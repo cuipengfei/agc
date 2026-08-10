@@ -1,0 +1,51 @@
+# Secrets and local credentials
+.env
+.env.*
+*credential*
+*credentials*
+*secret*
+*token*
+*password*
+*passwd*
+*private-key*
+*.pem
+*.key
+broker.token
+kimi-device-id
+install-id
+
+# Runtime state
+.omc/
+.omo/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+history*
+logs/
+log/
+cache/
+caches/
+run/
+sessions/
+terminal-sessions/
+profiles/
+puppeteer/
+gpu_cache.json
+
+# Backups
+*.bak
+*.bak-*
+*.backup
+*.backup-*
+
+# Python local artifacts
+__pycache__/
+*.py[cod]
+
+# Intentionally excluded user-specific umans files
+codex/umans.config.toml
+omp/agent/extensions/umans-status.ts
+.omc/project-memory.json
+.omc/state/agent-replay-ddb2a7e3-c09c-407f-87ff-1ac9fc125b23.jsonl
+.omc/state/idle-notif-cooldown.json

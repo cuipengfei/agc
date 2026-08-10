@@ -1,0 +1,24 @@
+# WATCHDOG.yml — OMP Advisor Roster
+# Docs: https://github.com/can1357/oh-my-pi/blob/main/docs/advisor-watchdog.md
+#
+# Search path: user level (~/.omp/agent/) + project level (cwd → repo root, both <dir>/ and <dir>/.omp/).
+# Same-name advisor slug: project leaf > project ancestor > user.
+
+# Shared baseline prepended to every advisor's system prompt (after built-in system.md).
+# Supports @import. Default: none.
+instructions: ""
+
+advisors:
+  - name: default
+    # Model selector with optional :level thinking suffix (e.g. anthropic/claude-sonnet-4-5:high).
+    # Omitted → modelRoles.advisor from models.yml. Default: omitted.
+    model: ""
+    # Built-in tool names to grant. Any name in BUILTIN_TOOL_NAMES.
+    # Omitted → ["read", "grep", "glob"]. [] → no tools.
+    tools: [read, grep, glob]
+    # This advisor's specialization, appended after shared baseline. Supports @import.
+    # Default: none.
+    instructions: ""
+    # Per-advisor toggle. false = stays in roster but runtime never built (shows ○).
+    # Default: true.
+    enabled: true

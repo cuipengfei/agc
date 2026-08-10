@@ -1,0 +1,61 @@
+{
+  "notify": {
+    "enabled": false,
+    "style": {
+      "backgroundColor": "#0A0A1E",
+      "backgroundOpacity": 0.75,
+      "textColor": "#C0D0E0",
+      "borderRadius": 3,
+      "colorBarWidth": 4,
+      "width": 440,
+      "height": 110,
+      "titleFontSize": 15,
+      "contentFontSize": 12,
+      "iconFontSize": 28,
+      "duration": 6000,
+      "position": "center",
+      "shadow": false,
+      "idleColor": "#00BFFF",
+      "errorColor": "#FF3366"
+    },
+    "toolCall": {
+      "enabled": false,
+      "duration": 10000,
+      "position": "top-right",
+      "maxVisible": 2,
+      "maxArgLength": 200,
+      "filter": {
+        "exclude": [
+          "think_sequentialthinking",
+          "Read",
+          "Grep",
+          "Glob",
+          "lsp_diagnostics",
+          "lsp_symbols",
+          "lsp_find_references",
+          "lsp_goto_definition",
+          "lsp_prepare_rename"
+        ]
+      }
+    }
+  },
+  "compaction": {
+    "enabled": true,
+    "language": "简体中文",
+    "style": "Brutally direct, facts only, zero fluff, zero ambiguity"
+  },
+  "autoMemory": {
+    "enabled": true
+  },
+  "backgroundSubagent": {
+    "enabled": true
+  },
+  "leaderboard": {
+    "enabled": false
+  },
+  "logging": {
+    "enabled": true,
+    "maxLines": 200
+  }
+}
+

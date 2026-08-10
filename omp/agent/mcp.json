@@ -1,0 +1,81 @@
+{
+  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
+  "mcpServers": {
+    "graphiti-memory": {
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp/"
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "context7-mcp",
+      "args": [
+        "--api-key",
+        "<REDACTED>"
+      ]
+    },
+    "mintlify-index": {
+      "type": "http",
+      "url": "https://index.mintlify.com"
+    },
+    "deep-wiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp"
+    },
+    "search-exa": {
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>"
+    },
+    "search-grep": {
+      "type": "http",
+      "url": "https://mcp.grep.app"
+    },
+    "search-tavily": {
+      "type": "http",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=<REDACTED>"
+    },
+    "firecrawl": {
+      "type": "http",
+      "url": "https://mcp.firecrawl.dev/<REDACTED>/v2/mcp"
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "/home/cpf/.bun/bin/chrome-devtools-mcp",
+      "args": [
+        "--browserUrl",
+        "http://127.0.0.1:9333",
+        "--no-usage-statistics",
+        "--no-performance-crux"
+      ]
+    },
+    "jina": {
+      "type": "http",
+      "url": "https://mcp.jina.ai/v1",
+      "headers": {
+        "Authorization": "Bearer <REDACTED>"
+      }
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "codegraph",
+      "args": [
+        "serve",
+        "--mcp"
+      ]
+    },
+    "ddgs": {
+      "type": "stdio",
+      "command": "/home/cpf/.local/bin/ddgs",
+      "args": [
+        "mcp"
+      ]
+    },
+    "headroom": {
+      "type": "http",
+      "url": "http://127.0.0.1:8788/mcp"
+    },
+    "context-mode": {
+      "type": "stdio",
+      "command": "context-mode"
+    }
+  }
+}

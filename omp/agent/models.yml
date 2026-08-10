@@ -1,0 +1,135 @@
+# oh-my-pi model configuration
+
+providers:
+  # ── OpenCode/Codex-compatible Responses endpoint ─────────────────────────────
+  c8787:
+    baseUrl: http://localhost:8787/v1
+    apiKey: <REDACTED>
+    api: openai-responses
+    headers:
+      x-session-id: <REDACTED>
+    compat:
+      supportsImageDetailOriginal: false
+    models:
+      - id: gpt-5.4
+        name: GPT-5.4
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+      - id: gpt-5.5
+        name: GPT-5.5
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+      - id: gpt-5.3-codex
+        name: GPT-5.3 Codex
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+      - id: gemini-3.1-pro-preview
+        name: Gemini 3.1 Pro Preview
+        reasoning: true
+        input: [text, image]
+        contextWindow: 128000
+        maxTokens: 16000
+      - id: gpt-5.4-mini
+        name: gpt-5.4-mini
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+      - id: gpt-5.6-sol
+        name: GPT-5.6 Sol
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+      - id: gpt-5.6-terra
+        name: GPT-5.6 Terra
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+      - id: gpt-5.6-luna
+        name: GPT-5.6 Luna
+        reasoning: true
+        input: [text, image]
+        contextWindow: 272000
+        maxTokens: 16000
+
+  umans:
+    api: anthropic-messages
+    baseUrl: "https://api.code.umans.ai"
+    apiKey: "<REDACTED>"
+    models:
+      - id: umans-kimi-k2.7
+        name: "Umans Kimi K2.7 Code"
+        reasoning: true
+        input: [text, image]
+        contextWindow: 262144
+        maxTokens: 32768
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: umans-kimi-k3
+        name: "Umans Kimi K3 (prerelease)"
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1048576
+        maxTokens: 131071
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: umans-glm-5.2
+        name: "Umans GLM 5.2"
+        reasoning: true
+        input: [text]
+        contextWindow: 405504
+        maxTokens: 131071
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: umans-coder
+        name: "Umans Coder"
+        reasoning: true
+        input: [text, image]
+        contextWindow: 262144
+        maxTokens: 32768
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: umans-flash
+        name: "Umans Flash"
+        reasoning: true
+        input: [text, image]
+        contextWindow: 262144
+        maxTokens: 32768
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: umans-qwen3.6-35b-a3b
+        name: "Umans Qwen3.6 35B A3B"
+        reasoning: true
+        input: [text, image]
+        contextWindow: 262144
+        maxTokens: 32768
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+
+

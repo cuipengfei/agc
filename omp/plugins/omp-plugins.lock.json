@@ -1,0 +1,15 @@
+{
+  "plugins": {
+    "@plannotator/pi-extension": {
+      "version": "0.26.7",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "@dietrichgebert/ponytail": {
+      "version": "4.9.0",
+      "enabledFeatures": null,
+      "enabled": true
+    }
+  },
+  "settings": {}
+}

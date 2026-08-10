@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "name": "codex-config",
+      "source": "~/.codex/config.toml",
+      "repo": "codex/config.toml",
+      "protected": true
+    },
+    {
+      "name": "codex-hooks-config",
+      "source": "~/.codex/hooks.json",
+      "repo": "codex/hooks.json",
+      "protected": true
+    },
+    {
+      "name": "codex-omx-config",
+      "source": "~/.codex/.omx-config.json",
+      "repo": "codex/.omx-config.json",
+      "protected": true
+    },
+    {
+      "name": "codex-hooks",
+      "source": "~/.codex/hooks",
+      "repo": "codex/hooks",
+      "protected": false,
+      "directory": true
+    },
+    {
+      "name": "opencode-config",
+      "source": "~/.config/opencode/opencode.jsonc",
+      "repo": "opencode/opencode.jsonc",
+      "protected": true
+    },
+    {
+      "name": "opencode-cli",
+      "source": "~/.config/opencode/cli.json",
+      "repo": "opencode/cli.json",
+      "protected": true
+    },
+    {
+      "name": "opencode-dcp",
+      "source": "~/.config/opencode/dcp.jsonc",
+      "repo": "opencode/dcp.jsonc",
+      "protected": true
+    },
+    {
+      "name": "opencode-tweaks",
+      "source": "~/.config/opencode/oc-tweaks.json",
+      "repo": "opencode/oc-tweaks.json",
+      "protected": true
+    },
+    {
+      "name": "opencode-tui",
+      "source": "~/.config/opencode/tui.json",
+      "repo": "opencode/tui.json",
+      "protected": true
+    },
+    {
+      "name": "opencode-plugin",
+      "source": "~/.config/opencode/plugin",
+      "repo": "opencode/plugin",
+      "protected": false,
+      "directory": true
+    },
+    {
+      "name": "omo-config",
+      "source": "~/.omo/omo.jsonc",
+      "repo": "omo/omo.jsonc",
+      "protected": true
+    },
+    {
+      "name": "omp-config",
+      "source": "~/.omp/agent/config.yml",
+      "repo": "omp/agent/config.yml",
+      "protected": true
+    },
+    {
+      "name": "omp-plugins",
+      "source": "~/.omp/plugins",
+      "repo": "omp/plugins",
+      "protected": false,
+      "directory": true,
+      "exclude": [
+        "bun.lock"
+      ]
+    },
+    {
+      "name": "omp-pi-extensions",
+      "source": "~/.omp/.pi/extensions",
+      "repo": "omp/.pi/extensions",
+      "protected": false,
+      "directory": true
+    },
+    {
+      "name": "omp-models",
+      "source": "~/.omp/agent/models.yml",
+      "repo": "omp/agent/models.yml",
+      "protected": true
+    },
+    {
+      "name": "omp-mcp",
+      "source": "~/.omp/agent/mcp.json",
+      "repo": "omp/agent/mcp.json",
+      "protected": true
+    },
+    {
+      "name": "omp-watchdog",
+      "source": "~/.omp/agent/WATCHDOG.md",
+      "repo": "omp/agent/WATCHDOG.md",
+      "protected": false
+    },
+    {
+      "name": "omp-watchdog-config",
+      "source": "~/.omp/agent/WATCHDOG.yml",
+      "repo": "omp/agent/WATCHDOG.yml",
+      "protected": false
+    },
+    {
+      "name": "omp-extensions",
+      "source": "~/.omp/agent/extensions",
+      "repo": "omp/agent/extensions",
+      "protected": false,
+      "directory": true,
+      "exclude": [
+        "umans-status.ts"
+      ]
+    },
+    {
+      "name": "omp-hooks",
+      "source": "~/.omp/agent/hooks",
+      "repo": "omp/agent/hooks",
+      "protected": false,
+      "directory": true
+    }
+  ]
+}

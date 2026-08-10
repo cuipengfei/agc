@@ -1,0 +1,337 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "small_model": "4140/gpt-5.6-luna",
+  "logLevel": "ERROR",
+  "autoupdate": "notify",
+  "share": "disabled",
+  "permission": {
+    "*": "allow",
+    "question": "allow",
+    "bash": {
+      "*": "allow",
+      "rm *": "ask",
+      "git commit*": "ask",
+      "git push*": "ask",
+      "git reset --hard*": "ask",
+      "git checkout -- *": "ask",
+      "git clean*": "ask",
+    },
+    "external_directory": "allow",
+    "doom_loop": "ask",
+    "plan_enter": "ask",
+    "plan_exit": "ask",
+  },
+  "mcp": {
+    "mempalace": {
+      "type": "local",
+      "command": ["/home/cpf/.local/bin/mempalace-mcp"],
+      "enabled": false,
+      "timeout": 10000,
+    },
+    "deep-wiki": {
+      "type": "remote",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "oauth": false,
+      "enabled": true,
+    },
+    "search-exa": {
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>",
+      "oauth": false,
+      "enabled": true,
+    },
+    "search-tavily": {
+      "type": "remote",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=<REDACTED>",
+      "oauth": false,
+      "enabled": true,
+    },
+    "firecrawl": {
+      "type": "remote",
+      "url": "https://mcp.firecrawl.dev/<REDACTED>/v2/mcp",
+      "oauth": false,
+      "enabled": true,
+    },
+    "chrome-devtools": {
+      "type": "local",
+      "command": [
+        "/home/cpf/.bun/bin/chrome-devtools-mcp",
+        "--browserUrl",
+        "http://127.0.0.1:9333",
+        "--no-usage-statistics",
+        "--no-performance-crux",
+      ],
+      "enabled": true,
+      "timeout": 20000,
+    },
+    "headroom": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8788/mcp",
+      "enabled": true,
+    },
+    "jina": {
+      "type": "remote",
+      "url": "https://mcp.jina.ai/v1",
+      "headers": {
+        "Authorization": "Bearer <REDACTED>",
+      },
+      "oauth": false,
+      "enabled": true,
+    },
+    "graphiti-memory": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8000/mcp/",
+      "oauth": false,
+      "enabled": true,
+    },
+    "ddgs": {
+      "type": "local",
+      "command": ["/home/cpf/.local/bin/ddgs", "mcp"],
+      "enabled": true,
+      "timeout": 20000,
+    },
+    "codegraph": {
+      "type": "local",
+      "command": ["codegraph", "serve", "--mcp"],
+      "enabled": true,
+    },
+  },
+  "snapshot": false,
+  "lsp": true,
+  "experimental": {
+    "openTelemetry": false,
+    "batch_tool": true,
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 15000,
+  },
+  "plugin": [
+    "context-mode",
+    "oh-my-openagent",
+    "oc-tweaks",
+    "@tarquinen/opencode-dcp",
+    "@plannotator/opencode",
+    "@dietrichgebert/ponytail",
+  ],
+  "provider": {
+    "4140": {
+      "npm": "@ai-sdk/openai",
+      "name": "4140",
+      "options": {
+        "baseURL": "http://localhost:8787/v1",
+        "apiKey": "<REDACTED>",
+      },
+      "models": {
+        "claude-fable-5": {
+          "name": "claude-fable-5",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "low": {
+              "effort": "low",
+            },
+            "medium": {
+              "effort": "medium",
+            },
+            "high": {
+              "effort": "high",
+            },
+            "xhigh": {
+              "effort": "max",
+            },
+          },
+        },
+        "gpt-5.4": {
+          "name": "GPT-5.4",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gpt-5.5": {
+          "name": "GPT-5.5",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gpt-5.3-codex": {
+          "name": "GPT-5.3 Codex",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro Preview",
+          "limit": {
+            "context": 128000,
+            "output": 16000,
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gpt-5.4-mini": {
+          "name": "gpt-5.4-mini",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gpt-5.6-sol": {
+          "name": "GPT-5.6 Sol",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "none": {
+              "reasoningEffort": "none",
+            },
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+            },
+            "max": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gpt-5.6-terra": {
+          "name": "GPT-5.6 Terra",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "none": {
+              "reasoningEffort": "none",
+            },
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+            },
+            "max": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+        "gpt-5.6-luna": {
+          "name": "GPT-5.6 Luna",
+          "limit": {
+            "context": 272000,
+            "output": 16000,
+          },
+          "variants": {
+            "none": {
+              "reasoningEffort": "none",
+            },
+            "low": {
+              "reasoningEffort": "low",
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+            },
+            "high": {
+              "reasoningEffort": "high",
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+            },
+            "max": {
+              "reasoningEffort": "max",
+            },
+          },
+        },
+      },
+    },
+  },
+}

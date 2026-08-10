@@ -1,0 +1,612 @@
+setupVersion: 1
+autoResume: true
+power: 
+  sleepPrevention: idle
+advisor: 
+  enabled: true
+  syncBacklog: "1"
+  immuneTurns: 0
+prewalk: 
+  enabled: false
+git: 
+  enabled: true
+extensions: 
+  - /home/cpf/.omp/.pi/extensions/rtk.ts
+  - /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
+  - <REDACTED>
+  - /home/cpf/.omp/agent/extensions/advisor-cache-observer.ts
+enabledModels: 
+  - c4141/*
+  - c4142/*
+  - c4143/*
+  - c8787/*
+  - umans/*
+  - opencode-zen/*
+  - opencode-go/*
+  - opencode-go/*
+  - kimi-code/*
+  - deepseek/*
+disabledProviders: 
+  - claude
+  - claude-plugins
+providers: 
+  maxInFlightRequests: 
+    c4141: 5
+    c4142: 5
+    c4143: 5
+    c8787: 5
+    umans: 5
+    opencode-zen: 5
+    opencode-go: 5
+    kimi-code: 5
+    deepseek: 5
+  anthropic: 
+    serverSideFallback: false
+  ollama-cloud: 
+    maxConcurrency: 3
+  webSearchOrder: 
+    - exa
+    - duckduckgo
+    - codex
+    - jina
+    - tavily
+    - firecrawl
+    - kimi
+    - startpage
+    - ecosia
+    - google
+    - mojeek
+    - public
+  webSearchExclude: 
+    - gemini
+    - searxng
+  antigravityEndpoint: auto
+  imageOrder: 
+    []
+  fireworksTier: standard
+  tts: auto
+  tinyModel: online
+  tinyModelDevice: default
+  tinyModelDtype: default
+  memoryModel: online
+  autoThinkingModel: online
+  autoThinkingMaxEffort: xhigh
+  unexpectedStopModel: online
+  kimiApiFormat: auto
+  openaiWebsockets: auto
+  streamFirstEventTimeoutSeconds: -1
+  streamIdleTimeoutSeconds: -1
+  openrouterVariant: default
+  fetch: trafilatura
+disabledExtensions: 
+  []
+modelRoleStorage: global
+modelRoles: 
+  plan: c8787/gpt-5.6-sol:high
+  slow: c8787/gpt-5.6-sol:high
+  commit: c8787/gpt-5.6-luna:medium
+  smol: c8787/gpt-5.6-luna:medium
+  task: c8787/gpt-5.6-terra:high
+  vision: c8787/gpt-5.6-luna:medium
+  tiny: c8787/gpt-5.6-luna:medium
+  advisor: c8787/gpt-5.6-luna:max
+  designer: umans/umans-glm-5.2:high
+  default: c8787/gpt-5.6-luna:max
+modelTags: 
+  {}
+modelProviderOrder: 
+  []
+cycleOrder: 
+  - smol
+  - default
+  - slow
+theme: 
+  dark: dark-abyss
+  light: light-arctic
+symbolPreset: nerd
+colorBlindMode: false
+statusLine: 
+  preset: default
+  separator: slash
+  sessionAccent: true
+  transparent: false
+  compactThinkingLevel: false
+  showHookStatus: true
+  leftSegments: 
+    []
+  rightSegments: 
+    []
+  segmentOptions: 
+    {}
+tools: 
+  artifactSpillThreshold: 50
+  artifactTailBytes: 20
+  artifactHeadBytes: 20
+  outputMaxColumns: 768
+  artifactTailLines: 500
+  format: auto
+  approval: 
+    security_scan: prompt
+  approvalMode: yolo
+  intentTracing: true
+  abortOnFabricatedResult: true
+  maxTimeout: 0
+  xdev: true
+  xdevDocs: builtins
+  xdevInlineDevices: 
+    []
+terminal: 
+  showImages: true
+  showProgress: true
+images: 
+  autoResize: true
+  blockImages: false
+  describeForTextModels: true
+tui: 
+  maxInlineImageColumns: 100
+  maxInlineImageRows: 20
+  maxInlineImages: 8
+  textSizing: false
+  renderMermaid: true
+  codexResetFireworks: false
+  titleState: true
+  hyperlinks: auto
+  tight: true
+  scrollbackRebuild: true
+  imeSafeCursor: false
+display: 
+  shimmer: kitt
+  smoothStreaming: true
+  showTokenUsage: true
+  cacheMissMarker: true
+  collapseCompacted: true
+showHardwareCursor: true
+defaultThinkingLevel: high
+hideThinkingBlock: false
+proseOnlyThinking: true
+omitThinking: false
+model: 
+  loopGuard: 
+    enabled: true
+    checkAssistantContent: true
+    toolCallReminder: true
+  toolCallLoopGuard: 
+    enabled: true
+    threshold: 5
+    exemptTools: 
+      - hub
+inlineToolDescriptors: auto
+includeModelInPrompt: true
+includeWorkspaceTree: false
+workspace: 
+  additionalDirectories: 
+    []
+personality: friendly
+temperature: -1
+topP: -1
+topK: -1
+minP: -1
+presencePenalty: -1
+repetitionPenalty: -1
+textVerbosity: medium
+tier: 
+  openai: none
+  anthropic: none
+  google: none
+  subagent: inherit
+retry: 
+  enabled: true
+  maxRetries: 3
+  baseDelayMs: 500
+  maxDelayMs: 300000
+  modelFallback: true
+  usageAwareFallback: false
+  usageReservePct: 10
+  usageReservePolicy: confirm
+  fallbackChains: 
+    {}
+  fallbackRevertPolicy: cooldown-expiry
+steeringMode: all
+followUpMode: all
+interruptMode: immediate
+loop: 
+  mode: prompt
+doubleEscapeAction: tree
+treeFilterMode: user-only
+autocompleteMaxVisible: 5
+emojiAutocomplete: true
+paste: 
+  largeMenuThreshold: 100
+startup: 
+  quiet: false
+  showSplash: false
+  setupWizard: true
+  checkUpdate: false
+  changelogMode: summary
+marketplace: 
+  autoUpdate: auto
+magicKeywords: 
+  enabled: true
+  ultrathink: true
+  orchestrate: true
+  workflow: true
+completion: 
+  notify: "on"
+error: 
+  notify: "on"
+ask: 
+  timeout: 0
+  notify: "on"
+  enabled: true
+recap: 
+  enabled: true
+  idleSeconds: 300
+collab: 
+  relayUrl: wss://my.omp.sh
+  webUrl: ""
+  displayName: ""
+share: 
+  serverUrl: https://my.omp.sh/s
+  store: blob
+  redactSecrets: true
+stt: 
+  enabled: false
+  language: en
+  modelName: parakeet
+  submitTrigger: never
+contextPromotion: 
+  enabled: false
+compaction: 
+  enabled: true
+  midTurnEnabled: false
+  strategy: shake
+  thresholdPercent: 90
+  thresholdTokens: -1
+  handoffSaveToDisk: true
+  remoteEnabled: true
+  remoteStreamingV2Enabled: true
+  keepRecentTokens: 20000
+  autoContinue: true
+  v2RetainedMessageBudget: 64000
+  idleEnabled: false
+  idleThresholdTokens: 200000
+  idleTimeoutSeconds: 300
+  supersedeReads: true
+  dropUseless: true
+snapcompact: 
+  systemPrompt: none
+  toolResults: false
+  shape: auto
+branchSummary: 
+  enabled: true
+  reserveTokens: 16384
+memories: 
+  maxRolloutsPerStartup: 64
+  maxRolloutAgeDays: 30
+  minRolloutIdleHours: 12
+  threadScanLimit: 300
+  maxRawMemoriesForGlobal: 200
+  stage1Concurrency: 8
+  stage1LeaseSeconds: 120
+  stage1RetryDelaySeconds: 120
+  phase2LeaseSeconds: 180
+  phase2RetryDelaySeconds: 180
+  phase2HeartbeatSeconds: 30
+  rolloutPayloadPercent: 0.7
+  phase1InputTokenLimit: 4000
+  fallbackTokenLimit: 16000
+  summaryInjectionTokenLimit: 5000
+memory: 
+  backend: local
+autolearn: 
+  enabled: true
+  autoContinue: true
+  minToolCalls: 5
+mnemopi: 
+  scoping: per-project
+  embeddingVariant: en
+  autoRecall: true
+  autoRetain: true
+  polyphonicRecall: false
+  enhancedRecall: false
+  proactiveLinking: false
+  noEmbeddings: false
+  llmMode: smol
+  retainEveryNTurns: 4
+  recallLimit: 8
+  recallContextTurns: 3
+  recallMaxQueryChars: 4000
+  injectionTokenLimit: 5000
+  debug: false
+hindsight: 
+  apiUrl: http://localhost:8888
+  scoping: per-project-tagged
+  autoRecall: true
+  autoRetain: true
+  retainMode: full-session
+  retainEveryNTurns: 3
+  retainOverlapTurns: 2
+  retainContext: omp
+  recallBudget: mid
+  recallMaxTokens: 1024
+  recallContextTurns: 1
+  recallMaxQueryChars: 800
+  recallTypes: 
+    - world
+    - experience
+  debug: false
+  requestTimeoutMs: 30000
+  reflectTimeoutMs: 120000
+  recallTimeoutMs: 30000
+  retainTimeoutMs: 60000
+  mentalModelsEnabled: true
+  mentalModelAutoSeed: true
+  mentalModelRefreshIntervalMs: 300000
+  mentalModelMaxRenderChars: 16000
+ttsr: 
+  enabled: true
+  contextMode: discard
+  interruptMode: always
+  repeatMode: once
+  repeatGap: 10
+  builtinRules: true
+  disabledRules: 
+    []
+edit: 
+  mode: hashline
+  fuzzyMatch: true
+  fuzzyThreshold: 0.95
+  streamingAbort: false
+  blockAutoGenerated: true
+  enforceSeenLines: true
+readLineNumbers: false
+read: 
+  defaultLimit: 300
+  renderMarkdown: false
+  summarize: 
+    enabled: true
+    prose: false
+    minBodyLines: 4
+    minCommentLines: 6
+    minTotalLines: 100
+    unfoldUntil: 50
+    unfoldLimit: 100
+  toolResultPreview: false
+lsp: 
+  enabled: true
+  lazy: true
+  formatOnWrite: false
+  diagnosticsOnWrite: true
+  diagnosticsOnEdit: true
+  diagnosticsDeduplicate: true
+bash: 
+  enabled: true
+  autoBackground: 
+    enabled: true
+  patterns: 
+    []
+  direnv: auto
+  direnvLoadTimeoutMs: 30000
+bashInterceptor: 
+  enabled: true
+  patterns: 
+    - pattern: ^\s*(cat|head|tail|less|more)\s+
+      tool: read
+      message: "Use the `read` tool instead of cat/head/tail. It provides better context and handles binary files."
+    - pattern: ^\s*(grep|rg|ripgrep|ag|ack)\s+
+      tool: grep
+      message: "Use the `grep` tool instead of grep/rg. It respects .gitignore and provides structured output."
+    - pattern: ^\s*(find|fd|locate)\s+.*(-name|-iname|-type|--type|-glob)
+      tool: glob
+      message: "Use the `glob` tool instead of find/fd. It respects .gitignore and is faster for glob patterns."
+    - pattern: ^\s*sed\s+(-i|--in-place)
+      tool: edit
+      message: "Use the `edit` tool instead of sed -i. It provides diff preview and fuzzy matching."
+    - pattern: "^\\s*perl\\s+.*-[pn]?i"
+      tool: edit
+      message: "Use the `edit` tool instead of perl -i. It provides diff preview and fuzzy matching."
+    - pattern: ^\s*awk\s+.*-i\s+inplace
+      tool: edit
+      message: "Use the `edit` tool instead of awk -i inplace. It provides diff preview and fuzzy matching."
+    - pattern: "^\\s*(echo|printf|cat\\s*<<)\\s+(?:(?:[^\"'>]|\"[^\"]*\"|'[^']*')|(?<!\\|)>{1,2}\\|?\\s*(?:\"/dev/(?:null|tty|stdout|stderr)\"|'/dev/(?:null|tty|stdout|stderr)'|/dev/(?:null|tty|stdout|stderr))(?:[\\s;&|]|$))*(?<!\\|)>{1,2}\\|?\\s*(?!(?:\"/dev/(?:null|tty|stdout|stderr)\"|'/dev/(?:null|tty|stdout|stderr)'|/dev/(?:null|tty|stdout|stderr))(?:[\\s;&|]|$))[$\\w./~\"'-]"
+      tool: write
+      message: "Use the `write` tool instead of echo/cat redirection. It handles encoding and provides confirmation."
+    - pattern: ^\s*nohup\s+|(?<!&)\&\s*$
+      tool: hub
+      message: "Use the `hub` tool (`op:\"start\"`) instead of nohup or background shell syntax so the process stays observable and managed."
+    - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?(?:dev|start)(?:\s|$)|(?:vite|next\s+dev|nuxt\s+dev|nodemon|lldb|gdb|tail\s+-f)(?:\s|$)|docker\s+compose\s+up(?!.*(?:\s-d(?:\s|$)|--detach))(?:\s|$))
+      tool: hub
+      message: "Use the `hub` tool (`op:\"start\"`) for services, watchers, and debuggers so other omp instances can observe and control them."
+    - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?\S+|cargo\s+watch|watchexec|pytest|vitest|jest|tsc)(?:.|\n)*(?:--watch|-w)(?:\s|$)
+      tool: hub
+      message: "Use the `hub` tool (`op:\"start\"`) for watch mode so its output, input, and lifecycle stay managed."
+shellMinimizer: 
+  enabled: true
+  only: 
+    []
+  except: 
+    []
+  maxCaptureBytes: 4194304
+  sourceOutlineLevel: aggressive
+eval: 
+  py: true
+  js: true
+  rb: false
+  jl: false
+python: 
+  kernelMode: session
+  interpreter: ""
+ruby: 
+  interpreter: ""
+julia: 
+  interpreter: ""
+todo: 
+  enabled: true
+  reminders: true
+  remindersMax: 1
+  eager: preferred
+glob: 
+  enabled: true
+grep: 
+  enabled: true
+  contextBefore: 3
+  contextAfter: 3
+astGrep: 
+  enabled: true
+astEdit: 
+  enabled: true
+debug: 
+  enabled: true
+launch: 
+  enabled: true
+speechgen: 
+  enabled: false
+generate_image: 
+  enabled: false
+inspect_image: 
+  mode: auto
+  timeoutMs: 300000
+computer: 
+  enabled: false
+  display: all
+  maxWidth: 1920
+  maxHeight: 1200
+checkpoint: 
+  enabled: false
+fetch: 
+  enabled: true
+vault: 
+  enabled: false
+github: 
+  enabled: true
+  cache: 
+    enabled: true
+    softTtlSec: 300
+    hardTtlSec: 604800
+web_search: 
+  enabled: true
+security: 
+  enabled: true
+browser: 
+  enabled: true
+  headless: true
+  cmux: true
+async: 
+  enabled: true
+  maxJobs: 12
+  pollWaitDuration: smart
+irc: 
+  timeoutMs: 120000
+mcp: 
+  enableProjectConfig: true
+  renderMarkdownResults: true
+  notifications: true
+  notificationDebounceMs: 500
+plan: 
+  enabled: true
+  defaultOnStartup: false
+goal: 
+  enabled: true
+  statusInFooter: true
+  continuationModes: 
+    - interactive
+title: 
+  refreshOnReplan: true
+task: 
+  isolation: 
+    mode: none
+    apply: true
+    merge: patch
+    commits: generic
+  eager: preferred
+  batch: true
+  enableEffort: true
+  maxConcurrency: 5
+  enableLsp: true
+  maxRecursionDepth: 1
+  maxRuntimeMs: 1800000
+  agentIdleTtlMs: 420000
+  softRequestBudget: 200
+  softRequestBudgetNotice: true
+  maxEffort: max
+  disabledAgents: 
+    []
+  agentModelOverrides: 
+    {}
+  agentPrewalk: 
+    {}
+  prewalk: false
+  showResolvedModelBadge: true
+tasks: 
+  todoClearDelay: 60
+skills: 
+  enabled: true
+  enableSkillCommands: false
+  enableCodexUser: true
+  enableClaudeUser: false
+  enableClaudeProject: true
+  enablePiUser: true
+  enablePiProject: true
+  enableAgentsUser: true
+  enableAgentsProject: true
+  customDirectories: 
+    []
+  ignoredSkills: 
+    []
+  includeSkills: 
+    []
+commands: 
+  enableClaudeUser: false
+  enableClaudeProject: true
+  enableOpencodeUser: false
+  enableOpencodeProject: true
+secrets: 
+  enabled: false
+live: 
+  voice: sol
+tts: 
+  localModel: kokoro
+  localVoice: af_heart
+speech: 
+  enabled: false
+  mode: assistant
+  enhanced: false
+  voice: af_heart
+features: 
+  unexpectedStopDetection: false
+codexResets: 
+  autoRedeem: unset
+  minBlockedMinutes: 60
+  keepCredits: 0
+  salvageHorizonHours: 12
+provider: 
+  appendOnlyContext: "on"
+exa: 
+  enabled: true
+  searchDelayMs: 1000
+commit: 
+  mapReduceEnabled: true
+  mapReduceMinFiles: 4
+  mapReduceMaxFileTokens: 50000
+  mapReduceTimeoutMs: 120000
+  mapReduceMaxConcurrency: 5
+  changelogMaxDiffChars: 120000
+dev: 
+  autoqa: true
+  autoqaPush: 
+    endpoint: https://qa.omp.sh/v1/grievances
+  autoqaConsent: granted
+gc: 
+  blobs: true
+  archive: true
+  wal: true
+  coldArchiveAfterDays: 30
+  retainNewestGlobal: 20
+  retainNewestPerCwd: 10
+thinkingBudgets: 
+  minimal: 1024
+  low: 2048
+  medium: 8192
+  high: 16384
+  xhigh: 32768
+  max: 32768
