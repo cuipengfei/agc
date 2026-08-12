@@ -220,6 +220,9 @@ trust_level = "trusted"
 [projects."/home/cpf/.agents"]
 trust_level = "trusted"
 
+[projects."/home/cpf/.local/share/uv/tools/headroom-ai"]
+trust_level = "trusted"
+
 [tui]
 notifications = true
 theme = "catppuccin-mocha"
@@ -341,8 +344,8 @@ trusted_hash = "sha256:89d0365c3dd05e5503c3948f1be707be703396356341736ea3923fa9e
 trusted_hash = "sha256:9f9b46244739e7f6f787757a083d0d65c07db3aa2daaaecb6fe9e65b08f362b2"
 
 [marketplaces.context-mode]
-last_updated = "2026-08-10T12:27:54Z"
-last_revision = "69f13fb0188f9a7a91690df03a9bed942ff27500"
+last_updated = "2026-08-12T13:28:02Z"
+last_revision = "a5f02966d11761124d514d589eca94012aa41c4c"
 source_type = "git"
 source = "https://github.com/mksglu/context-mode.git"
 

@@ -64,6 +64,24 @@
       "directory": true
     },
     {
+      "name": "opencode-plugin-herdr-agent-state",
+      "source": "~/.config/opencode/plugins/herdr-agent-state.js",
+      "repo": "opencode/plugins/herdr-agent-state.js",
+      "protected": false
+    },
+    {
+      "name": "opencode-plugin-rtk",
+      "source": "~/.config/opencode/plugins/rtk.ts",
+      "repo": "opencode/plugins/rtk.ts",
+      "protected": false
+    },
+    {
+      "name": "opencode-plugin-win-ntf-notify",
+      "source": "~/.config/opencode/plugins/win-ntf-notify.ts",
+      "repo": "opencode/plugins/win-ntf-notify.ts",
+      "protected": false
+    },
+    {
       "name": "omo-config",
       "source": "~/.omo/omo.jsonc",
       "repo": "omo/omo.jsonc",
