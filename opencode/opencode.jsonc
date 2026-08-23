@@ -106,6 +106,12 @@
     "auto": true,
     "prune": true,
     "reserved": 15000,
+    "tail_turns": 2,
+    "preserve_recent_tokens": 8000,
+  },
+  "tool_output": {
+    "max_bytes": 8192,
+    "max_lines": 200,
   },
   "plugin": [
     "context-mode",

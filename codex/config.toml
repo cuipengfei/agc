@@ -1,7 +1,7 @@
 model_catalog_json = "/home/cpf/.codex/model-catalog-4140.json"
 hide_agent_reasoning = false
 instructions = "You are a programming assistant. Always respond in Chinese (简体中文)."
-model = "gpt-5.6-luna"
+model = "gpt-5.6-terra"
 model_provider = "cop"
 model_reasoning_summary = "detailed"
 model_supports_reasoning_summaries = true
@@ -12,7 +12,6 @@ show_raw_agent_reasoning = true
 web_search = "live"
 approvals_reviewer = "user"
 developer_instructions = "<omx version=\"1\">You have oh-my-codex installed through Codex plugin mode. AGENTS.md is the orchestration brain and main control surface. Follow AGENTS.md for skill/keyword routing and $name workflow invocation. When spawning native subagents, set `agent_type` to an installed role and never omit it for OMX work. Registered Codex plugin marketplace surfaces supply OMX workflows and plugin-scoped companion resources when the plugin is installed; native agent roles are installed as setup-owned Codex agent TOML files in plugin mode so agent_type routing works. User-installed skills may still live under ~/.codex/skills. Use outcome-first, concise progress updates: state the target result, constraints, validation evidence, and stop condition before adding process detail.</omx>"
-model_reasoning_effort = "high"
 
 [analytics]
 enabled = false
@@ -225,7 +224,7 @@ trust_level = "trusted"
 
 [tui]
 notifications = true
-theme = "catppuccin-mocha"
+theme = "gruvbox-dark"
 status_line_use_colors = true
 pet = "codex"
 alternate_screen = "never"
@@ -344,23 +343,33 @@ trusted_hash = "sha256:89d0365c3dd05e5503c3948f1be707be703396356341736ea3923fa9e
 trusted_hash = "sha256:9f9b46244739e7f6f787757a083d0d65c07db3aa2daaaecb6fe9e65b08f362b2"
 
 [marketplaces.context-mode]
-last_updated = "2026-08-12T13:28:02Z"
-last_revision = "a5f02966d11761124d514d589eca94012aa41c4c"
+last_updated = "2026-08-16T16:39:24Z"
+last_revision = "699ff30d08dddeeb5359f92b9262729591bf1cf5"
 source_type = "git"
 source = "https://github.com/mksglu/context-mode.git"
 
 [plugins."context-mode@context-mode"]
 enabled = true
 
+[marketplaces.ponytail]
+last_updated = "2026-08-08T03:09:10Z"
+last_revision = "2ed6c52c9d7e5e56942508591085fd45dea277d3"
+source_type = "git"
+source = "https://github.com/DietrichGebert/ponytail.git"
+
 [plugins."oh-my-codex@oh-my-codex-local"]
+enabled = true
+
+[plugins."better-harness@better-harness"]
 enabled = true
 
 [marketplaces.oh-my-codex-local]
 source_type = "local"
 source = "/home/cpf/.bun/install/global/node_modules/oh-my-codex"
 
-[marketplaces.ponytail]
-last_updated = "2026-08-08T03:09:10Z"
-last_revision = "2ed6c52c9d7e5e56942508591085fd45dea277d3"
+[marketplaces.better-harness]
+last_updated = "2026-08-16T01:55:53Z"
+last_revision = "36c85c40ffb7596d413cc14bfbc8e66c741c182e"
 source_type = "git"
-source = "https://github.com/DietrichGebert/ponytail.git"
+source = "https://github.com/QoderAI/better-harness.git"
+ref = "main"
