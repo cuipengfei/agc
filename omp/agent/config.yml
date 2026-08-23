@@ -19,6 +19,7 @@ enabledModels:
   - c4142/*
   - c4143/*
   - c8787/*
+  - c8787-chat/*
   - umans/*
   - opencode-zen/*
   - opencode-go/*
@@ -34,6 +35,7 @@ providers:
     c4142: 5
     c4143: 5
     c8787: 5
+    c8787-chat: 5
     umans: 5
     opencode-zen: 5
     opencode-go: 5
@@ -88,7 +90,7 @@ modelRoles:
   task: c8787/gpt-5.6-terra:high
   vision: c8787/gpt-5.6-luna:medium
   tiny: c8787/gpt-5.6-luna:medium
-  advisor: c8787/gpt-5.6-terra:high
+  advisor: c8787/gpt-5.6-luna:max
   designer: umans/umans-glm-5.2:high
   default: kimi-code/k3-256k:high
 modelTags: 
@@ -258,11 +260,9 @@ contextPromotion:
 compaction: 
   enabled: true
   midTurnEnabled: false
-  strategy: shake
   thresholdPercent: 90
   thresholdTokens: -1
   handoffSaveToDisk: true
-  remoteEnabled: true
   remoteStreamingV2Enabled: true
   keepRecentTokens: 20000
   autoContinue: true
@@ -272,6 +272,10 @@ compaction:
   idleTimeoutSeconds: 300
   supersedeReads: true
   dropUseless: true
+  methodOrder: 
+    - shake
+    - remote
+    - soft
 snapcompact: 
   systemPrompt: none
   toolResults: false
@@ -296,19 +300,21 @@ memories:
   fallbackTokenLimit: 16000
   summaryInjectionTokenLimit: 5000
 memory: 
-  backend: local
+  backend: mnemopi
 autolearn: 
   enabled: true
   autoContinue: true
   minToolCalls: 5
 mnemopi: 
   scoping: per-project
-  embeddingVariant: en
+  embeddingVariant: multilingual
+  embeddingApiUrl: http://localhost:4140/v1
+  embeddingModel: text-embedding-3-small
   autoRecall: true
   autoRetain: true
-  polyphonicRecall: false
-  enhancedRecall: false
-  proactiveLinking: false
+  polyphonicRecall: true
+  enhancedRecall: true
+  proactiveLinking: true
   noEmbeddings: false
   llmMode: smol
   retainEveryNTurns: 4
@@ -572,7 +578,7 @@ speech:
   enhanced: false
   voice: af_heart
 features: 
-  unexpectedStopDetection: false
+  unexpectedStopDetection: none
 codexResets: 
   autoRedeem: unset
   minBlockedMinutes: 60

@@ -214,27 +214,6 @@
             },
           },
         },
-        "gemini-3.1-pro-preview": {
-          "name": "Gemini 3.1 Pro Preview",
-          "limit": {
-            "context": 128000,
-            "output": 16000,
-          },
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-            },
-            "high": {
-              "reasoningEffort": "high",
-            },
-            "xhigh": {
-              "reasoningEffort": "max",
-            },
-          },
-        },
         "gpt-5.4-mini": {
           "name": "gpt-5.4-mini",
           "limit": {
@@ -335,6 +314,23 @@
             "max": {
               "reasoningEffort": "max",
             },
+          },
+        },
+      },
+    },
+    "4140-chat": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "4140-chat",
+      "options": {
+        "baseURL": "http://localhost:8787/v1",
+        "apiKey": "<REDACTED>",
+      },
+      "models": {
+        "gemini-3.7-flash": {
+          "name": "Gemini 3.7 Flash",
+          "limit": {
+            "context": 1000000,
+            "output": 64000,
           },
         },
       },

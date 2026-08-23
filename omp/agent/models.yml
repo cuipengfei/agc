@@ -29,12 +29,6 @@ providers:
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
-      - id: gemini-3.1-pro-preview
-        name: Gemini 3.1 Pro Preview
-        reasoning: true
-        input: [text, image]
-        contextWindow: 128000
-        maxTokens: 16000
       - id: gpt-5.4-mini
         name: gpt-5.4-mini
         reasoning: true
@@ -59,6 +53,21 @@ providers:
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
+
+  # ── Chat Completions endpoint for chat-only models (Gemini) ────────────────
+  c8787-chat:
+    baseUrl: http://localhost:8787/v1
+    apiKey: <REDACTED>
+    api: openai-completions
+    headers:
+      x-session-id: <REDACTED>
+    models:
+      - id: gemini-3.7-flash
+        name: Gemini 3.7 Flash
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1000000
+        maxTokens: 64000
 
   umans:
     api: anthropic-messages

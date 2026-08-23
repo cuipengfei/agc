@@ -1,7 +1,6 @@
 model_catalog_json = "/home/cpf/.codex/model-catalog-4140.json"
 hide_agent_reasoning = false
-instructions = "You are a programming assistant. Always respond in Chinese (简体中文)."
-model = "gpt-5.6-terra"
+model = "gpt-5.6-luna"
 model_provider = "cop"
 model_reasoning_summary = "detailed"
 model_supports_reasoning_summaries = true
@@ -11,7 +10,8 @@ service_tier = "fast"
 show_raw_agent_reasoning = true
 web_search = "live"
 approvals_reviewer = "user"
-developer_instructions = "<omx version=\"1\">You have oh-my-codex installed through Codex plugin mode. AGENTS.md is the orchestration brain and main control surface. Follow AGENTS.md for skill/keyword routing and $name workflow invocation. When spawning native subagents, set `agent_type` to an installed role and never omit it for OMX work. Registered Codex plugin marketplace surfaces supply OMX workflows and plugin-scoped companion resources when the plugin is installed; native agent roles are installed as setup-owned Codex agent TOML files in plugin mode so agent_type routing works. User-installed skills may still live under ~/.codex/skills. Use outcome-first, concise progress updates: state the target result, constraints, validation evidence, and stop condition before adding process detail.</omx>"
+developer_instructions = "<omx version=\"1\">You have oh-my-codex installed through Codex plugin mode. AGENTS.md is the orchestration brain and main control surface. Follow AGENTS.md for skill/keyword routing and $name workflow invocation. When spawning native subagents, set `agent_type` to an installed role and never omit it for OMX work. Registered Codex plugin marketplace surfaces supply OMX workflows and plugin-scoped companion resources when the plugin is installed; native agent roles are installed as setup-owned Codex agent TOML files in plugin mode so agent_type routing works. User-installed skills may still live under ~/.codex/skills. Use outcome-first, concise progress updates: state the target result, constraints, validation evidence, and stop condition before adding process detail.</omx>\n\nAlways respond to the user in Simplified Chinese."
+model_reasoning_effort = "high"
 
 [analytics]
 enabled = false
@@ -343,8 +343,8 @@ trusted_hash = "sha256:89d0365c3dd05e5503c3948f1be707be703396356341736ea3923fa9e
 trusted_hash = "sha256:9f9b46244739e7f6f787757a083d0d65c07db3aa2daaaecb6fe9e65b08f362b2"
 
 [marketplaces.context-mode]
-last_updated = "2026-08-16T16:39:24Z"
-last_revision = "699ff30d08dddeeb5359f92b9262729591bf1cf5"
+last_updated = "2026-08-20T14:04:24Z"
+last_revision = "e47942d41d79c35ecce13013c9e75122d8470705"
 source_type = "git"
 source = "https://github.com/mksglu/context-mode.git"
 
@@ -357,19 +357,19 @@ last_revision = "2ed6c52c9d7e5e56942508591085fd45dea277d3"
 source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
 
-[plugins."oh-my-codex@oh-my-codex-local"]
-enabled = true
+[marketplaces.better-harness]
+last_updated = "2026-08-20T14:04:19Z"
+last_revision = "a73519bed65c3fc19dbab50cd57e225dd224d195"
+source_type = "git"
+source = "https://github.com/QoderAI/better-harness.git"
+ref = "main"
 
 [plugins."better-harness@better-harness"]
+enabled = true
+
+[plugins."oh-my-codex@oh-my-codex-local"]
 enabled = true
 
 [marketplaces.oh-my-codex-local]
 source_type = "local"
 source = "/home/cpf/.bun/install/global/node_modules/oh-my-codex"
-
-[marketplaces.better-harness]
-last_updated = "2026-08-16T01:55:53Z"
-last_revision = "36c85c40ffb7596d413cc14bfbc8e66c741c182e"
-source_type = "git"
-source = "https://github.com/QoderAI/better-harness.git"
-ref = "main"

@@ -1,9 +1,8 @@
 {
   "env": {
-    "OMX_DEFAULT_FRONTIER_MODEL": "gpt-5.5",
-    "OMX_DEFAULT_STANDARD_MODEL": "gpt-5.6-luna",
+    "OMX_DEFAULT_FRONTIER_MODEL": "gpt-5.6-sol",
+    "OMX_DEFAULT_STANDARD_MODEL": "gpt-5.4",
     "OMX_DEFAULT_SPARK_MODEL": "gpt-5.6-luna",
     "OMX_TEAM_CHILD_MODEL": "gpt-5.6-terra"
   }
 }
-
