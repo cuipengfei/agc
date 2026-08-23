@@ -6,7 +6,7 @@
 
 ## Overview
 
-OMP 的 Mnemopi 记忆后端有两条 consolidation 路径：`dispose()`（普通退出，不 sleep）和 `/memory enqueue`（显式 full consolidation）。两条路径都受 12 小时年龄门槛限制，fresh rows 不会被晋升到 episodic memory。standalone `pi-mnemopi` CLI 提供无交互的 `sleep` 命令，可以脚本化。
+OMP 的 Mnemopi 记忆后端有三条相关路径：`dispose()`（普通退出，**不执行 sleep**，所以不 promote）、`/memory enqueue`（显式 full consolidation），以及 standalone `pi-mnemopi sleep` CLI（可无交互触发 full consolidation）。**只有 full sleep 路径受 12 小时年龄门槛限制**；`dispose()` 不是被 age gate 拦住，而是根本不跑 sleep。因此 fresh rows 在普通退出和立即 enqueue 后，都不会被晋升到 episodic memory。
 
 ## Consolidation 路径
 
