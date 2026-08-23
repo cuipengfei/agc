@@ -108,6 +108,7 @@ find . -path './.git' -prune -o -type l -print
 - 不追踪 token、secret、password、cookie、credential、authorization、私钥、`.env`、数据库、WAL、历史、日志、缓存、session、运行时状态、备份和生成文件。
 - 明确排除用户专属文件：`~/.codex/umans.config.toml`、`~/.omp/agent/extensions/umans-status.ts`；仓库副本保持 `<REDACTED>` 或 ignored，不纳入可提交同步内容。
 - `pull`、`push`、`status`、`diff` 均通过 manifest 约束范围；不要执行广泛同步替代单文件需求。
+- `raw/` 和 `wiki/` 是本仓库自产的学习/实验记录（Karpathy LLM Wiki 模式），不在 `manifest.json` 中，不参与 pull/push 同步。入库前必须脱敏，不存放 token、cookie、authorization header 等凭据内容。
 
 ## 修改规则
 
