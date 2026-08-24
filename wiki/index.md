@@ -15,3 +15,11 @@ OMP Prewalk 的行为边界、模型切换机制与社区反响。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Prewalk：规划后切换模型](omp-prewalk/prewalk.md) | 规划后首次文件修改返回时切换到便宜模型、触发边界、子代理配置与社区口碑 | 2026-08-24 |
+
+## omp-ttsr
+
+OMP TTSR 流式行为护栏与 /omfg 规则生成入口。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP TTSR 与 /omfg：流式行为护栏](omp-ttsr/ttsr-and-omfg.md) | TTSR 触发边界、配置、规则生成、Skills 对比与活体演示 | 2026-08-24 |

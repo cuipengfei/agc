@@ -351,8 +351,8 @@ ttsr:
   enabled: true
   contextMode: discard
   interruptMode: always
-  repeatMode: once
-  repeatGap: 10
+  repeatMode: after-gap
+  repeatGap: 5
   builtinRules: true
   disabledRules: 
     []
