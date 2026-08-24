@@ -27,7 +27,6 @@ enabledModels:
   - kimi-code/*
   - deepseek/*
 disabledProviders: 
-  - claude
   - claude-plugins
 providers: 
   maxInFlightRequests: 
@@ -80,7 +79,7 @@ providers:
   openrouterVariant: default
   fetch: trafilatura
 disabledExtensions: 
-  []
+  - context-file:user:AGENTS.md
 modelRoleStorage: global
 modelRoles: 
   plan: c8787/gpt-5.6-sol:high
