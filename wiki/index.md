@@ -22,4 +22,4 @@ OMP TTSR 流式行为护栏与 /omfg 规则生成入口。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP TTSR 与 /omfg：流式行为护栏](omp-ttsr/ttsr-and-omfg.md) | TTSR 触发边界、配置、规则生成、Skills 对比与活体演示 | 2026-08-24 |
+| [OMP TTSR 与 /omfg：流式行为护栏](omp-ttsr/ttsr-and-omfg.md) | TTSR 触发边界、配置、规则生成、Skills 对比、活体演示与重复注入实验 | 2026-08-25 |

@@ -11,3 +11,8 @@
 ## [2026-08-24] ingest | OMP TTSR 与 /omfg：流式行为护栏
 - Disposition: New
 - Raw: raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md; raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md
+
+## [2026-08-25] ingest | update OMP TTSR 与 /omfg：流式行为护栏
+- Disposition: Update
+- Raw: raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md
+- Updated: OMP TTSR 与 /omfg：流式行为护栏

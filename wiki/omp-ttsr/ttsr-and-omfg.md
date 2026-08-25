@@ -1,8 +1,8 @@
 # OMP TTSR 与 /omfg：流式行为护栏
 
 > Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24
-> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md)
-> Updated: 2026-08-24
+> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md)
+> Updated: 2026-08-25
 
 ## 速查
 
@@ -61,6 +61,12 @@
 ## 活体演示（2026-08-24，本会话）
 
 `/omfg` 锻造规则 → 保存到 `.omp/rules/verify-before-mechanism-claims.md`（Registered live）→ 下一条回复被 `system-interrupt reason="rule_violation"` 中途掐断 → 默认 `once` 下重复措辞未二次触发。证明了本会话内一次完整生命周期；不证明所有规则/provider/模式行为一致。
+
+## 重复注入实验
+
+在 `repeatMode: after-gap`、`repeatGap: 5` 的配置下，本会话继续进行无害对话后，两条自定义规则都再次触发：`no-git-commit-without-explicit-request` 和 `verify-before-mechanism-claims` 各自至少出现两次 `<system-interrupt ...>` occurrence。再次触发产生新的注入 occurrence，不是刷新旧条目。
+
+这里的证据范围是**当前会话可见上下文**；它不等同于 transcript 精确总数，也不声称这些正文在后续 compaction 后仍全部保留。完整 occurrence 前后片段与观察边界见 [重复 XML 注入实验记录](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md)。
 
 ## 已知问题与社区反响
 
