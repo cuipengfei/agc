@@ -2,7 +2,7 @@
 
 > Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24
 > Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md)
-> Updated: 2026-08-24
+> Updated: 2026-08-27
 
 ## Overview
 
@@ -76,4 +76,4 @@ Prewalk 从 v16.5.0 引入，后续经历了循环处理、只读 xd:// 排除�
 
 ## See Also
 
-- [OMP Mnemopi Consolidation 生命周期](../omp-mnemopi/consolidation-lifecycle.md)
+- [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — Prewalk 在 OMP 工作模式中的定位及组合建议。

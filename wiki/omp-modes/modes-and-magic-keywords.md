@@ -2,7 +2,7 @@
 
 > Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md)
 > Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md)
-> Updated: 2026-08-26
+> Updated: 2026-08-27
 
 ## 工作流模式
 
@@ -99,3 +99,8 @@ Vibe 父 session 没有普通 `task`/`eval`，因此 `orchestrate`/`workflowz` �
 普通并行派工 → orchestrate
 严格多阶段 DAG → workflowz
 ```
+
+## See Also
+
+- [OMP Prewalk：规划后切换模型](../omp-prewalk/prewalk.md) — `/prewalk` 的触发门槛、模型交接与生命周期细节。
+- [OMP TTSR 与 /omfg：流式行为护栏](../omp-ttsr/ttsr-and-omfg.md) — 与 magic keywords 对照的规则匹配、提示注入与流式中断机制。

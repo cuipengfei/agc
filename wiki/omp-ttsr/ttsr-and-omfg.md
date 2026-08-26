@@ -2,7 +2,7 @@
 
 > Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24
 > Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md)
-> Updated: 2026-08-25
+> Updated: 2026-08-27
 
 ## 速查
 
@@ -89,4 +89,4 @@
 
 ## See Also
 
-- [OMP Prewalk：规划后切换模型](../omp-prewalk/prewalk.md)
+- [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — TTSR 与 magic keywords 等触发机制的定位及组合边界。

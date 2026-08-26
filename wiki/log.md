@@ -20,3 +20,6 @@
 ## [2026-08-26] ingest | OMP 工作模式与 Magic Keywords
 - Disposition: New
 - Raw: raw/omp-modes/2026-08-26-omp-vibe-mode.md; raw/omp-modes/2026-08-26-omp-magic-keywords.md; raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md; raw/omp-modes/2026-08-26-omp-modes-overview.md
+
+## [2026-08-27] lint | 4 issues found, 0 auto-fixed
+- Applied: 4 approved relationship fixes
