@@ -16,3 +16,7 @@
 - Disposition: Update
 - Raw: raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md
 - Updated: OMP TTSR 与 /omfg：流式行为护栏
+
+## [2026-08-26] ingest | OMP 工作模式与 Magic Keywords
+- Disposition: New
+- Raw: raw/omp-modes/2026-08-26-omp-vibe-mode.md; raw/omp-modes/2026-08-26-omp-magic-keywords.md; raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md; raw/omp-modes/2026-08-26-omp-modes-overview.md
