@@ -31,3 +31,6 @@ OMP 工作流模式、Vibe 与 Task/Hub 的对比、magic keywords 的触发与�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | Vibe 是 task/hub 的强制收窄包装、三个 magic keywords 的触发条件、模式组合建议 | 2026-08-27 |
+
+| [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | TTSR 上下文保留策略的证据、场景取舍与最小 A/B 测试方案 | 2026-08-26 |
+| [四 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode+OMO、OMP、Prime Agent、DSH 的真正独特优势 | 2026-08-27 |

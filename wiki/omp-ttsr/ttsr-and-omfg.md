@@ -47,9 +47,9 @@
 | 上下文洁净度 | ✅ 违规消息整条消失，后续模型看不到 | ❌ 违规内容留在上下文 |
 | token 成本 | ❌ 命中前部分作废重写 | ✅ 已生成的保留 |
 | 输出连贯性 | ❌ 重写从零开始 | ✅ 续写保脉络 |
-| 适用 | 方向性错误 | 局部瑕疵 |
+| 适用 | 方向性错误时倾向 | 局部瑕疵、需要诊断具体实例时倾向 |
 
-**立场**：discard 是对的默认——TTSR 的核心价值就是"错话不进上下文"。keep 只在长输出尾部局部瑕疵时占优。per-rule contextMode 是 open issue [#7182](https://github.com/can1357/oh-my-pi/issues/7182)，目前只有全局开关。
+**场景判断**：官方默认值和设计偏好是 `discard`，但没有证据证明它在所有场景下更好。方向性或安全污染时倾向 `discard`；局部、可诊断的修复时倾向 `keep`。per-rule `contextMode` 是 open issue [#7182](https://github.com/can1357/oh-my-pi/issues/7182)，目前只有全局开关。
 
 ## 与 Skills 的边界
 
