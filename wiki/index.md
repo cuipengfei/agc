@@ -34,3 +34,11 @@ OMP 工作流模式、Vibe 与 Task/Hub 的对比、magic keywords 的触发与�
 
 | [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | TTSR 上下文保留策略的证据、场景取舍与最小 A/B 测试方案 | 2026-08-26 |
 | [四 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode+OMO、OMP、Prime Agent、DSH 的真正独特优势 | 2026-08-27 |
+
+## prime-agent
+
+Prime Agent 功能、配置、RLM、Continual Harness、长运行能力。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置概览、RLM、与 OMP 的差异 | 2026-08-28 |

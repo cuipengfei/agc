@@ -38,3 +38,8 @@
 - Disposition: New
 - Raw: raw/ai-coding-agents/2026-08-27-4-agent-comparison.md
 - Updated: 四 AI Coding Agent 对比
+
+## [2026-08-28] ingest | Prime Agent 文档研究
+- Disposition: New
+- Raw: raw/prime-agent/2026-08-28-prime-agent-docs-study.md
+- Updated: Prime Agent：功能与配置总览
