@@ -150,6 +150,18 @@
       "repo": "omp/agent/hooks",
       "protected": false,
       "directory": true
+    },
+    {
+      "name": "prime-settings",
+      "source": "~/.prime/agent/settings.json",
+      "repo": "prime/settings.json",
+      "protected": true
+    },
+    {
+      "name": "prime-models",
+      "source": "~/.prime/agent/models.json",
+      "repo": "prime/models.json",
+      "protected": true
     }
   ]
 }

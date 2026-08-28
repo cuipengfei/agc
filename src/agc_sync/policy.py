@@ -24,7 +24,7 @@ SENSITIVE_ASSIGNMENT = re.compile(
     r"(?P<prefix>['\"]?(?P<name>"
     r"api[_-]?key|access[_-]?key|client[_-]?secret|password|passwd|token|secret|"
     r"authorization|bearer|cookie|oauth|private[_-]?key|x-session-id"
-    r")['\"]?\s*[:=]\s*['\"]?)(?P<value>[^'\"\s,}\]]+)",
+    r")['\"]?\s*[:=]\s*['\"]?)(?P<value>(?![\[{])[^'\"\s,}\]]+)",
     re.IGNORECASE,
 )
 CLI_SECRET = re.compile(

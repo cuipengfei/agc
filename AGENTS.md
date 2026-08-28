@@ -11,7 +11,7 @@ AGC（AGent Configs）仓库有两个用途：
 
 ### 配置同步
 
-`manifest.json` 是同步范围的唯一权威清单，声明每个条目的来源路径、仓库路径、是否受保护、是否为目录及排除项。当前 23 个条目：12 个 protected、6 个 directory。
+`manifest.json` 是同步范围的唯一权威清单，声明每个条目的来源路径、仓库路径、是否受保护、是否为目录及排除项。当前 25 个条目：14 个 protected、6 个 directory。
 
 ```text
 pull.sh / sync.py pull
@@ -58,6 +58,7 @@ push.sh / sync.py push
 | `omo/`          | OMO 配置                                         |
 | `omp/agent/`    | OMP 配置、模型、MCP、WATCHDOG、extensions、hooks |
 | `omp/plugins/`  | OMP 插件包与锁定文件                             |
+| `prime/`        | Prime Agent 配置（settings、models）            |
 | `raw/`          | 学习记录原始材料（repo-owned，不同步）           |
 | `experiments/`  | 结构化实验记录（repo-owned，不同步）             |
 | `wiki/`         | 编译后的知识文章（repo-owned，不同步）           |
@@ -97,7 +98,7 @@ push.sh / sync.py push
 | `src/agc_sync/cli.py`       | 命令编排与错误出口            |
 | `sync.py`                   | 兼容 Python 入口              |
 | `pull.sh` / `push.sh`       | 用户入口脚本                  |
-| `tests/test_sync.py`        | 同步行为回归测试（16 个用例） |
+| `tests/test_sync.py`        | 同步行为回归测试（17 个用例） |
 | `wiki/index.md`             | 学习记录全局索引              |
 | `wiki/log.md`               | 学习记录操作日志              |
 
@@ -124,7 +125,7 @@ git diff --check
 find . -path './.git' -prune -o -type l -print
 ```
 
-当前 16 个测试覆盖：pull 脱敏（apiKey、Authorization、UMANS 排除路径、独立 token、Firecrawl 路径 token）、push 凭据覆盖、repo 明文 secret 扫描、原子写、pull/push run 文件同步、CLI status/diff 输出、sync_plan 双向准备、manifest 双向 FilePair。
+当前 17 个测试覆盖：pull 脱敏（apiKey、Authorization、UMANS 排除路径、独立 token、Firecrawl 路径 token、敏感 key 下的 JSON 对象值不脱敏）、push 凭据覆盖、repo 明文 secret 扫描、原子写、pull/push run 文件同步、CLI status/diff 输出、sync_plan 双向准备、manifest 双向 FilePair。
 
 未直接覆盖：`backup.py`、真实 manifest 和全部异常分支。新增或修改同步行为时，至少补对应行为测试，并报告未执行的验证。
 
@@ -136,11 +137,13 @@ find . -path './.git' -prune -o -type l -print
 | `opencode/` | `~/.config/opencode/` |
 | `omo/`      | `~/.omo/`             |
 | `omp/`      | `~/.omp/`             |
+| `prime/`    | `~/.prime/agent/`     |
 
 ## 同步边界
 
 - 不追踪 token、secret、password、cookie、credential、authorization、私钥、`.env`、数据库、WAL、历史、日志、缓存、session、运行时状态、备份和生成文件。
 - 明确排除用户专属文件：`~/.codex/umans.config.toml`、`~/.omp/agent/extensions/umans-status.ts`；仓库副本保持 `<REDACTED>` 或 ignored，不纳入可提交同步内容。
+- Prime Agent 侧排除 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）及 sessions/logs/venv 等运行时产物；只同步 `settings.json` 与 `models.json`，两者均 protected。
 - `pull`、`push`、`status`、`diff` 均通过 manifest 约束范围；不要执行广泛同步替代单文件需求。
 - `raw/`、`experiments/` 和 `wiki/` 是本仓库自产的学习/实验记录，不在 `manifest.json` 中，不参与 pull/push 同步。入库前必须脱敏，不存放 token、cookie、authorization header 等凭据内容。`experiments/` 只记录结构化实验过程；只有可复用结论才晋升到 `wiki/`。
 

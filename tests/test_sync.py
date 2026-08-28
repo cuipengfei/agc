@@ -72,6 +72,18 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(count, 1)
         self.assertIn('"ctx7sk-target-secret"', output)
 
+    def test_pull_keeps_json_object_value_under_sensitive_key(self):
+        source = (
+            '"env": {\n'
+            '  "CONTEXT7_API_KEY": {\n'
+            '    "env": "CONTEXT7_API_KEY"\n'
+            '  }\n'
+            '}\n'
+        )
+        output, count = redact(source)
+        self.assertEqual(count, 0)
+        self.assertEqual(output, source)
+
     def test_pull_redacts_firecrawl_path_token(self):
         source = '"url": "https://mcp.firecrawl.dev/fc-0123456789abcdef0123456789abcdef/v2/mcp"\n'
         output, count = redact(source)

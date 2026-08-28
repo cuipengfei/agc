@@ -6,6 +6,7 @@
 - OpenCode
 - OMO
 - OMP
+- Prime Agent
 
 ## 目录映射
 
@@ -15,6 +16,7 @@
 | `opencode/` | `~/.config/opencode/` |
 | `omo/` | `~/.omo/` |
 | `omp/` | `~/.omp/` |
+| `prime/` | `~/.prime/agent/` |
 
 仓库保存来源文件的副本，不使用 symlink。实际同步范围由 `manifest.json` 控制。
 
@@ -50,5 +52,6 @@
 - `.env`、私钥、数据库、日志、缓存、session、运行时状态
 - `~/.codex/umans.config.toml`
 - `~/.omp/agent/extensions/umans-status.ts`
+- `~/.prime/agent/` 下的 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）、sessions/logs/venv 等运行时产物
 
 详细规则见 [`AGENTS.md`](AGENTS.md)。

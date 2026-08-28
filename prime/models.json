@@ -1,0 +1,69 @@
+{
+  "providers": {
+    "c8787": {
+      "baseUrl": "http://localhost:8787/v1",
+      "apiKey": "<REDACTED>",
+      "api": "openai-responses",
+      "headers": {
+        "x-session-id": "<REDACTED>"
+      },
+      "models": [
+        {
+          "id": "gpt-5.4",
+          "name": "GPT-5.4",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 272000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "gpt-5.5",
+          "name": "GPT-5.5",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 272000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "gpt-5.6-sol",
+          "name": "GPT-5.6 Sol",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 272000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "gpt-5.6-luna",
+          "name": "GPT-5.6 Luna",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 272000,
+          "maxTokens": 16000
+        }
+      ]
+    },
+    "umans": {
+      "api": "anthropic-messages",
+      "baseUrl": "https://api.code.umans.ai",
+      "apiKey": "UMANS_API_KEY",
+      "models": [
+        {
+          "id": "umans-kimi-k2.7",
+          "name": "Umans Kimi K2.7 Code",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 262144,
+          "maxTokens": 32768
+        },
+        {
+          "id": "umans-kimi-k3",
+          "name": "Umans Kimi K3 (prerelease)",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "maxTokens": 131071
+        }
+      ]
+    }
+  }
+}

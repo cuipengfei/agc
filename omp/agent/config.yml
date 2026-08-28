@@ -1,20 +1,20 @@
 setupVersion: 1
 autoResume: true
-power: 
+power:
   sleepPrevention: idle
-advisor: 
+advisor:
   enabled: true
-  syncBacklog: "1"
-  immuneTurns: 0
-prewalk: 
+  syncBacklog: "3"
+  immuneTurns: 3
+prewalk:
   enabled: false
-git: 
+git:
   enabled: true
-extensions: 
+extensions:
   - /home/cpf/.omp/.pi/extensions/rtk.ts
   - /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
   - <REDACTED>
-enabledModels: 
+enabledModels:
   - c4141/*
   - c4142/*
   - c4143/*
@@ -26,10 +26,10 @@ enabledModels:
   - opencode-go/*
   - kimi-code/*
   - deepseek/*
-disabledProviders: 
+disabledProviders:
   - claude-plugins
-providers: 
-  maxInFlightRequests: 
+providers:
+  maxInFlightRequests:
     c4141: 5
     c4142: 5
     c4143: 5
@@ -40,11 +40,11 @@ providers:
     opencode-go: 5
     kimi-code: 5
     deepseek: 5
-  anthropic: 
+  anthropic:
     serverSideFallback: false
-  ollama-cloud: 
+  ollama-cloud:
     maxConcurrency: 3
-  webSearchOrder: 
+  webSearchOrder:
     - exa
     - duckduckgo
     - codex
@@ -57,11 +57,11 @@ providers:
     - google
     - mojeek
     - public
-  webSearchExclude: 
+  webSearchExclude:
     - gemini
     - searxng
   antigravityEndpoint: auto
-  imageOrder: 
+  imageOrder:
     []
   fireworksTier: standard
   tts: auto
@@ -78,54 +78,55 @@ providers:
   streamIdleTimeoutSeconds: -1
   openrouterVariant: default
   fetch: trafilatura
-disabledExtensions: 
+disabledExtensions:
   - context-file:user:AGENTS.md
 modelRoleStorage: global
-modelRoles: 
+modelRoles:
   plan: c8787/gpt-5.6-sol:high
   slow: c8787/gpt-5.6-sol:high
   commit: c8787/gpt-5.6-luna:medium
   smol: c8787/gpt-5.6-luna:medium
-  task: c8787/gpt-5.6-terra:high
+  task: c8787/gpt-5.6-sol:medium
   vision: c8787/gpt-5.6-luna:medium
   tiny: c8787/gpt-5.6-luna:medium
-  advisor: c8787/gpt-5.6-luna:max
+  advisor: c8787/gpt-5.6-luna:medium
   designer: umans/umans-glm-5.2:high
   default: kimi-code/k3-256k:high
-modelTags: 
+modelTags:
   {}
-modelProviderOrder: 
+modelProviderOrder:
   []
-cycleOrder: 
+cycleOrder:
   - smol
   - default
   - slow
-theme: 
+theme:
   dark: dark-abyss
   light: light-arctic
 symbolPreset: nerd
 colorBlindMode: false
-statusLine: 
+statusLine:
   preset: default
-  separator: slash
+  separator: powerline-thin
   sessionAccent: true
   transparent: false
   compactThinkingLevel: false
   showHookStatus: true
-  leftSegments: 
+  leftSegments:
     []
-  rightSegments: 
+  rightSegments:
     []
-  segmentOptions: 
+  segmentOptions:
     {}
-tools: 
+  contextLine: annotated
+tools:
   artifactSpillThreshold: 50
   artifactTailBytes: 20
   artifactHeadBytes: 20
   outputMaxColumns: 768
   artifactTailLines: 500
   format: auto
-  approval: 
+  approval:
     security_scan: prompt
   approvalMode: yolo
   intentTracing: true
@@ -133,16 +134,16 @@ tools:
   maxTimeout: 0
   xdev: true
   xdevDocs: builtins
-  xdevInlineDevices: 
+  xdevInlineDevices:
     []
-terminal: 
+terminal:
   showImages: true
   showProgress: true
-images: 
+images:
   autoResize: true
   blockImages: false
   describeForTextModels: true
-tui: 
+tui:
   maxInlineImageColumns: 100
   maxInlineImageRows: 20
   maxInlineImages: 8
@@ -154,7 +155,7 @@ tui:
   tight: true
   scrollbackRebuild: true
   imeSafeCursor: false
-display: 
+display:
   shimmer: kitt
   smoothStreaming: true
   showTokenUsage: true
@@ -165,21 +166,21 @@ defaultThinkingLevel: high
 hideThinkingBlock: false
 proseOnlyThinking: true
 omitThinking: false
-model: 
-  loopGuard: 
+model:
+  loopGuard:
     enabled: true
     checkAssistantContent: true
     toolCallReminder: true
-  toolCallLoopGuard: 
+  toolCallLoopGuard:
     enabled: true
     threshold: 5
-    exemptTools: 
+    exemptTools:
       - hub
 inlineToolDescriptors: auto
 includeModelInPrompt: true
 includeWorkspaceTree: false
-workspace: 
-  additionalDirectories: 
+workspace:
+  additionalDirectories:
     []
 personality: friendly
 temperature: -1
@@ -189,12 +190,12 @@ minP: -1
 presencePenalty: -1
 repetitionPenalty: -1
 textVerbosity: medium
-tier: 
+tier:
   openai: none
   anthropic: none
   google: none
   subagent: inherit
-retry: 
+retry:
   enabled: true
   maxRetries: 3
   baseDelayMs: 500
@@ -203,60 +204,60 @@ retry:
   usageAwareFallback: false
   usageReservePct: 10
   usageReservePolicy: confirm
-  fallbackChains: 
+  fallbackChains:
     {}
   fallbackRevertPolicy: cooldown-expiry
 steeringMode: all
 followUpMode: all
 interruptMode: immediate
-loop: 
+loop:
   mode: prompt
 doubleEscapeAction: tree
 treeFilterMode: user-only
 autocompleteMaxVisible: 5
 emojiAutocomplete: true
-paste: 
+paste:
   largeMenuThreshold: 100
-startup: 
+startup:
   quiet: false
   showSplash: false
   setupWizard: true
   checkUpdate: false
   changelogMode: summary
-marketplace: 
+marketplace:
   autoUpdate: auto
-magicKeywords: 
+magicKeywords:
   enabled: true
   ultrathink: true
   orchestrate: true
   workflow: true
-completion: 
+completion:
   notify: "on"
-error: 
+error:
   notify: "on"
-ask: 
+ask:
   timeout: 0
   notify: "on"
   enabled: true
-recap: 
+recap:
   enabled: true
   idleSeconds: 300
-collab: 
+collab:
   relayUrl: wss://my.omp.sh
   webUrl: ""
   displayName: ""
-share: 
+share:
   serverUrl: https://my.omp.sh/s
   store: blob
   redactSecrets: true
-stt: 
+stt:
   enabled: false
   language: en
   modelName: parakeet
   submitTrigger: never
-contextPromotion: 
+contextPromotion:
   enabled: false
-compaction: 
+compaction:
   enabled: true
   midTurnEnabled: false
   thresholdPercent: 90
@@ -271,18 +272,18 @@ compaction:
   idleTimeoutSeconds: 300
   supersedeReads: true
   dropUseless: true
-  methodOrder: 
+  methodOrder:
     - shake
     - remote
     - soft
-snapcompact: 
+snapcompact:
   systemPrompt: none
   toolResults: false
   shape: auto
-branchSummary: 
+branchSummary:
   enabled: true
   reserveTokens: 16384
-memories: 
+memories:
   maxRolloutsPerStartup: 64
   maxRolloutAgeDays: 30
   minRolloutIdleHours: 12
@@ -298,13 +299,13 @@ memories:
   phase1InputTokenLimit: 4000
   fallbackTokenLimit: 16000
   summaryInjectionTokenLimit: 5000
-memory: 
+memory:
   backend: mnemopi
-autolearn: 
+autolearn:
   enabled: true
   autoContinue: true
   minToolCalls: 5
-mnemopi: 
+mnemopi:
   scoping: per-project
   embeddingVariant: multilingual
   embeddingApiUrl: http://localhost:4140/v1
@@ -322,7 +323,7 @@ mnemopi:
   recallMaxQueryChars: 4000
   injectionTokenLimit: 5000
   debug: false
-hindsight: 
+hindsight:
   apiUrl: http://localhost:8888
   scoping: per-project-tagged
   autoRecall: true
@@ -335,7 +336,7 @@ hindsight:
   recallMaxTokens: 1024
   recallContextTurns: 1
   recallMaxQueryChars: 800
-  recallTypes: 
+  recallTypes:
     - world
     - experience
   debug: false
@@ -347,16 +348,16 @@ hindsight:
   mentalModelAutoSeed: true
   mentalModelRefreshIntervalMs: 300000
   mentalModelMaxRenderChars: 16000
-ttsr: 
+ttsr:
   enabled: true
   contextMode: discard
   interruptMode: always
   repeatMode: after-gap
   repeatGap: 5
   builtinRules: true
-  disabledRules: 
+  disabledRules:
     []
-edit: 
+edit:
   mode: hashline
   fuzzyMatch: true
   fuzzyThreshold: 0.95
@@ -364,10 +365,10 @@ edit:
   blockAutoGenerated: true
   enforceSeenLines: true
 readLineNumbers: false
-read: 
+read:
   defaultLimit: 300
   renderMarkdown: false
-  summarize: 
+  summarize:
     enabled: true
     prose: false
     minBodyLines: 4
@@ -376,24 +377,24 @@ read:
     unfoldUntil: 50
     unfoldLimit: 100
   toolResultPreview: false
-lsp: 
+lsp:
   enabled: true
   lazy: true
   formatOnWrite: false
   diagnosticsOnWrite: true
   diagnosticsOnEdit: true
   diagnosticsDeduplicate: true
-bash: 
+bash:
   enabled: true
-  autoBackground: 
+  autoBackground:
     enabled: true
-  patterns: 
+  patterns:
     []
   direnv: auto
   direnvLoadTimeoutMs: 30000
-bashInterceptor: 
+bashInterceptor:
   enabled: true
-  patterns: 
+  patterns:
     - pattern: ^\s*(cat|head|tail|less|more)\s+
       tool: read
       message: "Use the `read` tool instead of cat/head/tail. It provides better context and handles binary files."
@@ -424,100 +425,100 @@ bashInterceptor:
     - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?\S+|cargo\s+watch|watchexec|pytest|vitest|jest|tsc)(?:.|\n)*(?:--watch|-w)(?:\s|$)
       tool: hub
       message: "Use the `hub` tool (`op:\"start\"`) for watch mode so its output, input, and lifecycle stay managed."
-shellMinimizer: 
+shellMinimizer:
   enabled: true
-  only: 
+  only:
     []
-  except: 
+  except:
     []
   maxCaptureBytes: 4194304
   sourceOutlineLevel: aggressive
-eval: 
+eval:
   py: true
   js: true
   rb: false
   jl: false
-python: 
+python:
   kernelMode: session
   interpreter: ""
-ruby: 
+ruby:
   interpreter: ""
-julia: 
+julia:
   interpreter: ""
-todo: 
+todo:
   enabled: true
   reminders: true
   remindersMax: 1
   eager: preferred
-glob: 
+glob:
   enabled: true
-grep: 
+grep:
   enabled: true
   contextBefore: 3
   contextAfter: 3
-astGrep: 
+astGrep:
   enabled: true
-astEdit: 
+astEdit:
   enabled: true
-debug: 
+debug:
   enabled: true
-launch: 
+launch:
   enabled: true
-speechgen: 
+speechgen:
   enabled: false
-generate_image: 
+generate_image:
   enabled: false
-inspect_image: 
+inspect_image:
   mode: auto
   timeoutMs: 300000
-computer: 
+computer:
   enabled: false
   display: all
   maxWidth: 1920
   maxHeight: 1200
-checkpoint: 
+checkpoint:
   enabled: false
-fetch: 
+fetch:
   enabled: true
-vault: 
+vault:
   enabled: false
-github: 
+github:
   enabled: true
-  cache: 
+  cache:
     enabled: true
     softTtlSec: 300
     hardTtlSec: 604800
-web_search: 
+web_search:
   enabled: true
-security: 
+security:
   enabled: true
-browser: 
+browser:
   enabled: true
   headless: true
   cmux: true
-async: 
+async:
   enabled: true
   maxJobs: 12
   pollWaitDuration: smart
-irc: 
+irc:
   timeoutMs: 120000
-mcp: 
+mcp:
   enableProjectConfig: true
   renderMarkdownResults: true
   notifications: true
   notificationDebounceMs: 500
-plan: 
+plan:
   enabled: true
   defaultOnStartup: false
-goal: 
+goal:
   enabled: true
   statusInFooter: true
-  continuationModes: 
+  continuationModes:
     - interactive
-title: 
+title:
   refreshOnReplan: true
-task: 
-  isolation: 
+task:
+  isolation:
     mode: none
     apply: true
     merge: patch
@@ -533,17 +534,17 @@ task:
   softRequestBudget: 200
   softRequestBudgetNotice: true
   maxEffort: max
-  disabledAgents: 
+  disabledAgents:
     []
-  agentModelOverrides: 
+  agentModelOverrides:
     {}
-  agentPrewalk: 
+  agentPrewalk:
     {}
   prewalk: false
   showResolvedModelBadge: true
-tasks: 
+tasks:
   todoClearDelay: 60
-skills: 
+skills:
   enabled: true
   enableSkillCommands: false
   enableCodexUser: true
@@ -553,61 +554,61 @@ skills:
   enablePiProject: true
   enableAgentsUser: true
   enableAgentsProject: true
-  customDirectories: 
+  customDirectories:
     []
-  ignoredSkills: 
+  ignoredSkills:
     []
-  includeSkills: 
+  includeSkills:
     []
-commands: 
+commands:
   enableClaudeUser: false
   enableClaudeProject: true
   enableOpencodeUser: false
   enableOpencodeProject: true
-secrets: 
+secrets:
   enabled: false
-live: 
+live:
   voice: sol
-tts: 
+tts:
   localModel: kokoro
   localVoice: af_heart
-speech: 
+speech:
   enabled: false
   mode: assistant
   enhanced: false
   voice: af_heart
-features: 
+features:
   unexpectedStopDetection: none
-codexResets: 
+codexResets:
   autoRedeem: unset
   minBlockedMinutes: 60
   keepCredits: 0
   salvageHorizonHours: 12
-provider: 
+provider:
   appendOnlyContext: "on"
-exa: 
+exa:
   enabled: true
   searchDelayMs: 1000
-commit: 
+commit:
   mapReduceEnabled: true
   mapReduceMinFiles: 4
   mapReduceMaxFileTokens: 50000
   mapReduceTimeoutMs: 120000
   mapReduceMaxConcurrency: 5
   changelogMaxDiffChars: 120000
-dev: 
+dev:
   autoqa: true
-  autoqaPush: 
+  autoqaPush:
     endpoint: https://qa.omp.sh/v1/grievances
   autoqaConsent: granted
-gc: 
+gc:
   blobs: true
   archive: true
   wal: true
   coldArchiveAfterDays: 30
   retainNewestGlobal: 20
   retainNewestPerCwd: 10
-thinkingBudgets: 
+thinkingBudgets:
   minimal: 1024
   low: 2048
   medium: 8192

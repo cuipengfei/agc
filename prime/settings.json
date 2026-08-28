@@ -1,5 +1,56 @@
 {
-  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
+  "defaultProvider": "kimi-coding",
+  "defaultModel": "k3",
+  "telemetry": {
+    "noticeShown": true,
+    "enabled": false
+  },
+  "defaultThinkingLevel": "max",
+  "hideThinkingBlock": false,
+  "thinkingBudgets": {
+    "minimal": 1024,
+    "low": 2048,
+    "medium": 8192,
+    "high": 16384
+  },
+  "theme": "dark",
+  "quietStartup": false,
+  "treeFilterMode": "user-only",
+  "autocompleteMaxVisible": 5,
+  "showHardwareCursor": true,
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 20000
+  },
+  "branchSummary": {
+    "reserveTokens": 16384,
+    "skipPrompt": false
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 3,
+    "baseDelayMs": 500,
+    "provider": {
+      "maxRetryDelayMs": 60000
+    }
+  },
+  "steeringMode": "all",
+  "followUpMode": "all",
+  "transport": "auto",
+  "terminal": {
+    "showImages": true,
+    "showTerminalProgress": true,
+    "fullscreen": true
+  },
+  "images": {
+    "autoResize": true,
+    "blockImages": false
+  },
+  "enableSkillCommands": false,
+  "npmCommand": [
+    "bun"
+  ],
   "mcpServers": {
     "graphiti-memory": {
       "type": "http",
@@ -8,10 +59,11 @@
     "context7": {
       "type": "stdio",
       "command": "context7-mcp",
-      "args": [
-        "--api-key",
-        "<REDACTED>"
-      ]
+      "env": {
+        "CONTEXT7_API_KEY": {
+          "env": "CONTEXT7_API_KEY"
+        }
+      }
     },
     "mintlify-index": {
       "type": "http",
@@ -23,7 +75,10 @@
     },
     "search-exa": {
       "type": "http",
-      "url": "https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>"
+      "url": "https://mcp.exa.ai/mcp",
+      "headers": {
+        "x-api-key": "<REDACTED>"
+      }
     },
     "grep-app": {
       "type": "http",
@@ -31,7 +86,10 @@
     },
     "search-tavily": {
       "type": "http",
-      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=<REDACTED>"
+      "url": "https://mcp.tavily.com/mcp/",
+      "headers": {
+        "x-api-key": "<REDACTED>"
+      }
     },
     "firecrawl": {
       "type": "http",
@@ -77,5 +135,10 @@
       "type": "stdio",
       "command": "context-mode"
     }
-  }
+  },
+  "recentModels": [
+    "kimi-coding/k3",
+    "c8787/gpt-5.6-luna"
+  ],
+  "editorPaddingX": 1
 }
