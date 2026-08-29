@@ -152,6 +152,13 @@
       "directory": true
     },
     {
+      "name": "omp-rules",
+      "source": "~/.omp/agent/rules",
+      "repo": "omp/agent/rules",
+      "protected": false,
+      "directory": true
+    },
+    {
       "name": "prime-settings",
       "source": "~/.prime/agent/settings.json",
       "repo": "prime/settings.json",

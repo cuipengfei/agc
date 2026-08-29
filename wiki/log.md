@@ -53,3 +53,8 @@
 - Disposition: New; Update
 - Raw: raw/omp-extensions/2026-08-29-omp-extension-lifecycle-patterns.md; raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md
 - Updated: OMP Extension 与 TTSR 分层防护；OMP TTSR 与 /omfg：流式行为护栏
+
+## [2026-08-29] ingest | 模型 capability 与 gateway wire 参数不一致
+- Disposition: New
+- Raw: raw/model-gateway-mismatch/2026-08-29-reasoning-effort-wire-suppression.md
+- Updated: 模型 capability 与 gateway wire 参数不一致
