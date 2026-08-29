@@ -97,7 +97,6 @@
     },
   },
   "snapshot": false,
-  "lsp": true,
   "experimental": {
     "openTelemetry": false,
     "batch_tool": true,
@@ -354,6 +353,7 @@
           "name": "K3",
           "limit": {
             "context": 1000000,
+            "output": 32768,
           },
           "reasoning": true,
           "modalities": {

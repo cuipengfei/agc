@@ -222,6 +222,9 @@ trust_level = "trusted"
 [projects."/home/cpf/.local/share/uv/tools/headroom-ai"]
 trust_level = "trusted"
 
+[projects."/home/cpf/.cache/kimi-claw"]
+trust_level = "trusted"
+
 [tui]
 notifications = true
 theme = "gruvbox-dark"
