@@ -99,11 +99,13 @@ providers:
         input: [text, image]
         contextWindow: 1048576
         maxTokens: 131071
+
         cost:
           input: 0
           output: 0
           cacheRead: 0
           cacheWrite: 0
+
       - id: umans-glm-5.2
         name: "Umans GLM 5.2"
         reasoning: true
@@ -149,4 +151,13 @@ providers:
           cacheRead: 0
           cacheWrite: 0
 
-
+  kimi-claw:
+    api: anthropic-messages
+    baseUrl: https://agent-gw.kimi.com/coding
+    apiKey: "<REDACTED>"
+    models:
+      - id: k3-agent
+        name: "K3"
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1000000

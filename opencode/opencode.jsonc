@@ -342,5 +342,22 @@
         },
       },
     },
+    "kimi-claw": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "Kimi Claw",
+      "options": {
+        "baseURL": "https://agent-gw.kimi.com/coding/v1",
+        "apiKey": "<REDACTED>",
+      },
+      "models": {
+        "k3-agent": {
+          "name": "K3",
+          "reasoning": true,
+          "modalities": {
+            "input": ["text", "image", "video"],
+          },
+        },
+      },
+    },
   },
 }

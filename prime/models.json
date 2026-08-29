@@ -85,6 +85,20 @@
           "maxTokens": 131071
         }
       ]
+    },
+    "kimi-claw": {
+      "api": "anthropic-messages",
+      "baseUrl": "https://agent-gw.kimi.com/coding",
+      "apiKey": "<REDACTED>",
+      "models": [
+        {
+          "id": "k3-agent",
+          "name": "K3",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1000000
+        }
+      ]
     }
   }
 }

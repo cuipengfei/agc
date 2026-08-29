@@ -25,6 +25,7 @@ enabledModels:
   - opencode-go/*
   - opencode-go/*
   - kimi-code/*
+  - kimi-claw/*
   - deepseek/*
 disabledProviders:
   - claude-plugins
@@ -39,6 +40,7 @@ providers:
     opencode-zen: 5
     opencode-go: 5
     kimi-code: 5
+    kimi-claw: 5
     deepseek: 5
   anthropic:
     serverSideFallback: false
