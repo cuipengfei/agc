@@ -352,6 +352,9 @@
       "models": {
         "k3-agent": {
           "name": "K3",
+          "limit": {
+            "context": 1000000,
+          },
           "reasoning": true,
           "modalities": {
             "input": ["text", "image", "video"],

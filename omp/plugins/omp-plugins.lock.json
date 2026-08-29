@@ -11,7 +11,7 @@
       "enabled": true
     },
     "@qoder-ai/better-harness": {
-      "version": "0.6.4",
+      "version": "0.6.5",
       "enabledFeatures": null,
       "enabled": true
     }

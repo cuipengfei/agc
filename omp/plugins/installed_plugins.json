@@ -4,10 +4,10 @@
     "better-harness@better-harness": [
       {
         "scope": "user",
-        "installPath": "/home/cpf/.omp/plugins/cache/plugins/better-harness___better-harness___0.6.4",
-        "version": "0.6.4",
-        "installedAt": "2026-08-20T13:57:59.061Z",
-        "lastUpdated": "2026-08-20T13:57:59.061Z"
+        "installPath": "/home/cpf/.omp/plugins/cache/plugins/better-harness___better-harness___0.6.5",
+        "version": "0.6.5",
+        "installedAt": "2026-08-29T14:54:25.186Z",
+        "lastUpdated": "2026-08-29T14:54:25.186Z"
       }
     ]
   }
