@@ -101,7 +101,7 @@ cycleOrder:
   - default
   - slow
 theme:
-  dark: dark-abyss
+  dark: dark-tokyo-night
   light: light-arctic
 symbolPreset: nerd
 colorBlindMode: false

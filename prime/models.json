@@ -42,6 +42,27 @@
         }
       ]
     },
+    "c8787-chat": {
+      "baseUrl": "http://localhost:8787/v1",
+      "apiKey": "<REDACTED>",
+      "api": "openai-completions",
+      "headers": {
+        "x-session-id": "<REDACTED>"
+      },
+      "models": [
+        {
+          "id": "kimi-k2.7-code",
+          "name": "Kimi K2.7 Code",
+          "reasoning": true,
+          "compat": {
+            "supportsReasoningEffort": false
+          },
+          "input": ["text", "image"],
+          "contextWindow": 256000,
+          "maxTokens": 32000
+        }
+      ]
+    },
     "umans": {
       "api": "anthropic-messages",
       "baseUrl": "https://api.code.umans.ai",

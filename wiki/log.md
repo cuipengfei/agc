@@ -43,3 +43,13 @@
 - Disposition: New
 - Raw: raw/prime-agent/2026-08-28-prime-agent-docs-study.md
 - Updated: Prime Agent：功能与配置总览
+
+## [2026-08-29] ingest | OMP Extension 与 TTSR 分层防护
+- Disposition: New; Update
+- Raw: raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md
+- Updated: OMP TTSR 与 /omfg：流式行为护栏
+
+## [2026-08-29] ingest | OMP Extension 与 TTSR 通用生命周期模式
+- Disposition: New; Update
+- Raw: raw/omp-extensions/2026-08-29-omp-extension-lifecycle-patterns.md; raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md
+- Updated: OMP Extension 与 TTSR 分层防护；OMP TTSR 与 /omfg：流式行为护栏

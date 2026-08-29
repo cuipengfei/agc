@@ -22,7 +22,8 @@ OMP TTSR 流式行为护栏与 /omfg 规则生成入口。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP TTSR 与 /omfg：流式行为护栏](omp-ttsr/ttsr-and-omfg.md) | TTSR 触发边界、配置、规则生成、Skills 对比、活体演示与重复注入实验 | 2026-08-27 |
+| [OMP TTSR 与 /omfg：流式行为护栏](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、匹配、生命周期、规则身份、keep/discard、/omfg 与活体实验 | 2026-08-29 |
+| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | Extension/TTSR 的输入时机、职责分工、消息注入、测试方法与 task agent 案例 | 2026-08-29 |
 
 ## omp-modes
 

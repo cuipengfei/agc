@@ -1,8 +1,8 @@
 # OMP TTSR 与 /omfg：流式行为护栏
 
 > Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24
-> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md)
-> Updated: 2026-08-27
+> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md)
+> Updated: 2026-08-29
 
 ## 速查
 
@@ -58,6 +58,12 @@
 
 真正的分界线是**执行保证强度**，不是"该做/不该做"——两边都可以写禁令，约束力不同。
 
+### 规则身份与重复验证
+
+TTSR 规则名来自规则文件名 stem；frontmatter 中的 `name:` 不会改名，也不会切断旧的 injected 状态。规则命中后，当前配置下的 `repeatMode: after-gap` 会在后续若干 completed turns 内抑制同一规则。因此 live 验收必须先跑正向放行、再跑负向阻断，或使用两个全新 session；先跑负向会把规则标记为 injected，随后的放行不能证明条件没有命中。
+
+修改规则来规避旧注入状态时，应改文件名并启动新 session，而不是在 frontmatter 里添加 `name:`。
+
 ## 活体演示（2026-08-24，本会话）
 
 `/omfg` 锻造规则 → 保存到 `.omp/rules/verify-before-mechanism-claims.md`（Registered live）→ 下一条回复被 `system-interrupt reason="rule_violation"` 中途掐断 → 默认 `once` 下重复措辞未二次触发。证明了本会话内一次完整生命周期；不证明所有规则/provider/模式行为一致。
@@ -67,6 +73,12 @@
 在 `repeatMode: after-gap`、`repeatGap: 5` 的配置下，本会话继续进行无害对话后，两条自定义规则都再次触发：`no-git-commit-without-explicit-request` 和 `verify-before-mechanism-claims` 各自至少出现两次 `<system-interrupt ...>` occurrence。再次触发产生新的注入 occurrence，不是刷新旧条目。
 
 这里的证据范围是**当前会话可见上下文**；它不等同于 transcript 精确总数，也不声称这些正文在后续 compaction 后仍全部保留。完整 occurrence 前后片段与观察边界见 [重复 XML 注入实验记录](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md)。
+
+## Extension 与 TTSR 的分层边界
+
+TTSR 处理原始流式文本，适合做确定性的 best-effort 拦截；`tool_call` extension 处理 schema 验证后的结构化参数，适合做本地执行政策。不要把 JSON 结构校验交给 regex，也不要假设 extension 能看见 schema defaulting 前的原始参数。
+
+`task` 工具当前会先给省略的 item 级 `agent` 补默认值 `"task"`，再触发 extension。因此 extension 无法区分“显式写了 task”和“省略后自动补成 task”。严格强制每个 item 显式提供 `agent` 需要修改 OMP schema 或向 extension 暴露验证前 raw input；本机最佳实践是 TTSR 尽力拦截漏写、extension 阻断空值并提醒 generic `task` 路由。详细分工见 [OMP Extension 与 TTSR 分层防护](extension-and-ttsr-layering.md)。
 
 ## 已知问题与社区反响
 
