@@ -1,33 +1,37 @@
 # Prime Agent 技术实质
 
-> Sources: Prime Agent 源码（commit a903d4b），2026-08-30
+> Sources: Prime Agent 源码（commit a903d4b），2026-08-30；本机 bundle（v0.8.1，`chunk-OKDNBPEN.js:41853` 与 `chunk-OKDNBPEN.js:50260`）
 > Raw: [Prime Agent 源码验证记录](../../raw/prime-agent/2026-08-30-prime-agent-technical-reality.md)
 > Updated: 2026-08-30
 
 ## RLM（Recursive Language Model）
 
-### 版本差异
+### 版本差异：已确认的 kernel 实现
 
-| 版本 | Kernel 类型 | 启动命令 | 通信协议 |
-|---|---|---|---|
-| v0.8.1（本机 bundle） | 标准 Jupyter IPython kernel | `python -m ipykernel_launcher` | ZeroMQ + HMAC |
-| 上游源码（a903d4b） | 自定义 CPython REPL | `python -m rlm.repl` | stdin/stdout JSONL |
+| 版本 | 来源 | Kernel 类型 | 启动命令 | 通信协议 |
+|---|---|---|---|---|
+| v0.8.1 | 本机 bundle（`chunk-OKDNBPEN.js:41853/50260`） | 标准 Jupyter IPython kernel | `python -m ipykernel_launcher` | ZeroMQ + HMAC |
+| 上游源码 | `repl-manager.ts:1-300`；`repl.py:1-1123` | 自定义 CPython REPL | `python -m rlm.repl` | stdin/stdout JSONL |
 
-两者都是持久 Python 环境，但实现不同。v0.8.1 是成熟的标准 Jupyter 生态；上游源码在探索更轻量的自定义协议。
+### v0.8.1 已确认的行为
 
-### 模型调用方式（两版本一致）
+仅 kernel 启动命令和协议已核实（见上表）。
 
-模型通过 `ipython` tool 提交 Python cell。环境里预置 `rlm.run()`、`rlm.harness` 等对象。`rlm.run()` 通过 `host_request` 桥接到 TypeScript host，返回严格校验的 `RLMSpawnHandle`。
+### 上游源码（a903d4b）已确认的行为
 
-### 子 agent 隔离（两版本一致）
+**模型调用方式**：
+- 通过 `ipython` tool 提交 Python cell
+- 环境预置 `rlm.run()`、`rlm.harness` 等对象
+- `rlm.run()` 通过 `host_request` 桥接到 TypeScript host，返回 `RLMSpawnHandle`（`rlm-runtime.ts` + `__init__.py`）
 
+**子 agent 隔离**：
 - 独立 `AgentSession`、`SessionManager`、独立的 kernel 子进程
 - Inline 子 agent 与父 agent **共享同一个 Node worker 进程**
 - Daemon-backed 子 agent 可保留为独立可寻址 worker
 
-### 递归
-
-子 agent 可再 `rlm.run()`，default depth cap = 2。递归在 **agent/session 调度层** 真实存在，实现手段是 host 调度，不是 Python/OS 进程递归。
+**递归**：
+- 子 agent 可再 `rlm.run()`，default depth cap = 2
+- 递归在 **agent/session 调度层** 真实存在，实现手段是 host 调度，不是 Python/OS 进程递归
 
 ## Continual Harness
 

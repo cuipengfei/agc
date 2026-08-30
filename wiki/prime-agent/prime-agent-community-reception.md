@@ -18,7 +18,6 @@
 - "Self-improving" 是 2026 最过度宣称的短语
 - 但 context-as-variable 是对 context bloat 的架构级回答
 - 长期自主运行值得试，生产环境别碰
-- 未验证其亲自 hands-on 使用 Prime，可能是基于文档/源码的解读
 
 ## 竞品创始人评价
 
@@ -30,9 +29,7 @@ X/Twitter thread（https://www.unrollnow.com/status/2085502793679294947）：
 >
 > "I gave it a py kernel just like they did (which we had for about 6mo now btw) bascially ends up spamming eval as you can imagine"
 
-**利益冲突**：直接竞品 OMP 的创始人。
-
-**评价范围**：Python kernel 非独创、实际运行 spam eval、token 浪费。未覆盖 Continual Harness 或 Daemon。
+直接竞品 OMP 的创始人。评价范围：Python kernel 非独创、实际运行 spam eval、token 浪费。
 
 ## Benchmark（Composio）
 
@@ -62,15 +59,15 @@ X/Twitter thread（https://www.unrollnow.com/status/2085502793679294947）：
 - riddlemethat："基础模型已跟上，不再需要 harness"
 - sexyketchup777："模型越强，harness 越没用"
 
-**限制**：均为匿名用户，无身份验证，无系统评测。
+均为匿名用户，低可信度。
 
 ## 投资者
 
-Andrej Karpathy 和 Clem Delangue（Hugging Face）是 Prime Intellect 的投资者，但未找到对 Prime Agent 产品的直接技术评价。
+Andrej Karpathy 和 Clem Delangue（Hugging Face）是 Prime Intellect 投资者。无直接技术评价记录。
 
 ## 结论
 
-**知名来源中，仅 1 位有直接技术评价（Can Bölük，负面）。** 独立博客质疑 headline，AI 顾问认可方向但质疑宣传，benchmark 显示 pass rate 高但 token 消耗也高。行业领袖层尚未产生深度使用报告——产品发布不到一个月。
+知名来源中仅 Can Bölük（OMP 创始人）有直接技术评价，负面。独立博客质疑 headline，AI 顾问认可方向但质疑宣传，benchmark 显示高 pass rate 但 token 消耗也高。
 
 ## See Also
 

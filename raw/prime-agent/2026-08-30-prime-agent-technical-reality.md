@@ -1,13 +1,13 @@
-# Prime Agent 技术实质：源码验证记录
+# Prime Agent 技术实质：源码验证记录（v0.8.1 bundle + 上游 a903d4b）
 
-> Source: PrimeIntellect-ai/prime-agent GitHub 仓库源码（main branch, commit a903d4b）
+> Source: PrimeIntellect-ai/prime-agent GitHub 仓库源码（main branch, commit a903d4b）；本机 bundle（v0.8.1，`~/.local/opt/node-v24.19.0-linux-x64/node_modules/node/lib/node_modules/prime-agent/dist/bundle/*.js:41853` 与 `*.js:50260`）
 > Collected: 2026-08-30
 > Published: Unknown
 
 ## 版本差异说明
 
-本机安装版本（v0.8.1，bundle 验证）：启动 `python -m ipykernel_launcher`，标准 Jupyter kernel。
-上游源码（commit a903d4b，文档/源码）：启动 `python -m rlm.repl`，自定义 JSONL REPL。
+本机安装版本（v0.8.1，bundle 验证）：`chunk-OKDNBPEN.js:41853` 有 `IPYKERNEL_REQUIREMENT = "ipykernel"`；`chunk-OKDNBPEN.js:50260` spawn 参数为 `["-m", "ipykernel_launcher"]` — 标准 Jupyter kernel。
+上游源码（commit a903d4b）：`packages/coding-agent/src/core/kernel/repl-manager.ts` spawn 参数为 `["-m", "rlm.repl"]`；`prime-agent-runtime/src/rlm/repl.py` 实现自定义 JSONL REPL。
 两者为不同时期的实现形态。以下按版本分列。
 
 ## RLM（Recursive Language Model）
