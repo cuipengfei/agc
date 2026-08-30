@@ -83,3 +83,19 @@
 - Disposition: New
 - Raw: raw/better-harness/2026-08-30-overview.md; raw/better-harness/2026-08-30-third-party-reception.md; raw/better-harness/2026-08-30-vs-claude-insights.md
 - Updated: Better Harness
+
+## [2026-08-30] ingest | mcp_excalidraw：给 Agent 一块活画布
+- Disposition: New
+- Raw: raw/agent-interaction/2026-08-30-mcp-excalidraw-official-materials.md; raw/agent-interaction/2026-08-30-mcp-excalidraw-repo-evidence.md; raw/agent-interaction/2026-08-30-excalidraw-official-mcp.md
+
+## [2026-08-30] ingest | 视觉人机交互全景
+- Disposition: New
+- Raw: raw/agent-interaction/2026-08-30-visual-canvas-landscape.md; raw/agent-interaction/2026-08-30-excalidraw-official-mcp.md
+
+## [2026-08-30] ingest | 产物可持续编辑 Genre
+- Disposition: New
+- Raw: raw/agent-interaction/2026-08-30-phodal-agentic-artifact.md
+
+## [2026-08-30] ingest | Hermes vs OpenClaw 架构差异
+- Disposition: New
+- Raw: raw/agent-harness/2026-08-30-hermes-vs-openclaw.md
