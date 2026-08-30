@@ -1,8 +1,8 @@
 # OMP Prewalk：规划后切换模型
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24
-> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md)
-> Updated: 2026-08-27
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13
+> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md)
+> Updated: 2026-08-30
 
 ## Overview
 
@@ -67,6 +67,32 @@ HN 的批评还指出跨模型切换的 KV cache 冷启动、计划可审阅性�
 
 Prewalk 从 v16.5.0 引入，后续经历了循环处理、只读 xd:// 排除、one-shot 生命周期、DeepSeek 兼容和文档化等修正。相关历史问题包括：[#5551](https://github.com/can1357/oh-my-pi/issues/5551) 已由 [PR #5553](https://github.com/can1357/oh-my-pi/pull/5553) 修复；只读 xd:// 行为由 [PR #7314](https://github.com/can1357/oh-my-pi/pull/7314) 修复；one-shot 生命周期由 [PR #7785](https://github.com/can1357/oh-my-pi/pull/7785) 修复；DeepSeek reasoning 问题对应 [commit 54ce9e47fc](https://github.com/can1357/oh-my-pi/commit/54ce9e47fc6e)。
 
+## 外部实验数据
+
+OMP 创始人 Can Bölük 在 Stencil.so 发布的自测数据（作者自测，非独立第三方评测）：
+
+**GPT-5.6 Sol → GPT-5.6 Luna：**
+
+| 方案 | pass | cost | duration |
+|---|---|---|---|
+| Luna oneshot | 77% | $0.60 | 570s |
+| /prewalk | 85% | $1.04 | 300s |
+| Sol oneshot | 88% | $1.71 | 372s |
+
+/prewalk 达到 Sol 独做 97% 的 pass rate，61% 的成本，且是最快的。
+
+**Opus 4.8 → Gemini Flash 3.5：**
+
+| 方案 | pass | cost | duration |
+|---|---|---|---|
+| Flash oneshot | 60% | $1.16 | 360s |
+| /prewalk | 78% | $1.46 | 402s |
+| Opus oneshot | 85% | $2.78 | 606s |
+
+/prewalk 达到 Opus 独做 92% 的 pass rate，53% 的成本，1.5× 速度。
+
+**注意**：作者/OMP 维护者自测，非独立第三方评测。
+
 ## 未决问题
 
 - plan-mode 子代理清除 frontmatter 后，bundled task fallback 是否仍可能启用 prewalk，尚未运行时验证。
@@ -77,3 +103,4 @@ Prewalk 从 v16.5.0 引入，后续经历了循环处理、只读 xd:// 排除�
 ## See Also
 
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — Prewalk 在 OMP 工作模式中的定位及组合建议。
+- [Harness 格式与上下文载体](../harness-engineering/harness-formats-and-context-carriers.md) — 模型切换时机的 harness 优化与编辑格式对比

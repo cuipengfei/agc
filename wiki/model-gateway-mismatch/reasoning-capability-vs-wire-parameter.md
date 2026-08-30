@@ -46,4 +46,5 @@ agent host 声明模型支持 reasoning，不等于 gateway 上游接受 `reason
 
 ## See Also
 
+- [Prime Agent 技术实质](../prime-agent/prime-agent-technical-reality.md) — Prime Agent 的 harness 层设计与实现细节
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md) — 同一仓库的 host-level 护栏方法论

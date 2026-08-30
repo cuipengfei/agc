@@ -33,6 +33,14 @@ Agent host 声明的模型 capability 与本地 gateway 上游实际接受的 wi
 |---------|---------|---------|
 | [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数分离；compat 开关定位与幻觉修复 | 2026-08-29 |
 
+## harness-engineering
+
+Harness 编辑格式与上下文载体的通用设计模式。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline 编辑格式、Snapcompact 上下文压缩、与 RLM 控制平面的维度对比 | 2026-08-30 |
+
 ## omp-modes
 
 OMP 工作流模式、Vibe 与 Task/Hub 的对比、magic keywords 的触发与组合。
@@ -56,4 +64,6 @@ Prime Agent 功能、配置、RLM、Continual Harness、长运行能力。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置概览、RLM、与 OMP 的差异 | 2026-08-28 |
+| [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置概览、RLM、与 OMP 的差异 | 2026-08-30 |
+| [Prime Agent 技术实质](prime-agent/prime-agent-technical-reality.md) | 源码验证的 RLM kernel 类型、Continual Harness CRUD 机制、Daemon 架构细节 | 2026-08-30 |
+| [Prime Agent 社区 Reception](prime-agent/prime-agent-community-reception.md) | 独立博客、竞品创始人、benchmark、社区声音的第三方评价汇总 | 2026-08-30 |

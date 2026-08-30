@@ -58,3 +58,23 @@
 - Disposition: New
 - Raw: raw/model-gateway-mismatch/2026-08-29-reasoning-effort-wire-suppression.md
 - Updated: 模型 capability 与 gateway wire 参数不一致
+
+## [2026-08-30] ingest | Prime Agent 技术实质
+- Disposition: New; Update
+- Raw: raw/prime-agent/2026-08-30-prime-agent-technical-reality.md
+- Updated: Prime Agent 技术实质; Prime Agent：功能与配置总览; 四 AI Coding Agent 对比; 模型 capability 与 gateway wire 参数不一致
+
+## [2026-08-30] ingest | Prime Agent 社区 Reception
+- Disposition: New; Update
+- Raw: raw/prime-agent/2026-08-30-prime-agent-community-reception.md
+- Updated: Prime Agent 社区 Reception; 四 AI Coding Agent 对比
+
+## [2026-08-30] ingest | Harness 格式与上下文载体
+- Disposition: New
+- Raw: raw/stencil/2026-08-30-the-harness-problem.md; raw/stencil/2026-08-30-snapcompact.md
+- Updated: Harness 格式与上下文载体
+
+## [2026-08-30] update | OMP Prewalk（外部实验数据补充）
+- Disposition: Update
+- Raw: raw/stencil/2026-08-30-prewalk.md
+- Updated: OMP Prewalk：规划后切换模型

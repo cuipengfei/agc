@@ -1,8 +1,8 @@
 # 四 AI Coding Agent 对比：真正独特优势
 
-> Sources: 官方 GitHub 仓库与文档，2026-08-27
+> Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30
 > Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md)
-> Updated: 2026-08-27
+> Updated: 2026-08-30
 
 ## 研究对象
 
@@ -10,7 +10,7 @@
 |------|------|---------|
 | OpenCode + OMO | `anomalyco/opencode` + `code-yeongyu/oh-my-openagent` | 插件生态 + OMO 编排层 |
 | OMP | `can1357/oh-my-pi` | 多模式 agent harness |
-| Prime Agent | `PrimeIntellect-ai/prime-agent` | RLM-native + 自改进 harness |
+| Prime Agent | `PrimeIntellect-ai/prime-agent` | RLM-native + 配置持久化 harness（非自学习） |
 | DSH | `deepseek-ai/deepseek-harness` | DeepSeek 官方 harness |
 
 ## 研究方法
@@ -99,5 +99,7 @@
 
 ## See Also
 
+- [Prime Agent 技术实质](../prime-agent/prime-agent-technical-reality.md) — 源码验证的实现细节
+- [Prime Agent 社区 Reception](../prime-agent/prime-agent-community-reception.md) — 第三方评价与 benchmark
 - [OMP TTSR 与 /omfg：流式行为护栏](../omp-ttsr/ttsr-and-omfg.md)
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md)

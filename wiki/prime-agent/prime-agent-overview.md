@@ -1,15 +1,15 @@
 # Prime Agent：功能与配置总览
 
-> Sources: Prime Agent 官方文档，2026-08-28
+> Sources: Prime Agent 官方文档，2026-08-28; Prime Agent 技术实质，2026-08-30
 > Raw: [Prime Agent 文档研究原始记录](../../raw/prime-agent/2026-08-28-prime-agent-docs-study.md)
-> Updated: 2026-08-28
+> Updated: 2026-08-30
 
 ## 核心架构
 
 Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 agent harness。核心组合是：
 
-- **RLM（Recursive Language Model）**：持久 IPython kernel，模型用代码管理 context
-- **Continual Harness**：prompt/memory/skill/subagent specs 可持久化、可回滚
+- **RLM（Recursive Language Model）**：持久 Python 环境（v0.8.1 为标准 Jupyter kernel，上游源码为自定义 REPL），模型用代码管理 context
+- **Continual Harness**：prompt/memory/skill/subagent 配置可持久化、可回滚（不改模型权重）
 - **Daemon 架构**：TUI 可随时 detach，worker 继续持有 session 和状态
 
 ## 主要功能
@@ -116,6 +116,8 @@ Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 ag
 - 结果通过 `agent_message` 或文件回传
 - 父 agent 的 Python 状态跨对话保留
 
+**技术实质**：详见 [Prime Agent 技术实质](prime-agent-technical-reality.md) — 包括 kernel 类型、隔离级别、递归实现机制等源码验证细节。
+
 **适用场景**：
 - 处理超长上下文（几百 KB 代码库）
 - 程序化切片、搜索、重组 context
@@ -123,12 +125,17 @@ Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 ag
 
 ## Continual Harness
 
-**机制**：`/refine` 从自身 trajectory 提炼改进
+**机制**：`/refine` 从运行轨迹生成配置更新（prompt / memory / skill / subagent 的 CRUD）
+
+**关键限制**：
+- 不改模型权重，不是"自学习"
+- 需要显式触发（`/refine` 或 auto-refine）
+- 基础 system prompt 禁止修改
 
 **可持久化**：
 - prompt notes
 - memories
-- reusable skills
+- reusable skills（配置引用，非可执行代码）
 - subagent specifications
 
 **支持 rollback**
@@ -140,7 +147,7 @@ Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 ag
 | 工作流模式 | Vibe/Plan/Goal/Prewalk/TTSR | 单一模式 + RLM |
 | 上下文管理 | 传统 | 持久 Python kernel |
 | 子 agent | task 工具 | RLM 递归调用 |
-| 自改进 | 无 | Continual Harness |
+| 跨会话配置复用 | skills/rules/config 文件同步 | Continual Harness（JSON CRUD） |
 | 关键词触发 | Magic Keywords | 无 |
 | 流式中断 | TTSR | 无 |
 
@@ -148,7 +155,7 @@ Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 ag
 
 **Prime Agent 适合**：
 - 需要处理超长上下文
-- 需要 agent 从经验中学习
+- 需要跨 session 复用项目约定（prompts / memories / skills）
 - 需要程序化控制 context
 - 需要长期运行的自动化任务
 
@@ -160,5 +167,7 @@ Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 ag
 
 ## See Also
 
+- [Prime Agent 技术实质](prime-agent-technical-reality.md) — 源码验证的实现细节
+- [Prime Agent 社区 Reception](prime-agent-community-reception.md) — 第三方评价与 benchmark
 - [四 AI Coding Agent 对比](../ai-coding-agents/4-agent-comparison.md)
 - [OMP TTSR 与 /omfg：流式行为护栏](../omp-ttsr/ttsr-and-omfg.md)
