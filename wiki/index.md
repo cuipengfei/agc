@@ -83,7 +83,7 @@ Prime Agent 功能、配置、RLM、Continual Harness、长运行能力。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [mcp_excalidraw：给 Agent 一块活画布](agent-interaction/mcp-excalidraw.md) | 双 server 架构、26 工具、draw→look→adjust 迭代环、企业离线评估、与官方 MCP 的形态差异 | 2026-08-30 |
-| [视觉人机交互全景](agent-interaction/visual-canvas-interaction-landscape.md) | 交互通道判定口径、白板/产物/画布三组工具、企业离线短名单 | 2026-08-30 |
+| [视觉人机交互全景](agent-interaction/visual-canvas-interaction-landscape.md) | A/B/C 三级分类、12 个 A 级真共享工具（2D/3D/工作流/设计/数据）、按场景推荐矩阵 | 2026-08-30 |
 | [产物可持续编辑 Genre](agent-interaction/sustainable-artifact-editing.md) | Phodal 三支柱、五条判定标准、qoder-lottie 无独立发布的实测 | 2026-08-30 |
 
 ## agent-harness

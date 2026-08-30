@@ -50,6 +50,28 @@ AI Client (Claude Code / Cursor / Codex CLI / OpenCode / Claude Desktop / Antigr
 1. 清空后重发元素，Excalidraw 可能重新注入缓存的 bound text 造成重复——官方建议不要把标签放在背景区域矩形上，用独立文本元素
 2. 截图、图片导出、视口控制、Mermaid 渲染**需要浏览器标签页开着**（canvas 前端是执行端）
 
+## 人机协作流程
+
+人在浏览器里操作画布（拖、画、改标签），网页端**就是标准 Excalidraw，没有任何 chat 输入框或"通知 agent"按钮**。要让人类改动被 agent 读到，必须**切回 TUI/IDE 聊天框发一句话**——agent 收到消息后自行决定调用 `describe_scene` 或 `get_canvas_screenshot`。
+
+流程：
+
+```text
+人操作 Excalidraw（浏览器）→ 切回 TUI 发"我改好了/看看图" → agent 调用 describe_scene + screenshot → agent 回复/继续修改
+```
+
+架构中的 WebSocket 仅用于**多用户/多 agent 之间的画布实时同步**（两个人同时看同一张图，A 画一条线 B 的屏幕立刻更新），**不用于向 agent client 推消息**。没有 webhook，没有"画布变更即触发 agent"的机制。
+
+## 读图机制：全量，无增量
+
+`describe_scene` 和 `get_canvas_screenshot` 都是**全量读取**，不是 diff，不是 delta，不分页，没有变更标记：
+
+- `describe_scene` → `GET /api/elements` → 遍历所有元素 → 生成 human-readable 文本（每元素一行 `id | type | position | text | ...`），N 个元素 = N 行 + 头部统计
+- `get_canvas_screenshot` → `exportImage('png')` → 返回完整 base64 PNG
+
+画布元素多了，每轮 agent 读图的上下文膨胀是真实问题。
+
+**有限替代**：`query_elements` 支持按 `type`、`bbox`（坐标范围）、`filter` 过滤，只拿某区域或某类元素。但返回的是原始 JSON，不是 `describe_scene` 那种 human-readable 文本——LLM 还得自己读 JSON 理解。没有"只告诉我改了什么"的增量机制。
 ## 与官方 excalidraw/excalidraw-mcp 的区别
 
 两者只是名字像，产品形态不同：

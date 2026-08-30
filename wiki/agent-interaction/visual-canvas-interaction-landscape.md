@@ -1,7 +1,7 @@
 # 视觉人机交互全景：人与 Agent 共享视觉工作面
 
-> Sources: GitHub API 元数据批量快照; Miro 官方公告与开发文档; 各项目官方 README，2026-08-30
-> Raw: [全景证据](../../raw/agent-interaction/2026-08-30-visual-canvas-landscape.md); [官方 excalidraw-mcp 摘录](../../raw/agent-interaction/2026-08-30-excalidraw-official-mcp.md)
+> Sources: GitHub API 元数据; tldraw 官方文档; Figma 官方帮助/开发者文档; Blender 官方 lab 页面; Spline 官方; Honeycomb/Observable/Deepnote/Hex 官方文档; 各项目 README
+> Raw: [全景证据](../../raw/agent-interaction/2026-08-30-visual-canvas-landscape.md); [tldraw 生态深挖](../../raw/agent-interaction/2026-08-30-tldraw-ecosystem-deep-dive.md); [3D 空间工具](../../raw/agent-interaction/2026-08-30-3d-spatial-tools.md); [数据可视化与 SaaS](../../raw/agent-interaction/2026-08-30-data-viz-saas-tools.md); [Figma 生态](../../raw/agent-interaction/2026-08-30-figma-ecosystem.md); [Sim workflow 画布](../../raw/agent-interaction/2026-08-30-sim-workflow-canvas.md)
 > Updated: 2026-08-30
 
 ## 判定标准
@@ -11,34 +11,96 @@
 - 多 agent 仪表盘（Conductor、Emdash、Superset 等）外壳是图形的，但与每个 agent 的交互仍是文字聊天——**出局**
 - SDK/协议（AG-UI、A2UI、MCP-UI、CopilotKit 等）是造界面的材料，不是交互方式——**出局**
 - TUI（Claude Squad、Herdr）与纯后端机制（LangGraph middleware）——**出局**
+- Agent 生成图片/图表后交付给人看，人只看不动——**出局**
 
-## 真正符合的工具（按交互介质分组）
+## A 级：真共享可编辑视觉空间
 
-### 白板/无限画布
+人与 agent **同时读写同一视觉空间**，agent 的修改立即落入人可继续编辑的状态。
 
-- **Miro**：商业产品里动作最大。2026-02 上官方 MCP server（Claude Code/Cursor 读写 board），2026-05 Canvas 26 加画布内 agent（Sidekicks）与自动化（Flows），并给 agent 提供 Mermaid/Markdown/HTML widget 格式。纯 SaaS；Enterprise 的 MCP 默认关、需管理员开
-- **Excalidraw + mcp_excalidraw**：开源对应物，元素级控制 + 实时同步 + 迭代环。详见 [mcp_excalidraw 深挖](mcp-excalidraw.md)
-- **FigJam / Whimsical / Lucidspark / Mural**：AI 停在"生成 + 总结"，agent 看不到人后来的改动，不满足"可重入、共享状态"
+### 2D 无限画布
 
-### 文档/代码/设计产物画布
+| 工具 | Stars | 许可 | 人与 Agent 共享模式 | 维护健康度 |
+|---|---|---|---|---|
+| **mcp_excalidraw** | 2,362 | MIT | 本地 Excalidraw 画布，26 MCP 工具元素级 CRUD，截图反馈闭环，WebSocket 多 agent 并发 | 巴士因子 ≈1-2 |
+| **tldraw Agent Starter** | 34 | MIT 模板 | 无限画布，agent 流式 action，人 chat panel + 直接编辑 | **依赖 tldraw SDK，生产需 license** |
+| **tldraw MCP App** | — | 生产需 license | MCP Apps iframe 内嵌，agent `exec` JS 改 live editor，人直接点 widget | 官方产品，活跃 |
+| **tldraw offline** | — | 免费桌面 | 桌面 .tldraw 文件，agent raw JS 端口驱动，人本地编辑 | 官方桌面版 |
 
-Claude Artifacts、OpenAI Canvas、Figma Make（已发布）/ Figma Design Agent（beta）、Qoder Lottie（插件 v0.1.0）。全部纯 SaaS、单一厂商锁定。
+### 3D 空间
 
-### 画布 SDK 的成品化入口
+| 工具 | Stars | 许可 | 人与 Agent 共享模式 | 维护健康度 |
+|---|---|---|---|---|
+| **Blender MCP** | 26,505 | MIT | Blender viewport，agent 操作 scene/材质/节点，人实时观察修正 | 社区项目，Blender 成熟 |
+| **threejs-devtools-mcp** | 88 | MIT | 浏览器 live Three.js scene，agent inspect/modify，人 devtools overlay 操作 | 早期，v0.4.1 |
 
-tldraw computer（托管实验产品）与 [tldraw Agent Starter Kit](https://github.com/tldraw/agent-template)（MIT 模板，本地跑，模型自选）。
+### 工作流/节点画布
 
-### 边界项
+| 工具 | Stars | 许可 | 人与 Agent 共享模式 | 维护健康度 |
+|---|---|---|---|---|
+| **Sim** | 29,491 | Apache-2.0 | 可视化 workflow canvas，agent 改节点/边，人拖放审批，团队实时协作 | 产品级，v0.8.17 |
 
-Plannotator（Apache-2.0，8,246 stars）：浏览器视觉化标注 plan/diff 回传结构化反馈——"文字标注 + 视觉呈现"的弱匹配，完全本地。
+### 设计画布
 
-## 企业/离线短名单
+| 工具 | 许可 | 人与 Agent 共享模式 | 备注 |
+|---|---|---|---|
+| **Figma Design Agent** | SaaS | 人 on-canvas/sidebar 对话，agent 直接改 layout/组件/变量/样式 | Full seat 可写，View/Dev 只读 |
+| **Figma MCP (use_figma)** | SaaS | 外部 agent 经 MCP 写回原生 Figma 内容，人审阅/Undo/继续编辑 | remote endpoint，需 Full seat |
 
-不需外部托管的只有四个：**Excalidraw + mcp_excalidraw、tldraw Agent Starter Kit、drawio 桌面 + 社区 MCP、Plannotator**。前提：本地指视觉交互层；agent 模型后端仍需内部 LLM 网关或本地模型。
+### 数据画布
 
-## 关键快照（2026-08-30）
+| 工具 | 许可 | 人与 Agent 共享模式 | 备注 |
+|---|---|---|---|
+| **Honeycomb Canvas** | SaaS | 人拖数据点/粘 Mermaid，agent 生成查询可视化，team chat 同一 investigation | 可自部署？否 |
+| **Observable Canvases AI** | SaaS | AI 读 viewport 在空白处新增 frame，所有协作者可见可编辑 | AI 只新增不修改 |
 
-协议层 stars：AG-UI 15,626 / A2UI 16,232 / MCP-UI 5,114 / CopilotKit 37,113 / Vercel AI SDK 26,496 / assistant-ui 11,925。控制台类注意两个状态变化：Crystal 已deprecated、由 Nimbalyst 接替；Vibe Kanban（27,954 stars）官方宣布 sunsetting，不宜新采用。
+### 3D SaaS
+
+| 工具 | 许可 | 人与 Agent 共享模式 | 备注 |
+|---|---|---|---|
+| **Spline AI Agent** | SaaS | agent 创建/排列 objects/材质，人实时 art-direct/调灯光动画 | [vendor claim] |
+
+## B 级：Agent 生成，人后接管（非实时共享编辑）
+
+| 工具 | 说明 |
+|---|---|
+| **Figma Make** | prompt→app/prototype，人点选预览/属性面板/代码；Make→Design 是脱钩 snapshot，不回同步 |
+| **Meshy 3D Agent** | 对话生成可编辑模型，人下载后接管，非同时编辑 |
+| **官方 excalidraw-mcp** | 5,208 stars，one-shot diagram 生成，无持久元素级多轮工作台 |
+| **Cursor Canvas** | agent 生成交互 artifact，人可改；团队 snapshot 共享，未证实多人实时同屏 |
+| **Deepnote Agent** | 共享 notebook canvas，agent 创建 chart/code block，人逐 cell 确认/undo；block 画布非自由白板 |
+| **Hex Notebook Agent** | 同上，notebook 类；逐 cell confirm |
+
+## C 级：仅生成或查看视觉产物（出局）
+
+| 工具 | Stars | 说明 |
+|---|---|---|
+| **excalidraw/excalidraw** | 130,805 | 核心画布无内置 agent，需外部桥接 |
+| **tldraw/tldraw** | 50,034 | 生产部署需 license key |
+| **AFFiNE** | 72,019 | MCP 写入布局仍 roadmap，agent 创建块全在 (0,0) |
+| **xyflow** | 38,198 | SDK 工具包，需自建 agent 桥接 |
+| **antvis/mcp-server-chart** | 4,345 | 仅生成 chart 输出，无持久共享画布 |
+| **VisActor vchart** | — | 交互图表后端，无共享画布 |
+| **Mermaid MCP** | — | diagram-only，偏流程图 |
+| **KyuRish MCP Dashboards** | — | 对话内嵌交互 UI，非独立共享 canvas |
+
+## 按场景推荐
+
+| 场景 | 首选 | 备选 | 避免 |
+|---|---|---|---|
+| Coding agent 画架构图/流程图 | **mcp_excalidraw** | tldraw Agent Starter | Sim, Blender |
+| 3D 建模/场景 | **Blender MCP** | threejs-devtools-mcp | mcp_excalidraw |
+| 自动化工作流编排 | **Sim** | — | mcp_excalidraw |
+| 数据可视化分析 | Honeycomb/Observable (SaaS) | Deepnote/Hex (SaaS) | 开源方案不成熟 |
+| UI/UX 设计协作 | Figma Design Agent + MCP (SaaS) | — | 无真开源替代 |
+| 通用 2D 白板 | **mcp_excalidraw** | tldraw MCP App | excalidraw-mcp (one-shot) |
+
+## 关键风险
+
+- **mcp_excalidraw**：巴士因子 ≈1-2（yctimlin 单人维护）
+- **tldraw MCP App**：生产需 license，非纯开源
+- **Blender MCP**：LLM 代码执行无沙箱，可能删数据/外传
+- **threejs-devtools-mcp**：仅 88 stars，成熟度低
+- **Sim**：节点画布 ≠ 自由白板，不能画架构图
 
 ## See Also
 

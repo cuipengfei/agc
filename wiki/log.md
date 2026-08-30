@@ -99,3 +99,14 @@
 ## [2026-08-30] ingest | Hermes vs OpenClaw 架构差异
 - Disposition: New
 - Raw: raw/agent-harness/2026-08-30-hermes-vs-openclaw.md
+
+## [2026-08-30] update | mcp_excalidraw：给 Agent 一块活画布
+- Disposition: Update
+- Updated: mcp_excalidraw：给 Agent 一块活画布
+- 新增：人机协作流程（网页无通知按钮，须切回 TUI 发消息）、读图机制为全量无增量（describe_scene / screenshot 均非 diff，query_elements 为有限替代）
+
+## [2026-08-30] update | 视觉人机交互全景
+- Disposition: Update
+- Raw: raw/agent-interaction/2026-08-30-tldraw-ecosystem-deep-dive.md; raw/agent-interaction/2026-08-30-3d-spatial-tools.md; raw/agent-interaction/2026-08-30-data-viz-saas-tools.md; raw/agent-interaction/2026-08-30-figma-ecosystem.md; raw/agent-interaction/2026-08-30-sim-workflow-canvas.md
+- Updated: 视觉人机交互全景
+- 新增：A/B/C 三级完整分类（A 级 12 个工具跨 2D/3D/工作流/设计/数据/3D SaaS）、B 级 6 个、C 级 8 个；按场景推荐矩阵；关键风险（巴士因子、license、沙箱、成熟度）
