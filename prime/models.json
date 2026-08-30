@@ -96,7 +96,7 @@
           "name": "K3",
           "reasoning": true,
           "input": ["text", "image"],
-          "contextWindow": 1000000
+          "contextWindow": 262144
         }
       ]
     }

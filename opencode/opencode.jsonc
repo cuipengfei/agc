@@ -352,7 +352,7 @@
         "k3-agent": {
           "name": "K3",
           "limit": {
-            "context": 1000000,
+            "context": 262144,
             "output": 32768,
           },
           "reasoning": true,
