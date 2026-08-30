@@ -78,3 +78,8 @@
 - Disposition: Update
 - Raw: raw/stencil/2026-08-30-prewalk.md
 - Updated: OMP Prewalk：规划后切换模型
+
+## [2026-08-30] ingest | Better Harness
+- Disposition: New
+- Raw: raw/better-harness/2026-08-30-overview.md; raw/better-harness/2026-08-30-third-party-reception.md; raw/better-harness/2026-08-30-vs-claude-insights.md
+- Updated: Better Harness

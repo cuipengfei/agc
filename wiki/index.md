@@ -41,6 +41,14 @@ Harness 编辑格式与上下文载体的通用设计模式。
 |---------|---------|---------|
 | [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline 编辑格式、Snapcompact 上下文压缩、与 RLM 控制平面的维度对比 | 2026-08-30 |
 
+## better-harness
+
+Better Harness 工作流审计工具。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Better Harness](better-harness/better-harness.md) | 12 host 支持矩阵、五维模型、与 Claude Code Insights 对比、与执行 harness 的关系 | 2026-08-30 |
+
 ## omp-modes
 
 OMP 工作流模式、Vibe 与 Task/Hub 的对比、magic keywords 的触发与组合。
