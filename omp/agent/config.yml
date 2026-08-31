@@ -93,7 +93,7 @@ modelRoles:
   tiny: c8787/gpt-5.6-luna:medium
   advisor: c8787/gpt-5.6-sol:medium
   designer: umans/umans-glm-5.2:high
-  default: kimi-code/k3-256k:high
+  default: kimi-claw/k3-agent:high
 modelTags:
   {}
 modelProviderOrder:
