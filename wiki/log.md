@@ -110,3 +110,9 @@
 - Raw: raw/agent-interaction/2026-08-30-tldraw-ecosystem-deep-dive.md; raw/agent-interaction/2026-08-30-3d-spatial-tools.md; raw/agent-interaction/2026-08-30-data-viz-saas-tools.md; raw/agent-interaction/2026-08-30-figma-ecosystem.md; raw/agent-interaction/2026-08-30-sim-workflow-canvas.md
 - Updated: 视觉人机交互全景
 - 新增：A/B/C 三级完整分类（A 级 12 个工具跨 2D/3D/工作流/设计/数据/3D SaaS）、B 级 6 个、C 级 8 个；按场景推荐矩阵；关键风险（巴士因子、license、沙箱、成熟度）
+
+## [2026-08-31] ingest | OMP Mnemopi scoping 与模式切换
+- Disposition: Update
+- Raw: raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md
+- Updated: OMP Mnemopi Consolidation 生命周期
+- 新增：三种 scoping 的写入/召回路由、`per-project-tagged` 的 shared-bank 前提、retain 工具无 scope 参数、模式切换不迁移，以及三个选项同时随 v15.6.0 首发的历史证据

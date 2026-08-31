@@ -6,7 +6,7 @@ OMP Mnemopi 记忆后端的配置、行为验证和 consolidation 生命周期�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | dispose/enqueue/standalone CLI 三条路径的行为差异、12h 门槛、开关接线状态 | 2026-08-23 |
+| [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与发布历史；dispose/enqueue/standalone CLI consolidation 差异 | 2026-08-31 |
 
 ## omp-prewalk
 
