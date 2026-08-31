@@ -73,4 +73,5 @@ Issue 同时提出 per-rule `contextMode`，即不同规则分别使用 `keep` �
 ## See Also
 
 - [OMP TTSR 与 /omfg：流式行为护栏](ttsr-and-omfg.md)
+- [OMP Extension 与 TTSR 分层防护](extension-and-ttsr-layering.md)
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md)

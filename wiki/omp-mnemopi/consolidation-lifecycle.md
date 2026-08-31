@@ -108,3 +108,8 @@ polyphonicRecall 和 enhancedRecall 的 gate 在 `orchestrateRecall` 里，但 O
 - `per-project-tagged` 依赖预先存在的 shared/global memory；它自身不写 global
 - `retain` 工具不能选择写入 bank，持续维护 project + global 两层内容需要切换 scoping 或外部 writer
 - 没有用户可配的 shutdown tradeoff 开关
+
+## See Also
+
+- [浏览历史 RAG：Hister 的能力与边界](../personal-knowledge/browser-history-rag.md) — 对比个人文档检索与 Agent 记忆系统
+- [Harness 格式与上下文载体](../harness-engineering/harness-formats-and-context-carriers.md) — 记忆、压缩和上下文载体的边界

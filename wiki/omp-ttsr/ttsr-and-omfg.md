@@ -101,4 +101,6 @@ TTSR 处理原始流式文本，适合做确定性的 best-effort 拦截；`tool
 
 ## See Also
 
-- [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — TTSR 与 magic keywords 等触发机制的定位及组合边界。
+- [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — TTSR 与 magic keywords 等触发机制的定位及组合边界
+- [OMP Extension 与 TTSR 分层防护](extension-and-ttsr-layering.md) — TTSR 与结构化 extension 的职责边界
+- [TTSR keep vs discard](keep-vs-discard.md) — 命中后保留或丢弃错误上下文的取舍

@@ -103,3 +103,4 @@
 - [Prime Agent 社区 Reception](../prime-agent/prime-agent-community-reception.md) — 第三方评价与 benchmark
 - [OMP TTSR 与 /omfg：流式行为护栏](../omp-ttsr/ttsr-and-omfg.md)
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md)
+- [开源 Harness 与托管推理不是一回事](open-harness-vs-hosted-inference.md) — 区分客户端开源、Provider 主权与模型成本

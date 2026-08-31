@@ -165,5 +165,5 @@ task(tasks=[
 
 ## See Also
 
-- [OMP TTSR 与 /omfg：流式行为护栏](ttsr-and-omfg.md) — TTSR 的具体 scope、配置和历史实验。
-- [OMP task agent 防护原始研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md) — 本次 worked example 的证据记录。
+- [OMP TTSR 与 /omfg：流式行为护栏](ttsr-and-omfg.md) — TTSR 的具体 scope、配置和历史实验
+- [TTSR keep vs discard](keep-vs-discard.md) — 错误上下文的生命周期选择

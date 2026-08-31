@@ -80,3 +80,6 @@ Prime Agent 的 RLM（持久 Python kernel）是另一种 harness 创新：让�
 - [Prime Agent 技术实质](../prime-agent/prime-agent-technical-reality.md) — Prime Agent 的 RLM kernel 实现细节
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md) — 另一套 harness 层护栏方法论
 - [OMP Prewalk：规划后切换模型](../omp-prewalk/prewalk.md) — 模型切换时机的 harness 优化
+- [Better Harness](../better-harness/better-harness.md) — 从会话和配置反查 harness 工作流缺口
+- [Hermes vs OpenClaw 架构差异](../agent-harness/hermes-vs-openclaw-architecture.md) — 相同模型受上下文架构影响的具体案例
+- [文档、测验与 AI 代码库的认知债务](documentation-and-cognitive-debt.md) — 持久上下文之外的人类理解闭环

@@ -1,103 +1,114 @@
 # Knowledge Base Index
 
-## omp-mnemopi
+## agent-harness
 
-OMP Mnemopi 记忆后端的配置、行为验证和 consolidation 生命周期。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与发布历史；dispose/enqueue/standalone CLI consolidation 差异 | 2026-08-31 |
-
-## omp-prewalk
-
-OMP Prewalk 的行为边界、模型切换机制与社区反响。
+Agent harness 的 prompt、上下文架构与运行形态差异。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Prewalk：规划后切换模型](omp-prewalk/prewalk.md) | 规划后首次文件修改返回时切换到便宜模型、触发边界、子代理配置与社区口碑 | 2026-08-27 |
-
-## omp-ttsr
-
-OMP TTSR 流式行为护栏与 /omfg 规则生成入口。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [OMP TTSR 与 /omfg：流式行为护栏](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、匹配、生命周期、规则身份、keep/discard、/omfg 与活体实验 | 2026-08-29 |
-| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | Extension/TTSR 的输入时机、职责分工、消息注入、测试方法与 task agent 案例 | 2026-08-29 |
-
-## model-gateway-mismatch
-
-Agent host 声明的模型 capability 与本地 gateway 上游实际接受的 wire 参数不一致时的诊断与修复。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数分离；compat 开关定位与幻觉修复 | 2026-08-29 |
-
-## harness-engineering
-
-Harness 编辑格式与上下文载体的通用设计模式。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline 编辑格式、Snapcompact 上下文压缩、与 RLM 控制平面的维度对比 | 2026-08-30 |
-
-## better-harness
-
-Better Harness 工作流审计工具。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [Better Harness](better-harness/better-harness.md) | 12 host 支持矩阵、五维模型、与 Claude Code Insights 对比、与执行 harness 的关系 | 2026-08-30 |
-
-## omp-modes
-
-OMP 工作流模式、Vibe 与 Task/Hub 的对比、magic keywords 的触发与组合。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | Vibe 是 task/hub 的强制收窄包装、三个 magic keywords 的触发条件、模式组合建议 | 2026-08-27 |
-
-## ai-coding-agents
-
-主要 AI coding agent / IDE / 框架的横向对比。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | TTSR 上下文保留策略的证据、场景取舍与最小 A/B 测试方案 | 2026-08-26 |
-| [四 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode+OMO、OMP、Prime Agent、DSH 的真正独特优势 | 2026-08-27 |
-
-## prime-agent
-
-Prime Agent 功能、配置、RLM、Continual Harness、长运行能力。
-
-| Article | Summary | Updated |
-|---------|---------|---------|
-| [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置概览、RLM、与 OMP 的差异 | 2026-08-30 |
-| [Prime Agent 技术实质](prime-agent/prime-agent-technical-reality.md) | 源码验证的 RLM kernel 类型、Continual Harness CRUD 机制、Daemon 架构细节 | 2026-08-30 |
-| [Prime Agent 社区 Reception](prime-agent/prime-agent-community-reception.md) | 独立博客、竞品创始人、benchmark、社区声音的第三方评价汇总 | 2026-08-30 |
+| [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 相同模型表现差异背后的 prompt、技能加载、压缩、记忆和用户建模因素 | 2026-08-30 |
 
 ## agent-interaction
 
-人与 agent 在视觉介质上交互（画布、产物、白板）的工具图谱与深挖。
+Agent 与画布、结构化产物及可持续编辑界面的交互方式。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [mcp_excalidraw：给 Agent 一块活画布](agent-interaction/mcp-excalidraw.md) | 双 server 架构、26 工具、draw→look→adjust 迭代环、企业离线评估、与官方 MCP 的形态差异 | 2026-08-30 |
-| [视觉人机交互全景](agent-interaction/visual-canvas-interaction-landscape.md) | A/B/C 三级分类、12 个 A 级真共享工具（2D/3D/工作流/设计/数据）、按场景推荐矩阵 | 2026-08-30 |
-| [产物可持续编辑 Genre](agent-interaction/sustainable-artifact-editing.md) | Phodal 三支柱、五条判定标准、qoder-lottie 无独立发布的实测 | 2026-08-30 |
+| [Agent 操作结构化产物](agent-interaction/agent-authored-structured-artifacts.md) | Workflow contract 与正式领域 DSL/runtime 的能力边界 | 2026-09-01 |
+| [mcp_excalidraw：给 Agent 一块活画布](agent-interaction/mcp-excalidraw.md) | MCP server、画布工具与 draw → look → adjust 迭代闭环 | 2026-08-30 |
+| [产物可持续编辑 Genre](agent-interaction/sustainable-artifact-editing.md) | 稳定语义身份、增量操作和可验证反馈的判定标准 | 2026-08-30 |
+| [视觉人机交互全景](agent-interaction/visual-canvas-interaction-landscape.md) | 共享视觉工作面的分级分类、工具地图与场景选择 | 2026-08-30 |
 
 ## agent-tooling
 
-Agent 周边工具的安装、配置与 extras 选择。
+Agent 周边工具、安装配置与工作流 Skill。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装指南；image / memory / SDK 集成等不需要的理由 | 2026-08-31 |
+| [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南 | 2026-08-31 |
 
-## agent-harness
+## ai-coding-agents
 
-Agent harness 的 prompt 工程与上下文架构差异。
+AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 同模型表现差异的 5 个架构原因；gateway-first vs agent-first | 2026-08-30 |
+| [四 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent 与 DSH 的真正独特能力 | 2026-08-30 |
+| [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
+
+## better-harness
+
+Better Harness 的工作流审计模型与适用边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Better Harness](better-harness/better-harness.md) | 多 host 支持、五维审计模型及其与执行 harness 的互补关系 | 2026-08-30 |
+
+## harness-engineering
+
+Harness 的编辑格式、上下文载体与人类理解闭环。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [文档、测验与 AI 代码库的认知债务](harness-engineering/documentation-and-cognitive-debt.md) | 用文档保存意图与决策，用 Quiz 暴露理解偏差，用测试验证行为 | 2026-09-01 |
+| [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline、Snapcompact 与 RLM 在编辑、压缩和控制平面上的差异 | 2026-08-30 |
+
+## model-gateway-mismatch
+
+模型能力、SDK 解析与 gateway wire contract 不一致问题。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数的分离及验证方法 | 2026-08-29 |
+
+## omp-mnemopi
+
+OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与 consolidation 边界 | 2026-08-31 |
+
+## omp-modes
+
+OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议 | 2026-08-27 |
+
+## omp-prewalk
+
+OMP Prewalk 的模型切换机制与行为边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Prewalk：规划后切换模型](omp-prewalk/prewalk.md) | 规划后首次文件修改时切换模型的触发、配置与社区证据 | 2026-08-30 |
+
+## omp-ttsr
+
+OMP TTSR 流式行为护栏、Extension 分层与上下文处置。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | schema、tool_call extension 与 TTSR 的职责边界 | 2026-08-29 |
+| [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | 命中规则后保留或丢弃错误上下文的证据与取舍 | 2026-08-26 |
+| [OMP TTSR 与 /omfg](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、配置、生命周期、规则生成与实测边界 | 2026-08-29 |
+
+## personal-knowledge
+
+个人资料采集、检索、RAG 与隐私边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [浏览历史 RAG：Hister 的能力与边界](personal-knowledge/browser-history-rag.md) | 浏览历史和文件的 Retrieval、MCP 接入及旧历史重抓取限制 | 2026-09-01 |
+
+## prime-agent
+
+Prime Agent 的功能、技术实现与第三方评价。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Prime Agent 社区 Reception](prime-agent/prime-agent-community-reception.md) | 第三方评价、benchmark 与争议 | 2026-08-30 |
+| [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置和与 OMP 的关系 | 2026-08-30 |
+| [Prime Agent 技术实质](prime-agent/prime-agent-technical-reality.md) | RLM、Continual Harness、CRUD 与持久运行时的源码验证 | 2026-08-30 |

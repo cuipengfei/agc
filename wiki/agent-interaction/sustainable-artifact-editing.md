@@ -30,3 +30,4 @@ Zerolang（Vercel Labs，agent 操作语义图节点/graph hash，pre-1.0 无现
 
 - [视觉人机交互全景](visual-canvas-interaction-landscape.md) — 按交互通道过滤的工具地图
 - [mcp_excalidraw 深挖](mcp-excalidraw.md) — 本地画布路线
+- [Agent 操作结构化产物](agent-authored-structured-artifacts.md) — Workflow contract 与正式领域 DSL 的区别

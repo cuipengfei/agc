@@ -121,3 +121,26 @@
 - Raw: raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md
 - Updated: OMP Mnemopi Consolidation 生命周期
 - 新增：三种 scoping 的写入/召回路由、`per-project-tagged` 的 shared-bank 前提、retain 工具无 scope 参数、模式切换不迁移，以及三个选项同时随 v15.6.0 首发的历史证据
+
+## [2026-09-01] ingest | 文档、测验与 AI 代码库的认知债务
+- Disposition: New
+- Raw: raw/harness-engineering/2026-08-29-document-driven-ai-engineering.md; raw/harness-engineering/2026-08-31-codebase-cognitive-debt-quizzes.md
+- Updated: 文档、测验与 AI 代码库的认知债务; Harness 格式与上下文载体
+
+## [2026-09-01] ingest | 开源 Harness 与托管推理不是一回事
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-09-01-freebuff-repository-study.md; raw/ai-coding-agents/2026-09-01-opencode-provider-evidence.md; raw/ai-coding-agents/2026-09-01-omp-provider-evidence.md
+- Updated: 开源 Harness 与托管推理不是一回事; 四 AI Coding Agent 对比; 模型 capability 与 gateway wire 参数不一致
+
+## [2026-09-01] ingest | 浏览历史 RAG
+- Disposition: New; Update
+- Raw: raw/personal-knowledge/2026-09-01-hister-repository-study.md
+- Updated: 浏览历史 RAG：Hister 的能力与边界; OMP Mnemopi Consolidation 生命周期
+
+## [2026-09-01] ingest | Agent 操作结构化产物
+- Disposition: New; Update
+- Raw: raw/agent-interaction/2026-09-01-openmaic-repository-study.md; raw/agent-tooling/2026-09-01-garden-skills-repository-study.md
+- Updated: Agent 操作结构化产物; 产物可持续编辑 Genre
+
+## [2026-09-01] lint | 8 issues found, 8 auto-fixed
+- 修复：重建损坏的全局索引表；规范 3 个 TTSR 关系区；补充 4 组高价值跨主题关系
