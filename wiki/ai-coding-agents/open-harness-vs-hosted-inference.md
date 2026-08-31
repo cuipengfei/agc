@@ -56,4 +56,5 @@ OpenCode 和 OMP 都把 provider 作为用户可替换配置：
 
 - [四 AI Coding Agent 对比](4-agent-comparison.md) — 从独特 harness 能力比较 OpenCode、OMP、Prime Agent 与 DSH。
 - [模型 capability 与 gateway wire 参数不一致](../model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) — provider 可替换之后仍需处理协议契约。
+- [JustWoker `/v1/messages` 实测行为](../model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) — 记录兼容端点实际返回的模型、usage、身份和环境字段。
 - [Hermes vs OpenClaw 架构差异](../agent-harness/hermes-vs-openclaw-architecture.md) — 相同模型也会因 harness 不同产生行为差异。

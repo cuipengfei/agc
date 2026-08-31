@@ -144,3 +144,10 @@
 
 ## [2026-09-01] lint | 8 issues found, 8 auto-fixed
 - 修复：重建损坏的全局索引表；规范 3 个 TTSR 关系区；补充 4 组高价值跨主题关系
+
+## [2026-09-01] ingest | JustWoker `/v1/messages` 实测行为
+- Disposition: New; Update
+- Raw: raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md
+- Updated: JustWoker `/v1/messages` 实测行为; 开源 Harness 与托管推理不是一回事
+
+## [2026-09-01] lint | 19 issues found, 0 auto-fixed

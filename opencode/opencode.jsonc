@@ -341,6 +341,34 @@
         },
       },
     },
+    "justwoker": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "JustDoWork",
+      "options": {
+        "baseURL": "https://api.justwoker.icu/v1",
+        "apiKey": "<REDACTED>",
+      },
+      "models": {
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "limit": { "context": 1000000, "output": 32768 },
+        },
+        "claude-opus-4-8-thinking": {
+          "name": "Claude Opus 4.8 Thinking",
+          "limit": { "context": 1000000, "output": 32768 },
+          "reasoning": true,
+        },
+        "claude-opus-5": {
+          "name": "Claude Opus 5",
+          "limit": { "context": 1000000, "output": 32768 },
+        },
+        "claude-opus-5-thinking": {
+          "name": "Claude Opus 5 Thinking",
+          "limit": { "context": 1000000, "output": 32768 },
+          "reasoning": true,
+        },
+      },
+    },
     "kimi-claw": {
       "npm": "@ai-sdk/anthropic",
       "name": "Kimi Claw",

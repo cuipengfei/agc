@@ -60,6 +60,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数的分离及验证方法 | 2026-08-29 |
+| [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测 | 2026-09-01 |
 
 ## omp-mnemopi
 

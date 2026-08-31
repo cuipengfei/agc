@@ -21,6 +21,7 @@ enabledModels:
   - c8787/*
   - c8787-chat/*
   - umans/*
+  - justwoker/*
   - opencode-zen/*
   - opencode-go/*
   - opencode-go/*
