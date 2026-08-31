@@ -66,6 +66,22 @@
 
 成功响应由 Cloudflare 返回，并出现 `x-oneapi-request-id`；部分记录还包含 `x-request-id`。
 
+## 站点侧矛盾（客户端可观察，未解释）
+
+以下三组观测彼此冲突，均为已记录的客户端事实，但本次实验无法给出解释。
+
+### `supported_endpoint_types` 声明与 OpenAI 路径实测不符
+
+`/v1/models` 响应中四个模型均声明 `supported_endpoint_types: ["anthropic", "openai"]`。但早前对 OpenAI 路径 `POST /v1/chat/completions` 的实测结果为三个模型 HTTP 503 `all nodes exhausted`、一个模型 HTTP 403。声明来自面板配置，与上游该路径的实际可用性不一致。
+
+### 站点 `usage.cost` 与面板倍率换算不一致
+
+一次最小请求（`claude-opus-4-8`，6844 input / 1 output）的响应 `usage.cost` 为 `0.0006104893320066336` USD，折算约 0.089 USD/M input token。已认证的 `/api/pricing` 给出的倍率（`model_ratio: 0.25`，`completion_ratio: 5`，`group_ratio: 1`）按 New API 公式换算为约 0.50 USD/M input。两者相差约 5.6 倍。`usage.cost` 字段的计费口径未验证，该矛盾未解释。
+
+### `claude-opus-4-8-thinking` 在 `/v1/messages` 返回 403
+
+该模型在 `/v1/models` 中列出，且早期冒烟测试中 `/v1/messages` 返回 HTTP 200；但另一次 Anthropic 路径实测返回 HTTP 403。同一模型同一端点出现 200 与 403 两种结果，条件差异（例如账户额度、并发、上游路由状态）未确认。
+
 ## See Also
 
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — 客户端、Agent runtime、Provider 路由和模型是不同层。
