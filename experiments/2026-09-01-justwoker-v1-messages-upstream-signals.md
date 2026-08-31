@@ -18,7 +18,7 @@
 ## Context
 
 - Date: 2026-09-01
-- Client: Python `urllib.request`
+- - Client: JavaScript `fetch` (Node.js / Bun runtime)
 - Protocol header: `anthropic-version: 2023-06-01`
 - Advertised model names:
   - `claude-opus-4-8`
