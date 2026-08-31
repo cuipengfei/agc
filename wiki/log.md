@@ -111,6 +111,11 @@
 - Updated: 视觉人机交互全景
 - 新增：A/B/C 三级完整分类（A 级 12 个工具跨 2D/3D/工作流/设计/数据/3D SaaS）、B 级 6 个、C 级 8 个；按场景推荐矩阵；关键风险（巴士因子、license、沙箱、成熟度）
 
+## [2026-08-31] ingest | Headroom Extras
+- Disposition: New
+- Raw: raw/agent-tooling/2026-08-31-headroom-extras-survey.md
+- Created: Headroom Extras
+
 ## [2026-08-31] ingest | OMP Mnemopi scoping 与模式切换
 - Disposition: Update
 - Raw: raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md

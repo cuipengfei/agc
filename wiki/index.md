@@ -86,6 +86,14 @@ Prime Agent 功能、配置、RLM、Continual Harness、长运行能力。
 | [视觉人机交互全景](agent-interaction/visual-canvas-interaction-landscape.md) | A/B/C 三级分类、12 个 A 级真共享工具（2D/3D/工作流/设计/数据）、按场景推荐矩阵 | 2026-08-30 |
 | [产物可持续编辑 Genre](agent-interaction/sustainable-artifact-editing.md) | Phodal 三支柱、五条判定标准、qoder-lottie 无独立发布的实测 | 2026-08-30 |
 
+## agent-tooling
+
+Agent 周边工具的安装、配置与 extras 选择。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装指南；image / memory / SDK 集成等不需要的理由 | 2026-08-31 |
+
 ## agent-harness
 
 Agent harness 的 prompt 工程与上下文架构差异。
