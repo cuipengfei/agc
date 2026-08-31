@@ -129,6 +129,10 @@ find . -path './.git' -prune -o -type l -print
 
 未直接覆盖：`backup.py`、真实 manifest 和全部异常分支。新增或修改同步行为时，至少补对应行为测试，并报告未执行的验证。
 
+**Wiki 证据边界：**
+
+- `check_evidence.py` 验证字面证据和 raw 链接存在性，不替代人工语义审查。
+
 ## 来源映射
 
 | 仓库路径    | 本机来源              |
