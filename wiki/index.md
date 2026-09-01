@@ -33,7 +33,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [四 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent 与 DSH 的真正独特能力 | 2026-08-30 |
+| [六 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent、DSH、jcode 与 OpenClaude 的真正独特能力 | 2026-09-01 |
 | [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
 
 ## better-harness
@@ -69,6 +69,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与 consolidation 边界 | 2026-08-31 |
+| [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-01 |
 
 ## omp-modes
 

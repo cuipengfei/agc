@@ -151,3 +151,12 @@
 - Updated: JustWoker `/v1/messages` 实测行为; 开源 Harness 与托管推理不是一回事
 
 ## [2026-09-01] lint | 19 issues found, 0 auto-fixed
+
+## [2026-09-01] ingest | 六 AI Coding Agent 对比：真正独特优势
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md
+- Updated: 六 AI Coding Agent 对比（原四 Agent 对比）
+## [2026-09-01] ingest | OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter
+- Disposition: New
+- Raw: raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md; raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md; raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md
+- Updated: OMP Mnemopi Consolidation 生命周期
