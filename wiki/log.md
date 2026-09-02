@@ -160,3 +160,8 @@
 - Disposition: New
 - Raw: raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md; raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md; raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md
 - Updated: OMP Mnemopi Consolidation 生命周期
+
+## [2026-09-02] ingest | 免费强模型 API 候选与尝试排序
+- Disposition: New
+- Raw: raw/model-gateway-mismatch/2026-09-02-free-strong-model-api-candidates.md
+- Updated: 免费强模型 API 候选与尝试排序
