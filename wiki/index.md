@@ -89,6 +89,22 @@ OMP Prewalk 的模型切换机制与行为边界。
 |---------|---------|---------|
 | [OMP Prewalk：规划后切换模型](omp-prewalk/prewalk.md) | 规划后首次文件修改时切换模型的触发、配置与社区证据 | 2026-08-30 |
 
+## omp-discovery
+
+OMP 能力发现、provider 隔离与插件生命周期。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP 能力 provider 隔离边界](omp-discovery/omp-provider-isolation-boundaries.md) | disabledProviders 生效与不生效的层次、marketplace 缝隙 | 2026-09-03 |
+
+## omp-sessions
+
+OMP session 文件格式与第三方工具兼容性。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [JSONL 格式与第三方 pi 解析器](omp-sessions/jsonl-format-and-third-party-parsers.md) | title 首行问题、正确镜像做法、残留障碍 | 2026-09-03 |
+
 ## omp-ttsr
 
 OMP TTSR 流式行为护栏、Extension 分层与上下文处置。

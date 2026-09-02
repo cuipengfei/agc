@@ -1,8 +1,8 @@
 # Better Harness
 
 > Sources: Better Harness 官方文档，2026-08-30; DEV Community，2026-08-30; DevGENT，2026-08-30; HVTracker，2026-08-30; Claude Code 官方文档，2026-08-30
-> Raw: [Better Harness 官方材料](../../raw/better-harness/2026-08-30-overview.md); [Better Harness 第三方评价](../../raw/better-harness/2026-08-30-third-party-reception.md); [Better Harness vs Claude Code Insights](../../raw/better-harness/2026-08-30-vs-claude-insights.md)
-> Updated: 2026-08-30
+> Raw: [Better Harness 官方材料](../../raw/better-harness/2026-08-30-overview.md); [Better Harness 第三方评价](../../raw/better-harness/2026-08-30-third-party-reception.md); [Better Harness vs Claude Code Insights](../../raw/better-harness/2026-08-30-vs-claude-insights.md); [BH 确定性分析器边界](../../raw/better-harness/2026-09-03-deterministic-analyzer-boundary.md)
+> Updated: 2026-09-03
 
 ## 是什么
 
@@ -20,14 +20,14 @@ Coding agent 工作流审计工具。分析项目配置和 session 日志，生�
 | Cursor | `.cursor-plugin/` | ✅ | ✅ | ❌ source-local | Canvas |
 | GitHub Copilot | `.github/plugin/` | ✅ | ✅ | ✅ marketplace | HTML+MD |
 | Qwen Code | `qwen-extension.json` | ✅ | ✅ | ✅ native CLI | HTML+MD |
-| Pi | `package.json` manifest | ✅ | ✅ | ✅ native | HTML+MD |
+| Pi / OMP | `package.json` manifest | ✅ | ✅（需剥 title 首行） | ✅ native | HTML+MD |
 | Kimi Code | `.kimi-plugin/` | ✅ | ✅ | ❌ manual | HTML+MD |
 | WorkBuddy | 无 | ✅ | ✅ | ❌ manual | HTML+MD |
 | Grok | 无 | ✅ | ✅ | ❌ manual | HTML+MD |
 | Augment/Auggie | 无 | ❌ | ✅ | ❌ | HTML only |
 | DeepSeek Harness | 无 | ✅ | ✅ | ❌ | HTML+MD |
 
-**OMP/Prime Agent 无 adapter。**
+**OMP 无原生 adapter，但 pi adapter 经处理可用；Prime Agent 未验证。**
 
 ## 五维模型
 
@@ -57,13 +57,18 @@ Coding agent 工作流审计工具。分析项目配置和 session 日志，生�
 | 时机 | 事后 | 运行时 | 运行时+持久 |
 | 能力 | 诊断、建议、报告 | TTSR、extensions、Prewalk | RLM、Continual Harness |
 | 改变行为 | ❌ | ✅ | ✅ |
+## 确定性分析器的产出边界
 
-**互补关系**：Better Harness 是"体检报告"，OMP/Prime Agent 是"运行时控制"。
+Better Harness 的确定性采集层（`session-analysis` 下的 `.mjs`）产出证据 envelope，**不自动产出缺陷**。本次对 AGC 仓库的三条 finding 全部来自 sub-agent 读源码 + fixture 复现；analyzer 侧三个 envelope 全 `available` 但 findings 均为 0。
+
+真正约束判断质量的是 prose（`SKILL.md:71` 的 exactly three、`findings-review.md` 的质量门、五维天花板模型），不是代码。代码只保证产物格式（renderer 的四类 schema 校验）。
+
+> Raw: [BH 确定性分析器边界](../../raw/better-harness/2026-09-03-deterministic-analyzer-boundary.md)
 
 ## 限制
 
 - 不改变 agent 运行时行为——只诊断 + 建议，无自动 apply
-- OMP/Prime Agent 无 adapter
+- 无原生 adapter 的 host 需手动处理 session 格式（OMP 的 JSONL 首行为 `{"type":"title"}`，pi parser 会跳过）
 - Cursor 无 marketplace 安装——source-local only
 - 部分 host 需手动安装——WorkBuddy、Grok 无 shell，skills 需手动复制或 symlink；DSH 需绝对 `customSkillDirs` 路径指向 Better Harness 根（拒绝 copies/symlinks/相对路径）；Augment/Auggie 仅 session 读取，无 Skill/install
 

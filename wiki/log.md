@@ -180,3 +180,27 @@
 - Disposition: New
 - Raw: raw/agent-tooling/2026-09-03-skills-cli-performance-model.md
 - Created: skills CLI 性能模型：目录发现比安装数量更关键
+
+## [2026-09-03] ingest | OMP 能力 provider 隔离边界
+- Disposition: New
+- Raw: raw/omp-discovery/2026-09-03-omp-provider-isolation-boundaries.md
+- Created: OMP 能力 provider 隔离边界
+- 核心发现：`disabledProviders` 挡住 capability-provider 注册的 resources（skills、commands、agents、MCP、hooks、tools、extensions 等），LSP 配置完全不走这层；`main.ts:763` 无条件预加载 + `lsp/config.ts:444` 直接消费
+- marketplace 安装掉在 `omp-extension-roots.ts:379` 过滤与 `claude-plugins.ts:290-295` 只扫 `commands/` 之间的缝隙
+- `readMarketplaceLspConfig` 查找路径与真实位置不一致：`cache/<marketplace>/marketplace.json` 不存在，真实位置在 `marketplaces/<marketplace>/.claude-plugin/marketplace.json`
+
+## [2026-09-03] ingest | JSONL 格式与第三方 pi 解析器兼容性
+- Disposition: New
+- Raw: raw/omp-sessions/2026-09-03-jsonl-title-first-and-pi-parsers.md
+- Created: JSONL 格式与第三方 pi 解析器兼容性
+- 核心发现：OMP session JSONL 首行是 `{"type":"title"}`，BH pi parser 只看第一行找 `type:"session"` → 整文件跳过
+- 剥掉首行后 `eligibleSessions` 0→5，`taskEpisodes` 0→24
+- 正确做法：源只读，镜像到临时目录剥首行，绝不原地修改 session 文件
+- 残留：改工具名大小写后 `withChanges` 仍为 0，第二个障碍未定位
+
+## [2026-09-03] review | Better Harness 支持矩阵与确定性边界
+- Disposition: Update
+- Raw: raw/better-harness/2026-09-03-deterministic-analyzer-boundary.md
+- Updated: Better Harness 支持矩阵
+- Pi / OMP 行 Session Evidence 改标「需剥 title 首行」；限制段补充「无原生 adapter 的 host 需手动处理 session 格式」
+- 新增「确定性分析器的产出边界」节：采集层产证据 envelope、不自动产缺陷；真正约束判断质量的是 prose（SKILL.md:71、findings-review 质量门、五维天花板）
