@@ -25,7 +25,7 @@
       "type": "http",
       "url": "https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>"
     },
-    "grep-app": {
+    "grep-app-github": {
       "type": "http",
       "url": "https://mcp.grep.app"
     },

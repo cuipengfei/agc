@@ -39,7 +39,7 @@ providers:
         name: GPT-5.6 Sol
         reasoning: true
         input: [text, image]
-        contextWindow: 272000
+        contextWindow: 872000
         maxTokens: 16000
       - id: gpt-5.6-terra
         name: GPT-5.6 Terra

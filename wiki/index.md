@@ -26,6 +26,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南 | 2026-08-31 |
+| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响 | 2026-09-03 |
 
 ## ai-coding-agents
 
@@ -70,7 +71,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与 consolidation 边界 | 2026-08-31 |
-| [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-01 |
+| [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-02 |
 
 ## omp-modes
 

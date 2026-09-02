@@ -76,6 +76,10 @@ def _iter_files(entry: Entry, source: Path, destination: Path) -> Iterable[FileP
         yield FilePair(source, destination)
         return
     if not source.exists():
+        # A directory entry whose source is gone yields the directory itself so
+        # consumers report `missing` like single-file entries. Returning nothing
+        # made pull/status/diff print a clean success for a vanished source.
+        yield FilePair(source, destination)
         return
     for path in sorted(source.rglob("*")):
         relative = path.relative_to(source)
@@ -91,7 +95,3 @@ def _iter_files(entry: Entry, source: Path, destination: Path) -> Iterable[FileP
 
 def iter_pull_files(entry: Entry) -> Iterable[FilePair]:
     yield from _iter_files(entry, entry.source, entry.repo)
-
-
-def iter_push_files(entry: Entry) -> Iterable[FilePair]:
-    yield from _iter_files(entry, entry.repo, entry.source)

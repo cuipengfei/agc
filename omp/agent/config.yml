@@ -29,7 +29,7 @@ enabledModels:
   - kimi-claw/*
   - deepseek/*
 disabledProviders:
-  - claude-plugins
+  []
 providers:
   maxInFlightRequests:
     c4141: 5
@@ -92,9 +92,9 @@ modelRoles:
   task: c8787/gpt-5.6-sol:medium
   vision: c8787/gpt-5.6-luna:medium
   tiny: c8787/gpt-5.6-luna:medium
-  advisor: c8787/gpt-5.6-sol:medium
-  designer: umans/umans-glm-5.2:high
-  default: kimi-claw/k3-agent:high
+  advisor: c8787/gpt-5.6-luna:max
+  designer: kimi-code/k3:high
+  default: justwoker/claude-opus-5:medium
 modelTags:
   {}
 modelProviderOrder:

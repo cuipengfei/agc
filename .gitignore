@@ -49,3 +49,4 @@ omp/agent/extensions/umans-status.ts
 .omc/project-memory.json
 .omc/state/agent-replay-ddb2a7e3-c09c-407f-87ff-1ac9fc125b23.jsonl
 .omc/state/idle-notif-cooldown.json
+.pi/better-harness/

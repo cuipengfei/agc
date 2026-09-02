@@ -18,7 +18,7 @@
 | `omp/` | `~/.omp/` |
 | `prime/` | `~/.prime/agent/` |
 
-仓库保存来源文件的副本，不使用 symlink。实际同步范围由 `manifest.json` 控制。
+仓库保存来源文件的副本，不使用 symlink。同步是单向的：来源 -> 仓库。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。实际同步范围由 `manifest.json` 控制。
 
 ## 代码结构
 
@@ -27,8 +27,7 @@
 - manifest 与路径映射
 - 凭据策略
 - 文件传输与原子写入
-- 备份
-- pull / push 用例
+- pull 用例
 - CLI 编排
 
 根目录 `sync.py` 仅是兼容入口。
@@ -38,13 +37,11 @@
 ```bash
 ./pull.sh --dry-run
 ./pull.sh
-./push.sh --dry-run
-./push.sh
 ./sync.py status
 ./sync.py diff
 ```
 
-`pull` 不把来源凭据带入仓库；`push` 保留目标位置已有凭据，并在覆盖前创建备份。
+`pull` 不把来源凭据带入仓库。仓库不会写回来源，因此仓库里不应出现真实凭据。
 
 ## 不追踪
 

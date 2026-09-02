@@ -38,10 +38,10 @@ approval_mode = "approve"
 [mcp_servers.search-exa]
 url = "https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>"
 
-[mcp_servers.search-grep]
+[mcp_servers.grep-app-github]
 url = "https://mcp.grep.app"
 
-[mcp_servers.search-grep.tools.searchGitHub]
+[mcp_servers.grep-app-github.tools.searchGitHub]
 approval_mode = "approve"
 
 [mcp_servers.search-tavily]

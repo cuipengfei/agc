@@ -4,9 +4,9 @@ import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
-from src.agc_sync import cli, pull, push
+from src.agc_sync import cli, pull
 from src.agc_sync.manifest import Entry
-from src.agc_sync.policy import overlay_target_credentials, redact, scan_repo_secrets
+from src.agc_sync.policy import redact
 from src.agc_sync.transfer import write_atomic
 
 
@@ -32,24 +32,6 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(count, 1)
         self.assertEqual(output, "  - <REDACTED>\n")
 
-    def test_push_preserves_target_credentials(self):
-        repo = (
-            'url = "https://mcp.example.test/mcp?apiKey=<REDACTED>"\n'
-            'Authorization = "Bearer <REDACTED>"\n'
-        )
-        target = (
-            'url = "https://mcp.example.test/mcp?apiKey=target-secret"\n'
-            'Authorization = "Bearer target-auth"\n'
-        )
-        output, count = overlay_target_credentials(repo, target)
-        self.assertEqual(count, 2)
-        self.assertIn("apiKey=target-secret", output)
-        self.assertIn('Authorization = "Bearer target-auth"', output)
-        self.assertNotIn("<REDACTED>", output)
-
-    def test_push_rejects_literal_repo_secret(self):
-        self.assertTrue(scan_repo_secrets('apiKey = "literal-secret"'))
-
     def test_pull_does_not_preserve_existing_repo_secret(self):
         source = 'apiKey = "source-secret"\n'
         output, count = redact(source)
@@ -64,13 +46,6 @@ class SyncTests(unittest.TestCase):
         self.assertIn('"--api-key"', output)
         self.assertIn('"<REDACTED>"', output)
         self.assertNotIn("real-secret", output)
-
-    def test_push_restores_standalone_token_literal(self):
-        repo = '"--api-key",\n"<REDACTED>"\n'
-        target = '"--api-key",\n"ctx7sk-target-secret"\n'
-        output, count = overlay_target_credentials(repo, target)
-        self.assertEqual(count, 1)
-        self.assertIn('"ctx7sk-target-secret"', output)
 
     def test_pull_keeps_json_object_value_under_sensitive_key(self):
         source = (
@@ -94,13 +69,6 @@ class SyncTests(unittest.TestCase):
         )
         self.assertNotIn("0123456789abcdef0123456789abcdef", output)
 
-    def test_push_restores_firecrawl_path_token(self):
-        repo = '"url": "https://mcp.firecrawl.dev/<REDACTED>/v2/mcp"\n'
-        target = '"url": "https://mcp.firecrawl.dev/fc-0123456789abcdef0123456789abcdef/v2/mcp"\n'
-        output, count = overlay_target_credentials(repo, target)
-        self.assertEqual(count, 1)
-        self.assertIn("https://mcp.firecrawl.dev/fc-0123456789abcdef0123456789abcdef/v2/mcp", output)
-
     def test_atomic_write_updates_file(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "config.txt"
@@ -118,18 +86,7 @@ class SyncTests(unittest.TestCase):
             self.assertEqual(pull.run([entry]), 0)
             self.assertEqual(repository.read_text(encoding="utf-8"), "value = 1\n")
 
-    def test_push_run_updates_source_from_entry(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            repository = root / "repo.txt"
-            source = root / "source.txt"
-            repository.write_text("value = 2\n", encoding="utf-8")
-            entry = Entry("test", source, repository, False, False, frozenset())
-
-            self.assertEqual(push.run([entry]), 0)
-            self.assertEqual(source.read_text(encoding="utf-8"), "value = 2\n")
-
-    def test_status_reports_both_directions(self):
+    def test_status_reports_pull_direction(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "source.txt"
@@ -142,7 +99,7 @@ class SyncTests(unittest.TestCase):
                 self.assertEqual(cli.status([entry]), 0)
 
             self.assertIn("pull: would-update", output.getvalue())
-            self.assertIn("push: missing", output.getvalue())
+            self.assertNotIn("push", output.getvalue())
 
     def test_diff_reports_repository_and_source_difference(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -162,8 +119,8 @@ class SyncTests(unittest.TestCase):
             self.assertIn("source", output.getvalue())
             self.assertIn("repo", output.getvalue())
 
-    def test_sync_plan_prepares_pull_and_push_bytes(self):
-        from src.agc_sync.sync_plan import prepare_pull, prepare_push
+    def test_sync_plan_prepares_pull_bytes(self):
+        from src.agc_sync.sync_plan import prepare_pull
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -174,10 +131,9 @@ class SyncTests(unittest.TestCase):
             entry = Entry("test", source, repository, False, False, frozenset())
 
             self.assertEqual(prepare_pull(entry, source), (b"value = 1\n", 0))
-            self.assertEqual(prepare_push(entry, repository, source), (b"value = 2\n", 0))
 
-    def test_manifest_direction_helpers_return_named_file_pair(self):
-        from src.agc_sync.manifest import iter_pull_files, iter_push_files
+    def test_manifest_pull_helper_returns_named_file_pair(self):
+        from src.agc_sync.manifest import iter_pull_files
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -188,9 +144,51 @@ class SyncTests(unittest.TestCase):
             entry = Entry("test", source, repository, False, False, frozenset())
 
             pull_pair = next(iter(iter_pull_files(entry)))
-            push_pair = next(iter(iter_push_files(entry)))
             self.assertEqual((pull_pair.source, pull_pair.destination), (source, repository))
-            self.assertEqual((push_pair.source, push_pair.destination), (repository, source))
+
+    def test_directory_entry_reports_missing_when_source_absent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            entry = Entry(
+                "dir-entry", root / "absent", root / "repo", False, True, frozenset()
+            )
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(pull.run([entry]), 0)
+
+            self.assertIn("missing=1", output.getvalue())
+
+    def test_directory_entry_reports_no_missing_when_source_empty(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "present"
+            source.mkdir()
+            entry = Entry(
+                "dir-entry", source, root / "repo", False, True, frozenset()
+            )
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(pull.run([entry]), 0)
+
+            self.assertIn("missing=0", output.getvalue())
+
+    def test_diff_reports_missing_directory_instead_of_reading_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repository = root / "repo"
+            repository.mkdir()
+            (repository / "a.json").write_text("{}", encoding="utf-8")
+            entry = Entry(
+                "dir-entry", root / "absent", repository, False, True, frozenset()
+            )
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(cli.diff([entry]), 0)
+
+            self.assertIn("missing", output.getvalue())
 
 
 if __name__ == "__main__":

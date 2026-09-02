@@ -165,3 +165,18 @@
 - Disposition: New
 - Raw: raw/model-gateway-mismatch/2026-09-02-free-strong-model-api-candidates.md
 - Updated: 免费强模型 API 候选与尝试排序
+
+## [2026-09-02] review | OMP 记忆后端对比语义复核
+- Disposition: Update
+- Raw: raw/omp-mnemopi/2026-09-02-omp-hindsight-source-recheck.md（本次新增）; raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md; raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md; raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md
+- 删除「TEMPR 四路召回」：该词在 OMP `src/hindsight/` 全部源码中不存在，且 `recallTypes` 默认只有 `world` + `experience` 两类（`settings-schema.ts:406`）
+- reranker 召回增益改标未验证：官方无对比基准，本仓库未实测，通用 IR 推断不作为 Hindsight 结论
+- 迁移写入接口标注 endpoint 与 payload schema 未验证，不再当作既定 API 事实
+- 迁移证据描述改为可复核的实际检查：遍历 `src/hindsight/` 与 `src/mnemopi/` 全部 `.ts` 无 `migrat`/`fromMnemopi`（原文写「全文搜 migrate|import」会匹配所有 import 语句，不构成证据）
+- 版本锚点 v18.0.11 → v18.1.3；`settings-schema.ts:2950` → `2949-2951`
+- Sharpshooter 提取模型改为「selector 优先、`extract.ts:166` 是 fallback 分支」
+
+## [2026-09-03] ingest | skills CLI 性能模型：目录发现比安装数量更关键
+- Disposition: New
+- Raw: raw/agent-tooling/2026-09-03-skills-cli-performance-model.md
+- Created: skills CLI 性能模型：目录发现比安装数量更关键

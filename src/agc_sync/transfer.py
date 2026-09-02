@@ -17,10 +17,6 @@ def read_text(path: Path) -> str:
         raise RuntimeError(f"文件不存在：{path}") from exc
 
 
-def resolved_target(path: Path) -> Path:
-    return path.resolve() if path.is_symlink() else path
-
-
 def same_bytes(path: Path, content: bytes) -> bool:
     try:
         return path.read_bytes() == content

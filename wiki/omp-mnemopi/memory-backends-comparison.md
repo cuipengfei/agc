@@ -1,12 +1,12 @@
 # OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter
 
-> Sources: vectorize-io/hindsight GitHub, 2026-09-01; can1357/oh-my-pi 源码与 git history, 2026-09-01
-> Raw: [2026-09-01-hindsight-official-installation](../../raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md); [2026-09-01-hindsight-official-configuration](../../raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md); [2026-09-01-omp-hindsight-sharpshooter-source](../../raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md)
-> Updated: 2026-09-01
+> Sources: vectorize-io/hindsight GitHub, 2026-09-01; can1357/oh-my-pi 源码与 git history, 2026-09-01；本地 OMP v18.1.3 源码复核, 2026-09-02
+> Raw: [2026-09-01-hindsight-official-installation](../../raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md); [2026-09-01-hindsight-official-configuration](../../raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md); [2026-09-01-omp-hindsight-sharpshooter-source](../../raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md); [2026-09-02-omp-hindsight-source-recheck](../../raw/omp-mnemopi/2026-09-02-omp-hindsight-source-recheck.md)
+> Updated: 2026-09-02
 
 ## Overview
 
-OMP `memory.backend` 枚举共 5 个值（`settings-schema.ts:2950`，本地 v18.0.11）：`off`、`local`、`hindsight`、`mnemopi`、`sharpshooter`。三者定位不同：**Mnemopi** 是本地 SQLite 记忆库，**Hindsight** 是远程/自托管记忆服务（PostgreSQL + 嵌入模型 + reranker），**Sharpshooter** 是「friction-gated 项目决策日志」，只记踩坑换来的项目决策，不参与通用检索。
+OMP `memory.backend` 枚举共 5 个值（`settings-schema.ts:2949-2951`，本地 v18.1.3）：`off`、`local`、`hindsight`、`mnemopi`、`sharpshooter`。三者定位不同：**Mnemopi** 是本地 SQLite 记忆库，**Hindsight** 是远程/自托管记忆服务（PostgreSQL + 嵌入模型 + reranker），**Sharpshooter** 是「friction-gated 项目决策日志」，只记踩坑换来的项目决策，不参与通用检索。
 
 ## 安装与运行
 
@@ -40,7 +40,7 @@ pg0 是 vectorize-io 的零配置 PostgreSQL 单二进制（PostgreSQL 18 + pgve
 | 精度 | 粗（查询和文档没被一起看过） | 准（能看到逐词交互） |
 | Hindsight 用 | `bge-small-en-v1.5` 或外部 | `ms-marco-MiniLM-L-6-v2` 或外部/rrf |
 
-去掉 reranker 后召回质量**明显降**（通用 IR 共识；Hindsight 官方未发布有无 reranker 的对比基准）。小预算场景（`recallMaxTokens: 1024`）下，top 几条的排序质量更敏感。
+reranker 的召回增益在 Hindsight 上**未验证**：官方未发布有无 reranker 的对比基准，本仓库也未实测。通用 IR 文献里 cross-encoder 精排通常带来可观提升，但这是外部推断，不能当作 Hindsight 的实测结论。小预算场景（`recallMaxTokens: 1024`）下 top 几条的排序质量更敏感，这一点同样是推断。
 
 ## OMP 的 Hindsight 配置项
 
@@ -59,7 +59,7 @@ OMP 侧（`settings-schema.ts:3260-3422`）：
 | `hindsight.retainEveryNTurns` | 3 | 两种模式都生效，控制触发节奏 |
 | `hindsight.retainOverlapTurns` | 2 | **只在 `last-turn` 分支生效**（`state.ts:348` 在 `retainFullWindow` 判断之后） |
 | `hindsight.retainContext` | `omp` | retain 请求的来源标签 |
-| `hindsight.recallBudget` / `recallMaxTokens` / `recallContextTurns` / `recallMaxQueryChars` / `recallTypes` | mid / 1024 / 1 / 800 / 默认集 | 召回侧调优 |
+| `hindsight.recallBudget` / `recallMaxTokens` / `recallContextTurns` / `recallMaxQueryChars` / `recallTypes` | mid / 1024 / 1 / 800 / `["world","experience"]` | 召回侧调优；recallTypes 默认两类（`settings-schema.ts:406`） |
 | `hindsight.requestTimeoutMs` / `reflectTimeoutMs` / `recallTimeoutMs` / `retainTimeoutMs` | 30s / 120s / 30s / 60s | 各路径超时 |
 | `hindsight.mentalModelsEnabled` / `mentalModelAutoSeed` / `mentalModelRefreshIntervalMs` / `mentalModelMaxRenderChars` | true / true / 5min / 16000 | mental model 自动播种与注入 |
 
@@ -71,21 +71,21 @@ env override 只覆盖部分字段（URL/token/bankId/mission/retain/recall/time
 
 ## Sharpshooter
 
-2026-08-28 引入（上游 commit `ffee26b`，随 v18.0.10 发布；本地 v18.0.11 已含）。功能是「friction-gated project decision memory」：每条 user prompt 异步触发 extraction（`smol` role 模型，`extract.ts:166`），只收「有摩擦的决策」（回归、反复纠正、代码里看不出来的规则）。存储为每项目 3 个固定 markdown（`architecture.md`/`product.md`/`style.md`，各限 120 行）。**无 embedding 召回**：启动时全量注入 developer instructions，另有 `search()` 对三份 markdown 做大小写不敏感的逐行字面搜索（`backend.ts:156,223`，`searchable: true`）。额外成本：每 user prompt 一次 extraction 调用 + 5 分钟定时 consolidation。
+2026-08-28 引入（上游 commit `ffee26b`，随 v18.0.10 发布；本地 v18.1.3 已含）。功能是「friction-gated project decision memory」：每条 user prompt 异步触发 extraction，只收「有摩擦的决策」（回归、反复纠正、代码里看不出来的规则）。提取模型先按配置的 selector 解析，解析不到时回退到 `smol` role（`extract.ts:166` 是 fallback 分支，不是唯一路径）。存储为每项目 3 个固定 markdown（`architecture.md`/`product.md`/`style.md`，各限 120 行）。**无 embedding 召回**：启动时全量注入 developer instructions，另有 `search()` 对三份 markdown 做大小写不敏感的逐行字面搜索（`backend.ts:156` 的 `searchable: true`、`backend.ts:223` 的 `search()`）。额外成本：每 user prompt 一次 extraction 调用 + 5 分钟定时 consolidation。
 
 ## 迁移（Mnemopi → Hindsight）
 
-OMP 源码全文搜 `migrate|import`，**无官方迁移路径**。迁移 = 手动搬运 + 切配置：
+遍历本地 OMP 的 `src/hindsight/` 与 `src/mnemopi/` 全部 `.ts`，无任何含 `migrat` 或 `fromMnemopi` 的文件，**无官方迁移路径**。迁移 = 手动搬运 + 切配置：
 
 1. 起服务（slim 镜像或 pip）
-2. 从 `~/.omp/agent/memories/mnemopi/banks/*/mnemopi.db` 导 `working_memory`/`episodic_memory`/`facts`，写脚本 POST 到 hindsight `retain` API——数据会经 hindsight 的 LLM **重新提取事实**，是有损再加工，不是 1:1 搬迁；要无损就保留 mnemopi.db 只读归档
+2. 从 `~/.omp/agent/memories/mnemopi/banks/*/mnemopi.db` 导 `working_memory`/`episodic_memory`/`facts`，写脚本喂给 hindsight 的写入接口——**该接口的具体 endpoint 与 payload schema 本仓库未验证**，实施前须查当时的官方 API 文档。数据会经 hindsight 的 LLM 重新提取事实，是有损再加工，不是 1:1 搬迁；要无损就保留 mnemopi.db 只读归档
 3. `memory.backend: mnemopi → hindsight`，`hindsight.apiUrl` 默认已指 8888
 4. 验证后发一条 retain，到 `:9999` 控制面确认 bank 有数据
 5. 回滚：mnemopi 的 SQLite 不删，backend 切回即恢复
 
 ## 决策要点
 
-- 切 hindsight 得到：服务端 LLM 事实提取、TEMPR 四路召回、mental models、`reflect` 工具、跨工具生态、控制面 UI
+- 切 hindsight 得到：服务端 LLM 事实提取、mental models（`mentalModelsEnabled` 默认 true）、`reflect` 工具、跨工具生态、`:9999` 控制面 UI。召回按 `recallTypes` 分类检索，默认 `world` + `experience` 两类；服务端检索管线的内部结构本仓库未核实
 - 失去：`memory_edit` 工具、完全本地零外部进程（多了一个服务要维护）、mnemopi SQLite 可直接 SQL 审计的透明性
 - 风险：Hindsight 服务端 LLM 提取意味着会话内容发给配置的 LLM provider——配 Ollama 纯本地，配 OpenAI 则数据离机
 - 现有 mnemopi 已知坑（dispose 不 promote、12h gate）在 hindsight 下不适用，但 hindsight 的坑未踩过
