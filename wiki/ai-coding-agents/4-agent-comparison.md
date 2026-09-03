@@ -1,8 +1,8 @@
 # 六 AI Coding Agent 对比：真正独特优势
 
 > Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30; jcode 与 OpenClaude 调研，2026-09-01
-> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md)
-> Updated: 2026-09-01
+> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md)
+> Updated: 2026-09-03
 
 ## 研究对象
 
@@ -17,10 +17,12 @@
 
 ## 研究方法
 
-- 会话中可见 3 次 `task` 批量调度：wide → narrow → deep
-- 每批次派发 4 个子任务，共 12 个子任务
-- 子任务角色/完整参数未验证
-- 官方文档、GitHub PR/issue、源码验证
+调查方法从默认的 A-first 改为 B→A：
+
+- **A-first** 拿已有 agent 的独有能力当清单，去查新 agent 有没有。结构性缺陷：输出空间里没有「独有」这个值，只能返回追平或落后。
+- **B-first** 先用低成本方式枚举新 agent 自己的能力面（deepwiki 目录树 + 一次定向提问），挑出候选独有项，再对每个候选反查已有 agent 是否存在等价物。本轮 B-first 从 `xai-org/grok-build` 中捞出 2 个候选独有项 + 1 处既有裁定修正，A-first 遗漏。
+- **厂商叙述污染枚举** 的实例：官方反复宣传「并行优于深度」，导致两个 scout 报告了互相矛盾的数字（8 vs 128），真值为 32 并发 + 128 次调用预算。收敛轮不可省。
+- 官方文档、GitHub PR/issue、源码验证。
 
 ## 真独有优势
 
@@ -34,6 +36,9 @@
 - OpenCode PR #14741 提出类似功能但 closed 未合并
 - DSH 有第三方 `dsh-stream-rules` 插件，但无 abort+retry 完整闭环
 - Prime Agent 需自行开发
+
+> **Status: Narrower competitor exists** (2026-09-03)
+> Grok Build `doom-loop` achieves the same mid-stream abort + reminder + retry via a server-side signal (`response.doom_loop_check`) rather than client-side detection. It is narrower (only repetition, only one fixed reminder) but gains server-side visibility into sampling degeneration. See [Grok Build](grok-build.md).
 
 **证据**：https://github.com/can1357/oh-my-pi/blob/main/docs/ttsr-injection-lifecycle.md
 
@@ -59,6 +64,9 @@
 
 ### jcode：跨 harness 会话恢复与凭据导入
 
+
+> **Status: Partial competitor exists** (2026-09-03)
+> Grok Build `xai-grok-foreign-sessions` scans `~/.claude/projects/` and `~/.codex/state_*.sqlite` for metadata (title, cwd, branch, timestamp) but does **not** resume conversation history or read credentials. Conversely, Grok Build's `claude_import.rs` imports Claude *settings* (rules, MCP, hooks, env) which jcode does not do. The two capabilities are on different axes. See [Grok Build](grok-build.md).
 **是什么**：可 resume Codex、Claude Code、OpenCode、pi 的会话继续对话；可检测并经用户同意后读取这四家及 Gemini/Copilot 的本地凭据（含 macOS Keychain），拒绝 symlink。
 
 **为什么独特**：OpenCode、OMP、Prime 均只有自家 session/credential 机制，无跨 harness 导入器（DSH unknown）。注意这是互操作/迁移能力，不提升 agent 智能。
@@ -120,6 +128,8 @@
 - **成熟度更强**：Prime Agent RLM、Continual Harness
 - **功能等价**：OMP Magic Keywords vs OMO 关键词触发、OMP Vibe vs OMO 多 agent、jcode 记忆图 vs OMP mnemopi、OpenClaude 订阅 OAuth/多 provider vs OpenCode/Prime
 - **无独特**：OpenCode 单独、OpenClaude（差异仅为泄漏源码衍生身份，附法律风险）
+- **新发现（待继续验证）**：Grok Build 服务端 doom-loop 信号（更窄但服务端驱动）、LazinessDetector 声称-证据比对（默认观测模式）
+
 
 ## See Also
 
@@ -129,3 +139,5 @@
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md)
 - [OMP Mnemopi Consolidation 生命周期](../omp-mnemopi/consolidation-lifecycle.md) — jcode 记忆图的等价物对照
 - [开源 Harness 与托管推理不是一回事](open-harness-vs-hosted-inference.md) — 区分客户端开源、Provider 主权与模型成本
+- [Grok Build](grok-build.md) — 第七个 agent 的初步裁定与机制证据
+- [Reviewer Blind Spots](../harness-engineering/reviewer-blind-spots.md) — 调查方法本身暴露出的验证架构问题

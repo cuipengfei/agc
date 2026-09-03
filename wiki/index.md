@@ -34,7 +34,8 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [六 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent、DSH、jcode 与 OpenClaude 的真正独特能力 | 2026-09-01 |
+| [六 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent、DSH、jcode 与 OpenClaude 的真正独特能力 | 2026-09-03 |
+| [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-03 |
 | [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
 
 ## better-harness
@@ -52,8 +53,8 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [文档、测验与 AI 代码库的认知债务](harness-engineering/documentation-and-cognitive-debt.md) | 用文档保存意图与决策，用 Quiz 暴露理解偏差，用测试验证行为 | 2026-09-01 |
+| [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-03 |
 | [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline、Snapcompact 与 RLM 在编辑、压缩和控制平面上的差异 | 2026-08-30 |
-
 ## model-gateway-mismatch
 
 模型能力、SDK 解析与 gateway wire contract 不一致问题。
@@ -62,7 +63,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 |---------|---------|---------|
 | [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数的分离及验证方法 | 2026-08-29 |
 | [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测 | 2026-09-01 |
-| [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-02 |
+| [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-04 |
 
 ## omp-mnemopi
 
@@ -132,3 +133,11 @@ Prime Agent 的功能、技术实现与第三方评价。
 | [Prime Agent 社区 Reception](prime-agent/prime-agent-community-reception.md) | 第三方评价、benchmark 与争议 | 2026-08-30 |
 | [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置和与 OMP 的关系 | 2026-08-30 |
 | [Prime Agent 技术实质](prime-agent/prime-agent-technical-reality.md) | RLM、Continual Harness、CRUD 与持久运行时的源码验证 | 2026-08-30 |
+
+## keyboard-input
+
+键盘驱动指针控制、窗口与 tab 切换、输入重映射工具。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Keyboard-Driven Pointer Control](keyboard-input/keyboard-driven-pointer-control.md) | 三条机制路径区分、工具矩阵、Capslock 与 Windows 方案 | 2026-09-03 |

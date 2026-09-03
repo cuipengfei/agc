@@ -204,3 +204,30 @@
 - Updated: Better Harness 支持矩阵
 - Pi / OMP 行 Session Evidence 改标「需剥 title 首行」；限制段补充「无原生 adapter 的 host 需手动处理 session 格式」
 - 新增「确定性分析器的产出边界」节：采集层产证据 envelope、不自动产缺陷；真正约束判断质量的是 prose（SKILL.md:71、findings-review 质量门、五维天花板）
+
+## [2026-09-03] ingest | Keyboard-Driven Pointer Control
+- Disposition: New
+- Raw: raw/keyboard-input/2026-09-03-keyboard-driven-pointer-control.md
+- Updated: Keyboard-Driven Pointer Control
+
+## [2026-09-04] ingest | 免费强模型 API 候选与尝试排序
+- Disposition: Update
+- Raw: raw/model-gateway-mismatch/2026-09-03-baipiao-charity-votes.md; raw/model-gateway-mismatch/2026-09-03-baipiao-bbs-charity-summary.md; raw/model-gateway-mismatch/2026-09-04-lmspeed-free-api-directory.md
+- Updated: 免费强模型 API 候选与尝试排序
+- 新增：baipiao.org/charity 社区投票数据（7 个正分站点）; baipiao.org/bbs 论坛推荐; LMSpeed 免费 API 导航站参考
+- 约束：仅收录净分 > 0 的站点，排除 TrueSOTA（净分 0）及全部负分站点
+
+## [2026-09-03] ingest | Grok Build
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md; raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md
+- Updated: Grok Build
+
+## [2026-09-03] ingest | Reviewer Blind Spots
+- Disposition: New
+- Raw: raw/harness-engineering/2026-09-03-reviewer-blind-spots.md
+- Updated: Reviewer Blind Spots
+
+## [2026-09-03] ingest | 六 AI Coding Agent 对比
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md; raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md
+- Updated: 六 AI Coding Agent 对比（调查方法段重写、TTSR 与 jcode Status 块、Grok Build 结论行）

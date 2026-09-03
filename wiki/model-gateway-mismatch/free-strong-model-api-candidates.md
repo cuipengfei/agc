@@ -1,8 +1,8 @@
 # 免费强模型 API 候选与尝试排序
 
-> Sources: AIHubMix；速语 API；AnyRouter；Eachof；iFlow 社区；QuickRouter.AI；ChatAnywhere；FreeTokenRouter；Kilo Gateway；APIDock, 2026-09-02
-> Raw: [免费强模型 API 候选公开资料摘录](../../raw/model-gateway-mismatch/2026-09-02-free-strong-model-api-candidates.md)
-> Updated: 2026-09-02
+> Sources: AIHubMix；速语 API；AnyRouter；Eachof；iFlow 社区；QuickRouter.AI；ChatAnywhere；FreeTokenRouter；Kilo Gateway；APIDock; baipiao.org; LMSpeed, 2026-09-02
+> Raw: [免费强模型 API 候选公开资料摘录](../../raw/model-gateway-mismatch/2026-09-02-free-strong-model-api-candidates.md); [baipiao.org/charity 投票数据](../../raw/model-gateway-mismatch/2026-09-03-baipiao-charity-votes.md); [baipiao.org/bbs 公益站汇总](../../raw/model-gateway-mismatch/2026-09-03-baipiao-bbs-charity-summary.md); [LMSpeed 免费 API 导航站](../../raw/model-gateway-mismatch/2026-09-04-lmspeed-free-api-directory.md)
+> Updated: 2026-09-04
 
 ## Overview
 
@@ -81,7 +81,41 @@
 - “无需信用卡”只按页面声明记录，未做注册流程验证。
 - 未记录任何 API key、token、cookie、账号或支付信息。
 
+## baipiao.org/charity：社区投票排序的公益站
+
+[baipiao.org/charity/](https://baipiao.org/charity/) 是一个收集并公开社区投票的公益站导航页面。2026-09-03 抓取时，页面展示 62 个站点，每个站点有独立的 charity 子页面，并通过 `/api/votes` 接口提供实时投票数据。
+
+### 正分站点（净分 > 0）
+
+按 `thumb_up − thumb_down` 从高到低：
+
+| 排名 | 站点 | 完整 URL | Thumb up | Thumb down | 净分 |
+|---:|---|---|---:|---:|---:|
+| 1 | JustWoker | https://baipiao.org/charity/justwoker/ | 78 | 25 | **53** |
+| 2 | ChatAnywhere | https://baipiao.org/charity/chatanywhere/ | 41 | 12 | **29** |
+| 3 | 基元律动 Token Rhythm | https://baipiao.org/charity/token-rhythm/ | 23 | 4 | **19** |
+| 4 | NOFX | https://baipiao.org/charity/nofx-one/ | 10 | 5 | **5** |
+| 5 | AgentRouter | https://baipiao.org/charity/agentrouter/ | 64 | 60 | **4** |
+| 6 | Rua Chat | https://baipiao.org/charity/ruachat/ | 17 | 14 | **3** |
+| 7 | iamhc 公益站 | https://baipiao.org/charity/iamhc/ | 18 | 16 | **2** |
+
+### 论坛额外推荐（bbs 汇总帖）
+
+baipiao.org/bbs 上有一篇汇总帖列出更多支持每日签到的公益站，数据来自社区分享而非官方文档：
+
+- **AgentRouter（claudefree）**：注册赠 175刀，模型包括 gpt-5.6-sol、claude-opus-4-8、claude-opus-5，GitHub 2025.12.3 前注册
+- **justworker**：注册赠 90刀，模型包括 claude-opus-4-8、claude-opus-5，需 GitHub 账号注册满 1 年以上
+- **gorouter**：注册赠 50刀，模型包括 claude-opus-4-8、claude-opus-5
+- **tabiai**：注册赠 50刀，模型包括 gpt-5.6-sol、claude-opus-4-8、claude-opus-5
+
+### 使用建议
+
+- 投票数据反映社区评价倾向，不等于服务稳定性或模型真实来源已验证。
+- 部分站点在 charity 页面和社区帖子中重复出现（如 AgentRouter、ChatAnywhere），可作为交叉验证线索。
+- 建议先尝试净分最高的 JustWoker 和 ChatAnywhere，再按需测试其他站点。
+
 ## See Also
 
+- [LMSpeed 免费 LLM API 目录](https://lmspeed.net/free) — 2824 模型、158 提供商的免费层筛选与速度基准。
 - [JustWoker `/v1/messages` 实测行为](justwoker-v1-messages-observed-behavior.md) — 兼容网关返回模型字段与 usage 的实际观测。
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — 区分客户端、托管推理和 provider 路由。
