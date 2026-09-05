@@ -231,3 +231,8 @@
 - Disposition: Update
 - Raw: raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md; raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md
 - Updated: 六 AI Coding Agent 对比（调查方法段重写、TTSR 与 jcode Status 块、Grok Build 结论行）
+
+## [2026-09-04] ingest | LLM 出图的两种作者模型
+- Disposition: New
+- Raw: raw/agent-tooling/2026-09-04-diagram-design-vs-archify.md
+- Updated: LLM 出图的两种作者模型
