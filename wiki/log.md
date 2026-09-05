@@ -397,3 +397,10 @@
 - 本机 Copilot 网关 `/v1/models` 的三组字段各有用途：`claude_model_id`（Claude-facing ID，12 条目中 6 条带 `[1m]`）、`billing.token_prices.default.context_max`（计费档边界，实测 272000/224000/200000/128000 四种值）、`capabilities.limits.max_context_window_tokens`（真实窗口）。按窗口 >200000 推后缀会给 6 个模型错加。
 - 成本含义：`gpt-5.4` 的 `default` 档 input 250 / output 1500 / cache 25，`long_context` 档 input 500 / output 2250 / cache 50，即 input 与 cache 2 倍、output 1.5 倍。
 - 范围限定：上述字段只在本机 Copilot 网关观测到；JustWoker relay 的 `data[0]` 键集合仅 `created_at`/`display_name`/`id`/`type`。UA 与重试是 2026-09-05 新证据，未改 2026-09-01 的 raw，另建当日 raw 摘录。
+
+## [2026-09-05] ingest | Claude Code 上下文窗口与自动压缩控制
+- Disposition: New
+- Raw: raw/harness-engineering/2026-09-05-claude-code-context-window-docs.md; raw/harness-engineering/2026-09-05-claude-binary-compaction-probe.md
+- 官方 model-config 把 `CLAUDE_CODE_MAX_CONTEXT_TOKENS` 的生效条件分成三互斥情形；中转站的 `claude-*` ID 落在情形 3，声明窗口无效且 ACW 被 cap 到内置窗口。
+- 二进制证据：默认压缩触发点为窗口减 13000（`ZPe` 中 `let r=e-13000`），`PCT_OVERRIDE` 经 `Math.min(Math.floor(e*(o/100)),r)` 只能提早不能抬高；`CLAUDE_CODE_CONTEXT_LIMIT` 0 命中（同期 MAX_CONTEXT_TOKENS 9 处、PCT_OVERRIDE 6 处）。按窗口查表的 `precomputeBufferFraction` 具体数值未提取。
+- `[1m]` 线路行为需两个方向的观测才成立：curl 直发带后缀 502、同 env 下 `claude -p` 正常应答。实验记录另见 experiments/2026-09-05-1m-suffix-wire-behavior.md（verdict: works，未抓包闭环）。
