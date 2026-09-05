@@ -308,6 +308,13 @@
 - Updated: 六 AI Coding Agent 对比（新增「四源能力调查(2026-09-05)」节；openinterpreter 移出低优先并加 Status: Outdated）
 - 要点：① DeepCode 降级——9 个模块文件头自证 borrowed from dsh（repeat_guard/pruner/structured_result/external_backend 等，grep.app 直证）。② openinterpreter 升级——`codex-rs` harness 仿真层源码直证（Harness enum + request.rs「chat-completions harness emulation」）。③ jcode 新轴 agentgrep + ONNX 嵌入记忆（DeepWiki，`[single-source]`）。④ Prime 官方博客确认 built on top of pi。⑤ OMO 主仓库已演进为 oh-my-openagent。⑥ Grok SWE-bench 70.8% @ $0.20/M（第三方口径）。
 
+## [2026-09-05] ingest | MotoMoto relay wire contract 与 SDK 解析差异
+- Disposition: New; Update
+- Raw: raw/model-gateway-mismatch/2026-09-05-motomoto-endpoint-topology-and-client-tolerance.md; raw/model-gateway-mismatch/2026-09-05-responses-frame-sequence-and-sdk-parts.md; raw/model-gateway-mismatch/2026-09-05-opencode-provider-npm-spec.md
+- Updated: Relay 的 chunked 流不终止：诊断与最小修复；SDK 对非标准 responses 帧的解析严格度差异；模型 capability 与 gateway wire 参数不一致
+- Experiment: experiments/2026-09-05-unterminated-chunked-stream-client-behavior.md
+- 要点：严格等待 stream `done` 的 Bun、Node 与 Python 客户端均因缺失 chunked 终止块等待约 60 秒；串行受控实验证明此前的 headers 延迟来自并发排队测量；本地 shim 按协议终止标记主动收尾；AI SDK 与 pi-ai 对同一非标准 responses 帧的 finish 状态不同；`gpt-5.6-sol` 的 capability 声明与本次 reasoning 输出观测分离。
+
 ## [2026-09-05] lint | 2 issues found, 2 auto-fixed
 - `enabledmodels-glob-slash-pitfall.md`：元数据（Sources/Raw）位于正文末尾导致校验器判定「无 Raw 字段」并连带把 `raw/omp-discovery/2026-09-05-enabledmodels-glob-slash.md` 判为 unreferenced；已移至标题下方标准位置并补 `Updated` 字段，原文逐字保留。
 - `tan-command.md`：`:9` 与 `:41` 把共享 cache key 的效果写成「直接命中/白捡全量前缀命中」，与本文引用的 OpenAI 原话及 [前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) `:23-29` 矛盾（官方明确 "they do not pin requests to a machine or guarantee a cache read hit"）；改为概率表述并补引该句，Updated 与 index 同步至 2026-09-05。
@@ -320,3 +327,18 @@
 - 修正 scout 结论一处：JcodeThree 称 OMP Mnemopi「默认」本地 ONNX，本机源码只能证明本地路径存在；本机实际配置走 `embeddingApiUrl` API 嵌入，故 wiki 不写「默认」。
 - 修正此前过宽表述：OpenCode 事件 replay 由「都等价」改为「部分同轴」，四家机制形态列表区分；补隐私边界（v2 默认纯本地；v1 `/share` 上传至 `opncd.ai`，默认 manual、可关）。
 - 净结论：真独有 2 项（OMP TTSR、DSH Cordis）；可能独有由 2 减至 1（openinterpreter 多 harness 运行时切换）；未知 1 项（jcode swarm 服务端读集追踪）。
+
+## [2026-09-05] ingest | AI Coding Agent 对比：Claude Code 与 Codex CLI 入列
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md; raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md
+- Updated: AI Coding Agent 对比：真正独特优势（19 家）（H1 与 index 行改名，17→19 家；研究对象表加 Claude Code、Codex CLI 两行；新增「Claude Code 与 Codex CLI 入列(2026-09-05)」节；净结论由真独有 2 改为 4）
+- 方法差异：两个 agent 都装在本机（Claude Code `2.1.261`、Codex CLI `0.153.4`），A 侧证据改为直读二进制字符串 + 活体执行，不再依赖 grep.app/DeepWiki 转述。三个只读 scout 共给出 19 条 `真独有`（Claude Code 11、Codex 8），主会话按本仓门槛复核后只留 3 条。
+- 新增真独有 2 项：① Codex execpolicy `.rules` —— Starlark 风格 `prefix_rule` DSL，主会话用临时规则文件活体实测 `codex execpolicy check`，`git status`→allow、`git push --force`→无匹配、`rm -rf /`→forbidden；二进制内另见 `proposed_execpolicy_amendment` 与网络规则持久化，即模型可提议规则修正。收窄边界：「审批固化为规则」与 Claude `alwaysAllowRules` 同轴，独有的是策略语言 + 内联单测 + 模型提议修正。② Codex hash 化 hook trust —— 官方文档 + 二进制 `HookTrustStatus`/`SetHookTrusted`，反向核查在 Claude Code 206MB 二进制内扫 `hooktrust`/`trusthook` 命中 0。
+- 新增可能独有 1 项：Claude Code `--exclude-dynamic-system-prompt-sections`，为**跨用户**前缀缓存命中做工程（Reasonix/Hermes 只做单用户 within/cross-session）。同时把同一 scout 判为真独有的 `--system-prompt-snapshot` 降为同轴不同实现（Reasonix `StaticPromptCache` 在同轴，Claude 只是更完整）。
+- 双杀两条：两个 scout 在「云端任务交接」与「守护进程/后台会话」两条轴上各自宣称自家独有、理由都是「对方没有」；本机核实两边都有，双双降为同轴不同实现。残留 `codex queue` 列为可能独有 `[single-source]`。
+- 弃用一个数字：scout 写的「Achieves ~82-98% cross-user cache sharing」句子本身在 raw 里（报告原文收录），但 scout 未给来源、无法回溯到任何一手材料，已在文章内以 Status 块标注为未溯源数字、不得引用；同时说明这与「raw 里没有」是两回事。
+- 计数口径修正：那份四源调查 raw 是 17 个 worker 分节/运行但只覆盖 16 个不同项目（Grok Build 跑两次），第 17 个项目 DeepCode 由主会话补漏；且用 Claude Code 替掉了 OpenClaude。两套名单并起来 18 个名字，加 Codex 后 19。
+- 横向发现：Codex 的 hook 引擎源码里直接叫 `ClaudeHooksEngine`（scout 经 DeepWiki 读 `codex-rs/hooks/src/lib.rs`，`[single-source]`），wire 字段与 Claude Code 完全同名（`hookEventName`/`permissionDecision`/`additionalContext`/`suppressOutput`/`stopReason`/`updatedInput`，主会话在两个二进制里分别扫到），事件名只差 snake_case 与 PascalCase；两家都用 `SKILL.md`+YAML frontmatter。即 OpenAI 实现了 Anthropic 的 hook 线格式（基于同名字段的推断，双方未公开声明兼容意图）。这是「真独有稀少」的机制性解释。
+- 同日自我更正：初稿曾写「Codex 事件集比 Claude 多 `post_compact`/`subagent_start`」，该句写下时未做对应扫描，补扫后证伪——Claude Code 二进制里 `PostCompact` 命中 59、`SubagentStart` 命中 24（含 `executePostCompactHooks`、`executeSubagentStartHooks`），只是 PascalCase 命名。反方向「Codex 无 `PermissionDenied` hook」降为「已查材料中未找到」。按 `raw/` 不可变，更正未回改 enrollment 记录，另立 supplement raw；文章内加 Status 块。此更正加强而非削弱收敛结论。
+- 全文补做证据分层：execpolicy 与 hook trust 两节明确区分「主会话活体实测」「scout 转述官方文档 `[single-source]`」「二进制字符串推断（未读源码）」三类；`hash 化` 定语因仅有 scout 文档来源而与 `[verified]` 的信任闸门拆分标注。
+- 仍是缺口：OpenClaude 的四源调查未做；jcode swarm 服务端读集追踪未直读。
