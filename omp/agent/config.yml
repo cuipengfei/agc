@@ -22,12 +22,16 @@ enabledModels:
   - c8787-chat/*
   - umans/*
   - justwoker/*
+  - kktoken/*
+  - tabitoken/*
+  - motomoto-responses/*
   - opencode-zen/*
   - opencode-go/*
   - opencode-go/*
   - kimi-code/*
   - kimi-claw/*
   - deepseek/*
+  - tokenrouter/**
 disabledProviders:
   []
 providers:
@@ -85,15 +89,15 @@ disabledExtensions:
   - context-file:user:AGENTS.md
 modelRoleStorage: global
 modelRoles:
-  plan: c8787/gpt-5.6-sol:high
-  slow: c8787/gpt-5.6-sol:high
+  plan: justwoker/claude-opus-5:medium
+  slow: justwoker/claude-opus-5:medium
   commit: c8787/gpt-5.6-luna:medium
-  smol: c8787/gpt-5.6-luna:medium
-  task: c8787/gpt-5.6-sol:medium
+  smol: kimi-claw/k3-agent:medium
+  task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-5.6-luna:medium
-  tiny: c8787/gpt-5.6-luna:medium
+  tiny: kimi-claw/k3-agent:medium
   advisor: c8787/gpt-5.6-luna:max
-  designer: kimi-code/k3:high
+  designer: kimi-claw/k3-agent:medium
   default: justwoker/claude-opus-5:medium
 modelTags:
   {}
@@ -146,6 +150,7 @@ images:
   autoResize: true
   blockImages: false
   describeForTextModels: true
+  questionTimeoutMs: 300000
 tui:
   maxInlineImageColumns: 100
   maxInlineImageRows: 20
@@ -471,9 +476,6 @@ speechgen:
   enabled: false
 generate_image:
   enabled: false
-inspect_image:
-  mode: auto
-  timeoutMs: 300000
 computer:
   enabled: false
   display: all
@@ -522,10 +524,10 @@ title:
   refreshOnReplan: true
 task:
   isolation:
-    mode: none
     apply: true
     merge: patch
     commits: generic
+    enabled: false
   eager: preferred
   batch: true
   enableEffort: true

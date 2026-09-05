@@ -1,6 +1,6 @@
 model_catalog_json = "/home/cpf/.codex/model-catalog-4140.json"
 hide_agent_reasoning = false
-model = "gpt-5.6-sol"
+model = "gpt-5.6-luna"
 model_provider = "cop"
 model_reasoning_summary = "detailed"
 model_supports_reasoning_summaries = true
@@ -11,7 +11,7 @@ show_raw_agent_reasoning = true
 web_search = "live"
 approvals_reviewer = "user"
 developer_instructions = "<omx version=\"1\">You have oh-my-codex installed through Codex plugin mode. AGENTS.md is the orchestration brain and main control surface. Follow AGENTS.md for skill/keyword routing and $name workflow invocation. When spawning native subagents, set `agent_type` to an installed role and never omit it for OMX work. Registered Codex plugin marketplace surfaces supply OMX workflows and plugin-scoped companion resources when the plugin is installed; native agent roles are installed as setup-owned Codex agent TOML files in plugin mode so agent_type routing works. User-installed skills may still live under ~/.codex/skills. Use outcome-first, concise progress updates: state the target result, constraints, validation evidence, and stop condition before adding process detail.</omx>\n\nAlways respond to the user in Simplified Chinese."
-model_reasoning_effort = "medium"
+model_reasoning_effort = "max"
 
 [analytics]
 enabled = false
