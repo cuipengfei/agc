@@ -354,3 +354,38 @@
 - 新机制（静态路径证据，非已观测运行行为）：managed requirements 存在拒绝 YOLO 的路径——二进制错误串原文「`approval_policy = "never"` cannot be used because requirements do not allow `sandbox_mode = "danger-full-access"`; Codex would fall back to read-only permissions with approvals」。本轮未实际触发观测。
 - 未实测项已标注：`Forbidden`/`Prompt` 在 `AskForApproval::Never` 下的具体归约。安全测法不存在（真跑 `--yolo` 即无沙箱执行真实 turn），且 `ctx_fetch_and_index` 与直接 `read` 对 `developers.openai.com/codex/rules` 两次均超时，未取得官方文档原文。
 - 净影响：弱化「有 YOLO 就等于没策略」这个最自然的反驳，在边界内支持 execpolicy 的真独有裁定（关规则至少需要单独开关，且管理侧存在拒绝路径）；运行时 enforcement 仍列为未实测。裁定数量不变（真独有 4、主要可能独有 2）。
+
+## [2026-09-05] ingest | 四 Agent CLI 能力面对比
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-05-cli-help-recursive-survey.md
+- Updated: AI Coding Agent 对比：真正独特优势（19 家）（`codex queue` 与 OpenCode `db` 两处 CLI 侧补证标注）
+- 方法：codex/opencode/omo/omp 递归 `--help`，合计 179 个独立页（omo 16、opencode 59、codex 65、omp 39）。两个方法学发现：omo 的 help 正文描述词会诱导假路径（16 条猜的路径全部回落父页，须按 `Commands:` 段递归）；omp 是单层文档（62 个 action 探 `--help` 全部回落父页）。
+- 结构结论：codex=可远控可上云的服务（app-server daemon、协议绑定导出、cloud 任务）；opencode=本地 HTTP 服务+可探测本地库（db、13 个 debug 子命令）；omo=OpenCode 插件管理层（非 agent）；omp=工具最多的单机（broker/gateway/ps/bench 等无对应物）。
+- 边界：app-server 已证客户端只有 VS Code extension（help 原文）；Zed/Neovim/Cloud 前端为推断已剔除。OpenCode `db` 只证明 CLI 暴露 DB 查询面，SQLite/WAL 机制表述继续引用既有 raw。
+
+## [2026-09-05] ingest | Codex 特性门系统与 Code Mode
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md
+- features：135 项 = 48 true + 87 false（脚本解析；早期手数 126/28/34 作废）。stage 与 effective 两列正交：stable false 有 3 项（multi_agent_v2、recommended_plugins、secret_auth_storage），removed true 有 9 项。
+- removed 机制：仅记为待验证假设——`plugin_hooks = true` 在 config 但 effective=false 直接证成「removed 时 config 设置被忽略」；「统一冻结在末次默认值」未证，可能是 feature-specific。
+- Code Mode：开关已 enable（另启用 multi_agent_v2、recommended_plugins、secret_auth_storage、apply_patch_preserve_line_endings、apply_patch_streaming_events，均已复跑验证），host 二进制随包装在位（66.2MB，stdio/grpc transport），但端到端未实测：launcher 只解析 codex 本体路径，host 由谁 spawn 未验证；模型 metadata 需 advertise Code Mode support，中转模型大概率没有。
+- 字符串摘录入库前做过二次逐字复核：初版有一条引文（execute_handler.rs 拼接串）在二进制中 MISS，已换成精确原文。
+
+## [2026-09-05] ingest | CLI 调查版本号更正（opencode 1.18.29）
+- Disposition: Disputed
+- Raw: raw/ai-coding-agents/2026-09-05-cli-survey-version-correction.md
+- Updated: 四 Agent CLI 能力面对比（Sources 行版本）
+- 原 raw `2026-09-05-cli-help-recursive-survey.md` 第 7 行把 opencode 版本误记为 1.2.19。证据：采集时段 17:55–19:45，而 `opencode-ai/package.json`（version 1.18.29）与二进制 mtime 均为 10:59，先于全部采集，故采集时版本即 1.18.29；原 raw 按不可变规则保持原样，更正入 supplement。同时复核 codex-cli 0.153.4、omo v4.19.4、omp 18.1.10。
+
+## [2026-09-05] ingest | Code Mode 字符串规范化说明 + 版本更正证明强度收窄
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-09-05-code-mode-string-normalization.md; raw/ai-coding-agents/2026-09-05-version-correction-proof-strength.md
+- Updated: Codex 特性门系统与 Code Mode（Raw block 加规范化说明）；四 Agent CLI 能力面对比（Raw block 加证明强度收窄）
+- 规范化说明：raw2 第四节 fenced block 中含 `…` 的长串是规范化显示（二进制原文为带不可打印占位字节的 Rust 格式化串），逐字性只对说明中列出的 literal 短串成立（`codex-code-mode-protocol`、`expects raw JavaScript source text`、`Waits on a yielded`、`yield_time_ms`、`max_output_tokens` 等）。
+- 证明强度收窄：版本更正的「可证」收窄为「mtime 强烈支持 + 未发现版本更换证据」。
+- 同时按 advisor 收窄三处 wiki 表述：omp `gc` 改为「支持 --blobs/--archive/--wal 维护选项，执行效果未验证」；plugin_hooks 样本改为「config 值未反映到 effective，原因未确定」；codex queue 补证改为「help surface 未发现对应子命令（未发现 ≠ 能力不存在）」。
+- 过程记录：correction raw 被 article A 引用后曾被直接编辑过一次，已回滚并改走本 supplement，raw 不可变规则恢复闭合。
+
+## [2026-09-05] correction | 收窄同日两条 ingest 日志的表述
+- 对「Codex 特性门系统与 Code Mode」条目：「直接证成 removed 时 config 设置被忽略」收窄为「plugin_hooks 样本显示 config 值未反映到 effective，原因未确定」；「已换成精确原文」收窄为「已换成二次复核后的字符串；含占位字节的长串为规范化显示，逐字 literal 仅限 `2026-09-05-code-mode-string-normalization.md` 列出的短串」。
+- 同时修正 `codex-feature-flags.md` 的时态矛盾：135 项分布拆为 enable 前基线（stable true 39 / stable false 3 / under-dev false 52）与 enable 后复跑（stable true 42 / under-dev true 3 / under-dev false 49，脚本计数）。

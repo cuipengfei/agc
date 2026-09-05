@@ -231,6 +231,8 @@ claurst、Codewhale(经标注复核后移入:机制面常见,见上表)、crush�
 
 隐私边界:v2 默认纯本地(`~/.local/share/opencode/opencode.db`)。但 v1 有 `/share`,执行后完整会话历史上传到 `opncd.ai`(公开链接),默认 `"manual"` 需手动触发,可用 `share: disabled` 或 `OPENCODE_DISABLE_SHARE` 关闭;v2 官方文档称 sharing 尚未实现。所以「隐私优先、不存代码」与 share 不矛盾,但 share 是该承诺的明确例外。本段来自本轮 scout 核查,`[single-source]`。
 
+CLI 侧补证（2026-09-05，本机 opencode 1.18.29）：`opencode db [query]` / `db path` 子命令在 CLI 层暴露了 DB 查询面（`--format json\|tsv`），与上表「本地自建事件库」方向一致；但「SQLite(WAL) 事件溯源 + 投影」这一机制表述仍只由既有 raw（scout 核查）支撑，本轮 CLI 输出只证明 db 查询入口存在。见 [四 Agent CLI 能力面对比](cli-capability-surface.md)。
+
 ### 四条概念澄清(此前表述容易误读)
 
 - **Codewhale 的 SHA256 不是文件编辑机制**:那是 CLI **二进制自更新器**(`crates/cli/src/update.rs` 校验后原子替换自身),与代码编辑无关,也与 harness 能力无关。
@@ -328,7 +330,7 @@ error: the argument '--dangerously-bypass-approvals-and-sandbox' cannot be used 
 | 云端任务交接 | Claude `ultrareview`/`--cloud`/`--teleport`/`--environment ccpool_` 真独有，因为「Codex 无云端」 | `codex cloud` 真独有，因为「Claude 只有 review 专用」 | 两边都有第一方云端交接，**双双降为同轴不同实现**；且托管服务不是 harness 机制轴 |
 | 守护进程 / 后台会话 | —— | app-server 共享守护进程 + WebSocket attach + bearer auth 真独有 | Claude 有 `--bg`/`agents`/`attach`/`logs`/`stop`/`respawn`/`--remote-control`；CodexUnique 自己也承认，只以「统一守护进程 vs supervisor-worker」区分，那是实现形态，**降为同轴不同实现** |
 
-守护进程轴上唯一残留的子操作是 `codex queue`（不 attach 就向已运行会话注入消息）。已查 6 家未见等价 CLI（OMP 顶层 `--help` 也没有），列为**可能独有**、`[single-source]`。
+> CLI 侧补证（2026-09-05，本机 codex-cli 0.153.4）：`codex queue --thread <T> --message <TEXT>` 在本机 help 中确认存在；同轮递归 `--help` 调查（四家共 179 页）中，opencode/omo/omp 的 help surface 均未发现对应子命令（未发现 ≠ 能力不存在）。「跨家独有」范围仍限已查的几家，`[single-source]` 定性不变。见 [四 Agent CLI 能力面对比](cli-capability-surface.md)。
 
 ### 其余被降级的候选
 
