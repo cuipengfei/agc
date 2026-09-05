@@ -342,3 +342,15 @@
 - 同日自我更正：初稿曾写「Codex 事件集比 Claude 多 `post_compact`/`subagent_start`」，该句写下时未做对应扫描，补扫后证伪——Claude Code 二进制里 `PostCompact` 命中 59、`SubagentStart` 命中 24（含 `executePostCompactHooks`、`executeSubagentStartHooks`），只是 PascalCase 命名。反方向「Codex 无 `PermissionDenied` hook」降为「已查材料中未找到」。按 `raw/` 不可变，更正未回改 enrollment 记录，另立 supplement raw；文章内加 Status 块。此更正加强而非削弱收敛结论。
 - 全文补做证据分层：execpolicy 与 hook trust 两节明确区分「主会话活体实测」「scout 转述官方文档 `[single-source]`」「二进制字符串推断（未读源码）」三类；`hash 化` 定语因仅有 scout 文档来源而与 `[verified]` 的信任闸门拆分标注。
 - 仍是缺口：OpenClaude 的四源调查未做；jcode swarm 服务端读集追踪未直读。
+
+## [2026-09-05] ingest | Codex bypass 开关与 execpolicy 的关系
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md
+- Updated: AI Coding Agent 对比：真正独特优势（19 家）（execpolicy 节证据分层升级 + 新增「三个 bypass 开关在 CLI 层正交」段）
+- 起因：用户问「`codex --yolo` 之后 execpolicy `.rules` 是不是就不起作用了」。本轮能确证的是「关规则有独立开关、没被折叠进 `--yolo`」，即 CLI 层正交；**运行时是否仍拦截未实测**，不能据此给出「一定还生效」的确定答案。
+- 行为证明 `--yolo` 是别名：先用对照实验确认 clap 会拒绝未知 flag（`--definitelynotaflag` → `error: unexpected argument`），再用重复参数法——`codex --yolo --dangerously-bypass-approvals-and-sandbox` 报 `cannot be used multiple times`，说明解析成同一 argument id。
+- 三个 bypass 开关独立且各有 env var：`--yolo`（审批+沙箱，`DANGEROUSLY_BYPASS_APPROVALS_AND_SANDBOX`）、`--ignore-rules`（规则加载，`IGNORE_RULES`）、`--dangerously-bypass-hook-trust`（hook 信任，`BYPASS_HOOK_TRUST`）；前两个可同时传不冲突。
+- 证据升级（scout 单源 → 一手）：三档 decision `Allow`/`Prompt`/`Forbidden` 由二进制枚举串 `PrefixRuleAllowPromptForbiddenPrefixPattern` 直证；`justification` 与 `NetworkRule` 同处一串直证。仍为 `[single-source]`：优先级次序、`match`/`not_match` 内联单测、分层规则。
+- 新机制（静态路径证据，非已观测运行行为）：managed requirements 存在拒绝 YOLO 的路径——二进制错误串原文「`approval_policy = "never"` cannot be used because requirements do not allow `sandbox_mode = "danger-full-access"`; Codex would fall back to read-only permissions with approvals」。本轮未实际触发观测。
+- 未实测项已标注：`Forbidden`/`Prompt` 在 `AskForApproval::Never` 下的具体归约。安全测法不存在（真跑 `--yolo` 即无沙箱执行真实 turn），且 `ctx_fetch_and_index` 与直接 `read` 对 `developers.openai.com/codex/rules` 两次均超时，未取得官方文档原文。
+- 净影响：弱化「有 YOLO 就等于没策略」这个最自然的反驳，在边界内支持 execpolicy 的真独有裁定（关规则至少需要单独开关，且管理侧存在拒绝路径）；运行时 enforcement 仍列为未实测。裁定数量不变（真独有 4、主要可能独有 2）。

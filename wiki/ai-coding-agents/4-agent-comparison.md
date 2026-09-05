@@ -1,7 +1,7 @@
 # AI Coding Agent 对比：真正独特优势（19 家）
 
 > Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30; jcode 与 OpenClaude 调研，2026-09-01; Claude Code 2.1.261 与 Codex CLI 0.153.4 本机安装直读，2026-09-05
-> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md)
+> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md); [Codex bypass 开关与 execpolicy 的关系](../../raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md)
 > Updated: 2026-09-05
 
 ## 研究对象
@@ -275,12 +275,28 @@ claurst、Codewhale(经标注复核后移入:机制面常见,见上表)、crush�
 **这一段的证据分层，别混读**：
 
 - **主会话实测所得**（活体，见上表）：按 argv token 数组做前缀匹配、`allow` 与 `forbidden` 两种 decision 生效、无匹配时返回空 `matchedRules` 且不给 decision、`-r/--rules` 可重复传入、`codex exec --ignore-rules` 存在于 help 原文。
-- **仅 scout 转述自官方文档**（`https://developers.openai.com/codex/rules`，`[single-source]`，主会话未独立复核）：优先级 `forbidden > prompt > allow` 三档、`justification` 字段、`match`/`not_match` 内联单测、用户层与项目层分层规则。
+- **二进制枚举名直证**（`[verified]`，本机扫描）：三档 decision 为 `Allow`/`Prompt`/`Forbidden`——串 `PrefixRuleAllowPromptForbiddenPrefixPattern`；`justification` 字段与网络规则同处一串 `NetworkRulejustificationPluginSelected…PromptForbidden`。这几项此前只有 scout 文档来源，现已升级。
+- **仍仅 scout 转述自官方文档**（`https://developers.openai.com/codex/rules`，`[single-source]`，主会话未独立复核）：优先级次序 `forbidden > prompt > allow`、`match`/`not_match` 内联单测、用户层与项目层分层规则。注：`ctx_fetch_and_index` 与直接 `read` 对该 URL 均超时，本轮未取得文档原文。
 - **二进制字符串推断**（未读源码）：主二进制内含 `execpolicy/src/parser.rs`、`execpolicy/src/policy.rs`、`execpolicy/src/rule.rs` 这类 Rust panic 位置字符串，据此推断存在独立 execpolicy crate 及 parser/policy/rule 模块划分——**属推断，未读源码证实**。
 
 更关键的是**规则会被模型提议、被系统持久化**。这一条的直接证据是主二进制内的字符串：`proposed_execpolicy_amendment` 与 `proposed_network_policy_amendment` 出现在同一处 `struct ExecApprovalRequestEvent with 17 elements` 的字段名序列中，另有 `proposed execpolicy amendment: `、`# network rule saved in execpolicy (`、`failed to persist network policy amendment to execpolicy: `、`Failed to apply execpolicy amendment: `。行为侧的旁证是本机 `~/.codex/rules/default.rules`：32 行、每行都是 `prefix_rule(...)`、`decision` 直方图 `{'allow': 32}`——形态与「历次审批固化」一致，但**「这些行确由审批流程写入」是推断，未观测写入过程**。
 
 反向核查后的边界：**「审批固化成规则」这一层是同轴的**——Claude Code 的 `alwaysAllowRules` + `.claude/settings.local.json` 达到同一目标（二进制内另见 `askSuppressesAlwaysAllowRule`、`toolAlwaysAllowedRule`）。真正无对应物的是「策略**语言**（有 parser、有内联单测、可 CLI 单独求值）+ 模型提议修正 + 网络规则纳入同一策略」。已点名核查：OMP TTSR（正则命中在模型输出流上，不是命令策略）、Claude Code（`allowedTools`/`disallowedTools` 是平铺字符串列表）、DSH `ctx.sandbox`（运行时约束，非声明式规则语言）、goose（四档权限模式）、crush（1-4 级 + `allowed_tools`）、Reasonix、Codewhale。
+
+**三个 bypass 开关在 CLI 层是正交的**（`[verified]`，行为证明；**运行时 enforcement 未实测**）。`--yolo` 不在 help 里但可用；对照实验先确认 clap 会拒绝未知 flag（`codex --definitelynotaflag --help` → `error: unexpected argument`），再用重复参数法定性：
+
+```
+$ codex --yolo --dangerously-bypass-approvals-and-sandbox --help
+error: the argument '--dangerously-bypass-approvals-and-sandbox' cannot be used multiple times
+```
+
+即 `--yolo` 就是该 flag 的别名，作用是「Skip all confirmation prompts and execute commands without sandboxing」。三个 bypass 开关是彼此独立的参数、各有 env var：`--yolo`（审批+沙箱，`DANGEROUSLY_BYPASS_APPROVALS_AND_SANDBOX`）、`--ignore-rules`（规则加载，`IGNORE_RULES`）、`--dangerously-bypass-hook-trust`（hook 信任，`BYPASS_HOOK_TRUST`）；`--yolo` 与 `--ignore-rules` 可同时传且不冲突。
+
+**这些证据的边界要说清**：以上只证明了「关规则」有独立开关、没有被折叠进 `--yolo`，即**CLI 层正交**。它**不能**推出「`--yolo` 之后规则仍在运行时生效」——`Forbidden`/`Prompt` 在 `AskForApproval::Never` 下究竟如何归约，本轮**未实测**：真跑一次 `--yolo` 就是无沙箱执行真实 agent turn，没有安全测法；`ctx_fetch_and_index` 与直接 `read` 对 `developers.openai.com/codex/rules` 均超时，官方文档也没拿到。
+
+另有一条管理侧压过用户的**静态路径证据**（二进制错误字符串，非已观测到的运行行为）：`` `approval_policy = "never"` cannot be used because requirements do not allow `sandbox_mode = "danger-full-access"`; Codex would fall back to read-only permissions with approvals ``。据此可判定「requirements 拒绝 YOLO 并回落 read-only + 需审批」这条代码路径存在，但本轮未实际触发观测。
+
+这两条**弱化了「有 YOLO 就等于没策略」这个最自然的反驳**，因而在边界内支持 execpolicy 的真独有裁定：关规则至少需要一个单独的开关，且管理侧存在拒绝 YOLO 的路径。至于运行时到底还拦不拦，仍是未实测项。见 [Codex bypass 开关与 execpolicy 的关系](../../raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md)。
 
 **2. hook trust 闸门** —— 「执行前需已持久化信任」`[verified]`；「按 hash 索引」`[single-source]`
 
