@@ -30,16 +30,15 @@ pull.sh / sync.py pull
 
 ```text
 调查/实验
-  -> raw/<topic>/YYYY-MM-DD-<slug>.md（原始证据摘录，不可变）
+  -> raw/<topic>/（原始证据摘录，不可变）
   -> experiments/<date>-<slug>.md（结构化实验记录）
-  -> wiki/<topic>/<article>.md（可复用结论，仅在有足够材料时编译）
+  -> wiki/<topic>/（可复用结论）
 ```
 
+- 格式与流程以 `karpathy-llm-wiki` skill 为准（raw/wiki 布局、index/log 条目格式与取值、Grounding Invariant、lint 流程、相对路径规则）。本节只记该 skill 没有的 agc 特有约束，避免 skill 升级后两处漂移。
 - `raw/` 只放必要摘录，不放完整 transcript；入库前必须脱敏。
 - `experiments/` 固定字段：Hypothesis / Baseline / Change / Context / Steps / Observations / Evidence / Verdict / Follow-up。
-- `wiki/` 只在材料足够时编译；每个事实必须能追溯到 raw。
-- `wiki/index.md` 是全局索引：按 topic 分节，每节一个三列表格（Article / Summary / Updated）。`wiki/log.md` 是追加式操作日志，条目格式 `## [YYYY-MM-DD] <action> | <描述>`，字段含 `Disposition`（New / Update / Disputed / No material）、`Raw`、`Updated`。
-- 文章元数据（`Sources`、`Raw`、`Updated`）必须紧跟 H1 放在连续 blockquote 里；写在正文末尾会被证据校验器判为「无 Raw 字段」并连带把对应 raw 报成 unreferenced。`Raw` 链接从 `wiki/<topic>/` 出发统一用 `../../raw/`。
+- 文章元数据（`Sources`、`Raw`、`Updated`）必须紧跟 H1 放在连续 blockquote 里；写在正文末尾会被证据校验器判为「无 Raw 字段」并连带把对应 raw 报成 unreferenced。
 
 ## 关键目录
 
@@ -127,8 +126,8 @@ find . -path './.git' -prune -o -type l -print
 
 **Wiki 证据边界：**
 
-- 证据校验器不在本仓库内，在 skill 目录：`python3 ~/.agents/skills/karpathy-llm-wiki/scripts/check_evidence.py .`（可追加文章路径限定范围；默认扫 `wiki/**/*.md`，排除 `index.md`、`log.md`）。
-- 它只验证字面证据与 raw 链接存在性，不查概括是否忠于原文，也不替代人工语义审查。fidelity suspect 常有假阳性（产品版本号、`See Also` 行）。
+- 证据校验器不在本仓库内，在 skill 目录：`python3 ~/.agents/skills/karpathy-llm-wiki/scripts/check_evidence.py .`（用法与扫描范围见 skill）。
+- 已观察到的 fidelity suspect 假阳性形态：产品版本号、`See Also` 行、raw 侧写在 fenced code block 里的数字（如 JSON 字段值、代码片段中的常量）。
 
 ## 来源映射
 
