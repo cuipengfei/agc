@@ -106,6 +106,7 @@ OMP 能力发现、provider 隔离与插件生命周期。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 能力 provider 隔离边界](omp-discovery/omp-provider-isolation-boundaries.md) | disabledProviders 生效与不生效的层次、marketplace 缝隙 | 2026-09-03 |
+| [OMP enabledModels glob 陷阱：带斜杠的 model id 需要双星](omp-discovery/enabledmodels-glob-slash-pitfall.md) | Bun.Glob 单星不跨斜杠导致 CLI 可见而 TUI 不可见的诊断与修复 | 2026-09-05 |
 
 ## omp-sessions
 

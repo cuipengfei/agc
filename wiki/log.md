@@ -246,3 +246,12 @@
 ## [2026-09-04] ingest | Prompt Cache：前缀匹配与 cache key 的真实分工
 - Disposition: New
 - Raw: raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md; raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md
+
+## [2026-09-05] ingest | OMP enabledModels glob 陷阱：带斜杠的 model id 需要双星
+- Disposition: New
+- Raw: raw/omp-discovery/2026-09-05-enabledmodels-glob-slash.md
+- Updated: OMP 能力 provider 隔离边界（交叉引用新增；正文未改）
+
+## [2026-09-05] lint | 2 issues found, 2 auto-fixed
+- `enabledmodels-glob-slash-pitfall.md`：元数据（Sources/Raw）位于正文末尾导致校验器判定「无 Raw 字段」并连带把 `raw/omp-discovery/2026-09-05-enabledmodels-glob-slash.md` 判为 unreferenced；已移至标题下方标准位置并补 `Updated` 字段，原文逐字保留。
+- `tan-command.md`：`:9` 与 `:41` 把共享 cache key 的效果写成「直接命中/白捡全量前缀命中」，与本文引用的 OpenAI 原话及 [前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) `:23-29` 矛盾（官方明确 "they do not pin requests to a machine or guarantee a cache read hit"）；改为概率表述并补引该句，Updated 与 index 同步至 2026-09-05。
