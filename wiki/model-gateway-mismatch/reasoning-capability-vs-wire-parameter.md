@@ -1,8 +1,8 @@
 # 模型 capability 声明与 gateway wire 参数不一致
 
-> Sources: OMP `openai-shared.ts`, `openai-reasoning-fallback.ts`; 本地 gateway 目录与 copilot-api 日志
-> Raw: [reasoning_effort wire suppression 案例](../../raw/model-gateway-mismatch/2026-08-29-reasoning-effort-wire-suppression.md)
-> Updated: 2026-08-29
+> Sources: OMP `openai-shared.ts`, `openai-reasoning-fallback.ts`; 本地 gateway 目录与 copilot-api 日志; MotoMoto relay 实测
+> Raw: [reasoning_effort wire suppression 案例](../../raw/model-gateway-mismatch/2026-08-29-reasoning-effort-wire-suppression.md); [OpenCode provider `npm` 选择规范与两 harness 协议配置摘录](../../raw/model-gateway-mismatch/2026-09-05-opencode-provider-npm-spec.md)
+> Updated: 2026-09-05
 
 ## 核心判断
 
@@ -44,8 +44,15 @@ agent host 声明模型支持 reasoning，不等于 gateway 上游接受 `reason
 - 枚举性：`model list` 等只读命令仍识别该模型。
 - 行为性：开 verbose 后对比 400 与 200 的请求体；未开 verbose 时只能从日志模式+源码推断。
 
+## capability 声明不等于 reasoning 输出
+
+MotoMoto 的 `gpt-5.6-sol` 在 OpenCode 配置中声明为 `"reasoning": true`。同一道 bat-and-ball 题分别经 `/v1/chat/completions` 与 `/v1/responses` 请求时，两条协议都给出正确答案，但两边的 `reasoning_chars` 都是 0，usage 中的 `reasoning_tokens` 也都是 0。
+
+这只能证明本次观测没有收到可见 reasoning 内容，不能证明模型内部没有推理；但它足以说明 host capability 声明不能替代 wire-level 行为验证。应分别记录：模型是否答对、响应是否包含可见 thinking、usage 是否报告 reasoning tokens，以及请求体是否真的带有 `reasoning_effort`。
+
 ## See Also
 
 - [Prime Agent 技术实质](../prime-agent/prime-agent-technical-reality.md) — Prime Agent 的 harness 层设计与实现细节
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md) — 同一仓库的 host-level 护栏方法论
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — Provider 主权与协议兼容是两个问题
+- [SDK 对非标准 responses 帧的解析严格度差异](sdk-strictness-on-nonstandard-responses-frames.md) — 同一 relay 的解析器差异会改变 finish 状态，但不等于 reasoning capability
