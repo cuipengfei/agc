@@ -1,8 +1,8 @@
 # Prompt Cache：前缀匹配与 cache key 的真实分工
 
-> Sources: OpenAI 官方文档与 API Reference, 2026-09-04; Anthropic Claude Platform 文档, 2026-09-04
-> Raw: [OpenAI Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md); [Anthropic Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md); [OMP /tan 命令源码验证摘录](../../raw/omp-background-agents/2026-09-04-tan-command-verification.md)
-> Updated: 2026-09-04
+> Sources: OpenAI 官方文档与 API Reference, 2026-09-04; Anthropic Claude Platform 文档, 2026-09-04; Claude Code 2.1.261 本机安装直读, 2026-09-05
+> Raw: [OpenAI Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md); [Anthropic Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md); [OMP /tan 命令源码验证摘录](../../raw/omp-background-agents/2026-09-04-tan-command-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md)
+> Updated: 2026-09-05
 
 ## Overview
 
@@ -50,7 +50,21 @@ OMP 侧的一个加重证据（单源，仅 OMP auth-gateway 源码注释）："
 
 官方未公开单机容量与驱逐策略，以下为基于"缓存容量有限"一般假设的推断：共享 key 的成本是同一缓存域内多条发散尾部互相挤占驱逐位，量级 ∝ 并发发散尾部数 × 存活时长；且驱逐只有"被顶掉的条目还会被再次请求"时才产生真实费用（重新 prefill）。因此 **fork 型分身（前缀共享大、尾部短命）共享 key 净赚；不相关长会话全局共用一个 key 净亏**——前者分子大分母小，后者相反。这是 OMP /tan 共享父会话 key 的设计依据。
 
+## harness 侧怎么让前缀真的稳定（2026-09-05 补）
+
+前缀逐字节匹配是命中的必要条件，但 harness 自己往 system prompt 里塞的东西每次都在变（cwd、git status、env info、memory 路径），所以这个必要条件默认是不成立的。Claude Code `2.1.261` 有两个直接针对这一点的开关，是目前看到最明确的客户端侧前缀工程：
+
+| 机制 | 做什么 | 目标 |
+|---|---|---|
+| `--system-prompt-snapshot` | 字段说明原文「Record the conversation's system prompt once and reuse it verbatim on every later request and resume」，另存 `systemPromptSnapshotHash`；后台会话与远程会话默认开启 | 同一会话内跨请求与 resume 的字节稳定 |
+| `--exclude-dynamic-system-prompt-sections` | 把 per-user 动态段（cwd、env info、memory paths、git status）移出被缓存的 system prompt，改注入第一条 user message | **跨用户**命中同一段静态 system prompt 前缀 |
+
+第二条值得单独注意：本文其余部分讨论的 key、TTL、隔离都在单组织或单用户视角内，而这个开关瞄准的是**不同用户之间**共享静态前缀。Claude Code 自己写明了 tradeoff（模型看不到那些段的原位置），并留了 kill switch。
+
+反向核查：Reasonix `StaticPromptCache`（会话创建时快照 system prompt、不再从磁盘重读）在第一条轴上同轴；为跨用户共享前缀做工程的，已查材料中没有第二家。
+
 ## See Also
 
 - [OMP /tan：后台 fork 分身命令](../omp-background-agents/tan-command.md)
 - [模型 capability 与 gateway wire 参数不一致](../model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md)
+- [AI Coding Agent 对比：真正独特优势（19 家）](../ai-coding-agents/4-agent-comparison.md) — 这两个开关的独有性裁定与反向核查过程
