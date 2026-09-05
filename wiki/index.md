@@ -66,6 +66,14 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测 | 2026-09-01 |
 | [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-04 |
 
+## omp-background-agents
+
+OMP 后台 agent 派遣机制：/tan fork 分身、缓存 lineage 与 side-turn 隔离。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP /tan：后台 fork 分身命令](omp-background-agents/tan-command.md) | /tan 的 fork 语义、隔离指令与 session 身份分离 + cache key 共享的缓存设计 | 2026-09-05 |
+
 ## omp-mnemopi
 
 OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。

@@ -237,6 +237,12 @@
 - Raw: raw/agent-tooling/2026-09-04-diagram-design-vs-archify.md
 - Updated: LLM 出图的两种作者模型
 
+## [2026-09-04] ingest | OMP /tan：后台 fork 分身命令
+- Disposition: New
+- Raw: raw/omp-background-agents/2026-09-04-tan-command-verification.md; raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md
+- Updated: 六 AI Coding Agent 对比
+- 方法学：三路多源验证（GitHub 源码 + 本机安装副本 v18.1.10 + 官方文档）；证伪修正 2 处（prompt_cache_key 与 abuse detection 职责分离；key 是概率性路由提示非硬条件）
+
 ## [2026-09-04] ingest | Prompt Cache：前缀匹配与 cache key 的真实分工
 - Disposition: New
 - Raw: raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md; raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md
