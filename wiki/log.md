@@ -311,3 +311,12 @@
 ## [2026-09-05] lint | 2 issues found, 2 auto-fixed
 - `enabledmodels-glob-slash-pitfall.md`：元数据（Sources/Raw）位于正文末尾导致校验器判定「无 Raw 字段」并连带把 `raw/omp-discovery/2026-09-05-enabledmodels-glob-slash.md` 判为 unreferenced；已移至标题下方标准位置并补 `Updated` 字段，原文逐字保留。
 - `tan-command.md`：`:9` 与 `:41` 把共享 cache key 的效果写成「直接命中/白捡全量前缀命中」，与本文引用的 OpenAI 原话及 [前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) `:23-29` 矛盾（官方明确 "they do not pin requests to a machine or guarantee a cache read hit"）；改为概率表述并补引该句，Updated 与 index 同步至 2026-09-05。
+
+## [2026-09-05] ingest | 六 AI Coding Agent 对比：被质疑断言的反向核查
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md
+- Updated: 六 AI Coding Agent 对比（新增「被质疑断言的反向核查(2026-09-05)」节；Reasonix/jcode/OpenClaude 三处加 Status: Outdated；结论段加「本轮新降级」行）
+- 四项降级：① Reasonix `sessiontemp` 的「可能独有」被多个反例推翻；但本轮反向核查报告混用了 Claude Code,而已有八家名单写的是 OpenClaude,所以不再写「8 家里 6 家」或声称完成对已有八家的封闭计数。报告实际列出 OMP、Grok、claurst、Claude Code、DSH、goose 六个等价物；OpenClaude 自身是否有同类机制未核查。② jcode `agentgrep` 降为同轴不同实现（aider repo map、goose `analyze`、OMP `read` 结构摘要+codegraph、crush `lsp_references` 达同一目标）。③ jcode ONNX 嵌入记忆降为功能等价——本机 OMP 源码直证 mnemopi 有 fastembed 本地路径。④ OpenClaude「唯一公开的原版 harness 衍生」不成立（openinterpreter `Harness::ClaudeCode` 与 claurst clean-room 重写构成反例）。
+- 修正 scout 结论一处：JcodeThree 称 OMP Mnemopi「默认」本地 ONNX，本机源码只能证明本地路径存在；本机实际配置走 `embeddingApiUrl` API 嵌入，故 wiki 不写「默认」。
+- 修正此前过宽表述：OpenCode 事件 replay 由「都等价」改为「部分同轴」，四家机制形态列表区分；补隐私边界（v2 默认纯本地；v1 `/share` 上传至 `opncd.ai`，默认 manual、可关）。
+- 净结论：真独有 2 项（OMP TTSR、DSH Cordis）；可能独有由 2 减至 1（openinterpreter 多 harness 运行时切换）；未知 1 项（jcode swarm 服务端读集追踪）。

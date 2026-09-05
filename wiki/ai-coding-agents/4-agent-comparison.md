@@ -1,7 +1,7 @@
 # 六 AI Coding Agent 对比：真正独特优势
 
 > Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30; jcode 与 OpenClaude 调研，2026-09-01
-> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md)
+> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md)
 > Updated: 2026-09-05
 
 ## 研究对象
@@ -139,6 +139,9 @@
 
 **OpenClaude**：无真实独有功能。多 provider、订阅 OAuth、hooks、记忆、VS Code 扩展均非独有；gRPC headless 与 OpenCode serve 能力等价；Buddy 为纯 UI 装饰。唯一差异是唯一公开的「Claude Code 原版 harness + 任意模型」衍生实现，价值在源码研究，且伴法律灰色风险（2026-03-31 泄漏事件 + DMCA 8.1K 仓库 fork 网络下架；未见诉讼）。社区无头部人物评测；周边有假冒泄漏仓库的恶意软件诱饵与诈骗帖。
 
+> **Status: Outdated** (2026-09-05)
+> 第 140 行「唯一公开的『Claude Code 原版 harness + 任意模型』衍生实现」中的**唯一性**不成立。两个反例:① openinterpreter 的 `Harness::ClaudeCode` / `ClaudeCodeBare` 是 MIT 独立代码,自行构造 Claude Code 的 system prompt 与工具定义;② claurst 自述为 Claude Code 的 clean-room Rust 重写。OpenClaude 真正的区别是**运行的就是泄漏原版代码本身**(~512K 行 TS fork + `openaiShim.ts` 把 Anthropic SDK 调用翻成 `/chat/completions`),而另两家是从零重建行为。这是来源性质差异,不是工程优势,且只有 OpenClaude 带 DMCA 风险。见 [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md)。
+
 **jcode 性能宣称**：官方自测 PSS 27.8 MB（embedding off）、启动比 Claude Code 快 72.2×；无第三方复测，方向可信（Rust vs Node）、精确倍数存疑。
 
 ## 结论
@@ -151,6 +154,7 @@
 - **无独特**：OpenCode 单独、OpenClaude（差异仅为泄漏源码衍生身份，附法律风险）
 - **新发现（待继续验证）**：Grok Build 服务端 doom-loop 信号（只处理服务端退化信号，不支持任意用户规则；`low_logprob` 是 TTSR 流管线拿不到的那一类）、LazinessDetector 声称-证据比对（默认观测模式）
 - **新发现（待继续验证）**：OMP `/tan` 后台 fork 分身——session 身份分离 + prompt cache key 共享父会话缓存 lineage（OpenAI 官方 best practice 同样建议分叉共享 key）；OpenCode/OMO 侧等价物未调查。详见 [OMP /tan](../omp-background-agents/tan-command.md)
+- **本轮新降级(2026-09-05 反向核查)**:Reasonix `sessiontemp`(6/8 家有等价隔离机制)、jcode `agentgrep`(同轴不同实现)、jcode ONNX 嵌入记忆(OMP Mnemopi 亦本地 ONNX,功能等价)、OpenClaude「唯一衍生实现」(openinterpreter 与 claurst 构成反例)。可能独有从 2 项减至 1 项(openinterpreter 多 harness 仿真)
 
 ## 新候选 B→A 对比(2026-09-04)
 
@@ -165,6 +169,9 @@
 |---|---|---|
 | **DeepCode** | repeat_guard 软循环提醒(3/5/8 阈值渐进,不阻断);hooks 使用 Claude-Code 兼容 schema | repeat_guard 与 Grok doom-loop 同轴不同机制(软提醒 vs 硬中断)。~~PreCompact 时机~~已证伪:压缩前注入是通用能力——OpenCode `experimental.session.compacting`、Claude Code `PreCompact`、OMP `session_before_compact`+`session.compacting`(types.d.ts:832-833)都有。剩生态兼容差异:CC schema 的 hook 可直接跑,OpenCode/OMP 为自家模型 |
 | **Reasonix** | sessiontemp 会话级临时目录隔离 | sessiontemp 可能独有;~~prefix-cache 稳定性~~已移除——README 营销措辞,源码未命中,且未证明别家没有(prefix-cache 稳定是各 harness 的通用工程关注点,举证责任在声称独有的一方) |
+
+> **Status: Outdated** (2026-09-05)
+> Reasonix 第 167 行的「sessiontemp 可能独有」已推翻,但证据范围需收窄：反向核查报告实际混用了 Claude Code,而本文已有八家名单中的对应项是 OpenClaude,因此不能把它概括成「8 家里 6 家」。报告逐项列出了 6 个有会话级临时目录/工作区隔离等价物的项目：OMP `leaseArtifacts` + `pi-iso`(CoW/worktree,`~/.omp/wt/` 带 owner 标记)、Grok `IsolationMode{None,Worktree,Sandbox}`、claurst worktree 隔离、Claude Code 沙箱 `$TMPDIR`、DSH 按会话生成独立 Windows SID 的私有临时目录、goose `AGENT_SESSION_ID` + 容器；但其中 Claude Code 不是 OpenClaude,所以本轮不能据此完成对本文「已有八家」的封闭计数。crush(ad-hoc `MkdirTemp`)与 OpenCode(明确不做沙箱)也未见同等隔离。结论仍足够推翻「可能独有」：至少多个反例已存在；OpenClaude 自身是否提供等价机制留作未核查。Reasonix 的实现细节(lease 引用计数、世代轮换、`.owner.lock` 24h stale 清理、fail-closed 不回退主机临时目录)比同类扎实,但那是成熟度差异,不是能力有无差异。见 [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md)。
 
 ### 对照基准(1)
 
@@ -194,7 +201,45 @@ claurst、Codewhale(经标注复核后移入:机制面常见,见上表)、crush�
 6. **Grok Build 数字**:SWE-bench Verified 70.8% at $0.20/M tokens(ddgs → sdd.sh/tokencost.app,第三方口径 `[single-source]`);context7 确认子 agent 并发上限 32、`spawn_subagent` 支持 worktree 隔离与 `resume_from`。
 7. **Reasonix 裁定不变**:本轮 web 路拿到 prefix-cache 相关材料(threads 帖称单日真实负载 99.82% 命中率、$12 vs $61;README 称 >90% 命中、长会话输入成本约 1/5),但这些是 README 与网页口径 `[single-source]`,**不构成对上表第 167 行「prefix-cache 稳定性已移除」的推翻**——仍无源码命中,也仍未证明别家没有。Reasonix 的可能独有项依旧只有 `sessiontemp`(源码直读,见 [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md))。
 
+> **Status: Outdated** (2026-09-05)
+> 第 191 行 jcode 的两条「新增待核查轴」已降级,均非独有。`agentgrep`:交互形态(搜索结果直接带结构上下文)少见,但同一用户目标别家都到达了——aider tree-sitter repo map 全局注入签名、goose `analyze` 建 tree-sitter 调用图、OMP `read` 对可解析代码返回结构摘要 + codegraph 调用链、crush `lsp_references`,判为同轴不同实现。ONNX 本地嵌入记忆:**OMP Mnemopi 也有本地 ONNX 嵌入路径**——本机 OMP 类型声明写明 "mnemopi's local embedding provider loads fastembed"、模型 id 例子 `fast-bge-base-en-v1.5`,且因 `onnxruntime-node` 的 NAPI finalizer 在 Windows 上会 segfault Bun(issue #3031)而特意跑在独立子进程(`dist/types/mnemopi/embed-client.d.ts:3-10,20-22`、`embed-protocol.d.ts:1-12`)。差异降为运行时选择(Rust `tract-onnx` vs Node fastembed 子进程),判为功能等价。注意本机实际配置走的是 API 嵌入而非本地模型(`embeddingApiUrl: http://localhost:4140/v1`,见 [Mnemopi Consolidation 生命周期](../omp-mnemopi/consolidation-lifecycle.md)),所以「哪个是默认」本轮未定论,只确认本地路径存在。jcode 剩下的独有候选仍只有 swarm 服务端读集追踪(从未直读实现)。另:`jcode self-dev`(`build`/`build-reload`/`test` + `execvp` 热换二进制并保留会话状态)是发给终端用户的工具,但用途是开发 jcode 自身,不构成通用 harness 能力。见 [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md)。
+
 未变:真独有净剩仍为 OMP TTSR 与 DSH Cordis。DeepCode 降级反而加强 DSH 侧证据——其 repeat-tool-reminder、pruner、subagent 契约被 DeepCode 成体系移植。
+
+## 被质疑断言的反向核查(2026-09-05)
+
+用户对上文表格提出 16 条标注,其中 5 项机制断言派 4 个只读 scout 做反向核查——不是证明 A 有某功能,而是逐个点名别家有没有。四项降级已就地加 Status 块(第 169、142、204 行)。剩下的澄清与新细节:
+
+### openinterpreter 的 harness 仿真具体仿到哪一层
+
+三层,不止改请求格式:① `claude_code_system_and_tools` 构造目标 harness 的 system prompt(Full 变体含工具指南、CWD、git status、平台、shell、OS 版本、模型信息与上下文管理指令;Bare 变体只有 CWD 与日期);② 把内部工具映射成对方的工具定义(Bare 只暴露 Bash/Edit/Read,Full 另加 Grep);③ 按 Messages / Responses / Chat 三种 wire 分别构造请求体。13 种 harness 运行时 `/harness` 切换,自己的 Rust loop 不变、不 shell 出去调别家 CLI。
+
+与另两个「跑 Claude Code 行为」的项目区别:claurst 是 clean-room 重写**一家**;OpenClaude 是 fork 泄漏原版**一家**;只有 openinterpreter 做**多家运行时切换**。这是它目前唯一站得住的可能独有项,`[single-source]`(grep.app repo 级源码)。
+
+### OpenCode 的「跨设备 replay」是本地自建,不是上传云端
+
+此前 log 里写它「比 DSH/OMP 的文件日志多一层」,现修正为**部分同轴**:各家机制形态不同,不能笼统说都等价,也不能说它独有。
+
+| 项目 | 机制 | 跨设备路径 |
+|---|---|---|
+| OpenCode v2 | 本地 SQLite(WAL)事件溯源 + 投影;`session.log?after=seq` 增量 replay API | 自己跑 `opencode serve`,别的设备 attach 到自己的 server |
+| OMP | typed JSONL 事件日志 + `/collab` 实时 relay | `/collab` 链接共享(实时协作,非历史 replay) |
+| DSH | immutable generation files + resume/fork | 靠文件复制,无增量 API |
+| crush | per-workspace SQLite + detach 后台 server + 多 client attach | 同机多 client,非跨设备 |
+
+隐私边界:v2 默认纯本地(`~/.local/share/opencode/opencode.db`)。但 v1 有 `/share`,执行后完整会话历史上传到 `opncd.ai`(公开链接),默认 `"manual"` 需手动触发,可用 `share: disabled` 或 `OPENCODE_DISABLE_SHARE` 关闭;v2 官方文档称 sharing 尚未实现。所以「隐私优先、不存代码」与 share 不矛盾,但 share 是该承诺的明确例外。本段来自本轮 scout 核查,`[single-source]`。
+
+### 四条概念澄清(此前表述容易误读)
+
+- **Codewhale 的 SHA256 不是文件编辑机制**:那是 CLI **二进制自更新器**(`crates/cli/src/update.rs` 校验后原子替换自身),与代码编辑无关,也与 harness 能力无关。
+- **crush 的 `crushrc` 配的是 agent 自身运行时**:provider、模型、MCP server、各类 option。特点是配置文件即 bash 脚本(内置 `provider add`/`model add`/`option`/`mcp add` 命令,30s loadTimeout),且 **agent 可在会话中用 bash tool 跑这些命令改自己当前会话的配置**,不写回文件。
+- **aider 的 repo map 不是 LSP**:tree-sitter 静态解析建符号标签图 → PageRank 排序 → 按 token 预算把类/方法/函数签名注入 prompt。无 language server、无诊断、无跳转。对照 OMP/OpenCode/crush 才是真 LSP 客户端。
+- **claurst 的预算切分不算 agentic coding 能力**:百分比/固定/USD cap 是花钱管控,与代码任务执行质量无关,已从独有优势位撤下。
+- **goose subrecipes**:一个 recipe 用 YAML 把别的 recipe 当步骤调用,支持并行执行、参数传递与 `sequential_when_repeated` 顺序控制。对应 Claude Code 的 skills + subagents、OMP 的 task 批次。
+
+### 净结论
+
+真独有仍 2 项(OMP TTSR、DSH Cordis);可能独有 1 项(openinterpreter 多 harness 仿真);未知 1 项(jcode swarm 服务端读集追踪)。Reasonix 本轮归零。
 
 ## See Also
 
