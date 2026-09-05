@@ -50,6 +50,14 @@ Better Harness 的工作流审计模型与适用边界。
 |---------|---------|---------|
 | [Better Harness](better-harness/better-harness.md) | 多 host 支持、五维审计模型及其与执行 harness 的互补关系 | 2026-08-30 |
 
+## copilot-gateway
+
+本机 8787 GitHub Copilot 网关的模型目录实测规格。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [GPT-5.6 Luna 真实规格](copilot-gateway/gpt-5.6-luna-specs.md) | 窗口 1050000（922000 prompt + 128000 output）、o200k_base、仅 /responses 端点、一个窗口两个计费档；OMP contextWindow 配总窗口的教训 | 2026-09-06 |
+
 ## harness-engineering
 
 Harness 的编辑格式、上下文载体与人类理解闭环。
@@ -130,7 +138,7 @@ OMP 内置 slash 命令的全量枚举与逐命令机制。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 内置 slash 命令全表（82 条）](omp-slash-commands/builtin-slash-commands.md) | core registry 79 条 + bundled /green /review + SDK /autoresearch；六类分组的机制、场景、收益与 ACP 可用性 | 2026-09-05 |
+| [OMP 内置 slash 命令全表（82 条）](omp-slash-commands/builtin-slash-commands.md) | core registry 79 条 + bundled /green /review + SDK /autoresearch；六类分组的机制、场景、收益与 ACP 可用性 | 2026-09-06 |
 
 ## omp-ttsr
 

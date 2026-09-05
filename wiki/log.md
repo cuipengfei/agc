@@ -419,3 +419,10 @@
 - Updated: wiki/omp-slash-commands/builtin-slash-commands.md
 - 新增「十问补遗」章节：/restart re-exec 机制、/compact remote 模型配置（compactionModel + remoteCompaction.model，无独立 role）、/handoff 三态产物、/context Autocompact buffer 数值门控、/fast family 与 realized 判定、/cleanse 的 LSP 边界、/security coordinator+reviewer 两层架构、/collab relay 默认 wss://my.omp.sh 可自建、/jobs 三类 job、/review reviewer 构成。
 - 修正（advisor 纠偏）：/quit 标注实现细节未确认；/fresh 改为两层 provider session 状态 + Codex/GitLab Duo 常驻 WebSocket 实证；/autoresearch 注入条件 !restrictToolNames；/review 数量改为推荐上限启发式。
+
+## [2026-09-06] ingest | GPT-5.6 Luna 真实规格 + 压缩模型解析机制
+- Disposition: New; Update
+- Raw: raw/copilot-gateway/2026-09-06-8787-v1-models-luna.md; raw/omp-slash-commands/2026-09-06-compaction-model-resolution.md
+- Updated: wiki/omp-slash-commands/builtin-slash-commands.md
+- 新文章 wiki/copilot-gateway/gpt-5.6-luna-specs.md（新话题 copilot-gateway）：8787 /v1/models 实测 luna 窗口 1,050,000（922K prompt + 128K output）、o200k_base、仅 /responses 端点、一个物理窗口两个计费档；纠正 models.yml 旧值 272000/16000。
+- 十问补遗 #2 扩写：OMP 无全局压缩模型字段，resolveCompactionConfiguredTarget 只读 currentModel.compactionModel，modelOverrides 仅精确 id 匹配；#3 收紧为手动 handoff 两态、落盘需 autoTriggered+handoffSaveToDisk。
