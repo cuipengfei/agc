@@ -147,7 +147,7 @@ find . -path './.git' -prune -o -type l -print
 - Prime Agent 侧排除 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）及 sessions/logs/venv 等运行时产物；只同步 `settings.json` 与 `models.json`，两者均 protected。
 - `pull`、`status`、`diff` 均通过 manifest 约束范围；不要执行广泛同步替代单文件需求。
 - `raw/`、`experiments/` 和 `wiki/` 是本仓库自产的学习/实验记录，不在 `manifest.json` 中，不参与 pull 同步。入库前必须脱敏，不存放 token、cookie、authorization header 等凭据内容。`experiments/` 只记录结构化实验过程；只有可复用结论才晋升到 `wiki/`。
-- `.gitignore` 是凭据边界的第二道闸：忽略 `.env`、`*token*`、`*.pem`、`*.key` 等凭据形态，`.omc/`、`.omo/`、`.pi/`、`logs/`、`sessions/`、`cache/` 等运行时状态，`*.bak` 备份与 `__pycache__/`。往仓库加新目录前先确认它是否已被忽略。
+- `.gitignore` 是凭据边界的第二道闸：忽略 `.env*`、`*token*`、`*secret*`、`*credential*`、`*password*`、`*.pem`、`*.key` 等凭据形态，`.omc/`、`.omo/`、`logs/`、`sessions/`、`cache/`、`profiles/`、`*.db`、`*.sqlite`、`history*` 等运行时状态，`*.bak`/`*.backup` 备份与 `__pycache__/`。注意它按**通配符匹配任意层级**，不是只匹配根目录；但只忽略 `.pi/better-harness/`，`omp/.pi/extensions` 仍是 manifest 同步项（`manifest.json:107-111`）。往仓库加新目录前先确认它是否已被忽略。
 - 绝对路径基本不脱敏：`policy.py` 只在 `EXCLUDED_USER_PATH` 里特判 `umans-status.ts` 一条路径，其余配置里的 `/home/<user>/...`（hook 命令、MCP 启动路径、工具链布局）会原样入库。这是已知并接受的残留，不是待修问题。
 
 ## 修改规则
