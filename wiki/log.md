@@ -389,3 +389,11 @@
 ## [2026-09-05] correction | 收窄同日两条 ingest 日志的表述
 - 对「Codex 特性门系统与 Code Mode」条目：「直接证成 removed 时 config 设置被忽略」收窄为「plugin_hooks 样本显示 config 值未反映到 effective，原因未确定」；「已换成精确原文」收窄为「已换成二次复核后的字符串；含占位字节的长串为规范化显示，逐字 literal 仅限 `2026-09-05-code-mode-string-normalization.md` 列出的短串」。
 - 同时修正 `codex-feature-flags.md` 的时态矛盾：135 项分布拆为 enable 前基线（stable true 39 / stable false 3 / under-dev false 52）与 enable 后复跑（stable true 42 / under-dev true 3 / under-dev false 49，脚本计数）。
+
+## [2026-09-05] ingest | Gateway catalog 是客户端配置的权威源
+- Disposition: New; Update
+- Raw: raw/model-gateway-mismatch/2026-09-05-copilot-gateway-catalog-fields.md; raw/model-gateway-mismatch/2026-09-05-anthropic-relay-catalog-and-ua.md
+- Updated: JustWoker `/v1/messages` 实测行为（新增目录无能力字段与 UA 门槛两节，Sources/Raw/Updated 同步）；模型 capability 声明与 gateway wire 参数不一致（See Also 交叉引用）
+- 本机 Copilot 网关 `/v1/models` 的三组字段各有用途：`claude_model_id`（Claude-facing ID，12 条目中 6 条带 `[1m]`）、`billing.token_prices.default.context_max`（计费档边界，实测 272000/224000/200000/128000 四种值）、`capabilities.limits.max_context_window_tokens`（真实窗口）。按窗口 >200000 推后缀会给 6 个模型错加。
+- 成本含义：`gpt-5.4` 的 `default` 档 input 250 / output 1500 / cache 25，`long_context` 档 input 500 / output 2250 / cache 50，即 input 与 cache 2 倍、output 1.5 倍。
+- 范围限定：上述字段只在本机 Copilot 网关观测到；JustWoker relay 的 `data[0]` 键集合仅 `created_at`/`display_name`/`id`/`type`。UA 与重试是 2026-09-05 新证据，未改 2026-09-01 的 raw，另建当日 raw 摘录。

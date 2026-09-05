@@ -1,8 +1,8 @@
 # JustWoker `/v1/messages` 实测行为
 
-> Sources: JustWoker API 实测, 2026-09-01
-> Raw: [JustWoker `/v1/messages` 脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md)
-> Updated: 2026-09-01
+> Sources: JustWoker API 实测, 2026-09-01; JustWoker `/v1/models` 目录与 UA 实测, 2026-09-05
+> Raw: [JustWoker `/v1/messages` 脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md); [Anthropic 兼容 relay 的 `/v1/models` 目录形态与 UA 门槛](../../raw/model-gateway-mismatch/2026-09-05-anthropic-relay-catalog-and-ua.md)
+> Updated: 2026-09-05
 
 ## Overview
 
@@ -82,7 +82,26 @@
 
 该模型在 `/v1/models` 中列出，且早期冒烟测试中 `/v1/messages` 返回 HTTP 200；但另一次 Anthropic 路径实测返回 HTTP 403。同一模型同一端点出现 200 与 403 两种结果，条件差异（例如账户额度、并发、上游路由状态）未确认。
 
+## 目录条目不含能力字段（2026-09-05 观测）
+
+`/v1/models` 的 `data[0]` 键集合只有：
+
+```json
+["created_at","display_name","id","type"]
+```
+
+没有 `capabilities`、没有 `billing`、没有 `claude_model_id`。因此把 Claude Code 指向该 relay 时，上下文窗口、输出上限一类能力值无法从目录读取，只能来自客户端本地静态配置。
+
+这与本机 Copilot 网关形成对照：后者同一端点会给出 `claude_model_id`、`billing.token_prices` 与 `capabilities.limits`。上文 2026-09-01 记录的 `supported_endpoint_types` 字段属于站点面板配置，与这里说的能力字段不是同一组。
+
+## User-Agent 影响目录响应码（2026-09-05 观测）
+
+同一 URL、同一认证头，只改 `User-Agent`：Python 标准库 `urllib.request` 的默认 UA 得到 HTTP 403，浏览器 UA（`Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36`）得到 HTTP 200。
+
+同期还观测到目录请求间歇失败：同一命令连续执行，部分次数返回可解析 JSON，部分次数因超时或非 200 无结果；失败次数的完整统计未记录。因此把该 relay 目录当作程序化数据源时需要重试。
+
 ## See Also
 
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — 客户端、Agent runtime、Provider 路由和模型是不同层。
 - [模型 capability 声明与 gateway wire 参数不一致](reasoning-capability-vs-wire-parameter.md) — capability 与传输参数也需要分别验证。
+- [Gateway catalog 是客户端配置的权威源](gateway-catalog-as-config-authority.md) — 本机 Copilot 网关的目录字段与本 relay 的对照。

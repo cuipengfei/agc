@@ -56,3 +56,4 @@ MotoMoto 的 `gpt-5.6-sol` 在 OpenCode 配置中声明为 `"reasoning": true`�
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md) — 同一仓库的 host-level 护栏方法论
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — Provider 主权与协议兼容是两个问题
 - [SDK 对非标准 responses 帧的解析严格度差异](sdk-strictness-on-nonstandard-responses-frames.md) — 同一 relay 的解析器差异会改变 finish 状态，但不等于 reasoning capability
+- [Gateway catalog 是客户端配置的权威源](gateway-catalog-as-config-authority.md) — 同一诊断原则的另一面：目录已声明的字段不要自己推算
