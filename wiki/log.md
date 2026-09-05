@@ -236,3 +236,7 @@
 - Disposition: New
 - Raw: raw/agent-tooling/2026-09-04-diagram-design-vs-archify.md
 - Updated: LLM 出图的两种作者模型
+
+## [2026-09-04] ingest | Prompt Cache：前缀匹配与 cache key 的真实分工
+- Disposition: New
+- Raw: raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md; raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md

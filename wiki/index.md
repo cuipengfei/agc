@@ -135,6 +135,14 @@ Prime Agent 的功能、技术实现与第三方评价。
 | [Prime Agent：功能与配置总览](prime-agent/prime-agent-overview.md) | 核心架构、主要功能、配置和与 OMP 的关系 | 2026-08-30 |
 | [Prime Agent 技术实质](prime-agent/prime-agent-technical-reality.md) | RLM、Continual Harness、CRUD 与持久运行时的源码验证 | 2026-08-30 |
 
+## prompt-caching
+
+Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界 | 2026-09-04 |
+
 ## keyboard-input
 
 键盘驱动指针控制、窗口与 tab 切换、输入重映射工具。
