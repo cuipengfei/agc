@@ -124,6 +124,14 @@ OMP session 文件格式与第三方工具兼容性。
 |---------|---------|---------|
 | [JSONL 格式与第三方 pi 解析器](omp-sessions/jsonl-format-and-third-party-parsers.md) | title 首行问题、正确镜像做法、残留障碍 | 2026-09-03 |
 
+## omp-slash-commands
+
+OMP 内置 slash 命令的全量枚举与逐命令机制。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP 内置 slash 命令全表（82 条）](omp-slash-commands/builtin-slash-commands.md) | core registry 79 条 + bundled /green /review + SDK /autoresearch；六类分组的机制、场景、收益与 ACP 可用性 | 2026-09-05 |
+
 ## omp-ttsr
 
 OMP TTSR 流式行为护栏、Extension 分层与上下文处置。

@@ -12,47 +12,54 @@ providers:
       supportsImageDetailOriginal: false
     models:
       - id: gpt-5.4
+        compactionModel: c8787/gpt-5.6-luna
         name: GPT-5.4
         reasoning: true
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
       - id: gpt-5.5
+        compactionModel: c8787/gpt-5.6-luna
         name: GPT-5.5
         reasoning: true
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
       - id: gpt-5.3-codex
+        compactionModel: c8787/gpt-5.6-luna
         name: GPT-5.3 Codex
         reasoning: true
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
       - id: gpt-5.4-mini
+        compactionModel: c8787/gpt-5.6-luna
         name: gpt-5.4-mini
         reasoning: true
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
       - id: gpt-5.6-sol
+        compactionModel: c8787/gpt-5.6-luna
         name: GPT-5.6 Sol
         reasoning: true
         input: [text, image]
         contextWindow: 872000
         maxTokens: 16000
       - id: gpt-5.6-terra
+        compactionModel: c8787/gpt-5.6-luna
         name: GPT-5.6 Terra
         reasoning: true
         input: [text, image]
         contextWindow: 272000
         maxTokens: 16000
       - id: gpt-5.6-luna
+        compactionModel: c8787/gpt-5.6-luna
         name: GPT-5.6 Luna
         reasoning: true
         input: [text, image]
-        contextWindow: 272000
-        maxTokens: 16000
+        contextWindow: 1050000
+        maxTokens: 128000
 
   # ── Chat Completions endpoint for chat-only models (Gemini) ────────────────
   c8787-chat:
@@ -63,12 +70,14 @@ providers:
       x-session-id: <REDACTED>
     models:
       - id: gemini-3.7-flash
+        compactionModel: c8787/gpt-5.6-luna
         name: Gemini 3.7 Flash
         reasoning: true
         input: [text, image]
         contextWindow: 1000000
         maxTokens: 64000
       - id: kimi-k2.7-code
+        compactionModel: c8787/gpt-5.6-luna
         name: Kimi K2.7 Code
         reasoning: true
         compat:
@@ -83,6 +92,7 @@ providers:
     apiKey: "<REDACTED>"
     models:
       - id: claude-opus-5
+        compactionModel: c8787/gpt-5.6-luna
         name: "Claude Opus 5"
         reasoning: true
         input: [text, image]
@@ -94,6 +104,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: claude-opus-5-thinking
+        compactionModel: c8787/gpt-5.6-luna
         name: "Claude Opus 5 Thinking"
         reasoning: true
         input: [text, image]
@@ -111,6 +122,7 @@ providers:
     apiKey: "<REDACTED>"
     models:
       - id: claude-opus-5
+        compactionModel: c8787/gpt-5.6-luna
         name: "Claude Opus 5"
         reasoning: true
         input: [text, image]
@@ -122,6 +134,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: claude-opus-5-thinking
+        compactionModel: c8787/gpt-5.6-luna
         name: "Claude Opus 5 Thinking"
         reasoning: true
         input: [text, image]
@@ -139,6 +152,7 @@ providers:
     apiKey: "<REDACTED>"
     models:
       - id: claude-opus-5
+        compactionModel: c8787/gpt-5.6-luna
         name: "Claude Opus 5"
         reasoning: true
         input: [text, image]
@@ -150,6 +164,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: claude-opus-5-thinking
+        compactionModel: c8787/gpt-5.6-luna
         name: "Claude Opus 5 Thinking"
         reasoning: true
         input: [text, image]
@@ -163,10 +178,11 @@ providers:
 
   motomoto-responses:
     api: openai-responses
-    baseUrl: "https://motomoto.lol"
-    apiKey: "<REDACTED>"
+    baseUrl: "http://127.0.0.1:4150/v1"
+    apiKey: "<REDACTED>"   # real key lives in ~/.config/motomoto-shim.key, held by the shim
     models:
       - id: gpt-5.5
+        compactionModel: c8787/gpt-5.6-luna
         name: "GPT-5.5 (Responses)"
         reasoning: true
         input: [text, image]
@@ -178,6 +194,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: gpt-5.6-sol
+        compactionModel: c8787/gpt-5.6-luna
         name: "GPT-5.6 Sol (Responses)"
         reasoning: true
         input: [text, image]
@@ -270,10 +287,29 @@ providers:
     apiKey: "<REDACTED>"
     models:
       - id: k3-agent
+        compactionModel: c8787/gpt-5.6-luna
         name: "K3"
         reasoning: true
         input: [text, image]
         contextWindow: 262144
+
+  kimi-code:
+    # 覆盖 bundled kimi-code/k3：压缩候选首选改为 8787 网关的 GPT-5.6 Luna
+    modelOverrides:
+      k3:
+        compactionModel: c8787/gpt-5.6-luna
+      k3-256k:
+        compactionModel: c8787/gpt-5.6-luna
+      kimi-for-coding:
+        compactionModel: c8787/gpt-5.6-luna
+      kimi-for-coding-highspeed:
+        compactionModel: c8787/gpt-5.6-luna
+      kimi-k2:
+        compactionModel: c8787/gpt-5.6-luna
+      kimi-k2-turbo-preview:
+        compactionModel: c8787/gpt-5.6-luna
+      kimi-k2.5:
+        compactionModel: c8787/gpt-5.6-luna
 
   tokenrouter:
     api: openai-completions
@@ -281,6 +317,7 @@ providers:
     apiKey: "<REDACTED>"
     models:
       - id: z-ai/glm-5.3-free
+        compactionModel: c8787/gpt-5.6-luna
         name: "GLM 5.3 Free"
         reasoning: true
         input: [text]
@@ -291,3 +328,14 @@ providers:
           output: 0
           cacheRead: 0
           cacheWrite: 0
+
+  deepseek:
+    modelOverrides:
+      deepseek-v4-flash:
+        compactionModel: c8787/gpt-5.6-luna
+      deepseek-v4-flash-vision-exp:
+        compactionModel: c8787/gpt-5.6-luna
+      deepseek-v4-pro:
+        compactionModel: c8787/gpt-5.6-luna
+
+

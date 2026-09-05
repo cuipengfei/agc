@@ -404,3 +404,18 @@
 - 官方 model-config 把 `CLAUDE_CODE_MAX_CONTEXT_TOKENS` 的生效条件分成三互斥情形；中转站的 `claude-*` ID 落在情形 3，声明窗口无效且 ACW 被 cap 到内置窗口。
 - 二进制证据：默认压缩触发点为窗口减 13000（`ZPe` 中 `let r=e-13000`），`PCT_OVERRIDE` 经 `Math.min(Math.floor(e*(o/100)),r)` 只能提早不能抬高；`CLAUDE_CODE_CONTEXT_LIMIT` 0 命中（同期 MAX_CONTEXT_TOKENS 9 处、PCT_OVERRIDE 6 处）。按窗口查表的 `precomputeBufferFraction` 具体数值未提取。
 - `[1m]` 线路行为需两个方向的观测才成立：curl 直发带后缀 502、同 env 下 `claude -p` 正常应答。实验记录另见 experiments/2026-09-05-1m-suffix-wire-behavior.md（verdict: works，未抓包闭环）。
+
+## [2026-09-05] ingest | OMP 内置 slash 命令全表（82 条）
+- Disposition: New
+- Raw: raw/omp-slash-commands/2026-09-05-registry-enumeration.md; raw/omp-slash-commands/2026-09-05-scout-modes.md; raw/omp-slash-commands/2026-09-05-scout-collaboration.md; raw/omp-slash-commands/2026-09-05-scout-session.md; raw/omp-slash-commands/2026-09-05-scout-lifecycle.md; raw/omp-slash-commands/2026-09-05-scout-marketplace-control.md; raw/omp-slash-commands/2026-09-05-scout-bundled.md; raw/omp-slash-commands/2026-09-05-external-intent.md
+- Updated: wiki/omp-slash-commands/builtin-slash-commands.md（新话题 + index）
+- 「内置」边界经 advisor 两次纠偏后定稿：core registry（builtin-registry.ts:38-45 六类数组 79 条）+ bundled /green /review（loader.ts:154-171）+ SDK 注入 /autoresearch（sdk.ts:2133）；slashCommandCapability 是文件型自定义命令通道，与内置命令是两层；acp-builtins.ts 只是过滤派发不是命令源。
+- 运行时对账用 dist/cli.js bundle 字符串命中替代 TUI 实测（82/82）；CLI 无非交互列命令子命令。
+- 版本 skew：Context7/DeepWiki 的若干 description 与本机 v18.1.10 源码不一致（/agents、/branch 等），文章以本机源码为准；24 条命令无任何外部文档。
+
+## [2026-09-05] update | slash 命令文章：十问补遗 + 三处修正
+- Disposition: Update
+- Raw: raw/omp-slash-commands/2026-09-05-followup-lifecycle.md; raw/omp-slash-commands/2026-09-05-followup-modes.md; raw/omp-slash-commands/2026-09-05-followup-collab.md
+- Updated: wiki/omp-slash-commands/builtin-slash-commands.md
+- 新增「十问补遗」章节：/restart re-exec 机制、/compact remote 模型配置（compactionModel + remoteCompaction.model，无独立 role）、/handoff 三态产物、/context Autocompact buffer 数值门控、/fast family 与 realized 判定、/cleanse 的 LSP 边界、/security coordinator+reviewer 两层架构、/collab relay 默认 wss://my.omp.sh 可自建、/jobs 三类 job、/review reviewer 构成。
+- 修正（advisor 纠偏）：/quit 标注实现细节未确认；/fresh 改为两层 provider session 状态 + Codex/GitLab Duo 常驻 WebSocket 实证；/autoresearch 注入条件 !restrictToolNames；/review 数量改为推荐上限启发式。

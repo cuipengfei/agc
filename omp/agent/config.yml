@@ -85,8 +85,7 @@ providers:
   streamIdleTimeoutSeconds: -1
   openrouterVariant: default
   fetch: trafilatura
-disabledExtensions:
-  - context-file:user:AGENTS.md
+disabledExtensions: []
 modelRoleStorage: global
 modelRoles:
   plan: justwoker/claude-opus-5:medium
@@ -282,7 +281,6 @@ compaction:
   dropUseless: true
   methodOrder:
     - shake
-    - remote
     - soft
 snapcompact:
   systemPrompt: none

@@ -342,10 +342,10 @@
       },
     },
     "motomoto-responses": {
-      "npm": "@ai-sdk/openai",
+      "npm": "@ai-sdk/openai-compatible",
       "name": "MotoMoto Responses",
       "options": {
-        "baseURL": "https://motomoto.lol/v1",
+        "baseURL": "http://127.0.0.1:4150/v1",
         "apiKey": "<REDACTED>"
       },
       "models": {
