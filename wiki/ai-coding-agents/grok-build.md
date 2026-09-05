@@ -2,7 +2,7 @@
 
 > Sources: `xai-org/grok-build` 源码与 `docs.x.ai/build/*`；多源研究（2026-09-03）
 > Raw: [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md)；[竞品循环与停滞检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md)
-> Updated: 2026-09-03
+> Updated: 2026-09-04
 
 ## 概述
 
@@ -18,7 +18,7 @@ Grok 推理后端在采样过程中检测到输出退化（`tail_repetition`、`
 
 **为什么结构上独有。** `[single-source]` doom-loop 机制存在于 Grok Build 自己的代码中。在六个被调查的 agent 中，没有发现接收服务端中途循环信号的等价物；它们要么只做客户端检测，要么完全没有循环检测。`[likely]` 四家主要模型厂商（OpenAI、Anthropic、Google、DeepSeek）的公开流式 API 中没有中途循环诊断。`[likely]` 唯一具备相同垂直整合位置的竞争对手——DSH（同时控制模型和 harness）——也没有等价机制。
 
-**为什么价值很窄。** 这个机制只干一件事：检测重复，注入一句固定提醒。据已有调查，客户端规则系统（如 OMP TTSR）可覆盖任意正则或 AST 规则，注入命中规则的原文，然后重试——表达力严格更强。差别在于 TTSR 是纯客户端，而 doom-loop 拿到了服务端信号。这只在客户端无法可靠检测循环的特定场景（例如超长上下文退化）有优势，不是普遍优越性。另见 [OMP TTSR 与 /omfg](../omp-ttsr/ttsr-and-omfg.md)。
+**为什么价值很窄。** 这个机制只处理服务端 doom-loop/退化信号（`tail_repetition`、`exact_repetition`、`low_logprob`），命中后注入一句固定提醒，不支持任意用户规则。据已有调查，客户端规则系统（如 OMP TTSR）可覆盖任意正则或 AST 规则，注入命中规则的原文，然后重试——在规则表达力上严格更强。真正不可替代的只有 `low_logprob` 这一类：OMP 的 TTSR 流管线对流增量做 regex/AST 匹配，不接收服务端采样元数据，因此拿不到 logprob 退化信号。这三个信号名的证据等级仍是 `[single-source]` 且未一手复验——本条修正提高的是机制描述的准确度，不是证据等级；也未调查其他客户端实现是否有别的途径获得同类信号。另见 [OMP TTSR 与 /omfg](../omp-ttsr/ttsr-and-omfg.md)。
 
 ### LazinessDetector：声称与证据的比对分类
 

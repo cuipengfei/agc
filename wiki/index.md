@@ -35,9 +35,10 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [六 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent、DSH、jcode 与 OpenClaude 的真正独特能力 | 2026-09-03 |
-| [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-03 |
+| [六 AI Coding Agent 对比](ai-coding-agents/4-agent-comparison.md) | OpenCode、OMP、Prime Agent、DSH、jcode 与 OpenClaude 的真正独特能力 | 2026-09-05 |
+| [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-04 |
 | [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
+| [Coding Agent 候选发现方法](ai-coding-agents/candidate-discovery-method.md) | wide-narrow-deep 枚举流程、README 机制词扫描、流行度的真实用途 | 2026-09-04 |
 
 ## better-harness
 

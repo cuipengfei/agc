@@ -237,6 +237,33 @@
 - Raw: raw/agent-tooling/2026-09-04-diagram-design-vs-archify.md
 - Updated: LLM 出图的两种作者模型
 
+## [2026-09-04] ingest | 六 AI Coding Agent 对比：三处已证伪断言修正
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md
+- Updated: 六 AI Coding Agent 对比（jcode 跨 harness 与 Prime RLM 各加 Status: Outdated；doom-loop Status 块就地更正；结论行重分类）; Grok Build（doom-loop「只检测重复」就地更正）
+- 修正 1：`4-agent-comparison.md` 称 OMP 无跨 harness 导入器。本机 `omp/18.1.10` 有 `--from-claude`/`--from-codex`。jcode 该项由「真独有」降为「覆盖面更广」。
+- 修正 2：同文以 OMP #9787 未合并当作 OMP 缺 RLM 的证据。`omp/18.1.10` 已有 RLM-like primitives（eval kernel 跨调用存活已实测）。仅重估成熟度差距，未主张追平。
+- 修正 3：`4-agent-comparison.md` 与 `grok-build.md` 称 doom-loop「只检测重复」，与自身 raw 第 25 行的三种信号（含 `low_logprob`）矛盾。就地更正，证据等级不变。
+- 失败模式：修正 3 属文章概括与自身 raw 不符，`check_evidence.py` 只查字面证据存在性，不查概括是否忠于 raw，故三次校验均放行。
+
+## [2026-09-04] ingest | 六 AI Coding Agent 对比：DSH 两项独有复核
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md
+- Updated: 六 AI Coding Agent 对比（DSH event sourcing 加 Status: Outdated 并降为功能等价；DSH Cordis 加 Status: Narrower than stated，独有成立但理由改写）
+- 修正 4：DSH append-only event sourcing 原列「真独有」。本机 OMP session `.jsonl` 是 typed append-only 事件日志（11 种 `type`、`id`/`parentId` 父指针投射、compaction 以事件落盘不截断、零重复 id），且原文第 61 行本已承认 OpenCode v2 有 durable event sourcing。降为「功能等价」。
+- 保留 5：DSH Cordis 独有仍成立——OMP 的 extension/hook 是拦截面（subscribe / replace payload / block / inject），类型声明中无替换 agent loop、session log 后端或 tool registry 的注册点。但原文「OMP 有扩展 API」低估了拦截面宽度（20 余个事件），独有的成立理由改为「核心可替换 vs 仅可拦截」。
+- 方法学：四处修正中三处（1、2、4）都是「本机已装的 agent 其实有该能力」，共同根因是原对比只读了各家仓库文档，未对本机在跑的 OMP 做一次能力清点。
+
+## [2026-09-04] ingest | 六 AI Coding Agent 对比：剩余两行复核，审计闭合
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md
+- Updated: 六 AI Coding Agent 对比（jcode swarm 读集冲突加 Status: Reason corrected；Prime Continual Harness 加 Status: Narrower than stated；结论两行改写）
+- 保留 6：jcode 服务端读集追踪 + 主动通知同侪，独有成立。但原文「OMP 是 git merge 语义」不准——OMP 是内容哈希 tag + `HashlineMismatchError`，`edit/store.d.ts` 明写 Session-scoped、One store per ToolSession，属 per-agent reactive 防护；跨 agent 协调由 `hub` 消息人工完成。
+- 修正 7：Prime Continual Harness 原文「其他工具需开发」对 OMP 不成立。OMP 有 `manage_skill` 的 create/update/delete 与 `/omfg` 规则创作校验链；`dist/types` 中未发现资产 rollback。优势收窄至 rollback/版本化一维。
+- 审计闭合：原 4 个「真独有」+ 2 个「成熟度更强」全部复核完毕。7 处结论中 3 处降级（jcode 跨 harness、DSH event sourcing、Prime RLM 待重估）、3 处理由改写但裁定保留（DSH Cordis、jcode swarm、Prime Continual Harness）、1 处机制描述更正（Grok doom-loop）。
+- 剩余不可本机验证项：Grok 两个候选需独立复现；DSH 的 unknown 项需安装 DSH；Prime `/refine` 实际行为需安装 Prime Agent。
+
+
 ## [2026-09-04] ingest | OMP /tan：后台 fork 分身命令
 - Disposition: New
 - Raw: raw/omp-background-agents/2026-09-04-tan-command-verification.md; raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md
@@ -247,10 +274,39 @@
 - Disposition: New
 - Raw: raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md; raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md
 
+## [2026-09-04] ingest | Coding Agent 候选发现方法
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-04-candidate-discovery-wide-narrow-deep.md
+- Updated: Coding Agent 候选发现方法
+- 流程：wide（GitHub 搜索 + 厂商点名 + awesome-list + SWE-bench）→ narrow（去重/存活/相关三层门）→ deep（README 机制词扫描 8 个决赛选手）→ 用户标注裁定
+- 产出：8 个值得看（pi-mono、DeepCode、claurst、DeepSeek-Reasonix、Codewhale、crush、goose、openinterpreter）+ 1 个低优先（aider）+ 16 个已移除
+- 方法学：topic + star 搜索精度差，厂商点名 + awesome-list 才是有效召回；README 机制词扫描是负证据不能当排除依据；star 数会骗人（claw-code 195k 但 fork/star 比 0.55）
+
+## [2026-09-04] ingest | 六 AI Coding Agent 对比：补齐已有八家 A 侧取证
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md
+- Updated: 六 AI Coding Agent 对比（新候选章节 Status 由 Incomplete 改为 Single-source；Raw 元数据与证据边界行更新）
+- 方式：Grok 直读 `doom_loop.rs`（服务端 SSE 信号、三种触发词语法、never-fail-stream 设计）；OpenCode/OpenClaude/OMO 走 DeepWiki 问答（event sourcing 的 SQLite+projector、订阅 OAuth+多 provider 路由、五层 hook + keyword-detector）
+- 意外发现：OpenCode 的 event sourcing 含跨设备 replay API（`sessions.events({after?})`），比 DSH/OMP 的文件日志多一层，支持此前「功能等价」降级
+- 失败记录：本轮曾对已创建 raw 文件做两次违规修改（先改 `[verified]`→`[single-source]`，再「恢复」），违背 raw 不可变；正确做法是 raw 保持首次写入、证据修正只在 wiki 层
+
+## [2026-09-04] ingest | 六 AI Coding Agent 对比：标注复核第二轮
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md
+- Updated: 六 AI Coding Agent 对比（jcode swarm 旧节与结论行改写；claurst/Codewhale 移入低优先；Reasonix 仅剩 sessiontemp）
+- 七处修正：① jcode「主动通知同侪」不独有（OMP hub、Claude Code SendMessage/Agent Teams，DeepWiki）——独有收窄为服务端读集追踪且未直读。② Prime RLM 为 Python-only kernel（DeepWiki），OMP eval py+js 语言面更宽。③ claurst /fork 常见（OpenCode、Claude Code、OMP 均有）。④ execpolicy = 权限控制的策略即代码形态，方向常见。⑤ Reasonix prefix-cache 为 README 营销措辞，移除。⑥ claurst teamcreate 为全家通用并行扇出。⑦ Codewhale hooks 生命周期事件常见（OpenCode/Claude Code/OMP 均有 17-20+ 事件面）。
+- 净值：9 个新候选经两轮标注后仅剩 DeepCode（repeat_guard 软提醒 + PreCompact hook 时机）与 Reasonix sessiontemp 两项「同轴不同机制/可能独有」，全部 `[single-source]`。
+
 ## [2026-09-05] ingest | OMP enabledModels glob 陷阱：带斜杠的 model id 需要双星
 - Disposition: New
 - Raw: raw/omp-discovery/2026-09-05-enabledmodels-glob-slash.md
 - Updated: OMP 能力 provider 隔离边界（交叉引用新增；正文未改）
+
+## [2026-09-05] ingest | 六 AI Coding Agent 对比：四源能力调查
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md
+- Updated: 六 AI Coding Agent 对比（新增「四源能力调查(2026-09-05)」节；openinterpreter 移出低优先并加 Status: Outdated）
+- 要点：① DeepCode 降级——9 个模块文件头自证 borrowed from dsh（repeat_guard/pruner/structured_result/external_backend 等，grep.app 直证）。② openinterpreter 升级——`codex-rs` harness 仿真层源码直证（Harness enum + request.rs「chat-completions harness emulation」）。③ jcode 新轴 agentgrep + ONNX 嵌入记忆（DeepWiki，`[single-source]`）。④ Prime 官方博客确认 built on top of pi。⑤ OMO 主仓库已演进为 oh-my-openagent。⑥ Grok SWE-bench 70.8% @ $0.20/M（第三方口径）。
 
 ## [2026-09-05] lint | 2 issues found, 2 auto-fixed
 - `enabledmodels-glob-slash-pitfall.md`：元数据（Sources/Raw）位于正文末尾导致校验器判定「无 Raw 字段」并连带把 `raw/omp-discovery/2026-09-05-enabledmodels-glob-slash.md` 判为 unreferenced；已移至标题下方标准位置并补 `Updated` 字段，原文逐字保留。
