@@ -111,6 +111,8 @@
 - Updated: 视觉人机交互全景
 - 新增：A/B/C 三级完整分类（A 级 12 个工具跨 2D/3D/工作流/设计/数据/3D SaaS）、B 级 6 个、C 级 8 个；按场景推荐矩阵；关键风险（巴士因子、license、沙箱、成熟度）
 
+
+
 ## [2026-08-31] ingest | Headroom Extras
 - Disposition: New
 - Raw: raw/agent-tooling/2026-08-31-headroom-extras-survey.md
@@ -441,3 +443,9 @@
 - Disposition: New
 - Raw: raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md; raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-corrections.md
 - Updated: 无级联更新
+
+## [2026-09-06] update | mcp_excalidraw：给 Agent 一块活画布
+- Disposition: Update
+- Raw: raw/agent-interaction/2026-09-06-mcp-excalidraw-local-setup.md
+- Updated: mcp_excalidraw：给 Agent 一块活画布
+- 新增：Bun 全局安装、OMP MCP 配置、26 工具 8 类完整分类、浏览器依赖 4 项、字体枚举与默认设置、Sync 机制、遥测代码审计、单 canvas 限制与变通

@@ -1,8 +1,8 @@
 # mcp_excalidraw：给 Agent 一块活画布
 
-> Sources: mcp_excalidraw 官方落地页与 Skill cheatsheet; GitHub API 仓库实证; excalidraw/excalidraw-mcp 官方 README，2026-08-30
-> Raw: [官方材料摘录](../../raw/agent-interaction/2026-08-30-mcp-excalidraw-official-materials.md); [仓库实证](../../raw/agent-interaction/2026-08-30-mcp-excalidraw-repo-evidence.md); [官方 excalidraw-mcp 摘录](../../raw/agent-interaction/2026-08-30-excalidraw-official-mcp.md)
-> Updated: 2026-08-30
+> Sources: mcp_excalidraw 官方落地页与 Skill cheatsheet; GitHub API 仓库实证; excalidraw/excalidraw-mcp 官方 README，2026-08-30; 本地安装与实测, 2026-09-06
+> Raw: [官方材料摘录](../../raw/agent-interaction/2026-08-30-mcp-excalidraw-official-materials.md); [仓库实证](../../raw/agent-interaction/2026-08-30-mcp-excalidraw-repo-evidence.md); [官方 excalidraw-mcp 摘录](../../raw/agent-interaction/2026-08-30-excalidraw-official-mcp.md); [本地设置与使用补充](../../raw/agent-interaction/2026-09-06-mcp-excalidraw-local-setup.md)
+> Updated: 2026-09-06
 
 ## 是什么
 
@@ -24,9 +24,29 @@ AI Client (Claude Code / Cursor / Codex CLI / OpenCode / Claude Desktop / Antigr
 - Obsidian 互导：`.excalidraw.md` vault 原生格式（2026-07-17 加入）
 - 安装三路径：skill 拷贝（`~/.claude/skills/` 或 `~/.codex/skills/`，推荐）、各客户端 MCP 配置、Docker（`ghcr.io/yctimlin/mcp_excalidraw-canvas`）
 
-## 工具面（26 个 MCP 工具，7 类）
+## 工具面（26 个 MCP 工具，8 类）
 
-元素 CRUD（7）、布局对齐（6）、场景感知（3，反馈环核心）、文件 I/O 与导出（4）、状态管理（3）、视口相机（1）、Mermaid 转换（1）+ 设计指南（1）。另有完整 REST API 和 CLI。详见 raw 中的 cheatsheet 摘录。
+| 分类 | 数量 | 工具 |
+|---|---:|---|
+| 创建 | 3 | create_element, batch_create_elements, create_from_mermaid |
+| 编辑 | 6 | update_element, delete_element, group_elements, ungroup_elements, lock_elements, unlock_elements |
+| 布局 | 3 | align_elements, distribute_elements, duplicate_elements |
+| 查询 | 3 | describe_scene, query_elements, get_element |
+| 导出 | 4 | export_scene, export_to_image, export_to_excalidraw_url, get_canvas_screenshot |
+| 快照 | 2 | snapshot_scene, restore_snapshot |
+| 视口 | 1 | set_viewport |
+| 状态管理 | 1 | clear_canvas |
+| 其他 | 3 | import_scene, read_diagram_guide, get_resource |
+
+注：状态管理仅 `clear_canvas`；`snapshot_scene`/`restore_snapshot` 属快照类；视口仅 `set_viewport`。
+
+**浏览器依赖（4 个）**：`create_from_mermaid`, `export_to_image`, `get_canvas_screenshot`, `set_viewport` 需要浏览器标签页开着；其余 22 个自动 spawn canvas server。
+
+**字体枚举**：硬编码 `1=Virgil`, `2=Helvetica`, `3=Cascadia`, `5=Excalifont`, `6=Nunito`, `7=Lilita One`, `8=Comic Shanns`；Maple 不支持，fallback 到 Virgil(1)。Skill 层可设默认 `fontFamily: 3`。
+
+## 遥测审计（2026-09-06 补充）
+
+代码级搜索 `dist/` 全部 JS 文件：仅 `share-url.js` 有外部上传（`json.excalidraw.com`）；其余网络请求均指向本地 `EXPRESS_SERVER_URL`（默认 `127.0.0.1:3000`）。未发现 telemetry/analytics/track/metric 等关键词。
 
 ## 维护健康度（2026-08-30 快照）
 
@@ -49,6 +69,8 @@ AI Client (Claude Code / Cursor / Codex CLI / OpenCode / Claude Desktop / Antigr
 
 1. 清空后重发元素，Excalidraw 可能重新注入缓存的 bound text 造成重复——官方建议不要把标签放在背景区域矩形上，用独立文本元素
 2. 截图、图片导出、视口控制、Mermaid 渲染**需要浏览器标签页开着**（canvas 前端是执行端）
+3. **字体硬编码**：仅支持 Virgil/Helvetica/Cascadia/Excalifont/Nunito/Lilita One/Comic Shanns；Maple 等自定义字体需改源码
+4. **单 canvas**：无多 board/workspace；多板需多端口实例或 export/import 文件切换
 
 ## 人机协作流程
 
@@ -72,6 +94,7 @@ AI Client (Claude Code / Cursor / Codex CLI / OpenCode / Claude Desktop / Antigr
 画布元素多了，每轮 agent 读图的上下文膨胀是真实问题。
 
 **有限替代**：`query_elements` 支持按 `type`、`bbox`（坐标范围）、`filter` 过滤，只拿某区域或某类元素。但返回的是原始 JSON，不是 `describe_scene` 那种 human-readable 文本——LLM 还得自己读 JSON 理解。没有"只告诉我改了什么"的增量机制。
+
 ## 与官方 excalidraw/excalidraw-mcp 的区别
 
 两者只是名字像，产品形态不同：
