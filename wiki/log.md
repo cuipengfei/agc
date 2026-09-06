@@ -431,3 +431,13 @@
 - Disposition: New
 - Raw: raw/awesome-mcp-servers/session-data-excerpts.md（会话结果派生摘要；原始大快照因体积未入库）
 - Updated: 无级联更新
+
+## [2026-09-06] ingest | GitHub 刷星检测工具调研
+- Disposition: New
+- Raw: raw/github-star-fraud-detection/heathdutton-StarScout.md
+- Updated: 无级联更新
+
+## [2026-09-06] ingest | OMP Mnemopi Auto-Recall 注入机制
+- Disposition: New
+- Raw: raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md; raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-corrections.md
+- Updated: 无级联更新

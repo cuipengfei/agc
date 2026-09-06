@@ -5,7 +5,7 @@
 AGC（AGent Configs）仓库有两个用途：
 
 1. **配置管理**：保存 Codex、OpenCode、OMO、OMP、Prime Agent 五套 Agent 工具的可审查配置、hook、plugin 与扩展副本。同步是单向的：来源 -> 仓库，由显式脚本完成；仓库不使用 symlink。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。
-2. **学习记录**：以 Karpathy LLM Wiki 模式存储 agent 配置的学习、实验与研究成果。`raw/` 放不可变原始材料摘录，`experiments/` 放结构化实验记录，`wiki/` 放可复用结论。
+2. **学习记录**：以 Karpathy LLM Wiki 模式存储 agent 配置的学习、实验与研究成果。`raw/` 放原始材料摘录（commit 后冻结），`experiments/` 放结构化实验记录，`wiki/` 放可复用结论。
 
 ## 架构与数据流
 
@@ -28,15 +28,17 @@ pull.sh / sync.py pull
 
 ### 学习记录
 
+> 本仓库规则优先于 skill：`raw/` 在 commit 前可改（草稿），commit 后冻结；`wiki/` 随时可改，但新事实必须先存新 raw（同 topic 多 raw 用 `Raw:` 分号并列）。
+
 ```text
-调查/实验
-  -> raw/<topic>/（原始证据摘录，不可变）
-  -> experiments/<date>-<slug>.md（结构化实验记录）
-  -> wiki/<topic>/（可复用结论）
+调查/实验（experiments/ 或 /tmp 草稿，可反复改）
+  -> raw/<topic>/（commit 前定稿，commit 后冻结）
+  -> wiki/<topic>/（可复用结论，随时演进）
 ```
 
 - 格式与流程以 `karpathy-llm-wiki` skill 为准（raw/wiki 布局、index/log 条目格式与取值、Grounding Invariant、lint 流程、相对路径规则）。本节只记该 skill 没有的 agc 特有约束，避免 skill 升级后两处漂移。
-- `raw/` 只放必要摘录，不放完整 transcript；入库前必须脱敏。
+- `raw/` 只放必要摘录，不放完整 transcript；每次写入前必须脱敏。
+- 冻结点为首次 git commit：新文件首次提交前属草稿可改；已提交 raw 永久冻结。未提交发现问题就地改；已提交发现问题新增新文件，wiki 的 `Raw:` 并列引用后更新。
 - `experiments/` 固定字段：Hypothesis / Baseline / Change / Context / Steps / Observations / Evidence / Verdict / Follow-up。
 - 文章元数据（`Sources`、`Raw`、`Updated`）必须紧跟 H1 放在连续 blockquote 里；写在正文末尾会被证据校验器判为「无 Raw 字段」并连带把对应 raw 报成 unreferenced。
 

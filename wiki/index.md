@@ -8,8 +8,16 @@ Agent harness 的 prompt、上下文架构与运行形态差异。
 |---------|---------|---------|
 | [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 相同模型表现差异背后的 prompt、技能加载、压缩、记忆和用户建模因素 | 2026-08-30 |
 
-## agent-interaction
 
+## github-repo-analysis
+
+GitHub 仓库分析：star 真实性、刷星检测与舆情评估。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [GitHub 刷星检测工具调研](github-repo-analysis/star-fraud-detection-tools.md) | 六工具（StarScout 系）信号分类法、分工、报告纪律与选型 | 2026-09-06 |
+
+## agent-interaction
 Agent 与画布、结构化产物及可持续编辑界面的交互方式。
 
 | Article | Summary | Updated |
@@ -107,6 +115,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 |---------|---------|---------|
 | [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与 consolidation 边界 | 2026-08-31 |
 | [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-02 |
+| [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响 | 2026-09-06 |
 
 ## omp-modes
 
