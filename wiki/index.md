@@ -58,6 +58,7 @@ Better Harness 的工作流审计模型与适用边界。
 |---------|---------|---------|
 | [GPT-5.6 Luna 真实规格](copilot-gateway/gpt-5.6-luna-specs.md) | 窗口 1050000（922000 prompt + 128000 output）、o200k_base、仅 /responses 端点、一个窗口两个计费档；OMP contextWindow 配总窗口的教训 | 2026-09-06 |
 
+
 ## harness-engineering
 
 Harness 的编辑格式、上下文载体与人类理解闭环。
@@ -68,6 +69,14 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-03 |
 | [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline、Snapcompact 与 RLM 在编辑、压缩和控制平面上的差异 | 2026-08-30 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
+
+## mcp-servers
+
+MCP server 清单筛选、star 真实性与生态知识。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [awesome-mcp-servers 通用 MCP 筛选](mcp-servers/awesome-mcp-servers-shortlist-method.md) | 3472→320 四层筛选管线、逐桶对账公式与 LLM rubric 终审 | 2026-09-06 |
 
 ## model-gateway-mismatch
 

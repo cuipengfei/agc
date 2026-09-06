@@ -1,0 +1,474 @@
+[
+ {
+  "cat": "Developer Tools",
+  "group": "code-dev-tools",
+  "include": true,
+  "confidence": "high",
+  "reason": "整类面向开发工作流（lint/依赖/API/代码质量），coding agent 直接受益",
+  "evidence": "抽样10条均为 dev 工具（vexor 语义代码搜索、bumpguard 依赖升级分析、DAP 调试桥等）"
+ },
+ {
+  "cat": "Coding Agents",
+  "group": "coding-agents",
+  "include": true,
+  "confidence": "high",
+  "reason": "类名即目标域",
+  "evidence": "73 条均为 agent 编排/记忆/审查工具"
+ },
+ {
+  "cat": "‍💻 Code Execution",
+  "group": "exec-cli",
+  "include": true,
+  "confidence": "high",
+  "reason": "代码沙箱/运行器是 coding agent 核心能力",
+  "evidence": "类内为 sandbox、REPL、runner"
+ },
+ {
+  "cat": "🖥️ Command Line",
+  "group": "exec-cli",
+  "include": true,
+  "confidence": "high",
+  "reason": "shell/CLI 访问是 coding agent 基础",
+  "evidence": "类内为 terminal/shell MCP"
+ },
+ {
+  "cat": "🖥️ OS Automation",
+  "group": "exec-cli",
+  "include": true,
+  "confidence": "medium",
+  "reason": "OS 级自动化对本地 agent 通用有用，但边缘条目偏桌面运维",
+  "evidence": "10 条，量小"
+ },
+ {
+  "cat": "Version Control",
+  "group": "version-control",
+  "include": true,
+  "confidence": "high",
+  "reason": "git/forge 操作是 coding agent 刚需",
+  "evidence": "GitHub/GitLab/Gitea/Bitbucket 条目"
+ },
+ {
+  "cat": "File Systems",
+  "group": "filesystems",
+  "include": true,
+  "confidence": "high",
+  "reason": "文件读写/搜索是 agent 基础工具",
+  "evidence": "42 条 fs 访问类"
+ },
+ {
+  "cat": "Knowledge & Memory",
+  "group": "knowledge-memory",
+  "include": true,
+  "confidence": "high",
+  "reason": "记忆/RAG 存储对 agent 通用",
+  "evidence": "291 条 memory/knowledge 条目"
+ },
+ {
+  "cat": "Search & Data Extraction",
+  "group": "search-extract",
+  "include": true,
+  "confidence": "high",
+  "reason": "网页搜索/抓取是 agent 通用能力",
+  "evidence": "203 条 search/scrape 条目"
+ },
+ {
+  "cat": "Browser Automation",
+  "group": "browser-automation",
+  "include": true,
+  "confidence": "high",
+  "reason": "浏览器驱动是 agent 通用能力",
+  "evidence": "88 条 playwright/puppeteer 类"
+ },
+ {
+  "cat": "Aggregators",
+  "group": "aggregators",
+  "include": true,
+  "confidence": "high",
+  "reason": "MCP 网关/聚合器天然通用",
+  "evidence": "110 条 meta-server"
+ },
+ {
+  "cat": "🗄️ Databases",
+  "group": "databases",
+  "include": true,
+  "confidence": "high",
+  "reason": "DB 访问是通用开发需求",
+  "evidence": "126 条 SQL/NoSQL 连接"
+ },
+ {
+  "cat": "☁️ Cloud Platforms",
+  "group": "cloud-deploy",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "部署/云操作对 devops 型 agent 有用，但含厂商锁定控制台",
+  "evidence": "109 条混合 AWS/CF/厂商面板"
+ },
+ {
+  "cat": "Monitoring",
+  "group": "monitoring",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "可观测性对 agent 排障有用，含纯运维 SaaS",
+  "evidence": "77 条"
+ },
+ {
+  "cat": "Security",
+  "group": "security",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "代码安全扫描对 coding agent 有用，但多为 SOC/威胁情报",
+  "evidence": "199 条需逐条分"
+ },
+ {
+  "cat": "Research",
+  "group": "research-docs",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "学术/深度搜索可助调研，偏论文场景",
+  "evidence": "39 条"
+ },
+ {
+  "cat": "Data Platforms",
+  "group": "data-platforms",
+  "include": "borderline",
+  "confidence": "low",
+  "reason": "偏数据分析平台，coding 相关性弱",
+  "evidence": "40 条"
+ },
+ {
+  "cat": "Data Science Tools",
+  "group": "data-platforms",
+  "include": "borderline",
+  "confidence": "low",
+  "reason": "偏 notebook/ML 实验",
+  "evidence": "36 条"
+ },
+ {
+  "cat": "Architecture & Design",
+  "group": "arch-design",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "架构图/UML 工具对设计型 agent 有用",
+  "evidence": "21 条"
+ },
+ {
+  "cat": "Workplace & Productivity",
+  "group": "collab-productivity",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "issue 跟踪/文档协作与开发流相关，含大量纯办公",
+  "evidence": "99 条"
+ },
+ {
+  "cat": "Communication",
+  "group": "collab-productivity",
+  "include": "borderline",
+  "confidence": "low",
+  "reason": "IM/邮件通知对 agent 仅边缘有用",
+  "evidence": "126 条"
+ },
+ {
+  "cat": "🛠️ Other Tools and Integrations",
+  "group": "misc-other",
+  "include": "borderline",
+  "confidence": "medium",
+  "reason": "杂项桶必须逐条终审",
+  "evidence": "180 条混合"
+ },
+ {
+  "cat": "Finance & Fintech",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Gaming",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Marketing",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Travel & Transportation",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "🗺️ Location Services",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Social Media",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Sports",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "E-Commerce",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "⚖️ Legal",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Real Estate",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Spirituality & Esoterica",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "🎙️ Podcasts",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Text-to-Speech",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "🎧 Text-to-Speech",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Speech-to-Text",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "🎙️ Speech-to-Text",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Translation Services",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Aerospace & Astrodynamics",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Agreements & Coordination",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Health & Wellness",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Environment & Nature",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Art & Culture",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Biology, Medicine and Bioinformatics",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Customer Data Platforms",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Product Management",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Support & Service Management",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Education",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Home Automation",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Industrial & IoT",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Embedded System",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Delivery",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "🗣️ Conversational AI",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Accessibility",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Multimedia Process",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Cryptography",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "Data Visualization",
+  "group": null,
+  "include": false,
+  "confidence": "high",
+  "reason": "垂直业务/领域专用，不属于通用或 coding-agent 助力范畴",
+  "evidence": "按类整体排除"
+ },
+ {
+  "cat": "end to end RAG platforms",
+  "group": "knowledge-memory",
+  "include": true,
+  "confidence": "high",
+  "reason": "RAG 平台属知识检索，直接助力 agent",
+  "evidence": "4 条 RAG 平台条目"
+ }
+]

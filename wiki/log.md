@@ -426,3 +426,8 @@
 - Updated: wiki/omp-slash-commands/builtin-slash-commands.md
 - 新文章 wiki/copilot-gateway/gpt-5.6-luna-specs.md（新话题 copilot-gateway）：8787 /v1/models 实测 luna 窗口 1,050,000（922K prompt + 128K output）、o200k_base、仅 /responses 端点、一个物理窗口两个计费档；纠正 models.yml 旧值 272000/16000。
 - 十问补遗 #2 扩写：OMP 无全局压缩模型字段，resolveCompactionConfiguredTarget 只读 currentModel.compactionModel，modelOverrides 仅精确 id 匹配；#3 收紧为手动 handoff 两态、落盘需 autoTriggered+handoffSaveToDisk。
+
+## [2026-09-06] ingest | awesome-mcp-servers 通用 MCP 筛选
+- Disposition: New
+- Raw: raw/awesome-mcp-servers/session-data-excerpts.md（会话结果派生摘要；原始大快照因体积未入库）
+- Updated: 无级联更新

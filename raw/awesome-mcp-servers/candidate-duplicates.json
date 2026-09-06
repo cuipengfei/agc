@@ -1,0 +1,82 @@
+[
+ {
+  "url": "https://github.com/askbudi/roundtable",
+  "occurrences": [
+   {
+    "line": 164,
+    "cat": "Aggregators",
+    "name": "askbudi/roundtable"
+   },
+   {
+    "line": 651,
+    "cat": "Coding Agents",
+    "name": "askbudi/roundtable"
+   }
+  ]
+ },
+ {
+  "url": "https://github.com/firecrawl/firecrawl-mcp-server",
+  "occurrences": [
+   {
+    "line": 442,
+    "cat": "Browser Automation",
+    "name": "firecrawl/firecrawl-mcp-server"
+   },
+   {
+    "line": 2744,
+    "cat": "Monitoring",
+    "name": "firecrawl/firecrawl-mcp-server"
+   },
+   {
+    "line": 3037,
+    "cat": "Search & Data Extraction",
+    "name": "firecrawl/firecrawl-mcp-server"
+   }
+  ]
+ },
+ {
+  "url": "https://github.com/olostep/olostep-mcp-server",
+  "occurrences": [
+   {
+    "line": 471,
+    "cat": "Browser Automation",
+    "name": "olostep/olostep-mcp-server"
+   },
+   {
+    "line": 3102,
+    "cat": "Search & Data Extraction",
+    "name": "olostep/olostep-mcp-server"
+   }
+  ]
+ },
+ {
+  "url": "https://github.com/liftkkkk/owl-mcp",
+  "occurrences": [
+   {
+    "line": 2423,
+    "cat": "Knowledge & Memory",
+    "name": "liftkkkk/owl-mcp"
+   },
+   {
+    "line": 2507,
+    "cat": "Knowledge & Memory",
+    "name": "liftkkkk/owl-mcp"
+   }
+  ]
+ },
+ {
+  "url": "https://github.com/pantheon-security/notebooklm-mcp-secure",
+  "occurrences": [
+   {
+    "line": 2466,
+    "cat": "Knowledge & Memory",
+    "name": "Pantheon-Security/notebooklm-mcp-secure"
+   },
+   {
+    "line": 2944,
+    "cat": "Research",
+    "name": "Pantheon-Security/notebooklm-mcp-secure"
+   }
+  ]
+ }
+]
