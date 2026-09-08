@@ -82,8 +82,8 @@ providers:
   unexpectedStopModel: online
   kimiApiFormat: auto
   openaiWebsockets: auto
-  streamFirstEventTimeoutSeconds: -1
-  streamIdleTimeoutSeconds: -1
+  streamFirstEventTimeoutSeconds: 150
+  streamIdleTimeoutSeconds: 150
   openrouterVariant: default
   fetch: trafilatura
 disabledExtensions:
