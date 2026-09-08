@@ -2,7 +2,7 @@
 // managed by herdr; reinstalling or updating the integration overwrites this file.
 // add custom hooks/plugins beside this file instead of editing it.
 // HERDR_INTEGRATION_ID=omp
-// HERDR_INTEGRATION_VERSION=8
+// HERDR_INTEGRATION_VERSION=9
 // @ts-nocheck
 
 import net from "node:net";
@@ -442,6 +442,11 @@ export default function (pi) {
       // cancel the retry hold and publish a false Idle.
       return;
     }
+    if (event?.willContinue === true) {
+      // A continuation is already scheduled, so this end is not a settle.
+      // Older builds omit the field and fall through as before.
+      return;
+    }
 
     agentActive = false;
 
@@ -460,4 +465,3 @@ export default function (pi) {
     }
   });
 }
-

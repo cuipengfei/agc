@@ -76,6 +76,11 @@
     "context-mode": {
       "type": "stdio",
       "command": "context-mode"
+    },
+    "excalidraw": {
+      "type": "stdio",
+      "command": "/home/cpf/.bun/bin/mcp-excalidraw-server",
+      "args": []
     }
   }
 }
