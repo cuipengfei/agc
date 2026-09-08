@@ -449,3 +449,8 @@
 - Raw: raw/agent-interaction/2026-09-06-mcp-excalidraw-local-setup.md
 - Updated: mcp_excalidraw：给 Agent 一块活画布
 - 新增：Bun 全局安装、OMP MCP 配置、26 工具 8 类完整分类、浏览器依赖 4 项、字体枚举与默认设置、Sync 机制、遥测代码审计、单 canvas 限制与变通
+
+## [2026-09-08] ingest | Kimi Claw 专用网关
+- Disposition: New
+- Raw: raw/kimi-claw/2026-09-08-kimi-claw-gateway-probe.md
+- Updated: 无级联更新
