@@ -22,8 +22,6 @@ enabledModels:
   - c8787-chat/*
   - umans/*
   - justwoker/*
-  - kktoken/*
-  - tabitoken/*
   - motomoto-responses/*
   - opencode-zen/*
   - opencode-go/*
@@ -90,8 +88,8 @@ disabledExtensions:
   []
 modelRoleStorage: global
 modelRoles:
-  plan: justwoker/claude-opus-5:medium
-  slow: justwoker/claude-opus-5:medium
+  plan: kimi-code/k3:high
+  slow: kimi-claw/k3-agent:xhigh
   commit: c8787/gpt-5.6-luna:medium
   smol: kimi-claw/k3-agent:medium
   task: kimi-claw/k3-agent:medium
@@ -99,7 +97,7 @@ modelRoles:
   tiny: kimi-claw/k3-agent:medium
   advisor: c8787/gpt-5.6-luna:max
   designer: kimi-claw/k3-agent:medium
-  default: justwoker/claude-opus-5:medium
+  default: kimi-code/k3:high
 modelTags:
   {}
 modelProviderOrder:

@@ -76,6 +76,13 @@ providers:
         input: [text, image]
         contextWindow: 1000000
         maxTokens: 64000
+      - id: gemini-3.8-flash
+        compactionModel: c8787/gpt-5.6-luna
+        name: Gemini 3.8 Flash
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1048576
+        maxTokens: 65536
       - id: kimi-k2.7-code
         compactionModel: c8787/gpt-5.6-luna
         name: Kimi K2.7 Code
@@ -122,66 +129,6 @@ providers:
         input: [text, image]
         contextWindow: 1000000
         maxTokens: 32768
-
-  kktoken:
-    api: anthropic-messages
-    baseUrl: "https://kktoken.cc"
-    apiKey: "<REDACTED>"
-    models:
-      - id: claude-opus-5
-        compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 5"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0.6
-          output: 0.6
-          cacheRead: 0
-          cacheWrite: 0
-      - id: claude-opus-5-thinking
-        compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 5 Thinking"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0.65
-          output: 0.65
-          cacheRead: 0
-          cacheWrite: 0
-
-  tabitoken:
-    api: anthropic-messages
-    baseUrl: "https://tabitoken.com"
-    apiKey: "<REDACTED>"
-    models:
-      - id: claude-opus-5
-        compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 5"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0.6
-          output: 0.6
-          cacheRead: 0
-          cacheWrite: 0
-      - id: claude-opus-5-thinking
-        compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 5 Thinking"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0.65
-          output: 0.65
-          cacheRead: 0
-          cacheWrite: 0
 
   motomoto-responses:
     api: openai-responses
@@ -335,20 +282,6 @@ providers:
           output: 0
           cacheRead: 0
           cacheWrite: 0
-
-  api456:
-    api: openai-completions
-    baseUrl: https://api456.me/v1
-    apiKey: "<REDACTED>"
-    models:
-      - id: claude-opus-4-6
-        compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 4.6 (api456)"
-        input: [text]
-      - id: claude-sonnet-4-6
-        compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Sonnet 4.6 (api456)"
-        input: [text]
 
   deepseek:
     modelOverrides:
