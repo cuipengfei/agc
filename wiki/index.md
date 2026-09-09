@@ -98,6 +98,48 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-04 |
 | [Relay 的 chunked 流不终止：诊断与最小修复](model-gateway-mismatch/relay-unterminated-chunked-stream.md) | 缺失 chunked 终止块造成的 60 秒挂起、客户端一致性验证与本地 shim 修复 | 2026-09-05 |
 | [SDK 对非标准 responses 帧的解析严格度差异](model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) | AI SDK 与 pi-ai 对同一 responses 帧的解析差异及 OpenCode/OMP 协议分配 | 2026-09-05 |
+
+## omp-auth
+
+OMP Auth Broker 与 Gateway：凭据集中与代理访问。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Auth Broker 与 Gateway](omp-auth/auth-broker-gateway.md) | 凭据集中、access token 服务端解析、客户端不保存 provider key | 2026-09-09 |
+
+## omp-commands
+
+OMP 内置命令的机制与动态发现。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Cleanse：动态诊断修复](omp-commands/cleanse.md) | 按项目文件和可用 binary 动态发现 checker，多语言支持 | 2026-09-09 |
+
+## omp-config
+
+OMP 配置项的源码级行为边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Compaction Model 与 Thinking Level](omp-config/compaction-model.md) | compactionModel 只换压的人，thinking effort 继承自 session thinkingLevel | 2026-09-09 |
+| [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理 | 2026-09-09 |
+
+## omp-extensibility
+
+OMP Extension 与 Hook 的职责边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Hooks vs Extensions](omp-extensibility/hooks-vs-extensions.md) | Extension 覆盖 HookAPI 全部用例并增加 tool/provider，Hook 是 legacy 兼容层 | 2026-09-09 |
+
+## omp-tips
+
+OMP 启动提示与交互快捷方式。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP 启动提示全表](omp-tips/startup-tips.md) | 28 条提示（27 条 + 1 条条件提示）、加权随机、Agent Hub、yield-queue | 2026-09-09 |
+
 ## kimi-claw
 
 Kimi Claw 专用网关（agent-gw.kimi.com）的模型目录、会员档位与 entitlement 边界。
@@ -130,7 +172,7 @@ OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议 | 2026-08-27 |
+| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议 | 2026-09-09 |
 
 ## omp-prewalk
 
@@ -171,7 +213,7 @@ OMP TTSR 流式行为护栏、Extension 分层与上下文处置。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | schema、tool_call extension 与 TTSR 的职责边界 | 2026-08-29 |
+| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | schema、tool_call extension 与 TTSR 的职责边界 | 2026-09-09 |
 | [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | 命中规则后保留或丢弃错误上下文的证据与取舍 | 2026-08-26 |
 | [OMP TTSR 与 /omfg](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、配置、生命周期、规则生成与实测边界 | 2026-08-29 |
 
@@ -208,3 +250,11 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Keyboard-Driven Pointer Control](keyboard-input/keyboard-driven-pointer-control.md) | 三条机制路径区分、工具矩阵、Capslock 与 Windows 方案 | 2026-09-03 |
+
+## software-testing
+
+软件测试中的 mutation testing、test oracle、invariant 与 mutant 分类。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-09 |

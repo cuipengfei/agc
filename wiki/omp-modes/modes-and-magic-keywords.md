@@ -1,8 +1,8 @@
 # OMP 工作模式与 Magic Keywords
 
 > Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md)
-> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md)
-> Updated: 2026-08-27
+> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md)
+> Updated: 2026-09-09
 
 ## 工作流模式
 
@@ -57,7 +57,7 @@ Plan、Goal、Vibe 互斥。
 |---|---|---|
 | `ultrathink` | 当前 turn 深度推理；auto-thinking 时提升到最高 effort | 无 |
 | `orchestrate` | 用 `task` subagents 并行执行 | 需要 `task` 工具 |
-| `workflowz` | 用 `eval` 中的 `agent/parallel/pipeline/completion` 构建 DAG | 需要 `task` + `eval` |
+| `workflowz` | 用 `eval` 中的 `agent/parallel/pipeline/completion` 构建 DAG；依赖节点按边等待，独立节点仍可并行 | 需要 `task` + `eval` |
 
 匹配规则：
 
@@ -97,7 +97,7 @@ Vibe 父 session 没有普通 `task`/`eval`，因此 `orchestrate`/`workflowz` �
 
 深思 → ultrathink
 普通并行派工 → orchestrate
-严格多阶段 DAG → workflowz
+带依赖关系的多阶段 DAG → workflowz
 ```
 
 ## See Also

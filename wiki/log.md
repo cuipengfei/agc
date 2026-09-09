@@ -454,3 +454,49 @@
 - Disposition: New
 - Raw: raw/kimi-claw/2026-09-08-kimi-claw-gateway-probe.md
 - Updated: 无级联更新
+
+## [2026-09-09] ingest | OMP 启动提示全表
+- Disposition: New
+- Raw: raw/omp-tips/2026-09-09-startup-tips-source.md
+- Created: OMP 启动提示全表
+
+## [2026-09-09] ingest | OMP Compaction Model 与 Thinking Level
+- Disposition: New
+- Raw: raw/omp-config/2026-09-09-compaction-model-thinking-level.md
+- Created: OMP Compaction Model 与 Thinking Level
+
+## [2026-09-09] ingest | OMP Managed Skills 生命周期
+- Disposition: New
+- Raw: raw/omp-config/2026-09-09-managed-skills-lifecycle.md
+- Created: OMP Managed Skills 生命周期
+
+## [2026-09-09] ingest | OMP Hooks vs Extensions
+- Disposition: New
+- Raw: raw/omp-extensibility/2026-09-09-hooks-vs-extensions-source.md; raw/omp-extensibility/2026-09-09-extension-hook-relationship.md
+- Created: OMP Hooks vs Extensions
+
+## [2026-09-09] ingest | OMP Cleanse：动态诊断修复
+- Disposition: New
+- Raw: raw/omp-commands/2026-09-09-cleanse-discovery-source.md
+- Created: OMP Cleanse：动态诊断修复
+
+## [2026-09-09] ingest | OMP Auth Broker 与 Gateway
+- Disposition: New
+- Raw: raw/omp-auth/2026-09-09-auth-broker-gateway-source.md
+- Created: OMP Auth Broker 与 Gateway
+
+## [2026-09-09] ingest | OMP 工作模式与 Magic Keywords（workflowz 修正）
+- Disposition: Update
+- Raw: raw/omp-modes/2026-09-09-workflowz-dag-correction.md
+- Updated: OMP 工作模式与 Magic Keywords
+- 修正：workflowz 由"严格多阶段 DAG"改为"依赖节点按边等待，独立节点仍可并行"
+
+## [2026-09-09] ingest | OMP Extension 与 TTSR 分层防护（Extension/Hook 关系修正）
+- Disposition: Update
+- Raw: raw/omp-extensibility/2026-09-09-extension-hook-relationship.md
+- Updated: OMP Extension 与 TTSR 分层防护
+- 修正："Extension 是 Hook 的严格超集"改为"Extension 覆盖 HookAPI 全部用例，但两套 API 不是完全 drop-in"
+
+## [2026-09-09] ingest | Mutation testing、test oracle 与 invariant
+- Disposition: New
+- Raw: raw/software-testing/2026-09-09-thoughtworks-mutation-testing.md; raw/software-testing/2026-09-09-test-oracle-survey.md; raw/software-testing/2026-09-09-invariant-definition.md; raw/software-testing/2026-09-09-mutation-invariant-violations.md

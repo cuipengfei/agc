@@ -1,8 +1,8 @@
 # OMP Extension 与 TTSR：执行护栏的分层方法
 
 > Sources: OMP Extension authoring 文档与当前源码；OMP 官方 TTSR 文档；TTSR Injection Lifecycle 参考
-> Raw: [Extension 生命周期与设计模式](../../raw/omp-extensions/2026-08-29-omp-extension-lifecycle-patterns.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 防护案例](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md)
-> Updated: 2026-08-29
+> Raw: [Extension 生命周期与设计模式](../../raw/omp-extensions/2026-08-29-omp-extension-lifecycle-patterns.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 防护案例](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [OMP Extension 与 Hook 关系修正](../../raw/omp-extensibility/2026-09-09-extension-hook-relationship.md)
+> Updated: 2026-09-09
 
 ## 核心判断
 
@@ -20,8 +20,7 @@ TTSR 和 extension 都能做护栏，但不是同一种护栏：TTSR 看文本�
 
 ## Extension 的职责和生命周期
 
-Extension 是 OMP 增加能力的主要方式。它通过 `ExtensionAPI` 注册工具、命令和 session event handlers。新 authoring 应优先使用 ExtensionAPI；Extension 是 Hook 的严格超集。
-
+新 authoring 应优先使用 ExtensionAPI；Extension 覆盖 HookAPI 的全部用例，但两套 API 不是完全 drop-in。不要把 "Extension 是 Hook 的严格超集" 当成精确描述——能力覆盖成立，接口不兼容。
 OMP 会从项目目录、用户目录、配置路径、CLI `--extension`/`-e` 和插件 manifest 发现 extension。文件名 stem 是 extension 的派生名称。Extension 应在加载阶段注册 handler，不要在模块加载时调用 runtime action。
 
 ### `tool_call` 适合什么
