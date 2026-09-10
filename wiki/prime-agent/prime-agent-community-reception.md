@@ -50,7 +50,7 @@ X/Twitter thread（https://www.unrollnow.com/status/2085502793679294947）：
 
 *Prime Agent：24 个有效运行中 15 个通过。6 个被排除：2 个 verifier 超时（session 高达 3.5M tokens、33 次 tool call），4 个未记录。
 
-**关键观察**：Prime token 消耗最高（1.4M/任务，几乎 2x），没有 harness 在所有指标上占优。
+**关键观察**：Prime token 消耗最高，没有 harness 在所有指标上占优。
 
 ## 社区声音（HN）
 

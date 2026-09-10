@@ -74,7 +74,7 @@ Supervisor-worker：supervisor 管 Unix socket、client attach/detach、worker �
 
 ## Status: Disputed
 
-本文章中关于 RLM 的"递归"描述与 Digg 转载文章 "Critic Finds Prime Agent Lacks True RLM Recursion" 存在表面矛盾。但源码已确认 child→grandchild 递归在 agent/session 调度层真实存在，因此该批评与事实不符。
+本文章中关于 RLM 的"递归"描述与一篇 Digg 转载文章存在表面矛盾。但源码已确认 child→grandchild 递归在 agent/session 调度层真实存在，因此该批评与事实不符。
 
 ## See Also
 

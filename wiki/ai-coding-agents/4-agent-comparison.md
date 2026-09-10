@@ -1,7 +1,7 @@
 # AI Coding Agent 对比：真正独特优势（19 家）
 
 > Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30; jcode 与 OpenClaude 调研，2026-09-01; Claude Code 2.1.261 与 Codex CLI 0.153.4 本机安装直读，2026-09-05
-> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md); [Codex bypass 开关与 execpolicy 的关系](../../raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md)
+> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md); [Codex bypass 开关与 execpolicy 的关系](../../raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md); [CLI 调查版本号更正](../../raw/ai-coding-agents/2026-09-05-cli-survey-version-correction.md); [CLI help 递归调查](../../raw/ai-coding-agents/2026-09-05-cli-help-recursive-survey.md)
 > Updated: 2026-09-05
 
 ## 研究对象
@@ -315,7 +315,7 @@ error: the argument '--dangerously-bypass-approvals-and-sandbox' cannot be used 
 
 为什么算可能独有：别家做 prompt cache 稳定性都是为**单个用户**的 within-session / cross-session 命中（Reasonix `StaticPromptCache`、Hermes `prefix_and_2`）；为**跨用户共享前缀**做工程的，已查材料里没有第二家。评级只给 `[single-source]`：证据来自 Anthropic 自家实现，缺独立第二方佐证。
 
-> Status: 证据边界（2026-09-05）
+> **Status: 证据边界**（2026-09-05）
 >
 > ClaudeCodeUnique 报告里写了「Achieves ~82-98% cross-user cache sharing」。这句话本身在 raw 里（scout 报告原文收录），但 scout 没给出任何来源，也无法回溯到 Anthropic 文档或二进制里的任何数字。**属未溯源数字，已弃用，不得引用**。这与「raw 里没有」是两回事，别把两者混为一谈。
 
@@ -358,7 +358,7 @@ error: the argument '--dangerously-bypass-approvals-and-sandbox' cannot be used 
 
 即 **OpenAI 在自家 harness 里实现了 Anthropic 的 hook 线格式**——这是基于上述同名字段的推断，双方均未公开声明兼容意图。
 
-> Status: 自我更正（2026-09-05）
+> **Status: 自我更正**（2026-09-05）
 >
 > 本节初稿曾写「Codex 事件里多出 `post_compact` 与 `subagent_start`，Claude 没有」。那句话写下时未做对应扫描，补扫后**证伪**：Claude Code 二进制里 `PostCompact` 命中 59（含 `executePostCompactHooks`）、`SubagentStart` 命中 24（含 `executeSubagentStartHooks`、`SubagentStart hooks cancelled (control stream closed)`），只是用 PascalCase。反方向只余弱证据：Codex 里 `PermissionDenied`/`permission_denied` 各命中 2，但语境是 IO/AWS 错误枚举与 gRPC 状态名，不是 hook 事件；`"retry"` 命中 0。故「Codex 无 PermissionDenied hook」只能记作**已查材料中未找到**。证据见 [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md)。
 >

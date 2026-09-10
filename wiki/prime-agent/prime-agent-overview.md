@@ -8,7 +8,7 @@
 
 Prime Agent 是面向 coding、research 与 long-horizon evaluation 的开源 agent harness。核心组合是：
 
-- **RLM（Recursive Language Model）**：持久 Python 环境（v0.8.1 为标准 Jupyter kernel，上游源码为自定义 REPL），模型用代码管理 context
+- **RLM（Recursive Language Model）**：持久 Python 环境（标准 Jupyter kernel，上游源码为自定义 REPL），模型用代码管理 context
 - **Continual Harness**：prompt/memory/skill/subagent 配置可持久化、可回滚（不改模型权重）
 - **Daemon 架构**：TUI 可随时 detach，worker 继续持有 session 和状态
 

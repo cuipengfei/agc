@@ -63,7 +63,7 @@ Better Harness 的确定性采集层（`session-analysis` 下的 `.mjs`）产出
 
 真正约束判断质量的是 prose（`SKILL.md:71` 的 exactly three、`findings-review.md` 的质量门、五维天花板模型），不是代码。代码只保证产物格式（renderer 的四类 schema 校验）。
 
-> Raw: [BH 确定性分析器边界](../../raw/better-harness/2026-09-03-deterministic-analyzer-boundary.md)
+> 证据：[BH 确定性分析器边界](../../raw/better-harness/2026-09-03-deterministic-analyzer-boundary.md)
 
 ## 限制
 

@@ -1,8 +1,8 @@
 # 视觉人机交互全景：人与 Agent 共享视觉工作面
 
 > Sources: GitHub API 元数据; tldraw 官方文档; Figma 官方帮助/开发者文档; Blender 官方 lab 页面; Spline 官方; Honeycomb/Observable/Deepnote/Hex 官方文档; 各项目 README
-> Raw: [全景证据](../../raw/agent-interaction/2026-08-30-visual-canvas-landscape.md); [tldraw 生态深挖](../../raw/agent-interaction/2026-08-30-tldraw-ecosystem-deep-dive.md); [3D 空间工具](../../raw/agent-interaction/2026-08-30-3d-spatial-tools.md); [数据可视化与 SaaS](../../raw/agent-interaction/2026-08-30-data-viz-saas-tools.md); [Figma 生态](../../raw/agent-interaction/2026-08-30-figma-ecosystem.md); [Sim workflow 画布](../../raw/agent-interaction/2026-08-30-sim-workflow-canvas.md)
-> Updated: 2026-08-30
+> Raw: [全景证据](../../raw/agent-interaction/2026-08-30-visual-canvas-landscape.md); [tldraw 生态深挖](../../raw/agent-interaction/2026-08-30-tldraw-ecosystem-deep-dive.md); [3D 空间工具](../../raw/agent-interaction/2026-08-30-3d-spatial-tools.md); [数据可视化与 SaaS](../../raw/agent-interaction/2026-08-30-data-viz-saas-tools.md); [Figma 生态](../../raw/agent-interaction/2026-08-30-figma-ecosystem.md); [Sim workflow 画布](../../raw/agent-interaction/2026-08-30-sim-workflow-canvas.md); [官方 excalidraw-mcp 摘录](../../raw/agent-interaction/2026-08-30-excalidraw-official-mcp.md)
+> Updated: 2026-09-10
 
 ## 判定标准
 
@@ -65,23 +65,23 @@
 |---|---|
 | **Figma Make** | prompt→app/prototype，人点选预览/属性面板/代码；Make→Design 是脱钩 snapshot，不回同步 |
 | **Meshy 3D Agent** | 对话生成可编辑模型，人下载后接管，非同时编辑 |
-| **官方 excalidraw-mcp** | 5,208 stars，one-shot diagram 生成，无持久元素级多轮工作台 |
+| **官方 excalidraw-mcp** | 5207 stars，one-shot diagram 生成，无持久元素级多轮工作台 |
 | **Cursor Canvas** | agent 生成交互 artifact，人可改；团队 snapshot 共享，未证实多人实时同屏 |
 | **Deepnote Agent** | 共享 notebook canvas，agent 创建 chart/code block，人逐 cell 确认/undo；block 画布非自由白板 |
 | **Hex Notebook Agent** | 同上，notebook 类；逐 cell confirm |
 
 ## C 级：仅生成或查看视觉产物（出局）
 
-| 工具 | Stars | 说明 |
-|---|---|---|
-| **excalidraw/excalidraw** | 130,805 | 核心画布无内置 agent，需外部桥接 |
-| **tldraw/tldraw** | 50,034 | 生产部署需 license key |
-| **AFFiNE** | 72,019 | MCP 写入布局仍 roadmap，agent 创建块全在 (0,0) |
-| **xyflow** | 38,198 | SDK 工具包，需自建 agent 桥接 |
-| **antvis/mcp-server-chart** | 4,345 | 仅生成 chart 输出，无持久共享画布 |
-| **VisActor vchart** | — | 交互图表后端，无共享画布 |
-| **Mermaid MCP** | — | diagram-only，偏流程图 |
-| **KyuRish MCP Dashboards** | — | 对话内嵌交互 UI，非独立共享 canvas |
+| 工具 | 说明 |
+|---|---|
+| **excalidraw/excalidraw** | 核心画布无内置 agent，需外部桥接 |
+| **tldraw/tldraw** | 生产部署需 license key |
+| **AFFiNE** | MCP 写入布局仍 roadmap，agent 创建块全在 (0,0) |
+| **xyflow** | SDK 工具包，需自建 agent 桥接 |
+| **antvis/mcp-server-chart** | 仅生成 chart 输出，无持久共享画布 |
+| **VisActor vchart** | 交互图表后端，无共享画布 |
+| **Mermaid MCP** | diagram-only，偏流程图 |
+| **KyuRish MCP Dashboards** | 对话内嵌交互 UI，非独立共享 canvas |
 
 ## 按场景推荐
 

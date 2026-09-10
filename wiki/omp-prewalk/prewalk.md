@@ -89,7 +89,7 @@ OMP 创始人 Can Bölük 在 Stencil.so 发布的自测数据（作者自测，
 | /prewalk | 78% | $1.46 | 402s |
 | Opus oneshot | 85% | $2.78 | 606s |
 
-/prewalk 达到 Opus 独做 92% 的 pass rate，53% 的成本，1.5× 速度。
+/prewalk 达到 Opus 独做的 pass rate，更低的成本，更快的速度。
 
 **注意**：作者/OMP 维护者自测，非独立第三方评测。
 

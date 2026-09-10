@@ -76,7 +76,7 @@
 
 ### 站点 `usage.cost` 与面板倍率换算不一致
 
-一次最小请求（`claude-opus-4-8`，6844 input / 1 output）的响应 `usage.cost` 为 `0.0006104893320066336` USD，折算约 0.089 USD/M input token。已认证的 `/api/pricing` 给出的倍率（`model_ratio: 0.25`，`completion_ratio: 5`，`group_ratio: 1`）按 New API 公式换算为约 0.50 USD/M input。两者相差约 5.6 倍。`usage.cost` 字段的计费口径未验证，该矛盾未解释。
+一次最小请求（`claude-opus-4-8`，6844 input / 1 output）的响应 `usage.cost` 为 `0.0006104893320066336` USD。已认证的 `/api/pricing` 给出的倍率（`model_ratio: 0.25`，`completion_ratio: 5`，`group_ratio: 1`）按 New API 公式换算后与 `usage.cost` 字段不一致。`usage.cost` 字段的计费口径未验证，该矛盾未解释。
 
 ### `claude-opus-4-8-thinking` 在 `/v1/messages` 返回 403
 

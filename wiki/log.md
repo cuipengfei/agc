@@ -500,3 +500,20 @@
 ## [2026-09-09] ingest | Mutation testing、test oracle 与 invariant
 - Disposition: New
 - Raw: raw/software-testing/2026-09-09-thoughtworks-mutation-testing.md; raw/software-testing/2026-09-09-test-oracle-survey.md; raw/software-testing/2026-09-09-invariant-definition.md; raw/software-testing/2026-09-09-mutation-invariant-violations.md
+
+## [2026-09-10] lint | 66 fidelity suspects 逐项核验，19 项修正，余 47 为 checker 结构性假阳性
+- Disposition: Update（既有文章核验）
+- 修正（真错误）：
+  - visual-canvas-interaction-landscape.md：无 raw 证据的 Stars 列删除；官方 excalidraw-mcp star 数由 5,208 修正为 5207（raw: stargazers_count: 5207），Raw 补链 excalidraw-official-mcp.md
+  - justwoker-v1-messages-observed-behavior.md：无 raw 证据的具体倍率数字删除
+  - prewalk.md：无 raw 证据的 92%/53%/1.5x 性能数字删除
+  - prime-agent-overview.md：无 raw 证据的 "v0.8.1" 删除
+  - prime-agent-community-reception.md：无 raw 证据的 "1.4M" 删除
+  - prime-agent-technical-reality.md：无 raw 证据的 "Critic Finds..." 标题删除
+  - builtin-slash-commands.md：行号与 raw 对齐（1206-1213→1200-1400；agent.ts:104,139→102-115/:148）
+  - better-harness.md：正文裸 `Raw:` 前缀改 `证据:`（被 checker 误解析为元数据）
+  - 4-agent-comparison.md：Raw 补链 cli-survey-version-correction.md 与 cli-help-recursive-survey.md（正文引用 1.18.29 与 CLI 补证的证据 raw 此前未列入）
+- 回滚：prime-agent 三篇曾错误添加无原文证据的 correction raw，已撤回元数据改动并删除 3 个未提交 raw
+- 逐项核验的假阳性形态：千分位格式（2,362 vs raw 2362）、DATE_RE 误吃行号前缀（2240-22←2240-2256）、raw 侧数字在 fenced code block 内（60.0/2.94/1478 等）、正文概括语（"hands stay on keyboard"）、inline code 剥离残句、See Also 行、raw 原文逐字在侧（HN 引语）
+- 附加修正：4-agent-comparison.md 两处未加粗 `> Status:` 改为 `> **Status:**`（checker STATUS_LINE_RE 只识别加粗形态，属文章格式缺陷非内容假阳性）；CLI 侧补证段残句经核验 raw cli-help-recursive-survey.md:1395-1409 有完整 `opencode db` help 输出，有证据，系 INLINE_CODE_RE 剥离后字面匹配失败
+- Result: 66 → 47（0 evidence errors；47 项全部经逐项核验为 checker 结构性假阳性：千分位/DATE_RE 误吃行号/fenced code 内数字/inline code 剥离残句/正文概括语/See Also 行/raw 原文逐字在侧）
