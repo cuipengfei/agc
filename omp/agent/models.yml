@@ -130,14 +130,14 @@ providers:
         contextWindow: 1000000
         maxTokens: 32768
 
-  motomoto-responses:
-    api: openai-responses
+  motomoto-chat:
+    api: openai-completions
     baseUrl: "http://127.0.0.1:4150/v1"
     apiKey: "<REDACTED>"   # real key lives in ~/.config/motomoto-shim.key, held by the shim
     models:
       - id: gpt-5.5
         compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.5 (Responses)"
+        name: "GPT-5.5 (Chat Completions)"
         reasoning: true
         input: [text, image]
         contextWindow: 1000000
@@ -149,7 +149,7 @@ providers:
           cacheWrite: 0
       - id: gpt-5.6-sol
         compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.6 Sol (Responses)"
+        name: "GPT-5.6 Sol (Chat Completions)"
         reasoning: true
         input: [text, image]
         contextWindow: 1000000
@@ -291,4 +291,3 @@ providers:
         compactionModel: c8787/gpt-5.6-luna
       deepseek-v4-pro:
         compactionModel: c8787/gpt-5.6-luna
-

@@ -3,6 +3,6 @@
   "private": true,
   "dependencies": {
     "@dietrichgebert/ponytail": "https://github.com/DietrichGebert/ponytail",
-    "@plannotator/pi-extension": "^0.27.12"
+    "@plannotator/pi-extension": "^0.27.13"
   }
 }
