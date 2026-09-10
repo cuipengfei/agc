@@ -22,7 +22,7 @@ enabledModels:
   - c8787-chat/*
   - umans/*
   - justwoker/*
-  - motomoto-responses/*
+  - motomoto-chat/*
   - opencode-zen/*
   - opencode-go/*
   - opencode-go/*
@@ -31,8 +31,7 @@ enabledModels:
   - deepseek/*
   - tokenrouter/**
   - openrouter/**
-disabledProviders:
-  []
+disabledProviders: []
 providers:
   maxInFlightRequests:
     c4141: 5
@@ -67,8 +66,7 @@ providers:
     - gemini
     - searxng
   antigravityEndpoint: auto
-  imageOrder:
-    []
+  imageOrder: []
   fireworksTier: standard
   tts: auto
   tinyModel: online
@@ -84,8 +82,7 @@ providers:
   streamIdleTimeoutSeconds: 150
   openrouterVariant: default
   fetch: trafilatura
-disabledExtensions:
-  []
+disabledExtensions: []
 modelRoleStorage: global
 modelRoles:
   plan: kimi-code/k3:high
@@ -98,10 +95,8 @@ modelRoles:
   advisor: c8787/gpt-5.6-luna:max
   designer: kimi-claw/k3-agent:medium
   default: kimi-code/k3:high
-modelTags:
-  {}
-modelProviderOrder:
-  []
+modelTags: {}
+modelProviderOrder: []
 cycleOrder:
   - smol
   - default
@@ -113,17 +108,14 @@ symbolPreset: nerd
 colorBlindMode: false
 statusLine:
   preset: default
-  separator: powerline-thin
+  separator: slash
   sessionAccent: true
   transparent: false
   compactThinkingLevel: false
   showHookStatus: true
-  leftSegments:
-    []
-  rightSegments:
-    []
-  segmentOptions:
-    {}
+  leftSegments: []
+  rightSegments: []
+  segmentOptions: {}
   contextLine: annotated
 tools:
   artifactSpillThreshold: 50
@@ -140,8 +132,7 @@ tools:
   maxTimeout: 0
   xdev: true
   xdevDocs: builtins
-  xdevInlineDevices:
-    []
+  xdevInlineDevices: []
 terminal:
   showImages: true
   showProgress: true
@@ -159,15 +150,18 @@ tui:
   codexResetFireworks: false
   titleState: true
   hyperlinks: auto
-  tight: true
+  tight: false
   scrollbackRebuild: true
   imeSafeCursor: false
+  resizeScrollback: rebuild
+  reactions: true
 display:
   shimmer: kitt
   smoothStreaming: true
   showTokenUsage: true
   cacheMissMarker: true
   collapseCompacted: true
+  showTurnTime: true
 showHardwareCursor: true
 defaultThinkingLevel: high
 hideThinkingBlock: false
@@ -187,8 +181,7 @@ inlineToolDescriptors: auto
 includeModelInPrompt: true
 includeWorkspaceTree: false
 workspace:
-  additionalDirectories:
-    []
+  additionalDirectories: []
 personality: friendly
 temperature: -1
 topP: -1
@@ -211,8 +204,7 @@ retry:
   usageAwareFallback: false
   usageReservePct: 10
   usageReservePolicy: confirm
-  fallbackChains:
-    {}
+  fallbackChains: {}
   fallbackRevertPolicy: cooldown-expiry
 steeringMode: all
 followUpMode: all
@@ -361,8 +353,7 @@ ttsr:
   repeatMode: after-gap
   repeatGap: 5
   builtinRules: true
-  disabledRules:
-    []
+  disabledRules: []
 edit:
   mode: hashline
   fuzzyMatch: true
@@ -394,8 +385,7 @@ bash:
   enabled: true
   autoBackground:
     enabled: true
-  patterns:
-    []
+  patterns: []
   direnv: auto
   direnvLoadTimeoutMs: 30000
 bashInterceptor:
@@ -424,19 +414,17 @@ bashInterceptor:
       message: "Use the `write` tool instead of echo/cat redirection. It handles encoding and provides confirmation."
     - pattern: ^\s*nohup\s+|(?<!&)\&\s*$
       tool: hub
-      message: "Use the `hub` tool (`op:\"start\"`) instead of nohup or background shell syntax so the process stays observable and managed."
+      message: 'Use the `hub` tool (`op:"start"`) instead of nohup or background shell syntax so the process stays observable and managed.'
     - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?(?:dev|start)(?:\s|$)|(?:vite|next\s+dev|nuxt\s+dev|nodemon|lldb|gdb|tail\s+-f)(?:\s|$)|docker\s+compose\s+up(?!.*(?:\s-d(?:\s|$)|--detach))(?:\s|$))
       tool: hub
-      message: "Use the `hub` tool (`op:\"start\"`) for services, watchers, and debuggers so other omp instances can observe and control them."
+      message: 'Use the `hub` tool (`op:"start"`) for services, watchers, and debuggers so other omp instances can observe and control them.'
     - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?\S+|cargo\s+watch|watchexec|pytest|vitest|jest|tsc)(?:.|\n)*(?:--watch|-w)(?:\s|$)
       tool: hub
-      message: "Use the `hub` tool (`op:\"start\"`) for watch mode so its output, input, and lifecycle stay managed."
+      message: 'Use the `hub` tool (`op:"start"`) for watch mode so its output, input, and lifecycle stay managed.'
 shellMinimizer:
   enabled: true
-  only:
-    []
-  except:
-    []
+  only: []
+  except: []
   maxCaptureBytes: 4194304
   sourceOutlineLevel: aggressive
 eval:
@@ -537,12 +525,9 @@ task:
   softRequestBudget: 200
   softRequestBudgetNotice: true
   maxEffort: max
-  disabledAgents:
-    []
-  agentModelOverrides:
-    {}
-  agentPrewalk:
-    {}
+  disabledAgents: []
+  agentModelOverrides: {}
+  agentPrewalk: {}
   prewalk: false
   showResolvedModelBadge: true
 tasks:
@@ -557,12 +542,9 @@ skills:
   enablePiProject: true
   enableAgentsUser: true
   enableAgentsProject: true
-  customDirectories:
-    []
-  ignoredSkills:
-    []
-  includeSkills:
-    []
+  customDirectories: []
+  ignoredSkills: []
+  includeSkills: []
 commands:
   enableClaudeUser: false
   enableClaudeProject: true
