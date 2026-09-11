@@ -517,3 +517,13 @@
 - 逐项核验的假阳性形态：千分位格式（2,362 vs raw 2362）、DATE_RE 误吃行号前缀（2240-22←2240-2256）、raw 侧数字在 fenced code block 内（60.0/2.94/1478 等）、正文概括语（"hands stay on keyboard"）、inline code 剥离残句、See Also 行、raw 原文逐字在侧（HN 引语）
 - 附加修正：4-agent-comparison.md 两处未加粗 `> Status:` 改为 `> **Status:**`（checker STATUS_LINE_RE 只识别加粗形态，属文章格式缺陷非内容假阳性）；CLI 侧补证段残句经核验 raw cli-help-recursive-survey.md:1395-1409 有完整 `opencode db` help 输出，有证据，系 INLINE_CODE_RE 剥离后字面匹配失败
 - Result: 66 → 47（0 evidence errors；47 项全部经逐项核验为 checker 结构性假阳性：千分位/DATE_RE 误吃行号/fenced code 内数字/inline code 剥离残句/正文概括语/See Also 行/raw 原文逐字在侧）
+
+## [2026-09-11] ingest | Coding Agent 的短反馈闭环：逐轮 Advisor
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-10-pi-advisor.md; raw/ai-coding-agents/2026-09-10-pi-omplike-advisor.md; raw/ai-coding-agents/2026-09-10-dsh-advisor.md; raw/omp-slash-commands/2026-09-05-scout-collaboration.md; raw/ai-coding-agents/2026-09-05-cli-help-recursive-survey.md
+- Created: Coding Agent 的短反馈闭环：逐轮 Advisor
+
+## [2026-09-11] ingest | OMP 配置语义手册；OMP 实验性上下文管理与 OpenCode DCP 对比；OMP 运行时控制
+- Disposition: New
+- Raw: raw/omp-config/2026-09-11-config-semantics.md; raw/omp-config/2026-09-11-experimental-context-management.md; raw/omp-config/2026-09-11-runtime-controls.md; raw/omp-config/2026-09-11-opencode-dcp-config.md; raw/omp-config/2026-09-11-opencode-dcp-project.md
+- Created: OMP 配置语义手册；OMP 实验性上下文管理与 OpenCode DCP 对比；OMP 运行时控制
