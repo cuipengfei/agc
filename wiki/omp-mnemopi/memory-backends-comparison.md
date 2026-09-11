@@ -1,8 +1,8 @@
 # OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter
 
 > Sources: vectorize-io/hindsight GitHub, 2026-09-01; can1357/oh-my-pi 源码与 git history, 2026-09-01；本地 OMP v18.1.3 源码复核, 2026-09-02
-> Raw: [2026-09-01-hindsight-official-installation](../../raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md); [2026-09-01-hindsight-official-configuration](../../raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md); [2026-09-01-omp-hindsight-sharpshooter-source](../../raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md); [2026-09-02-omp-hindsight-source-recheck](../../raw/omp-mnemopi/2026-09-02-omp-hindsight-source-recheck.md)
-> Updated: 2026-09-02
+> Raw: [2026-09-01-hindsight-official-installation](../../raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md); [2026-09-01-hindsight-official-configuration](../../raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md); [2026-09-01-omp-hindsight-sharpshooter-source](../../raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md); [2026-09-02-omp-hindsight-source-recheck](../../raw/omp-mnemopi/2026-09-02-omp-hindsight-source-recheck.md); [OMP Hindsight 配置默认值](../../raw/omp-mnemopi/2026-09-11-omp-hindsight-defaults.md)
+> Updated: 2026-09-11
 
 ## Overview
 

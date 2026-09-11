@@ -527,3 +527,6 @@
 - Disposition: New
 - Raw: raw/omp-config/2026-09-11-config-semantics.md; raw/omp-config/2026-09-11-experimental-context-management.md; raw/omp-config/2026-09-11-runtime-controls.md; raw/omp-config/2026-09-11-opencode-dcp-config.md; raw/omp-config/2026-09-11-opencode-dcp-project.md
 - Created: OMP 配置语义手册；OMP 实验性上下文管理与 OpenCode DCP 对比；OMP 运行时控制
+
+## [2026-09-11] ingest | no material: raw/awesome-mcp-servers/compare-vs-local-stack.md
+- Disposition: No material
