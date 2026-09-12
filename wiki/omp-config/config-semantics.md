@@ -2,7 +2,7 @@
 
 > Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)
 > Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md)
-> Updated: 2026-09-11
+> Updated: 2026-09-12
 
 ## 这份手册讲什么
 
@@ -14,7 +14,7 @@
 |---|---|---|---|
 | `compaction.midTurnEnabled: true` | 允许 OMP 在 tool-loop 衔接点自动压缩 | 已完成一个 tool interaction、准备继续下一步时 | 长工具链任务更不容易中途撞 window；代价是更早压缩，早期细节会变 summary |
 | `compaction.idleEnabled: true` | 允许空闲时自动压缩 | agent 空闲且 token 超阈值时 | 暂停回来时常已完成 context 整理；代价是部分旧细节已被摘要化 |
-| `compaction.experimentalContextManagement: false` | 实验性 context 管理开关 | 现为 false，未启用 | 当前仍走普通 compaction，不启用 notes/rollover 工具链 |
+| `compaction.experimentalContextManagement: true` | 实验性 context 管理开关 | 开关开启 + 工具表面 + owner 绑定后生效 | 自动 compact 走 notes-backed rollover，不再调用 summarization model；显式 mode/focus 的 `/compact` 仍走旧管线 |
 | `providers.cacheRetention: long` | 要求长 prompt-cache retention | provider 支持时 | 支持的 provider 用 1 小时 TTL，并关闭 keep-alive refresh；连续长会话更容易复用缓存 |
 
 ## 读文件、编辑、网页读取、Bash 输出
@@ -57,7 +57,7 @@
 - `secrets.enabled` 只保护走 provider-context 链路的对话内容，不等于本地 session/file/log 或第三方 extension 都自动被清理。
 - `edit.autoRepair` 的 smol 请求不走主 agent / Advisor 的 obfuscation 路径。
 - `tools.xdevDocs` 是 system-prompt 文档策略，与 `providers.fetch` 的网页抓取后端无关。
-- `compaction.experimentalContextManagement` 的实验工具不是开关一开就必有；还要求 `context_notes`、`new_context`、`read`、`grep` 在 effective tool surface 中可用，且调用者是 owner；改开关后要 restart 才刷新工具。
+- `compaction.experimentalContextManagement` 生效需三重门：配置开关为 true、effective tool surface 同时具备 `context_notes`/`new_context`/`read`/`grep`、调用者为 owner 且绑定 live branch。改开关后需 restart 才刷新工具列表。
 
 ## See Also
 

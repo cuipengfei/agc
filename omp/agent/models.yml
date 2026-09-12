@@ -98,9 +98,9 @@ providers:
     baseUrl: "https://api.justwoker.icu"
     apiKey: "<REDACTED>"
     models:
-      - id: claude-opus-5
+      - id: gpt-5.6-luna
         compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 5"
+        name: "GPT-5.6 Luna"
         reasoning: true
         input: [text, image]
         contextWindow: 1000000
@@ -110,9 +110,9 @@ providers:
           output: 0.6
           cacheRead: 0
           cacheWrite: 0
-      - id: claude-opus-5-thinking
+      - id: gpt-5.6-terra
         compactionModel: c8787/gpt-5.6-luna
-        name: "Claude Opus 5 Thinking"
+        name: "GPT-5.6 Terra"
         reasoning: true
         input: [text, image]
         contextWindow: 1000000
@@ -277,6 +277,72 @@ providers:
         input: [text]
         contextWindow: 1000000
         maxTokens: 131072
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+
+  sensenova:
+    api: openai-completions
+    baseUrl: "https://token.sensenova.cn/v1"
+    apiKey: "<REDACTED>"   # 复制自 OpenCode auth.json 的 SenseNova key
+    models:
+      - id: deepseek-v4-flash
+        compactionModel: c8787/gpt-5.6-luna
+        name: DeepSeek V4 Flash
+        reasoning: true
+        input: [text]
+        contextWindow: 1000000
+        maxTokens: 65536
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: deepseek-v4-pro
+        compactionModel: c8787/gpt-5.6-luna
+        name: DeepSeek V4 Pro
+        reasoning: true
+        input: [text]
+        contextWindow: 1048576
+        maxTokens: 65536
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: glm-5.2
+        compactionModel: c8787/gpt-5.6-luna
+        name: GLM-5.2
+        reasoning: true
+        input: [text]
+        contextWindow: 1000000
+        maxTokens: 131072
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: kimi-k3
+        compactionModel: c8787/gpt-5.6-luna
+        name: Kimi K3
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1048576
+        maxTokens: 65536
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: sensenova-6.8-flash-lite
+        compactionModel: c8787/gpt-5.6-luna
+        name: SenseNova 6.8 Flash Lite
+        reasoning: true
+        input: [text, image]
+        contextWindow: 262144
+        maxTokens: 65536
         cost:
           input: 0
           output: 0

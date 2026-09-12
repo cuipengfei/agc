@@ -530,3 +530,7 @@
 
 ## [2026-09-11] ingest | no material: raw/awesome-mcp-servers/compare-vs-local-stack.md
 - Disposition: No material
+## [2026-09-12] update | OMP 实验性上下文管理与 OpenCode DCP 对比
+- Disposition: Update
+- Raw: raw/omp-config/2026-09-12-experimental-context-deep-dive.md
+- Updated: OMP 配置语义手册（修正 experimentalContextManagement 状态为 true，补充三重门与自动/显式路径分流）

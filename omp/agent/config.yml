@@ -29,6 +29,7 @@ enabledModels:
   - kimi-code/*
   - kimi-claw/*
   - deepseek/*
+  - sensenova/*
   - tokenrouter/**
   - openrouter/**
 disabledProviders:
@@ -46,6 +47,7 @@ providers:
     kimi-code: 5
     kimi-claw: 5
     deepseek: 5
+    sensenova: 5
   anthropic:
     serverSideFallback: false
   ollama-cloud:
@@ -108,7 +110,7 @@ cycleOrder:
   - default
   - slow
 theme:
-  dark: dark-tokyo-night
+  dark: dark-monokai
   light: light-arctic
 symbolPreset: nerd
 colorBlindMode: false
@@ -220,7 +222,7 @@ retry:
   fallbackRevertPolicy: cooldown-expiry
 steeringMode: all
 followUpMode: all
-interruptMode: immediate
+interruptMode: wait
 loop:
   mode: prompt
 doubleEscapeAction: tree
@@ -286,7 +288,7 @@ compaction:
   methodOrder:
     - shake
     - soft
-  experimentalContextManagement: false
+  experimentalContextManagement: true
 snapcompact:
   systemPrompt: none
   toolResults: false

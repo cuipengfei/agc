@@ -124,8 +124,8 @@ OMP 配置项的源码级行为边界。
 |---------|---------|---------|
 | [OMP Compaction Model 与 Thinking Level](omp-config/compaction-model.md) | compactionModel 只换压的人，thinking effort 继承自 session thinkingLevel | 2026-09-09 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理 | 2026-09-09 |
-| [OMP 配置语义手册](omp-config/config-semantics.md) | 24 项设置的触发条件、agent 行为影响、用户可见结果与取舍 | 2026-09-11 |
-| [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-11 |
+| [OMP 配置语义手册](omp-config/config-semantics.md) | 24 项设置的触发条件、agent 行为影响、用户可见结果与取舍 | 2026-09-12 |
+| [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
 
 ## omp-extensibility
