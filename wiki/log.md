@@ -534,3 +534,12 @@
 - Disposition: Update
 - Raw: raw/omp-config/2026-09-12-experimental-context-deep-dive.md
 - Updated: OMP 配置语义手册（修正 experimentalContextManagement 状态为 true，补充三重门与自动/显式路径分流）
+
+## [2026-09-12] ingest | OMP 配置语义手册：通知、空闲回顾、停顿恢复与表情反应
+- Disposition: Update
+- Raw: raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md
+- Updated: OMP 配置语义手册（新增通知与空闲回顾、停顿恢复与表情反应两个分组，共 9 项设置）
+
+## [2026-09-12] lint | 0 issues found, 0 auto-fixed
+- 范围限定检查 `wiki/omp-config/config-semantics.md`：0 fidelity suspect, 0 evidence error, 0 unreferenced raw
+- 全量检查 46 fidelity suspects 均来自其他既有文章，本次新增内容无真实 suspect

@@ -1,7 +1,7 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md)
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md)
 > Updated: 2026-09-12
 
 ## 这份手册讲什么
@@ -52,12 +52,36 @@
 | `tools.xdevDocs: inline` | 所有 mounted xdev device 都成为 prompt docs 内联候选 | system prompt 组装时 | 超出 per-device / total budget 的 device 进入 `Additional devices (docs on demand)` catalog，模型需按需读 `xd://...` |
 | `codexResets.autoRedeem: no` | Codex saved rate-limit reset 的自动花费策略 | Codex reset 相关流程 | `unset` 首次询问；`yes` 允许自动检查/花费；`no` 跳过 auto-redeem 检查与自动花费 |
 
+## 通知与空闲回顾
+
+| 设置 | 做什么 | 何时触发 | 影响与取舍 |
+|---|---|---|---|
+| `completion.notify: on` | Agent 正常完成一轮时触发终端通知 | `agent_end` 且非 error/abort 时 | 后台运行时知悉完成；Warp 终端因原生 UX 会跳过此通知避免重复 |
+| `error.notify: on` | Agent 以 error 停止时触发终端通知 | `agent_end` 且最后 assistant `stopReason === "error"` 时 | 后台运行时立即发现故障；默认 `off`，本机已显式开启 |
+| `ask.notify: on` | Agent 用 ask 工具等待输入时触发终端通知 | 每次 `ask` 执行且 `hasUI === true` 时 | 防止 agent 卡住等你而你没注意到 |
+| `ask.timeout: 0` | ask 等待用户回答的自动选择倒计时（秒），`0` 禁用 | `ask` 执行时读取；plan mode 下强制禁用 | `0`（当前）最安全；设 15-120 秒可无人值守自动推进 |
+| `recap.enabled: true` | 终端空闲后额外生成一次当前进展摘要 | `agent_end` 后，空闲达 `recap.idleSeconds` 时 | 显示在 TUI 状态栏 `※ recap:`，不写入持久对话记录；额外消耗一次 LLM 调用 |
+| `recap.idleSeconds: 300` | 空闲多久触发 recap（秒） | 设 `setTimeout` 时；代码 clamp 到 `1-3600` | 当前 300 秒（5 分钟）比默认 240 秒长，减少 token 浪费 |
+
+## 停顿恢复与表情反应
+
+| 设置 | 做什么 | 何时触发 | 影响与取舍 |
+|---|---|---|---|
+| `features.unexpectedStopDetection: mechanical` | Agent 意外停住时自动恢复 | `stopReason === "stop"` 且无 tool call 时 | `mechanical`：仅 signed thinking-only stop 重试；`smart`：加可见文字分类；`none`：关闭此检测。最多重试 3 次 |
+| `providers.unexpectedStopModel` | Smart 模式下判断是否意外停住的小模型 | 仅在 `smart` 档位且可见文字需分类时 | 默认 online TINY/smol（通常更小，实际延迟/成本取决于模型与 provider）；可选本地 on-device 模型 |
+| `tui.reactions: true` | 邀请主 Agent 用 emoji 开头回复，提取为前一条用户气泡的 badge | system prompt 组装时（仅 main agent + TUI） | 开关控制的是 prompt 邀请，渲染器解析路径不受此开关门控；每条用户消息最多一个 badge |
+
 ## 关键边界
 
 - `secrets.enabled` 只保护走 provider-context 链路的对话内容，不等于本地 session/file/log 或第三方 extension 都自动被清理。
 - `edit.autoRepair` 的 smol 请求不走主 agent / Advisor 的 obfuscation 路径。
 - `tools.xdevDocs` 是 system-prompt 文档策略，与 `providers.fetch` 的网页抓取后端无关。
 - `compaction.experimentalContextManagement` 生效需三重门：配置开关为 true、effective tool surface 同时具备 `context_notes`/`new_context`/`read`/`grep`、调用者为 owner 且绑定 live branch。改开关后需 restart 才刷新工具列表。
+
+- 通知路径仅支持终端分层路由（Herdr → cmux → OSC 99/9 → Bell + Linux D-Bus），未提供内置 HTTP/webhook 目标。
+- `features.unexpectedStopDetection` 仅控制 signed thinking-only 与可见文字的意外停顿检测；完全空输出或未签名 thinking-only 走独立的空输出恢复机制（最多重试 3 次，停止并报错），不受此开关控制。
+- `tui.reactions` 仅控制 system prompt 是否向主 Agent 注入 emoji 反应邀请；渲染器解析路径不受此开关门控，偶然的 emoji 开头回复仍可能被渲染为 badge。
+- Idle Recap 不走通知路由，仅在 TUI 状态栏显示 `※ recap:` 文本。
 
 ## See Also
 
