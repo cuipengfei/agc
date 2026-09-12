@@ -6,6 +6,7 @@ advisor:
   enabled: true
   syncBacklog: "3"
   immuneTurns: 3
+  maxNotesPerUpdate: 5
 prewalk:
   enabled: false
 git:
@@ -167,6 +168,7 @@ tui:
   imeSafeCursor: false
   resizeScrollback: rebuild
   reactions: true
+  mouse: false
 display:
   shimmer: kitt
   smoothStreaming: true
@@ -174,10 +176,12 @@ display:
   cacheMissMarker: true
   collapseCompacted: true
   showTurnTime: true
+  pinnedAgents: full
+  hideToolActivity: false
 showHardwareCursor: true
 defaultThinkingLevel: high
 hideThinkingBlock: false
-proseOnlyThinking: true
+proseOnlyThinking: false
 omitThinking: false
 model:
   loopGuard:
@@ -195,14 +199,14 @@ includeWorkspaceTree: false
 workspace:
   additionalDirectories:
     []
-personality: friendly
+personality: pragmatic
 temperature: -1
 topP: -1
 topK: -1
 minP: -1
 presencePenalty: -1
 repetitionPenalty: -1
-textVerbosity: medium
+textVerbosity: low
 tier:
   openai: none
   anthropic: none
@@ -225,7 +229,7 @@ followUpMode: all
 interruptMode: wait
 loop:
   mode: prompt
-doubleEscapeAction: tree
+doubleEscapeAction: rewind
 treeFilterMode: user-only
 autocompleteMaxVisible: 5
 emojiAutocomplete: true
@@ -593,7 +597,7 @@ speech:
   enhanced: false
   voice: af_heart
 features:
-  unexpectedStopDetection: none
+  unexpectedStopDetection: mechanical
 codexResets:
   autoRedeem: "no"
   minBlockedMinutes: 60
@@ -632,3 +636,5 @@ thinkingBudgets:
   max: 32768
 composer:
   shape: box
+externalThinking: false
+skillful: true
