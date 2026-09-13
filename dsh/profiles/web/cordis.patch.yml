@@ -1,0 +1,100 @@
+- insert:
+  - id: mcp-deep-wiki
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: deep-wiki
+      transport: streamable-http
+      url: https://mcp.deepwiki.com/mcp
+  - id: mcp-search-exa
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: search-exa
+      transport: streamable-http
+      url: https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>
+  - id: mcp-search-tavily
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: search-tavily
+      transport: streamable-http
+      url: https://mcp.tavily.com/mcp/?tavilyApiKey=<REDACTED>
+  - id: mcp-firecrawl
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: firecrawl
+      transport: streamable-http
+      url: https://mcp.firecrawl.dev/<REDACTED>/v2/mcp
+  - id: mcp-headroom
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: headroom
+      transport: streamable-http
+      url: http://127.0.0.1:8788/mcp
+  - id: mcp-jina
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: jina
+      transport: streamable-http
+      url: https://mcp.jina.ai/v1
+      headers:
+        Authorization: Bearer <REDACTED>
+  - id: mcp-chrome-devtools
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: chrome-devtools
+      transport: stdio
+      command: /home/cpf/.bun/bin/chrome-devtools-mcp
+      args:
+      - --browserUrl
+      - http://127.0.0.1:9333
+      - --no-usage-statistics
+      - --no-performance-crux
+  - id: mcp-ddgs
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: ddgs
+      transport: stdio
+      command: /home/cpf/.local/bin/ddgs
+      args:
+      - mcp
+  - id: mcp-codegraph
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: codegraph
+      transport: stdio
+      command: codegraph
+      args:
+      - serve
+      - --mcp
+  - id: mcp-context7
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: context7
+      transport: stdio
+      command: context7-mcp
+      args:
+      - --api-key
+      - <REDACTED>
+  - id: mcp-context-mode
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: context-mode
+      transport: stdio
+      command: context-mode
+  - id: mcp-excalidraw
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: excalidraw
+      transport: stdio
+      command: /home/cpf/.bun/bin/mcp-excalidraw-server
+  - id: mcp-mintlify-index
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: mintlify-index
+      transport: streamable-http
+      url: https://index.mintlify.com
+  - id: mcp-grep-app-github
+    name: '@deepseek-ai/dsh-mcp-client'
+    config:
+      serverName: grep-app-github
+      transport: streamable-http
+      url: https://mcp.grep.app

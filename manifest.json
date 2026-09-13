@@ -169,6 +169,32 @@
       "source": "~/.prime/agent/models.json",
       "repo": "prime/models.json",
       "protected": true
+    },
+    {
+      "name": "dsh-settings",
+      "source": "~/.dsh/settings.yaml",
+      "repo": "dsh/settings.yaml"
+    },
+    {
+      "name": "dsh-web-cordis-patch",
+      "source": "~/.dsh/profiles/web/cordis.patch.yml",
+      "repo": "dsh/profiles/web/cordis.patch.yml",
+      "protected": true
+    },
+    {
+      "name": "dsh-web-cordis",
+      "source": "~/.dsh/profiles/web/cordis.yml",
+      "repo": "dsh/profiles/web/cordis.yml"
+    },
+    {
+      "name": "dsh-web-package",
+      "source": "~/.dsh/profiles/web/package.json",
+      "repo": "dsh/profiles/web/package.json"
+    },
+    {
+      "name": "dsh-web-pnpm-workspace",
+      "source": "~/.dsh/profiles/web/pnpm-workspace.yaml",
+      "repo": "dsh/profiles/web/pnpm-workspace.yaml"
     }
   ]
 }

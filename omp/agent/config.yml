@@ -4,7 +4,7 @@ power:
   sleepPrevention: idle
 advisor:
   enabled: true
-  syncBacklog: "3"
+  syncBacklog: '3'
   immuneTurns: 3
   maxNotesPerUpdate: 5
 prewalk:
@@ -12,37 +12,27 @@ prewalk:
 git:
   enabled: true
 extensions:
-  - /home/cpf/.omp/.pi/extensions/rtk.ts
-  - /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
-  - <REDACTED>
+- /home/cpf/.omp/.pi/extensions/rtk.ts
+- /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
+- <REDACTED>
 enabledModels:
-  - c4141/*
-  - c4142/*
-  - c4143/*
-  - c8787/*
-  - c8787-chat/*
-  - umans/*
-  - justwoker/*
-  - motomoto-chat/*
-  - opencode-zen/*
-  - opencode-go/*
-  - opencode-go/*
-  - kimi-code/*
-  - kimi-claw/*
-  - deepseek/*
-  - sensenova/*
-  - tokenrouter/**
-  - openrouter/**
-disabledProviders:
-  []
+- c8787/*
+- c8787-chat/*
+- justwoker/*
+- motomoto-chat/*
+- opencode-zen/*
+- opencode-go/*
+- kimi-code/*
+- kimi-claw/*
+- deepseek/*
+- sensenova/*
+- tokenrouter/**
+- openrouter/**
+disabledProviders: []
 providers:
   maxInFlightRequests:
-    c4141: 5
-    c4142: 5
-    c4143: 5
     c8787: 5
     c8787-chat: 5
-    umans: 5
     opencode-zen: 5
     opencode-go: 5
     kimi-code: 5
@@ -54,24 +44,23 @@ providers:
   ollama-cloud:
     maxConcurrency: 3
   webSearchOrder:
-    - exa
-    - duckduckgo
-    - codex
-    - jina
-    - tavily
-    - firecrawl
-    - kimi
-    - startpage
-    - ecosia
-    - google
-    - mojeek
-    - public
+  - exa
+  - duckduckgo
+  - codex
+  - jina
+  - tavily
+  - firecrawl
+  - kimi
+  - startpage
+  - ecosia
+  - google
+  - mojeek
+  - public
   webSearchExclude:
-    - gemini
-    - searxng
+  - gemini
+  - searxng
   antigravityEndpoint: auto
-  imageOrder:
-    []
+  imageOrder: []
   fireworksTier: standard
   tts: auto
   tinyModel: online
@@ -88,8 +77,7 @@ providers:
   openrouterVariant: default
   fetch: auto
   cacheRetention: long
-disabledExtensions:
-  []
+disabledExtensions: []
 modelRoleStorage: global
 modelRoles:
   plan: kimi-code/k3:high
@@ -102,14 +90,12 @@ modelRoles:
   advisor: c8787/gpt-5.6-luna:max
   designer: kimi-claw/k3-agent:medium
   default: kimi-code/k3:high
-modelTags:
-  {}
-modelProviderOrder:
-  []
+modelTags: {}
+modelProviderOrder: []
 cycleOrder:
-  - smol
-  - default
-  - slow
+- smol
+- default
+- slow
 theme:
   dark: dark-monokai
   light: light-arctic
@@ -122,12 +108,9 @@ statusLine:
   transparent: false
   compactThinkingLevel: false
   showHookStatus: true
-  leftSegments:
-    []
-  rightSegments:
-    []
-  segmentOptions:
-    {}
+  leftSegments: []
+  rightSegments: []
+  segmentOptions: {}
   contextLine: annotated
 tools:
   artifactSpillThreshold: 50
@@ -144,8 +127,7 @@ tools:
   maxTimeout: 0
   xdev: true
   xdevDocs: inline
-  xdevInlineDevices:
-    []
+  xdevInlineDevices: []
 terminal:
   showImages: true
   showProgress: true
@@ -192,13 +174,12 @@ model:
     enabled: true
     threshold: 5
     exemptTools:
-      - hub
+    - hub
 inlineToolDescriptors: auto
 includeModelInPrompt: true
 includeWorkspaceTree: false
 workspace:
-  additionalDirectories:
-    []
+  additionalDirectories: []
 personality: pragmatic
 temperature: -1
 topP: -1
@@ -221,8 +202,7 @@ retry:
   usageAwareFallback: false
   usageReservePct: 10
   usageReservePolicy: confirm
-  fallbackChains:
-    {}
+  fallbackChains: {}
   fallbackRevertPolicy: cooldown-expiry
 steeringMode: all
 followUpMode: all
@@ -249,20 +229,20 @@ magicKeywords:
   orchestrate: true
   workflow: true
 completion:
-  notify: "on"
+  notify: 'on'
 error:
-  notify: "on"
+  notify: 'on'
 ask:
   timeout: 0
-  notify: "on"
+  notify: 'on'
   enabled: true
 recap:
   enabled: true
   idleSeconds: 300
 collab:
   relayUrl: wss://my.omp.sh
-  webUrl: ""
-  displayName: ""
+  webUrl: ''
+  displayName: ''
 share:
   serverUrl: https://my.omp.sh/s
   store: blob
@@ -290,8 +270,8 @@ compaction:
   supersedeReads: true
   dropUseless: true
   methodOrder:
-    - shake
-    - soft
+  - shake
+  - soft
   experimentalContextManagement: true
 snapcompact:
   systemPrompt: none
@@ -354,8 +334,8 @@ hindsight:
   recallContextTurns: 1
   recallMaxQueryChars: 800
   recallTypes:
-    - world
-    - experience
+  - world
+  - experience
   debug: false
   requestTimeoutMs: 30000
   reflectTimeoutMs: 120000
@@ -372,8 +352,7 @@ ttsr:
   repeatMode: after-gap
   repeatGap: 5
   builtinRules: true
-  disabledRules:
-    []
+  disabledRules: []
 edit:
   mode: hashline
   fuzzyMatch: true
@@ -405,50 +384,57 @@ bash:
   enabled: true
   autoBackground:
     enabled: true
-  patterns:
-    []
+  patterns: []
   direnv: auto
   direnvLoadTimeoutMs: 30000
   allowCompoundCommands: false
 bashInterceptor:
   enabled: true
   patterns:
-    - pattern: ^\s*(cat|head|tail|less|more)\s+
-      tool: read
-      message: "Use the `read` tool instead of cat/head/tail. It provides better context and handles binary files."
-    - pattern: ^\s*(grep|rg|ripgrep|ag|ack)\s+
-      tool: grep
-      message: "Use the `grep` tool instead of grep/rg. It respects .gitignore and provides structured output."
-    - pattern: ^\s*(find|fd|locate)\s+.*(-name|-iname|-type|--type|-glob)
-      tool: glob
-      message: "Use the `glob` tool instead of find/fd. It respects .gitignore and is faster for glob patterns."
-    - pattern: ^\s*sed\s+(-i|--in-place)
-      tool: edit
-      message: "Use the `edit` tool instead of sed -i. It provides diff preview and fuzzy matching."
-    - pattern: "^\\s*perl\\s+.*-[pn]?i"
-      tool: edit
-      message: "Use the `edit` tool instead of perl -i. It provides diff preview and fuzzy matching."
-    - pattern: ^\s*awk\s+.*-i\s+inplace
-      tool: edit
-      message: "Use the `edit` tool instead of awk -i inplace. It provides diff preview and fuzzy matching."
-    - pattern: "^\\s*(echo|printf|cat\\s*<<)\\s+(?:(?:[^\"'>]|\"[^\"]*\"|'[^']*')|(?<!\\|)>{1,2}\\|?\\s*(?:\"/dev/(?:null|tty|stdout|stderr)\"|'/dev/(?:null|tty|stdout|stderr)'|/dev/(?:null|tty|stdout|stderr))(?:[\\s;&|]|$))*(?<!\\|)>{1,2}\\|?\\s*(?!(?:\"/dev/(?:null|tty|stdout|stderr)\"|'/dev/(?:null|tty|stdout|stderr)'|/dev/(?:null|tty|stdout|stderr))(?:[\\s;&|]|$))[$\\w./~\"'-]"
-      tool: write
-      message: "Use the `write` tool instead of echo/cat redirection. It handles encoding and provides confirmation."
-    - pattern: ^\s*nohup\s+|(?<!&)\&\s*$
-      tool: hub
-      message: "Use the `hub` tool (`op:\"start\"`) instead of nohup or background shell syntax so the process stays observable and managed."
-    - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?(?:dev|start)(?:\s|$)|(?:vite|next\s+dev|nuxt\s+dev|nodemon|lldb|gdb|tail\s+-f)(?:\s|$)|docker\s+compose\s+up(?!.*(?:\s-d(?:\s|$)|--detach))(?:\s|$))
-      tool: hub
-      message: "Use the `hub` tool (`op:\"start\"`) for services, watchers, and debuggers so other omp instances can observe and control them."
-    - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?\S+|cargo\s+watch|watchexec|pytest|vitest|jest|tsc)(?:.|\n)*(?:--watch|-w)(?:\s|$)
-      tool: hub
-      message: "Use the `hub` tool (`op:\"start\"`) for watch mode so its output, input, and lifecycle stay managed."
+  - pattern: ^\s*(cat|head|tail|less|more)\s+
+    tool: read
+    message: Use the `read` tool instead of cat/head/tail. It provides better context
+      and handles binary files.
+  - pattern: ^\s*(grep|rg|ripgrep|ag|ack)\s+
+    tool: grep
+    message: Use the `grep` tool instead of grep/rg. It respects .gitignore and provides
+      structured output.
+  - pattern: ^\s*(find|fd|locate)\s+.*(-name|-iname|-type|--type|-glob)
+    tool: glob
+    message: Use the `glob` tool instead of find/fd. It respects .gitignore and is
+      faster for glob patterns.
+  - pattern: ^\s*sed\s+(-i|--in-place)
+    tool: edit
+    message: Use the `edit` tool instead of sed -i. It provides diff preview and fuzzy
+      matching.
+  - pattern: ^\s*perl\s+.*-[pn]?i
+    tool: edit
+    message: Use the `edit` tool instead of perl -i. It provides diff preview and
+      fuzzy matching.
+  - pattern: ^\s*awk\s+.*-i\s+inplace
+    tool: edit
+    message: Use the `edit` tool instead of awk -i inplace. It provides diff preview
+      and fuzzy matching.
+  - pattern: ^\s*(echo|printf|cat\s*<<)\s+(?:(?:[^"'>]|"[^"]*"|'[^']*')|(?<!\|)>{1,2}\|?\s*(?:"/dev/(?:null|tty|stdout|stderr)"|'/dev/(?:null|tty|stdout|stderr)'|/dev/(?:null|tty|stdout|stderr))(?:[\s;&|]|$))*(?<!\|)>{1,2}\|?\s*(?!(?:"/dev/(?:null|tty|stdout|stderr)"|'/dev/(?:null|tty|stdout|stderr)'|/dev/(?:null|tty|stdout|stderr))(?:[\s;&|]|$))[$\w./~"'-]
+    tool: write
+    message: Use the `write` tool instead of echo/cat redirection. It handles encoding
+      and provides confirmation.
+  - pattern: ^\s*nohup\s+|(?<!&)\&\s*$
+    tool: hub
+    message: Use the `hub` tool (`op:"start"`) instead of nohup or background shell
+      syntax so the process stays observable and managed.
+  - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?(?:dev|start)(?:\s|$)|(?:vite|next\s+dev|nuxt\s+dev|nodemon|lldb|gdb|tail\s+-f)(?:\s|$)|docker\s+compose\s+up(?!.*(?:\s-d(?:\s|$)|--detach))(?:\s|$))
+    tool: hub
+    message: Use the `hub` tool (`op:"start"`) for services, watchers, and debuggers
+      so other omp instances can observe and control them.
+  - pattern: ^\s*(?:(?:bun|npm|pnpm|yarn)\s+(?:run\s+)?\S+|cargo\s+watch|watchexec|pytest|vitest|jest|tsc)(?:.|\n)*(?:--watch|-w)(?:\s|$)
+    tool: hub
+    message: Use the `hub` tool (`op:"start"`) for watch mode so its output, input,
+      and lifecycle stay managed.
 shellMinimizer:
   enabled: true
-  only:
-    []
-  except:
-    []
+  only: []
+  except: []
   maxCaptureBytes: 4194304
   sourceOutlineLevel: default
 eval:
@@ -462,11 +448,11 @@ eval:
     enabled: true
 python:
   kernelMode: session
-  interpreter: ""
+  interpreter: ''
 ruby:
-  interpreter: ""
+  interpreter: ''
 julia:
-  interpreter: ""
+  interpreter: ''
 todo:
   enabled: true
   reminders: false
@@ -533,7 +519,7 @@ goal:
   enabled: true
   statusInFooter: true
   continuationModes:
-    - interactive
+  - interactive
 title:
   refreshOnReplan: true
 task:
@@ -553,12 +539,9 @@ task:
   softRequestBudget: 200
   softRequestBudgetNotice: true
   maxEffort: high
-  disabledAgents:
-    []
-  agentModelOverrides:
-    {}
-  agentPrewalk:
-    {}
+  disabledAgents: []
+  agentModelOverrides: {}
+  agentPrewalk: {}
   prewalk: false
   showResolvedModelBadge: true
 tasks:
@@ -573,12 +556,9 @@ skills:
   enablePiProject: true
   enableAgentsUser: true
   enableAgentsProject: true
-  customDirectories:
-    []
-  ignoredSkills:
-    []
-  includeSkills:
-    []
+  customDirectories: []
+  ignoredSkills: []
+  includeSkills: []
 commands:
   enableClaudeUser: false
   enableClaudeProject: true
@@ -599,12 +579,12 @@ speech:
 features:
   unexpectedStopDetection: mechanical
 codexResets:
-  autoRedeem: "no"
+  autoRedeem: 'no'
   minBlockedMinutes: 60
   keepCredits: 0
   salvageHorizonHours: 12
 provider:
-  appendOnlyContext: "on"
+  appendOnlyContext: 'on'
 exa:
   enabled: true
   searchDelayMs: 1000

@@ -1,0 +1,199 @@
+llm-deepseek:
+  apiKeyEnv: DEEPSEEK_API_KEY
+  baseURL: https://api.deepseek.com/v1
+llm-pi-ai:
+  providers:
+    c4140:
+      apiKeyEnv: C4140_API_KEY
+      api: openai-responses
+      baseURL: http://localhost:8787/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      thinkingBudgets:
+        minimal: 1024
+        low: 2048
+        medium: 8192
+        high: 16384
+        xhigh: 32768
+        max: 32768
+      models:
+      - id: claude-fable-5
+        name: claude-fable-5
+      - id: gpt-5.4
+        name: GPT-5.4
+      - id: gpt-5.5
+        name: GPT-5.5
+      - id: gpt-5.3-codex
+        name: GPT-5.3 Codex
+      - id: gpt-5.4-mini
+        name: gpt-5.4-mini
+      - id: gpt-5.6-sol
+        name: GPT-5.6 Sol
+      - id: gpt-5.6-terra
+        name: GPT-5.6 Terra
+      - id: gpt-5.6-luna
+        name: GPT-5.6 Luna
+    c4140-chat:
+      apiKeyEnv: C4140_CHAT_API_KEY
+      api: openai-completions
+      baseURL: http://localhost:8787/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: gemini-3.7-flash
+        name: Gemini 3.7 Flash
+      - id: gemini-3.8-flash
+        name: Gemini 3.8 Flash
+      - id: kimi-k2.7-code
+        name: Kimi K2.7 Code
+    motomoto-responses:
+      apiKeyEnv: MOTOMOTO_API_KEY
+      api: openai-responses
+      baseURL: http://localhost:4150/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: kimi-k3-flash
+        name: Kimi K3 Flash
+      - id: kimi-k3
+        name: Kimi K3
+    justwoker:
+      apiKeyEnv: JUSTWOKER_API_KEY
+      api: anthropic-messages
+      baseURL: https://api.justwoker.icu/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: gpt-5.6-luna
+        name: GPT-5.6 Luna
+      - id: gpt-5.6-terra
+        name: GPT-5.6 Terra
+      - id: gpt-5.6-sol
+        name: GPT-5.6 Sol
+    kimi-claw:
+      apiKeyEnv: KIMI_CLAW_API_KEY
+      api: anthropic-messages
+      baseURL: https://agent-gw.kimi.com/coding/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: k3-agent
+        name: K3
+    c8787:
+      apiKeyEnv: C8787_API_KEY
+      api: openai-responses
+      baseURL: http://localhost:8787/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      thinkingBudgets:
+        minimal: 1024
+        low: 2048
+        medium: 8192
+        high: 16384
+        xhigh: 32768
+        max: 32768
+      models:
+      - id: gpt-5.4
+        name: GPT-5.4
+      - id: gpt-5.5
+        name: GPT-5.5
+      - id: gpt-5.3-codex
+        name: GPT-5.3 Codex
+      - id: gpt-5.4-mini
+        name: gpt-5.4-mini
+      - id: gpt-5.6-sol
+        name: GPT-5.6 Sol
+      - id: gpt-5.6-terra
+        name: GPT-5.6 Terra
+      - id: gpt-5.6-luna
+        name: GPT-5.6 Luna
+    c8787-chat:
+      apiKeyEnv: C8787_CHAT_API_KEY
+      api: openai-completions
+      baseURL: http://localhost:8787/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: gemini-3.7-flash
+        name: Gemini 3.7 Flash
+      - id: gemini-3.8-flash
+        name: Gemini 3.8 Flash
+      - id: kimi-k2.7-code
+        name: Kimi K2.7 Code
+    motomoto-chat:
+      apiKeyEnv: MOTOMOTO_API_KEY
+      api: openai-completions
+      baseURL: http://localhost:4150/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: gpt-5.5
+        name: GPT-5.5 (Chat Completions)
+      - id: gpt-5.6-sol
+        name: GPT-5.6 Sol (Chat Completions)
+    tokenrouter:
+      apiKeyEnv: TOKENROUTER_API_KEY
+      api: openai-completions
+      baseURL: https://tokenrouter.cn/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: z-ai/glm-5.3-free
+        name: GLM 5.3 Free
+    sensenova:
+      apiKeyEnv: SENSENOVA_API_KEY
+      api: openai-completions
+      baseURL: https://api.sensenova.cn/v1
+      retryPolicy:
+        mode: normal
+        backoff:
+          initialDelayMs: 500
+          maxDelayMs: 300000
+        maxRetries: 3
+      models:
+      - id: deepseek-v4-flash
+        name: DeepSeek V4 Flash
+      - id: deepseek-v4-pro
+        name: DeepSeek V4 Pro
+      - id: glm-5.2
+        name: GLM-5.2
+      - id: kimi-k3
+        name: Kimi K3
+      - id: sensenova-6.8-flash-lite
+        name: SenseNova 6.8 Flash Lite

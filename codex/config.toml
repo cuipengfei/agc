@@ -19,9 +19,6 @@ enabled = false
 [feedback]
 enabled = false
 
-[mcp_servers.graphiti-memory]
-url = "http://127.0.0.1:8000/mcp/"
-
 [mcp_servers.context7]
 command = "context7-mcp"
 args = ["--api-key", "<REDACTED>"]

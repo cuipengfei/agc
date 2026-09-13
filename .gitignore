@@ -30,6 +30,7 @@ run/
 sessions/
 terminal-sessions/
 profiles/
+!dsh/profiles/
 puppeteer/
 gpu_cache.json
 

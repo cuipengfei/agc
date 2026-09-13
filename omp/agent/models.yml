@@ -1,7 +1,4 @@
-# oh-my-pi model configuration
-
 providers:
-  # ── OpenCode/Codex-compatible Responses endpoint ─────────────────────────────
   c8787:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
@@ -11,57 +8,69 @@ providers:
     compat:
       supportsImageDetailOriginal: false
     models:
-      - id: gpt-5.4
-        compactionModel: c8787/gpt-5.6-luna
-        name: GPT-5.4
-        reasoning: true
-        input: [text, image]
-        contextWindow: 272000
-        maxTokens: 16000
-      - id: gpt-5.5
-        compactionModel: c8787/gpt-5.6-luna
-        name: GPT-5.5
-        reasoning: true
-        input: [text, image]
-        contextWindow: 272000
-        maxTokens: 16000
-      - id: gpt-5.3-codex
-        compactionModel: c8787/gpt-5.6-luna
-        name: GPT-5.3 Codex
-        reasoning: true
-        input: [text, image]
-        contextWindow: 272000
-        maxTokens: 16000
-      - id: gpt-5.4-mini
-        compactionModel: c8787/gpt-5.6-luna
-        name: gpt-5.4-mini
-        reasoning: true
-        input: [text, image]
-        contextWindow: 272000
-        maxTokens: 16000
-      - id: gpt-5.6-sol
-        compactionModel: c8787/gpt-5.6-luna
-        name: GPT-5.6 Sol
-        reasoning: true
-        input: [text, image]
-        contextWindow: 872000
-        maxTokens: 16000
-      - id: gpt-5.6-terra
-        compactionModel: c8787/gpt-5.6-luna
-        name: GPT-5.6 Terra
-        reasoning: true
-        input: [text, image]
-        contextWindow: 272000
-        maxTokens: 16000
-      - id: gpt-5.6-luna
-        compactionModel: c8787/gpt-5.6-luna
-        name: GPT-5.6 Luna
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1050000
-        maxTokens: 128000
-
-  # ── Chat Completions endpoint for chat-only models (Gemini) ────────────────
+    - id: gpt-5.4
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.4
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 272000
+      maxTokens: 16000
+    - id: gpt-5.5
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.5
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 272000
+      maxTokens: 16000
+    - id: gpt-5.3-codex
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.3 Codex
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 272000
+      maxTokens: 16000
+    - id: gpt-5.4-mini
+      compactionModel: c8787/gpt-5.6-luna
+      name: gpt-5.4-mini
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 272000
+      maxTokens: 16000
+    - id: gpt-5.6-sol
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Sol
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 292000
+      maxTokens: 16000
+    - id: gpt-5.6-terra
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Terra
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 272000
+      maxTokens: 16000
+    - id: gpt-5.6-luna
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Luna
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1050000
+      maxTokens: 128000
   c8787-chat:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
@@ -69,186 +78,124 @@ providers:
     headers:
       x-session-id: <REDACTED>
     models:
-      - id: gemini-3.7-flash
-        compactionModel: c8787/gpt-5.6-luna
-        name: Gemini 3.7 Flash
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 64000
-      - id: gemini-3.8-flash
-        compactionModel: c8787/gpt-5.6-luna
-        name: Gemini 3.8 Flash
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1048576
-        maxTokens: 65536
-      - id: kimi-k2.7-code
-        compactionModel: c8787/gpt-5.6-luna
-        name: Kimi K2.7 Code
-        reasoning: true
-        compat:
-          omitReasoningEffort: true
-        input: [text, image]
-        contextWindow: 256000
-        maxTokens: 32000
-
+    - id: gemini-3.7-flash
+      compactionModel: c8787/gpt-5.6-luna
+      name: Gemini 3.7 Flash
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 64000
+    - id: gemini-3.8-flash
+      compactionModel: c8787/gpt-5.6-luna
+      name: Gemini 3.8 Flash
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1048576
+      maxTokens: 65536
+    - id: kimi-k2.7-code
+      compactionModel: c8787/gpt-5.6-luna
+      name: Kimi K2.7 Code
+      reasoning: true
+      compat:
+        omitReasoningEffort: true
+      input:
+      - text
+      - image
+      contextWindow: 256000
+      maxTokens: 32000
   justwoker:
     api: anthropic-messages
-    baseUrl: "https://api.justwoker.icu"
-    apiKey: "<REDACTED>"
+    baseUrl: https://api.justwoker.icu
+    apiKey: <REDACTED>
     models:
-      - id: gpt-5.6-luna
-        compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.6 Luna"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0.6
-          output: 0.6
-          cacheRead: 0
-          cacheWrite: 0
-      - id: gpt-5.6-terra
-        compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.6 Terra"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0.65
-          output: 0.65
-          cacheRead: 0
-          cacheWrite: 0
-      - id: gpt-5.6-sol
-        compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.6 Sol"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-
+    - id: gpt-5.6-luna
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Luna
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 32768
+      cost:
+        input: 0.6
+        output: 0.6
+        cacheRead: 0
+        cacheWrite: 0
+    - id: gpt-5.6-terra
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Terra
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 32768
+      cost:
+        input: 0.65
+        output: 0.65
+        cacheRead: 0
+        cacheWrite: 0
+    - id: gpt-5.6-sol
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Sol
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 32768
   motomoto-chat:
     api: openai-completions
-    baseUrl: "http://127.0.0.1:4150/v1"
-    apiKey: "<REDACTED>"   # real key lives in ~/.config/motomoto-shim.key, held by the shim
+    baseUrl: http://127.0.0.1:4150/v1
+    apiKey: <REDACTED>
     models:
-      - id: gpt-5.5
-        compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.5 (Chat Completions)"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: gpt-5.6-sol
-        compactionModel: c8787/gpt-5.6-luna
-        name: "GPT-5.6 Sol (Chat Completions)"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1000000
-        maxTokens: 32768
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-
-  umans:
-    api: anthropic-messages
-    baseUrl: "https://api.code.umans.ai"
-    apiKey: "<REDACTED>"
-    models:
-      - id: umans-kimi-k2.7
-        name: "Umans Kimi K2.7 Code"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 262144
-
-        maxTokens: 32768
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: umans-kimi-k3
-        name: "Umans Kimi K3 (prerelease)"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1048576
-        maxTokens: 131071
-
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-
-      - id: umans-glm-5.2
-        name: "Umans GLM 5.2"
-        reasoning: true
-        input: [text]
-        contextWindow: 405504
-        maxTokens: 131071
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: umans-coder
-        name: "Umans Coder"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 262144
-        maxTokens: 32768
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: umans-flash
-        name: "Umans Flash"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 262144
-        maxTokens: 32768
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: umans-qwen3.6-35b-a3b
-        name: "Umans Qwen3.6 35B A3B"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 262144
-        maxTokens: 32768
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-
+    - id: gpt-5.5
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.5 (Chat Completions)
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 32768
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
+    - id: gpt-5.6-sol
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-5.6 Sol (Chat Completions)
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 32768
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
   kimi-claw:
     api: anthropic-messages
     baseUrl: https://agent-gw.kimi.com/coding
-    apiKey: "<REDACTED>"
+    apiKey: <REDACTED>
     models:
-      - id: k3-agent
-        compactionModel: c8787/gpt-5.6-luna
-        name: "K3"
-        reasoning: true
-        input: [text, image]
-        contextWindow: 262144
-
+    - id: k3-agent
+      compactionModel: c8787/gpt-5.6-luna
+      name: K3
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 262144
   kimi-code:
-    # 覆盖 bundled kimi-code/k3：压缩候选首选改为 8787 网关的 GPT-5.6 Luna
     modelOverrides:
       k3:
         compactionModel: c8787/gpt-5.6-luna
@@ -264,91 +211,96 @@ providers:
         compactionModel: c8787/gpt-5.6-luna
       kimi-k2.5:
         compactionModel: c8787/gpt-5.6-luna
-
   tokenrouter:
     api: openai-completions
     baseUrl: https://api.tokenrouter.com/v1
-    apiKey: "<REDACTED>"
+    apiKey: <REDACTED>
     models:
-      - id: z-ai/glm-5.3-free
-        compactionModel: c8787/gpt-5.6-luna
-        name: "GLM 5.3 Free"
-        reasoning: true
-        input: [text]
-        contextWindow: 1000000
-        maxTokens: 131072
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-
+    - id: z-ai/glm-5.3-free
+      compactionModel: c8787/gpt-5.6-luna
+      name: GLM 5.3 Free
+      reasoning: true
+      input:
+      - text
+      contextWindow: 1000000
+      maxTokens: 131072
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
   sensenova:
     api: openai-completions
-    baseUrl: "https://token.sensenova.cn/v1"
-    apiKey: "<REDACTED>"   # 复制自 OpenCode auth.json 的 SenseNova key
+    baseUrl: https://token.sensenova.cn/v1
+    apiKey: <REDACTED>
     models:
-      - id: deepseek-v4-flash
-        compactionModel: c8787/gpt-5.6-luna
-        name: DeepSeek V4 Flash
-        reasoning: true
-        input: [text]
-        contextWindow: 1000000
-        maxTokens: 65536
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: deepseek-v4-pro
-        compactionModel: c8787/gpt-5.6-luna
-        name: DeepSeek V4 Pro
-        reasoning: true
-        input: [text]
-        contextWindow: 1048576
-        maxTokens: 65536
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: glm-5.2
-        compactionModel: c8787/gpt-5.6-luna
-        name: GLM-5.2
-        reasoning: true
-        input: [text]
-        contextWindow: 1000000
-        maxTokens: 131072
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: kimi-k3
-        compactionModel: c8787/gpt-5.6-luna
-        name: Kimi K3
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1048576
-        maxTokens: 65536
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-      - id: sensenova-6.8-flash-lite
-        compactionModel: c8787/gpt-5.6-luna
-        name: SenseNova 6.8 Flash Lite
-        reasoning: true
-        input: [text, image]
-        contextWindow: 262144
-        maxTokens: 65536
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
-
+    - id: deepseek-v4-flash
+      compactionModel: c8787/gpt-5.6-luna
+      name: DeepSeek V4 Flash
+      reasoning: true
+      input:
+      - text
+      contextWindow: 1000000
+      maxTokens: 65536
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
+    - id: deepseek-v4-pro
+      compactionModel: c8787/gpt-5.6-luna
+      name: DeepSeek V4 Pro
+      reasoning: true
+      input:
+      - text
+      contextWindow: 1048576
+      maxTokens: 65536
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
+    - id: glm-5.2
+      compactionModel: c8787/gpt-5.6-luna
+      name: GLM-5.2
+      reasoning: true
+      input:
+      - text
+      contextWindow: 1000000
+      maxTokens: 131072
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
+    - id: kimi-k3
+      compactionModel: c8787/gpt-5.6-luna
+      name: Kimi K3
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1048576
+      maxTokens: 65536
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
+    - id: sensenova-6.8-flash-lite
+      compactionModel: c8787/gpt-5.6-luna
+      name: SenseNova 6.8 Flash Lite
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 262144
+      maxTokens: 65536
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
   deepseek:
     modelOverrides:
       deepseek-v4-flash:

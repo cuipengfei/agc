@@ -1,10 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
   "mcpServers": {
-    "graphiti-memory": {
-      "type": "http",
-      "url": "http://127.0.0.1:8000/mcp/"
-    },
     "context7": {
       "type": "stdio",
       "command": "context7-mcp",
@@ -13,10 +9,6 @@
         "<REDACTED>"
       ]
     },
-    "mintlify-index": {
-      "type": "http",
-      "url": "https://index.mintlify.com"
-    },
     "deep-wiki": {
       "type": "http",
       "url": "https://mcp.deepwiki.com/mcp"
@@ -24,10 +16,6 @@
     "search-exa": {
       "type": "http",
       "url": "https://mcp.exa.ai/mcp?exaApiKey=<REDACTED>"
-    },
-    "grep-app-github": {
-      "type": "http",
-      "url": "https://mcp.grep.app"
     },
     "search-tavily": {
       "type": "http",
@@ -76,6 +64,14 @@
     "context-mode": {
       "type": "stdio",
       "command": "context-mode"
+    },
+    "mintlify-index": {
+      "type": "http",
+      "url": "https://index.mintlify.com"
+    },
+    "grep-app-github": {
+      "type": "http",
+      "url": "https://mcp.grep.app"
     },
     "excalidraw": {
       "type": "stdio",

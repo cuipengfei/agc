@@ -22,12 +22,6 @@
     "plan_exit": "ask",
   },
   "mcp": {
-    "mempalace": {
-      "type": "local",
-      "command": ["/home/cpf/.local/bin/mempalace-mcp"],
-      "enabled": false,
-      "timeout": 10000,
-    },
     "deep-wiki": {
       "type": "remote",
       "url": "https://mcp.deepwiki.com/mcp",
@@ -78,12 +72,6 @@
       "oauth": false,
       "enabled": true,
     },
-    "graphiti-memory": {
-      "type": "remote",
-      "url": "http://127.0.0.1:8000/mcp/",
-      "oauth": false,
-      "enabled": true,
-    },
     "ddgs": {
       "type": "local",
       "command": ["/home/cpf/.local/bin/ddgs", "mcp"],
@@ -97,6 +85,7 @@
     },
   },
   "snapshot": false,
+  "lsp": true,
   "experimental": {
     "openTelemetry": false,
     "batch_tool": true,
@@ -360,115 +349,6 @@
         },
       },
     },
-    "motomoto-responses": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "MotoMoto Responses",
-      "options": {
-        "baseURL": "http://127.0.0.1:4150/v1",
-        "apiKey": "<REDACTED>"
-      },
-      "models": {
-        "gpt-5.5": {
-          "name": "GPT-5.5 (Responses)",
-          "limit": { "context": 1000000, "output": 32768 },
-          "reasoning": true,
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-            },
-            "high": {
-              "reasoningEffort": "high",
-            },
-          },
-        },
-        "gpt-5.6-sol": {
-          "name": "GPT-5.6 Sol (Responses)",
-          "limit": { "context": 1000000, "output": 32768 },
-          "reasoning": true,
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-            },
-            "high": {
-              "reasoningEffort": "high",
-            },
-          },
-        }
-      }
-    },
-    "justwoker": {
-      "npm": "@ai-sdk/anthropic",
-      "name": "JustDoWork",
-      "options": {
-        "baseURL": "https://api.justwoker.icu/v1",
-        "apiKey": "<REDACTED>",
-      },
-      "models": {
-        "gpt-5.6-luna": {
-          "name": "GPT-5.6 Luna",
-          "limit": { "context": 1000000, "output": 32768 },
-          "reasoning": true,
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-            },
-            "high": {
-              "reasoningEffort": "high",
-            },
-            "xhigh": {
-              "reasoningEffort": "max",
-            },
-          },
-        },
-        "gpt-5.6-terra": {
-          "name": "GPT-5.6 Terra",
-          "limit": { "context": 1000000, "output": 32768 },
-          "reasoning": true,
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-            },
-            "high": {
-              "reasoningEffort": "high",
-            },
-            "xhigh": {
-              "reasoningEffort": "max",
-            },
-          },
-        },
-        "gpt-5.6-sol": {
-          "name": "GPT-5.6 Sol",
-          "limit": { "context": 1000000, "output": 32768 },
-          "reasoning": true,
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-            },
-            "high": {
-              "reasoningEffort": "high",
-            },
-            "xhigh": {
-              "reasoningEffort": "max",
-            },
-          },
-        },
-      },
-    },
     "kimi-claw": {
       "npm": "@ai-sdk/anthropic",
       "name": "Kimi Claw",
@@ -479,13 +359,13 @@
       "models": {
         "k3-agent": {
           "name": "K3",
-          "limit": {
-            "context": 262144,
-            "output": 32768,
-          },
           "reasoning": true,
           "modalities": {
             "input": ["text", "image", "video"],
+          },
+          "limit": {
+            "context": 262144,
+            "output": 32768,
           },
         },
       },
