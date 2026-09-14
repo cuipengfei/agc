@@ -1,8 +1,8 @@
 # OMP TTSR 与 /omfg：流式行为护栏
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24
-> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md)
-> Updated: 2026-08-29
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24；本会话 18.1.21 源码核验与内存复现，2026-09-14
+> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [deferred 注入竞态调查](../../raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md)
+> Updated: 2026-09-14
 
 ## 速查
 
@@ -38,7 +38,7 @@
 | `ttsr.builtinRules` | `true`/`false` | 是否加载内置规则包。默认 `true` |
 | `ttsr.disabledRules` | string[] | 按名屏蔽，内置与自定义均生效。默认 `[]` |
 
-**当前配置**：`discard` + `always` + `after-gap` + `repeatGap: 5`——每 5 个 turn 允许同一规则再次触发（实验性偏严格的选择，非官方推荐值）。
+**当前配置**（2026-09-14 pull 快照）：`discard` + `always` + `once` + `repeatGap: 5`（此前为 `after-gap`）。`always` + `once` 恰好绕开 deferred 竞态（见下文「已知问题」）。
 
 ## keep vs discard
 
@@ -60,7 +60,7 @@
 
 ### 规则身份与重复验证
 
-TTSR 规则名来自规则文件名 stem；frontmatter 中的 `name:` 不会改名，也不会切断旧的 injected 状态。规则命中后，当前配置下的 `repeatMode: after-gap` 会在后续若干 completed turns 内抑制同一规则。因此 live 验收必须先跑正向放行、再跑负向阻断，或使用两个全新 session；先跑负向会把规则标记为 injected，随后的放行不能证明条件没有命中。
+TTSR 规则名来自规则文件名 stem；frontmatter 中的 `name:` 不会改名，也不会切断旧的 injected 状态。规则命中后，`repeatMode: after-gap` 会在后续若干 completed turns 内抑制同一规则（`once` 则整个会话不再触发）。因此 live 验收必须先跑正向放行、再跑负向阻断，或使用两个全新 session；先跑负向会把规则标记为 injected，随后的放行不能证明条件没有命中。
 
 修改规则来规避旧注入状态时，应改文件名并启动新 session，而不是在 frontmatter 里添加 `name:`。
 
@@ -74,6 +74,8 @@ TTSR 规则名来自规则文件名 stem；frontmatter 中的 `name:` 不会改�
 
 这里的证据范围是**当前会话可见上下文**；它不等同于 transcript 精确总数，也不声称这些正文在后续 compaction 后仍全部保留。完整 occurrence 前后片段与观察边界见 [重复 XML 注入实验记录](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md)。
 
+对照：上述实验是受控的正常 after-gap 行为（隔够 turn 数后合法再触发）。2026-09-14 发现的 deferred 竞态（见「已知问题」）则是在间隔**未**满足时的异常重复，两者机制不同。
+
 ## Extension 与 TTSR 的分层边界
 
 TTSR 处理原始流式文本，适合做确定性的 best-effort 拦截；`tool_call` extension 处理 schema 验证后的结构化参数，适合做本地执行政策。不要把 JSON 结构校验交给 regex，也不要假设 extension 能看见 schema defaulting 前的原始参数。
@@ -85,6 +87,12 @@ TTSR 处理原始流式文本，适合做确定性的 best-effort 拦截；`tool
 官方主推卖点（README poster + 视频）；独立用户实测口碑证据**空白**（未发现可核验的 HN/Reddit/X 实测评价——非负面，是无数据）。
 
 已修：#1767（开关不生效）、#2783（兄弟调用波及）、#3646（hashline 路径作用域）、#5489（静默不注册）。仍 open：#7960（iTerm2 EOF 误退出）、#8192（语义分类器）、#8583（手动编辑草稿）、#7158/#7182（per-rule repeat/context）。状态以各 issue 页面为准（2026-08-24 快照）。
+
+### Deferred 注入竞态：repeatGap 被绕过（[#12057](https://github.com/can1357/oh-my-pi/issues/12057)，2026-09-14 上报）
+
+非打断路径（`interruptMode: never`，或 `tool-only` 下匹配 text/thinking 的规则）存在窗口：提醒从待送达队列取出送去投递后、「已注入」登记前，同一规则可再次被匹配排队，产生零间隔的重复注入，`repeatGap` 失效。18.1.21 源码核验 + 内存复现确认（两轮命中排两次队，登记簿全程为空）。`always` 路径免疫（同步 abort + 登记先于恢复）。详细机制、行号与复现输出见 [deferred 注入竞态调查](../../raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md)。`once` 模式在同通道下是否也双投递：未实测。
+
+孪生问题 [#10204](https://github.com/can1357/oh-my-pi/issues/10204)（OPEN）：`once` 规则的提醒被 compaction 摘要出模型上下文后，登记簿仍视规则为已用完——模型看不见提醒，规则却永久不再触发。两者共同根因：注入登记与「提醒是否真实存在于模型上下文」脱钩。
 
 ## 适用判断
 

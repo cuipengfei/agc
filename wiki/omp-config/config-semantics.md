@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md)
-> Updated: 2026-09-12
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md)
+> Updated: 2026-09-14
 
 ## 这份手册讲什么
 
@@ -21,13 +21,21 @@
 
 | 设置 | 做什么 | 何时触发 | 影响与取舍 |
 |---|---|---|---|
-| `read.renderMarkdown: true` | Markdown read 走格式化终端渲染 | `read` 读取 Markdown 时 | 文档更适于人看；若需要字节级原文，别把预览当源文件 |
+| `read.renderMarkdown: true` | Markdown read 走格式化终端渲染 | `read` 读取 Markdown 时 | 文档更适于人看；若需要字节级原文，别把预览当源文件。只改本地 read 结果的 metadata（`contentType` 标签）与 TUI 渲染路径，provider 上送的 toolResult 不含 details，不影响 LLM 收到的正文 |
 | `read.summarize.prose: true` | prose 文件也可进入 read 摘要分支 | read 自身进入摘要逻辑时 | 长文档更快拿到结构摘要；不是所有 prose 都强制摘要 |
-| `read.toolResultPreview: true` | read 结果在聊天区显示 inline preview | read tool result 渲染时 | 你能直接在 TUI 对话区看到 read 到了什么 |
-| `edit.streamingAbort: true` | streamed edit 的最终 preview 报错时可中止 | native edit engine final preview 已报 error 时 | 防止被判错的流式 edit 继续提交；不是"有风险就中断" |
+| `read.toolResultPreview: true` | read 结果在聊天区显示 inline preview | read tool result 渲染时 | 你能直接在 TUI 对话区看到 read 到了什么。纯 TUI 展示层，不影响发给 LLM 的任何字节 |
+| `edit.streamingAbort: false` | streamed edit 的最终 preview 报错时是否中止（本机当前关） | native edit engine final preview 已报 error 时 | 开启时防止被判错的流式 edit 继续提交，但中断后需手动 F5 恢复；关闭则错误走正常 tool result 通道，模型下一轮自动处理，适合无人值守长跑 |
 | `providers.fetch: auto` | 网页读取走自动 reader 顺序 | fetch HTML→Markdown 时 | 顺序为 native → trafilatura → lynx → Parallel → Firecrawl → Jina；`auto` 不等于不联网 |
 | `shellMinimizer.sourceOutlineLevel: default` | Bash 打印源码时减少 aggressive 压缩 | Bash 输出源码时 | `aggressive` 更偏 outline，可能省掉 function body；`default` 保留更多实现细节 |
 | `bash.allowCompoundCommands: false` | 不把 literal `cmd1 && cmd2` 拆开做分段处理 | Bash 命令包含 literal `&&` 链时 | 不是禁止执行 `&&`；整条命令仍整体处理 |
+
+
+### streamingAbort 中断之后发生什么（18.1.21 核验）
+
+- **中断即结算，不自动重试**：preview 失败触发 tool-scoped abort 后，agent loop 为该 tool call 补占位 aborted result（标注「Streaming edit preview failed for <path>」诊断）并结束本 turn。guard abort 被定性为 deliberate，源码注释明确「MUST settle the turn instead」，理由是会挂起在飞的 `prompt()` 或抵消拦截意图。
+- **F5 = manual-retry，两条路径**：完整但失败的工具批次可在剥掉失败尾巴后**直接重放原 tool calls**（省一次模型调用；部分成功的批次永不重放以免重复副作用）；被截断的批次（含 preview 失败这类带 synthetic placeholder 尾巴的）则剥掉后由模型重新生成。对 preview 失败这个具体 case，F5 的意义是「人确认后再让 LLM 试一次」。
+- **自动 retry 的排除范围（精确）**：自动重试分类器中已核验显式排除 guard abort 的是 `reasonlessAbort`、`transportReset`、`prematureClose` 三个分支；`streamStall` 分支无此检查（源码未注释原因），guard abort 是否可能经该通道进入自动重试暂不下定论（未做 guard-abort × stall 实测）。
+- **F5 与自动重试的上下文基本等价**：F5 按下时模型相同、上下文近似相同（只剥掉失败 turn）。「自动重试会空烧 token」不能作为反对自动化的理由；两者实际差异是 F5 前的时间窗口给人读诊断/改提示/放弃的介入机会，以及人工按键的天然限速。
 
 ## 子 Agent、自动学习与 Todo
 

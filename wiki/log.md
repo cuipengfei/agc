@@ -543,3 +543,8 @@
 ## [2026-09-12] lint | 0 issues found, 0 auto-fixed
 - 范围限定检查 `wiki/omp-config/config-semantics.md`：0 fidelity suspect, 0 evidence error, 0 unreferenced raw
 - 全量检查 46 fidelity suspects 均来自其他既有文章，本次新增内容无真实 suspect
+
+## [2026-09-14] ingest | OMP TTSR 与 /omfg：流式行为护栏
+- Disposition: Update
+- Raw: raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md
+- Updated: OMP TTSR 与 /omfg（配置节当前配置快照改 once；已知问题节新增 deferred 注入竞态 #12057 与孪生问题 #10204；重复注入实验节加正常/异常对照）
