@@ -3,8 +3,6 @@ providers:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
     api: openai-responses
-    headers:
-      x-session-id: <REDACTED>
     compat:
       supportsImageDetailOriginal: false
     models:
@@ -75,8 +73,8 @@ providers:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
     api: openai-completions
-    headers:
-      x-session-id: <REDACTED>
+    compat:
+      supportsPromptCacheKey: true
     models:
     - id: gemini-3.7-flash
       compactionModel: c8787/gpt-5.6-luna
