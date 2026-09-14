@@ -548,3 +548,8 @@
 - Disposition: Update
 - Raw: raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md
 - Updated: OMP TTSR 与 /omfg（配置节当前配置快照改 once；已知问题节新增 deferred 注入竞态 #12057 与孪生问题 #10204；重复注入实验节加正常/异常对照）
+
+## [2026-09-14] ingest | OMP 配置语义手册
+- Disposition: Update
+- Raw: raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md
+- Updated: OMP 配置语义手册（Sources 版本补 v18.1.21；streamingAbort 值改 false 并新增「中断之后发生什么」运行时小节；两个 read 开关补 provider 上送边界）
