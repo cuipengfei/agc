@@ -553,3 +553,8 @@
 - Disposition: Update
 - Raw: raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md
 - Updated: OMP 配置语义手册（Sources 版本补 v18.1.21；streamingAbort 值改 false 并新增「中断之后发生什么」运行时小节；两个 read 开关补 provider 上送边界）
+
+## [2026-09-14] ingest | OMP 动态 Session Identity 与 Sticky Routing
+- Disposition: New
+- Raw: raw/omp-config/2026-09-14-omp-dynamic-session-identity-sticky-routing.md
+- Updated: Prompt Cache：前缀匹配与 cache key 的真实分工（See Also 加反向链接）

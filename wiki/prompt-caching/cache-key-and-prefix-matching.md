@@ -68,3 +68,4 @@ OMP 侧的一个加重证据（单源，仅 OMP auth-gateway 源码注释）："
 - [OMP /tan：后台 fork 分身命令](../omp-background-agents/tan-command.md)
 - [模型 capability 与 gateway wire 参数不一致](../model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md)
 - [AI Coding Agent 对比：真正独特优势（19 家）](../ai-coding-agents/4-agent-comparison.md) — 这两个开关的独有性裁定与反向核查过程
+- [OMP 动态 Session Identity 与 Sticky Routing](../omp-config/dynamic-session-identity-sticky-routing.md) — OMP 侧 prompt_cache_key 的归一化规则与注入条件
