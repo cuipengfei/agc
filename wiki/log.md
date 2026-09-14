@@ -558,3 +558,7 @@
 - Disposition: New
 - Raw: raw/omp-config/2026-09-14-omp-dynamic-session-identity-sticky-routing.md
 - Updated: Prompt Cache：前缀匹配与 cache key 的真实分工（See Also 加反向链接）
+
+## [2026-09-14] ingest | OMP Advisor 防过时三旋钮
+- Disposition: New
+- Raw: raw/omp-config/2026-09-14-omp-advisor-freshness-knobs.md
