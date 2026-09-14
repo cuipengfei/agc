@@ -4,9 +4,9 @@ power:
   sleepPrevention: idle
 advisor:
   enabled: true
-  syncBacklog: "3"
-  immuneTurns: 3
-  maxNotesPerUpdate: 5
+  syncBacklog: "1"
+  immuneTurns: 0
+  maxNotesPerUpdate: 1
 prewalk:
   enabled: false
 git:
@@ -203,6 +203,7 @@ tier:
   anthropic: none
   google: none
   subagent: inherit
+  advisor: auto
 retry:
   enabled: true
   maxRetries: 3
