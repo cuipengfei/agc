@@ -264,3 +264,12 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-09 |
+
+## proxy-ops
+
+专有代理客户端迁移与代理节点出口指纹的通用取证方法（不含具体服务商信息）。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界 | 2026-09-16 |
+| [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 批量测出口、BGP origin 收敛 ASN 冲突、命名审计 | 2026-09-16 |

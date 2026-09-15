@@ -562,3 +562,11 @@
 ## [2026-09-14] ingest | OMP Advisor 防过时三旋钮
 - Disposition: New
 - Raw: raw/omp-config/2026-09-14-omp-advisor-freshness-knobs.md
+
+## [2026-09-16] ingest | 专有代理客户端迁移到标准 Clash：通用取证方法
+- Disposition: New
+- Raw: raw/proxy-ops/2026-09-16-proprietary-client-to-clash-subscription.md
+
+## [2026-09-16] ingest | 代理出口 IP 指纹批量测量与形态分类
+- Disposition: New
+- Raw: raw/proxy-ops/2026-09-16-exit-ip-fingerprint-measurement.md
