@@ -240,18 +240,16 @@ status_line = ["model-with-reasoning", "context-remaining", "current-dir", "git-
 terminal_resize_reflow = true
 memories = true
 
-plugin_hooks = true
-
 multi_agent = true
 
-hooks = true
-goals = true
 multi_agent_v2 = true
 recommended_plugins = true
 secret_auth_storage = true
 apply_patch_preserve_line_endings = true
 apply_patch_streaming_events = true
 code_mode = true
+hooks = true
+goals = true
 [plugins."ponytail@ponytail"]
 enabled = true
 
