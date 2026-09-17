@@ -570,3 +570,7 @@
 ## [2026-09-16] ingest | 代理出口 IP 指纹批量测量与形态分类
 - Disposition: New
 - Raw: raw/proxy-ops/2026-09-16-exit-ip-fingerprint-measurement.md
+
+## [2026-09-17] ingest | Herdr + Plannotator 工具链调研
+- Disposition: New
+- Raw: raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md
