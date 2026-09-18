@@ -1,4 +1,16 @@
 providers:
+  openai-codex:
+    baseUrl: http://localhost:8787/v1
+    apiKey: <REDACTED>
+    api: openai-codex-responses
+    models:
+    - id: gpt-5.6-luna
+      name: GPT-5.6 Luna (codex search)
+      reasoning: true
+      input:
+      - text
+      contextWindow: 400000
+      maxTokens: 128000
   c8787:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
@@ -110,37 +122,9 @@ providers:
     baseUrl: https://api.justwoker.icu
     apiKey: <REDACTED>
     models:
-    - id: gpt-5.6-luna
+    - id: claude-opus-4-8
       compactionModel: c8787/gpt-5.6-luna
-      name: GPT-5.6 Luna
-      reasoning: true
-      input:
-      - text
-      - image
-      contextWindow: 1000000
-      maxTokens: 32768
-      cost:
-        input: 0.6
-        output: 0.6
-        cacheRead: 0
-        cacheWrite: 0
-    - id: gpt-5.6-terra
-      compactionModel: c8787/gpt-5.6-luna
-      name: GPT-5.6 Terra
-      reasoning: true
-      input:
-      - text
-      - image
-      contextWindow: 1000000
-      maxTokens: 32768
-      cost:
-        input: 0.65
-        output: 0.65
-        cacheRead: 0
-        cacheWrite: 0
-    - id: gpt-5.6-sol
-      compactionModel: c8787/gpt-5.6-luna
-      name: GPT-5.6 Sol
+      name: Claude Opus 4.8
       reasoning: true
       input:
       - text

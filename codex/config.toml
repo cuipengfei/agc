@@ -50,18 +50,10 @@ approval_mode = "approve"
 [mcp_servers.search-tavily.tools.tavily_search]
 approval_mode = "approve"
 
-[mcp_servers.firecrawl]
-url = "https://mcp.firecrawl.dev/<REDACTED>/v2/mcp"
-
 [mcp_servers.chrome-devtools]
 command = "/home/cpf/.bun/bin/chrome-devtools-mcp"
 args = ["--browserUrl", "http://127.0.0.1:9333", "--no-usage-statistics", "--no-performance-crux"]
 
-[mcp_servers.jina]
-url = "https://mcp.jina.ai/v1"
-
-[mcp_servers.jina.http_headers]
-Authorization = "Bearer <REDACTED>"
 
 [mcp_servers.codegraph]
 command = "codegraph"

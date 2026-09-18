@@ -40,12 +40,6 @@
       "oauth": false,
       "enabled": true,
     },
-    "firecrawl": {
-      "type": "remote",
-      "url": "https://mcp.firecrawl.dev/<REDACTED>/v2/mcp",
-      "oauth": false,
-      "enabled": true,
-    },
     "chrome-devtools": {
       "type": "local",
       "command": [
@@ -61,15 +55,6 @@
     "headroom": {
       "type": "remote",
       "url": "http://127.0.0.1:8788/mcp",
-      "enabled": true,
-    },
-    "jina": {
-      "type": "remote",
-      "url": "https://mcp.jina.ai/v1",
-      "headers": {
-        "Authorization": "Bearer <REDACTED>",
-      },
-      "oauth": false,
       "enabled": true,
     },
     "ddgs": {
@@ -345,6 +330,23 @@
           "limit": {
             "context": 256000,
             "output": 32000,
+          },
+        },
+      },
+    },
+    "justwoker": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "JustDoWork",
+      "options": {
+        "baseURL": "https://api.justwoker.icu/v1",
+        "apiKey": "<REDACTED>",
+      },
+      "models": {
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "limit": {
+            "context": 1000000,
+            "output": 32768,
           },
         },
       },

@@ -574,3 +574,11 @@
 ## [2026-09-17] ingest | Herdr + Plannotator 工具链调研
 - Disposition: New
 - Raw: raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md
+
+## [2026-09-19] ingest | OMP web search 自定义 Responses API 端点接入
+- Disposition: New
+- Raw: raw/omp-tips/2026-09-19-codex-provider-responses-api-mechanism.md
+
+## [2026-09-19] ingest | OMP web search provider 清单与 fallback 机制
+- Disposition: New
+- Raw: raw/omp-tips/2026-09-19-web-search-provider-inventory.md

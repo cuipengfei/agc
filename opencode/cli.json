@@ -4,7 +4,8 @@
   },
   "plugins": [
     "oh-my-openagent",
-    "./plugins/umans-status-tui.tsx"
+    "./plugins/umans-status-tui.tsx",
+    "./herdr-opencode"
   ],
   "scroll": {
     "acceleration": true
