@@ -82,12 +82,12 @@ headroom `providers/openai_responses.py:30-37` 注册了 `/v1/codex/responses` �
 2. .zshrc：`export PI_CODEX_WEB_SEARCH_MODEL=<model>`
 3. config.yml：`providers.webSearchOrder` 把 `codex` 排第一（如需优先于其他已配凭证的 provider）
 
-## 边界
-
 ## 本机端口
 
 - headroom 监听 8787，进程参数：`headroom proxy --anthropic-api-url http://localhost:4140 --openai-api-url http://localhost:4140 --port 8787 --mode cache`
 - copilot-api 监听 4140
+
+## 边界
 
 - 不是任意 Responses API 端点都能接：必须能处理 `/codex/responses` 路径和强制 `tool_choice` 请求形状
 - headroom 做了路径归一化；直连不认识该路径的端点会 404
