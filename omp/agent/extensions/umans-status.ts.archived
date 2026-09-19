@@ -1,0 +1,32 @@
+// Umans usage status — reads shared cache via umans-status.sh render
+// (same script used by ccstatusline + OpenCode umans-status-tui plugin).
+// Displays in OMP footer via ctx.ui.setStatus.
+import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent"
+
+const REFRESH_SCRIPT = "/home/cpf/.local/bin/umans-status.sh"
+const POLL_MS = 30_000
+
+export default async function (pi: ExtensionAPI) {
+  pi.on("session_start", async (_event, ctx) => {
+    if (!ctx.hasUI) return
+
+    async function poll() {
+      try {
+        const result = await pi.exec(REFRESH_SCRIPT, [], { timeout: 5_000 })
+        if (result.killed || result.code !== 0) {
+          ctx.ui.setStatus("umans", "Umans: --")
+          return
+        }
+        const text = result.stdout.trim()
+        ctx.ui.setStatus("umans", text || "Umans: --")
+      } catch (err) {
+        console.warn("[umans-status] poll failed:", err)
+        ctx.ui.setStatus("umans", "Umans: --")
+      }
+    }
+
+    poll().catch((err) => console.warn("[umans-status] initial poll failed:", err))
+    ctx.setInterval(poll, POLL_MS)
+  })
+}
+
