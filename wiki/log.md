@@ -625,3 +625,13 @@
 - 纠正：『默认 32 case』错误——`gen_inputs(nargs, 32)` 的 32 是 bits（32-bit 输入域）；boundary 10 组 + 固定种子伪随机 24 个 = 34 组，max_inputs=40 不截断（behavior.py:184-199；exebench.py:241,271-272）。
 - 纠正：『plain claude/codex 无人消费』『gemini/opencode 可直接换会话』过度概括——未消费仅限未使用 launcher/inline/successor 的 plain session；gemini `clearContext` 只证明当前上下文重置；codex 等价 successor 未验证。
 - Updated: wiki/agent-tooling/reverify.md; wiki/index.md; raw/agent-tooling/2026-09-19-reverify-project-audit.md（未 commit，就地修正）
+
+## [2026-09-19] ingest | SoL-Pi 与 OMP 兼容性
+- Disposition: New
+- Raw: raw/agent-harness/2026-09-19-sol-pi-forensics.md
+- Created: SoL-Pi 与 OMP 兼容性：机制核查与装得上但开不了
+
+## [2026-09-19] ingest | OMP 扩展自动加载机制
+- Disposition: New
+- Raw: raw/omp-tips/2026-09-19-extension-auto-loading-canary.md
+- Created: OMP 扩展自动加载机制
