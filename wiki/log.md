@@ -606,3 +606,9 @@
 ## [2026-09-19] ingest | Responses API web_search usage 计量
 - Disposition: New
 - Raw: raw/responses-api/2026-09-19-web-search-usage-probe.md
+
+## [2026-09-19] ingest | LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置
+- Disposition: New
+- Raw: raw/llm-proxy-sse/2026-09-19-llm-api-sse-streaming-clash-mihomo-study.md; raw/llm-proxy-sse/2026-09-19-clash-verge-mihomo-local-config-forensics.md; raw/llm-proxy-sse/2026-09-19-mihomo-keep-alive-key-name-verification.md
+- Created: LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置
+- 要点：keep-alive-idle 调长更不安全（15 略优于 30，已纠正，raw 初稿 30 推荐作废）；「拨号时刻重选节点」一手源码、「出口 IP 漂移」推论、「NAT 空闲超时分钟级」未验证；tcp-keep-alive-*/dial-timeout 不存在为一手源码+二进制双证；WSL2+TUN Bun 证书误报标本机记录。

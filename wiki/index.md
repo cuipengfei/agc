@@ -286,6 +286,14 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 | [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界 | 2026-09-16 |
 | [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 批量测出口、BGP origin 收敛 ASN 冲突、命名审计 | 2026-09-16 |
 
+## llm-proxy-sse
+
+LLM API SSE 流式调用在 Clash Verge/mihomo + 机场链路上的长连接机制、链路影响与配置边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置](llm-proxy-sse/llm-api-sse-proxy-chain.md) | SSE=单条长生命周期响应流、mihomo 透明转发无害、url-test 拨号时刻选路不杀已有流；keep-alive 键名三证定版、idle 调长更不安全（15 优于 30）；select 组固定出口 + 客户端读超时/重试兜底 | 2026-09-19 |
+
 ## herdr-plannotator
 
 Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 CLI、配置、插件机制与集成方式。
