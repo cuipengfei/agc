@@ -582,3 +582,23 @@
 ## [2026-09-19] ingest | OMP web search provider 清单与 fallback 机制
 - Disposition: New
 - Raw: raw/omp-tips/2026-09-19-web-search-provider-inventory.md
+
+## [2026-09-19] ingest | OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
+- Disposition: New
+- Raw: raw/omp/2026-09-19-judgment-provider-values.md; raw/omp/2026-09-19-judgment-typesafe-history.md; raw/omp/2026-09-19-llm-judgment-callflows.md; raw/omp/2026-09-19-judge-smoke-test.md
+- Created: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
+
+## [2026-09-19] ingest | Jev 在 OMP、Codex、OpenCode 的现成集成盘点
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md; raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md; raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md
+- Created: Jev 在 OMP、Codex、OpenCode 的现成集成盘点
+
+## [2026-09-19] ingest | OMP Advisor Concern 投递策略
+- Disposition: New
+- Raw: raw/omp-config/2026-09-19-omp-advisor-concern-delivery-policy.md
+- Created: OMP Advisor Concern 投递策略
+
+## [2026-09-19] ingest | OMP Advisor 防过时三旋钮
+- Disposition: Update
+- Raw: raw/omp-config/2026-09-19-advisor-runtime-18-2-6.md
+- Updated: OMP Advisor 防过时三旋钮

@@ -50,6 +50,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [四 Agent CLI 能力面对比](ai-coding-agents/cli-capability-surface.md) | codex/opencode/omo/omp 递归 --help（179 页）九大功能域对比与结构差异 | 2026-09-05 |
 | [Codex 特性门系统与 Code Mode](ai-coding-agents/codex-feature-flags.md) | features stage×effective 正交、removed 冻结假设、Code Mode host 架构 | 2026-09-05 |
 | [Coding Agent 的短反馈闭环：逐轮 Advisor](ai-coding-agents/short-feedback-loop-advisors.md) | OMP、Pi 与 DSH 的第二模型逐轮审查和 advice 回流机制 | 2026-09-11 |
+| [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层 | 2026-09-19 |
 
 ## better-harness
 
@@ -128,7 +129,8 @@ OMP 配置项的源码级行为边界。
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
 | [OMP 动态 Session Identity 与 Sticky Routing](omp-config/dynamic-session-identity-sticky-routing.md) | prompt_cache_key 归一化与 Chat compat gate、未声明 compat 键 keep 语义、4140 body fallback、三条路线排除理由 | 2026-09-14 |
-| [OMP Advisor 防过时三旋钮](omp-config/advisor-freshness-knobs.md) | syncBacklog/immuneTurns/maxNotesPerUpdate 语义、backlog 与 note 两条丢弃路径、防过时最强组合与代价 | 2026-09-14 |
+| [OMP Advisor 防过时三旋钮](omp-config/advisor-freshness-knobs.md) | syncBacklog/immuneTurns/maxNotesPerUpdate 语义、backlog 与 note 两条丢弃路径、防过时最强组合与代价 | 2026-09-19 |
+| [OMP Advisor Concern 投递策略](omp-config/advisor-concern-delivery-policy.md) | mid-turn concern 的 admission defer 现状与 blocker-only 行为、git 沿革、upstream opt-in 变更请求 #9074/#9576/#10600 | 2026-09-19 |
 
 ## omp-extensibility
 
@@ -283,3 +285,11 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 + Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制（925行） | 2026-09-17 |
+
+## omp
+
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper 的行为边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：judgmentProvider 三值 closed enum 与非法值行为、TypeSafe 回退链、3 自动+1 手动消费方、judge() smoke 实测边界 | 2026-09-19 |
