@@ -602,3 +602,7 @@
 - Disposition: Update
 - Raw: raw/omp-config/2026-09-19-advisor-runtime-18-2-6.md
 - Updated: OMP Advisor 防过时三旋钮
+
+## [2026-09-19] ingest | Responses API web_search usage 计量
+- Disposition: New
+- Raw: raw/responses-api/2026-09-19-web-search-usage-probe.md

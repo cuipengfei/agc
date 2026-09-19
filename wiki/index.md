@@ -69,6 +69,14 @@ Better Harness 的工作流审计模型与适用边界。
 | [GPT-5.6 Luna 真实规格](copilot-gateway/gpt-5.6-luna-specs.md) | 窗口 1050000（922000 prompt + 128000 output）、o200k_base、仅 /responses 端点、一个窗口两个计费档；OMP contextWindow 配总窗口的教训 | 2026-09-06 |
 
 
+## responses-api
+
+Responses API 兼容端点的服务端行为实测：web_search 服务端执行、usage 计量、缓存与配额。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Responses API web_search usage 计量](responses-api/web-search-usage-forensics.md) | 服务端执行搜索、小 query 大 input 的成因、SSE 事件流结构、prompt cache 实测、tool_usage 跟踪 | 2026-09-19 |
+
 ## harness-engineering
 
 Harness 的编辑格式、上下文载体与人类理解闭环。
