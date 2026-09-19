@@ -36,6 +36,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南 | 2026-08-31 |
 | [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响 | 2026-09-03 |
 | [LLM 出图的两种作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG 与 archify 类型化 JSON 的作者模型、几何裸露面与选择 | 2026-09-04 |
+| [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 
 ## ai-coding-agents
 
@@ -85,7 +86,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 |---------|---------|---------|
 | [文档、测验与 AI 代码库的认知债务](harness-engineering/documentation-and-cognitive-debt.md) | 用文档保存意图与决策，用 Quiz 暴露理解偏差，用测试验证行为 | 2026-09-01 |
 | [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-03 |
-| [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline、Snapcompact 与 RLM 在编辑、压缩和控制平面上的差异 | 2026-08-30 |
+| [Harness 格式与上下文载体](harness-engineering/harness-formats-and-context-carriers.md) | Hashline、Snapcompact、RLM 与 reverify rollover 在编辑、压缩、handoff 校验和载体上的差异 | 2026-09-19 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
 
 ## mcp-servers
@@ -275,7 +276,7 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-09 |
+| [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-19 |
 
 ## proxy-ops
 

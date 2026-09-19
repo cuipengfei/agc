@@ -1,8 +1,8 @@
 # Harness 格式与上下文载体
 
-> Sources: Can Bölük (Stencil.so)，2026-02-12; Can Bölük (Stencil.so)，2026-06-10
-> Raw: [The Harness Problem](../../raw/stencil/2026-08-30-the-harness-problem.md); [Snapcompact](../../raw/stencil/2026-08-30-snapcompact.md)
-> Updated: 2026-08-30
+> Sources: Can Bölük (Stencil.so)，2026-02-12; Can Bölük (Stencil.so)，2026-06-10; Reverify 项目审计（本机），2026-09-19
+> Raw: [The Harness Problem](../../raw/stencil/2026-08-30-the-harness-problem.md); [Snapcompact](../../raw/stencil/2026-08-30-snapcompact.md); [Reverify 项目审计](../../raw/agent-tooling/2026-09-19-reverify-project-audit.md)
+> Updated: 2026-09-19
 
 ## 核心主题
 
@@ -58,6 +58,21 @@
 | img-6×10-sent | 0.882 | 0.601 | 0.822 |
 
 关键观察：image 在短 corpus 上接近 text 天花板，但模型需要更多 thinking/output token 来 decode。
+
+### 对照：Reverify rollover 与普通 handoff
+
+Reverify 的 `rollover` 子命令针对的正是本表里的 **handoff** 一行——它承认「模型自觉写交接文档」不可靠，改为用 hook 强制化：
+
+- **自动阈值触发**：Stop hook 从 transcript 读取上下文 token，越过可配置阈值（环境变量可调）就 block 一次并要求模型写 hand-off 文件，不靠模型自觉。
+- **主动关闭宿主 compaction**：安装时改写各宿主配置，把原生 compaction 关掉——即接管而非配合。
+- **形状校验 + receipt**：hand-off 落盘后要过校验（block 之后被重写、≤24KB、非空、≥3 个 `##` 小节）才发 receipt。
+- **ledger 联动（仅限 Reverify 支持的 binary 目标）**：对二进制分析任务，工具核实过的事实（含被 refuted 的）单独进 `.reverify/ledger/`；这是逆向场景的 verified-facts 库，不是普通源码任务的通用事实库。交接文档本身在模板页脚明示为 UNVERIFIED。
+
+但机制边界同样明确，不应夸大成「可信交接」或「必然换会话」：
+
+- hand-off 校验只看**形状**不看内容，写错的结论照样过关；
+- 校验失败、hook 异常、token 读不到时 guard 一律 `action: "allow"` 放行——fail-closed 只针对「发不发 receipt」，整条链是 fail-open；
+- receipt 之后是否开新会话分宿主：若 launcher 成功消费 receipt 则结束当前进程并开新会话；Gemini 走 hook 内 `clearContext` 清上下文，OpenCode 经 SDK 开新 session；Claude/Codex 没有进程内清上下文原语，只能依赖 launcher（或 opt-in 的 successor），不经 launcher 的会话 receipt 无人消费、靠 `doctor` 事后报警——换会话不是必然结果。
 
 ## 适用边界
 

@@ -612,3 +612,16 @@
 - Raw: raw/llm-proxy-sse/2026-09-19-llm-api-sse-streaming-clash-mihomo-study.md; raw/llm-proxy-sse/2026-09-19-clash-verge-mihomo-local-config-forensics.md; raw/llm-proxy-sse/2026-09-19-mihomo-keep-alive-key-name-verification.md
 - Created: LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置
 - 要点：keep-alive-idle 调长更不安全（15 略优于 30，已纠正，raw 初稿 30 推荐作废）；「拨号时刻重选节点」一手源码、「出口 IP 漂移」推论、「NAT 空闲超时分钟级」未验证；tcp-keep-alive-*/dial-timeout 不存在为一手源码+二进制双证；WSL2+TUN Bun 证书误报标本机记录。
+
+## [2026-09-19] ingest | Reverify：确定性验证的适用边界与 rollover 实际价值
+- Disposition: New
+- Raw: raw/agent-tooling/2026-09-19-reverify-project-audit.md
+- Created: Reverify：确定性验证的适用边界与 rollover 实际价值
+- Updated: Harness 格式与上下文载体; Mutation testing、test oracle 与 invariant（index Updated 同步 2026-09-19，正文由 cascade worker 更新）
+- 要点：验证回路只接受二进制 bytes（verifier.py:1255），非 RE 核对面仅 functions_equiv 窄契约（int argv→int stdout，需可信参考实现）；rollover 的 hand-off validation 只查形状（mtime/24KB/非空/≥3 个 ##，rollover_harness.py:560-578），失败 action="allow"（:805），receipt 仅 launcher/inline/successor 三条消费路径，plain claude/codex 无人消费（CHANGELOG 实测一例 909k tokens）；issue #22 空断言 VERIFIED 公开绕过、修复 PR #21 未合入；benchmark 数字（275 样本/2,007 known-false 0 false VERIFIED）未独立复现；审计未运行 reverify。
+
+## [2026-09-19] correction | Reverify evidence wording
+- 纠正：『README claim kind 全是 binary/RE、源码差分在 claim loop 外』不准确——Verifier 由 `data: bytes` 初始化（verifier.py:190-191），但 `Verifier.SUPPORTED` 同时含二进制断言、`exebench` 与 `functions_equiv`（verifier.py:165-188），核查器 `_check_exebench`/`_check_functions_equiv`（verifier.py:643-707）；源码差分既可作为 claim 进入回路，也可走 CLI `reverify equiv` / exebench adapter，契约仍窄。
+- 纠正：『默认 32 case』错误——`gen_inputs(nargs, 32)` 的 32 是 bits（32-bit 输入域）；boundary 10 组 + 固定种子伪随机 24 个 = 34 组，max_inputs=40 不截断（behavior.py:184-199；exebench.py:241,271-272）。
+- 纠正：『plain claude/codex 无人消费』『gemini/opencode 可直接换会话』过度概括——未消费仅限未使用 launcher/inline/successor 的 plain session；gemini `clearContext` 只证明当前上下文重置；codex 等价 successor 未验证。
+- Updated: wiki/agent-tooling/reverify.md; wiki/index.md; raw/agent-tooling/2026-09-19-reverify-project-audit.md（未 commit，就地修正）

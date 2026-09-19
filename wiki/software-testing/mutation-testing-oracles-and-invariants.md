@@ -1,8 +1,8 @@
 # Mutation testing、test oracle 与 invariant
 
-> Sources: Thoughtworks Technology Radar, 2026-04-15; The Oracle Problem in Software Testing: A Survey, 2015; MDN Glossary: Invariant, Published date unknown; Efficient Mutation Testing by Checking Invariant Violations, 2009
-> Raw: [Thoughtworks mutation testing](../../raw/software-testing/2026-09-09-thoughtworks-mutation-testing.md); [test oracle survey](../../raw/software-testing/2026-09-09-test-oracle-survey.md); [invariant definition](../../raw/software-testing/2026-09-09-invariant-definition.md); [mutation and invariant violations](../../raw/software-testing/2026-09-09-mutation-invariant-violations.md)
-> Updated: 2026-09-09
+> Sources: Thoughtworks Technology Radar, 2026-04-15; The Oracle Problem in Software Testing: A Survey, 2015; MDN Glossary: Invariant, Published date unknown; Efficient Mutation Testing by Checking Invariant Violations, 2009; Reverify 项目审计（本机），2026-09-19
+> Raw: [Thoughtworks mutation testing](../../raw/software-testing/2026-09-09-thoughtworks-mutation-testing.md); [test oracle survey](../../raw/software-testing/2026-09-09-test-oracle-survey.md); [invariant definition](../../raw/software-testing/2026-09-09-invariant-definition.md); [mutation and invariant violations](../../raw/software-testing/2026-09-09-mutation-invariant-violations.md); [Reverify 项目审计](../../raw/agent-tooling/2026-09-19-reverify-project-audit.md)
+> Updated: 2026-09-19
 
 Mutation testing evaluates a test suite by changing the program under test, running the tests against the changed versions, and recording whether the tests detect the changes. Test oracles determine whether observed behavior is acceptable. Invariants are properties that must remain true during relevant program execution; they can be used as one kind of oracle or as evidence that a mutant changed behavior.
 
@@ -29,6 +29,12 @@ Test oracle 是判断测试执行结果是否正确或可接受的机制。它�
 - invariant 或其他可检查性质。
 
 没有 oracle，测试可以执行程序，但不能根据结果判断行为是否正确。
+
+### 窄例：源码差分 oracle（Reverify functions_equiv）
+
+`reverify equiv <reference> <candidate> --lang python|c` 把 **reference implementation 本身当作 oracle**：候选实现与参考实现在共享输入上各执行一遍、比较输出，不一致时给出一个具体 witness（输入 + 两边各自输出）。这正是上面清单里「reference implementation」一类 oracle 的机械化——判据不是预制的 expected output，而是另一个被信任的实现；前提是需要显式允许本地执行代码。
+
+边界同样明确：共享输入上的一致只是抽样证据，不证明全域正确——它只能判定「与该参考实现行为不一致」，不能判定「绝对正确」；参考实现本身若错了，判据跟着错。
 
 ## Invariant 的位置
 
