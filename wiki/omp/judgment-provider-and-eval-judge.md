@@ -1,8 +1,8 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md)
-> Updated: 2026-09-19
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md)
+> Updated: 2026-09-20
 
 ## Overview
 
@@ -48,21 +48,30 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 
 共同底线：两个会话内自动功能（auto-thinking、unexpected-stop）是吞错降级设计；唯一能把异常甩到用户面前的是 git TUI（错误条）与 eval cell（异常）。
 
-## eval judge() 的行为边界（本会话 smoke 实测）
+## eval judge() 的行为边界（2026-09-19 至 2026-09-20 实测）
 
-- helper 可用：cell 代码中 `judge(state, questions)` 可被调用。
-- choice / bool / score 三类 question 均可返回结构化结果。
+- JavaScript 与 Python eval 均可调用 `judge(state, questions)`；两种语言都已实测 `bool`、`choice`、`score`。
+- `bool` 返回肯定概率；`choice` 返回选项、概率分布与 confidence；`score` 返回概率加权等级、概率分布、legend 与 confidence。
 - 返回 handle 的 status / done / wait 字段可用；**output() 不支持**。
-- backend / model / usage 通过 helper 未暴露，本轮**未核验**。
-- 来源边界：以上均为本会话实测观察，smoke 只覆盖 helper 可用性与返回形态，不构成对判定质量的评价。
+- 2026-09-20 这组调用由用户根据 API 服务端调用日志确认实际后端为 Jev。该证据只覆盖本组请求；helper 返回值本身不暴露 backend、model 或 usage，其他调用仍需运行证据确认后端。
+- 完全相同的 state 与 questions 连续调用三次，choice 都是 `complete`；`complete` 概率为 0.96 至 0.97，score 为 2.78 至 2.81。类别保持一致，小数有轻微变化。
+- 一次内容完整性题把自我声明判为 `complete`，概率为 0.97。该样本说明 rubric 可以产生高概率假阳性，不构成对 Jev 一般判定质量的评价。
+
+## 语义检查的使用边界
+
+`judge(...)` 适合检查清晰度、完整性、自洽性、案例质量和文风。每个 question 应只检查一个目标，criteria 应要求可引用的具体内容；文本声称自己满足条件，不能单独作为满足条件的证据。修改前后比较时复用同一 rubric，关键判断关注分类稳定性和概率范围，不依赖某一次小数。
+
+文件存在、JSON 解析、字段出现、Markdown 结构、Git 状态和测试退出码仍使用确定性检查。报告判定结果时同时保存 state、questions 和 output；仅展示 questions 不能称为完整输入。
 
 ## 证据边界
 
-- 本文事实来源：本机 18.2.5 安装包源码/schema/CHANGELOG 直读、GitHub commits/releases/compare API、一次 eval smoke 实测，全部本轮会话完成。
-- 未验证：真实 `TYPESAFE_API_KEY` 下的端到端判定效果、TypeSafe 与 keyword judge 的判定质量差异、429/5xx 退避在真实故障下的行为。
+- 本文事实来源：本机 18.2.5 安装包源码/schema/CHANGELOG 直读、GitHub commits/releases/compare API、2026-09-19 smoke 实测，以及 2026-09-20 双语言三题型与重复调用实测。
+- 2026-09-20 这组请求的 Jev 后端由用户通过 API 服务端日志确认；其他 `judge(...)` 调用的实际后端仍需单独取证。
+- 未验证：TypeSafe 与 keyword judge 的整体判定质量差异、429/5xx 退避在真实故障下的行为。
 
 ## See Also
 
 - [Jev 在三宿主（OMP/Codex/OpenCode）的现成集成盘点](../ai-coding-agents/jev-host-integrations.md)
+- [Jev 语义回归检查方法](../harness-engineering/jev-semantic-regression-testing.md)
 - [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md)
 - [OMP 配置语义手册](../omp-config/config-semantics.md)

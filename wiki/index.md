@@ -87,6 +87,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [文档、测验与 AI 代码库的认知债务](harness-engineering/documentation-and-cognitive-debt.md) | 用文档保存意图与决策，用 Quiz 暴露理解偏差，用测试验证行为 | 2026-09-01 |
+| [Jev 语义回归检查方法](harness-engineering/jev-semantic-regression-testing.md) | 原子 question、可引用 criteria、基线复用、重复调用与完整输入输出记录 | 2026-09-20 |
 | [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-20 |
 | [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计，结构化 Advisor 自审 | 2026-09-20 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
@@ -313,6 +314,6 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper 的行为边�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：judgmentProvider 三值 closed enum 与非法值行为、TypeSafe 回退链、3 自动+1 手动消费方、judge() smoke 实测边界 | 2026-09-19 |
+| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、3 自动+1 手动消费方，以及 judge() 双语言三题型与重复调用实测 | 2026-09-20 |
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 2026-09-20 已切 jev-1.13 付费通道，UTC 午夜重置推断已推翻（Status: Outdated） | 2026-09-20 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数（MAX_ATTEMPTS 3、min(hinted,5000)、429 transient）、观测面（model_usage 仅 auto-thinking 写、请求级零日志、失败回退链）、zen 已实测兼容（服务端自认 typesafe 转发）与 OpenRouter 不兼容 | 2026-09-20 |

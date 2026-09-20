@@ -656,3 +656,10 @@
 - Updated: Reviewer Blind Spots（新增「共享错误框架」小节，引用 2026-09-20 新 raw；旧 raw 保持冻结）
 - 要点：Advisor 会话更新嵌入 `**user**:`/`**agent**:` 角色标记、状态头、工具结果截断与 shaken 压缩边界；Watchdog 审查设计强调三桶审查框架与证据链，分离可观测数据与推断；共享错误框架将反复出现的 advisor 错误归类为可复用分类法。
 - Next: 无
+
+## [2026-09-20] ingest | Jev eval 语义回归检查
+- Disposition: New; Update
+- Raw: raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md
+- Created: Jev 语义回归检查方法
+- Updated: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界; OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
+- 要点：JavaScript/Python eval 三题型实测；本组请求经服务端日志确认由 Jev 处理；相同输入重复调用分类稳定但小数轻微变化；宽松 rubric 接受自我声明并产生 0.97 假阳性；语义检查需要原子 question、可引用 criteria、同 rubric 前后比较，并保存完整 state/questions/output。

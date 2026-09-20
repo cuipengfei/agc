@@ -1,7 +1,7 @@
 # OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
 
-> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20
-> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md)
+> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20
+> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md)
 > Updated: 2026-09-20
 
 ## Overview
@@ -52,6 +52,14 @@ unexpected-stop 的 classifier 先于 todo 完成检查运行（`src/session/age
 - **活体判定链样例**（2026-09-20 13:47:45，本机日志逐字）：`route:"entered"`（13:47:45.087）→ 0.87s 后 judge true → `agent.continue scheduled source:"unexpected-stop-retry"`（13:47:45.956）→ `route:"unexpected-stop-handled"`（13:47:45.957）。对端 zen console 同窗口记录 `POST /inference/systemone/v1/systemone` 200、UA `Bun/1.4.2`、request content-length 1902；重建 body（717 字符 state + 题面 + model）UTF-8 恰为 1902 字节——**长度相等比对**（zen 未存 body，非逐字节断言）；同 body 重发 200 返回 `{"model":"jev-1.13","answers":{"stopped":{"type":"noul","noul":0.76}},"usage":{"input_tokens":888,"output_tokens":22}}`。
 - **误检倾向观察**（样本=3，未量化）：本会话 3 次纯文本交付型收尾被 smart 分支判为意外停止触发 nudge，与题面措辞（"says it will act, continue working, or call a tool, then ends"）对短交付文本边界模糊一致。观察性结论，非稳定定律。
 
+## 语义判定的实践观察
+
+2026-09-20 的一组 eval 调用由用户通过 API 服务端日志确认实际后端为 Jev。完全相同的 state 与 questions 连续调用三次时，choice 均选择 `complete`，其概率为 0.96 至 0.97；score 为 2.78 至 2.81。相同请求的分类可以稳定，概率与加权分数仍可能轻微变化。
+
+概率表示题面和 criteria 下的分布，不能直接解释成内容的客观质量百分比。实测 state 只声称自己包含一个结论和两条理由，没有给出具体内容；宽松 criteria 仍以 0.97 的概率选择 `complete`。这个样本证明该 rubric 会产生高概率假阳性，不足以评价 Jev 的一般判定质量。
+
+用于语义检查时，criteria 应要求可引用的具体证据，并明确排除自我声明。多个目标分别提问；修改前后复用同一 rubric；需要确认实际后端时查看服务端日志或其他运行证据，不能仅根据 answer shape 推断。
+
 ## 已验证协议兼容端点
 
 | 端点 | 判定 | 证据 |
@@ -65,3 +73,5 @@ unexpected-stop 的 classifier 先于 todo 完成检查运行（`src/session/age
 - [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](judgment-provider-and-eval-judge.md)
 - [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md)
 - [Jev 七渠道定价与 OMP systemone 兼容性判定](../ai-coding-agents/jev-omp-systemone-channel-compatibility.md)
+
+- [Jev 语义回归检查方法](../harness-engineering/jev-semantic-regression-testing.md)
