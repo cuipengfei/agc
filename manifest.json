@@ -94,6 +94,12 @@
       "protected": true
     },
     {
+      "name": "omp-env",
+      "source": "~/.omp/agent/.env",
+      "repo": "omp/agent/.env",
+      "protected": true
+    },
+    {
       "name": "omp-plugins",
       "source": "~/.omp/plugins",
       "repo": "omp/plugins",

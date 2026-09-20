@@ -1,8 +1,8 @@
 # 审查方的盲区
 
 > Sources: OMP 会话中的直接观察（2026-09-03）；Grok Build LazinessDetector 源码（`xai-org/grok-build`）
-> Raw: [审查方盲区会话观察](../../raw/harness-engineering/2026-09-03-reviewer-blind-spots.md)；[Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md)（C 节）
-> Updated: 2026-09-03
+> Raw: [审查方盲区会话观察](../../raw/harness-engineering/2026-09-03-reviewer-blind-spots.md)；[Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md)（C 节）；[共享错误框架 2026-09-20](../../raw/harness-engineering/2026-09-20-watchdog-review-design.md)
+> Updated: 2026-09-20
 
 ## 概述
 
@@ -46,8 +46,14 @@ LazinessDetector 在分类之后有三层决策：封闭类别集合（7 个值�
 审查方——无论是模型分类器还是人工程序——在给出判决之前应该声明它能看什么、不能看什么。「我没有找到证据」和「我的视野里不包含这个证据」之间的区别不是咬文嚼字；它改变了合适的回应方式。前者邀请挑战；后者邀请补充。
 
 在本次观察中，被审方最终通过问「审查方能看到什么」识别出了缺口。这个问题应该在第一次升级时就问，而不是第三次。
+## 共享错误框架（2026-09-20 新增）
+
+2026-09-20 的 Advisor 审查中，反复出现同类错误：fidelity suspect 假阳性、New/Update 归类误判、重叠检查遗漏。这些错误的共同根因不是 Advisor 不看材料，而是审查者在给出判决前没有先独立建立 user-baseline（用户原话与限定词清单），导致后续所有判断都建立在同一个错误前提上。
+
+与本章前面的盲区同源：审查方在给出判决之前应该声明它能看什么、不能看什么，而不是把严重度升级当成证据强度升级。此处新增的不是新机制，而是把同一原则应用到 Advisor 自审流程中。
 
 ## 另见
 
 - [Grok Build](../ai-coding-agents/grok-build.md) — 发现截断机制的 coding agent
 - [文档、测验与 AI 代码库的认知债务](documentation-and-cognitive-debt.md) — 相关的验证与理解缺口讨论
+- [watchdog-review-design](watchdog-review-design.md) — 三桶审查框架与证据链设计

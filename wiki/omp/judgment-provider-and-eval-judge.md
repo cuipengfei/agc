@@ -30,7 +30,7 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 ## TypeSafe 后端与回退链
 
 - `TypeSafeJudge` 把 `JudgmentRequest` 原样转发 `POST {base}/v1/systemone`，默认 `TYPESAFE_BASE_URL` 为 `https://api.typesafe.ai`、默认模型 `jev-latest`；带 401/403 key 轮换与 429/5xx 的 `retry-after` 感知退避（MAX_ATTEMPTS 3）。
-- 凭据：`/login typesafe` 或环境变量 `TYPESAFE_API_KEY`；可选 `TYPESAFE_BASE_URL`、`TYPESAFE_DEFAULT_MODEL`。
+- 凭据：环境变量 `TYPESAFE_API_KEY`、CLI `--api-key`、models.yml `providers.typesafe.apiKey`、`/login typesafe` 存储（key 共四条途径，源码行号与判定细节见 [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md)）；可选 `TYPESAFE_BASE_URL`、`TYPESAFE_DEFAULT_MODEL`——后两者为 **env-only**，无 config 等价物。
 - TypeSafe 调用失败（网络错误、重试后仍 5xx、key 被拒）**总是**回退到 online role 链，绝不回退到 feature 自己的 local-model override。
 - LLM 桥内部按 feature 的 backend 二分：backend = `"online"`（两个相关设置的默认值）→ `OnlineChatJudge`，候选链 `tiny → smol → default`，调用方传了 `sessionModel` 且不在候选中则末尾追加会话当前模型；backend 指到本地 tiny-model key → `LocalJudge`（on-device，keyword 提示词，`LOCAL_ANSWER_MAX_TOKENS=16`，reasoning 模型给 1024）。
 - 完整 fallback chain：**TypeSafe（含退避与 key 轮换）→ tiny → smol → default → 会话当前模型**。`llm` 模式下永不触碰 TypeSafe；链内规则为无 API key 的候选跳过、凭据/provider 失败换下一个、caller abort/TimeoutError 直接抛、全灭才抛 `judgment: every tiny/smol candidate failed`。
@@ -64,4 +64,5 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 ## See Also
 
 - [Jev 在三宿主（OMP/Codex/OpenCode）的现成集成盘点](../ai-coding-agents/jev-host-integrations.md)
+- [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md)
 - [OMP 配置语义手册](../omp-config/config-semantics.md)

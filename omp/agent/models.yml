@@ -177,6 +177,14 @@ providers:
       - text
       - image
       contextWindow: 262144
+    - id: k2d8-preview
+      compactionModel: c8787/gpt-5.6-luna
+      name: K2.8 Preview
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 262144
   kimi-code:
     modelOverrides:
       k3:

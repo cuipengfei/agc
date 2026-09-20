@@ -370,6 +370,17 @@
             "output": 32768,
           },
         },
+        "k2d8-preview": {
+          "name": "K2.8 Preview",
+          "reasoning": true,
+          "modalities": {
+            "input": ["text", "image", "video"],
+          },
+          "limit": {
+            "context": 262144,
+            "output": 32768,
+          },
+        },
       },
     },
   },

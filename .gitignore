@@ -1,6 +1,7 @@
 # Secrets and local credentials
 .env
 .env.*
+!omp/agent/.env
 *credential*
 *credentials*
 *secret*

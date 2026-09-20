@@ -635,3 +635,24 @@
 - Disposition: New
 - Raw: raw/omp-tips/2026-09-19-extension-auto-loading-canary.md
 - Created: OMP 扩展自动加载机制
+
+## [2026-09-19] ingest | Jev 渠道定价核验与 OMP systemone 兼容性实测
+- Disposition: New; Update
+- Raw: raw/omp/2026-09-19-typesafe-env-chain-and-zen-setup.md; raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md; raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md
+- Created: OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入; Jev 七渠道定价与 OMP systemone 兼容性判定
+- Updated: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界; Jev 在 OMP、Codex、OpenCode 的现成集成盘点
+- 要点：key 四途径（env/CLI/models.yml apiKey//login）与 BASE_URL、DEFAULT_MODEL env-only 为本机 18.2.6 源码直读；zen 免费额度 UTC 午夜重置为推断（Retry-After 26654/26251 对齐）；429 只打 systemone 端点不打 models 端点为实测；匿名 200/假 key 401/真 key 429/其它免费模型 503 四组对照齐全；「OpenRouter 免费 allowance」≠「免费 jev」为当轮更正；七渠道中已实测可用仅 OpenCode Zen 一家。
+
+## [2026-09-20] ingest | Judgment systemone protocol：活体实测证据、题型 schema 与 zen 重置推断修正
+- Disposition: New; Update
+- Raw: raw/omp/2026-09-20-judgment-systemone-live-evidence.md; raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md
+- Created: OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
+- Updated: Jev 七渠道定价与 OMP systemone 兼容性判定（zen 429 节加 Status: Outdated；结论 1 撤回「等 UTC 午夜额度重置」；Raw 行追加新 raw；See Also 加协议面文章）; OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入（证据边界加 Status: Outdated 撤回 UTC 午夜重置推断；DEFAULT_MODEL 行追加 2026-09-20 已切 jev-1.13 付费通道的更新注记；Raw/Sources/Updated 同步）
+
+## [2026-09-20] ingest | Advisor 上下文标记 + Watchdog 审查设计 + 共享错误框架
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-09-20-advisor-context-markers.md; raw/harness-engineering/2026-09-20-watchdog-review-design.md
+- Created: OMP Advisor 上下文标记；Watchdog 审查设计
+- Updated: Reviewer Blind Spots（新增「共享错误框架」小节，引用 2026-09-20 新 raw；旧 raw 保持冻结）
+- 要点：Advisor 会话更新嵌入 `**user**:`/`**agent**:` 角色标记、状态头、工具结果截断与 shaken 压缩边界；Watchdog 审查设计强调三桶审查框架与证据链，分离可观测数据与推断；共享错误框架将反复出现的 advisor 错误归类为可复用分类法。
+- Next: 无

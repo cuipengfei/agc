@@ -1,7 +1,7 @@
 # Jev 在 OMP、Codex、OpenCode 的现成集成盘点
 
 > Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19
-> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md)
+> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md)
 > Updated: 2026-09-19
 
 ## Overview
@@ -54,6 +54,8 @@
 | PyPI `typesafe-ai` 包 | 同名噪声：社区 anti-squat 占位 redirect shim，非官方包 |
 | Netlify AI Gateway 上架 Jev | 平台托管集成，非本三宿主 |
 
+2026-09-19 渠道实测更新：上述平台托管渠道已完成七渠道全景核验（TypeSafe 直连 / OpenRouter / Vercel / Netlify / Cloudflare / OpenCode Zen / Vivgrid）——输入定价基本一致（$0.042/M，Netlify 表取整 $0.04），免费条款差异大。**两处对此文此前结论的更正**：① OpenRouter 上**没有免费 jev**（jev-1.13 $0.042/M、is_free:false、无 :free 变体；此前「新用户免费 allowance」的表述已更正为账户通用额度 ≠ 模型免费），且其 jev 挂在 /api/alpha/decisions，与 OMP 硬编码的 /v1/systemone 路径不匹配，env 无解；② 平台托管集成 ≠ 可直接给 OMP 用——OMP judgment 只认 /v1/systemone 形状，七渠道中已实测可用的仅 OpenCode Zen 一家（原生暴露 /zen/v1/systemone；jev-1.13-free 限时免费，当日真 key 撞 429 FreeUsageLimitError、匿名通道 200）。Vercel/Netlify 为文档级协议兼容（分别差 key、需先生产部署站点），Cloudflare 需翻译 shim。判定明细见 [Jev 七渠道定价与 OMP systemone 兼容性判定](jev-omp-systemone-channel-compatibility.md)。
+
 ## 证据边界（未验证清单）
 
 - Codex/OpenCode 侧的 jev-mcp、Jevbridge、jev-router 均**未本机安装、未注册、未调用任何端点**——它们是 README/仓库层面的社区可配置方案，本 wiki 不将其表述为已验证 ready-to-use。
@@ -64,4 +66,5 @@
 ## See Also
 
 - [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](../omp/judgment-provider-and-eval-judge.md)
+- [Jev 七渠道定价与 OMP systemone 兼容性判定](jev-omp-systemone-channel-compatibility.md)
 - [四 Agent CLI 能力面对比](cli-capability-surface.md)
