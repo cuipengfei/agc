@@ -54,7 +54,6 @@ approval_mode = "approve"
 command = "/home/cpf/.bun/bin/chrome-devtools-mcp"
 args = ["--browserUrl", "http://127.0.0.1:9333", "--no-usage-statistics", "--no-performance-crux"]
 
-
 [mcp_servers.codegraph]
 command = "codegraph"
 args = ["serve", "--mcp"]

@@ -29,7 +29,8 @@
         "http://127.0.0.1:9333",
         "--no-usage-statistics",
         "--no-performance-crux"
-      ]
+      ],
+      "enabled": false
     },
     "codegraph": {
       "type": "stdio",
@@ -44,7 +45,8 @@
       "command": "/home/cpf/.local/bin/ddgs",
       "args": [
         "mcp"
-      ]
+      ],
+      "enabled": false
     },
     "headroom": {
       "type": "http",
@@ -56,7 +58,8 @@
     },
     "mintlify-index": {
       "type": "http",
-      "url": "https://index.mintlify.com"
+      "url": "https://index.mintlify.com",
+      "enabled": false
     },
     "grep-app-github": {
       "type": "http",
@@ -65,7 +68,8 @@
     "excalidraw": {
       "type": "stdio",
       "command": "/home/cpf/.bun/bin/mcp-excalidraw-server",
-      "args": []
+      "args": [],
+      "enabled": false
     }
   }
 }

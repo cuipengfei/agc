@@ -1,5 +1,5 @@
 setupVersion: 2
-autoResume: true
+autoResume: false
 power:
   sleepPrevention: idle
 advisor:
@@ -43,34 +43,11 @@ providers:
     serverSideFallback: false
   ollama-cloud:
     maxConcurrency: 3
-  webSearchOrder:
-    - codex
-    - exa
-    - duckduckgo
-    - jina
-    - tavily
-    - firecrawl
-    - kimi
-    - startpage
-    - ecosia
-    - google
-    - mojeek
-    - public
-  webSearchExclude:
-    - gemini
-    - searxng
   antigravityEndpoint: auto
-  imageOrder:
-    []
   fireworksTier: standard
-  tts: auto
-  tinyModel: online
   tinyModelDevice: default
   tinyModelDtype: default
-  memoryModel: online
-  autoThinkingModel: online
   autoThinkingMaxEffort: xhigh
-  unexpectedStopModel: online
   kimiApiFormat: auto
   openaiWebsockets: auto
   streamFirstEventTimeoutSeconds: 150
@@ -92,6 +69,7 @@ modelRoles:
   advisor: justwoker/claude-opus-4-8:xhigh
   designer: kimi-claw/k3-agent:medium
   default: kimi-code/k3:high
+  web: openai-codex/gpt-5.6-luna
 modelTags:
   {}
 modelProviderOrder:
@@ -128,6 +106,7 @@ tools:
   format: auto
   approval:
     security_scan: prompt
+    mcp__context_mode_ctx_fetch_and_index: deny
   approvalMode: yolo
   intentTracing: true
   abortOnFabricatedResult: true
@@ -213,7 +192,31 @@ retry:
   usageReservePct: 10
   usageReservePolicy: confirm
   fallbackChains:
-    {}
+    web:
+      - web/exa
+      - web/duckduckgo
+      - web/jina
+      - web/tavily
+      - web/firecrawl
+      - web/kimi
+      - web/startpage
+      - web/ecosia
+      - web/google
+      - web/mojeek
+      - web/public
+      - web/parallel
+      - web/perplexity
+      - anthropic/claude-haiku-4-5
+      - openai-codex/gpt-5.6
+      - openai-codex/gpt-5.5
+      - xai/grok-4.5
+      - xai-oauth/grok-4.5
+      - web/zai
+      - web/tinyfish
+      - web/kagi
+      - web/brave
+      - web/synthetic
+      - web/ollama
   fallbackRevertPolicy: cooldown-expiry
 steeringMode: all
 followUpMode: all
@@ -261,7 +264,6 @@ share:
 stt:
   enabled: false
   language: en
-  modelName: parakeet
   submitTrigger: never
 contextPromotion:
   enabled: false
@@ -579,7 +581,6 @@ secrets:
 live:
   voice: sol
 tts:
-  localModel: kokoro
   localVoice: af_heart
 speech:
   enabled: false
