@@ -1,8 +1,8 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md)
-> Updated: 2026-09-20
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md)
+> Updated: 2026-09-21
 
 ## Overview
 
@@ -56,6 +56,14 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 - 2026-09-20 这组调用由用户根据 API 服务端调用日志确认实际后端为 Jev。该证据只覆盖本组请求；helper 返回值本身不暴露 backend、model 或 usage，其他调用仍需运行证据确认后端。
 - 完全相同的 state 与 questions 连续调用三次，choice 都是 `complete`；`complete` 概率为 0.96 至 0.97，score 为 2.78 至 2.81。类别保持一致，小数有轻微变化。
 - 一次内容完整性题把自我声明判为 `complete`，概率为 0.97。该样本说明 rubric 可以产生高概率假阳性，不构成对 Jev 一般判定质量的评价。
+
+## jevify 与 judge() 的关系（2026-09-21 实测）
+
+`jevify` 是 OMP 的第四个 magic keyword。用户 prompt 中出现独立小写单词 `jevify` 时，OMP 向会话追加隐藏提示，引导 agent 在 eval kernel 中调用 `judge()`：先冻结 rubric，再批量分类，最后人工复核低置信度、错误或边界项。
+
+`jevify` 本身不指定判断模型。2026-09-21 对提交 `923e731` 的 22 个文件执行 `jevify` 流程，完成通知中的实际 judge model 为 `kimi-claw/k2d8-preview`。这说明 `jevify` 只是工作流提示；实际走哪个模型由 `judgmentProvider` 和 `modelRoles.judge` 的路由决定。该次运行没有使用 Jev 模型，不能作为 Jev 模型效果证据。
+
+详见 [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) 和 [OMP TypeSafe env 变量边界](judgment-typesafe-env-config.md)。
 
 ## 语义检查的使用边界
 

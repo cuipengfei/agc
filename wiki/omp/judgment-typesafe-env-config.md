@@ -1,8 +1,8 @@
 # OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入
 
-> Sources: 本会话取证（本机 @oh-my-pi/* 18.2.6 安装源码直读）, 2026-09-19; 本会话实测（probe.py 对照探针、bun $env 静态验证、omp config get）, 2026-09-19; 本会话实测（zen 探针 GET models / POST systemone、omp models refresh）, 2026-09-19; 本会话实测（zen 429 重置推断复验、jev-1.13 付费通道实测）, 2026-09-20
-> Raw: [typesafe-env-chain-and-zen-setup](../../raw/omp/2026-09-19-typesafe-env-chain-and-zen-setup.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md)
-> Updated: 2026-09-20
+> Sources: 本会话取证（本机 @oh-my-pi/* 18.2.6 安装源码直读）, 2026-09-19; 本会话实测（probe.py 对照探针、bun $env 静态验证、omp config get）, 2026-09-19; 本会话实测（zen 探针 GET models / POST systemone、omp models refresh）, 2026-09-19; 本会话实测（zen 429 重置推断复验、jev-1.13 付费通道实测）, 2026-09-20; 本会话实测（18.2.7 models.yml api: typesafe 拒绝、上游 c96eb8fef5 加入 schema）, 2026-09-21
+> Raw: [typesafe-env-chain-and-zen-setup](../../raw/omp/2026-09-19-typesafe-env-chain-and-zen-setup.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [Zen jevify typesafe](../../raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md)
+> Updated: 2026-09-21
 
 ## Overview
 
@@ -77,6 +77,26 @@ probe.py 对照实测（2026-09-19，浏览器 UA，key 运行时读取并 redac
 - 备份 `~/.omp/agent/config.yml.bak-20260919-235440`；diff 仅 line 590 一行 `'unexpectedStopDetection: mechanical'` → `'smart'`，其它行 0 触碰。
 - 验证闭环：YAML parse OK（`features.unexpectedStopDetection='smart'`）；`omp config get` 返回 `smart`（实测）。
 - 语义出处：`settings-schema.ts:5745-5769`，合法值 `none|mechanical|smart`、默认 `mechanical`（`mechanical` 保留机械重试但不跑 judge，`smart` 才跑 judge）；生效判定 `src/session/turn-recovery.ts:917-920`。
+
+## models.yml api: typesafe 的版本限制（2026-09-21 实测）
+
+本机 OMP 18.2.7 的 `models.yml` schema 不接受 `api: typesafe`。尝试配置自定义 provider：
+
+```yaml
+providers:
+  typesafe-zen:
+    api: typesafe
+    baseUrl: https://opencode.ai/zen
+```
+
+启动报错：
+
+```text
+Warning: models.yml validation failed — custom providers disabled
+Schema error: providers.typesafe-zen.api: must be "openai-completions", …, "google-vertex" (was "typesafe")
+```
+
+上游提交 `c96eb8fef5` 在 main 分支加入了 `typesafe` / `openrouter-decisions` 等 API 值。该提交尚不属于 18.2.7。包含该提交的正式版本发布后，才能通过 `models.yml` 配置 `api: typesafe` 的 provider。
 
 ## 证据边界
 

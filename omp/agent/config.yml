@@ -66,10 +66,11 @@ modelRoles:
   task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-5.6-luna:medium
   tiny: kimi-claw/k2d8-preview:high
-  advisor: justwoker/claude-opus-4-8:xhigh
+  advisor: c8787/gpt-5.6-sol:high
   designer: kimi-claw/k3-agent:medium
   default: kimi-code/k3:high
   web: openai-codex/gpt-5.6-luna
+  memory: c8787/gpt-5.6-luna:high
 modelTags:
   {}
 modelProviderOrder:

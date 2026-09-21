@@ -53,7 +53,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [Codex 特性门系统与 Code Mode](ai-coding-agents/codex-feature-flags.md) | features stage×effective 正交、removed 冻结假设、Code Mode host 架构 | 2026-09-05 |
 | [Coding Agent 的短反馈闭环：逐轮 Advisor](ai-coding-agents/short-feedback-loop-advisors.md) | OMP、Pi 与 DSH 的第二模型逐轮审查和 advice 回流机制 | 2026-09-11 |
 | [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层 | 2026-09-19 |
-| [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated） | 2026-09-20 |
+| [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated）；Zen 模型目录 2026-09-21 实测 | 2026-09-21 |
 
 ## better-harness
 
@@ -188,7 +188,9 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 |---------|---------|---------|
 | [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、模式切换与 consolidation 边界 | 2026-08-31 |
 | [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-02 |
-| [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响 | 2026-09-06 |
+| [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响 | 2026-09-21 |
+| [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表 | 2026-09-21 |
+| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 停止写入者、保存 DB/WAL/SHM、完整主键差集、逐条点查、离线 staging、FTS 重建、原子替换；.recover 待验证 | 2026-09-21 |
 
 ## omp-modes
 
@@ -196,7 +198,7 @@ OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议 | 2026-09-09 |
+| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；jevify magic keyword | 2026-09-21 |
 
 ## omp-prewalk
 
@@ -314,6 +316,6 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper 的行为边�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、3 自动+1 手动消费方，以及 judge() 双语言三题型与重复调用实测 | 2026-09-20 |
+| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、3 自动+1 手动消费方，judge() 双语言三题型与重复调用实测；jevify magic keyword 与 judge() 路由分离 | 2026-09-21 |
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 2026-09-20 已切 jev-1.13 付费通道，UTC 午夜重置推断已推翻（Status: Outdated） | 2026-09-20 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数（MAX_ATTEMPTS 3、min(hinted,5000)、429 transient）、观测面（model_usage 仅 auto-thinking 写、请求级零日志、失败回退链）、zen 已实测兼容（服务端自认 typesafe 转发）与 OpenRouter 不兼容 | 2026-09-20 |

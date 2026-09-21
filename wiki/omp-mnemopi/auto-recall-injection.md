@@ -1,8 +1,8 @@
 # OMP Mnemopi Auto-Recall 注入机制
 
-> Sources: 本地 @oh-my-pi/pi-coding-agent 与 @oh-my-pi/pi-mnemopi 包源码, 2026-09-06
-> Raw: [2026-09-06-mnemopi-auto-recall-injection](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md); [2026-09-06-mnemopi-auto-recall-corrections](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-corrections.md)
-> Updated: 2026-09-06
+> Sources: 本地 @oh-my-pi/pi-coding-agent 与 @oh-my-pi/pi-mnemopi 包源码, 2026-09-06; OMP 源码 d49918fab2
+> Raw: [2026-09-06-mnemopi-auto-recall-injection](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md); [2026-09-06-mnemopi-auto-recall-corrections](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-corrections.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md)
+> Updated: 2026-09-21
 
 ## Overview
 
@@ -55,5 +55,6 @@ resume 时新建 `MnemopiSessionState`，`hasRecalledForFirstTurn` 默认 false�
 
 ## See Also
 
+- [Mnemopi 数据模型与 Recall/Reflect](data-model-and-retrieval.md) — 完整表职责、查询路径、FTS 与 embedding 辅助表
 - [OMP Mnemopi Consolidation 生命周期](consolidation-lifecycle.md) — consolidation 路径、scoping、已知坑
 - [OMP 记忆后端对比](memory-backends-comparison.md) — Mnemopi vs Hindsight vs Sharpshooter

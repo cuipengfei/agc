@@ -1,8 +1,8 @@
 # OMP 工作模式与 Magic Keywords
 
-> Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md)
-> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md)
-> Updated: 2026-09-09
+> Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); OMP 源码 d49918fab2
+> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md)
+> Updated: 2026-09-21
 
 ## 工作流模式
 
@@ -51,13 +51,14 @@ Plan、Goal、Vibe 互斥。
 
 “Vibe”通常暗示松散、随意，但 OMP 的 Vibe Mode 实际是**更严格的内部组织**：对人宽松（高层指令），对 agent 严格（只读导演 + 固定 worker 池）。叫 `Director Mode` 或 `Managed Worker Pool Mode` 会更清楚。
 
-## Magic Keywords：只有三个
+## Magic Keywords
 
 | Keyword | 效果 | 条件 |
 |---|---|---|
 | `ultrathink` | 当前 turn 深度推理；auto-thinking 时提升到最高 effort | 无 |
 | `orchestrate` | 用 `task` subagents 并行执行 | 需要 `task` 工具 |
 | `workflowz` | 用 `eval` 中的 `agent/parallel/pipeline/completion` 构建 DAG；依赖节点按边等待，独立节点仍可并行 | 需要 `task` + `eval` |
+| `jevify` | 追加隐藏提示，引导 agent 在 eval kernel 中调用 `judge()`：先冻结 rubric，再批量分类，最后人工复核低置信度、错误或边界项 | 需要 `eval` 工具；`magicKeywords.jevify` 默认开启，可用 `omp config set magicKeywords.jevify false` 关闭 |
 
 匹配规则：
 
@@ -98,6 +99,7 @@ Vibe 父 session 没有普通 `task`/`eval`，因此 `orchestrate`/`workflowz` �
 深思 → ultrathink
 普通并行派工 → orchestrate
 带依赖关系的多阶段 DAG → workflowz
+语义批量分类、冻结 rubric、低置信度复核 → jevify
 ```
 
 ## See Also

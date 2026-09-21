@@ -663,3 +663,10 @@
 - Created: Jev 语义回归检查方法
 - Updated: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界; OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
 - 要点：JavaScript/Python eval 三题型实测；本组请求经服务端日志确认由 Jev 处理；相同输入重复调用分类稳定但小数轻微变化；宽松 rubric 接受自我声明并产生 0.97 假阳性；语义检查需要原子 question、可引用 criteria、同 rubric 前后比较，并保存完整 state/questions/output。
+
+## [2026-09-21] ingest | Mnemopi 数据模型、SQLite 恢复、jevify 与 Zen typesafe 限制
+- Disposition: New; Update
+- Raw: raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md; raw/omp-mnemopi/2026-09-21-mnemopi-sqlite-recovery.md; raw/omp-modes/2026-09-21-magic-keywords-jevify.md; raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md
+- Created: Mnemopi 数据模型与 Recall/Reflect; Mnemopi SQLite 损坏恢复
+- Updated: OMP 工作模式与 Magic Keywords（加入 jevify，修正"只有三个"断言）; OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界（加入 jevify 与 judge() 路由分离）; OMP TypeSafe env 变量边界（加入 18.2.7 models.yml api: typesafe 拒绝与 c96eb8fef5 版本边界）; Jev 七渠道定价与 OMP systemone 兼容性判定（加入 Zen 模型目录实测）; OMP Mnemopi Auto-Recall 注入机制（加入 data-model-and-retrieval 链接）; OMP Mnemopi Consolidation 生命周期（加入启动期 promotion 段落）
+- 要点：recall 直接读取 working_memory、episodic_memory、facts 及 fts/memory_embeddings 辅助表；reflect 复用同一 recall 路径；memoria_facts 属于事实提取和版本追踪的内部数据表；jevify 是第四个 magic keyword，追加隐藏提示引导 judge() 工作流；22 文件分类实测 judge model 为 kimi-claw/k2d8-preview；Zen 目录可见 jev-1.13-free 和 jev-1.13，jev-latest 探针返回 unavailable；18.2.7 models.yml 拒绝 api: typesafe，上游 c96eb8fef5 加入 schema；Mnemopi 恢复 54/54 缺失记录逐条点查均报 corrupt，placeholder 已全部删除，.recover 待验证。

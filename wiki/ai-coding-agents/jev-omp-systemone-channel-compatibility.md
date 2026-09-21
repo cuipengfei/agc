@@ -1,8 +1,8 @@
 # Jev 七渠道定价与 OMP systemone 兼容性判定
 
-> Sources: 本会话实测（zen/OpenRouter 探针 probe4/probe5、/tmp/or-jev2.json API 响应）, 2026-09-19; 本会话取证（typesafe.ai / opencode.ai / vercel.com / netlify.com / developers.cloudflare.com / openrouter.ai / models.dev 逐字抓取复验）, 2026-09-19; 本会话只读核查（本机凭据存在性）, 2026-09-19
-> Raw: [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md)
-> Updated: 2026-09-20
+> Sources: 本会话实测（zen/OpenRouter 探针 probe4/probe5、/tmp/or-jev2.json API 响应）, 2026-09-19; 本会话取证（typesafe.ai / opencode.ai / vercel.com / netlify.com / developers.cloudflare.com / openrouter.ai / models.dev 逐字抓取复验）, 2026-09-19; 本会话只读核查（本机凭据存在性）, 2026-09-19; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21
+> Raw: [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [Zen jevify typesafe](../../raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md)
+> Updated: 2026-09-21
 
 ## Overview
 
@@ -59,6 +59,19 @@ models.dev api.json 对账要点：jev 共 6 行 serving 条目（cloudflare-ai-
 - 「小额免费 allowance」是 OpenRouter 给**新用户的账户通用额度**，不是 jev 专属免费；把「账户里有点通用免费额度」写成「这家能免费试 jev」是过度推断（该账户为老账号，allowance 是否存在未验证）。
 - 实测确认：jev-1.13 在 OpenRouter 上 $0.042/M、is_free:false、无 :free 变体、modality text->decisions、走 /api/alpha/decisions——**OpenRouter 上没有免费 jev，且路径接不进 OMP**（"dead on two counts：不免费，也接不进 OMP"）。
 - 教训：免费渠道判定以模型级 is_free/定价为准，账户通用额度不算模型免费。
+
+## Zen 模型目录实测（2026-09-21）
+
+`GET https://opencode.ai/zen/v1/models` 返回 200，约 30 个模型。可见：
+
+- `jev-1.13-free`
+- `jev-1.13`
+
+`jev-latest` 探针（最小 System One POST）返回：
+
+```text
+HTTP 400 "Model is unavailable."
+```
 
 ## 结论
 

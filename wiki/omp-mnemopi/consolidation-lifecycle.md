@@ -1,8 +1,8 @@
 # OMP Mnemopi Consolidation 生命周期
 
-> Sources: OMP session investigation, 2026-08-23; can1357/oh-my-pi Git history, source, issues and PRs, 2026-08-31
-> Raw: [2026-08-23-omp-mnemopi-investigation](../../raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md); [2026-08-31-mnemopi-scoping-history](../../raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md)
-> Updated: 2026-08-31
+> Sources: OMP session investigation, 2026-08-23; can1357/oh-my-pi Git history, source, issues and PRs, 2026-08-31; OMP 源码 d49918fab2
+> Raw: [2026-08-23-omp-mnemopi-investigation](../../raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md); [2026-08-31-mnemopi-scoping-history](../../raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md)
+> Updated: 2026-09-21
 
 ## Overview
 
@@ -108,6 +108,12 @@ polyphonicRecall 和 enhancedRecall 的 gate 在 `orchestrateRecall` 里，但 O
 - `per-project-tagged` 依赖预先存在的 shared/global memory；它自身不写 global
 - `retain` 工具不能选择写入 bank，持续维护 project + global 两层内容需要切换 scoping 或外部 writer
 - 没有用户可配的 shutdown tradeoff 开关
+
+## 启动期 Promotion（2026-09-21 源码确认）
+
+OMP 启动 Mnemopi bank 时（`backend.ts:94-96` 调用 `state.promoteEligibleWorkingMemory()`）会尝试 promote 符合年龄条件的 working memory 到 episodic memory。`state.ts:644-672` 说明：`remember` 每次写入都跑 `trimWorkingMemory`，删除 `consolidated_at IS NULL` 且超过 `workingMemoryTtlHours`（24 小时）的行；consolidation 的 `sleep` 年龄门槛为 12 小时，但此前只经 `/memory enqueue` 触发（`dispose` 传 `sleep:false`，#4843），导致从未手动 enqueue 的 retain/learn/transcript 行在会话间隔超过 24 小时后被静默删除（#10770）。启动期 promotion 在首次写入前对旧行盖上 `consolidated_at`，使 trim 过滤器不再删除它们。`sleep` 无 eligible 行时空转 no-op，失败只记录不抛出。
+
+详见 [Mnemopi 数据模型与 Recall/Reflect](data-model-and-retrieval.md)。
 
 ## See Also
 
