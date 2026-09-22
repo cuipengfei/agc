@@ -1,5 +1,10 @@
 # Wiki Log
 
+## [2026-09-23] ingest | OMP /model 模型浏览器：角色解析与 kind 过滤
+- Disposition: New
+- Raw: raw/omp-config/2026-09-23-model-browser-role-resolution.md
+- Wiki: wiki/omp-config/model-browser-role-resolution.md
+
 ## [2026-08-23] ingest | OMP Mnemopi Consolidation 生命周期
 - Disposition: New
 - Raw: raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md

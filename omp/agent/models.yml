@@ -299,3 +299,18 @@ providers:
         compactionModel: c8787/gpt-5.6-luna
       deepseek-v4-pro:
         compactionModel: c8787/gpt-5.6-luna
+  typesafe-zen:
+    api: typesafe
+    baseUrl: https://opencode.ai/zen
+    apiKey: OPENCODE_API_KEY
+    models:
+    - id: jev-1.13
+      name: Jev 1.13 (Zen)
+      reasoning: false
+      input:
+      - text
+    - id: jev-1.13-free
+      name: Jev 1.13 Free (Zen)
+      reasoning: false
+      input:
+      - text

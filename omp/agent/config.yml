@@ -27,6 +27,8 @@ enabledModels:
   - sensenova/*
   - tokenrouter/**
   - openrouter/**
+  - openai-codex/*
+  - typesafe-zen/*
 disabledProviders:
   []
 providers:
@@ -67,10 +69,10 @@ modelRoles:
   vision: c8787/gpt-5.6-luna:medium
   tiny: kimi-claw/k2d8-preview:high
   advisor: c8787/gpt-5.6-sol:high
-  designer: kimi-claw/k3-agent:medium
   default: kimi-code/k3:high
   web: openai-codex/gpt-5.6-luna
   memory: c8787/gpt-5.6-luna:high
+  judge: typesafe-zen/jev-1.13
 modelTags:
   {}
 modelProviderOrder:
@@ -218,6 +220,12 @@ retry:
       - web/brave
       - web/synthetic
       - web/ollama
+    judge:
+      - typesafe-zen/jev-1.13
+      - typesafe-zen/jev-1.13-free
+      - "@tiny"
+      - "@smol"
+      - "@default"
   fallbackRevertPolicy: cooldown-expiry
 steeringMode: all
 followUpMode: all
