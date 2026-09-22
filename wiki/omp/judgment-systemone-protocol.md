@@ -1,8 +1,8 @@
 # OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
 
-> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20
-> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md)
-> Updated: 2026-09-20
+> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（18.2.8 eval judge usage 记账、unexpected-stop nudge 无新增 usage）, 2026-09-22
+> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
+> Updated: 2026-09-22
 
 ## Overview
 
@@ -51,6 +51,8 @@ unexpected-stop 的 classifier 先于 todo 完成检查运行（`src/session/age
 - **失败回退链**：TypeSafe 调用失败（非 abort）恒回退 LLM 桥，链为 tiny → smol → default → 会话模型（`judgment/index.ts:115-121`；链内规则与 `llm` 模式语义见 [judgment-provider-and-eval-judge](judgment-provider-and-eval-judge.md)）。
 - **活体判定链样例**（2026-09-20 13:47:45，本机日志逐字）：`route:"entered"`（13:47:45.087）→ 0.87s 后 judge true → `agent.continue scheduled source:"unexpected-stop-retry"`（13:47:45.956）→ `route:"unexpected-stop-handled"`（13:47:45.957）。对端 zen console 同窗口记录 `POST /inference/systemone/v1/systemone` 200、UA `Bun/1.4.2`、request content-length 1902；重建 body（717 字符 state + 题面 + model）UTF-8 恰为 1902 字节——**长度相等比对**（zen 未存 body，非逐字节断言）；同 body 重发 200 返回 `{"model":"jev-1.13","answers":{"stopped":{"type":"noul","noul":0.76}},"usage":{"input_tokens":888,"output_tokens":22}}`。
 - **误检倾向观察**（样本=3，未量化）：本会话 3 次纯文本交付型收尾被 smart 分支判为意外停止触发 nudge，与题面措辞（"says it will act, continue working, or call a tool, then ends"）对短交付文本边界模糊一致。观察性结论，非稳定定律。
+> **Status: Outdated** (2026-09-22)
+> 「eval 的判定成功路径不留任何本地 usage 记录」仅对 18.2.6 成立：18.2.8 实测 eval `judge()` 记 model_usage（`purpose=judge`、`provider=typesafe-zen`、`model=jev-1.13`，3 样本）。unexpected-stop 的两次成功 nudge 在 18.2.8 均无 usage 新增，原因未知。证据见 [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)。
 
 ## 语义判定的实践观察
 

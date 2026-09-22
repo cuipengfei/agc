@@ -1,8 +1,8 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md)
-> Updated: 2026-09-21
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
+> Updated: 2026-09-22
 
 ## Overview
 
@@ -64,6 +64,14 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 `jevify` 本身不指定判断模型。2026-09-21 对提交 `923e731` 的 22 个文件执行 `jevify` 流程，完成通知中的实际 judge model 为 `kimi-claw/k2d8-preview`。这说明 `jevify` 只是工作流提示；实际走哪个模型由 `judgmentProvider` 和 `modelRoles.judge` 的路由决定。该次运行没有使用 Jev 模型，不能作为 Jev 模型效果证据。
 
 详见 [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) 和 [OMP TypeSafe env 变量边界](judgment-typesafe-env-config.md)。
+## judge 模型路由：modelRoles.judge 与 fallbackChains（18.2.8 实测）
+
+18.2.7+ 起，judge 实际用哪个模型由「角色链解析」决定：eval `judge()` 与自动 judge 共用 `resolveRoleChain("judge")`——链首取 `modelRoles.judge` 显式值；`retry.fallbackChains.judge` 缺省时改用 priority.json 默认段 `["typesafe/jev-latest", "@tiny", "@smol", "@default"]`，显式链一旦存在即整体替换默认链。本文上面描述的 judgmentProvider 三值与 LLM 桥 tiny→smol→default→session 链是 18.2.5 语义；配了 `modelRoles.judge` 后，实际链由角色解析决定。
+
+jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的 jev-latest 400 可由该候选链解释：18.2.7 时期 config 无 `modelRoles.judge`、无 `typesafe-zen` provider，judge 链 = priority.json 默认、链首即 `typesafe/jev-latest`，被 `TYPESAFE_BASE_URL` 指向 zen 后，候选解析会先尝试 jev-latest 再静默改用 `@tiny`——这些尝试与日志中的 400 未逐条绑定。2026-09-21 配 `modelRoles.judge = typesafe-zen/jev-1.13`、2026-09-22 配显式 fallback 链后，链首为 Zen jev-1.13。
+
+详见 [OMP judge 角色链解析与 jev-latest 400 根因](judge-role-chain-and-jev-latest-400.md)。
+
 
 ## 语义检查的使用边界
 

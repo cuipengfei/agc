@@ -675,3 +675,10 @@
 - Created: Mnemopi 数据模型与 Recall/Reflect; Mnemopi SQLite 损坏恢复
 - Updated: OMP 工作模式与 Magic Keywords（加入 jevify，修正"只有三个"断言）; OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界（加入 jevify 与 judge() 路由分离）; OMP TypeSafe env 变量边界（加入 18.2.7 models.yml api: typesafe 拒绝与 c96eb8fef5 版本边界）; Jev 七渠道定价与 OMP systemone 兼容性判定（加入 Zen 模型目录实测）; OMP Mnemopi Auto-Recall 注入机制（加入 data-model-and-retrieval 链接）; OMP Mnemopi Consolidation 生命周期（加入启动期 promotion 段落）
 - 要点：recall 直接读取 working_memory、episodic_memory、facts 及 fts/memory_embeddings 辅助表；reflect 复用同一 recall 路径；memoria_facts 属于事实提取和版本追踪的内部数据表；jevify 是第四个 magic keyword，追加隐藏提示引导 judge() 工作流；22 文件分类实测 judge model 为 kimi-claw/k2d8-preview；Zen 目录可见 jev-1.13-free 和 jev-1.13，jev-latest 探针返回 unavailable；18.2.7 models.yml 拒绝 api: typesafe，上游 c96eb8fef5 加入 schema；Mnemopi 恢复 54/54 缺失记录逐条点查均报 corrupt，placeholder 已全部删除，.recover 待验证。
+
+## [2026-09-22] ingest | judge 角色链解析与 jev-latest 400 根因
+- Disposition: New; Update
+- Raw: raw/omp/2026-09-22-jev-latest-400-root-cause.md
+- Created: OMP judge 角色链解析与 jev-latest 400 根因
+- Updated: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界（加 18.2.8 路由层一节）; OMP TypeSafe env 变量边界（18.2.8 解除 api: typesafe 版本限制）; OMP judgment /v1/systemone 协议面（eval 不留 usage 标 Status: Outdated 限 18.2.6）; OMP 配置语义手册（stopReason 归一化、abandoned tool-use、empty-stop 守卫）
+- 要点：缺 retry.fallbackChains.judge 时改用 priority.json 默认链，链首内置 typesafe/jev-latest 被 TYPESAFE_BASE_URL 劫持指向 zen → 400；显式链整体替换默认链，一处修复覆盖 auto judge 与 eval judge；ChainJudge timeout/abort 直接抛、不会继续 fallback；18.2.8 eval judge() 记 usage（18.2.6 不记），unexpected-stop 两次成功 nudge 无 usage 新增原因未知；empty completion 重试有测试实证（test 213-227），不打 judge。

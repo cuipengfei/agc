@@ -1,8 +1,8 @@
 # OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入
 
-> Sources: 本会话取证（本机 @oh-my-pi/* 18.2.6 安装源码直读）, 2026-09-19; 本会话实测（probe.py 对照探针、bun $env 静态验证、omp config get）, 2026-09-19; 本会话实测（zen 探针 GET models / POST systemone、omp models refresh）, 2026-09-19; 本会话实测（zen 429 重置推断复验、jev-1.13 付费通道实测）, 2026-09-20; 本会话实测（18.2.7 models.yml api: typesafe 拒绝、上游 c96eb8fef5 加入 schema）, 2026-09-21
-> Raw: [typesafe-env-chain-and-zen-setup](../../raw/omp/2026-09-19-typesafe-env-chain-and-zen-setup.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [Zen jevify typesafe](../../raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md)
-> Updated: 2026-09-21
+> Sources: 本会话取证（本机 @oh-my-pi/* 18.2.6 安装源码直读）, 2026-09-19; 本会话实测（probe.py 对照探针、bun $env 静态验证、omp config get）, 2026-09-19; 本会话实测（zen 探针 GET models / POST systemone、omp models refresh）, 2026-09-19; 本会话实测（zen 429 重置推断复验、jev-1.13 付费通道实测）, 2026-09-20; 本会话实测（18.2.7 models.yml api: typesafe 拒绝、上游 c96eb8fef5 加入 schema）, 2026-09-21; 本会话实测（18.2.8 api: typesafe 接受、typesafe-zen eval judge 三次成功）, 2026-09-22
+> Raw: [typesafe-env-chain-and-zen-setup](../../raw/omp/2026-09-19-typesafe-env-chain-and-zen-setup.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [Zen jevify typesafe](../../raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
+> Updated: 2026-09-22
 
 ## Overview
 
@@ -97,6 +97,8 @@ Schema error: providers.typesafe-zen.api: must be "openai-completions", …, "go
 ```
 
 上游提交 `c96eb8fef5` 在 main 分支加入了 `typesafe` / `openrouter-decisions` 等 API 值。该提交尚不属于 18.2.7。包含该提交的正式版本发布后，才能通过 `models.yml` 配置 `api: typesafe` 的 provider。
+
+2026-09-22 更新：18.2.8 已包含该提交，`api: typesafe` 被 models.yml schema 接受。本机已配 `typesafe-zen` provider（`baseUrl: https://opencode.ai/zen`，模型 `jev-1.13`/`jev-1.13-free`），eval judge 实测 3 次成功（`2026-09-22T14:47:39.050Z`、`15:18:35.051Z`、`15:54:07.190Z`，usage `purpose=judge`、`provider=typesafe-zen`、`model=jev-1.13`）。版本限制仅适用于 18.2.7 及更早。
 
 ## 证据边界
 

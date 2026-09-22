@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md)
-> Updated: 2026-09-14
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
+> Updated: 2026-09-22
 
 ## 这份手册讲什么
 
@@ -88,6 +88,8 @@
 
 - 通知路径仅支持终端分层路由（Herdr → cmux → OSC 99/9 → Bell + Linux D-Bus），未提供内置 HTTP/webhook 目标。
 - `features.unexpectedStopDetection` 仅控制 signed thinking-only 与可见文字的意外停顿检测；完全空输出或未签名 thinking-only 走独立的空输出恢复机制（最多重试 3 次，停止并报错），不受此开关控制。
+- `stopReason` 内部归一化值 `toolUse` 表示「这轮请求执行工具」（Anthropic `tool_use` 映射，`claude-session-store.ts:245`）；turn 带 toolCall 但 stopReason 非 `toolUse` 属 abandoned tool-use，工具不执行（`transform-messages.ts:727-741`）。工具结果后的空 assistant stop 走 empty-stop 守卫：注入 1 条 reminder 后自动再次调用模型（`test/agent-session-empty-stop-guard.test.ts:213-227` 用例），不打 judge。
+
 - `tui.reactions` 仅控制 system prompt 是否向主 Agent 注入 emoji 反应邀请；渲染器解析路径不受此开关门控，偶然的 emoji 开头回复仍可能被渲染为 badge。
 - Idle Recap 不走通知路由，仅在 TUI 状态栏显示 `※ recap:` 文本。
 
