@@ -682,3 +682,9 @@
 - Created: OMP judge 角色链解析与 jev-latest 400 根因
 - Updated: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界（加 18.2.8 路由层一节）; OMP TypeSafe env 变量边界（18.2.8 解除 api: typesafe 版本限制）; OMP judgment /v1/systemone 协议面（eval 不留 usage 标 Status: Outdated 限 18.2.6）; OMP 配置语义手册（stopReason 归一化、abandoned tool-use、empty-stop 守卫）
 - 要点：缺 retry.fallbackChains.judge 时改用 priority.json 默认链，链首内置 typesafe/jev-latest 被 TYPESAFE_BASE_URL 劫持指向 zen → 400；显式链整体替换默认链，一处修复覆盖 auto judge 与 eval judge；ChainJudge timeout/abort 直接抛、不会继续 fallback；18.2.8 eval judge() 记 usage（18.2.6 不记），unexpected-stop 两次成功 nudge 无 usage 新增原因未知；empty completion 重试有测试实证（test 213-227），不打 judge。
+
+## [2026-09-24] ingest | agc bank 第二次 SQLite 损坏与在线修复
+- Disposition: Update
+- Raw: raw/omp-mnemopi/2026-09-24-agc-bank-second-corruption.md
+- Updated: Mnemopi SQLite 损坏恢复
+- 要点：agc-djmfd5jv3zsd 三天内第二次物理损坏（该 bank 41 MB 为最大）；后端 inert 全程在线修复未退出 OMP；顾问拦截纠正 working_memory 误判——索引同坏时 COUNT(*)=343 系虚计数，穷举点查 1..200000 实救 342 行（rowid 连续 1..342），损失为 0 或至多 1 物理不可读行；gists -1、memory_embeddings -2、graph_edges 存活数不可定（派生表）；修复后 10 bank + default 全部 integrity ok。
