@@ -1,8 +1,8 @@
 # SoL-Pi 与 OMP 兼容性：机制核查与装得上但开不了
 
-> Sources: GitHub NVlabs/SoL-Pi；arXiv:2609.20519；官方博客；npm registry；oh-my-pi 仓库源码直读
-> Raw: [sol-pi-forensics](../../raw/agent-harness/2026-09-19-sol-pi-forensics.md)
-> Updated: 2026-09-19
+> Sources: GitHub NVlabs/SoL-Pi；arXiv:2609.20519；官方博客；npm registry；oh-my-pi 仓库源码直读；本机 SoL-Pi 仓库与 OMP release/PR 复查
+> Raw: [sol-pi-forensics](../../raw/agent-harness/2026-09-19-sol-pi-forensics.md); [sol-pi-current-state](../../raw/agent-harness/2026-09-25-sol-pi-current-state.md)
+> Updated: 2026-09-25
 
 SoL-Pi 是 NVIDIA Efficient AI 团队（负责人韩松，MIT 副教授、NVIDIA 研究总监）2026-09-02 开源的 agent harness 优化层（github.com/NVlabs/SoL-Pi，MIT 协议），论文 arXiv:2609.20519。本文核查其推广文章的事实准确性，并给出当前 OMP 上的真实兼容性结论。
 
@@ -47,30 +47,32 @@ Action Fusion 是四机制中唯一改变 agent 行为序列的一个，实现�
 
 动机数据（厂商自报）：「编辑后跟命令」占跨轮转换 12.3%，其中 Bash 占 85.1%。
 
-## OMP 兼容矩阵（2026-09-19，上游 HEAD commit 71c5eec）
+## OMP 兼容矩阵（2026-09-25 复查）
 
 | 特性 | 状态 | 依据 |
 |------|------|------|
-| 安装 | 装得上 | issue #11796 已关闭；PR #11800 已合并随 18.2.1 发布，legacy shim 补导出 findCutPoint 与 sessionEntryToContextMessages |
-| Action Fusion | 开启必崩 | PR #11991（open）：legacy shim 把 arktype schema 原样传给扩展，合并出的 schema 只剩 then_run，模型看不到 path/content，融合调用必崩；PR 作者实测 then_run 端到端成功（`[then_run:succeeded]`） |
-| Online Context Compact | 结构性失效（推断） | OMP 缺 agent_settled 事件（全仓 0 命中，pi 侧约 10 处）；#11991 实测仅覆盖 actionFusion |
-| 原生支持 | 今日开 RFC | issue #12530（2026-09-19 创建，0 评论）《Native SoL-Pi-inspired action fusion》，请求 OMP 原生给 edit/write 加 then_run |
+| 安装 | 装得上 | 本机仓库与官方文档仍一致：SoL-Pi 依赖 Pi 0.85.1；此前 #11800 已修复 legacy shim 导出缺失 |
+| Action Fusion | 修复在 open PR，未发布 | OMP #11991 仍为 open、`merged_at: null`；OMP 最新 release v18.3.0（2026-09-24）未显示合入。PR 分支实测 write/edit + `then_run` 成功，但当前 OMP 18.3.0 原生 edit/write 参数仍无后续命令字段 |
+| ObservationPack / Reducer / Compact | 默认可用但需显式开启 | `sol-pi.json` 中四个功能默认全关；Reducer 只处理符合条件的 bash 与融合 edit/write 诊断输出；Online Context Compact 依赖 Pi 的计划事件与原生压缩路径 |
+| 原生支持 | RFC 未落地 | #12530 仍请求 OMP 原生 Action Fusion；未在当前 release 中见到对应能力 |
 
-当前 OMP 18.2.6 结论：SoL-Pi 装得上，但开启 actionFusion 必崩（等 #11991）；其它特性默认可用（sol-pi.json 默认全关）。
+> **Status: Outdated** (2026-09-25)
+> “当前 OMP 18.2.6 结论：SoL-Pi 装得上，但开启 actionFusion 必崩（等 #11991）”已被 2026-09-25 复查部分取代：OMP 已发布到 18.3.0，但 #11991 仍 open，Action Fusion 兼容修复仍未进入 release。核心判断仍是等 #11991 合并或 #12530 落地。
 
-## 与本地三层优化工具的关系
+## 与本地上下文工具的关系
 
-本地已有三层上下文优化，SoL-Pi 与它们互补不重叠：
+本地已有上下文与传输优化，SoL-Pi 与它们互补但不完全重叠：
 
-- RTK：shell hook 层，过滤压缩单条命令输出，tee 全文落盘 ~/.local/share/rtk/tee/
-- context-mode：MCP 层，工具输出进 FTS5 索引按需取回
-- Headroom：proxy 传输层压缩 wire payload（本机 v0.37.0，--mode cache --code-aware）
+- RTK：shell hook 层，过滤压缩单条命令输出，tee 全文写入本地归档目录。
+- context-mode：MCP 层，工具输出进入可搜索索引，按需取回。
+- Headroom：本机 v0.37.0 代理在工具结果进入模型前处理新输出，并保留 CCR 取回标记；单独调用 MCP 压缩工具只生成可检索副本，不会自动移除已经进入会话的旧工具结果。
+- OpenCode DCP：出站请求前裁剪或压缩旧工具输出，并支持选择消息范围压缩；SoL-Pi Online Context Compact 则把计划步骤完成作为候选时机，检查成本与窗口压力后调用 Pi 原生压缩。
 
-前三者只缩小流量不改行为序列；**Action Fusion 改 agent 循环本身**（省一次完整模型往返），是唯一真缺口。
+这些本地层主要减少重复流量或旧输出；**Action Fusion 改 agent 循环本身**（省一次完整模型往返），仍是最难替代的能力。
 
 ## 结论
 
-不装 Pi 的前提下，SoL-Pi 四机制里 ObservationPack / Evidence-Preserving Reducer / Online Context Compact 均能被 RTK / context-mode / Headroom 三层部分或全部替代；Action Fusion 是唯一无法替代的能力，等 OMP #11991 合并或 RFC #12530 落地后才有可用路径。
+SoL-Pi 在 Pi 0.85.1 上是经 NVIDIA 测试的独立扩展，但在 OMP 上仍要区分两件事：OMP 18.3.0 已经发布，Action Fusion 兼容修复 #11991 仍 open 且未合入 release。观察大输出、让便宜模型读诊断日志、按完成边界触发压缩，这三类能力在本机 Headroom / context-mode / DCP / RTK 中已有相近路径；Action Fusion 仍缺 OMP 原生等价能力。要解锁它，路径仍是等 #11991 合并，或等 #12530 的原生支持落地。
 
 ## See Also
 

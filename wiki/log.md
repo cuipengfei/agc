@@ -688,3 +688,9 @@
 - Raw: raw/omp-mnemopi/2026-09-24-agc-bank-second-corruption.md
 - Updated: Mnemopi SQLite 损坏恢复
 - 要点：agc-djmfd5jv3zsd 三天内第二次物理损坏（该 bank 41 MB 为最大）；后端 inert 全程在线修复未退出 OMP；顾问拦截纠正 working_memory 误判——索引同坏时 COUNT(*)=343 系虚计数，穷举点查 1..200000 实救 342 行（rowid 连续 1..342），损失为 0 或至多 1 物理不可读行；gists -1、memory_embeddings -2、graph_edges 存活数不可定（派生表）；修复后 10 bank + default 全部 integrity ok。
+
+## [2026-09-25] ingest | SoL-Pi 与 OMP 兼容性：当前状态复查
+- Disposition: Update
+- Raw: raw/agent-harness/2026-09-25-sol-pi-current-state.md
+- Updated: SoL-Pi 与 OMP 兼容性
+- 要点：SoL-Pi 仓库 HEAD `1559b5c` 与远端一致；OMP #11991 仍 open 且未合入 v18.3.0；OMP 原生 edit/write 仍无后续命令参数；ObservationPack 与 Headroom 代理最接近，但单独 MCP 压缩不会自动移除旧工具结果；Reducer 只处理符合条件的 bash 与融合 edit/write 诊断输出；Online Context Compact 与 DCP 都以减少旧上下文为目标，但触发路径不同。旧“OMP 18.2.6 actionFusion 必崩”结论标为 Status: Outdated。
