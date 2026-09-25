@@ -81,6 +81,24 @@ providers:
       - image
       contextWindow: 1050000
       maxTokens: 128000
+    - id: gpt-6-luna
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-6 Luna
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 128000
+    - id: gpt-6-sol
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-6 Sol
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 292000
+      maxTokens: 16000
   c8787-chat:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
@@ -159,6 +177,20 @@ providers:
       - image
       contextWindow: 1000000
       maxTokens: 32768
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
+    - id: gpt-6-astra
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-6 Astra (Chat Completions)
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1050000
+      maxTokens: 128000
       cost:
         input: 0
         output: 0

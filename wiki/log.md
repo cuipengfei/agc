@@ -694,3 +694,9 @@
 - Raw: raw/agent-harness/2026-09-25-sol-pi-current-state.md
 - Updated: SoL-Pi 与 OMP 兼容性
 - 要点：SoL-Pi 仓库 HEAD `1559b5c` 与远端一致；OMP #11991 仍 open 且未合入 v18.3.0；OMP 原生 edit/write 仍无后续命令参数；ObservationPack 与 Headroom 代理最接近，但单独 MCP 压缩不会自动移除旧工具结果；Reducer 只处理符合条件的 bash 与融合 edit/write 诊断输出；Online Context Compact 与 DCP 都以减少旧上下文为目标，但触发路径不同。旧“OMP 18.2.6 actionFusion 必崩”结论标为 Status: Outdated。
+
+## [2026-09-25] ingest | GPT-6 Luna 与 Sol 三宿主接入记录
+- Disposition: New
+- Raw: raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md
+- Created: GPT-6 Luna 与 Sol 三宿主接入记录
+- 要点：8787 与 4140 `/v1/models` 返回一致；`gpt-6-luna` 与 `gpt-6-sol` 均为 Responses-only；Codex/OpenCode/OMP 数值已写入并通过解析校验；`/v1/responses` 冒烟均 200 且返回 `OK`。
