@@ -143,7 +143,7 @@ find . -path './.git' -prune -o -type l -print
 
 ## 同步边界
 
-- 不追踪 token、secret、password、cookie、credential、authorization、私钥、`.env`、数据库、WAL、历史、日志、缓存、session、运行时状态、备份和生成文件。
+- 不追踪明文形态的凭据与运行时产物：token、secret、password、cookie、credential、authorization、私钥、数据库、WAL、历史、日志、缓存、session、运行时状态、备份和生成文件。例外：manifest protected 条目以 `<REDACTED>` 脱敏值入库，例如 `omp/agent/.env`（manifest `omp-env` 条目，`protected: true`）——仓库内出现的是脱敏副本，不是真实凭据，且已跟踪文件不受 `.gitignore` 的 `.env*` 规则影响。
 - 明确排除的用户专属文件有两个不同层级：`omp/agent/extensions/umans-status.ts` 由 manifest 条目的 `exclude` 阻止 pull 刷新；`codex/umans.config.toml` 根本不在任何 manifest 条目覆盖范围内（`~/.codex/` 只同步 4 个具体文件与 `hooks/` 目录）。两者都存在于工作树、都被 `.gitignore:47-48` 排除，属历史残留，不纳入可提交内容。
 - Prime Agent 侧排除 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）及 sessions/logs/venv 等运行时产物；只同步 `settings.json` 与 `models.json`，两者均 protected。
 - `pull`、`status`、`diff` 均通过 manifest 约束范围；不要执行广泛同步替代单文件需求。

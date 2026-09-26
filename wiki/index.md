@@ -39,6 +39,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [LLM 出图的两种作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG 与 archify 类型化 JSON 的作者模型、几何裸露面与选择 | 2026-09-04 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 | [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 边界、脚本唯一改动 | 2026-09-26 |
+| [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型（code/doc/paper/image/video）、Part A AST 与 Part B Semantic 提取分支、code-only corpus 定义、update 手动触发与 --watch 后台监听、edge schema 与置信度规则、install 平台与 skills.sh 兼容性 | 2026-09-26 |
 
 ## ai-coding-agents
 

@@ -736,3 +736,8 @@
 - Raw: raw/harness-engineering/2026-09-26-watchdog-md-restructure.md
 - Updated: watchdog-review-design; Jev 语义回归检查方法
 - 要点：五处改动（证据节重写/高危唯一化/发送条件九条有序列表/提醒写法拆 2+2/项目特定占位换可见说明）; jevify 54 块盘点（32 flagged, 推翻 8, 拆分 2, 逮漏网 1「用户直接呼叫」）; advisor 连抓两次「非高危 blocker 无发送路径」; 十条路径走查全过; watchdog-soft-decision-table skill 删除, 有用内容吸收进 watchdog-structured-control-flow。
+
+## [2026-09-26] ingest | graphifyy 工作机制
+- Disposition: New
+- Raw: raw/agent-tooling/2026-09-26-graphify-mechanics.md
+- 要点：graphifyy 0.9.x 三种调用（CLI/Skill/MCP）；语料类型（code/doc/paper/image/video，video/audio 先转录）；Part A AST（免费）与 Part B Semantic（LLM）提取分支；code-only corpus 定义（只含 code 文件跳过 Part B）；Part B 后端选择（GEMINI_API_KEY 或 subagent，只读 GEMINI/GOOGLE key 不读 ANTHROPIC/OPENAI）；update 手动触发 + `--watch` 后台监听（code 自动重建，docs 写 flag）；`/graphify add` 支持的 URL 类型；edge schema 字段（_origin/confidence/confidence_score/relation）；`graphify install --platform` 支持 claude/codex/opencode/agents/pi（不含 omp，OMP 经 .agents/skills 自动发现）；skills.sh 有条目但 `npx skills add` 因仓库结构非标准失败。本次 agc 运行实测：3,309 节点 / 3,644 边 / 289 社区 / 334 文件；EXTRACTED 3611 / INFERRED 33 / AMBIGUOUS 0。
