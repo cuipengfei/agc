@@ -69,7 +69,7 @@ modelRoles:
   task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-5.6-luna:medium
   tiny: kimi-claw/k2d8-preview:high
-  advisor: justwoker/claude-opus-4-8:high
+  advisor: c8787/gpt-6-luna:max
   default: kimi-code/k3:high
   web: openai-codex/gpt-5.6-luna
   memory: c8787/gpt-5.6-luna:high
@@ -83,7 +83,7 @@ cycleOrder:
   - default
   - slow
 theme:
-  dark: dark-monokai
+  dark: dark-tokyo-night
   light: light-arctic
 symbolPreset: nerd
 colorBlindMode: false
