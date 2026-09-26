@@ -700,3 +700,15 @@
 - Raw: raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md
 - Created: GPT-6 Luna 与 Sol 三宿主接入记录
 - 要点：8787 与 4140 `/v1/models` 返回一致；`gpt-6-luna` 与 `gpt-6-sol` 均为 Responses-only；Codex/OpenCode/OMP 数值已写入并通过解析校验；`/v1/responses` 冒烟均 200 且返回 `OK`。
+
+## [2026-09-26] ingest | Headroom 0.39 配置、Timeouts 与升级兼容性
+- Disposition: New
+- Raw: raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md
+- Created: Headroom 0.39：配置行为、Timeouts 与升级兼容性
+- 要点：0.38→0.39 对已装五项 extras 无破坏，CLI 参数与 Kompress env var 未改名；0.39 官方新增 langgraph/pytorch-mps/sandbox/vector 四 extras，本地代理链都不需要；Kompress execution timeout 默认 25→3000ms，用户调优值仍更高；Timeouts 共 10 项（含 4 个 anthropic pre-upstream）；记忆检索超时 HEADROOM_ANTHROPIC_PRE_UPSTREAM_MEMORY_CONTEXT_TIMEOUT_SECONDS 被 anthropic/openai/gemini 三 handler 共用，Bedrock InvokeModel 不读；HEADROOM_PROTECT_READS 只保护源码类读取，JSON/CSV/日志仍压缩；Disable CCR 的 JSON row-drop 路径不可还原；唯一建议加 HEADROOM_PROTECT_READS=1；方法论：升级后"缺失"可执行文件先 Read 再判断，本例 headroom-proxy-start 是用户手写编排脚本非包 shim。
+
+## [2026-09-26] ingest | OMP 配置键全量清单与凭据遮蔽边界
+- Disposition: New
+- Raw: raw/omp-config/2026-09-26-config-key-census-18-3-1.md
+- Created: OMP 配置键全量清单与凭据遮蔽边界（18.3.1）
+- 要点：18.3.1 共 512 键，128 键 ui.label/ui.description 皆空（只缺其一的为 0）须读消费代码补说明；isCredential 只标记 8 键，auth.broker.url（URL）/modelRoles（record）携带敏感信息却未标记，须在 flag 之外按值形态补遮蔽（已验证挡下 dev.autoqaPush.endpoint/share.serverUrl/images.urls.credentials）；枚举 API orderedSettings + Settings.loadReadOnly + settingValuesEqual，loadReadOnly 不解析环境变量覆盖；指纹含 validate/normalize 源码但看不到消费代码行为，故只有解释索引时小版本升级须全量复查。

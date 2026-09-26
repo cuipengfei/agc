@@ -38,6 +38,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响 | 2026-09-03 |
 | [LLM 出图的两种作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG 与 archify 类型化 JSON 的作者模型、几何裸露面与选择 | 2026-09-04 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
+| [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 边界、脚本唯一改动 | 2026-09-26 |
 
 ## ai-coding-agents
 
@@ -146,6 +147,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Advisor Concern 投递策略](omp-config/advisor-concern-delivery-policy.md) | mid-turn concern 的 admission defer 现状与 blocker-only 行为、git 沿革、upstream opt-in 变更请求 #9074/#9576/#10600 | 2026-09-19 |
 | [OMP /model 模型浏览器：角色解析与 kind 过滤](omp-config/model-browser-role-resolution.md) | 已配置角色按 enabledModels 受限集合解析、范围外即 `—` 且无兜底；15 内置角色 + 10 kind 清单 | 2026-09-23 |
 | [OMP Advisor 上下文标记](omp-config/advisor-context-markers.md) | `**user**:`/`**agent**:` 角色标记、会话更新状态头、工具结果截断与 shaken 压缩边界 | 2026-09-20 |
+| [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区 | 2026-09-26 |
 
 ## omp-extensibility
 
