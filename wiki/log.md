@@ -712,3 +712,27 @@
 - Raw: raw/omp-config/2026-09-26-config-key-census-18-3-1.md
 - Created: OMP 配置键全量清单与凭据遮蔽边界（18.3.1）
 - 要点：18.3.1 共 512 键，128 键 ui.label/ui.description 皆空（只缺其一的为 0）须读消费代码补说明；isCredential 只标记 8 键，auth.broker.url（URL）/modelRoles（record）携带敏感信息却未标记，须在 flag 之外按值形态补遮蔽（已验证挡下 dev.autoqaPush.endpoint/share.serverUrl/images.urls.credentials）；枚举 API orderedSettings + Settings.loadReadOnly + settingValuesEqual，loadReadOnly 不解析环境变量覆盖；指纹含 validate/normalize 源码但看不到消费代码行为，故只有解释索引时小版本升级须全量复查。
+
+## [2026-09-26] update | Headroom 0.39 advisor 429 根因与修复
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md
+- Updated: Headroom 0.39：配置行为、Timeouts 与升级兼容性
+- 要点：advisor TUI 显示 quota_exhausted 实为 Headroom 0.39 本地 token 限流；__advisor.default.jsonl:1089,1093 记录 errorStatus:429 "Token rate limited. Retry after 5.4s"；proxy-8787.log:18180-18183 status=429 未转发 4140；openai.py:5784-5791 TokenBucketRateLimiter.check_tokens 本地抛出；check_tokens 为 0.39 新引入（0.38 定义但无调用点，0.39 被 openai/anthropic/gemini 四 handler 调用），默认 TPM 100000；修复 headroom-proxy-start 两处加 --no-rate-limit，/health 验证 rate_limiter.enabled:false；HEADROOM_NO_RATE_LIMIT 环境变量不存在。
+
+## [2026-09-26] ingest | advisor evictStaleResults + 工具结果渲染预算
+- Disposition: Update; Disputed
+- Raw: raw/omp-config/2026-09-26-advisor-evict-stale-results.md
+- Updated: OMP Advisor 上下文标记
+- 要点：18.3.2 新增 advisor.evictStaleResults（boolean, default true），每次评审前清理 advisor 自己早轮 read/grep/glob 结果（>=50 token, 最近一轮豁免, margin 切割点计算）；工具结果渲染预算修正：成功/失败均带有界正文（8 KiB/80 行, diff 300 行, 参数摘要 120 字符），旧断言「截断至 ≤120 字符」标 Outdated；advisor 第一手确认成功/失败都带正文；与主会话 shake 区别（定时 vs 压力, 重跑 vs artifact, 无回收地址）。
+
+## [2026-09-26] ingest | judgeBatch await 用法与常见误诊
+- Disposition: Update
+- Raw: raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md
+- Updated: OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界; Mnemopi 数据模型与 Recall/Reflect
+- 要点：judgeBatch 返回 thenable, await 后拿 JudgmentBatch（drain/drainIter/results/failed/status）; attach(id) 同理需 await; 未 await 的 Promise 上探方法只见 then/catch/finally, 据此断言「接口缺失」是误诊; 文档写 judge_batch 但内核只暴露 judgeBatch（命名差异, 行为一致）; memory_edit 对 facts 只读（update/forget/invalidate 全拒, 返回 not_editable）; 54 块双通道验证 dest 53/54 一致。
+
+## [2026-09-26] ingest | WATCHDOG.md 重构与 jevify 盘点
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-09-26-watchdog-md-restructure.md
+- Updated: watchdog-review-design; Jev 语义回归检查方法
+- 要点：五处改动（证据节重写/高危唯一化/发送条件九条有序列表/提醒写法拆 2+2/项目特定占位换可见说明）; jevify 54 块盘点（32 flagged, 推翻 8, 拆分 2, 逮漏网 1「用户直接呼叫」）; advisor 连抓两次「非高危 blocker 无发送路径」; 十条路径走查全过; watchdog-soft-decision-table skill 删除, 有用内容吸收进 watchdog-structured-control-flow。

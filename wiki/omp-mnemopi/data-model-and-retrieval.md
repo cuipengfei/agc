@@ -1,8 +1,8 @@
 # Mnemopi 数据模型与 Recall/Reflect
 
-> Sources: OMP 源码 d49918fab2
-> Raw: [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md)
-> Updated: 2026-09-21
+> Sources: OMP 源码 d49918fab2; 本会话 memory_edit 实测, 2026-09-26
+> Raw: [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md)
+> Updated: 2026-09-26
 
 Mnemopi 的记忆分为主内容表、事实表、关系表和辅助索引表。普通 `recall` 只直接消费主内容表与事实表，辅以 FTS 和 embedding 索引；`triples`、graph、memoria 系列表有独立用途。
 
@@ -39,6 +39,8 @@ flowchart TD
 ### memoria_facts
 
 属于事实提取和版本追踪的内部数据表，不构成第三个记忆层级。它保存 `fact_type`、`key`、`value`、`context_snippet`、`message_idx`、`version_id`、`previous_value` 等。同一次提取会同时写入 `facts` 和 `memoria_facts`，前者供 recall 搜索，后者保留提取细节。
+
+`facts` 表只读：`memory_edit` 工具对 `[facts]` 类型的记忆拒绝 `update` / `forget` / `invalidate` 三种操作，返回 `not_editable`（2026-09-26 实测）。跨会话更正一条措辞模糊的 fact 不能修改存量，只能新增一条澄清条目，靠新条内文里的作废声明压过旧条。`working_memory` 类型可编辑，不受此限制。
 
 ### triples
 

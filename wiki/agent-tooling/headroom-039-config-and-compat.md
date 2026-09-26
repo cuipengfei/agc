@@ -66,6 +66,18 @@ Bash 工具结果默认会被压缩，仅 WebFetch 默认排除。
 
 升级 Python 包后看到 bin 目录里某可执行文件"不见了"，不能推断它是旧版残留 shim 并删除。用户级 bin 目录下的可执行文件可能是手写编排脚本。本例 `headroom-proxy-start` 就是用户脚本，headroom 从未提供过同名命令。先 Read 确认性质，Read 优先于 rm。
 
+## Advisor 429 根因与修复
+
+OMP TUI 显示 advisor `quota_exhausted`，实际不是上游配额耗尽，也不是 OMP 状态误判。根因是 Headroom 0.39 新引入的本地 token 限流。
+
+`__advisor.default.jsonl:1089,1093` 记录 `errorStatus: 429`，`errorMessage: "Token rate limited. Retry after 5.4s"`。`proxy-8787.log:18180-18183` 显示请求到达 8787 后几毫秒内返回 `status=429`，未转发 4140。`openai.py:5784-5791` 确认这是 `TokenBucketRateLimiter.check_tokens` 在转发前抛出的本地 429。
+
+版本对比确认 `check_tokens` 是 0.39 新行为：0.38.0 的 `rate_limiter.py` 定义了 `check_tokens` 方法但整个包无调用点；0.39.0 被 `openai.py:3730`、`openai.py:5785`、`gemini.py:536`、`anthropic.py:1453` 四个 handler 调用。默认 TPM 100000（`models.py:332`）。
+
+修复：`headroom-proxy-start` 两处启动命令加 `--no-rate-limit`。重启后 `/health` 返回 `rate_limiter.enabled: false`，日志启动横幅显示 `Rate Limiting: DISABLED`。
+
+注意：`HEADROOM_NO_RATE_LIMIT` 环境变量不存在，只能通过 CLI 标志关闭。
+
 ## See Also
 
 - [Headroom Extras](headroom-extras.md)

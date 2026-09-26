@@ -1,8 +1,8 @@
 # Jev 语义回归检查方法
 
-> Sources: OMP eval judge() 会话实测, 2026-09-20
-> Raw: [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md)
-> Updated: 2026-09-20
+> Sources: OMP eval judge() 会话实测, 2026-09-20; 本会话 jevify 54 块盘点实测, 2026-09-26
+> Raw: [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [WATCHDOG.md 重构与 jevify 盘点](../../raw/harness-engineering/2026-09-26-watchdog-md-restructure.md)
+> Updated: 2026-09-26
 
 ## Overview
 
@@ -95,6 +95,21 @@ output
 ## 证据边界
 
 本文方法来自一次 OMP 会话中的 skill 文本检查和题型实测。高概率假阳性证明该 rubric 有缺陷，不能据此推断 Jev 在其他 rubric 或任务上的整体准确率。三次重复调用只说明本次输入的分类稳定且小数有轻微变化，不能建立一般性的方差范围。
+
+## 批量分类工作流（jevify 盘点）
+
+`jevify` magic keyword 引导 agent 在 eval kernel 中调用 `judge()` 做批量分类。适用场景：对一份文档的每个内容块判定去处（重构时逐块盘点旧规则有没有丢）。
+
+步骤：
+
+1. 冻结 rubric：把重构方案写成 framing，每个块按固定 choice 集判定去处。rubric 在数据加载前定稿，后续不改。
+2. 切块：按空白行分隔内容块，每块带所属章节路径。
+3. 批量判定：每个块作为一个 state，同一 rubric 的 questions 一次提交。单状态用 `judge()`，多状态用 `judgeBatch`（await 后 drain 收取）。
+4. 升级规则：top_p < 0.75、mixed、error、或 send_timing=true 但 dest 与预期不符的块触发人工复核。
+5. 人工复核：推翻 judge 误判、拆分跨类块、逮漏网分支。本次 54 块里 32 块触发升级，推翻 8 处、拆分 2 处、逮漏网 1 处。
+6. 双通道验证：同一批 state 同时用 judge() 循环和 judgeBatch 跑一遍，比较 dest 判定一致性。本次 53/54 一致，唯一差异块是人工已裁定的那块。
+
+与单状态 judge() 的区别：单状态适合修改前后比较（同一 rubric 复用，关注分类是否改变）；批量分类适合全文盘点（每个块独立判定去处，关注覆盖完整性）。两者共用同一 judge 引擎，批量形态只是传输层差异。
 
 ## See Also
 

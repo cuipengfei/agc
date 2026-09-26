@@ -91,3 +91,17 @@ Bash 工具结果默认会被压缩，仅 WebFetch 默认排除（`config.py:215
 ## 唯一建议改动
 
 脚本加 `export HEADROOM_PROTECT_READS=1`，用途限定为保护源码类文件读取。其他默认即可。
+
+## Advisor 429 排查与修复
+
+OMP TUI 显示 advisor `quota_exhausted`，用户怀疑上游 429。排查路径与证据：
+
+1. 主 session JSONL（1189 行）搜 `"429"` 得 0 匹配，主 agent 链路无 429。
+2. `__advisor.default.jsonl:1089,1093` 有 `errorStatus: 429`，`errorMessage: "429 {\"detail\":\"Token rate limited. Retry after 5.4s\"}"`，model `gpt-6-sol`，duration 15.5s。
+3. `proxy-8787.log:18180-18183`：`status=429`，`duration_ms=2.54-3.39`，请求体 146546 bytes，未转发 4140。
+4. `openai.py:5784-5791`：`TokenBucketRateLimiter.check_tokens` 在转发前抛 429，非上游返回。
+5. 版本对比：`check_tokens` 在 0.38.0 的 `rate_limiter.py:86` 定义但全包无调用点；0.39.0 被 `openai.py:3730`、`openai.py:5785`、`gemini.py:536`、`anthropic.py:1453` 四处调用。默认 TPM 100000（`models.py:332`）。
+6. 修复：`headroom-proxy-start` 两处启动命令加 `--no-rate-limit`。
+7. 验证：`/health` 返回 `"rate_limiter": {"enabled": false, "status": "disabled"}`；日志启动横幅 `Rate Limiting: DISABLED`；历史 429 计数 434 次全来自限流启用期间的旧实例。
+
+注意：`HEADROOM_NO_RATE_LIMIT` 环境变量不存在，只能 `--no-rate-limit` CLI 标志关闭。

@@ -1,8 +1,8 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
-> Updated: 2026-09-22
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md)
+> Updated: 2026-09-26
 
 ## Overview
 
@@ -76,6 +76,16 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 ## 语义检查的使用边界
 
 `judge(...)` 适合检查清晰度、完整性、自洽性、案例质量和文风。每个 question 应只检查一个目标，criteria 应要求可引用的具体内容；文本声称自己满足条件，不能单独作为满足条件的证据。修改前后比较时复用同一 rubric，关键判断关注分类稳定性和概率范围，不依赖某一次小数。
+
+## judgeBatch 批量用法与常见误诊（2026-09-26 实测）
+
+单状态用 `await judge(state, questions)`，直接返回 `{id: answer}`。两个以上 state 用 `judgeBatch`：`const ref = await judgeBatch(states, questions, concurrency, retries, min_ok, intent)` 返回 thenable，await 后拿到 JudgmentBatch，带 `drain / drainIter / results / failed / status` 方法。`await ref.drain(timeout)` 分片收取 settled items，`item.answers` 为结果，`item.error` 为失败。`judgeBatch.attach(id)` 同样返回 thenable，需 await 后才能拿到 JudgmentBatch。
+
+文档写 `judge_batch`（snake_case），内核只暴露 `judgeBatch`（camelCase）。命名差异客观存在，接口行为与文档一致。
+
+常见误诊：`judgeBatch` 返回未 resolve 的 thenable，在未 await 的 Promise 上探查方法（`Object.getOwnPropertyNames(Object.getPrototypeOf(b))`）只看到 `then / catch / finally`。据此断言「接口缺失」是误诊，文档方法在 resolve 后的对象上。
+
+54 个 state 同时用 judge() 循环和 judgeBatch 跑了一遍，dest 判定 53/54 一致。唯一差异块是人工已裁定的那块。
 
 文件存在、JSON 解析、字段出现、Markdown 结构、Git 状态和测试退出码仍使用确定性检查。报告判定结果时同时保存 state、questions 和 output；仅展示 questions 不能称为完整输入。
 
