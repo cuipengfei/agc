@@ -68,6 +68,11 @@
       "command": ["codegraph", "serve", "--mcp"],
       "enabled": true,
     },
+    "semgrep": {
+      "type": "local",
+      "command": ["/home/cpf/.local/bin/semgrep", "mcp"],
+      "enabled": true,
+    },
   },
   "snapshot": false,
   "lsp": true,

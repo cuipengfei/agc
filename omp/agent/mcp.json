@@ -70,6 +70,11 @@
       "command": "/home/cpf/.bun/bin/mcp-excalidraw-server",
       "args": [],
       "enabled": false
+    },
+    "semgrep": {
+      "type": "stdio",
+      "command": "/home/cpf/.local/bin/semgrep",
+      "args": ["mcp"]
     }
   }
 }
