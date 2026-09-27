@@ -763,3 +763,14 @@
 - Disposition: New
 - Raw: raw/harness-engineering/2026-09-26-mcp-setup-validation-and-credential-incident.md
 - 要点：Codex config.toml [mcp_servers.semgrep]、OpenCode jsonc local 块、OMP mcp.json stdio 块三家写法；验证阶梯——tomllib/json5/json.load 静态解析、stdio JSON-RPC 探针只连目标、codex mcp list 的 enabled 只反映 config.enabled 不代表连接、opencode mcp list 真实连接但会连接全部启用 server、OMP 无头会话枚举 8 server 含 semgrep 是端到端证据；filterExa 按设计过滤无额外工具请求的 mcp.exa.ai（search-exa ○ not connected 非故障）；凭据事故——完整读取三家配置致 context7/exa/tavily key 泄入会话输出、opencode mcp list 在 advisory blocker 后仍运行两次、建议轮换未授权不动、披露时间线两次修正后如实记录。
+
+## [2026-09-27] ingest | AI Coding Agent 对比：真正独特优势（19 家）
+- Disposition: Update
+- Raw: raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md
+- Updated: omo-native-vs-plugin.md
+- 要点：omo-ai 5.0.0 安装包直读（persona 原文 + bundle schema 与路由代码切片，无运行时观测）——真独有节新增 OMO Kibitzer（常驻记忆顾问 sidecar：5 只读工具、唯一输出 nudge ≤200 字符禁祈使句、反噪音纪律、reseed 换继任者）与 OMO Dream（用量账本驱动记忆分层 + system/ 层硬预算契约、git 仓库语义、两类证据技能审计）两项 `[single-source]` 候选；模型路由——kibitzer/recall 段 category 默认 quick、reflection/dream 走 chooseMemoryLaunchRoute fork/quick 成本路由；结论与净结论计数更新。
+
+## [2026-09-27] ingest | OMO 5.0：独立版与插件版
+- Disposition: Update
+- Raw: raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md
+- 要点：CodeMode 条目改判——与 Codex Code Mode 同轴，两边实现均未直读，机制等价性未验证，不据此判市场级独有；新增「比较范围说明」——本文独有清单是 release notes 声明的产品线比较（独立版 vs 插件版），与 4-agent-comparison.md 的 19 家市场级比较是两个范围，无口径冲突。

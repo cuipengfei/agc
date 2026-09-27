@@ -1,8 +1,8 @@
 # AI Coding Agent 对比：真正独特优势（19 家）
 
-> Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30; jcode 与 OpenClaude 调研，2026-09-01; Claude Code 2.1.261 与 Codex CLI 0.153.4 本机安装直读，2026-09-05
-> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md); [Codex bypass 开关与 execpolicy 的关系](../../raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md); [CLI 调查版本号更正](../../raw/ai-coding-agents/2026-09-05-cli-survey-version-correction.md); [CLI help 递归调查](../../raw/ai-coding-agents/2026-09-05-cli-help-recursive-survey.md)
-> Updated: 2026-09-05
+> Sources: 官方 GitHub 仓库与文档，2026-08-27; Prime Agent 技术实质，2026-08-30; Prime Agent 社区 Reception，2026-08-30; jcode 与 OpenClaude 调研，2026-09-01; Claude Code 2.1.261 与 Codex CLI 0.153.4 本机安装直读，2026-09-05; omo-ai 5.0.0 安装包直读，2026-09-27
+> Raw: [四 AI Coding Agent 对比研究原始记录](../../raw/ai-coding-agents/2026-08-27-4-agent-comparison.md); [jcode 与 OpenClaude 调研原始记录](../../raw/ai-coding-agents/2026-09-01-jcode-openclaude-research.md); [Grok Build 机制](../../raw/ai-coding-agents/2026-09-03-grok-build-mechanisms.md); [竞品循环检测调查](../../raw/ai-coding-agents/2026-09-03-loop-and-stall-detection-survey.md); [OMP 跨 harness 导入与 eval kernel 原语](../../raw/ai-coding-agents/2026-09-04-omp-cross-harness-and-eval-primitives.md); [OMP session 事件日志与 extension 事件面](../../raw/ai-coding-agents/2026-09-04-omp-session-event-log-and-extension-surface.md); [OMP 编辑防护与 agent 资产 CRUD](../../raw/ai-coding-agents/2026-09-04-omp-edit-guard-and-asset-crud.md); [OMP 压缩期与分支 extension 事件](../../raw/ai-coding-agents/2026-09-04-omp-compaction-and-branch-events.md); [9 个候选 B→A 对比](../../raw/ai-coding-agents/2026-09-04-nine-candidates-b-to-a.md); [已有八家 A 侧取证](../../raw/ai-coding-agents/2026-09-04-existing-eight-a-side-verification.md); [用户标注复核修正](../../raw/ai-coding-agents/2026-09-04-annotation-review-corrections.md); [四源能力调查 17 agents](../../raw/ai-coding-agents/2026-09-05-four-lane-capability-survey.md); [被质疑断言反向核查](../../raw/ai-coding-agents/2026-09-05-challenged-claims-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [hook 事件集不对称断言的证伪扫描](../../raw/ai-coding-agents/2026-09-05-hook-event-set-symmetry-correction.md); [Codex bypass 开关与 execpolicy 的关系](../../raw/ai-coding-agents/2026-09-05-codex-bypass-switches-and-execpolicy.md); [CLI 调查版本号更正](../../raw/ai-coding-agents/2026-09-05-cli-survey-version-correction.md); [CLI help 递归调查](../../raw/ai-coding-agents/2026-09-05-cli-help-recursive-survey.md); [omo-ai v5 Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md)
+> Updated: 2026-09-27
 
 ## 研究对象
 
@@ -96,6 +96,22 @@
 > **Status: Reason corrected** (2026-09-04)
 > ① 第 90 行对 OMP 的描述不准。OMP 的并发防护不是 git merge 语义，而是内容哈希 tag：`read`/`search`/`write` 为文件全文铸造短 tag，edit 必须携带，文件变动则以 `HashlineMismatchError` 拒绝。但 `edit/store.d.ts` 明写 **Session-scoped**、**One store per ToolSession**——per-agent、写入时才触发的 reactive 防护。② 「主动通知同侪」**不独有**：OMP hub 有 peer 消息（`send` 唤醒 idle/parked peers），Claude Code 有 `SendMessage`（跨机器会话互发）+ Agent Teams（DeepWiki 2026-09-04，`[single-source]`）。独有性收窄为**服务端读集追踪**（追踪谁读了什么、何时发现过期）这一半；该半本轮未直读 jcode 读集实现代码，状态 `[unknown]`。
 
+### OMO：Kibitzer 常驻记忆顾问 sidecar `[single-source]`
+
+**是什么**：随主 agent 会话一起创建、活满整个会话的后台顾问。5 个只读工具，唯一输出是 `nudge(path, hint)`（≤200 字符、禁祈使句）；判定标准是「这条已存记忆是否会改变主 agent 的下一步动作」——矛盾、同方案历史失败、即将重推的答案、被忽略的约束；命中后以「仅供参考，你当前的任务不变」措辞的引用块注入主 agent 下一轮。反噪音纪律：沉默默认、每条路径只判一次、已送达不重发、上下文预算耗尽时按 reseed 协议换继任者并继承 rejected/delivered 清单。
+
+**为什么独特**：OMP advisor 逐轮审查的是主 agent 的输出，不管记忆浮现；OMP Mnemopi 与 Claude Code auto-memory 的召回是相似度驱动的自动注入，无常驻 LLM 裁判持工作区只读工具逐候选裁决；Prime `/refine` 是用户发起的资产 CRUD。DSH 记忆面 unknown。模型走 `memory.recall` 配置段，category 默认 `quick`，解析失败静默。
+
+**证据**：omo-ai 5.0.0 安装包 persona 原文 + bundle 字符串双证，制品直读无运行时观测。详见 [omo-ai v5 Kibitzer/Dream 直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md)。
+
+### OMO：Dream 用量账本驱动的记忆分层 + 硬预算契约 `[single-source]`
+
+**是什么**：后台自主运行的记忆维护 agent。记忆是 git 仓库（commit 才生效、写锁、symlink 防护）；`system/` 常驻层有 token 预算硬契约——超 `compile_warn_tokens` 后本次运行必须削到 0.8 目标以下，优先修剪 self-aware.md（上限 12 条）；升降层由实测读取账本（memory-usage.json、ledger.json）决定——高频读取提升、无人用降级去 `reference/` 留交叉引用、降级可逆不删内容；技能审计区分两类证据：被 transcript 证错的就地修，只是没人用的只进报告候选绝不删；提交前审查清单 + 结构化 trailer。
+
+**为什么独特**：OMP Mnemopi 的 sleep consolidation 是 judge 驱动的 bank 晋升，无上下文层预算契约、无实测读取账本；Prime Continual Harness 有版本化与 rollback（OMO 无此面），但用户发起、无用量证据分层。git 背书本身不独有（Prime 有资产版本化），成立点是「实测读取量驱动升降层 + 硬预算契约 + 后台自主跨会话运行」的组合。
+
+**证据**：omo-ai 5.0.0 安装包 persona 原文，制品直读无运行时观测。模型走 fork/quick 成本路由（chooseMemoryLaunchRoute），触发器标 dream 时用 dream 独立工作量画像。
+
 ## 同类但成熟度更强
 
 别人有等价或可复制，但实现更完整或已合并主线。
@@ -148,7 +164,7 @@
 
 ## 结论
 
-- **当前独有候选(单源,未被竞品取证推翻)**:OMP TTSR、DSH Cordis(成立点为核心可替换性,非插件系统有无)、jcode swarm 服务端读集追踪(「主动通知同侪」已证常见——OMP hub、Claude Code SendMessage 均有;读集追踪本身未直读验证)。按一仓库=一源规则,全部 `[single-source]`,跨源复现未做,不构成已证实的真独有
+- **当前独有候选(单源,未被竞品取证推翻)**:OMP TTSR、DSH Cordis(成立点为核心可替换性,非插件系统有无)、OMO Kibitzer 常驻记忆顾问、OMO Dream 用量账本记忆分层(2026-09-27 omo-ai 5.0.0 安装包直读新增,`[single-source]`,制品直读无运行时观测)、jcode swarm 服务端读集追踪(「主动通知同侪」已证常见——OMP hub、Claude Code SendMessage 均有;读集追踪本身未直读验证)。按一仓库=一源规则,全部 `[single-source]`,跨源复现未做,不构成已证实的真独有
 - **覆盖面/成熟度更强**：jcode 跨 harness 互操作（4 家会话 + 6 家凭据 vs OMP 2 家会话）、Prime Agent Continual Harness（优势收窄至资产 rollback/版本化；CRUD 侧 OMP 已有）
 - **成熟度待重估**：Prime Agent RLM —— 本机当前 OMP 已有 RLM-like primitives（版本锚点见上方 Status 块与 raw），完整形态的差距未逐项复验
 - **功能等价**：OMP Magic Keywords vs OMO 关键词触发、OMP Vibe vs OMO 多 agent、jcode 记忆图 vs OMP mnemopi、OpenClaude 订阅 OAuth/多 provider vs OpenCode/Prime
@@ -243,7 +259,7 @@ CLI 侧补证（2026-09-05，本机 opencode 1.18.29）：`opencode db [query]` 
 
 ### 净结论
 
-真独有 **4** 项（OMP TTSR、DSH Cordis、Codex execpolicy DSL、Codex hash 化 hook trust）；可能独有 **2** 项（openinterpreter 多 harness 仿真、Claude Code cross-user prompt cache）；未知 1 项（jcode swarm 服务端读集追踪）。Reasonix 本轮归零。详见下节。
+真独有 **4** 项（OMP TTSR、DSH Cordis、Codex execpolicy DSL、Codex hash 化 hook trust）；可能独有 **2** 项（openinterpreter 多 harness 仿真、Claude Code cross-user prompt cache）；未知 1 项（jcode swarm 服务端读集追踪）。2026-09-27 omo-ai 5.0.0 安装包直读新增 2 项单源候选：OMO Kibitzer 常驻记忆顾问、OMO Dream 用量账本记忆分层（`[single-source]`，制品直读无运行时观测）。Reasonix 本轮归零。详见下节。
 
 ## Claude Code 与 Codex CLI 入列（2026-09-05）
 
