@@ -1,0 +1,48 @@
+{
+  "defaultProvider": "c8787",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "high",
+  "enabledModels": [
+    "c8787/*"
+  ],
+  "extensions": [
+    "/home/cpf/.pi/agent/extensions/rtk.ts",
+    "/home/cpf/.pi/agent/extensions/herdr-omp-agent-state.ts"
+  ],
+  "hideThinkingBlock": false,
+  "steeringMode": "all",
+  "followUpMode": "all",
+  "doubleEscapeAction": "tree",
+  "showHardwareCursor": true,
+  "lastChangelogVersion": "0.80.3",
+  "theme": "dark",
+  "enableSkillCommands": false,
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "transport": "sse",
+  "enableInstallTelemetry": false,
+  "defaultProjectTrust": "always",
+  "packages": [
+    "npm:@plannotator/pi-extension"
+  ],
+  "changelogSeen": {
+    "omo": "5.0.0"
+  },
+  "tipsHistory": {
+    "thinking-level": 1790478869655,
+    "favorite-model-rotation": 1790478875493,
+    "model-selector-favorites": 1790478943325,
+    "model-command-search": 1790479103120,
+    "model-cycling-scope": 1790479105408,
+    "thinking-budgets": 1790479284845,
+    "prompt-preset": 1790479490292,
+    "provider-login": 1790479550333
+  },
+  "modelThinkingLevels": {
+    "openai/gpt-6-luna-fast": "low"
+  },
+  "modelLastOnThinkingLevels": {
+    "openai/gpt-6-luna-fast": "low"
+  }
+}

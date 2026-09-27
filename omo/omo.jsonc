@@ -315,4 +315,80 @@
     "2026-08-reasoning-unification",
     "2026-09-category-deep-split"
   ],
+  "[native]": {
+    "categories": {
+      "artistry": {
+        "models": [
+          "4140/gpt-5.6-terra",
+          "4140/gpt-5.6-luna"
+        ],
+        "reasoning": "medium"
+      },
+      "deep-low": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "medium"
+      },
+      "quick": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "low"
+      },
+      "ultrabrain": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "medium"
+      },
+      "unspecified-high": {
+        "models": [
+          "4140/gpt-5.6-terra",
+          "4140/gpt-5.6-luna"
+        ],
+        "reasoning": "high"
+      },
+      "unspecified-low": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "low"
+      },
+      "visual-engineering": {
+        "models": [
+          "4140/gpt-5.6-terra",
+          "4140/gpt-5.6-luna"
+        ],
+        "reasoning": "medium"
+      },
+      "writing": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "low"
+      }
+    },
+    "agents": {
+      "explore": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "low"
+      },
+      "librarian": {
+        "models": [
+          "4140/gpt-5.6-luna",
+          "4140/gpt-5.6-terra"
+        ],
+        "reasoning": "low"
+      }
+    }
+  }
 }

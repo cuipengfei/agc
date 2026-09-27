@@ -88,6 +88,31 @@
       "protected": true
     },
     {
+      "name": "omo-agent-settings",
+      "source": "~/.omo/agent/settings.json",
+      "repo": "omo/agent/settings.json",
+      "protected": false
+    },
+    {
+      "name": "omo-agent-extensions",
+      "source": "~/.omo/agent/extensions",
+      "repo": "omo/agent/extensions",
+      "protected": false,
+      "directory": true
+    },
+    {
+      "name": "omo-agent-npm",
+      "source": "~/.omo/agent/npm/package.json",
+      "repo": "omo/agent/npm/package.json",
+      "protected": false
+    },
+    {
+      "name": "omo-agent-models",
+      "source": "~/.omo/agent/models.json",
+      "repo": "omo/agent/models.json",
+      "protected": true
+    },
+    {
       "name": "omp-config",
       "source": "~/.omp/agent/config.yml",
       "repo": "omp/agent/config.yml",
