@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "c8787",
-  "defaultModel": "gpt-5.4",
+  "defaultProvider": "kimi-claw",
+  "defaultModel": "k3-agent",
   "defaultThinkingLevel": "high",
   "enabledModels": [
     "c8787/*"
@@ -27,7 +27,7 @@
     "npm:@plannotator/pi-extension"
   ],
   "changelogSeen": {
-    "omo": "5.0.0"
+    "omo": "5.0.1"
   },
   "tipsHistory": {
     "thinking-level": 1790478869655,
@@ -37,12 +37,28 @@
     "model-cycling-scope": 1790479105408,
     "thinking-budgets": 1790479284845,
     "prompt-preset": 1790479490292,
-    "provider-login": 1790479550333
+    "provider-login": 1790479550333,
+    "fallback-chains-setting": 1790494414492,
+    "fallback-command": 1790494497308,
+    "click-pending-question": 1790497421735,
+    "queue-follow-up": 1790497497391,
+    "steering-message": 1790497572789,
+    "edit-queued-message": 1790497673191,
+    "interrupt-restores-queue": 1790497898366,
+    "file-reference": 1790498014370,
+    "path-completion": 1790498310028
   },
   "modelThinkingLevels": {
-    "openai/gpt-6-luna-fast": "low"
+    "openai/gpt-6-luna-fast": "low",
+    "4140/gpt-5.6-luna": "off",
+    "kimi-claw/k3-agent": "high"
   },
   "modelLastOnThinkingLevels": {
-    "openai/gpt-6-luna-fast": "low"
-  }
+    "openai/gpt-6-luna-fast": "low",
+    "kimi-claw/k3-agent": "high"
+  },
+  "showCacheMissNotices": true,
+  "collapseChangelog": true,
+  "tuiMode": "regular",
+  "fullscreenExitOutput": "resume-hint"
 }

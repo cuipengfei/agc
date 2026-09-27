@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1, plannotator 0.27.15, GitHub
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md)
-> Updated: 2026-09-17
+> Sources: herdr 0.9.1, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md)
+> Updated: 2026-09-27
 
 ---
 
@@ -905,6 +905,10 @@ BROWSER_READY_MATCH_TIMEOUT_MS = 5000;
 | 管理 worktree                  | herdr             | `herdr worktree create --branch feature-x`       |
 | 自定义 Herdr 工作流            | herdr plugin      | 写 `herdr-plugin.toml`                           |
 
+## 8. OMP 插件原生依赖与升级故障（2026-09-27 实测）
+
+OMP 插件 `@plannotator/pi-extension` 经 `@plannotator/webtui@0.1.0` 依赖 `node-pty@1.1.0`。node-pty 发布包不含 linux-x64 预编译产物，Linux 下安装脚本需 node-gyp 现场编译；缺失时整个共享 `~/.omp/plugins` node_modules 的安装失败（所有 OMP 插件连坐）。2026-09-27 实测：`bun add -g node-gyp` 后重跑升级即修复，`build/Release/pty.node` 生成；node-gyp 决策常驻全局。机制细节与修复流程详见 [Plannotator OMP 插件运行机制](plannotator-omp-plugin-mechanism.md)。
+
 ---
 
 ## Sources
@@ -923,7 +927,8 @@ BROWSER_READY_MATCH_TIMEOUT_MS = 5000;
 | herdr agents               | https://raw.githubusercontent.com/herdrdev/herdr/v0.9.1/docs/next/website/src/content/docs/agents.mdx           | v0.9.1                |
 | herdr agent automation     | https://raw.githubusercontent.com/herdrdev/herdr/v0.9.1/docs/next/website/src/content/docs/agent-automation.mdx | v0.9.1                |
 | herdr agent guide          | https://herdr.dev/agent-guide.md                                                                                | latest                |
-| plannotator CLI            | `plannotator --help`, `plannotator <cmd> --help`                                                                | 0.27.15               |
+| plannotator CLI help       | `plannotator --help`, `plannotator <cmd> --help`                                                                | 0.27.15（本页命令面均采自该版本调查） |
+| plannotator CLI version    | `plannotator --version`                                                                                         | 0.27.21（2026-09-27 本机实测；命令面未重验） |
 | plannotator source         | https://github.com/backnotprop/plannotator                                                                      | commit `2a51b26e1bfa` |
 | plannotator hooks          | https://github.com/backnotprop/plannotator/blob/master/apps/hook/hooks/hooks.json                               | latest                |
 | plannotator server         | https://github.com/backnotprop/plannotator/blob/master/apps/hook/server/index.ts                                | latest                |

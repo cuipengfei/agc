@@ -783,3 +783,9 @@
 
 ## [2026-09-27] ingest | no material: 前段 agentic-stack 站点 skim 与种子候选（研究性，摘要级，未逐项核验）
 - Disposition: No material
+
+## [2026-09-27] ingest | Plannotator OMP 插件运行机制：slash command 归属、服务链路与 node-pty 编译门
+- Disposition: New + Update
+- Raw: raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md; raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md
+- Updated: Herdr + Plannotator 工具链全量 Reference
+- 要点：node-pty@1.1.0 发布包无 linux-x64 预编译产物（四平台清单实测），经 @plannotator/webtui@0.1.0 进 pi-extension 依赖树；缺 node-gyp 时 bun install exit 127，共享 node_modules 下所有 OMP 插件升级连坐。修复 = bun add -g node-gyp（13.0.2）+ 重跑 uv-bun --up，pty.node 编译产物验证，node-gyp 决策常驻。插件 registerCommand 四命令（index.ts:663/670/770/1071，0.27.21 实测行号）；/plannotator-last 命令处理链内取会话消息→自建 node:http 服务器（serverAnnotate.ts:711/1202）供打包 HTML，批注经 HTTP POST /api/approve+/api/feedback 回传，不调用 plannotator CLI（浏览器 spawn 属网络辅助层）；~/.claude/skills 同名 skill 是另一入口（bang 命令调 ~/.local/bin/plannotator，145.3 MB，--version 实测 0.27.21；skill 家族安装者未验证）。

@@ -316,7 +316,8 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 + Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制（925行） | 2026-09-17 |
+| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 + Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制（925行；命令面截至 0.27.15，仅 `--version` 实测 0.27.21） | 2026-09-27 |
+| [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-09-27 |
 
 ## omp
 
