@@ -1,8 +1,8 @@
 # SDK 对非标准 responses 帧的解析严格度差异
 
-> Sources: MotoMoto relay 实测, 2026-09-05; opencode `providers.mdx` 与 `provider.ts`, 2026-09-05; `@oh-my-pi/pi-ai` 18.1.10 源码, 2026-09-05
-> Raw: [MotoMoto `/v1/responses` 帧序列与 AI SDK part 序列脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-05-responses-frame-sequence-and-sdk-parts.md); [OpenCode provider `npm` 选择规范与两 harness 协议配置摘录](../../raw/model-gateway-mismatch/2026-09-05-opencode-provider-npm-spec.md)
-> Updated: 2026-09-05
+> Sources: MotoMoto relay 实测, 2026-09-05; opencode `providers.mdx` 与 `provider.ts`, 2026-09-05; `@oh-my-pi/pi-ai` 18.1.10 源码, 2026-09-05; senpi 2026.9.26 dist 直读, 2026-09-27
+> Raw: [MotoMoto `/v1/responses` 帧序列与 AI SDK part 序列脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-05-responses-frame-sequence-and-sdk-parts.md); [OpenCode provider `npm` 选择规范与两 harness 协议配置摘录](../../raw/model-gateway-mismatch/2026-09-05-opencode-provider-npm-spec.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md)
+> Updated: 2026-09-27
 
 ## Overview
 
@@ -99,6 +99,8 @@ omp -p --model motomoto-responses/gpt-5.6-sol        exit 0, 16.42s
 一个容易误判的配置陷阱：pi-ai 的 `baseUrl` 不会自动补 `/v1`。`openai-responses.ts` 第 489 行只做去尾斜杠，第 526 行直接拼 `/responses`；全仓库唯一的 `/v1` 补全函数 `normalizeSakanaRequestBaseUrl`（`openai-shared.ts` 第 187 至 196 行）只有 1 个调用点、仅 sakana 使用。
 
 缺 `/v1` 时请求发往站点根路径，返回的是 HTTP 200 加 1204 字节 SPA HTML——**不是 404**。报错文字为 `OpenAI responses stream closed before a terminal response event was received`，每次约 1.4 秒，重试 4 次后 `stopReason: error`。**"流没有终止事件"这个错误信息会把人引向传输层，实际原因是请求打到了前端页面。** 判别方法是看响应的 `content-type` 是 `text/html` 还是 `text/event-stream`。
+
+senpi（OMO 独立版引擎，Pi 的 fork）共享同一套 adapter 与规则：dist 内 `openai-responses`、`openai-codex-responses`、`openai-completions` 为一等 api，内置 OpenAI SDK 同样不补 `/v1`。所以 OMO native 的 `~/.omo/agent/models.json` 里指向 `localhost:8787` 的 openai 系 provider 也必须把 baseUrl 写成 `http://localhost:8787/v1`。同一机制换个 fork 依然成立。
 
 ## 一个连带的命名债务
 

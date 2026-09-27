@@ -774,3 +774,12 @@
 - Disposition: Update
 - Raw: raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md
 - 要点：CodeMode 条目改判——与 Codex Code Mode 同轴，两边实现均未直读，机制等价性未验证，不据此判市场级独有；新增「比较范围说明」——本文独有清单是 release notes 声明的产品线比较（独立版 vs 插件版），与 4-agent-comparison.md 的 19 家市场级比较是两个范围，无口径冲突。
+
+## [2026-09-27] ingest | OMO native 模型配置与 senpi adapter 集合
+- Disposition: Update
+- Raw: raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md
+- Updated: OMO 5.0：独立版与插件版; SDK 对非标准 responses 帧的解析严格度差异; GPT-6 Luna 与 Sol 三宿主接入记录
+- 要点：native 从 ~/.omo/agent/models.json 读 provider（senpi dist ModelConfig.loadSync）；provider-per-API 分别配置（c8787 openai-responses 9 个 + c8787-chat openai-completions 3 个 + umans/justwoker/kimi-claw anthropic-messages），分组与模型上限经 json5+pyyaml 真解析库交叉校验与 OMP、opencode 源一致；senpi 是 Pi fork，api 取值同 pi-ai BUILTIN_API_IDS，内置 OpenAI SDK 不补 /v1 故 baseUrl 需带 /v1；opencode provider 名 4140 只是 provider 标识，baseURL 指向 localhost:8787；migrations-state.json 仅 migrateLegacySenpiDirs/migrateSessionsFromAgentRoot 两项、无 .pi 迁移无模型迁移、无时间戳；~/.omo/omo.jsonc 目标字面值含 ~ 为悬空 symlink，撤回配置耦合结论；凭据经 RAM 脚本读写不进上下文，exa/tavily key 早前明文暴露建议轮换；未验证——models.json 是否唯一生效来源（存在代码级 registerProvider）、未发真请求实测连通。
+
+## [2026-09-27] ingest | no material: 前段 agentic-stack 站点 skim 与种子候选（研究性，摘要级，未逐项核验）
+- Disposition: No material

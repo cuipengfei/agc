@@ -1,7 +1,7 @@
 # OMO 5.0：独立版（omo-ai）与插件版（oh-my-openagent）
 
 > Sources: oh-my-openagent v5.0.0 release notes（code-yeongyu，2026-09-26）; npm registry（oh-my-openagent、omo-ai）; 本机实测（omo-ai 5.0.0 / engine senpi 2026.9.26），2026-09-27
-> Raw: [OMO 5.0 独立版与插件版区别](../../raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md); [omo 命令面与首启迁移观察](../../raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md); [Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md); [Codex 特性门与 Code Mode 直读](../../raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md)
+> Raw: [OMO 5.0 独立版与插件版区别](../../raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md); [omo 命令面与首启迁移观察](../../raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md); [Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [Codex 特性门与 Code Mode 直读](../../raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md)
 > Updated: 2026-09-27
 
 术语：**插件版** = 装进宿主里跑的扩展；**独立版** = 自带引擎的独立命令行程序；**lane / category** = omo 按任务类型自动挑模型的通道；**bin** = npm 包声明的可执行命令名。
@@ -45,6 +45,20 @@ release notes 声明的独立版独有能力（插件版无）：
 ### Status: Disputed（自述性能，未独立验证）
 
 release notes 给出冷启动 5.8s→850ms、每轮上下文约插件版 0.39x～0.69x、97.5% prompt cache 命中等数字。全部作者自述，本会话未独立测量，当广告看。
+
+## native 模型配置（models.json）
+
+独立版从 `~/.omo/agent/models.json` 读 provider（senpi dist 内 `ModelConfig.loadSync`）。senpi 是 Pi 的 fork，支持的 api 取值与 pi-ai 的 `BUILTIN_API_IDS` 一致（`openai-responses`、`openai-completions`、`anthropic-messages`、`openai-codex-responses` 等），`docs/models.md` 明列这几个为合法 api。
+
+**按 API 协议分别配置 provider。** opencode 与 OMP 都把同一个 `localhost:8787` 网关按 API 协议分别配置：opencode 用 `4140`（Responses）+ `4140-chat`（chat completions）；OMP 用 `c8787`（openai-responses）+ `c8787-chat`（openai-completions）。本会话按 OMP 参照把 native models.json 重写为 5 provider：`c8787`（openai-responses，9 个 gpt 系）、`c8787-chat`（openai-completions，gemini/kimi 3 个）、`umans`、`justwoker`、`kimi-claw`（均 anthropic-messages）。分组与模型上限经真解析库交叉校验，与 OMP、opencode 源一致。
+
+**baseUrl 必须带 `/v1`。** senpi 内置 OpenAI SDK 不自动补 `/v1`，追加 `/responses`、`/chat/completions` 前直接用 baseUrl，所以 openai 系 provider 的 baseUrl 写 `http://localhost:8787/v1`；anthropic-messages 的 baseUrl 去尾 `/v1`。这与 [pi-ai 不补 `/v1`](../model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) 是同一机制在 fork 上的实例。
+
+**8787 == 4140。** opencode 名为 `4140` 的 provider 只是 provider 标识，其 baseURL 指向 `localhost:8787`。
+
+### Status: Unverified（生效来源与连通）
+
+models.json 是否为 native 唯一生效来源未定：senpi dist 另有代码级 `registerProvider`（extension/native provider），加载链未追完。native 实际吃 openai-responses/completions 打到 :8787 由源码支持，未发真请求实测。
 
 ## 升级后要注意的两处行为变化
 

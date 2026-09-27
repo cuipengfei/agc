@@ -1,8 +1,8 @@
 # GPT-6 Luna 与 Sol（8787 Copilot 网关）三宿主接入记录
 
-> Sources: 本机 8787/4140 `/v1/models` 实测与三宿主配置校验, 2026-09-25
-> Raw: [gpt6-three-host-config](../../raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md)
-> Updated: 2026-09-25
+> Sources: 本机 8787/4140 `/v1/models` 实测与三宿主配置校验, 2026-09-25; OMO native models.json 校验, 2026-09-27
+> Raw: [gpt6-three-host-config](../../raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md)
+> Updated: 2026-09-27
 
 ## 一句话
 
@@ -41,3 +41,11 @@
 ## 注意
 
 OMP 进程在启动时读取 `models.yml`；当前 OMP 会话需重启后才能选到这两个新模型。OpenCode 与 Codex 在下次启动时读取新配置。
+
+## OpenCode provider `4140` 实指 8787
+
+OpenCode 里名为 `4140` 的 provider，其 `baseURL` 指向 `http://localhost:8787/v1`——`4140` 只是 provider 标识。上文两个 `/v1/models` 端点返回同一份 33102 字节目录、`cmp` 一致，也印证 8787 与 4140 是同一网关的两个入口。
+
+## OMO native 作为第四宿主（2026-09-27）
+
+OMO 独立版（omo-ai）的 `~/.omo/agent/models.json` 同样按 API 协议分别配置：`c8787`（openai-responses）挂含 `gpt-6-luna`、`gpt-6-sol` 的 9 个 gpt 系模型，`c8787-chat`（openai-completions）挂 gemini/kimi。分组与模型上限经真解析库校验，与 OMP、opencode 源一致。详见 [OMO 独立版模型配置](../ai-coding-agents/omo-native-vs-plugin.md)。
