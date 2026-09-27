@@ -741,3 +741,25 @@
 - Disposition: New
 - Raw: raw/agent-tooling/2026-09-26-graphify-mechanics.md
 - 要点：graphifyy 0.9.x 三种调用（CLI/Skill/MCP）；语料类型（code/doc/paper/image/video，video/audio 先转录）；Part A AST（免费）与 Part B Semantic（LLM）提取分支；code-only corpus 定义（只含 code 文件跳过 Part B）；Part B 后端选择（GEMINI_API_KEY 或 subagent，只读 GEMINI/GOOGLE key 不读 ANTHROPIC/OPENAI）；update 手动触发 + `--watch` 后台监听（code 自动重建，docs 写 flag）；`/graphify add` 支持的 URL 类型；edge schema 字段（_origin/confidence/confidence_score/relation）；`graphify install --platform` 支持 claude/codex/opencode/agents/pi（不含 omp，OMP 经 .agents/skills 自动发现）；skills.sh 有条目但 `npx skills add` 因仓库结构非标准失败。本次 agc 运行实测：3,309 节点 / 3,644 边 / 289 社区 / 334 文件；EXTRACTED 3611 / INFERRED 33 / AMBIGUOUS 0。
+
+## [2026-09-27] ingest | Headroom 0.39 配置与兼容性
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-09-27-headroom-read-command-whitelist.md
+- Updated: Headroom 0.39 配置与兼容性
+- 要点：HEADROOM_PROTECT_READS 命令白名单（7 动词 + sed-n，共 8 种命令形式）、五种 harness wire shape 命令提取、11 种 wrapper 剥离、18 种 lockfile 排除、内容闸门放行类型（JSON/CSV/日志/diff/HTML/搜索）、OMP bash 守卫实测（拦 less/more，放行 cat/head/tail/nl/sed-n）、复合命令拦截、kimi-claw 不经过 8787 的路由确认、两层守卫条件交集表述。
+
+## [2026-09-27] ingest | OMO 5.0：独立版（omo-ai）与插件版（oh-my-openagent）
+- Disposition: New
+- Raw: raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md; raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md
+- Updated: 四 Agent CLI 能力面对比（codex / opencode / omo / omp）
+- 要点：5.0.0 起 omo 有两条并存产品线——OpenCode 插件版（oh-my-openagent）与自带 senpi 引擎的独立包 omo-ai，`omo` 命令归属换到 omo-ai；omo-ai 不依赖 oh-my-openagent、要求 Node>=24；同版本号出自同一 repository 字段（monorepo 为推断，未读构建配置）；插件版仍可运行但进入 degraded support、部分新功能永不进入插件版；Native 独有 Kibitzer/CodeMode/git-memory/mass-ulw/内置浏览器/共享 daemon；metis/momus 别名取消（静默生效），本机 key 在 [opencode] 块、该作用域是否适用未验证；deep-low 默认换 gpt-5.6-sol-fast；ncu 升级只升插件版不换独立版；omo CLI sentinel 证明退出码不可信须父页去重（9 张不同 help 页）；auth help 显示 pi auth 仅证明展示层非内部调用；首启迁移 migrateLegacySenpiDirs/migrateSessionsFromAgentRoot，现状 .pi 空、.omo 有内容，但 migrations-state.json 无时间戳，触发时序/因果/可逆性未验证；性能数字作者自述未实测。
+
+## [2026-09-26] ingest | Semgrep MCP：工具清单、传输条件与实测边界
+- Disposition: New
+- Raw: raw/agent-tooling/2026-09-26-semgrep-mcp-inventory.md
+- 要点：semgrep 1.178.0 无 extras、mcp==1.29.0 核心依赖；`semgrep mcp` 是主 CLI 子命令（旧 semgrep/mcp 仓库废弃并入）；register() 9 工具经 deregister_tools() 裁剪后本地 stdio 实见 7 个（移除 whoami 与 scan_remote）+ 2 prompt + 2 resource + /health + 8 个 TOOL_DISABLE_ENV_VARS；实测两文档未写前提——semgrep_scan_supply_chain 需常驻 semgrep daemon、semgrep_rule_schema 联网拉取 2s 超时；semgrep_findings 需 SEMGREP_APP_TOKEN 且只查平台不做新扫描；方法论：MCP 空结果需 CLI p/default 交叉验证（一次性扫描结果按 No material 不入库）。
+
+## [2026-09-26] ingest | 三家宿主 MCP 配置、验证阶梯与凭据事故
+- Disposition: New
+- Raw: raw/harness-engineering/2026-09-26-mcp-setup-validation-and-credential-incident.md
+- 要点：Codex config.toml [mcp_servers.semgrep]、OpenCode jsonc local 块、OMP mcp.json stdio 块三家写法；验证阶梯——tomllib/json5/json.load 静态解析、stdio JSON-RPC 探针只连目标、codex mcp list 的 enabled 只反映 config.enabled 不代表连接、opencode mcp list 真实连接但会连接全部启用 server、OMP 无头会话枚举 8 server 含 semgrep 是端到端证据；filterExa 按设计过滤无额外工具请求的 mcp.exa.ai（search-exa ○ not connected 非故障）；凭据事故——完整读取三家配置致 context7/exa/tavily key 泄入会话输出、opencode mcp list 在 advisory blocker 后仍运行两次、建议轮换未授权不动、披露时间线两次修正后如实记录。

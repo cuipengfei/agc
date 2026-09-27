@@ -117,3 +117,4 @@ opencode 的 `debug` 子树最厚，把 agent 内部工具（file/rg/lsp/snapsho
 
 - [Codex 特性门系统](codex-feature-flags.md)
 - [AI Coding Agent 对比：真正独特优势（19 家）](4-agent-comparison.md)
+- [OMO 5.0：独立版（omo-ai）与插件版（oh-my-openagent）](omo-native-vs-plugin.md)（本文调查时 omo 为 v4.19.4 插件版；5.0 后 omo 归独立包 omo-ai）

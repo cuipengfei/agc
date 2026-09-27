@@ -38,8 +38,9 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响 | 2026-09-03 |
 | [LLM 出图的两种作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG 与 archify 类型化 JSON 的作者模型、几何裸露面与选择 | 2026-09-04 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
-| [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 边界、脚本唯一改动 | 2026-09-26 |
+| [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动 | 2026-09-27 |
 | [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型（code/doc/paper/image/video）、Part A AST 与 Part B Semantic 提取分支、code-only corpus 定义、update 手动触发与 --watch 后台监听、edge schema 与置信度规则、install 平台与 skills.sh 兼容性 | 2026-09-26 |
+| [Semgrep MCP：工具清单、传输条件与实测边界](agent-tooling/semgrep-mcp.md) | 主 CLI 子命令形态、9 注册 7 实见、daemon 与 2s 超时两个文档未写前提、MCP 空结果需 CLI p/default 交叉验证 | 2026-09-26 |
 
 ## ai-coding-agents
 
@@ -56,6 +57,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [Coding Agent 的短反馈闭环：逐轮 Advisor](ai-coding-agents/short-feedback-loop-advisors.md) | OMP、Pi 与 DSH 的第二模型逐轮审查和 advice 回流机制 | 2026-09-11 |
 | [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层 | 2026-09-19 |
 | [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated）；Zen 模型目录 2026-09-21 实测 | 2026-09-21 |
+| [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；ncu 升级不换独立版；性能数字与首启迁移时序未验证 | 2026-09-27 |
 
 ## better-harness
 
@@ -94,6 +96,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-20 |
 | [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计、发送条件有序散文列表（非高危 blocker 与用户直接呼叫漏网分支）、jevify 盘点验证方法 | 2026-09-26 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
+| [三家宿主 MCP 配置、验证阶梯与凭据事故](harness-engineering/mcp-setup-validation.md) | Codex/OpenCode/OMP semgrep stdio 写法；静态解析/协议探针/真实加载三级验证各自边界；codex enabled 不代表连接、opencode list 有连接全部副作用；filterExa 设计行为；凭据暴露事故教训 | 2026-09-26 |
 
 ## mcp-servers
 

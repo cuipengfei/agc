@@ -1,8 +1,8 @@
 # Headroom 0.39：配置行为、Timeouts 与升级兼容性
 
-> Sources: 本机 headroom-ai 0.39.0 源码核验 + dist-info METADATA + Settings 页面, 2026-09-26
-> Raw: [2026-09-26-headroom-039-config-and-compat](../../raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md)
-> Updated: 2026-09-26
+> Sources: 本机 headroom-ai 0.39.0 源码核验 + dist-info METADATA + Settings 页面, 2026-09-26; 本机 headroom-ai 0.39.1 源码直读 + OMP 会话实测, 2026-09-27
+> Raw: [2026-09-26-headroom-039-config-and-compat](../../raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md); [2026-09-27-headroom-read-command-whitelist](../../raw/agent-tooling/2026-09-27-headroom-read-command-whitelist.md)
+> Updated: 2026-09-27
 
 ## Overview
 
@@ -77,6 +77,27 @@ OMP TUI 显示 advisor `quota_exhausted`，实际不是上游配额耗尽，也�
 修复：`headroom-proxy-start` 两处启动命令加 `--no-rate-limit`。重启后 `/health` 返回 `rate_limiter.enabled: false`，日志启动横幅显示 `Rate Limiting: DISABLED`。
 
 注意：`HEADROOM_NO_RATE_LIMIT` 环境变量不存在，只能通过 CLI 标志关闭。
+
+## HEADROOM_PROTECT_READS 的命令白名单
+
+`_is_read_command` 的完整白名单是 7 个动词加 `sed -n`（共 8 种命令形式）。`_READ_VERBS = ("cat", "head", "tail", "nl", "bat", "less", "more")`，`sed` 单独判断必须带 `-n` 标志。裸 `sed`（无 `-n`）是流编辑器，不命中读取保护。
+
+明确排除：`grep`、`rg`、`ls`、`find`、`pytest` 的派生输出不在白名单；任何位置出现 `>`、`>>`、`tee`、`<<` 判定为写操作，直接排除。
+
+命令提取按 harness wire shape 分五种：Anthropic dict（`input.command`）、OpenAI JSON string（`json.loads(arguments)`）、Codex list（`command` 是数组）、Codex code-mode `exec_command`（JS 对象字面量正则抠 `cmd` 属性）、纯文本 agent（fenced code block）。Codex JS 抠不出 `cmd` 字面量（变量、拼接、模板替换、不解的转义）时，调用方替换成哨兵字符串 `"exec_command(<cmd not a string literal>)"` 并登记该 `call_id` 进入内容检测；最终是否保护由内容闸门决定。纯文本 agent 没有 fenced block 时返回空字符串，不保护。
+
+wrapper 剥离：`_SHELL_WRAPPERS` 包含 `rtk`、`sudo`、`env`、`time`、`nice`、`ionice`、`nohup`、`stdbuf`、`command`、`timeout`、`xargs`。`sudo cat f`、`timeout 30 cat f`、`rtk cat f` 都判定为读。`bash -lc "cat f"` 递归进 `-c` 参数再判，也判定为读。
+
+18 种 lockfile（`bun.lock`、`package-lock.json`、`uv.lock`、`Cargo.lock` 等）命中 `_LOCKFILE_RE` 时不保护，因为 lockfile 是工具再生成产物，不会被逐字节 patch。
+
+内容闸门：`_read_output_should_be_protected` 默认保护，只在内容类型属于 `_RELEASABLE_READ_TYPES` 时放行压缩。放行类型：JSON array、搜索结果、构建/测试日志、git diff、HTML、CSV/表格。固定宽度列（`/etc/fstab`、C `#define` 块）也保护。检测异常时保护（fail-close）。
+
+## 与 OMP bash 守卫的关系
+
+OMP 在 tool 执行层拦 `less`/`more`（提示用 `read` 工具），放行 `cat`/`head`/`tail`/`nl`/`sed -n`。OMP 对复合命令也按整条命令行形状拦截。
+
+两层守卫作用在不同环节：OMP 拦掉的命令输出不存在，headroom 的保护名单里自然也不会有。OMP 放行的 5 种命令（`cat`/`head`/`tail`/`nl`/`sed -n`）命中 headroom 的 `_READ_VERBS` + `sed -n` 规则。若输出经过 8787 且 `HEADROOM_PROTECT_READS=1`，这些命令会进入 headroom 的读取检测；最终是否保护仍由内容闸门决定。
+
 
 ## See Also
 
