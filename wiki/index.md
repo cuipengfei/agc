@@ -350,3 +350,11 @@ NVIDIA Build 注册、短信验证与 API key 配置的后续上下文。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [NVIDIA Build 中国短信验证故障](nvidia-build/nvidia-build-china-sms-verification.md) | 官方短信故障状态、支持邮箱与后续注册配置上下文 | 2026-09-28
+
+## opencode
+
+OpenCode V2 迁移：包身份、破坏变更、配置与插件兼容性、会话迁移事故。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OpenCode V2 迁移：发布、破坏变更与本机兼容性](opencode/opencode-v2-migration.md) | V2 包 `@opencode/cli` 2.0.18（v1 `opencode-ai` 无 2.x）；三个有意破坏变更（插件 API、server API、终端配置）；LSP 保留不运行；配置多数自动归一化、`server`/`compaction.prune` 被忽略；本机 8 个 v1 插件 + 5/6 第三方仅 V1；启动触发会话迁移写入 DB（581 行 skip、完整度未确认）与凭据暴露教训 | 2026-09-29 |

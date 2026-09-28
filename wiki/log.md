@@ -827,3 +827,7 @@
 - Raw: raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md
 - 要点：MCP 工具通过 `write xd://` 调用时 `toolName = "write"` 且 approval 统一 tier `write`（tool-bridge.ts:656），语义只读的工具也触发 prewalk 切换；bash 命中 allow 规则同样返回 tier `write`（bash.ts:583,585）；`tools.xdev: false` 消除 false positive，代价是 schema 进每次 API 请求，prefix cache 影响未实测；特殊设备 resolve/reject/propose/report_issue 不依赖 session.xdev
 - Updated: OMP 配置语义手册
+
+## [2026-09-29] ingest | OpenCode V2 迁移：发布、破坏变更与本机兼容性
+- Disposition: New
+- Raw: raw/opencode/2026-09-29-opencode-v2-migrate-v1-official.md; raw/opencode/2026-09-29-opencode-v2-local-migration-audit.md
