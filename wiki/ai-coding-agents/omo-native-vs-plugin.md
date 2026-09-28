@@ -77,6 +77,7 @@ models.json 是否为 native 唯一生效来源未定：senpi dist 另有代码�
 ## See Also
 
 - [四 Agent CLI 能力面对比（codex / opencode / omo / omp）](cli-capability-surface.md)
+- [omo native 合法 agent 名册与配置三层](omo-native-agent-roster.md)
 
 ## 证据边界
 
