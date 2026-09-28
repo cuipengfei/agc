@@ -14,6 +14,16 @@ description: 枚举本机 OMP 全部配置键、按默认值分类生效状态�
 3. OMP 升级后键集合发生了什么（新增、删除、描述符指纹变化）
 4. 把全部键渲染成单个本地 HTML 供浏览筛选
 
+## 设计原则
+
+1. **四类问题，三脚本**：`dump-settings` 取真实配置 → `render-html` 渲染自包含 HTML → `report-gaps` 版本间 diff
+2. **三态分类**：每个键相对默认值标 `unset` / `default-explicit` / `customized`
+3. **值与默认值取证，不硬编码**：从引擎自身运行时取得默认值和生效值，不按字段名臆断
+4. **完整性门槛**：每个字段必须有说明文字，缺则就地终止、不写产物
+5. **脱敏**：产物自动遮蔽密钥与非本机 URL，发现盲区改脚本的 `redact()`，不手动改产物
+6. **产物只留本机**：`cache/` 已 gitignore，HTML 和 JSON 不提交
+7. **脚本最大化、LLM 最小化**：能用代码确定性完成的（取值、分类、脱敏、指纹、diff、渲染）全部由脚本完成；LLM 只负责脚本无法确定的部分（源码行为取证、翻译层撰写）。改动应优先扩展脚本能力，而非把工作推给 LLM 手工补
+
 ## 前置
 
 - 本机全局安装 `@oh-my-pi/pi-coding-agent`，源码在 `/home/cpf/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/src`（可用环境变量 `OMP_SRC` 覆盖）
@@ -54,7 +64,7 @@ bun $S/scripts/report-gaps.mjs --old $S/cache/settings-prev.json $S/cache/settin
 
 ## 指纹与升级复查
 
-每个键带 `fingerprint`（对描述符整体做 SHA-256，含 `validate`/`normalize` 函数源码）。键的解释文字（本 skill 的 `explanations/` 目录）依赖什么行为，指纹变了就必须重写。
+每个键带 `fingerprint`（对描述符整体做 SHA-256，含 `validate`/`normalize` 函数源码）。`report-gaps.mjs` 报指纹变化时，该键的说明文字（`translations.json` 里对应条目）可能需要重写。`--expl` 指向可选的解释目录（当前未建，`report-gaps` 在目录不存在时跳过该分支）。
 
 `report-gaps.mjs` 的行为：
 
