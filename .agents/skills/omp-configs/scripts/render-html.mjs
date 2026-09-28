@@ -13,7 +13,7 @@ const version = JSON.parse(raw).version;
 // < breaks out of the script tag and of HTML parsing; \u003c is valid JSON
 // and renders identically after JSON.parse, so inline the blob escaped.
 const data = raw.replace(/</g, "\\u003c");
-const trPath = join(import.meta.dir, "../cache/translations.json");
+const trPath = join(import.meta.dir, "../translations.json");
 if (!existsSync(trPath)) throw new Error(`translations.json 缺失：${trPath}`);
 const trRaw = await readFile(trPath, "utf8");
 const trData = trRaw.replace(/</g, "\\u003c");

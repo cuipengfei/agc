@@ -49,9 +49,9 @@ bun $S/scripts/report-gaps.mjs --old $S/cache/settings-prev.json $S/cache/settin
 
 ## 翻译层
 
-`translations.json` 在 `cache/` 里（gitignored，不进仓库），render-html 按 `join(import.meta.dir, "../cache/translations.json")` 读取。格式 `{"<id>": {"label": "…", "desc": "…"}, …, "_groups": {"<英文分组名>": "<中文>"}}`。写 HTML 前校验：文件必须存在；每个键必须有非空中文 desc（包括源里无文字的键）；源里有 label 的键 label 也必须非空；59 个分组必须有译名。缺一项即终止并列出缺项，不渲染英文或空说明。当前 512 键全覆盖，其中 128 个源里无 label/description 的键（如 `auth.broker.url`、`modelRoles`）的 desc 是手工读源码行为撰写的，label 为 null，页面 label 列回退显示键名。
+`translations.json` 在 skill 根目录（受版本管理，随仓库长期保存——这是 LLM 手写的翻译层，放 `cache/` 会被 gitignore 而丢失），render-html 按 `join(import.meta.dir, "../translations.json")` 读取。格式 `{"<id>": {"label": "…", "desc": "…"}, …, "_groups": {"<英文分组名>": "<中文>"}}`。写 HTML 前校验：文件必须存在；每个键必须有非空中文 desc（包括源里无文字的键）；源里有 label 的键 label 也必须非空；59 个分组必须有译名。缺一项即终止并列出缺项，不渲染英文或空说明。当前 514 键全覆盖，其中 128 个源里无 label/description 的键（如 `auth.broker.url`、`modelRoles`）的 desc 是手工读源码行为撰写的，label 为 null，页面 label 列回退显示键名。
 
-升级后 report-gaps 报 fingerprint 变化的键，其 description 可能改了：抽出该键新旧 description 重新翻译对应条目，保持 512 全覆盖。
+升级后 report-gaps 报 fingerprint 变化的键，其 description 可能改了：抽出该键新旧 description 重新翻译对应条目，保持 514 全覆盖。
 
 ## 脱敏边界
 
