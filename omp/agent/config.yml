@@ -115,7 +115,7 @@ tools:
   intentTracing: true
   abortOnFabricatedResult: true
   maxTimeout: 0
-  xdev: true
+  xdev: false
   speculativeExecution:
     enabled: true
   xdevDocs: inline

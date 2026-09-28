@@ -821,3 +821,9 @@
 - Raw: raw/omp-mnemopi/2026-09-28-mnemopi-scoping-global-retain-test.md; raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md
 - 要点：retain/learn 自 v18.3.3 起有 scope:"global" 参数（scoping 为 global/per-project-tagged 才暴露，per-project 下隐藏）；per-project-tagged 默认写 project、可显式写共享 bank（bank 名 default）；recall 合并去重后按 recallLimit 截断；实测两条 global 写入落共享 bank 且 recall 命中回写 recall_count。18.4.2 dump 515 键（18.4.1→18.4.2 新增/删除/指纹变化均 0）；cacheWarming $0.05 地板与 0.15 idle 续用概率门槛；checkpoint.enabled 只门控 agent 工具，不影响双击 Esc 与 /tree；checkpoint 自描述 "git-based" 与 prompt 文档不符。
 - Updated: OMP 配置语义手册；OMP 配置键全量清单与凭据遮蔽边界
+
+## [2026-09-29] ingest | OMP Prewalk：xdev 挂载与 False Positive
+- Disposition: Update
+- Raw: raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md
+- 要点：MCP 工具通过 `write xd://` 调用时 `toolName = "write"` 且 approval 统一 tier `write`（tool-bridge.ts:656），语义只读的工具也触发 prewalk 切换；bash 命中 allow 规则同样返回 tier `write`（bash.ts:583,585）；`tools.xdev: false` 消除 false positive，代价是 schema 进每次 API 请求，prefix cache 影响未实测；特殊设备 resolve/reject/propose/report_issue 不依赖 session.xdev
+- Updated: OMP 配置语义手册

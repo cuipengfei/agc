@@ -1,8 +1,8 @@
 # OMP Prewalk：规划后切换模型
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13
-> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md)
-> Updated: 2026-08-30
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13；本机源码 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证，2026-09-29
+> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md)
+> Updated: 2026-09-29
 
 ## Overview
 
@@ -44,6 +44,7 @@ plan-mode 子代理会清除 agent frontmatter 的 prewalk 设置；源码没有
 - **不能把失败编辑当成成功交付。** 失败 edit/write 也会触发切换；后续便宜模型只是继续尝试处理剩余项目，checklist 只是提示验证。
 - **模型质量不会按 todo 难度自动升级。** 如果剩余项目需要更强推理，用户必须手动 `/model` 切换；prewalk 没有按项目自动回升的机制。
 - **handoff 前后的 Esc 不承担模型回切。** handoff 前中断会保留当前模型和待处理状态；handoff 后中断会保留当时模型。该行为的完整交互尚未做专门运行时实验。
+- **xd:// 挂载导致 false positive 切换。** `tools.xdev: true`（默认）时，可挂载的 `loadMode = "discoverable"` 工具（即不在 `XDEV_KEEP_TOP_LEVEL` 且非 read/write 传输工具者）挂载到 `xd://` 设备下，模型通过 `write xd://<device>` 分发调用。此时 `toolName` 为 `write`，进入 `PREWALK_ACTION_TOOLS` 判定；MCP 工具的 `approval` 统一为 `"write"`（`tool-bridge.ts:656`），不论语义是否只读（如 `ctx_search`、`headroom_stats`、`deep_wiki_ask_wiki_question`），全部触发切换。`bash` 命中 allow 规则时 tier 也为 `write`（`bash.ts:583,585`），同样触发。设为 `tools.xdev: false` 可消除这些 false positive——可挂载工具回到顶层，`toolName` 为各自名字，不在 `PREWALK_ACTION_TOOLS`（仅 `edit`/`write`）中，不触发切换。代价是全部工具 schema 进入每次 API 请求；prefix cache 是否能吸收增量取决于 provider 和请求前缀条件，本机未实测。`xd://resolve`、`xd://reject`、`xd://propose`、`xd://report_issue` 不依赖 `session.xdev`，关闭 `xdev` 后仍可用（`xd-protocol.ts:84-123`）。
 
 ## 社区反响
 
@@ -99,6 +100,7 @@ OMP 创始人 Can Bölük 在 Stencil.so 发布的自测数据（作者自测，
 - prewalk 与 plan-yolo 同时启用时的交互，尚未运行时验证。
 - 失败 edit/write 后切换对实际交付质量的影响，尚未实测。
 - 社区没有足够样本支持采用率、满意率或“广泛喜爱”的统计结论。
+- `tools.xdev: false` 后全部可挂载工具 schema 进入每次 API 请求，对计费的实际影响取决于 provider 的 prefix cache 命中条件，本机未实测。
 
 ## See Also
 

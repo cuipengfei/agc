@@ -71,7 +71,7 @@
 | `secrets.enabled: true` | outbound provider context 中对匹配 secret 做 obfuscation/redaction | provider request 组装时 | 主 agent 和 Advisor 的动态上下文都走 obfuscator；但 static system prompt、tool schema 原样通过 |
 | `eval.tools.enabled: true` | eval 定义的 tools 可暴露给 task/agent/workpool children | task/agent/workpool 组装时 | 子 agent 可用当前会话临时定义的工具 |
 | `eval.autoBackground.enabled: true` | 长时间 eval cell 自动后台化 | eval cell 运行超阈值时 | 主对话不被长 eval 阻塞 |
-| `tools.xdev: false` | 不挂载 discoverable 工具到 `xd://`，全部放顶层 | 工具组装时（`syncXdevState`，session 级 gate，配置变更即时生效） | false 后所有 `loadMode = "discoverable"` 的工具回到顶层直接调用，`toolName` 为各自名字；消除 MCP 工具通过 `write xd://` 触发 prewalk 的 false positive（MCP 统一 tier `write`）；代价是全部工具 schema 进 system prompt，prefix cache 影响未实测 |
+| `tools.xdev: false` | 不挂载 discoverable 工具到 `xd://`，全部放顶层 | 工具组装时（`syncXdevState`，session 级 gate，配置变更即时生效） | false 后可挂载的 `loadMode = "discoverable"` 工具回到顶层直接调用，`toolName` 为各自名字；消除 MCP 工具通过 `write xd://` 触发 prewalk 的 false positive（MCP 统一 tier `write`）；代价是全部工具 schema 进每次 API 请求，prefix cache 影响未实测 |
 | `tools.xdevDocs: inline` | 所有 mounted xdev device 都成为 prompt docs 内联候选 | system prompt 组装时 | 超出 per-device / total budget 的 device 进入 `Additional devices (docs on demand)` catalog，模型需按需读 `xd://...` |
 | `codexResets.autoRedeem: no` | Codex saved rate-limit reset 的自动花费策略 | Codex reset 相关流程 | `unset` 首次询问；`yes` 允许自动检查/花费；`no` 跳过 auto-redeem 检查与自动花费 |
 
