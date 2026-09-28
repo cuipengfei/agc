@@ -317,6 +317,12 @@
   ],
   "[native]": {
     "categories": {
+      "architect": {
+        "models": [
+          "4140/gpt-6-luna"
+        ],
+        "reasoning": "high"
+      },
       "artistry": {
         "models": [
           "4140/gpt-5.6-terra",
@@ -330,6 +336,12 @@
           "4140/gpt-5.6-terra"
         ],
         "reasoning": "medium"
+      },
+      "deep-high": {
+        "models": [
+          "4140/gpt-6-luna"
+        ],
+        "reasoning": "high"
       },
       "quick": {
         "models": [

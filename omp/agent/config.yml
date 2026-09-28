@@ -237,7 +237,7 @@ loop:
   mode: prompt
 doubleEscapeAction: rewind
 treeFilterMode: user-only
-autocompleteMaxVisible: 5
+autocompleteMaxVisible: 10
 emojiAutocomplete: true
 paste:
   largeMenuThreshold: 100

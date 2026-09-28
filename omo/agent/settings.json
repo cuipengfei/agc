@@ -16,7 +16,7 @@
   "showHardwareCursor": true,
   "lastChangelogVersion": "0.80.3",
   "theme": "dark",
-  "enableSkillCommands": false,
+  "enableSkillCommands": true,
   "terminal": {
     "showTerminalProgress": true
   },
@@ -46,7 +46,38 @@
     "edit-queued-message": 1790497673191,
     "interrupt-restores-queue": 1790497898366,
     "file-reference": 1790498014370,
-    "path-completion": 1790498310028
+    "path-completion": 1790498310028,
+    "shortcut-overlay": 1790498448317,
+    "prompt-history": 1790498672013,
+    "external-editor": 1790498908337,
+    "expand-tool-output": 1790499536432,
+    "thinking-blocks": 1790499654509,
+    "paste-image": 1790500022536,
+    "copy-message": 1790500114429,
+    "input-newline": 1790500434159,
+    "bash-prefixes": 1790500582742,
+    "drag-drop-files": 1790500910466,
+    "answer-agent-question": 1790501188540,
+    "open-pending-question": 1790501312501,
+    "favorite-models-command": 1790501502141,
+    "tree-command": 1790501780842,
+    "fork-command": 1790516873627,
+    "clone-session": 1790517195491,
+    "continue-session": 1790517398650,
+    "session-name": 1790517561685,
+    "session-info": 1790517691119,
+    "export-share": 1790517895436,
+    "compact-command": 1790518294318,
+    "auto-compaction": 1790519223642,
+    "help-command": 1790519354019,
+    "keybindings-command": 1790519436368,
+    "agents-md-context": 1790519819301,
+    "skills-and-prompts": 1790519935533,
+    "files-command": 1790520053251,
+    "diff-command": 1790520791589,
+    "todo-command": 1790520936485,
+    "goal-command": 1790521008102,
+    "btw-command": 1790521216820
   },
   "modelThinkingLevels": {
     "openai/gpt-6-luna-fast": "low",
@@ -60,5 +91,12 @@
   "showCacheMissNotices": true,
   "collapseChangelog": true,
   "tuiMode": "regular",
-  "fullscreenExitOutput": "resume-hint"
+  "fullscreenExitOutput": "resume-hint",
+  "markdown": {
+    "mermaid": "streaming"
+  },
+  "todo": {
+    "firstTurnPlan": "remind",
+    "turnEndBackstop": true
+  }
 }
