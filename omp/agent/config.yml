@@ -149,7 +149,7 @@ display:
   smoothStreaming: true
   showTokenUsage: true
   cacheMissMarker: true
-  collapseCompacted: true
+  collapseCompacted: false
   showTurnTime: true
   pinnedAgents: full
   hideToolActivity: false
@@ -292,7 +292,7 @@ compaction:
   v2RetainedMessageBudget: 64000
   idleEnabled: true
   idleThresholdTokens: 200000
-  idleTimeoutSeconds: 300
+  idleTimeoutSeconds: 900
   supersedeReads: true
   dropUseless: true
   methodOrder:
@@ -329,7 +329,7 @@ autolearn:
   autoContinue: false
   minToolCalls: 5
 mnemopi:
-  scoping: per-project
+  scoping: per-project-tagged
   embeddingVariant: multilingual
   embeddingApiUrl: http://localhost:4140/v1
   embeddingModel: text-embedding-3-small

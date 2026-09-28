@@ -269,6 +269,20 @@ providers:
         output: 0
         cacheRead: 0
         cacheWrite: 0
+    - id: deepseek-flash
+      compactionModel: c8787/gpt-5.6-luna
+      name: DeepSeek V4.1 Flash
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 393216
+      cost:
+        input: 0
+        output: 0
+        cacheRead: 0
+        cacheWrite: 0
     - id: deepseek-v4-pro
       compactionModel: c8787/gpt-5.6-luna
       name: DeepSeek V4 Pro
