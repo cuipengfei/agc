@@ -2,7 +2,7 @@
 
 > Sources: 本机 OMP session JSONL 直读; Better Harness v0.6.6 `scripts/session-analysis/platforms/pi.mjs` 直读
 > Raw: [JSONL title 首行与 pi 解析器](../../raw/omp-sessions/2026-09-03-jsonl-title-first-and-pi-parsers.md)
-> Updated: 2026-09-03
+> Updated: 2026-09-27
 
 ## 一句话
 
@@ -25,6 +25,10 @@ OMP 的 session JSONL 首行是 `{"type":"title"}`，第三方 pi 格式消费�
 
 - **Better Harness**：原样读取 → `eligibleSessions=0`；剥掉首行 → `eligibleSessions=5`、`taskEpisodes=24`
 - **tokscale**：此前已因同一根因读不到 OMP session 的改动证据（已有独立 skill 记录）
+
+> **Status**: Outdated
+> **Updated**: 2026-09-27
+> 2026-09-27 验证：tokscale 4.17 原生 Oh My Pi client 已可解析 title-first（90.4K messages），mirror workaround 已退役（目录 0 jsonl、无调度）。证据：raw/omp-sessions/2026-09-27-omp-title-first-now-parsed.md；取代性文章：wiki/tokscale/senpi-omo-native-collection.md。
 
 ## 正确做法
 
