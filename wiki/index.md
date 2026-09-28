@@ -341,3 +341,11 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，以及输�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [tokscale 采集 omo native 用量](tokscale/senpi-omo-native-collection.md) | SENPI_CODING_AGENT_DIR 缺失时 senpi 被静默丢弃的根因、软链修复与跨根目录去重实证、~/.senpi 目录沿革、OMP mirror 退役 | 2026-09-27 |
+
+## nvidia-build
+
+NVIDIA Build 注册、短信验证与 API key 配置的后续上下文。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [NVIDIA Build 中国短信验证故障](nvidia-build/nvidia-build-china-sms-verification.md) | 官方短信故障状态、支持邮箱与后续注册配置上下文 | 2026-09-28
