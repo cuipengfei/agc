@@ -1,8 +1,8 @@
 # OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
 
-> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（18.2.8 eval judge usage 记账、unexpected-stop nudge 无新增 usage）, 2026-09-22
-> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
-> Updated: 2026-09-22
+> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（18.2.8 eval judge usage 记账、unexpected-stop nudge 无新增 usage）, 2026-09-22; 本会话源码直读（jfind cascade 四阶段消费方 + 通用 judge 接口）, 2026-09-28
+> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md)
+> Updated: 2026-09-28
 
 ## Overview
 
@@ -32,6 +32,7 @@ OMP 侧类型定义与此同构（`pi-ai/src/judgment/types.ts:22-92`）：`Choi
 | smart unexpected-stop 检测 | NoulQuestion（`UNEXPECTED_STOP_QUESTION`） | `noul >= 0.5` 判 true（keyword judge 只给 0/1，TypeSafe 给校准中间值，0.5 即「硬币翻转不触发」） | `src/session/unexpected-stop-classifier.ts:16`（阈值）,`:20-30`（题面）,`:43-62`（候选条件）,`:71`,`:83`；smart 分支 `src/session/turn-recovery.ts:916-991` |
 | git TUI AI staging | NoulQuestion（file pass 每文件一题、hunk pass 再判） | `noul >= 0.5` 选入 | `src/cli/git-tui/ai-stage.ts:34`（`STAGE_THRESHOLD`）,`:104`，调用点 :69 |
 | eval cell `judge()` | 用户自定义 choice/bool/score | bool↔noul 双向映射见上节 | `src/eval/judgment-bridge.ts` |
+| find（jfind cascade） | NoulQuestion（三波：文件名 / 草图 / 完整验证） | 草图 `>= 0.45`（CUTOFF）进验证；文件 contentScore `>= 0.2`（THRESHOLD）命中 | `src/tools/jfind/cascade.ts`、`questions.ts`；走注入的通用 `Judge` 接口（`cascade.ts:141`），实际路由到 TypeSafe/Jev 或 LLM 回退由 `resolveJudge` 决定，请求 body 无 wave 字段 |
 
 unexpected-stop 的 classifier 先于 todo 完成检查运行（`src/session/agent-session.ts:3630` 先于 :3772）；smart 分支重试上限 3（`turn-recovery.ts` `UNEXPECTED_STOP_MAX_RETRIES = 3`，:73），判定 true 则注入 developer reminder 并 `scheduleAgentContinue({source:"unexpected-stop-retry"})`（:981-991）。
 
