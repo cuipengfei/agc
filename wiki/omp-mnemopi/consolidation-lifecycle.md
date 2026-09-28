@@ -1,8 +1,8 @@
 # OMP Mnemopi Consolidation 生命周期
 
 > Sources: OMP session investigation, 2026-08-23; can1357/oh-my-pi Git history, source, issues and PRs, 2026-08-31; OMP 源码 d49918fab2
-> Raw: [2026-08-23-omp-mnemopi-investigation](../../raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md); [2026-08-31-mnemopi-scoping-history](../../raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md)
-> Updated: 2026-09-21
+> Raw: [2026-08-23-omp-mnemopi-investigation](../../raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md); [2026-08-31-mnemopi-scoping-history](../../raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [2026-09-28-mnemopi-scoping-global-retain-test](../../raw/omp-mnemopi/2026-09-28-mnemopi-scoping-global-retain-test.md); [2026-09-27-omp-18-3-3-predictive-text-engine](../../raw/omp/2026-09-27-omp-18-3-3-predictive-text-engine.md)
+> Updated: 2026-09-28
 
 ## Overview
 
@@ -47,7 +47,7 @@ Mnemopi `scoping` 有三个选项，默认 `per-project`：
 |---|---|---|
 | `global` | shared/global | shared/global |
 | `per-project` | 当前 cwd 对应的 project bank | 仅 project |
-| `per-project-tagged` | 当前 cwd 对应的 project bank | project + shared/global |
+| `per-project-tagged` | 当前 cwd 对应的 project bank（默认；可显式 `scope:"global"` 写共享 bank，见下文 Status 块） | project + shared/global |
 
 当前配置：
 
@@ -55,16 +55,25 @@ Mnemopi `scoping` 有三个选项，默认 `per-project`：
 memory:
   backend: mnemopi
 mnemopi:
-  scoping: per-project
+  scoping: per-project-tagged
   embeddingApiUrl: http://localhost:4140/v1
   embeddingModel: text-embedding-3-small
 ```
 
-这里的 project scope 严格说是 **cwd scope**：当前版本从 cwd 派生 project bank。`per-project-tagged` 不会将内容写入 global；global 只是额外的 recall target。如果 shared bank 没有被 `global` 模式或外部 writer 预先填充，它的 recall 效果与 `per-project` 相同。
+这里的 project scope 严格说是 **cwd scope**：当前版本从 cwd 派生 project bank。`per-project-tagged` 的默认写入目标是 project bank，shared/global 是额外的 recall target；需要写共享 bank 时由 `retain`/`learn` 的 `scope:"global"` 显式指定（18.3.3 起）。如果 shared bank 没有任何内容，它的 recall 效果与 `per-project` 相同。
+
+> **Status: Outdated** (2026-09-28)
+> 本段原文写「`per-project-tagged` 不会将内容写入 global」，这只覆盖默认路径。18.4.2 源码（`tools/memory-retain.ts`）允许显式 `scope:"global"` 写共享 bank；同日实测两条 global 写入落入共享 bank（`working_memory.channel_id=default`）并被 recall 命中。共享 bank 的名字是 `default`（`mnemopi/config.ts:129` `DEFAULT_SHARED_BANK`），不是 `global`。
 
 名称中的 `tagged` 具有误导性。Mnemopi 没有 tag-filtered recall；它实际打开两个独立 bank 并合并结果。不要和 Hindsight 的同名模式混淆，后者会真正使用 `project:<cwd>` tag。
 
-当前 `retain` 工具只接受 `items[].content` 与可选 `items[].context`，没有 bank/scope/tag 参数。LLM 不能逐条决定写入 global 或 project；写入位置由会话当前 scoping 决定。
+当前 `retain` 工具接受 `items[].content`、可选 `items[].context` 与可选 `items[].scope`（`"project" | "global"`，默认 project；描述原文 "storage scope; defaults to project, global is for durable cross-project knowledge"）。`scope` 参数只在 scoping 为 `global` 或 `per-project-tagged` 时暴露（`mnemopi/settings.ts` `isGlobalMemoryScopeAvailable`）；`per-project` 下工具隐藏该选项。写入位置默认由会话当前 scoping 决定，可按条覆盖为 global。
+
+> **Status: Outdated** (2026-09-28)
+> 本段原文写「retain 工具只接受 content 与 context，没有 bank/scope/tag 参数」。v18.3.3 changelog："Added optional global or per-project memory scopes to the retain and learn tools when Mnemopi scoping is enabled."另注：db 行里的 `scope` 列值固定为 `bank`（行级存储语义），与调用参数的 `scope` 是不同字段。
+### Recall 合并语义（18.4.2 源码）
+
+`collectScopedRecallResults`（`mnemopi/state.ts`）对每个 recall 目标 bank 分别查询，按 id 与内容去重合并，统一排序后按 `recallLimit` 截断；单个 bank 失败只记日志不拖垮另一边，全部目标都失败才抛错。scoping 配置在 memory backend 启动时读取（`mnemopi/backend.ts` `start`），改配置后新会话生效。
 
 ### 发布历史
 

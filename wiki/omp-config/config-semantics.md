@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
-> Updated: 2026-09-22
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md)
+> Updated: 2026-09-29
 
 ## 这份手册讲什么
 
@@ -16,6 +16,7 @@
 | `compaction.idleEnabled: true` | 允许空闲时自动压缩 | agent 空闲且 token 超阈值时 | 暂停回来时常已完成 context 整理；代价是部分旧细节已被摘要化 |
 | `compaction.experimentalContextManagement: true` | 实验性 context 管理开关 | 开关开启 + 工具表面 + owner 绑定后生效 | 自动 compact 走 notes-backed rollover，不再调用 summarization model；显式 mode/focus 的 `/compact` 仍走旧管线 |
 | `providers.cacheRetention: long` | 要求长 prompt-cache retention | provider 支持时 | 支持的 provider 用 1 小时 TTL，并关闭 keep-alive refresh；连续长会话更容易复用缓存 |
+| `providers.cacheWarming: idle`（18.4.2 核验） | 缓存条目过期前用 1-token 输出预算重发上一个请求续期 | 提示词缓存条目即将过期时 | 判定式 `预期节省 = 续用概率 × (失效重付价 − 命中价) − 续期成本 ≥ $0.05`；idle 档续用概率固定 0.15（streaming 档在长工具执行期间按 1 计），idle 续期窗口 30 分钟、streaming 60 分钟。便宜模型与短前缀在 idle 档事实上不会触发 |
 
 ## 读文件、编辑、网页读取、Bash 输出
 
@@ -29,6 +30,19 @@
 | `shellMinimizer.sourceOutlineLevel: default` | Bash 打印源码时减少 aggressive 压缩 | Bash 输出源码时 | `aggressive` 更偏 outline，可能省掉 function body；`default` 保留更多实现细节 |
 | `bash.allowCompoundCommands: false` | 不把 literal `cmd1 && cmd2` 拆开做分段处理 | Bash 命令包含 literal `&&` 链时 | 不是禁止执行 `&&`；整条命令仍整体处理 |
 
+### checkpoint、双击 Escape 与会话树的关系（18.4.2 核验）
+
+`checkpoint.enabled` 只门控 agent 工具 `checkpoint`/`rewind` 的注册（`tools/index.ts`），不影响 TUI 导航：`doubleEscapeAction: rewind` 打开用户消息回退选择器（`showUserMessageSelector`）、`tree` 打开会话树（`showTreeSelector`），走持久化会话树（`input-controller.ts`），与 checkpoint 工具无调用关系。`checkpoint`/`rewind` 的行为是 LLM 上下文管理（探索前 `checkpoint(goal)`，结束后 `rewind(report)` 移除中间工具消息只留简报）；子代理默认禁用，需在 agent-definition `tools:` frontmatter 显式列出。注意 `tools/checkpoint.ts` 的自描述字符串写 "git-based"，但行为文档 `prompts/tools/checkpoint.md` 与源码均无 git 工作树操作，两处表述不一致。
+
+### 其余 18.4.2 核验的显示/杂项键
+
+| 设置 | 做什么 | 何时触发 | 影响与取舍 |
+|---|---|---|---|
+| `display.collapseCompacted` | TUI 实时会话记录是否折叠压缩前历史 | transcript 展示构建时（`session/session-context.ts`：仅 `transcript: true` 路径，`collapseCompactedHistory` 为 live TUI surface 服务） | 只影响显示；模型上下文构建是另一条路径 |
+| `omitThinking` | 让上游 provider 在响应中不返回思维摘要 | 请求组装时（provider 支持时） | 请求级；与本地显示开关 `hideThinkingBlock`（思维照常产生与返回，仅 TUI 不渲染）分工不同 |
+| `showHardwareCursor: true` | 显示终端真实光标 | 常态 | 供中文/日文输入法（IME）候选窗锚定输入位置；语音输入与 live 命令模式会临时关闭再恢复 |
+| `python.interpreter: ""` | 指定精确 Python 可执行文件路径 | eval Python kernel 启动时 | 空串即默认形态，表示走自动运行时探测；显式写 `""` 等同于未设置 |
+| 会话名称颜色（`sessionAccent`，无配置键） | 给会话名算一个确定性强调色 | TUI 渲染编辑器边框、状态栏会话段时 | `getSessionAccentHex`（pi-tui `theme/session-color.ts`）：会话名 hash 取色相弧位置（深色主题排除黄绿芯与过亮青色系，浅色固定 195-330° 冷色带），与主题色碰撞时沿弧移开，明度彩度继承主题 accent 并按 OKLCH gamut cusp 归一化，浅色主题二分压到 WCAG AA 对比度 |
 
 ### streamingAbort 中断之后发生什么（18.1.21 核验）
 
@@ -57,6 +71,7 @@
 | `secrets.enabled: true` | outbound provider context 中对匹配 secret 做 obfuscation/redaction | provider request 组装时 | 主 agent 和 Advisor 的动态上下文都走 obfuscator；但 static system prompt、tool schema 原样通过 |
 | `eval.tools.enabled: true` | eval 定义的 tools 可暴露给 task/agent/workpool children | task/agent/workpool 组装时 | 子 agent 可用当前会话临时定义的工具 |
 | `eval.autoBackground.enabled: true` | 长时间 eval cell 自动后台化 | eval cell 运行超阈值时 | 主对话不被长 eval 阻塞 |
+| `tools.xdev: false` | 不挂载 discoverable 工具到 `xd://`，全部放顶层 | 工具组装时（`syncXdevState`，session 级 gate，配置变更即时生效） | false 后所有 `loadMode = "discoverable"` 的工具回到顶层直接调用，`toolName` 为各自名字；消除 MCP 工具通过 `write xd://` 触发 prewalk 的 false positive（MCP 统一 tier `write`）；代价是全部工具 schema 进 system prompt，prefix cache 影响未实测 |
 | `tools.xdevDocs: inline` | 所有 mounted xdev device 都成为 prompt docs 内联候选 | system prompt 组装时 | 超出 per-device / total budget 的 device 进入 `Additional devices (docs on demand)` catalog，模型需按需读 `xd://...` |
 | `codexResets.autoRedeem: no` | Codex saved rate-limit reset 的自动花费策略 | Codex reset 相关流程 | `unset` 首次询问；`yes` 允许自动检查/花费；`no` 跳过 auto-redeem 检查与自动花费 |
 

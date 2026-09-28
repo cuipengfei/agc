@@ -1,8 +1,8 @@
 # OMP 配置键全量清单与凭据遮蔽边界（18.3.1）
 
-> Sources: 本会话 dump-settings 取证（`@oh-my-pi/pi-coding-agent` v18.3.1）+ 直读 config/{all-settings,registry,settings}.ts, 2026-09-26
-> Raw: [配置键全量清单与凭据遮蔽边界取证](../../raw/omp-config/2026-09-26-config-key-census-18-3-1.md)
-> Updated: 2026-09-26
+> Sources: 本会话 dump-settings 取证（`@oh-my-pi/pi-coding-agent` v18.3.1）+ 直读 config/{all-settings,registry,settings}.ts, 2026-09-26; dump-settings 取证（v18.4.2）与 report-gaps 18.4.1→18.4.2 diff, 2026-09-28
+> Raw: [配置键全量清单与凭据遮蔽边界取证](../../raw/omp-config/2026-09-26-config-key-census-18-3-1.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md)
+> Updated: 2026-09-28
 
 ## 这篇讲什么
 
@@ -13,6 +13,8 @@ OMP 配置面的三个结构事实：全量键有多少、多少键在源码里�
 18.3.1 的 `orderedSettings()` 枚举出 512 个键。其中 128 个键在 `all-settings.ts` 里 `ui.label` 与 `ui.description` 两者皆空；核对下来只缺其一的都是 0 个，即每个键要么两个字段都有、要么都没有。
 
 对做「配置解释器」的直接影响：这 128 个键没有任何源自带的说明文字可用，只能读消费代码推断行为。剩下 384 个键的 label/description 可直接取用。
+
+**当前版本状态（2026-09-28，18.4.2）**：dump 枚举 515 键（较 18.3.1 的 512 净增 3），`effectiveDefault` 418、`customized` 97、凭据键仍 8 个。18.4.1→18.4.2 的键集合 diff：新增 0、删除 0、描述符指纹变化 0（report-gaps 输出 `{"added": 0, "removed": 0, "fingerprintChanged": 0}`）。
 
 ## 凭据遮蔽边界
 

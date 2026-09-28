@@ -815,3 +815,9 @@
 - Raw: raw/omp/2026-09-28-find-tool-cascade-source-forensics.md
 - 要点：OMP find=jfind 模块，编排类 Cascade（cascade.ts:108），固定四阶段（lexical 粗筛 + 文件名/草图/完整验证三波，docstring cascade.ts:1-14），非按工作类型动态；判分走注入的通用 Judge 接口（judge.judge，cascade.ts:141），题型恒 NoulQuestion，请求 body 无 wave 字段，实际后端 TypeSafe/Jev 或 LLM 回退由 resolveJudge 决定、本会话未验证；lexical 层 native grep 只扫内容计命中、fileScore 排名时加路径命中（2*inPath+log1p，lexical.ts:108）、idf clamp [0.5,6]、带 timeoutMs 且跳 skippedOversized 不保证穷尽；常量 CANDIDATES=128/FILES=20/WINDOWS=24/WINDOW_BYTES=8192/SKETCH_BYTES=384/FULL_LIMIT=40/NAME_BATCH=64/CUTOFF=0.45/THRESHOLD=0.2/PARALLEL=16（cascade.ts:27-58）；Wave1 选读=2 个 lexical 最强无条件读+按 nameScore 补满 20，Wave2 草图 score>=0.45 且最多留 40 段（cascade.ts:285），Wave3 每文件 contentScore>=0.2 上榜、行号来自 passage 自带 start/end（模型只给概率）；上一波分数只挑下一波输入不写进下一请求；协议文章消费方表补 find 为第 5 个 noul 消费方并标 TypeSafe/Jev 路由为条件；find vs grep 适用性为机制推断未做基准
 - Updated: OMP judgment /v1/systemone 协议面
+
+## [2026-09-28] ingest | OMP Mnemopi scoping 语义修正与 18.4.2 设置键取证
+- Disposition: Update; Disputed
+- Raw: raw/omp-mnemopi/2026-09-28-mnemopi-scoping-global-retain-test.md; raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md
+- 要点：retain/learn 自 v18.3.3 起有 scope:"global" 参数（scoping 为 global/per-project-tagged 才暴露，per-project 下隐藏）；per-project-tagged 默认写 project、可显式写共享 bank（bank 名 default）；recall 合并去重后按 recallLimit 截断；实测两条 global 写入落共享 bank 且 recall 命中回写 recall_count。18.4.2 dump 515 键（18.4.1→18.4.2 新增/删除/指纹变化均 0）；cacheWarming $0.05 地板与 0.15 idle 续用概率门槛；checkpoint.enabled 只门控 agent 工具，不影响双击 Esc 与 /tree；checkpoint 自描述 "git-based" 与 prompt 文档不符。
+- Updated: OMP 配置语义手册；OMP 配置键全量清单与凭据遮蔽边界
