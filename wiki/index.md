@@ -49,6 +49,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测） | 2026-09-27 |
+| [omo native 合法 agent 名册与配置三层](ai-coding-agents/omo-native-agent-roster.md) | 10 categories 实配状态与内置默认、具名 subagent 的 categories 绑定耦合、三层配置分工 | 2026-09-27 |
 | [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-04 |
 | [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
 | [Coding Agent 候选发现方法](ai-coding-agents/candidate-discovery-method.md) | wide-narrow-deep 枚举流程、README 机制词扫描、流行度的真实用途 | 2026-09-04 |
@@ -321,7 +322,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 ## omp
 
-OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper 的行为边界。
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，以及输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
@@ -329,3 +330,14 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper 的行为边�
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 已切 jev-1.13 付费通道；18.2.8 解除 api: typesafe 版本限制 | 2026-09-22 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数、观测面（18.2.8：auto-thinking 与 eval judge 记 usage；unexpected-stop 两个成功 nudge 样本无新增 usage，原因未知）、zen 已实测兼容与 OpenRouter 不兼容 | 2026-09-22 |
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |
+| [OMP predictive text engine](omp/predictive-text-engine.md) | 18.3.3 引入统一输入预测引擎：spelling.autocomplete 枚举（off/auto/ngram/smollm/apple）、Linux auto 走 ngram、幽灵文字 Tab/→ 接受；SmolLM2-135M 按需下载（145MB GGUF Q8_0、sha256）；预测 daemon 进程模型（broker spawn、detached:false、idle 15min 退出、从 history.db 与 Claude/Codex 历史学习）；autocompleteMaxVisible 是下拉列表非幽灵文字 | 2026-09-27 |
+| [OMP Rust/TS architecture and pi-natives](omp/rust-ts-architecture.md) | TS(Bun) 编排 + pi_natives 原生插件（Rust，cargo-about 证据）执行；12 个 crate 清单、pi-builtins 103 内建命令、pi-natives 28 模块、index.js 20 类导出；职责多为按名推断并标注 | 2026-09-27 |
+| [Node-API and napi-rs in OMP](omp/napi-node-api.md) | Node-API（原 N-API）稳定 ABI 逐字定义与边界（限 Node.js、不跨平台）；Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证；napi-rs 构建链（Rust 1.88+、#[napi]、平台分包）；pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1 证据 | 2026-09-27 |
+
+## tokscale
+
+多 coding agent 用量采集器：53 个 client 的本地会话扫描、定价计价与 submit 上传。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [tokscale 采集 omo native 用量](tokscale/senpi-omo-native-collection.md) | SENPI_CODING_AGENT_DIR 缺失时 senpi 被静默丢弃的根因、软链修复与跨根目录去重实证、~/.senpi 目录沿革、OMP mirror 退役 | 2026-09-27 |

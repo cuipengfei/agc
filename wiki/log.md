@@ -1,5 +1,15 @@
 # Wiki Log
 
+## [2026-09-27] ingest | tokscale 采集 omo native(senpi) 用量
+- Disposition: New (+ Update: omp-sessions 文章 tokscale 段标记 Outdated)
+- Raw: raw/tokscale/2026-09-27-senpi-collection-root-cause.md; raw/omp-sessions/2026-09-27-omp-title-first-now-parsed.md
+- Wiki: wiki/tokscale/senpi-omo-native-collection.md; Updated: wiki/omp-sessions/jsonl-format-and-third-party-parsers.md
+
+## [2026-09-27] ingest | omo native 合法 agent 名册与配置三层
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-09-27-omo-native-agent-roster.md
+- Wiki: wiki/ai-coding-agents/omo-native-agent-roster.md
+
 ## [2026-09-23] ingest | OMP /model 模型浏览器：角色解析与 kind 过滤
 - Disposition: New
 - Raw: raw/omp-config/2026-09-23-model-browser-role-resolution.md
@@ -789,3 +799,8 @@
 - Raw: raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md; raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md
 - Updated: Herdr + Plannotator 工具链全量 Reference
 - 要点：node-pty@1.1.0 发布包无 linux-x64 预编译产物（四平台清单实测），经 @plannotator/webtui@0.1.0 进 pi-extension 依赖树；缺 node-gyp 时 bun install exit 127，共享 node_modules 下所有 OMP 插件升级连坐。修复 = bun add -g node-gyp（13.0.2）+ 重跑 uv-bun --up，pty.node 编译产物验证，node-gyp 决策常驻。插件 registerCommand 四命令（index.ts:663/670/770/1071，0.27.21 实测行号）；/plannotator-last 命令处理链内取会话消息→自建 node:http 服务器（serverAnnotate.ts:711/1202）供打包 HTML，批注经 HTTP POST /api/approve+/api/feedback 回传，不调用 plannotator CLI（浏览器 spawn 属网络辅助层）；~/.claude/skills 同名 skill 是另一入口（bang 命令调 ~/.local/bin/plannotator，145.3 MB，--version 实测 0.27.21；skill 家族安装者未验证）。
+
+## [2026-09-27] ingest | OMP 预测引擎、pi-natives 架构与 Node-API
+- Disposition: New
+- Raw: raw/omp/2026-09-27-omp-18-3-3-predictive-text-engine.md; raw/omp/2026-09-27-omp-pi-natives-crate-inventory.md; raw/omp/2026-09-27-node-api-napi-rs-overview.md
+- 要点：18.3.3 统一输入预测引擎（spelling.autocomplete 枚举 off/auto/ngram/smollm/apple，Linux auto 走 ngram），SmolLM2-135M 按需下载（145MB GGUF Q8_0、sha256、固定 revision），预测 daemon 进程模型（TUI→broker→__omp_worker_text_predict，detached:false，idle 15min 退出，从 history.db 与 Claude/Codex 历史学习）；OMP=TS(Bun) 编排 + pi_natives 原生插件（Rust，THIRD-PARTY-NOTICES cargo-about 证据）执行，12 crate、pi-builtins 103 内建、pi-natives 28 模块、index.js 20 类导出，crate 职责多为按名推断并标注；Node-API 稳定 ABI 逐字定义与边界（限 Node.js、不跨平台），Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证，pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1；三份 raw 全部改为已直读页面（nodejs.org/api/n-api.html、napi.rs getting-started、napi.rs support-compatibility）的逐字摘录，删除搜索转述伪引文
