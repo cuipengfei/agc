@@ -55,6 +55,7 @@ providers:
   openaiWebsockets: auto
   streamFirstEventTimeoutSeconds: 150
   streamIdleTimeoutSeconds: 150
+  webSearchTimeoutSeconds: 90
   openrouterVariant: default
   fetch: auto
   cacheRetention: long
@@ -69,7 +70,7 @@ modelRoles:
   task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-5.6-luna:medium
   tiny: kimi-claw/k2d8-preview:high
-  advisor: c8787/gpt-6-luna:max
+  advisor: kimi-claw/k3-agent:high
   default: kimi-code/k3:high
   web: openai-codex/gpt-5.6-luna
   memory: c8787/gpt-5.6-luna:high
@@ -200,10 +201,10 @@ retry:
   fallbackChains:
     web:
       - web/exa
-      - web/duckduckgo
-      - web/jina
       - web/tavily
       - web/firecrawl
+      - web/duckduckgo
+      - web/jina
       - web/kimi
       - web/startpage
       - web/ecosia
@@ -212,11 +213,6 @@ retry:
       - web/public
       - web/parallel
       - web/perplexity
-      - anthropic/claude-haiku-4-5
-      - openai-codex/gpt-5.6
-      - openai-codex/gpt-5.5
-      - xai/grok-4.5
-      - xai-oauth/grok-4.5
       - web/zai
       - web/tinyfish
       - web/kagi
