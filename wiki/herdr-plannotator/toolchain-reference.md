@@ -1,7 +1,7 @@
 # Herdr + Plannotator 工具链全量 Reference
 
 > Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [插件 marketplace 复核](../../raw/herdr-plannotator/2026-09-29-herdr-plugin-marketplace-survey.md)
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md)
 > Updated: 2026-09-29
 
 ---
@@ -647,13 +647,6 @@ platforms = ["linux", "macos", "windows"]
 
 **Marketplace 机制** [文档]: GitHub topic `herdr-plugin`，索引每 30 分钟刷新，herdr.dev/plugins 浏览。
 
-### 4.4 Manifest 复核与状态漂移 [实测 2026-09-29]
-
-`AltanS/collie` 与 `ogulcancelik/herdr-browser` 2026-09-29 复核（contents API + git tree recursive）：默认分支全树无 `herdr-plugin.toml`，不满足 marketplace 收录口径。
-
-9-17 快照明确未核验 manifest（raw: 调研摘录 63-64 行）。可验证事实：复核日它们无法通过 `herdr plugin install` 安装；9-17 时 manifest 是否存在不可考。
-
----
 
 
 ## 5. `plannotator/herdr-annotate` 仓库
@@ -835,7 +828,6 @@ struct InvocationContext {
 - Google Chrome / Chromium
 - `experimental.kitty_graphics = true`（0.9.2 起被 `terminal.kitty_graphics` 取代，原键废弃）
 
-**Status: Outdated（2026-09-29）**——`ogulcancelik/herdr-browser` 默认分支 2026-09-29 复核全树无 `herdr-plugin.toml`（raw: 插件 marketplace 复核），当前不满足 marketplace 收录口径，安装命令可能失败。
 
 ### 6.3 安装 [README]
 
