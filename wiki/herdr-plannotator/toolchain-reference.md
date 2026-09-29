@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md)
-> Updated: 2026-09-27
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [插件 marketplace 复核](../../raw/herdr-plannotator/2026-09-29-herdr-plugin-marketplace-survey.md)
+> Updated: 2026-09-29
 
 ---
 
@@ -200,6 +200,37 @@
 
 **结论**：Socket API 层支持 `close_group` 参数，但 CLI 层 `--group` flag 在 0.9.1 中未正确实现为 flag（被当作 positional argument）。这是文档与实现的冲突。
 
+### 1.14 0.9.2 增量实测 [实测 2026-09-29，本机 herdr 0.9.2]
+
+以下条目基于 0.9.2 release notes 与 docs，仅本次实测过的部分标注 0.9.2；0.9.1 基线的既有结论（如 `--group` flag 冲突）未重验，保留原标注。
+
+**Breaking**: Herdr 私有 pane graphics API 删除——`pane.graphics.info` / `set` / `clear` / `stream` 返回 `unknown_method`；应用直接写标准 Kitty graphics，herdr 原生渲染（#4561）。
+
+**新增**（release notes 摘录，未逐项运行）：
+
+- agent 自报 resume 命令，server 重启后按原样重开其会话；pane 回到空闲 shell 后自报状态自动清除（#4687）
+- 多 prefix 键：`prefix = ["ctrl+space", "ctrl+s"]`，每个都进同一 prefix mode，`prefix+?` 列出全部（#4653）
+- `keys.clear_pane`：清当前 pane 屏幕与 scrollback、保留输入行；默认未绑定，不影响 Vim 等全屏应用（#4383）
+- `herdr machine status` / `machine reconnect`（终端内 SSH 认证含 MFA）；client 每 30 秒重查失败机器（#3763）
+- 恢复的 agent 逐个启动，默认间隔 100 ms，`[session] startup_per_agent_delay_ms` 可调（#4102）
+- 新 pane 设置 `TERM_PROGRAM=herdr` / `TERM_PROGRAM_VERSION`，不再继承宿主终端 session ID（#4104）
+- 保存的 layout 保留 48 份 snapshot 在 `session-snapshots/`（#4320）
+
+**placement 五种值与打开方式** [实测 2026-09-29]：
+
+| placement | 打开方式 | 行为 |
+| --- | --- | --- |
+| `split` | `pane split --direction right\|down` 或插件 pane | 标准 pane，可 move/swap/resize/zoom，参与持久化 |
+| `tab` | `prefix+c`（`keys.new_tab`） | 新开 tab，标准 pane |
+| `zoomed` | `prefix+z`（`keys.zoom`）切换现有 pane；插件 placement 打开即 zoom | 标准 pane |
+| `overlay` | 仅插件 pane 默认 placement，无用户默认键位 | 临时 zoomed 覆盖层，关闭还原焦点与 zoom |
+| `popup` | `[[keys.command]] type = "popup"` 自定义键位；socket `plugin.pane.open` | session 单例模态窗，无 pane ID，命令退出或 `popup.close` 关闭 |
+
+- popup 参数：`width`/`height` 支持格数或百分比（如 `"80%"`），默认半屏，过小钳到最小值；接收全部输入含 Escape（raw: placement/popup 实测）
+- CLI `--placement` 枚举（本机 0.9.2）为 `overlay\|split\|tab\|zoomed`，**不含 popup**；socket schema `PluginPanePlacement` 五值齐全——CLI 滞后于 socket 文档
+- 手动开 popup 走 socket JSON：`{"method":"plugin.pane.open","params":{"plugin_id":"<id>","entrypoint":"<id>","placement":"popup"}}`，前提是插件已安装启用
+- `[[keys.command]]` 三种 type：`shell`（后台）、`pane`（临时 pane）、`popup`（模态弹窗）；popup 跑固定命令，弹通用 shell 用 `command = "$SHELL"`
+
 ---
 
 ## 2. Herdr 配置项（config.toml）
@@ -242,7 +273,7 @@ onboarding = false
 | `terminal.default_shell`                           | `""`                                                     | string     | 新 pane shell；空=$SHELL→/bin/sh | 实测 |
 | `terminal.shell_mode`                              | `"auto"`                                                 | enum       | auto/login/non_login             | 实测 |
 | `terminal.new_cwd`                                 | `"follow"`                                               | enum       | follow/home/current/fixed path   | 实测 |
-| `terminal.kitty_graphics`                          | `true`                                                   | bool       | Kitty graphics 兼容              | 实测 |
+| `terminal.kitty_graphics`                          | `true`                                                   | bool       | Kitty graphics 兼容              | 实测 0.9.1 |
 | `update.channel`                                   | `"stable"`                                               | enum       | stable/preview                   | 实测 |
 | `update.version_check`                             | `true`                                                   | bool       | 后台检查更新                     | 实测 |
 | `update.manifest_check`                            | `true`                                                   | bool       | 后台检查 manifest                | 实测 |
@@ -349,6 +380,14 @@ onboarding = false
 | `experimental.cjk_ime_agents`                      | `[]`                                                     | list       | 限定 agent                       | 实测 |
 | `experimental.cjk_ime_cursor_shape`                | `"steady_block"`                                         | enum       | 光标形状                         | 实测 |
 | `advanced.scrollback_limit_bytes`                  | `10000000`                                               | int        | scrollback 限制                  | 实测 |
+| `keys.clear_pane`                                  | `""`（unbound）                                          | keybinding | 清 pane 屏幕与 scrollback，保留输入行 | 实测 0.9.2 |
+| `session.startup_per_agent_delay_ms`               | `100`                                                    | int        | 恢复 agent 逐个启动间隔          | 文档 0.9.2 |
+
+0.9.2 其他键位变化 [实测 2026-09-29]：
+
+- `keys.prefix` 支持数组（多 prefix 键）：`prefix = ["ctrl+space", "ctrl+s"]`，每个都进同一 prefix mode（#4653）
+- `[[keys.command]]` 三种 type：`shell`（后台运行）、`pane`（临时 pane，退出即关）、`popup`（会话模态弹窗）；popup 无默认键位，需自定义绑定
+
 
 ### 2.3 环境变量 [文档]
 
@@ -608,6 +647,33 @@ platforms = ["linux", "macos", "windows"]
 
 **Marketplace 机制** [文档]: GitHub topic `herdr-plugin`，索引每 30 分钟刷新，herdr.dev/plugins 浏览。
 
+### 4.4 Manifest 复核与状态漂移 [实测 2026-09-29]
+
+**方法**：topic 搜索 79 个仓库，逐个用 contents API（root）+ git tree recursive 复核默认分支是否存在 `herdr-plugin.toml`。注意 raw.githubusercontent 大小写敏感，大小写不匹配会 404，需用 contents API 复核。
+
+**与 4.3 快照的状态冲突**：
+
+- `AltanS/collie`（PWA 管理 herdr）—— 2026-09-29 复核 root 404、recursive 全树 NONE。
+- `ogulcancelik/herdr-browser`（Chromium 渲进 pane）—— 2026-09-29 复核 root 404、recursive 全树 NONE。
+
+9-17 快照明确未核验 manifest（raw: 调研摘录 63-64 行），2026-09-29 时这两仓库不满足 marketplace 收录口径。可验证事实：本次复核日它们无法通过 `herdr plugin install` 安装；9-17 时 manifest 是否存在不可考。
+
+**高 star 但复核不通过**（2026-09-29，star ≥300）：
+
+| Star | 仓库 | 描述 |
+| --- | --- | --- |
+| 3507 | `zenbu-labs/terminal-browser` | 终端浏览器，独立 TUI |
+| 2094 | `zenbu-labs/terminal-code` | 终端版 VS Code |
+| 1437 | `openclaw/crabbox` | 沙箱跑测试，CLI 工具 |
+| 1130 | `AltanS/collie` | 自托管手机终端 PWA |
+| 959 | `furkankly/zoetrope` | 会话实时流程图 |
+| 612 | `ZingerLittleBee/Heeler` | — |
+| 518 | `alexarthurs/herdr-sidebar` | VS Code 风格 sidebar |
+| 355 | `ogulcancelik/herdr-browser` | 渲染网页进 pane |
+| 346 | `eugenioenko/ttt` | TTT 编辑器 |
+
+manifest 复核通过的高 star 插件（root 有 `herdr-plugin.toml`）：`persiyanov/herdr-reviewr` 792、`smarzban/herdr-file-viewer` 612、`plannotator/herdr-annotate` 582、`eliasstravik/herdr-projects` 517、`madarco/agentbox` 499、`dcolinmorgan/herdr-remote` 394、`cloudmanic/herdr-plus` 340、`osolmaz/pi-workflows` 314、`0cv/herdr-mobile-relay` 261、`powerfooI/roamgate` 257。
+
 ---
 
 ## 5. `plannotator/herdr-annotate` 仓库
@@ -787,7 +853,9 @@ struct InvocationContext {
 - `ogulcancelik/herdr-browser`（插件 ID `official.browser`）
 - Bun
 - Google Chrome / Chromium
-- `experimental.kitty_graphics = true`
+- `experimental.kitty_graphics = true`（0.9.2 起被 `terminal.kitty_graphics` 取代，原键废弃）
+
+**Status: Outdated（2026-09-29）**——`ogulcancelik/herdr-browser` 默认分支 2026-09-29 复核全树无 `herdr-plugin.toml`（raw: 插件 marketplace 复核），当前不满足 marketplace 收录口径，安装命令可能失败。
 
 ### 6.3 安装 [README]
 

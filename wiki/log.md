@@ -831,3 +831,15 @@
 ## [2026-09-29] ingest | OpenCode V2 迁移：发布、破坏变更与本机兼容性
 - Disposition: New
 - Raw: raw/opencode/2026-09-29-opencode-v2-migrate-v1-official.md; raw/opencode/2026-09-29-opencode-v2-local-migration-audit.md
+
+## [2026-09-29] ingest | OMP Tavily 原生搜索凭证与 AuthStorage 入库
+- Disposition: Update
+- Raw: raw/omp-tips/2026-09-29-omp-web-search-tavily-source.md; raw/omp-tips/2026-09-29-tavily-auth-storage-session.md
+- 要点：`web/tavily` 不读取 `search-tavily` MCP URL 的 `tavilyApiKey`，而是通过 AuthStorage 读取 provider `tavily` 或 `TAVILY_API_KEY`；`isAvailable()` 仅在 `keys.source("tavily")` 或环境变量有值时报告可用。`omp auth-broker login tavily` 将交互输入保存到本机 `~/.omp/agent/agent.db`；2026-09-29 在本机 OMP `omp/18.4.3` 验证凭据记录存在、启用，且与 MCP URL 中的 key 相同，新进程 `AuthStorage.keys.source("tavily")` 可用。未验证 Tavily 服务端是否接受该 key、当前额度及运行中会话是否自动刷新；首次 stdin 预写出现 `Login cancelled: stdin closed`，内部原因未验证。
+- Updated: OMP web search: provider 清单、fallback 与凭证来源
+
+## [2026-09-29] ingest | Herdr 0.9.2 增量：placement/popup、graphics API 删除与插件 manifest 复核
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md; raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md; raw/herdr-plannotator/2026-09-29-herdr-plugin-marketplace-survey.md
+- 要点：0.9.2 私有 pane graphics API 删除（#4561）；agent 自报 resume（#4687）；多 prefix 键（#4653）；`keys.clear_pane`；placement 五值（overlay/popup/split/tab/zoomed）与打开方式；popup = session 单例模态窗（无 pane ID）；CLI `--placement` 枚举缺 popup 而 socket schema 齐全；`[[keys.command]]` 三 type 含 popup；manifest 复核发现 `AltanS/collie` 与 `ogulcancelik/herdr-browser` 2026-09-29 全树无 manifest，与 9-17 快照状态冲突；marketplace 高 star 仓库大量 topic 相关但不可安装。
+- Updated: Herdr + Plannotator 工具链全量 Reference
