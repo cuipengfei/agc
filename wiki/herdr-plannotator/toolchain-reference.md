@@ -649,32 +649,12 @@ platforms = ["linux", "macos", "windows"]
 
 ### 4.4 Manifest 复核与状态漂移 [实测 2026-09-29]
 
-**方法**：topic 搜索 79 个仓库，逐个用 contents API（root）+ git tree recursive 复核默认分支是否存在 `herdr-plugin.toml`。注意 raw.githubusercontent 大小写敏感，大小写不匹配会 404，需用 contents API 复核。
+`AltanS/collie` 与 `ogulcancelik/herdr-browser` 2026-09-29 复核（contents API + git tree recursive）：默认分支全树无 `herdr-plugin.toml`，不满足 marketplace 收录口径。
 
-**与 4.3 快照的状态冲突**：
-
-- `AltanS/collie`（PWA 管理 herdr）—— 2026-09-29 复核 root 404、recursive 全树 NONE。
-- `ogulcancelik/herdr-browser`（Chromium 渲进 pane）—— 2026-09-29 复核 root 404、recursive 全树 NONE。
-
-9-17 快照明确未核验 manifest（raw: 调研摘录 63-64 行），2026-09-29 时这两仓库不满足 marketplace 收录口径。可验证事实：本次复核日它们无法通过 `herdr plugin install` 安装；9-17 时 manifest 是否存在不可考。
-
-**高 star 但复核不通过**（2026-09-29，star ≥300）：
-
-| Star | 仓库 | 描述 |
-| --- | --- | --- |
-| 3507 | `zenbu-labs/terminal-browser` | 终端浏览器，独立 TUI |
-| 2094 | `zenbu-labs/terminal-code` | 终端版 VS Code |
-| 1437 | `openclaw/crabbox` | 沙箱跑测试，CLI 工具 |
-| 1130 | `AltanS/collie` | 自托管手机终端 PWA |
-| 959 | `furkankly/zoetrope` | 会话实时流程图 |
-| 612 | `ZingerLittleBee/Heeler` | — |
-| 518 | `alexarthurs/herdr-sidebar` | VS Code 风格 sidebar |
-| 355 | `ogulcancelik/herdr-browser` | 渲染网页进 pane |
-| 346 | `eugenioenko/ttt` | TTT 编辑器 |
-
-manifest 复核通过的高 star 插件（root 有 `herdr-plugin.toml`）：`persiyanov/herdr-reviewr` 792、`smarzban/herdr-file-viewer` 612、`plannotator/herdr-annotate` 582、`eliasstravik/herdr-projects` 517、`madarco/agentbox` 499、`dcolinmorgan/herdr-remote` 394、`cloudmanic/herdr-plus` 340、`osolmaz/pi-workflows` 314、`0cv/herdr-mobile-relay` 261、`powerfooI/roamgate` 257。
+9-17 快照明确未核验 manifest（raw: 调研摘录 63-64 行）。可验证事实：复核日它们无法通过 `herdr plugin install` 安装；9-17 时 manifest 是否存在不可考。
 
 ---
+
 
 ## 5. `plannotator/herdr-annotate` 仓库
 
