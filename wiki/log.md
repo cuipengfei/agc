@@ -1,9 +1,11 @@
 # Wiki Log
 
-## [2026-09-30] ingest | managed skills createIf 门槛与 Auto-Learn 注入出处
+## [2026-10-01] ingest | managed skills createIf 门槛与 Auto-Learn 注入出处
 - Disposition: Update（omp-config/managed-skills.md）
-- Raw: raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md
+- Raw: raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md; raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md
 - Wiki: Updated: wiki/omp-config/managed-skills.md
+- 备注：本条目实际操作日期为 2026-10-01，初记误标 2026-09-30；首个 raw 的 Collected 同步勘误（raw 已冻结，以更正文件并列引用）。
+
 
 ## [2026-09-27] ingest | tokscale 采集 omo native(senpi) 用量
 - Disposition: New (+ Update: omp-sessions 文章 tokscale 段标记 Outdated)

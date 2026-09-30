@@ -1,8 +1,8 @@
 # OMP Managed Skills 生命周期
 
 > Sources: OMP upstream source code
-> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md)
-> Updated: 2026-09-30
+> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md)
+> Updated: 2026-10-01
 
 ## 结论
 
