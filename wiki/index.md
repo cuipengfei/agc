@@ -56,7 +56,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [四 Agent CLI 能力面对比](ai-coding-agents/cli-capability-surface.md) | codex/opencode/omo/omp 递归 --help（179 页）九大功能域对比与结构差异 | 2026-09-05 |
 | [Codex 特性门系统与 Code Mode](ai-coding-agents/codex-feature-flags.md) | features stage×effective 正交、removed 冻结假设、Code Mode host 架构 | 2026-09-05 |
 | [Coding Agent 的短反馈闭环：逐轮 Advisor](ai-coding-agents/short-feedback-loop-advisors.md) | OMP、Pi 与 DSH 的第二模型逐轮审查和 advice 回流机制 | 2026-09-11 |
-| [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层 | 2026-09-19 |
+| [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层；补 OpenAI Decisions API 竞争动态（limited preview、端点未公开） | 2026-09-30 |
 | [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated）；Zen 模型目录 2026-09-21 实测 | 2026-09-21 |
 | [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；CodeMode 与 Codex Code Mode 同轴等价性未验证；native models.json 按 API 协议分别配置 provider（c8787/c8787-chat）、baseUrl 需带 /v1、8787 与 4140 同一网关 | 2026-09-27 |
 

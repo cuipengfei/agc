@@ -848,3 +848,8 @@
 - Disposition: New
 - Raw: raw/grok2api/2026-09-30-grok-web-fast-tool-capability-research.md; raw/grok2api/2026-09-30-grok-chat-fast-tool-loop-probe.md
 - 要点：grok2api `grok-chat-fast` 设计用途为纯对话（README 模型表 Conversation/Basic）；工具调用为提示词模拟（injectToolPrompt + `<tool_calls>` XML，三入站协议共用，无原生通道；tool_choice=required 降级为提示文本）；精简上下文实测完成真实两次文件读取的完整工具循环；完整 OMP 上下文 2 次请求中 1 次超时、唯一完整响应为 jailbreak 拒绝，判 NO_GO_FOR_CURRENT_OMP，样本不足以定性机制；残值限于纯文本低危角色（commit/title/smol），不碰工具与 memory。
+
+## [2026-09-30] ingest | Jev 在 OMP/Codex/OpenCode 的现成集成盘点
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md
+- 要点：OpenAI 于 DevDay 2026（09-29）宣布 Decisions API（limited preview，基于 Luna，用途分类/路由/行动选择，broad release 预告 coming days）；端点与 schema 未公开（官方索引、changelog、四个官方仓库、两篇溯源第三方均确认）；GitHub 出现 OpenDecisions 自建 /v1/decisions 服务（Jev 生态，形状为该项目自定）；结论：Jev 仍是唯一有可验证公开 API 的决策模型产品。

@@ -1,8 +1,8 @@
 # Jev 在 OMP、Codex、OpenCode 的现成集成盘点
 
-> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19
-> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md)
-> Updated: 2026-09-19
+> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30
+> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [openai-decisions-api-announcement](../../raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md)
+> Updated: 2026-09-30
 
 ## Overview
 
@@ -55,6 +55,13 @@
 | Netlify AI Gateway 上架 Jev | 平台托管集成，非本三宿主 |
 
 2026-09-19 渠道实测更新：上述平台托管渠道已完成七渠道全景核验（TypeSafe 直连 / OpenRouter / Vercel / Netlify / Cloudflare / OpenCode Zen / Vivgrid）——输入定价基本一致（$0.042/M，Netlify 表取整 $0.04），免费条款差异大。**两处对此文此前结论的更正**：① OpenRouter 上**没有免费 jev**（jev-1.13 $0.042/M、is_free:false、无 :free 变体；此前「新用户免费 allowance」的表述已更正为账户通用额度 ≠ 模型免费），且其 jev 挂在 /api/alpha/decisions，与 OMP 硬编码的 /v1/systemone 路径不匹配，env 无解；② 平台托管集成 ≠ 可直接给 OMP 用——OMP judgment 只认 /v1/systemone 形状，七渠道中已实测可用的仅 OpenCode Zen 一家（原生暴露 /zen/v1/systemone；jev-1.13-free 限时免费，当日真 key 撞 429 FreeUsageLimitError、匿名通道 200）。Vercel/Netlify 为文档级协议兼容（分别差 key、需先生产部署站点），Cloudflare 需翻译 shim。判定明细见 [Jev 七渠道定价与 OMP systemone 兼容性判定](jev-omp-systemone-channel-compatibility.md)。
+
+## 2026-09-30 竞争动态：OpenAI Decisions API
+
+- OpenAI 在 DevDay 2026（2026-09-29）宣布 Decisions API：官方 recap 原文称其 "focusing Luna's intelligence on a specific set of user-defined questions with finite pre-defined answers"，用途为分类、路由、选择 agent 下一步行动——与 Jev 同一产品形态。官方状态 "limited preview"，broad release "in the coming days"。HN 讨论亦将其框架为对 TypeSafe/Jev 的竞争回应。
+- 截至 2026-09-30，端点与 wire 格式未公开：官方 API reference 索引无 Decisions 条目，`resources/decisions*.md` 路径 404，changelog 无条目，openai-python / openai-node / openai-openapi / openai-cookbook 四个官方仓库均无 decisions 资源；bigchange 与 aigentlab 两篇独立溯源核查同日确认无公开 request path / schema / SDK 示例 / 定价。
+- GitHub 生态当日出现 OpenDecisions/OpenDecisions（0★，公告当天更新）：自建 `POST /v1/decisions` 服务，用开源模型在本地回答预定义选项问题，同时兼容 TypeSafe System One（`POST /v1/systemone`）；provider 路由表无 OpenAI 项，README 仅在图像输入格式处引用 OpenAI。其 `/v1/decisions` 形状属该项目自定，不构成 OpenAI 官方端点证据（推断）。
+- 含义：Decisions API 公开前，Jev 仍是唯一有可验证公开 API 的决策模型产品；上文集成盘点结论不受影响。
 
 ## 证据边界（未验证清单）
 
