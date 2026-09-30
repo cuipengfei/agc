@@ -64,6 +64,12 @@
           "name": "GPT-6 Sol",
           "contextWindow": 272000,
           "maxTokens": 16000
+        },
+        {
+          "id": "gpt-6-astra",
+          "name": "GPT-6 Astra",
+          "contextWindow": 272000,
+          "maxTokens": 16000
         }
       ]
     },
@@ -211,6 +217,23 @@
         {
           "id": "gpt-6-sol",
           "name": "GPT-6 Sol",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 272000,
+          "maxTokens": 16000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "gpt-6-astra",
+          "name": "GPT-6 Astra",
           "reasoning": true,
           "input": [
             "text",
@@ -393,6 +416,24 @@
           ],
           "contextWindow": 1050000,
           "maxTokens": 128000
+        }
+      ]
+    },
+    "grok2api": {
+      "name": "Grok2API",
+      "baseUrl": "http://127.0.0.1:8000/v1",
+      "api": "openai-completions",
+      "apiKey": "<REDACTED>",
+      "models": [
+        {
+          "id": "grok-chat-fast",
+          "name": "Grok Chat Fast",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 16000
         }
       ]
     }

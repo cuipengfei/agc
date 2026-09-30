@@ -99,6 +99,15 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
 | [三家宿主 MCP 配置、验证阶梯与凭据事故](harness-engineering/mcp-setup-validation.md) | Codex/OpenCode/OMP semgrep stdio 写法；静态解析/协议探针/真实加载三级验证各自边界；codex enabled 不代表连接、opencode list 有连接全部副作用；filterExa 设计行为；凭据暴露事故教训 | 2026-09-26 |
 
+
+## grok2api
+
+Grok 网页/Build/Console 账号的对话 API 网关；网页 Fast 的工具调用边界实测。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Grok 网页 Fast 工具调用边界](grok2api/grok-web-fast-tool-calling-limits.md) | 提示词模拟无原生通道；精简上下文实测通过完整工具循环，OMP 上下文唯一样本遭拒；NO-GO 与样本边界 | 2026-09-30 |
+
 ## mcp-servers
 
 MCP server 清单筛选、star 真实性与生态知识。

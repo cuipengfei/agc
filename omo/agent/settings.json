@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "kimi-claw",
-  "defaultModel": "k3-agent",
+  "defaultProvider": "kimi-coding",
+  "defaultModel": "k3",
   "defaultThinkingLevel": "high",
   "enabledModels": [
     "c8787/*"
@@ -27,7 +27,7 @@
     "npm:@plannotator/pi-extension"
   ],
   "changelogSeen": {
-    "omo": "5.0.1"
+    "omo": "5.1.2"
   },
   "tipsHistory": {
     "thinking-level": 1790478869655,
@@ -77,7 +77,25 @@
     "diff-command": 1790520791589,
     "todo-command": 1790520936485,
     "goal-command": 1790521008102,
-    "btw-command": 1790521216820
+    "btw-command": 1790521216820,
+    "efforts-command": 1790697695660,
+    "lookat-command": 1790697741958,
+    "mcp-command": 1790697880198,
+    "rules-command": 1790698906996,
+    "hooks-command": 1790699143027,
+    "websearch-command": 1790699160644,
+    "settings-locations": 1790699312333,
+    "permission-preset": 1790699835537,
+    "packages-setting": 1790700152203,
+    "custom-themes": 1790700293591,
+    "reload-resources": 1790700326531,
+    "project-trust": 1790700626437,
+    "tips-toggle": 1790700922397,
+    "print-mode": 1790701072487,
+    "tool-flags": 1790701261684,
+    "workflow-skills.plan": 1790701506957,
+    "workflow-skills.start-work": 1790701796220,
+    "workflow-skills.ultrawork": 1790701899838
   },
   "modelThinkingLevels": {
     "openai/gpt-6-luna-fast": "low",

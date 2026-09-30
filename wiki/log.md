@@ -843,3 +843,8 @@
 - Raw: raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md; raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md
 - 要点：0.9.2 私有 pane graphics API 删除（#4561）；agent 自报 resume（#4687）；多 prefix 键（#4653）；`keys.clear_pane`；placement 五值（overlay/popup/split/tab/zoomed）与打开方式；popup = session 单例模态窗（无 pane ID）；CLI `--placement` 枚举缺 popup 而 socket schema 齐全；`[[keys.command]]` 三 type 含 popup。
 - Updated: Herdr + Plannotator 工具链全量 Reference
+
+## [2026-09-30] ingest | Grok 网页 Fast 工具调用边界
+- Disposition: New
+- Raw: raw/grok2api/2026-09-30-grok-web-fast-tool-capability-research.md; raw/grok2api/2026-09-30-grok-chat-fast-tool-loop-probe.md
+- 要点：grok2api `grok-chat-fast` 设计用途为纯对话（README 模型表 Conversation/Basic）；工具调用为提示词模拟（injectToolPrompt + `<tool_calls>` XML，三入站协议共用，无原生通道；tool_choice=required 降级为提示文本）；精简上下文实测完成真实两次文件读取的完整工具循环；完整 OMP 上下文 2 次请求中 1 次超时、唯一完整响应为 jailbreak 拒绝，判 NO_GO_FOR_CURRENT_OMP，样本不足以定性机制；残值限于纯文本低危角色（commit/title/smol），不碰工具与 memory。

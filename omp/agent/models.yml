@@ -99,6 +99,15 @@ providers:
       - image
       contextWindow: 292000
       maxTokens: 16000
+    - id: gpt-6-astra
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-6 Astra
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 292000
+      maxTokens: 16000
   c8787-chat:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
@@ -149,6 +158,19 @@ providers:
       - image
       contextWindow: 1000000
       maxTokens: 32768
+  grok2api:
+    api: openai-completions
+    baseUrl: http://127.0.0.1:8000/v1
+    apiKey: <REDACTED>
+    models:
+    - id: grok-chat-fast
+      compactionModel: c8787/gpt-5.6-luna
+      name: Grok Chat Fast
+      reasoning: true
+      input:
+      - text
+      contextWindow: 128000
+      maxTokens: 16000
   motomoto-chat:
     api: openai-completions
     baseUrl: http://127.0.0.1:4150/v1
