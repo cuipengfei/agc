@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
 > Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md)
-> Updated: 2026-09-29
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md)
+> Updated: 2026-10-01
 
 ---
 
@@ -948,6 +948,8 @@ BROWSER_READY_MATCH_TIMEOUT_MS = 5000;
 ## 8. OMP 插件原生依赖与升级故障（2026-09-27 实测）
 
 OMP 插件 `@plannotator/pi-extension` 经 `@plannotator/webtui@0.1.0` 依赖 `node-pty@1.1.0`。node-pty 发布包不含 linux-x64 预编译产物，Linux 下安装脚本需 node-gyp 现场编译；缺失时整个共享 `~/.omp/plugins` node_modules 的安装失败（所有 OMP 插件连坐）。2026-09-27 实测：`bun add -g node-gyp` 后重跑升级即修复，`build/Release/pty.node` 生成；node-gyp 决策常驻全局。机制细节与修复流程详见 [Plannotator OMP 插件运行机制](plannotator-omp-plugin-mechanism.md)。
+
+2026-10-01 又实测到第二类安装故障：未完成的安装把 `~/.omp/plugins/node_modules/` 写成混版（部分文件新版、部分旧版），OMP 会话加载时报 `Export named 'resolveReviewProgress' not found in module ...?mtime=...`，同会话重试无效。修复 = 重跑安装写齐 + 重开会话。症状签名、时间线与取证方法详见 [pi-extension 混版故障](pi-extension-mixed-tree-failure.md)。
 
 ---
 

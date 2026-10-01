@@ -1,8 +1,8 @@
 # GPT-6 Luna 与 Sol（8787 Copilot 网关）三宿主接入记录
 
-> Sources: 本机 8787/4140 `/v1/models` 实测与三宿主配置校验, 2026-09-25; OMO native models.json 校验, 2026-09-27
-> Raw: [gpt6-three-host-config](../../raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md)
-> Updated: 2026-09-27
+> Sources: 本机 8787/4140 `/v1/models` 实测与三宿主配置校验, 2026-09-25; OMO native models.json 校验, 2026-09-27; 8787 `/v1/models` 复测, 2026-10-01
+> Raw: [gpt6-three-host-config](../../raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [8787 实测 limits 与 maxTokens 调整](../../raw/copilot-gateway/2026-10-01-v1-models-live-limits.md)
+> Updated: 2026-10-01
 
 ## 一句话
 
@@ -49,3 +49,18 @@ OpenCode 里名为 `4140` 的 provider，其 `baseURL` 指向 `http://localhost:
 ## OMO native 作为第四宿主（2026-09-27）
 
 OMO 独立版（omo-ai）的 `~/.omo/agent/models.json` 同样按 API 协议分别配置：`c8787`（openai-responses）挂含 `gpt-6-luna`、`gpt-6-sol` 的 9 个 gpt 系模型，`c8787-chat`（openai-completions）挂 gemini/kimi。分组与模型上限经真解析库校验，与 OMP、opencode 源一致。详见 [OMO 独立版模型配置](../ai-coding-agents/omo-native-vs-plugin.md)。
+
+## 网关目录复测与 OMP maxTokens 调整（2026-10-01）
+
+- `/v1/models` 响应形态已变为 `limits.{context_window, max_output, max_prompt}` 嵌套对象（09-25 抓取时是平铺的 `max_context_window` 等字段）。
+- 复测 18 个模型，gpt 系 `context_window` 均为 1050000（gpt-6 系 1000000，gpt-5.3-codex/gpt-5.4-mini 400000），`max_output` 全部 128000。与当时 OMP 配置对比：gpt-5.6-luna、gpt-6-luna 及 c8787-chat 三个模型（gemini-3.7/3.8-flash、kimi-k2.7-code）已一致；c8787 下其余 8 个模型的 contextWindow 配的是 272000/292000（与网关 `max_prompt` 或旧目录值吻合）。
+- **用户决策：只按原占比等比提升 maxTokens，contextWindow 一律不动**（"do not move context window up"、"only move output tokens up, to align percentage"）。16000 占 272000 的 5.88%、占 292000 的 5.48%，等比放大到真实窗口后取千位落入 `~/.omp/agent/models.yml`：
+
+| 模型 | contextWindow（未动） | maxTokens 原值 → 新值 |
+|---|---|---|
+| gpt-5.4 / 5.5 / 5.6-terra | 272000 | 16000 → 62000 |
+| gpt-5.6-sol / 6-astra | 292000 | 16000 → 58000 |
+| gpt-6-sol | 292000 | 16000 → 55000 |
+| gpt-5.3-codex / 5.4-mini | 272000 | 16000 → 24000 |
+
+- 注意与 [GPT-5.6 Luna 真实规格](gpt-5.6-luna-specs.md) 记录的教训（contextWindow 应配总窗口）的张力：本次为用户明确指令，阈值基数偏小是已知且接受的后果（阈值机制见 [OMP Compaction 阈值解析机制](../omp-config/compaction-threshold.md)）。

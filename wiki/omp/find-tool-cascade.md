@@ -1,8 +1,8 @@
 # OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分
 
-> Sources: 本会话源码直读（本机 @oh-my-pi/pi-coding-agent src/tools/jfind/* + @oh-my-pi/pi-ai src/judgment/typesafe.ts）, 2026-09-28
-> Raw: [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md)
-> Updated: 2026-09-28
+> Sources: 本会话源码直读（本机 @oh-my-pi/pi-coding-agent src/tools/jfind/* + @oh-my-pi/pi-ai src/judgment/typesafe.ts）, 2026-09-28; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01
+> Raw: [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md); [jevgrep-readme-and-architecture](../../raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md)
+> Updated: 2026-10-01
 
 ## Overview
 
@@ -58,11 +58,16 @@ OMP 的 `find` 工具（语义 grep）实现在 `src/tools/jfind/`，编排类 `
 
 find 的语义威力在**排序和过滤**，不在扩大初筛召回。
 
+## 与 jevgrep 的入口机制对照（2026-10-01）
+
+jevgrep（dzhng/jevgrep，独立 CLI）与 find 同属「Jev 判断 + 漏斗筛选」思路，候选产生机制不同：jevgrep 无 lexical 阶段，架构文档原文 "Hierarchical traversal uses directory metadata and content previews to decide where to explore. It does not upload the entire tree first."，靠目录级语义判断从根向下遍历，受 navigation byte budget 约束；且 "Keep files that pass relevance criteria without a fixed top-N limit."，与 find 的 CANDIDATES/FILES/FULL_LIMIT 硬名额立场相反。盲区互补：find 漏关键词不沾边的文件（召回卡在第 0 步），jevgrep 漏父目录被判负的子树（"A healthy negative file preview does not trigger an exhaustive scan of unseen source."）。jevgrep 另有声明级解析（tree-sitter 支持 Python/Go/Rust、TS compiler 支持 TS/JS）与本地答案缓存；find 的 judge 后端可回退 LLM 链，jevgrep 恒走 Jev（"Provider selection changes transport and authentication, not retrieval semantics."）。
+
 ## 证据边界
 
 - 本次 find 实际 judge 后端、model 名、各波中间 noul 值——未捕获。
 - Jev 是否有状态——无源码证据，不作断言。
 - find vs grep 为机制推断，非性能实测。
+- jevgrep 侧结论来自其 README 与架构文档，未本机安装运行、未逐行核对 retrieve.ts 源码。
 
 ## See Also
 

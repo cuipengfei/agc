@@ -1,8 +1,8 @@
 # Jev 在 OMP、Codex、OpenCode 的现成集成盘点
 
-> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30
-> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [openai-decisions-api-announcement](../../raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md)
-> Updated: 2026-09-30
+> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01
+> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [openai-decisions-api-announcement](../../raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md); [jevgrep-readme-and-architecture](../../raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md)
+> Updated: 2026-10-01
 
 ## Overview
 
@@ -63,11 +63,20 @@
 - GitHub 生态当日出现 OpenDecisions/OpenDecisions（0★，公告当天更新）：自建 `POST /v1/decisions` 服务，用开源模型在本地回答预定义选项问题，同时兼容 TypeSafe System One（`POST /v1/systemone`）；provider 路由表无 OpenAI 项，README 仅在图像输入格式处引用 OpenAI。其 `/v1/decisions` 形状属该项目自定，不构成 OpenAI 官方端点证据（推断）。
 - 含义：Decisions API 公开前，Jev 仍是唯一有可验证公开 API 的决策模型产品；上文集成盘点结论不受影响。
 
+## 2026-10-01 生态补充：jevgrep（agent 无关 CLI + skill）
+
+- 形态：独立 CLI（npm `@dzhng/jevgrep`，Node 22+，macOS/Linux，MIT，2026-10-01 抓取时 1967★），配 `jg skill` 安装器——README 原文 "The installer detects your coding agents (Claude Code, Codex, OpenCode and others) and asks where to install."。与本盘点其他条目的层次差异：它不是「宿主接 Jev」，而是把 Jev 封装成语义检索工具，再经 skill 装进宿主机。
+- 检索机制：层级语义遍历，无 lexical 关键词阶段——架构文档原文 "Hierarchical traversal uses directory metadata and content previews to decide where to explore. It does not upload the entire tree first."；不设固定 top-N；声明级解析（tree-sitter 支持 Python/Go/Rust，TS compiler 支持 TS/JS）；评估答案本地缓存。与 OMP find（jfind cascade）的入口机制对照见 [OMP find 工具的 cascade 架构](../omp/find-tool-cascade.md)。
+- provider：README 要求 "a key for Vercel AI Gateway, TypeSafe, OpenRouter, OpenCode Zen, or a custom TypeSafe-compatible endpoint"；架构文档 "Provider selection changes transport and authentication, not retrieval semantics."——其 OpenRouter 可用是靠按 provider 换传输，与 OMP 路径硬编码接不进 OpenRouter 的结论不冲突（见 [Jev 七渠道定价与 OMP systemone 兼容性判定](jev-omp-systemone-channel-compatibility.md)）。
+- 基准声明（README 自报，未独立复验）：10 个 SWE-bench 任务与无 Jev 基线均解 8 个，Sol 成本 $7.62 → $5.44（28.6%）；0.4.3 含 Jev 总成本 25.8% 更低。
+- 判定级别：README/架构文档层面，本轮未本机安装、未调用任何端点。
+
 ## 证据边界（未验证清单）
 
 - Codex/OpenCode 侧的 jev-mcp、Jevbridge、jev-router 均**未本机安装、未注册、未调用任何端点**——它们是 README/仓库层面的社区可配置方案，本 wiki 不将其表述为已验证 ready-to-use。
 - key 获取流程（console.typesafe.ai 是否即时自助或需审批）未验证。
 - mcpmarket.com 所列 "Askjev" 等 MCP registry 条目的源码仓库未核实；@thdxr 关于 opencode Jev 驱动权限插件的 X 帖线索未核实 repo。
+- jevgrep 未本机安装运行；其 README 基准声明未独立复验；`packages/core/src/retrieve.ts` 源码未逐行核对。
 - 调查范围之外一律记 "在所查范围未找到"，不作绝对断言。
 
 ## See Also
@@ -75,3 +84,4 @@
 - [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](../omp/judgment-provider-and-eval-judge.md)
 - [Jev 七渠道定价与 OMP systemone 兼容性判定](jev-omp-systemone-channel-compatibility.md)
 - [四 Agent CLI 能力面对比](cli-capability-surface.md)
+- [OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分](../omp/find-tool-cascade.md)

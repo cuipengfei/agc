@@ -860,3 +860,38 @@
 - Disposition: Update
 - Raw: raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md
 - 要点：OpenAI 于 DevDay 2026（09-29）宣布 Decisions API（limited preview，基于 Luna，用途分类/路由/行动选择，broad release 预告 coming days）；端点与 schema 未公开（官方索引、changelog、四个官方仓库、两篇溯源第三方均确认）；GitHub 出现 OpenDecisions 自建 /v1/decisions 服务（Jev 生态，形状为该项目自定）；结论：Jev 仍是唯一有可验证公开 API 的决策模型产品。
+
+## [2026-10-01] ingest | OMP Compaction 阈值解析机制
+- Disposition: New
+- Raw: raw/omp-config/2026-10-01-compaction-threshold-and-shake-mechanics.md
+- Updated: OMP Compaction Model 与 Thinking Level（See Also 互链）
+- 要点：auto-compact 阈值基数只有 contextWindow（固定值/百分比/reserve 三模式，默认 -1 走 reserve = max(15%, 16384)）；模型 maxTokens 不参与阈值，只做摘要自身输出预算（min(0.8×reserve, 16384)）；thresholdPercent 默认 85 的旧记录已被 -1 取代（源码树 HEAD 73a11421fe，v18.2.11-58）。
+
+## [2026-10-01] ingest | OMP Shake 机制
+- Disposition: New
+- Raw: raw/omp-config/2026-10-01-compaction-threshold-and-shake-mechanics.md
+- Updated: OMP 内置 slash 命令全表（/shake 行互链）
+- 要点：shake 无 LLM 裁剪 tool result 与消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档（#7776）；useless 结果豁免保护窗；toolCall 不碰；protectTokens 16000 经 git 历史核实与模型输出上限无关（引入提交 417a1a1d32 无取值理由记录）。
+
+## [2026-10-01] ingest | GPT-6 Luna 与 Sol 三宿主接入记录
+- Disposition: Update
+- Raw: raw/copilot-gateway/2026-10-01-v1-models-live-limits.md
+- 要点：8787 /v1/models 响应形态变为 limits 嵌套对象；gpt 系 context_window 1050000/max_output 128000；c8787 下 8 模型配置值与网关不一致；用户决策只按原占比等比提升 maxTokens（16000→62000/58000/55000/24000），contextWindow 一律不动，已落来源并 pull 入库（diff 验证 8 处 maxTokens、0 处 contextWindow）。
+
+## [2026-10-01] ingest | Plannotator pi-extension 混版故障
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md; raw/herdr-plannotator/2026-10-01-release-notes-0.27.15-0.27.24.md
+- Updated: Herdr + Plannotator 工具链全量 Reference（第 8 节补第二类安装故障）
+- 要点：Export named resolveReviewProgress not found + ?mtime= 报错根因为混版 node_modules（npm pack 证实 0.27.22/0.27.23/0.27.24 各自自洽；resolveReviewProgress 由 0.27.23 viewed-progress 功能引入）；?mtime= tag 是加载时刻墙钟（legacy-pi-compat.ts:2099-2104）；用户 uv-bun --up 于 11:37:51 触发、11:42:13-16 0.27.24 写齐修复；混版制造者不可再证实，最可能为 11:29 被中断的裸 bun update --latest（推断）；修复 = 重装 + 重开会话；10 个 release notes 归纳五条线（review 持久化/annotate/图示/宿主兼容/性能）。
+
+## [2026-10-01] ingest | OMP Snapcompact 机制
+- Disposition: New
+- Raw: raw/omp-config/2026-10-01-snapcompact-mechanics-forensics.md; raw/omp-config/2026-10-01-snapcompact-activeness-adoption.md
+- Updated: OMP 内置 slash 命令全表（/compact 行互链）、OMP Compaction Model 与 Thinking Level（See Also）、OMP 配置语义手册（See Also）
+- 要点：snapcompact 把被裁历史渲染成 PNG 位图帧归档（无 LLM；帧挂 preserveData.snapcompact 每轮重挂）；帧按面积计费（Gemini 每图固定 1120 token、Anthropic 28px patch、OpenAI 需 detail:"original"），同信息更少 token；帧预算表（未知 provider 兜底 5，无 env/配置键可改）；methodOrder 为有序偏好链 + 运行时兜底；包 2026-06-10 创建、26 版到 18.2.9、活跃打磨期，issue 流 7 月至 9 月连续、默认 methodOrder 第二位结构性采用；我们 methodOrder [shake, soft] 不含它，c8787 显式 compat.supportsImageDetailOriginal: false → OMP 侧即降级 auto（5 帧上限 + 可读性降质双重折扣），启用前先跟踪 #13393/#8792/#12854；本地 clone git log tail/--reverse 存在排序假象，创建时间以 --diff-filter=A 为准。
+
+## [2026-10-01] ingest | jevgrep 取证与三篇级联更新
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md
+- Updated: OMP find 工具的 cascade 架构（新增与 jevgrep 入口机制对照节）; Jev 在 OMP、Codex、OpenCode 的现成集成盘点（新增 2026-10-01 生态补充节）; Jev 七渠道定价与 OMP systemone 兼容性判定（新增 jevgrep provider 实践旁证节）
+- 要点：jevgrep（dzhng/jevgrep，npm @dzhng/jevgrep，抓取时 1967★）是 agent 无关的 Jev 语义检索 CLI + skill（安装器检测 Claude Code/Codex/OpenCode）；候选产生为层级语义遍历（无 lexical 阶段、无固定 top-N、navigation byte budget、声明级解析、本地缓存），与 OMP find 的关键词 grep 粗筛入口互补盲区；provider 含 Vercel/TypeSafe/OpenRouter/Zen/自定义端点，按 provider 换传输；README 基准自报 8/10 任务、Sol 成本 28.6% 降幅（未独立复验）；全部结论为 README/架构文档层面，未本机安装运行。

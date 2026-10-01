@@ -31,3 +31,8 @@
 ## 没有独立配置
 
 不存在 `compactionModel: provider/model:high` 这种写法。compact 的 effort 不来自 `compactionModel` 字符串。
+
+## See Also
+
+- [OMP Compaction 阈值解析机制](compaction-threshold.md) — 何时触发压缩；contextWindow 是唯一基数，maxTokens 不参与
+- [OMP Snapcompact 机制](snapcompact-mechanics.md) — 无 LLM 的位图帧归档方法

@@ -56,8 +56,8 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [四 Agent CLI 能力面对比](ai-coding-agents/cli-capability-surface.md) | codex/opencode/omo/omp 递归 --help（179 页）九大功能域对比与结构差异 | 2026-09-05 |
 | [Codex 特性门系统与 Code Mode](ai-coding-agents/codex-feature-flags.md) | features stage×effective 正交、removed 冻结假设、Code Mode host 架构 | 2026-09-05 |
 | [Coding Agent 的短反馈闭环：逐轮 Advisor](ai-coding-agents/short-feedback-loop-advisors.md) | OMP、Pi 与 DSH 的第二模型逐轮审查和 advice 回流机制 | 2026-09-11 |
-| [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层；补 OpenAI Decisions API 竞争动态（limited preview、端点未公开） | 2026-09-30 |
-| [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated）；Zen 模型目录 2026-09-21 实测 | 2026-09-21 |
+| [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层；补 OpenAI Decisions API 竞争动态（limited preview、端点未公开）；补 jevgrep（agent 无关 CLI + skill，README 层面未运行） | 2026-10-01 |
+| [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated）；Zen 模型目录 2026-09-21 实测；补 jevgrep provider 实践旁证（Vercel 存量默认通道） | 2026-10-01 |
 | [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；CodeMode 与 Codex Code Mode 同轴等价性未验证；native models.json 按 API 协议分别配置 provider（c8787/c8787-chat）、baseUrl 需带 /v1、8787 与 4140 同一网关 | 2026-09-27 |
 
 ## better-harness
@@ -75,7 +75,7 @@ Better Harness 的工作流审计模型与适用边界。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [GPT-5.6 Luna 真实规格](copilot-gateway/gpt-5.6-luna-specs.md) | 窗口 1050000（922000 prompt + 128000 output）、o200k_base、仅 /responses 端点、一个窗口两个计费档；OMP contextWindow 配总窗口的教训 | 2026-09-06 |
-| [GPT-6 Luna 与 Sol 三宿主接入记录](copilot-gateway/gpt-6-luna-sol-config.md) | 8787/4140 模型目录一致；Codex/OpenCode/OMP 数值、Responses-only、模板与解析校验、两模型冒烟 200；OpenCode provider 名 4140 实指 8787；OMO native 作为第四宿主 | 2026-09-27 |
+| [GPT-6 Luna 与 Sol 三宿主接入记录](copilot-gateway/gpt-6-luna-sol-config.md) | 8787/4140 模型目录一致；Codex/OpenCode/OMP 数值、Responses-only、模板与解析校验、两模型冒烟 200；OpenCode provider 名 4140 实指 8787；OMO native 作为第四宿主；2026-10-01 复测 limits 嵌套形态与 c8787 家族 8 模型 maxTokens 等比提升（contextWindow 不动的用户决策） | 2026-10-01 |
 
 
 ## responses-api
@@ -152,6 +152,8 @@ OMP 配置项的源码级行为边界。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Compaction Model 与 Thinking Level](omp-config/compaction-model.md) | compactionModel 只换压的人，thinking effort 继承自 session thinkingLevel | 2026-09-09 |
+| [OMP Compaction 阈值解析机制](omp-config/compaction-threshold.md) | 阈值基数只有 contextWindow（固定值/百分比/reserve 三模式，默认 -1 走 reserve = max(15%, 16384)）；maxTokens 不参与阈值，只做摘要输出预算 | 2026-10-01 |
+| [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处 | 2026-10-01 |
 | [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive | 2026-09-29 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
@@ -250,6 +252,7 @@ OMP 内置 slash 命令的全量枚举与逐命令机制。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 内置 slash 命令全表（82 条）](omp-slash-commands/builtin-slash-commands.md) | core registry 79 条 + bundled /green /review + SDK /autoresearch；六类分组的机制、场景、收益与 ACP 可用性 | 2026-09-06 |
+| [OMP Shake 机制](omp-slash-commands/shake-mechanics.md) | 无 LLM 外科裁剪：tool result + 消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档、useless 豁免、toolCall 不碰、artifact 占位符可回收 | 2026-10-01 |
 
 ## omp-ttsr
 
@@ -326,8 +329,9 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制 | 2026-09-29 |
+| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类 | 2026-10-01 |
 | [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-09-27 |
+| [Plannotator pi-extension 混版故障](herdr-plannotator/pi-extension-mixed-tree-failure.md) | Export named not found + ?mtime= 症状签名；根因为未完成安装写成的混版目录 + 进程内失败图谱缓存；修复 = 重装写齐 + 重开会话；npm pack 版本自洽取证法 | 2026-10-01 |
 
 ## omp
 
@@ -341,7 +345,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，以及输�
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |
 | [OMP predictive text engine](omp/predictive-text-engine.md) | 18.3.3 引入统一输入预测引擎：spelling.autocomplete 枚举（off/auto/ngram/smollm/apple）、Linux auto 走 ngram、幽灵文字 Tab/→ 接受；SmolLM2-135M 按需下载（145MB GGUF Q8_0、sha256）；预测 daemon 进程模型（broker spawn、detached:false、idle 15min 退出、从 history.db 与 Claude/Codex 历史学习）；autocompleteMaxVisible 是下拉列表非幽灵文字 | 2026-09-27 |
 | [OMP Rust/TS architecture and pi-natives](omp/rust-ts-architecture.md) | TS(Bun) 编排 + pi_natives 原生插件（Rust，cargo-about 证据）执行；12 个 crate 清单、pi-builtins 103 内建命令、pi-natives 28 模块、index.js 20 类导出；职责多为按名推断并标注 | 2026-09-27 |
-| [OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分](omp/find-tool-cascade.md) | jfind 固定四阶段（lexical + 文件名/草图/完整验证三波）、native grep + idf 加权粗筛（带超时、跳超大文件、不保证穷尽）、波间筛选常量（CANDIDATES=128/FILES=20/CUTOFF=0.45/THRESHOLD=0.2）、走注入的通用 judge 接口且请求无 wave 字段、实际后端未验证、find vs grep 适用性为机制推断 | 2026-09-28 |
+| [OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分](omp/find-tool-cascade.md) | jfind 固定四阶段（lexical + 文件名/草图/完整验证三波）、native grep + idf 加权粗筛（带超时、跳超大文件、不保证穷尽）、波间筛选常量（CANDIDATES=128/FILES=20/CUTOFF=0.45/THRESHOLD=0.2）、走注入的通用 judge 接口且请求无 wave 字段、实际后端未验证、find vs grep 适用性为机制推断；补与 jevgrep 入口机制对照 | 2026-10-01 |
 | [Node-API and napi-rs in OMP](omp/napi-node-api.md) | Node-API（原 N-API）稳定 ABI 逐字定义与边界（限 Node.js、不跨平台）；Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证；napi-rs 构建链（Rust 1.88+、#[napi]、平台分包）；pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1 证据 | 2026-09-27 |
 
 ## tokscale

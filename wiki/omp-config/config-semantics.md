@@ -111,5 +111,7 @@
 ## See Also
 
 - [OMP Compaction Model 与 Thinking Level](compaction-model.md) — compaction effort 继承自 session thinkingLevel
+- [OMP Compaction 阈值解析机制](compaction-threshold.md) — 阈值三模式与 reserve 公式；contextWindow 是唯一基数
+- [OMP Snapcompact 机制](snapcompact-mechanics.md) — 位图帧归档：帧预算、methodOrder 语义、detail:"original" 链
 - [OMP 实验性上下文管理与 OpenCode DCP 对比](experimental-context-vs-dcp.md) — rollover/notes 机制与 DCP outbound transform 的对比
 - [OMP 运行时控制](runtime-controls.md) — steering / follow-up / interrupt 与 parse regression tooling

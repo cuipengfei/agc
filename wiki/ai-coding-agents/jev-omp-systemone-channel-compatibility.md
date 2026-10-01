@@ -1,8 +1,8 @@
 # Jev 七渠道定价与 OMP systemone 兼容性判定
 
-> Sources: 本会话实测（zen/OpenRouter 探针 probe4/probe5、/tmp/or-jev2.json API 响应）, 2026-09-19; 本会话取证（typesafe.ai / opencode.ai / vercel.com / netlify.com / developers.cloudflare.com / openrouter.ai / models.dev 逐字抓取复验）, 2026-09-19; 本会话只读核查（本机凭据存在性）, 2026-09-19; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21
-> Raw: [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [Zen jevify typesafe](../../raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md)
-> Updated: 2026-09-21
+> Sources: 本会话实测（zen/OpenRouter 探针 probe4/probe5、/tmp/or-jev2.json API 响应）, 2026-09-19; 本会话取证（typesafe.ai / opencode.ai / vercel.com / netlify.com / developers.cloudflare.com / openrouter.ai / models.dev 逐字抓取复验）, 2026-09-19; 本会话只读核查（本机凭据存在性）, 2026-09-19; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01
+> Raw: [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [Zen jevify typesafe](../../raw/ai-coding-agents/2026-09-21-zen-jevify-typesafe.md); [jevgrep-readme-and-architecture](../../raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md)
+> Updated: 2026-10-01
 
 ## Overview
 
@@ -81,6 +81,10 @@ HTTP 400 "Model is unavailable."
 2. Vercel（协议兼容、差 key）与 Netlify（协议兼容、需部署站点激活）是文档级候选，本机均未实测；Vercel 促销 $0 价 2026-09-25 截止。
 3. OpenRouter 与 Cloudflare 都需要 shim 或上游改动，env 层面无解。
 4. 各渠道输入定价基本一致（$0.042/M，Netlify 表取整 $0.04），选渠道不该看价格，该看免费条款与 OMP 路径兼容性。
+
+## 2026-10-01 旁证：jevgrep 的 provider 实践
+
+独立检索 CLI jevgrep（dzhng/jevgrep）README 要求 "a key for Vercel AI Gateway, TypeSafe, OpenRouter, OpenCode Zen, or a custom TypeSafe-compatible endpoint"，且 "Existing saved keys without a provider remain Vercel keys."——Vercel 是其存量默认通道并实际运作，旁证全景表 Vercel 行「协议兼容」判定（README 层面，级别低于实测 POST）。其 OpenRouter 支持依赖按 provider 切换传输（架构文档："Provider selection changes transport and authentication, not retrieval semantics."），不改变本文结论：OMP 的 /v1/systemone 路径硬编码在 OpenRouter 上 env 无解。
 
 ## 证据边界
 
