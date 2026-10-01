@@ -26,7 +26,7 @@ providers:
       - text
       - image
       contextWindow: 272000
-      maxTokens: 16000
+      maxTokens: 62000
     - id: gpt-5.5
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-5.5
@@ -35,7 +35,7 @@ providers:
       - text
       - image
       contextWindow: 272000
-      maxTokens: 16000
+      maxTokens: 62000
     - id: gpt-5.3-codex
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-5.3 Codex
@@ -44,7 +44,7 @@ providers:
       - text
       - image
       contextWindow: 272000
-      maxTokens: 16000
+      maxTokens: 24000
     - id: gpt-5.4-mini
       compactionModel: c8787/gpt-5.6-luna
       name: gpt-5.4-mini
@@ -53,7 +53,7 @@ providers:
       - text
       - image
       contextWindow: 272000
-      maxTokens: 16000
+      maxTokens: 24000
     - id: gpt-5.6-sol
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-5.6 Sol
@@ -62,7 +62,7 @@ providers:
       - text
       - image
       contextWindow: 292000
-      maxTokens: 16000
+      maxTokens: 58000
     - id: gpt-5.6-terra
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-5.6 Terra
@@ -71,7 +71,7 @@ providers:
       - text
       - image
       contextWindow: 272000
-      maxTokens: 16000
+      maxTokens: 62000
     - id: gpt-5.6-luna
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-5.6 Luna
@@ -98,7 +98,7 @@ providers:
       - text
       - image
       contextWindow: 292000
-      maxTokens: 16000
+      maxTokens: 55000
     - id: gpt-6-astra
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-6 Astra
@@ -107,7 +107,7 @@ providers:
       - text
       - image
       contextWindow: 292000
-      maxTokens: 16000
+      maxTokens: 58000
   c8787-chat:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>
