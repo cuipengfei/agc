@@ -1,0 +1,7 @@
+[tool]
+requirements = [{ name = "httpie" }]
+entrypoints = [
+    { name = "http", install-path = "/home/cpf/.local/bin/http", from = "httpie" },
+    { name = "httpie", install-path = "/home/cpf/.local/bin/httpie", from = "httpie" },
+    { name = "https", install-path = "/home/cpf/.local/bin/https", from = "httpie" },
+]

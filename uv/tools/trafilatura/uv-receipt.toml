@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "trafilatura" }]
+entrypoints = [
+    { name = "trafilatura", install-path = "/home/cpf/.local/bin/trafilatura", from = "trafilatura" },
+]

@@ -1,0 +1,8 @@
+[tool]
+requirements = [
+    { name = "ddgs", extras = ["api", "mcp"] },
+    { name = "mcp", specifier = "<2" },
+]
+entrypoints = [
+    { name = "ddgs", install-path = "/home/cpf/.local/bin/ddgs", from = "ddgs" },
+]

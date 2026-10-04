@@ -1,0 +1,7 @@
+[tool]
+requirements = [{ name = "serena-agent", git = "https://github.com/oraios/serena" }]
+entrypoints = [
+    { name = "serena", install-path = "/home/cpf/.local/bin/serena", from = "serena-agent" },
+    { name = "serena-agent", install-path = "/home/cpf/.local/bin/serena-agent", from = "serena-agent" },
+    { name = "serena-hooks", install-path = "/home/cpf/.local/bin/serena-hooks", from = "serena-agent" },
+]

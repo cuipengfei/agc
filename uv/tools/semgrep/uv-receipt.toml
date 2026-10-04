@@ -1,0 +1,6 @@
+[tool]
+requirements = [{ name = "semgrep" }]
+entrypoints = [
+    { name = "pysemgrep", install-path = "/home/cpf/.local/bin/pysemgrep", from = "semgrep" },
+    { name = "semgrep", install-path = "/home/cpf/.local/bin/semgrep", from = "semgrep" },
+]

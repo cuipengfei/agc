@@ -1,0 +1,7 @@
+[tool]
+requirements = [{ name = "litellm", extras = ["proxy", "extra-proxy", "proxy-runtime"] }]
+entrypoints = [
+    { name = "lite", install-path = "/home/cpf/.local/bin/lite", from = "litellm" },
+    { name = "litellm", install-path = "/home/cpf/.local/bin/litellm", from = "litellm" },
+    { name = "litellm-proxy", install-path = "/home/cpf/.local/bin/litellm-proxy", from = "litellm" },
+]

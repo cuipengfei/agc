@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "python-lsp-server" }]
+entrypoints = [
+    { name = "pylsp", install-path = "/home/cpf/.local/bin/pylsp", from = "python-lsp-server" },
+]

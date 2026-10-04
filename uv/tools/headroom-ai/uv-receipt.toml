@@ -1,0 +1,7 @@
+[tool]
+requirements = [{ name = "headroom-ai", extras = ["proxy", "mcp", "code", "html", "relevance"] }]
+python = "3.13"
+entrypoints = [
+    { name = "headroom", install-path = "/home/cpf/.local/bin/headroom", from = "headroom-ai" },
+    { name = "headroom-cache-ttl", install-path = "/home/cpf/.local/bin/headroom-cache-ttl", from = "headroom-ai" },
+]

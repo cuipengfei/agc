@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "pipx" }]
+entrypoints = [
+    { name = "pipx", install-path = "/home/cpf/.local/bin/pipx", from = "pipx" },
+]

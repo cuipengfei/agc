@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "book-to-skill", git = "https://github.com/virgiliojr94/book-to-skill.git" }]
+entrypoints = [
+    { name = "book-to-skill", install-path = "/home/cpf/.local/bin/book-to-skill", from = "book-to-skill" },
+]

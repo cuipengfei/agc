@@ -1,0 +1,7 @@
+[tool]
+requirements = [{ name = "graphifyy", extras = ["svg", "leiden", "mcp", "sql", "postgres", "chinese"] }]
+python = "3.12"
+entrypoints = [
+    { name = "graphify", install-path = "/home/cpf/.local/bin/graphify", from = "graphifyy" },
+    { name = "graphify-mcp", install-path = "/home/cpf/.local/bin/graphify-mcp", from = "graphifyy" },
+]

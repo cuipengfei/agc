@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "oxylabs-mcp" }]
+entrypoints = [
+    { name = "oxylabs-mcp", install-path = "/home/cpf/.local/bin/oxylabs-mcp", from = "oxylabs-mcp" },
+]
