@@ -900,3 +900,9 @@
 - Disposition: New
 - Raw: raw/geekbang-agent-harness/2026-09-30-course-concepts.md
 - 要点：徐昊《Agent 驾驭工程之美》课程框架入库——双层循环（外层 PDCA + 内层操控循环）、四子系统（指令/工具/环境/状态）、操控循环四步（Guides/Action/Sensors/Steer）；自我纠正机制就是 ReAct 观察到了错误，无额外机器；edge 是窗口截断边界（中间旧对话被驱逐，system prompt 固定）；Böckeler 把修正指引嵌入 sensor 输出，融合前馈内容与反馈通道；feedforward 术语起源于 I. A. Richards 1951 年 Macy 控制论会议，后传入 control theory；课程概念归于「前同事 Martin Fowler」，公开文字作者实为 Böckeler。
+
+## [2026-10-04] ingest | 用控制论评估 Agent 系统
+- Disposition: New; Update
+- Raw: raw/harness-engineering/2026-10-02-bolu-ai-agent-control-system.md; raw/harness-engineering/2026-10-03-zhihu-ai-agent-harness-engineering.md; raw/harness-engineering/2026-10-03-juejin-harness-engineering-cybernetics.md; raw/harness-engineering/2026-10-03-csdn-harness-engineering-cybernetics.md; raw/harness-engineering/2026-10-03-cnblogs-harness-engineering-openai.md; raw/harness-engineering/2026-10-03-openai-harness-engineering.md; raw/harness-engineering/2026-10-03-george-zhang-harness-engineering-cybernetics.md
+- Updated: 双层循环操控模型（See Also 互链）
+- 要点：Harness Engineering × 控制论七来源入库——OpenAI 原文（5 个月约百万行、约 1,500 PR、3→7 人、人均 3.5 PR/天、0 行手写、约 1/10 时间）；知乎 Rocky Ding（Outcome=F(M,H,E,T)、model–harness pair、三支柱：评估闭环 42%→95% / 架构约束 52.8%→66.5% / 记忆治理 3 行≈200 行）；掘金铁锤001（组件映射、振荡/发散/滞后三稳定性问题、反馈四原则、三层控制架构）；CSDN 邬俊杰（可能性空间 M→m、自繁殖、共轭控制 L-1AL、业务相关/无关传感器）；bolu.dev（Agent=控制器+世界模型+执行器、MPC/退避视界、收敛/振荡/发散、deadband/hysteresis/anti-windup、评估轨迹非端点）；George Zhang（瓦特调速器 1780s→Kubernetes 2014→Harness 2026 三次模式、生成-验证不对称、Agents don't learn through osmosis）；博客园 warm3snow（五大实践拆解、约 100 行 AGENTS.md 目录、渐进式披露、单任务超 6 小时、等待成本高于纠错成本）。

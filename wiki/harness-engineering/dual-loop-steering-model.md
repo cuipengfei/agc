@@ -2,7 +2,7 @@
 
 > Sources: 徐昊（极客时间《Agent 驾驭工程之美》），2026-09; Birgitta Böckeler（martinfowler.com），2026-04-02
 > Raw: [课程核心概念摘录](../../raw/geekbang-agent-harness/2026-09-30-course-concepts.md)
-> Updated: 2026-10-02
+> Updated: 2026-10-04
 
 ## Overview
 
@@ -64,3 +64,4 @@ Cybernetics（控制论）是 Wiener 1948 年创立的跨学科领域，研究�
 
 - [Harness 格式与上下文载体](harness-formats-and-context-carriers.md) — 编辑格式与上下文载体的具体机制
 - [Claude Code 上下文与 Compaction](claude-code-context-and-compaction.md) — 上下文截断与压缩的具体实现
+- [用控制论评估 Agent 系统](evaluating-agent-systems-with-cybernetics.md) — 控制论四组检查清单、OpenAI 实践对应与七篇资源地图
