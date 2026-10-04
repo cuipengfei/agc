@@ -66,15 +66,15 @@ modelRoleStorage: global
 modelRoles:
   plan: kimi-code/k3:high
   slow: kimi-claw/k3-agent:xhigh
-  commit: c8787/gpt-5.6-luna:medium
+  commit: c8787/gpt-6-luna:high
   smol: kimi-claw/k2d8-preview:high
   task: kimi-claw/k3-agent:medium
-  vision: c8787/gpt-5.6-luna:medium
+  vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
-  advisor: justwoker/claude-opus-4-8:high
+  advisor: sensenova/glm-5.2:high
   default: kimi-code/k3:high
-  web: openai-codex/gpt-5.6-luna
-  memory: c8787/gpt-5.6-luna:high
+  web: c8787/gpt-6-luna:high
+  memory: c8787/gpt-6-luna:max
   judge: typesafe-zen/jev-1.13
 modelTags:
   {}
