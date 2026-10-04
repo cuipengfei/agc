@@ -895,3 +895,8 @@
 - Raw: raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md
 - Updated: OMP find 工具的 cascade 架构（新增与 jevgrep 入口机制对照节）; Jev 在 OMP、Codex、OpenCode 的现成集成盘点（新增 2026-10-01 生态补充节）; Jev 七渠道定价与 OMP systemone 兼容性判定（新增 jevgrep provider 实践旁证节）
 - 要点：jevgrep（dzhng/jevgrep，npm @dzhng/jevgrep，抓取时 1967★）是 agent 无关的 Jev 语义检索 CLI + skill（安装器检测 Claude Code/Codex/OpenCode）；候选产生为层级语义遍历（无 lexical 阶段、无固定 top-N、navigation byte budget、声明级解析、本地缓存），与 OMP find 的关键词 grep 粗筛入口互补盲区；provider 含 Vercel/TypeSafe/OpenRouter/Zen/自定义端点，按 provider 换传输；README 基准自报 8/10 任务、Sol 成本 28.6% 降幅（未独立复验）；全部结论为 README/架构文档层面，未本机安装运行。
+
+## [2026-10-02] ingest | 双层循环操控模型
+- Disposition: New
+- Raw: raw/geekbang-agent-harness/2026-09-30-course-concepts.md
+- 要点：徐昊《Agent 驾驭工程之美》课程框架入库——双层循环（外层 PDCA + 内层操控循环）、四子系统（指令/工具/环境/状态）、操控循环四步（Guides/Action/Sensors/Steer）；自我纠正机制就是 ReAct 观察到了错误，无额外机器；edge 是窗口截断边界（中间旧对话被驱逐，system prompt 固定）；Böckeler 把修正指引嵌入 sensor 输出，融合前馈内容与反馈通道；feedforward 术语起源于 I. A. Richards 1951 年 Macy 控制论会议，后传入 control theory；课程概念归于「前同事 Martin Fowler」，公开文字作者实为 Böckeler。
