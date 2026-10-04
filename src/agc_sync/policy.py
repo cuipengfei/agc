@@ -44,6 +44,9 @@ SECRET_LITERAL = re.compile(
     r"-----BEGIN .*PRIVATE KEY-----)",
     re.IGNORECASE,
 )
+URL_CREDENTIAL = re.compile(
+    r"(?P<prefix>[A-Za-z][A-Za-z0-9+.-]*://)[^/\s:@\"']+:[^/\s@\"']+@"
+)
 REDACTED = "<REDACTED>"
 EXCLUDED_USER_PATH = re.compile(
     r"(?P<prefix>(?:/|~/)[^\"'\s]*/umans-status\.ts)"
@@ -164,5 +167,11 @@ def redact(text: str) -> tuple[str, int]:
         if matches:
             body = SECRET_LITERAL.sub(REDACTED, body)
             literal_count += len(matches)
+        url_matches = list(URL_CREDENTIAL.finditer(body))
+        if url_matches:
+            body = URL_CREDENTIAL.sub(
+                lambda match: match.group("prefix") + REDACTED + "@", body
+            )
+            literal_count += len(url_matches)
         redacted_lines.append(body + newline)
     return "".join(redacted_lines), count + literal_count

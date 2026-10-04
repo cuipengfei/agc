@@ -37,6 +37,7 @@ class Entry:
     protected: bool
     directory: bool
     excluded: frozenset[str]
+    included: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -60,6 +61,7 @@ def load_entries() -> list[Entry]:
                 protected=bool(raw.get("protected", False)),
                 directory=bool(raw.get("directory", False)),
                 excluded=frozenset(raw.get("exclude", [])),
+                included=tuple(raw.get("include", [])),
             )
         )
     return entries
@@ -80,6 +82,24 @@ def _iter_files(entry: Entry, source: Path, destination: Path) -> Iterable[FileP
         # consumers report `missing` like single-file entries. Returning nothing
         # made pull/status/diff print a clean success for a vanished source.
         yield FilePair(source, destination)
+        return
+    if entry.included:
+        # Glob patterns drive the walk directly so a shallow pattern like
+        # */uv-receipt.toml never descends into tool venvs.
+        seen: set[Path] = set()
+        for pattern in entry.included:
+            for path in sorted(source.glob(pattern)):
+                relative = path.relative_to(source)
+                if (
+                    path in seen
+                    or not path.is_file()
+                    or path.is_symlink()
+                    or is_ignored(path)
+                    or relative.as_posix() in entry.excluded
+                ):
+                    continue
+                seen.add(path)
+                yield FilePair(path, destination / relative)
         return
     for path in sorted(source.rglob("*")):
         relative = path.relative_to(source)

@@ -190,6 +190,65 @@ class SyncTests(unittest.TestCase):
 
             self.assertIn("missing", output.getvalue())
 
+    def test_pull_redacts_url_embedded_credential(self):
+        source = 'index-url = "https://user:real-secret@example.com/simple"\n'
+
+        output, count = redact(source)
+
+        self.assertNotIn("real-secret", output)
+        self.assertIn("https://<REDACTED>@example.com/simple", output)
+        self.assertGreaterEqual(count, 1)
+
+    def test_manifest_include_collects_matching_files_only(self):
+        from src.agc_sync.manifest import iter_pull_files
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "tools"
+            receipt = source / "semgrep" / "uv-receipt.toml"
+            receipt.parent.mkdir(parents=True)
+            receipt.write_text("[tool]\n", encoding="utf-8")
+            (source / "semgrep" / "pyvenv.cfg").write_text("", encoding="utf-8")
+            entry = Entry("test", source, root / "repo", False, True, frozenset(), ("*/uv-receipt.toml",))
+
+            pairs = list(iter_pull_files(entry))
+
+            self.assertEqual([pair.source for pair in pairs], [receipt])
+            self.assertEqual(pairs[0].destination, root / "repo" / "semgrep" / "uv-receipt.toml")
+
+    def test_manifest_include_does_not_descend_into_tool_venvs(self):
+        from src.agc_sync.manifest import iter_pull_files
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "tools"
+            deep = source / "semgrep" / "lib" / "python3" / "uv-receipt.toml"
+            deep.parent.mkdir(parents=True)
+            deep.write_text("[tool]\n", encoding="utf-8")
+            entry = Entry("test", source, root / "repo", False, True, frozenset(), ("*/uv-receipt.toml",))
+
+            pairs = list(iter_pull_files(entry))
+
+            self.assertEqual(pairs, [])
+
+    def test_manifest_include_respects_exclude(self):
+        from src.agc_sync.manifest import iter_pull_files
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "tools"
+            kept = source / "semgrep" / "uv-receipt.toml"
+            dropped = source / "ddgs" / "uv-receipt.toml"
+            kept.parent.mkdir(parents=True)
+            dropped.parent.mkdir(parents=True)
+            kept.write_text("[tool]\n", encoding="utf-8")
+            dropped.write_text("[tool]\n", encoding="utf-8")
+            entry = Entry("test", source, root / "repo", False, True, frozenset({"ddgs/uv-receipt.toml"}), ("*/uv-receipt.toml",))
+
+            pairs = list(iter_pull_files(entry))
+
+            self.assertEqual([pair.source for pair in pairs], [kept])
+
 
 if __name__ == "__main__":
     unittest.main()

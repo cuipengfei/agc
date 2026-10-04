@@ -226,6 +226,24 @@
       "name": "dsh-web-pnpm-workspace",
       "source": "~/.dsh/profiles/web/pnpm-workspace.yaml",
       "repo": "dsh/profiles/web/pnpm-workspace.yaml"
+    },
+    {
+      "name": "agents-skill-lock",
+      "source": "~/.agents/.skill-lock.json",
+      "repo": "agents/skill-lock.json"
+    },
+    {
+      "name": "bun-global-packages",
+      "source": "~/.bun/install/global/package.json",
+      "repo": "bun/global-package.json"
+    },
+    {
+      "name": "uv-tools-receipts",
+      "source": "~/.local/share/uv/tools",
+      "repo": "uv/tools",
+      "protected": true,
+      "directory": true,
+      "include": ["*/uv-receipt.toml"]
     }
   ]
 }
