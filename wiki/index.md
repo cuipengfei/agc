@@ -130,10 +130,11 @@ MCP server 清单筛选、star 真实性与生态知识。
 |---------|---------|---------|
 | [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数的分离及验证方法 | 2026-09-05 |
 | [Gateway catalog 是客户端配置的权威源](model-gateway-mismatch/gateway-catalog-as-config-authority.md) | claude_model_id 与计费档边界替代按窗口推算，真实窗口与计费档不可混用 | 2026-09-05 |
-| [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测；目录无能力字段与 UA 门槛 | 2026-09-05 |
+| [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测；目录无能力字段与 UA 门槛；流式丢内容块、tools 与 system 被运行时替换、quince 代号溯源 | 2026-10-05 |
 | [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-04 |
 | [Relay 的 chunked 流不终止：诊断与最小修复](model-gateway-mismatch/relay-unterminated-chunked-stream.md) | 缺失 chunked 终止块造成的 60 秒挂起、客户端一致性验证与本地 shim 修复 | 2026-09-05 |
 | [SDK 对非标准 responses 帧的解析严格度差异](model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) | AI SDK 与 pi-ai 对同一 responses 帧的解析差异及 OpenCode/OMP 协议分配；senpi(OMO) 共享同套 adapter 与不补 /v1 规则 | 2026-09-27 |
+| [justwoker-shim 设计](model-gateway-mismatch/justwoker-shim-design.md) | 断路器状态机、SSE 合成、文本协议工具仿真、注入点选择与缓存兼容性 | 2026-10-05 |
 
 ## omp-auth
 
@@ -162,6 +163,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处 | 2026-10-01 |
 | [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive | 2026-09-29 |
+| [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
 | [OMP 动态 Session Identity 与 Sticky Routing](omp-config/dynamic-session-identity-sticky-routing.md) | prompt_cache_key 归一化与 Chat compat gate、未声明 compat 键 keep 语义、4140 body fallback、三条路线排除理由 | 2026-09-14 |
@@ -368,7 +370,7 @@ NVIDIA Build 注册、短信验证与 API key 配置的后续上下文。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [NVIDIA Build 中国短信验证故障](nvidia-build/nvidia-build-china-sms-verification.md) | 官方短信故障状态、支持邮箱与后续注册配置上下文 | 2026-09-28
+| [NVIDIA Build 中国短信验证故障](nvidia-build/nvidia-build-china-sms-verification.md) | 官方短信故障状态、支持邮箱；2026-09-29 Resolved 实证与注册/OMP 配置完成记录 | 2026-10-05 |
 
 ## opencode
 

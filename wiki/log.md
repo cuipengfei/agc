@@ -917,3 +917,14 @@
 - Raw: raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md; raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md
 - Updated: pstack 移植版生态全景（新增 backnotprop 内部结构已验证小节）
 - 要点：poteto-mode SKILL.md 全文入库——disable-model-invocation、23 份 playbook 路由表、24 原则五分组（Core 10/Architecture 6/Verification 5/Delegation 2/Meta 1）、Just do it 自主规则、subagent 按角色配模型、Harness 跨平台映射；GitHub API 实数 backnotprop 50 skills（24 principle + 26 功能），推翻此前会话「57」的未验证说法。mattpocock/skills（275,890★）README 全文与 ask-matt 流程图入库——27 skills（11+9+5+2）、user-invoked/model-invoked 两轴且不可平级互调、ask-matt 可选路由、主线 grill-with-docs→to-spec→to-tickets→implement→retro、三条 on-ramp、smart zone 约 150k、批评 GSD/BMAD/Spec-Kit 流程拥有型框架。新增对照文章「skill 系统的两种组织轴」。
+
+## [2026-10-05] ingest | JustWoker `/v1/messages` 实测行为
+- Disposition: New; Update
+- Raw: raw/model-gateway-mismatch/2026-10-05-justwoker-empty-stream-and-breaker-shim.md; raw/model-gateway-mismatch/2026-10-05-justwoker-tools-and-system-replacement.md; raw/model-gateway-mismatch/2026-10-05-claude-quince-bedrock-codename.md; raw/model-gateway-mismatch/2026-10-05-shim-tool-emulation-implementation.md
+- Updated: JustWoker `/v1/messages` 实测行为（补流式丢块、tools/system 替换、quince 代号、shim 绕行方案）
+- 新建：justwoker-shim 设计（断路器状态机、SSE 合成、文本协议工具仿真、注入点选择）
+
+## [2026-10-05] ingest | OMP nvidia 模型剪枝机制
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-10-05-omp-nvidia-model-pruning.md; raw/nvidia-build/2026-10-05-nvidia-build-sms-resolved-and-omp-integration.md
+- Updated: NVIDIA Build 中国短信验证故障（补 2026-09-29 Resolved 实证、注册与 OMP 配置完成记录）
