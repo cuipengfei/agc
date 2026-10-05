@@ -906,3 +906,14 @@
 - Raw: raw/harness-engineering/2026-10-02-bolu-ai-agent-control-system.md; raw/harness-engineering/2026-10-03-zhihu-ai-agent-harness-engineering.md; raw/harness-engineering/2026-10-03-juejin-harness-engineering-cybernetics.md; raw/harness-engineering/2026-10-03-csdn-harness-engineering-cybernetics.md; raw/harness-engineering/2026-10-03-cnblogs-harness-engineering-openai.md; raw/harness-engineering/2026-10-03-openai-harness-engineering.md; raw/harness-engineering/2026-10-03-george-zhang-harness-engineering-cybernetics.md
 - Updated: 双层循环操控模型（See Also 互链）
 - 要点：Harness Engineering × 控制论七来源入库——OpenAI 原文（5 个月约百万行、约 1,500 PR、3→7 人、人均 3.5 PR/天、0 行手写、约 1/10 时间）；知乎 Rocky Ding（Outcome=F(M,H,E,T)、model–harness pair、三支柱：评估闭环 42%→95% / 架构约束 52.8%→66.5% / 记忆治理 3 行≈200 行）；掘金铁锤001（组件映射、振荡/发散/滞后三稳定性问题、反馈四原则、三层控制架构）；CSDN 邬俊杰（可能性空间 M→m、自繁殖、共轭控制 L-1AL、业务相关/无关传感器）；bolu.dev（Agent=控制器+世界模型+执行器、MPC/退避视界、收敛/振荡/发散、deadband/hysteresis/anti-windup、评估轨迹非端点）；George Zhang（瓦特调速器 1780s→Kubernetes 2014→Harness 2026 三次模式、生成-验证不对称、Agents don't learn through osmosis）；博客园 warm3snow（五大实践拆解、约 100 行 AGENTS.md 目录、渐进式披露、单任务超 6 小时、等待成本高于纠错成本）。
+
+## [2026-10-05] ingest | pstack 移植版生态全景
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-10-05-github-pstack-ports-search.md; raw/agent-tooling/2026-10-05-uv-tool-receipts-deepwiki.md
+- 要点：pstack 原版为 Lauren Tan cursor/plugins；GitHub 检索 20+ 移植版，michael-denyer/pstack-claude 1103★ 与 backnotprop/pstack 944★ 两强断层，第三名 81★；平台热度 Codex > Claude Code > Pi/OMP，另有 ZCode/Devin 零星移植；uv 无全局工具清单，`uv tool list` 靠 `InstalledTools::tools()` 逐目录读 `uv-receipt.toml`（DeepWiki 源码索引），receipt 的 index-url 凭据被省略（仍按纵深防御配 protected+URL_CREDENTIAL 脱敏）；本机 12 个 receipt 3.2KB vs tools 目录 3.0G/94,152 文件，浅层 glob 遍历为必须。
+
+## [2026-10-05] ingest | mattpocock/skills 与 poteto-mode 机制
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md; raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md
+- Updated: pstack 移植版生态全景（新增 backnotprop 内部结构已验证小节）
+- 要点：poteto-mode SKILL.md 全文入库——disable-model-invocation、23 份 playbook 路由表、24 原则五分组（Core 10/Architecture 6/Verification 5/Delegation 2/Meta 1）、Just do it 自主规则、subagent 按角色配模型、Harness 跨平台映射；GitHub API 实数 backnotprop 50 skills（24 principle + 26 功能），推翻此前会话「57」的未验证说法。mattpocock/skills（275,890★）README 全文与 ask-matt 流程图入库——27 skills（11+9+5+2）、user-invoked/model-invoked 两轴且不可平级互调、ask-matt 可选路由、主线 grill-with-docs→to-spec→to-tickets→implement→retro、三条 on-ramp、smart zone 约 150k、批评 GSD/BMAD/Spec-Kit 流程拥有型框架。新增对照文章「skill 系统的两种组织轴」。

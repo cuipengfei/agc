@@ -41,6 +41,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动 | 2026-09-27 |
 | [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型（code/doc/paper/image/video）、Part A AST 与 Part B Semantic 提取分支、code-only corpus 定义、update 手动触发与 --watch 后台监听、edge schema 与置信度规则、install 平台与 skills.sh 兼容性 | 2026-09-26 |
 | [Semgrep MCP：工具清单、传输条件与实测边界](agent-tooling/semgrep-mcp.md) | 主 CLI 子命令形态、9 注册 7 实见、daemon 与 2s 超时两个文档未写前提、MCP 空结果需 CLI p/default 交叉验证 | 2026-09-26 |
+| [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv 无全局清单、per-tool receipt 为唯一事实来源；receipt 字段与凭据省略；浅层 glob 同步方案与 94,152 文件递归风险 | 2026-10-05 |
 
 ## ai-coding-agents
 
@@ -59,6 +60,9 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层；补 OpenAI Decisions API 竞争动态（limited preview、端点未公开）；补 jevgrep（agent 无关 CLI + skill，README 层面未运行） | 2026-10-01 |
 | [Jev 七渠道定价与 OMP systemone 兼容性判定](ai-coding-agents/jev-omp-systemone-channel-compatibility.md) | 七渠道定价与免费条款核验、zen 429 与四组对照实验、OMP /v1/systemone 兼容性判定（仅 zen 已实测可用）、OpenRouter「免费 allowance」更正；UTC 午夜重置推断已被 2026-09-20 证据推翻（Status: Outdated）；Zen 模型目录 2026-09-21 实测；补 jevgrep provider 实践旁证（Vercel 存量默认通道） | 2026-10-01 |
 | [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；CodeMode 与 Codex Code Mode 同轴等价性未验证；native models.json 按 API 协议分别配置 provider（c8787/c8787-chat）、baseUrl 需带 /v1、8787 与 4140 同一网关 | 2026-09-27 |
+| [pstack 移植版生态全景](ai-coding-agents/pstack-ports-landscape.md) | 原版为 Lauren Tan cursor/plugins；20+ 移植按 star 排行（1103/944 两强断层）；backnotprop 内部结构已验证：50 skills（24 principle + 26 功能）、poteto-mode 路由 23 playbooks | 2026-10-05 |
+| [mattpocock/skills：两轴分类的工程 skill 集](ai-coding-agents/mattpocock-skills-system.md) | 27 skills 按 user-invoked/model-invoked 分层、ask-matt 可选路由、主线流程与三条 on-ramp、反流程拥有型哲学 | 2026-10-05 |
+| [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照 | 2026-10-05 |
 
 ## better-harness
 
