@@ -31,6 +31,7 @@ enabledModels:
   - openrouter/**
   - openai-codex/*
   - typesafe-zen/*
+  - nvidia/**
 disabledProviders:
   []
 providers:
@@ -43,6 +44,7 @@ providers:
     kimi-claw: 5
     deepseek: 5
     sensenova: 5
+    nvidia: 5
   anthropic:
     serverSideFallback: false
   ollama-cloud:
@@ -71,7 +73,7 @@ modelRoles:
   task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
-  advisor: sensenova/deepseek-v4-flash:max
+  advisor: justwoker/claude-opus-4-8:high
   default: kimi-code/k3:high
   web: c8787/gpt-6-luna:high
   memory: c8787/gpt-6-luna:max

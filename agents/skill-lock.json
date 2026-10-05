@@ -340,9 +340,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/0xNyk/council-of-high-intelligence.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "fd9f4e5389ab590fa97d1112215f7f1462143240",
+      "skillFolderHash": "d641b8d8b404cbd589a4ea1a491039a355be3dc5",
       "installedAt": "2026-06-30T13:28:08.704Z",
-      "updatedAt": "2026-09-28T14:34:21.984Z"
+      "updatedAt": "2026-10-05T09:48:42.537Z"
     },
     "elon-musk-perspective": {
       "source": "alchaincyf/elon-musk-skill",
@@ -764,9 +764,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-audit/SKILL.md",
-      "skillFolderHash": "4e09c473159cca7d3799b01a50784d09bffc64ae",
+      "skillFolderHash": "f62f3a49debd14effa6d339b309f0bc531b9b232",
       "installedAt": "2026-08-05T15:58:21.826Z",
-      "updatedAt": "2026-10-03T14:54:34.942Z"
+      "updatedAt": "2026-10-05T02:48:10.122Z"
     },
     "ponytail-debt": {
       "source": "dietrichgebert/ponytail",
@@ -782,9 +782,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-gain/SKILL.md",
-      "skillFolderHash": "13724e1903f76456164f00ec2a3074848433588f",
+      "skillFolderHash": "87c6e7af7ab9dfbfb0729cc571ef2937cf731206",
       "installedAt": "2026-08-05T15:58:21.829Z",
-      "updatedAt": "2026-08-05T15:58:21.829Z"
+      "updatedAt": "2026-10-05T09:48:45.914Z"
     },
     "ponytail-help": {
       "source": "dietrichgebert/ponytail",
@@ -800,9 +800,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-review/SKILL.md",
-      "skillFolderHash": "cecec1713084ba31cda4add0373809c7f28ba8e7",
+      "skillFolderHash": "6edfcf161c997fdd3089bce4e5682a921fb59b46",
       "installedAt": "2026-08-05T15:58:21.830Z",
-      "updatedAt": "2026-10-03T14:54:45.882Z"
+      "updatedAt": "2026-10-05T02:48:14.669Z"
     },
     "no-bs": {
       "source": "cuipengfei/prompts",
@@ -1017,9 +1017,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "4757952e02e355232cca7f353356994e01e03c88",
+      "skillFolderHash": "585a486c057a9a9cf9623638b976969cc3703cfb",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-01T17:22:14.917Z"
+      "updatedAt": "2026-10-05T09:48:57.310Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
