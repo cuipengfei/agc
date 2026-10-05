@@ -940,3 +940,9 @@
 - Raw: raw/harness-engineering/2026-10-05-advisor-direct-answer-delivery-gap.md
 - Updated: OMP Advisor 上下文标记（新增「Advisor 直接回答的投递缺口」小节）
 - 要点：advisor 纯文本回答不渲染成 advisory 块（只有 advise() 调用渲染）；WATCHDOG.md L22 规则：直接点名必须经 advise() 发出；advisor 上下文压缩导致丢失先前评审的证据（compaction 后长篇评审只在 advisor session 里会丢失）；修复后 advisor 走 advise() 发出回答，用户可见
+
+## [2026-10-05] ingest | Sam Ruby notation/notation-up 与 Ashby 变异度定律
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-10-05-sam-ruby-notation-ashby.md
+- Updated: wiki/harness-engineering/evaluating-agent-systems-with-cybernetics.md
+- 要点：新增「变异度定律与规约下界」小节——Ashby 1956 必需变异度定律（经 Sam Ruby 在 Partly in the Right 引 Wikipedia）与 Chris Ford 转述（经 Sam Ruby 转述，未独立核验 LinkedIn 原帖）；恒温器类比（spec 是恒温器，生成代码是房间）；六案例归并为五类×信息来源×校验方式表格（DHH 与 Sam Ruby 自己的移植案例合并为一行）；「just trust the model」成立条件：信息来源是否已存在；rigor 迁移而非消失；Rails 中声明与 def 的分界即 Ashby 下界；资源地图加 Sam Ruby 行；Sources/Raw/Updated 更新
