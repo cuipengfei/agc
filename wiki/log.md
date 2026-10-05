@@ -928,3 +928,15 @@
 - Disposition: New; Update
 - Raw: raw/omp-config/2026-10-05-omp-nvidia-model-pruning.md; raw/nvidia-build/2026-10-05-nvidia-build-sms-resolved-and-omp-integration.md
 - Updated: NVIDIA Build 中国短信验证故障（补 2026-09-29 Resolved 实证、注册与 OMP 配置完成记录）
+
+## [2026-10-05] update | justwoker-shim 第二轮修复
+- Disposition: Update
+- Raw: raw/model-gateway-mismatch/2026-10-05-justwoker-shim-final-fixes.md
+- Updated: justwoker-shim 设计（新增路由节：带工具无条件走 emulation；文本协议工具仿真节更新：描述不截断、非法 JSON 回退、50K 结果截断；已知缺口删流式工具断）
+- 要点：采纳 advisor 两条意见——断路器饥饿（带工具请求不喂断路器）与流式转换死代码（130+ 行解析器不触发）；修复后带工具请求无条件走 emulation，断路器只被无工具请求喂养；五项修复：非法 JSON 回退为文本、路由修复、死代码删除（19.36 KB）、描述不截断、正则认单双引号+结果截断保护；e2e 验证 CLOSED/OPEN/非工具三条路径全过
+
+## [2026-10-05] update | OMP Advisor 直接回答投递缺口
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-10-05-advisor-direct-answer-delivery-gap.md
+- Updated: OMP Advisor 上下文标记（新增「Advisor 直接回答的投递缺口」小节）
+- 要点：advisor 纯文本回答不渲染成 advisory 块（只有 advise() 调用渲染）；WATCHDOG.md L22 规则：直接点名必须经 advise() 发出；advisor 上下文压缩导致丢失先前评审的证据（compaction 后长篇评审只在 advisor session 里会丢失）；修复后 advisor 走 advise() 发出回答，用户可见

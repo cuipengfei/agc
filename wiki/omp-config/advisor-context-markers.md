@@ -1,8 +1,8 @@
 # advisor-context-markers
 
-> Sources: raw/omp-config/2026-09-20-advisor-context-markers.md, 2026-09-20; 本机 OMP 18.3.2 源码直读, 2026-09-26; advisor 第一手确认, 2026-09-26
-> Raw: [顾问上下文标记摘录](../../raw/omp-config/2026-09-20-advisor-context-markers.md); [advisor.evictStaleResults 与渲染预算](../../raw/omp-config/2026-09-26-advisor-evict-stale-results.md)
-> Updated: 2026-09-26
+> Sources: raw/omp-config/2026-09-20-advisor-context-markers.md, 2026-09-20; 本机 OMP 18.3.2 源码直读, 2026-09-26; advisor 第一手确认, 2026-09-26; 本会话实测, 2026-10-05
+> Raw: [顾问上下文标记摘录](../../raw/omp-config/2026-09-20-advisor-context-markers.md); [advisor.evictStaleResults 与渲染预算](../../raw/omp-config/2026-09-26-advisor-evict-stale-results.md); [Advisor 直接回答的投递缺口](../../raw/harness-engineering/2026-10-05-advisor-direct-answer-delivery-gap.md)
+> Updated: 2026-10-05
 
 Advisor 通过会话更新中的角色标记区分用户输入与自身思考，从而在自审时避免混淆。
 
@@ -47,6 +47,14 @@ Advisor 通过会话更新中的角色标记区分用户输入与自身思考，
 ### FIFO advisory 投递队列
 
 参见 `advisory-correlation.json`（2026-09-20），它将 advisor 的 `advise` 工具调用映射到主会话投递；FIFO 顺序解释了为什么较早的 advisory 可能在较新的之后到达。
+
+## Advisor 直接回答的投递缺口（2026-10-05 新增）
+
+用户直接点名 advisor（如「@advisor: 你怎么看 shim 代码？」），advisor 的第一人称纯文本回答**不会渲染成 advisory 块**。OMP 只把 `advise()` 工具调用的 note 渲染为 advisory 块；advisor 的纯文本 assistant 输出只写进它自己的 session jsonl（`__advisor.default.jsonl`），没有投递通道。
+
+**WATCHDOG.md L22 规则**：被直接点名时，第一人称回答必须同时通过 `advise` 发出（正文完整放入 note，severity 用 `nit`，除非内容本身达到更高判级），否则用户看不到。
+
+**advisor 上下文压缩的影响**：advisor 之前读过 shim 全文并写了五点评审，但后来被压缩（compaction），丢失了先前评审的上下文。它重新搜仓库、重读 shim 才找回评审能力。长篇评审如果只在 advisor 自己的 session 里，compaction 后会丢失——除非当时就走 advise() 发出。
 
 ## 对 Advisor 自审的影响
 
