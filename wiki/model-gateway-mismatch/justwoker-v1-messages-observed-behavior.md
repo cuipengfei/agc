@@ -1,8 +1,8 @@
 # JustWoker `/v1/messages` 实测行为
 
-> Sources: JustWoker API 实测, 2026-09-01; JustWoker `/v1/models` 目录与 UA 实测, 2026-09-05
-> Raw: [JustWoker `/v1/messages` 脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md); [Anthropic 兼容 relay 的 `/v1/models` 目录形态与 UA 门槛](../../raw/model-gateway-mismatch/2026-09-05-anthropic-relay-catalog-and-ua.md)
-> Updated: 2026-09-05
+> Sources: JustWoker API 实测, 2026-09-01; JustWoker `/v1/models` 目录与 UA 实测, 2026-09-05; JustWoker 流式空响应与工具替换实测, 2026-10-04 至 2026-10-05
+> Raw: [JustWoker `/v1/messages` 脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md); [Anthropic 兼容 relay 的 `/v1/models` 目录形态与 UA 门槛](../../raw/model-gateway-mismatch/2026-09-05-anthropic-relay-catalog-and-ua.md); [流式空响应诊断与断路器 shim 设计](../../raw/model-gateway-mismatch/2026-10-05-justwoker-empty-stream-and-breaker-shim.md); [运行时替换 tools 与 system 的实测](../../raw/model-gateway-mismatch/2026-10-05-justwoker-tools-and-system-replacement.md); [claude-quince 是 Bedrock Opus 4.8 的内部代号](../../raw/model-gateway-mismatch/2026-10-05-claude-quince-bedrock-codename.md); [shim 工具仿真层实现](../../raw/model-gateway-mismatch/2026-10-05-shim-tool-emulation-implementation.md)
+> Updated: 2026-10-05
 
 ## Overview
 
@@ -100,7 +100,25 @@
 
 同期还观测到目录请求间歇失败：同一命令连续执行，部分次数返回可解析 JSON，部分次数因超时或非 200 无结果；失败次数的完整统计未记录。因此把该 relay 目录当作程序化数据源时需要重试。
 
+## 流式 `/v1/messages` 丢内容块（2026-10-04 观测）
+
+`stream: true` 的请求返回 HTTP 200 SSE，但整个流只有信封事件（`message_start`/`message_delta`/`message_stop`），零个内容块事件。非流式同参数请求返回完整内容。OMP 只走流式，因此每个回合都拿到计费空响应，重试 3 次后报 empty stop。
+
+## 运行时替换客户端 Tools 与 System（2026-10-04 至 2026-10-05 观测）
+
+发送带 `xyzzy_` 前缀的假工具，模型报告只看到 `read_tabular` 和 `system_todo_write`。`read` 和 `write` 两个名字原生透传（模型能以 tool_use 块调用），其余全部被替换。运行时不替换客户端 system，而是把自己的指令追加在后；但超长 system（~176K）里注入的内容会被淹没。邻居 OMP session 的模型逐字倒出上下文：头部是通用 invoke 模板，`read_tabular` 的 schema 里内嵌 Snowpark stored procedure 源码（`SnowflakeFile.open` + openpyxl/xlrd），上下文里没有 OMP 的任何规则。
+
+## `served claude-quince` 是 Bedrock Opus 4.8 的代号（2026-10-05 查证）
+
+`claude-quince` 是 Opus 4.8 经 AWS Bedrock 路由时的内部代号，见 protobuf 签名头 field #6 的绑定记录（`MING-ZCH/open-thinking-replay` 实验记录与 `ptr.pet/cliproxyapi` 生产签名校验代码两个独立来源）。模型层未被替换，替换发生在运行时层。
+
+## 本地 shim 绕行方案（2026-10-05 实现）
+
+`~/code-inside/justwoker-shim/shim.ts`：Bun 单文件代理（127.0.0.1:4151），断路器 + 非流式回退 + SSE 合成 + 文本协议工具仿真。OMP 的 models.yml 里 justwoker baseUrl 指向它。详见 [justwoker-shim 设计](justwoker-shim-design.md)。
+
 ## See Also
+
+- [justwoker-shim 设计](justwoker-shim-design.md) — 断路器、SSE 合成、文本协议仿真的完整设计。
 
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — 客户端、Agent runtime、Provider 路由和模型是不同层。
 - [模型 capability 声明与 gateway wire 参数不一致](reasoning-capability-vs-wire-parameter.md) — capability 与传输参数也需要分别验证。
