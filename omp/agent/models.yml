@@ -382,3 +382,22 @@ providers:
       reasoning: false
       input:
       - text
+  husky:
+    api: anthropic-messages
+    baseUrl: https://huskyapi.com/v1
+    apiKey: <REDACTED>
+    models:
+    - id: claude-opus-5-5
+      compactionModel: c8787/gpt-5.6-luna
+      name: Claude Opus 5.5 (Husky)
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 1000000
+      maxTokens: 64000
+      cost:
+        input: 0.8
+        output: 4.0
+        cacheRead: 0.04
+        cacheWrite: 1.0

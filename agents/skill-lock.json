@@ -178,9 +178,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
       "skillPath": "skills/improve-prompt/SKILL.md",
-      "skillFolderHash": "cfdde803675d64be4702c930812bf9e6bdb46e22",
+      "skillFolderHash": "379cfbb79507f527d0cc26291a0e9b0041351ff7",
       "installedAt": "2026-05-04T12:45:51.092Z",
-      "updatedAt": "2026-10-03T15:09:11.197Z"
+      "updatedAt": "2026-10-05T13:26:55.162Z"
     },
     "jpm-voice": {
       "source": "cuipengfei/prompts",
@@ -791,9 +791,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-help/SKILL.md",
-      "skillFolderHash": "3927d4fb46b93abbfe7da4ce1576e0891ae03005",
+      "skillFolderHash": "2eff8ae6e3f1aa1aa97166c6d3a81e5c89c4165e",
       "installedAt": "2026-08-05T15:58:21.829Z",
-      "updatedAt": "2026-10-03T14:54:42.295Z"
+      "updatedAt": "2026-10-05T13:27:02.721Z"
     },
     "ponytail-review": {
       "source": "dietrichgebert/ponytail",
