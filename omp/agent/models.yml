@@ -146,7 +146,7 @@ providers:
       maxTokens: 32000
   justwoker:
     api: anthropic-messages
-    baseUrl: https://api.justwoker.icu
+    baseUrl: http://127.0.0.1:4151
     apiKey: <REDACTED>
     models:
     - id: claude-opus-4-8
