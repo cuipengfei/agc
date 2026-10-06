@@ -74,7 +74,7 @@ modelRoles:
   task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
-  advisor: husky/claude-opus-5-5:xhigh
+  advisor: c8787/gpt-6-luna:xhigh
   default: kimi-code/k3:high
   web: c8787/gpt-6-luna:high
   memory: c8787/gpt-6-luna:max

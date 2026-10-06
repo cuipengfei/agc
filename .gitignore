@@ -53,3 +53,4 @@ omp/agent/extensions/umans-status.ts
 .omc/state/idle-notif-cooldown.json
 .pi/better-harness/
 graphify-out/
+.omx/

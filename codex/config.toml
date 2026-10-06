@@ -1,6 +1,6 @@
 model_catalog_json = "/home/cpf/.codex/model-catalog-4140.json"
 hide_agent_reasoning = false
-model = "gpt-6-sol"
+model = "gpt-6-luna"
 model_provider = "cop"
 model_reasoning_summary = "detailed"
 model_supports_reasoning_summaries = true
@@ -11,7 +11,7 @@ show_raw_agent_reasoning = true
 web_search = "live"
 approvals_reviewer = "user"
 developer_instructions = "<omx version=\"1\">You have oh-my-codex installed through Codex plugin mode. AGENTS.md is the orchestration brain and main control surface. Follow AGENTS.md for skill/keyword routing and $name workflow invocation. When spawning native subagents, set `agent_type` to an installed role and never omit it for OMX work. Registered Codex plugin marketplace surfaces supply OMX workflows and plugin-scoped companion resources when the plugin is installed; native agent roles are installed as setup-owned Codex agent TOML files in plugin mode so agent_type routing works. User-installed skills may still live under ~/.codex/skills. Use outcome-first, concise progress updates: state the target result, constraints, validation evidence, and stop condition before adding process detail.</omx>\n\nAlways respond to the user in Simplified Chinese."
-model_reasoning_effort = "high"
+model_reasoning_effort = "max"
 
 [analytics]
 enabled = false
@@ -322,15 +322,15 @@ trusted_hash = "sha256:dbfc3e0626a9cf6bbe579a69e22409384ed0598fba08df794b355e1e7
 trusted_hash = "sha256:216a53a71d5c9819f0fdbbbbf869c4f8d9455e742dad9e0f1d91f3d67dbba2ff"
 
 [hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:session_start:0:0"]
-trusted_hash = "sha256:5f81d38f47448a1581c08ec877e044d9e04dd6f814dce3f2671f7a8edadd719b"
+trusted_hash = "sha256:7ee5d5ae1f4a9e55f1f429f2960c2f9f32293f198c0e8e2e42b2fb3b4eeda142"
 enabled = true
 
 [hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:user_prompt_submit:0:0"]
-trusted_hash = "sha256:6a6f42bc3b58d6262db38bfd74d7f340fcca2b09cdb134aad365063f0bfefca4"
+trusted_hash = "sha256:8c9efc5a5e649c8cdca3f0b7bf4cba81d9717d1bc930c7dbc18b6efd66c7c58c"
 enabled = true
 
 [hooks.state."ponytail@ponytail:hooks/claude-codex-hooks.json:subagent_start:0:0"]
-trusted_hash = "sha256:1423b56c1322f96c8f74c51c1e7ae9a047b904c1fa43ee9165d462fd7a6e70ef"
+trusted_hash = "sha256:7954d675ef3bafd5e5a6073ae51d7de57a08f21340f241c332f99078e955675d"
 enabled = true
 
 [hooks.state."/home/cpf/.codex/hooks.json:pre_compact:0:0"]
