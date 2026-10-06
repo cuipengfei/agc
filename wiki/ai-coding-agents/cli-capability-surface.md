@@ -2,7 +2,7 @@
 
 > Sources: 本机实测（codex-cli 0.153.4、opencode 1.18.29、omo v4.19.4、omp 18.1.10），2026-09-05
 > Raw: [四 Agent CLI 递归 --help 调查](../../raw/ai-coding-agents/2026-09-05-cli-help-recursive-survey.md); [版本号更正](../../raw/ai-coding-agents/2026-09-05-cli-survey-version-correction.md)（原 raw 第 7 行 opencode 版本误记为 1.2.19，正确为 1.18.29）; [证明强度收窄](../../raw/ai-coding-agents/2026-09-05-version-correction-proof-strength.md)
-> Updated: 2026-09-05
+> Updated: 2026-10-06
 
 对四款本机安装的 agent CLI 做递归 `--help` 调查：顶层 → 按 `Commands:` 段递归 → 对声明 action 的命令逐个探 `<cmd> <action> --help`。合计 179 个独立 help 页（omo 16、opencode 59、codex 65、omp 39）。
 
@@ -118,3 +118,4 @@ opencode 的 `debug` 子树最厚，把 agent 内部工具（file/rg/lsp/snapsho
 - [Codex 特性门系统](codex-feature-flags.md)
 - [AI Coding Agent 对比：真正独特优势（19 家）](4-agent-comparison.md)
 - [OMO 5.0：独立版（omo-ai）与插件版（oh-my-openagent）](omo-native-vs-plugin.md)（本文调查时 omo 为 v4.19.4 插件版；5.0 后 omo 归独立包 omo-ai）
+- [tuios workspace 与 session rail](../terminal-multiplexers/tuios-workspace-and-sidebar.md)（第五个可比 CLI harness，本轮未做全面对比，仅挂交叉引用）

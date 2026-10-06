@@ -54,7 +54,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-04 |
 | [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
 | [Coding Agent 候选发现方法](ai-coding-agents/candidate-discovery-method.md) | wide-narrow-deep 枚举流程、README 机制词扫描、流行度的真实用途 | 2026-09-04 |
-| [四 Agent CLI 能力面对比](ai-coding-agents/cli-capability-surface.md) | codex/opencode/omo/omp 递归 --help（179 页）九大功能域对比与结构差异 | 2026-09-05 |
+| [四 Agent CLI 能力面对比](ai-coding-agents/cli-capability-surface.md) | codex/opencode/omo/omp 递归 --help（179 页）九大功能域对比与结构差异 | 2026-10-06 |
 | [Codex 特性门系统与 Code Mode](ai-coding-agents/codex-feature-flags.md) | features stage×effective 正交、removed 冻结假设、Code Mode host 架构 | 2026-09-05 |
 | [Coding Agent 的短反馈闭环：逐轮 Advisor](ai-coding-agents/short-feedback-loop-advisors.md) | OMP、Pi 与 DSH 的第二模型逐轮审查和 advice 回流机制 | 2026-09-11 |
 | [Jev 在 OMP/Codex/OpenCode 的现成集成盘点](ai-coding-agents/jev-host-integrations.md) | OMP 原生集成已发布且本机核验；Codex/OpenCode 仅社区 MCP 可配方案（本轮未安装运行）；instruction skill 与 SDK/provider 分层；补 OpenAI Decisions API 竞争动态（limited preview、端点未公开）；补 jevgrep（agent 无关 CLI + skill，README 层面未运行） | 2026-10-01 |
@@ -102,7 +102,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计、发送条件有序散文列表（非高危 blocker 与用户直接呼叫漏网分支）、jevify 盘点验证方法 | 2026-09-26 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
 | [三家宿主 MCP 配置、验证阶梯与凭据事故](harness-engineering/mcp-setup-validation.md) | Codex/OpenCode/OMP semgrep stdio 写法；静态解析/协议探针/真实加载三级验证各自边界；codex enabled 不代表连接、opencode list 有连接全部副作用；filterExa 设计行为；凭据暴露事故教训 | 2026-09-26 |
-| [双层循环操控模型](harness-engineering/dual-loop-steering-model.md) | 徐昊课程框架：双层循环（PDCA+操控循环）、四子系统、前馈/反馈/调整三环节；自我纠正就是 ReAct；edge 是窗口截断边界；Böckeler 的 guides/sensors 对应关系；feedforward 起源（Richards 1951 Macy Conference） | 2026-10-02 |
+| [双层循环操控模型](harness-engineering/dual-loop-steering-model.md) | 徐昊课程框架：双层循环（PDCA+操控循环）、四子系统、前馈/反馈/调整三环节；自我纠正就是 ReAct；edge 是窗口截断边界；Böckeler 的 guides/sensors 对应关系；feedforward 起源（Richards 1951 Macy Conference）；含 Bad Smells 目录（需求模糊/虚假胜利/指令腐化/前馈痴迷/上下文倾倒/上下文焦虑/跨会话知识丢失）；retro 与动态知识更新的关系 | 2026-10-04 |
 | [用控制论评估 Agent 系统](harness-engineering/evaluating-agent-systems-with-cybernetics.md) | 控制论四组检查清单（基础部件/MPC 与规划/状态估计与稳定性/多环控制与工程修复）；OpenAI 一手数据与五大实践的控制论对应；各来源资源分工地图；Ashby 变异度定律与规约复杂度下界 | 2026-10-05 |
 
 
@@ -313,6 +313,15 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-19 |
+
+## terminal-multiplexers
+
+浏览器/终端复用器的前端编译模型、workspace 抽象与侧栏机制。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；浏览器终端前端全是 xterm.js | 2026-10-06 |
+| [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | tuios 的 workspace 是编号 1-9 无名字的分组，window 是一等实体；session rail 四区块 sessions/terminals/files/agents；内嵌 herdr 二进制当 agent 上报协议 | 2026-10-06 |
 
 ## proxy-ops
 

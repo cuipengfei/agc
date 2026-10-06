@@ -946,3 +946,15 @@
 - Raw: raw/harness-engineering/2026-10-05-sam-ruby-notation-ashby.md
 - Updated: wiki/harness-engineering/evaluating-agent-systems-with-cybernetics.md
 - 要点：新增「变异度定律与规约下界」小节——Ashby 1956 必需变异度定律（经 Sam Ruby 在 Partly in the Right 引 Wikipedia）与 Chris Ford 转述（经 Sam Ruby 转述，未独立核验 LinkedIn 原帖）；恒温器类比（spec 是恒温器，生成代码是房间）；六案例归并为五类×信息来源×校验方式表格（DHH 与 Sam Ruby 自己的移植案例合并为一行）；「just trust the model」成立条件：信息来源是否已存在；rigor 迁移而非消失；Rails 中声明与 def 的分界即 Ashby 下界；资源地图加 Sam Ruby 行；Sources/Raw/Updated 更新
+
+## [2026-10-04] update | 双层循环操控模型
+- Disposition: Update
+- Raw: raw/geekbang-agent-harness/2026-10-02-qa-concepts.md
+- Updated: wiki/harness-engineering/dual-loop-steering-model.md
+- 要点：新增「Bad Smells 与重构手法」section，按用户问过的问题组织——需求模糊（三件套：约束/完成/边界）、虚假胜利（惰性生成、分离执行与验证）、指令腐化（优先级确定/矛盾检测/定期清理）、前馈痴迷（反馈优先）、上下文倾倒（上下文预算四法）、上下文焦虑（与惰性生成的区分、双层循环+checkpoint）、跨会话知识丢失（内层清点+外层归位）；新增「retro 与动态知识更新的关系」section——retro 是环境改进建议不是知识归位，auto-extract 更接近课程的动态知识更新；Raw 字段追加新 raw 文件链接；index.md Summary 更新
+
+## [2026-10-06] ingest | ttyd 前端编译模型与 tuios workspace/session rail
+- Disposition: New
+- Raw: raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md; raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md
+- Updated: 四 Agent CLI 能力面对比（See Also 加 tuios 交叉引用）
+- 要点：ttyd 把 xterm.js 前端编译进二进制、1.7.7（2024-03-30 最新 tag）lockfile 锁 xterm 5.4.0 / addon-webgl 0.17.0 / addon-canvas 0.6.0，升级只能等 release 或 rebuild；本机 OSC52 定制 html = 官方默认 + 两个 script 块（OSC52 剪贴板转发 + contextmenu 拦截），git diff 单 hunk +100/-1。tuios 0.8.5 的 workspace 是编号 1-9 无名字分组、window 是一等实体；session rail 四区块 sessions/terminals/files/agents（appearance.sidebar.sections）；内嵌 herdr 二进制当 agent 状态上报协议。新 topic terminal-multiplexers；cli-capability-surface 挂 See Also。凭据字段（TUIOS_PANE_TOKEN 等）已按 advisory 省略不入 raw。
