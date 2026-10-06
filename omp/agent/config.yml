@@ -75,8 +75,8 @@ modelRoles:
   vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
   advisor: c8787/gpt-6-luna:xhigh
-  default: kimi-code/k3:high
-  web: c8787/gpt-6-luna:high
+  default: kimi-claw/k3-agent:xhigh
+  web: web/firecrawl
   memory: c8787/gpt-6-luna:max
   judge: typesafe-zen/jev-1.13
 modelTags:
@@ -203,10 +203,13 @@ retry:
   usageReservePct: 10
   usageReservePolicy: confirm
   fallbackChains:
+    advisor:
+      - c8787/gpt-5.6-luna
     web:
-      - web/exa
       - web/tavily
-      - web/firecrawl
+      - web/exa
+      - c8787/gpt-6-luna
+      - c8787/gpt-5.6-luna
       - web/duckduckgo
       - web/jina
       - web/kimi

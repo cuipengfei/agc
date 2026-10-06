@@ -1,5 +1,11 @@
 # Wiki Log
 
+## [2026-10-06] ingest | agc bank 第三次 SQLite 损坏修复与根因排除压测
+- Disposition: Update（omp-mnemopi/sqlite-corruption-recovery.md）
+- Raw: raw/omp-mnemopi/2026-10-06-agc-bank-third-corruption.md; raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt.md
+- Wiki: Updated: wiki/omp-mnemopi/sqlite-corruption-recovery.md（恢复流程九步修订：验备份干净→.recover→值级合并+时间戳裁决→FTS 重建→重启会话；新增第三次损坏实录、根因排除表、句柄陈旧陷阱警示）；Updated: wiki/index.md
+- 要点：第三次损坏以干净 backup-20261005 为基底 + .recover 差集合并（新增 5485、更新 102、零冲突）恢复；同进程跨库报错（pid 1144549：mnemopi malformed→history.db IOERR，底层静默）指向 bun:sqlite 多句柄嫌疑；v1 tmpfs 24k 写 + v2 真实磁盘双句柄重压合计零损坏，多进程竞争假设排除；非复现≠无罪，根因未定论。
+
 ## [2026-10-01] ingest | managed skills createIf 门槛与 Auto-Learn 注入出处
 - Disposition: Update（omp-config/managed-skills.md）
 - Raw: raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md; raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md
@@ -958,3 +964,9 @@
 - Raw: raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md; raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md
 - Updated: 四 Agent CLI 能力面对比（See Also 加 tuios 交叉引用）
 - 要点：ttyd 把 xterm.js 前端编译进二进制、1.7.7（2024-03-30 最新 tag）lockfile 锁 xterm 5.4.0 / addon-webgl 0.17.0 / addon-canvas 0.6.0，升级只能等 release 或 rebuild；本机 OSC52 定制 html = 官方默认 + 两个 script 块（OSC52 剪贴板转发 + contextmenu 拦截），git diff 单 hunk +100/-1。tuios 0.8.5 的 workspace 是编号 1-9 无名字分组、window 是一等实体；session rail 四区块 sessions/terminals/files/agents（appearance.sidebar.sections）；内嵌 herdr 二进制当 agent 状态上报协议。新 topic terminal-multiplexers；cli-capability-surface 挂 See Also。凭据字段（TUIOS_PANE_TOKEN 等）已按 advisory 省略不入 raw。
+
+## [2026-10-06] update | 双层循环操控模型
+- Disposition: Update
+- Raw: raw/geekbang-agent-harness/2026-10-06-bad-smells-08-09-13.md
+- Updated: wiki/harness-engineering/dual-loop-steering-model.md
+- 要点：新增六节 Bad Smells——隐式约定（建立原则文档，constitution+ADR 三层结构，五层优先级）、信息散落（管理知识依赖，SOURCE.md+定时 Skill / AGENTS.md 提醒）、反馈过载（分级反馈，成功静默+阻塞/警告/信息三级）、状态污染（状态分区，草稿纸+双层循环）、环境漂移（环境锁定，init.sh+lockfile+Skill 局部化+MCP 隔离+Docker）、模式复制漂移（模式基线化四步：正向范例+架构约束+建立基线+持续清理）；Raw 字段追加新 raw 文件链接；index.md Summary 更新为「07–19 讲全十三种」
