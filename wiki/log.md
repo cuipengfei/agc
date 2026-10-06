@@ -970,3 +970,8 @@
 - Raw: raw/geekbang-agent-harness/2026-10-06-bad-smells-08-09-13.md
 - Updated: wiki/harness-engineering/dual-loop-steering-model.md
 - 要点：新增六节 Bad Smells——隐式约定（建立原则文档，constitution+ADR 三层结构，五层优先级）、信息散落（管理知识依赖，SOURCE.md+定时 Skill / AGENTS.md 提醒）、反馈过载（分级反馈，成功静默+阻塞/警告/信息三级）、状态污染（状态分区，草稿纸+双层循环）、环境漂移（环境锁定，init.sh+lockfile+Skill 局部化+MCP 隔离+Docker）、模式复制漂移（模式基线化四步：正向范例+架构约束+建立基线+持续清理）；Raw 字段追加新 raw 文件链接；index.md Summary 更新为「07–19 讲全十三种」
+
+## [2026-10-07] ingest | OMP advisor fallback 链解析与 web 角色 effort 层级坑
+- Disposition: New
+- Raw: raw/omp-config/advisor-web-fallback-chain-root-cause.md
+- 要点：18.4.5 effort 层级（commit 5f012e314d，修 #13789）使 advisor 无链时 resolveRetryFallbackChainKey step3 命中 web 角色键（同模型 :high）→ advisor 走 web 链 → 19 个 web-search provider 全部 Unhandled API in mapOptionsForApi: web-search → Advisor "default" unavailable for web/ollama；探针复现 resolved chain key for advisor: web；本地修法 modelRoles.web 改 web/firecrawl + 显式 fallbackChains.web（删重复链头项）+ fallbackChains.advisor 加 c8787/gpt-5.6-luna；有效链顺序探针验证 web/tavily → web/exa → c8787/gpt-6-luna → web/duckduckgo；上游 #13158 closed wontfix（维护者留话复现就 reopen）、#13789、#13187 by-design

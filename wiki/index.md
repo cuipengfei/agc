@@ -172,6 +172,7 @@ OMP 配置项的源码级行为边界。
 | [OMP /model 模型浏览器：角色解析与 kind 过滤](omp-config/model-browser-role-resolution.md) | 已配置角色按 enabledModels 受限集合解析、范围外即 `—` 且无兜底；15 内置角色 + 10 kind 清单 | 2026-09-23 |
 | [OMP Advisor 上下文标记](omp-config/advisor-context-markers.md) | `**user**:`/`**agent**:` 角色标记、会话更新状态头、工具结果渲染预算、evictStaleResults 清理、Advisor 直接回答的投递缺口（纯文本不渲染，只有 advise() 渲染）与 WATCHDOG.md L22 规则 | 2026-10-05 |
 | [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区；18.4.2 达 515 键 | 2026-09-28 |
+| [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
 
 ## omp-extensibility
 
