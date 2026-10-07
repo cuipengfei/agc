@@ -40,14 +40,6 @@
         "--mcp"
       ]
     },
-    "ddgs": {
-      "type": "stdio",
-      "command": "/home/cpf/.local/bin/ddgs",
-      "args": [
-        "mcp"
-      ],
-      "enabled": false
-    },
     "headroom": {
       "type": "http",
       "url": "http://127.0.0.1:8788/mcp"
@@ -55,11 +47,6 @@
     "context-mode": {
       "type": "stdio",
       "command": "context-mode"
-    },
-    "mintlify-index": {
-      "type": "http",
-      "url": "https://index.mintlify.com",
-      "enabled": false
     },
     "grep-app-github": {
       "type": "http",
@@ -74,7 +61,10 @@
     "semgrep": {
       "type": "stdio",
       "command": "/home/cpf/.local/bin/semgrep",
-      "args": ["mcp"]
+      "args": [
+        "mcp"
+      ],
+      "enabled": false
     }
   }
 }
