@@ -1,7 +1,7 @@
 # OMP Managed Skills 生命周期
 
 > Sources: OMP upstream source code; 本机目录与锁定文件实测, 2026-10-08
-> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md)
+> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md)
 > Updated: 2026-10-08
 
 ## 结论
@@ -51,7 +51,3 @@ Managed skills **没有自动清理**。
 - **自动捕获回合提示**：`autolearn.autoContinue` 开启时在 agent 停止后自动跑一轮私有捕获（额外消耗 token）。
 
 引用 OMP 行为规范时须区分两类出处：bundle 内字符串（系统提示注入或工具 description）与磁盘规则文件（如 `~/.omp/agent/rules/*.md`）。
-
-## 配套包变更的同步路径
-
-bun 全局包的安装与移除会反映到 agc 仓库的 `bun/global-package.json`（manifest 中 `bun-global-packages` 条目）。2026-10-08 实测：`bun remove -g @googleworkspace/cli` 后执行 `./pull.sh`，该文件被更新（updated=1，其余 62 项 unchanged），说明 bun 全局包清单受 agc 单向同步跟踪。
