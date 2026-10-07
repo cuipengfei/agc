@@ -1,8 +1,8 @@
 # graphifyy 工作机制
 
-> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26
-> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md)
-> Updated: 2026-09-26
+> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07
+> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md)
+> Updated: 2026-10-07
 
 ## Overview
 
@@ -125,6 +125,27 @@ God Nodes Top 5：Wiki Log (129) / Knowledge Base Index (35) / OMP 内置 Lifecy
 
 INFERRED 边 33 条分布：references 23 / uses 8 / indirect_call 2；来源 AGENTS.md 12 / toolchain-reference.md 3 / 其余各 1-2。
 
+## 2026-10-07 全命令清单实测（skill 0.9.69 → 包 0.9.79）
+
+先记一个操作副作用：**实测 `--version` 与 `--help` 两条命令触发用户级 skill 自动刷新**（Claude、OpenCode、Agents 三处，各留 SKILL.md.bak）；`detect` 只给版本不一致警告、无刷新输出；是否所有命令都触发未验证。不想被刷就设 `GRAPHIFY_NO_AUTO_REFRESH=1`。
+
+`graphify update .` 重建 agc 仓库：4,620 节点 / 5,079 边 / 397 社区（2026-09-26 为 3,309 / 3,644 / 289），11 个 code 文件无符号产出，旧产物自动备份到 graphify-out/ 下的日期目录。全命令清单逐项实测结果：
+
+- **查询类全部可用**：path（有向；`--undirected` 可忽略方向）、explain（节点档案：来源行、社区、度数、逐条关系）、affected（反向影响，深度 2）、query（自然语言词面匹配定起点，BFS 扩两轮；问 "redaction" 命中脱敏主题带出 12 节点）、god-nodes list（Wiki Log 174 边居首）、tree emit（交互 HTML 树）。
+- **体检/度量**：diagnose multigraph 报无重复边、无悬空端点、3 条自指边；benchmark 估算查图谱相对读全文的 token 压缩比（仅沙箱 3 节点图测得 5.3 倍，不代表真实仓库）。
+- **合并与协作**：merge-graphs 把小图并大图成 4,623 节点跨仓库图，秒级；merge-driver 仅在相同输入上验证通过（退出码 0），不同分支合并行为未验证；clone 拉公开仓库进 ~/.graphify/repos。
+- **导出实测七种、全部离线可用**：svg、wiki（每社区一篇文章）、graphml、obsidian 画布、callflow-html、neo4j / falkordb（生成 cypher 脚本，无需真实连接）；export html 未单独运行（graph.html 由构建直接产出）。
+- **记忆与全局**：save-result 存问答结论（`--question` + `--answer` + `--outcome`，不带 save 子命令）、reflect 聚合成 LESSONS.md、global add/list/remove 管理跨项目全局图（按图文件加、按仓库名删；已复原为空）、provider 管理语义后端。
+- **平台安装**：aider install/uninstall 在沙箱成对验证（写/删 AGENTS.md 段）；pi、copilot install 在假 HOME 下静默无操作，成功路径未验证；hook status 在非 git 目录如实报错。通用 uninstall、hook install/uninstall、其余十余平台 install/uninstall 未试（写真实用户级配置）。
+- **受阻的六条环境边界**：
+  - `add` 抓 URL：防内网守卫拦截 198.18.x 伪 IP——所试 example.com 与 raw.githubusercontent.com 均被拦（本机 Clash TUN 伪 IP 环境）；是否所有域名均失效未验证。
+  - `watch`：缺 watchdog 组件（提示 pip install watchdog）。
+  - `extract` / `label`：缺 openai Python 包（语义后端），label 退回 Community N 占位命名。
+  - `prs`：需要 gh CLI 已登录。
+  - `update --force` 的少节点防护未触发（删空沙箱代码后普通 update 直接重建空图），防护条件未验证。
+  - `benchmark` 的 token 压缩比仅在 3 节点沙箱图测过一次。
+
 ## See Also
 
 - [Headroom 0.39 配置与兼容性](headroom-039-config-and-compat.md) — 同 topic 下 agent-tooling 层工具
+- [codegraph 与 graphify 的分工边界](codegraph-vs-graphify.md) — 符号级索引与混合语料地图的对照

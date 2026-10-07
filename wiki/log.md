@@ -986,3 +986,20 @@
 - Disposition: New
 - Raw: raw/omp/2026-10-07-judgment-chat-llm-bridge.md
 - 要点：18.8.0 pi-ai `judgment/chat.ts` chatTextBackend 用普通 chat 模型当 judge 时不发 `response_format`/`json_schema`/`text.format`（judgment 目录 grep 零命中）；`temperature: 0` + `disableReasoning: true` + `maxTokens: 4096` 首次裸文本调用，prompt 约定关键词回答；`text.ts` 三解析器（choice 取最早合法 label / noul 取最早 yes-no / score 取首个范围内整数）抠答案，抠不到 throw `JudgmentParseError`；重试（parseRetries 2）才挂 `submit_judgment` tool（strict:true）强制交答案，仍走同一组解析器；jev 命中时走独立 `/v1/systemone` 路由与 chat 协议分离；本机 `modelRoles.judge` 实配 `typesafe-zen/jev-1.13`，Luna 做 judge 是假设场景；chat 类 judge 的 transport 依 `model.api` 分发（含 openai-responses 分支）但未读取 models.yml 具体 api 值。
+
+## [2026-10-07] ingest | graphify 0.9.79 全命令清单实测
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md
+- Updated: wiki/agent-tooling/graphify-mechanics.md
+- 要点：update 重建 agc 4620 节点/5079 边/397 社区；查询七件、导出七种、merge-graphs 跨仓、save-result/reflect 全部实测；六条环境边界（add 被伪 IP 拦、watch 缺 watchdog、extract/label 缺 openai 包、prs 要 gh 登录、--force 防护未触发、benchmark 仅沙箱）；skill 自动刷新副作用（--version/--help 实测触发，detect 仅版本警告）
+
+## [2026-10-07] ingest | semgrep 1.179.0 七工具复核
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-10-07-semgrep-1179-recheck.md
+- Updated: wiki/agent-tooling/semgrep-mcp.md
+- 要点：行为与 1.178.0 一致；新增边界：自定义规则 code_files 须相对路径、p/default 拉取也超时（10s）；非安全规则（print）实测命中 cli.py 六处
+
+## [2026-10-07] ingest | codegraph 与 graphify 分工边界探测
+- Disposition: New
+- Raw: raw/agent-tooling/2026-10-07-codegraph-graphify-probe.md
+- 要点：单查询探测——codegraph 返 25 个代码符号未达 wiki 条目，graphify 同日图谱 wiki 节点高连接数（Wiki Log 174 边居首）；性能、覆盖全局性、功能独有性均未验证；global 仅空图试用，跨项目查询未验证

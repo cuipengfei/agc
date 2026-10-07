@@ -39,8 +39,9 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [LLM 出图的两种作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG 与 archify 类型化 JSON 的作者模型、几何裸露面与选择 | 2026-09-04 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 | [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动 | 2026-09-27 |
-| [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型（code/doc/paper/image/video）、Part A AST 与 Part B Semantic 提取分支、code-only corpus 定义、update 手动触发与 --watch 后台监听、edge schema 与置信度规则、install 平台与 skills.sh 兼容性 | 2026-09-26 |
-| [Semgrep MCP：工具清单、传输条件与实测边界](agent-tooling/semgrep-mcp.md) | 主 CLI 子命令形态、9 注册 7 实见、daemon 与 2s 超时两个文档未写前提、MCP 空结果需 CLI p/default 交叉验证 | 2026-09-26 |
+| [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型与两段式提取、code-only corpus、edge schema；2026-10-07 补 0.9.79 全命令清单实测（查询七件、导出七种、合并/全局/记忆层）与六条环境边界（伪 IP 拦截、watchdog、openai 包、gh 登录等）与 skill 自动刷新副作用 | 2026-10-07 |
+| [Semgrep MCP：工具清单、传输条件与实测边界](agent-tooling/semgrep-mcp.md) | 主 CLI 子命令形态、9 注册 7 实见、daemon 与 token 两个前提；2026-10-07 复核 1.179.0：自定义规则须相对路径、p/default 拉取也超时、非安全规则（print）实测命中 | 2026-10-07 |
+| [codegraph 与 graphify 的分工边界](agent-tooling/codegraph-vs-graphify.md) | 符号级索引 vs 混合语料地图：单查询探测 codegraph 未达 wiki 条目而 graphify 以 wiki 为枢纽；分层分工、选用建议与证据边界 | 2026-10-07 |
 | [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv 无全局清单、per-tool receipt 为唯一事实来源；receipt 字段与凭据省略；浅层 glob 同步方案与 94,152 文件递归风险 | 2026-10-05 |
 
 ## ai-coding-agents

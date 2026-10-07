@@ -1,8 +1,8 @@
 # Semgrep MCP：工具清单、传输条件与实测边界
 
-> Sources: PyPI JSON API + semgrep develop 分支源码直读 + 本机 stdio 探针与 7 工具实测, 2026-09-26
-> Raw: [2026-09-26-semgrep-mcp-inventory](../../raw/agent-tooling/2026-09-26-semgrep-mcp-inventory.md)
-> Updated: 2026-09-26
+> Sources: PyPI JSON API + semgrep develop 分支源码直读 + 本机 stdio 探针与 7 工具实测, 2026-09-26; 1.179.0 七工具复核, 2026-10-07
+> Raw: [2026-09-26-semgrep-mcp-inventory](../../raw/agent-tooling/2026-09-26-semgrep-mcp-inventory.md); [2026-10-07-semgrep-1179-recheck](../../raw/agent-tooling/2026-10-07-semgrep-1179-recheck.md)
+> Updated: 2026-10-07
 
 ## Overview
 
@@ -41,9 +41,13 @@ stdio JSON-RPC 探针（`initialize` + `tools/list`）：server 自报 `semgrep 
 - `semgrep_scan_supply_chain`：报错需要本地常驻 `semgrep daemon`，工具文档未写此前提。
 - `semgrep_findings`：按预期报 `SEMGREP_APP_TOKEN must be set`。
 
-## 扫描验证方法论
+## 2026-10-07 复核（1.179.0）
 
-MCP 扫描返回空时看不到跑了哪些规则，单看 MCP 空结果不足以证明干净，需 CLI `p/default` 交叉验证才敢下「代码无问题」结论。一次性扫描结果不入库。
+七工具重测，行为与 1.178.0 一致（工具集合不变、daemon/token 两个前提不变）。新增边界：
+
+- **`semgrep_scan_with_custom_rule` 的 `code_files` 路径必须相对**：给绝对路径报 `Failed to create temporary files: Untrusted path must be relative`；改相对路径后命中精确。
+- **p/default 规则集拉取同样会超时**（10 秒），重试成功——之前只记录过 rule_schema 的 2 秒超时。
+- 非安全规则实测：一条 `print(...)` 风格规则扫本仓库 cli.py，命中 6 处、行列全对——自定义规则不限安全主题，风格与项目约定类规则同样可用。
 
 ## 调用时机
 
