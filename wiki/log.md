@@ -975,3 +975,14 @@
 - Disposition: New
 - Raw: raw/omp-config/advisor-web-fallback-chain-root-cause.md
 - 要点：18.4.5 effort 层级（commit 5f012e314d，修 #13789）使 advisor 无链时 resolveRetryFallbackChainKey step3 命中 web 角色键（同模型 :high）→ advisor 走 web 链 → 19 个 web-search provider 全部 Unhandled API in mapOptionsForApi: web-search → Advisor "default" unavailable for web/ollama；探针复现 resolved chain key for advisor: web；本地修法 modelRoles.web 改 web/firecrawl + 显式 fallbackChains.web（删重复链头项）+ fallbackChains.advisor 加 c8787/gpt-5.6-luna；有效链顺序探针验证 web/tavily → web/exa → c8787/gpt-6-luna → web/duckduckgo；上游 #13158 closed wontfix（维护者留话复现就 reopen）、#13789、#13187 by-design
+
+## [2026-10-07] ingest | OpenAI Decisions API beta 发布与字段级 schema
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md
+- Updated: Jev 在 OMP、Codex、OpenCode 的现成集成盘点
+- 要点：2026-10-06 官方 changelog 以 beta 发布 Decisions API（`gpt-6-luna` + `POST /v1/decisions`）；官方 guides/decisions 指南页与 API reference create 页公开字段级 schema——请求 `model`/`input`/`questions`（predicate/choice/score 三题型，choice value 可 string 或 boolean）+ `safety_identifier`，响应 `answers` 四变体（含 refusal）+ `usage`；定价 input $0.10/M 只计 input；访问门槛仅第三方单账号实测 "Decision API is not enabled for this user"。旧记录 2026-09-30「端点未公开」结论已标 Status: Outdated；「Jev 唯一有可验证公开 API」收窄为「Jev 仍属唯一 GA 级公开 API」。
+
+## [2026-10-07] ingest | OMP judgment 对 chat 类 judge 的无 schema 文本解析机制
+- Disposition: New
+- Raw: raw/omp/2026-10-07-judgment-chat-llm-bridge.md
+- 要点：18.8.0 pi-ai `judgment/chat.ts` chatTextBackend 用普通 chat 模型当 judge 时不发 `response_format`/`json_schema`/`text.format`（judgment 目录 grep 零命中）；`temperature: 0` + `disableReasoning: true` + `maxTokens: 4096` 首次裸文本调用，prompt 约定关键词回答；`text.ts` 三解析器（choice 取最早合法 label / noul 取最早 yes-no / score 取首个范围内整数）抠答案，抠不到 throw `JudgmentParseError`；重试（parseRetries 2）才挂 `submit_judgment` tool（strict:true）强制交答案，仍走同一组解析器；jev 命中时走独立 `/v1/systemone` 路由与 chat 协议分离；本机 `modelRoles.judge` 实配 `typesafe-zen/jev-1.13`，Luna 做 judge 是假设场景；chat 类 judge 的 transport 依 `model.api` 分发（含 openai-responses 分支）但未读取 models.yml 具体 api 值。

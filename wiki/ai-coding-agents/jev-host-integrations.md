@@ -1,8 +1,8 @@
 # Jev 在 OMP、Codex、OpenCode 的现成集成盘点
 
-> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01
-> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [openai-decisions-api-announcement](../../raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md); [jevgrep-readme-and-architecture](../../raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md)
-> Updated: 2026-10-01
+> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01; OpenAI Decisions API beta 发布与字段级 schema 逐字核验, 2026-10-07
+> Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [openai-decisions-api-announcement](../../raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md); [jevgrep-readme-and-architecture](../../raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md); [openai-decisions-api-beta-schema](../../raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md)
+> Updated: 2026-10-07
 
 ## Overview
 
@@ -60,8 +60,11 @@
 
 - OpenAI 在 DevDay 2026（2026-09-29）宣布 Decisions API：官方 recap 原文称其 "focusing Luna's intelligence on a specific set of user-defined questions with finite pre-defined answers"，用途为分类、路由、选择 agent 下一步行动——与 Jev 同一产品形态。官方状态 "limited preview"，broad release "in the coming days"。HN 讨论亦将其框架为对 TypeSafe/Jev 的竞争回应。
 - 截至 2026-09-30，端点与 wire 格式未公开：官方 API reference 索引无 Decisions 条目，`resources/decisions*.md` 路径 404，changelog 无条目，openai-python / openai-node / openai-openapi / openai-cookbook 四个官方仓库均无 decisions 资源；bigchange 与 aigentlab 两篇独立溯源核查同日确认无公开 request path / schema / SDK 示例 / 定价。
+
+> **Status: Outdated** (2026-10-07)
+> 2026-10-06 OpenAI 官方 changelog 以 beta 发布 Decisions API，端点 `POST /v1/decisions`，仅配 `gpt-6-luna`。官方 guides/decisions 指南页与 API reference create 方法页已公开字段级 schema：请求体 `model`/`input`/`questions`（predicate/choice/score 三题型）+ `safety_identifier`，响应 `answers`（含 refusal 变体）+ `usage`；定价 input $0.10/M 只计 input。访问门槛仅据第三方单账号实测报错 "Decision API is not enabled for this user"，不能推广到所有 key。详见 [openai-decisions-api-beta-schema raw](../../raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md)。
 - GitHub 生态当日出现 OpenDecisions/OpenDecisions（0★，公告当天更新）：自建 `POST /v1/decisions` 服务，用开源模型在本地回答预定义选项问题，同时兼容 TypeSafe System One（`POST /v1/systemone`）；provider 路由表无 OpenAI 项，README 仅在图像输入格式处引用 OpenAI。其 `/v1/decisions` 形状属该项目自定，不构成 OpenAI 官方端点证据（推断）。
-- 含义：Decisions API 公开前，Jev 仍是唯一有可验证公开 API 的决策模型产品；上文集成盘点结论不受影响。
+- 含义：截至 2026-10-07，OpenAI 已有公开 beta Decisions API（端点 + 字段级 schema + 定价均已公开），旧记录"Jev 仍是唯一有可验证公开 API 的决策模型产品"的唯一性结论不再成立；不对 Jev GA 等级作判断。上文集成盘点结论不受影响。
 
 ## 2026-10-01 生态补充：jevgrep（agent 无关 CLI + skill）
 
