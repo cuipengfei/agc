@@ -46,7 +46,8 @@
     },
     "context-mode": {
       "type": "stdio",
-      "command": "context-mode"
+      "command": "context-mode",
+      "enabled": false
     },
     "grep-app-github": {
       "type": "http",
