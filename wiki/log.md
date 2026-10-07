@@ -1003,3 +1003,8 @@
 - Disposition: New
 - Raw: raw/agent-tooling/2026-10-07-codegraph-graphify-probe.md
 - 要点：单查询探测——codegraph 返 25 个代码符号未达 wiki 条目，graphify 同日图谱 wiki 节点高连接数（Wiki Log 174 边居首）；性能、覆盖全局性、功能独有性均未验证；global 仅空图试用，跨项目查询未验证
+
+## [2026-10-08] ingest | skill 清理、锁定文件匹配与 gws CLI 移除
+- Disposition: Update
+- Raw: raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md
+- Updated: wiki/agent-tooling/skills-cli-performance-model.md; wiki/omp-config/managed-skills.md

@@ -30,78 +30,6 @@
       "installedAt": "2026-04-29T15:36:05.276Z",
       "updatedAt": "2026-10-06T14:14:17.609Z"
     },
-    "systematic-debugging": {
-      "source": "obra/superpowers",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/obra/superpowers.git",
-      "skillPath": "skills/systematic-debugging/SKILL.md",
-      "skillFolderHash": "9a48dfda84bf339cba4b03fd803ba0dca2e158e3",
-      "installedAt": "2026-04-29T15:51:28.453Z",
-      "updatedAt": "2026-09-19T02:02:16.085Z"
-    },
-    "test-driven-development": {
-      "source": "obra/superpowers",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/obra/superpowers.git",
-      "skillPath": "skills/test-driven-development/SKILL.md",
-      "skillFolderHash": "847144cf0824095922c0d4875648b9fa74877e1a",
-      "installedAt": "2026-04-29T15:51:32.792Z",
-      "updatedAt": "2026-09-19T02:02:23.501Z"
-    },
-    "verification-before-completion": {
-      "source": "obra/superpowers",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/obra/superpowers.git",
-      "skillPath": "skills/verification-before-completion/SKILL.md",
-      "skillFolderHash": "a4cb0b69aaefeab540947a7f1642bdaad810e37a",
-      "installedAt": "2026-04-29T15:51:41.844Z",
-      "updatedAt": "2026-07-24T15:30:19.337Z"
-    },
-    "writing-skills": {
-      "source": "obra/superpowers",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/obra/superpowers.git",
-      "skillPath": "skills/writing-skills/SKILL.md",
-      "skillFolderHash": "f761162236b19330da62b22ad0da20f5dac7c6ab",
-      "installedAt": "2026-04-29T15:51:49.798Z",
-      "updatedAt": "2026-09-19T02:02:35.923Z"
-    },
-    "agent-md-refactor": {
-      "source": "softaworks/agent-toolkit",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/softaworks/agent-toolkit.git",
-      "skillPath": "skills/agent-md-refactor/SKILL.md",
-      "skillFolderHash": "89a8fede359cb48c66f1af44c5aa8fc07b82cded",
-      "installedAt": "2026-04-29T15:53:05.814Z",
-      "updatedAt": "2026-04-29T15:53:05.814Z"
-    },
-    "skill-judge": {
-      "source": "softaworks/agent-toolkit",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/softaworks/agent-toolkit.git",
-      "skillPath": "skills/skill-judge/SKILL.md",
-      "skillFolderHash": "7e98bf10ccdbd7e9293e9f59564e6dc949999f85",
-      "installedAt": "2026-04-29T15:53:10.126Z",
-      "updatedAt": "2026-04-29T15:53:10.126Z"
-    },
-    "claude-md-improver": {
-      "source": "anthropics/claude-plugins-official",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
-      "skillPath": "plugins/claude-md-management/skills/claude-md-improver/SKILL.md",
-      "skillFolderHash": "7188018e6710998fbc3227fdacd1b2b6e0508c38",
-      "installedAt": "2026-04-29T15:53:28.149Z",
-      "updatedAt": "2026-04-29T15:53:28.149Z"
-    },
-    "workflow-patterns": {
-      "source": "wshobson/agents",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/wshobson/agents.git",
-      "skillPath": "plugins/conductor/skills/workflow-patterns/SKILL.md",
-      "skillFolderHash": "1b791f7ea4b7f6257a44699f3e30e3c3d12ea7ea",
-      "installedAt": "2026-04-29T15:53:31.162Z",
-      "updatedAt": "2026-05-23T11:20:57.829Z"
-    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
@@ -110,15 +38,6 @@
       "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
       "installedAt": "2026-04-29T15:53:34.901Z",
       "updatedAt": "2026-07-11T14:50:15.169Z"
-    },
-    "skill-development": {
-      "source": "anthropics/claude-plugins-official",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
-      "skillPath": "plugins/plugin-dev/skills/skill-development/SKILL.md",
-      "skillFolderHash": "eb778d2062b41fa6b0aca146c5d5462890d749a3",
-      "installedAt": "2026-04-29T15:57:51.301Z",
-      "updatedAt": "2026-04-29T15:57:51.301Z"
     },
     "auto-extract": {
       "source": "cuipengfei/prompts",
@@ -202,24 +121,6 @@
       "installedAt": "2026-05-04T12:48:23.091Z",
       "updatedAt": "2026-08-16T16:20:11.632Z"
     },
-    "gws-gmail": {
-      "source": "googleworkspace/cli",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/googleworkspace/cli.git",
-      "skillPath": "skills/gws-gmail/SKILL.md",
-      "skillFolderHash": "95c83c1280def63651f99025fa707bc0e4781a79",
-      "installedAt": "2026-05-05T15:43:11.758Z",
-      "updatedAt": "2026-05-05T15:43:11.758Z"
-    },
-    "gws-gmail-send": {
-      "source": "googleworkspace/cli",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/googleworkspace/cli.git",
-      "skillPath": "skills/gws-gmail-send/SKILL.md",
-      "skillFolderHash": "b80148cb44ba92558c4842251c4fd111b9efda0a",
-      "installedAt": "2026-05-05T15:43:11.760Z",
-      "updatedAt": "2026-05-05T15:43:11.760Z"
-    },
     "jichang": {
       "source": "cuipengfei/prompts",
       "sourceType": "github",
@@ -237,15 +138,6 @@
       "skillFolderHash": "2a0a0386bcd7b6841dede5c107b5272d099aa98f",
       "installedAt": "2026-05-12T13:27:53.579Z",
       "updatedAt": "2026-09-25T08:51:49.148Z"
-    },
-    "clean-ddd-hexagonal": {
-      "source": "ccheney/robust-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/ccheney/robust-skills.git",
-      "skillPath": "skills/clean-ddd-hexagonal/SKILL.md",
-      "skillFolderHash": "2d48482070daecfc6b420c830521bdd497710472",
-      "installedAt": "2026-05-12T15:26:27.753Z",
-      "updatedAt": "2026-09-12T08:59:53.779Z"
     },
     "grill-with-docs": {
       "source": "mattpocock/skills",
@@ -266,15 +158,6 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-05-17T05:49:15.500Z",
       "updatedAt": "2026-10-06T14:14:17.612Z"
-    },
-    "caveman": {
-      "source": "juliusbrussee/caveman",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
-      "skillPath": "skills/caveman/SKILL.md",
-      "skillFolderHash": "ce6b7ff0b692d2cd445989bf7e6ce74698aa9a57",
-      "installedAt": "2026-06-03T13:10:52.159Z",
-      "updatedAt": "2026-10-03T14:54:26.009Z"
     },
     "ask-matt": {
       "source": "mattpocock/skills",
@@ -342,15 +225,6 @@
       "installedAt": "2026-06-18T23:46:40.487Z",
       "updatedAt": "2026-10-06T14:14:17.630Z"
     },
-    "council": {
-      "source": "0xNyk/council-of-high-intelligence",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/0xNyk/council-of-high-intelligence.git",
-      "skillPath": "SKILL.md",
-      "skillFolderHash": "d641b8d8b404cbd589a4ea1a491039a355be3dc5",
-      "installedAt": "2026-06-30T13:28:08.704Z",
-      "updatedAt": "2026-10-05T09:48:42.537Z"
-    },
     "elon-musk-perspective": {
       "source": "alchaincyf/elon-musk-skill",
       "sourceType": "github",
@@ -368,33 +242,6 @@
       "skillFolderHash": "d9ecbb514dc1c96a4d24dc272f2a7eea1351e7d8",
       "installedAt": "2026-06-30T16:33:11.094Z",
       "updatedAt": "2026-10-07T12:06:12.082Z"
-    },
-    "plannotator-compound": {
-      "source": "backnotprop/plannotator",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/backnotprop/plannotator.git",
-      "skillPath": "apps/skills/extra/plannotator-compound/SKILL.md",
-      "skillFolderHash": "e7cb3bf5836705facedb2f94c6648f269d3f0748",
-      "installedAt": "2026-07-05T14:30:55.757Z",
-      "updatedAt": "2026-07-05T14:30:55.757Z"
-    },
-    "plannotator-setup-goal": {
-      "source": "backnotprop/plannotator",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/backnotprop/plannotator.git",
-      "skillPath": "apps/skills/extra/plannotator-setup-goal/SKILL.md",
-      "skillFolderHash": "29d5d60c2b8a88c1786d7bbdbbfa37e44b64f6a5",
-      "installedAt": "2026-07-05T14:30:55.760Z",
-      "updatedAt": "2026-07-05T14:30:55.760Z"
-    },
-    "plannotator-visual-explainer": {
-      "source": "backnotprop/plannotator",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/backnotprop/plannotator.git",
-      "skillPath": "apps/skills/extra/plannotator-visual-explainer/SKILL.md",
-      "skillFolderHash": "060525d9a83760cc7cbc3004217c596a76a3e39a",
-      "installedAt": "2026-07-05T14:30:55.762Z",
-      "updatedAt": "2026-09-18T16:10:51.284Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -1016,15 +863,6 @@
       "installedAt": "2026-09-06T07:29:05.471Z",
       "updatedAt": "2026-09-06T09:49:46.467Z"
     },
-    "excalidraw-skill": {
-      "source": "yctimlin/mcp_excalidraw",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/yctimlin/mcp_excalidraw.git",
-      "skillPath": "skills/excalidraw-skill/SKILL.md",
-      "skillFolderHash": "376b142d789f28fea9a43d6441de2e47b81f1284",
-      "installedAt": "2026-09-06T11:58:21.905Z",
-      "updatedAt": "2026-10-03T14:54:50.019Z"
-    },
     "diagram-design": {
       "source": "cathrynlavery/diagram-design",
       "sourceType": "github",
@@ -1531,6 +1369,24 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-10-06T14:14:17.620Z",
       "updatedAt": "2026-10-06T14:14:17.620Z"
+    },
+    "writing-skills": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/writing-skills/SKILL.md",
+      "skillFolderHash": "f761162236b19330da62b22ad0da20f5dac7c6ab",
+      "installedAt": "2026-10-07T15:54:16.444Z",
+      "updatedAt": "2026-10-07T15:54:16.444Z"
+    },
+    "skill-development": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
+      "skillPath": "plugins/plugin-dev/skills/skill-development/SKILL.md",
+      "skillFolderHash": "eb778d2062b41fa6b0aca146c5d5462890d749a3",
+      "installedAt": "2026-10-07T15:54:30.905Z",
+      "updatedAt": "2026-10-07T15:54:30.905Z"
     }
   },
   "dismissed": {

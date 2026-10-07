@@ -1,8 +1,8 @@
 # skills CLI 性能模型：目录发现比安装数量更关键
 
-> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03
-> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md)
-> Updated: 2026-09-03
+> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08
+> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md)
+> Updated: 2026-10-08
 
 ## Overview
 
@@ -18,7 +18,7 @@ CLI 在源码中静态列出多个 agent skill 目录，例如 `.agents/skills`�
        + 软链、嵌套目录和更新检查的额外成本
 ```
 
-这解释了为什么“安装了很多 skill”不是唯一问题：即使某些目录最终没有可用 skill，它们仍可能进入发现路径；软链也不是零成本引用。
+这解释了为什么"安装了很多 skill"不是唯一问题：即使某些目录最终没有可用 skill，它们仍可能进入发现路径；软链也不是零成本引用。
 
 ## `check` 不是纯 dry-run
 
@@ -34,6 +34,14 @@ CLI 在源码中静态列出多个 agent skill 目录，例如 `.agents/skills`�
 2. 清理无用的 skill 软链，避免让发现路径反复检查它们。
 3. 再测量 `skills ls -g`，确认清理是否真的减少了耗时。
 4. 只有在目录规模已经受控后，才考虑更换 CLI 或修改扫描算法。
+
+## 锁定文件结构与批量卸载
+
+`.skill-lock.json`（version 3）的 `skills` 映射以 skill 名为 key，每个条目含 `source`（owner/repo）、`sourceType: "github"`、`skillPath`（如 `skills/<name>/SKILL.md`）、`skillFolderHash`、`installedAt`、`updatedAt`。key 可以是显示名（如 `Poteto Mode`），而磁盘目录名取自 skillPath 末级（`poteto-mode`）；核对锁定状态时应按 skillPath 而非 key 字符串匹配，否则会把这两条误报为 untracked。
+
+`skills remove -g -y <name...>` 按 key 精确匹配卸载，CLI 报告成功移除的 skill 数等于传入的 name 数；误卸可用 `skills add -g -y <repo> -s <skill>` 按原 repo 恢复。卸载对锁文件的净效果可由 git HEAD 快照对比验证：168 条减 16 条至 152 条，无新增 key。
+
+插件自带但未经安装器的 skill（googleworkspace/cli 的 gws-\*、recipe-\*、persona-\* 家族）不进锁文件，其 frontmatter 带 `version: 0.22.5` 与 `openclaw` metadata 块，与已锁定条目同版本同 schema——这是判断同源的文件级证据。删除这类目录不影响锁文件；卸载对应的 bun 全局 CLI 用 `bun remove -g @googleworkspace/cli`，`which gws` 无输出即生效。
 
 ## 证据边界
 
