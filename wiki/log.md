@@ -1033,3 +1033,15 @@
 - Raw: raw/skills-cli/2026-10-08-lock-space-name-cleanup.md
 - Updated: wiki/agent-tooling/skills-cli-performance-model.md
 - 要点：`skills remove` 位置参数调用返回 `No matching skills found`（根因未证实，CLI 是否按空格拆词未读源码）；`--skill` 调用删除磁盘安装、锁记录不变；新旧条目共享 skillPath 时 remove 连带删 slug 目录；本次恢复路径为手工清键 + slug 重装（单次案例，非通用流程）
+
+## [2026-10-09] ingest | OmO 停止条件与意图检测机制
+- Disposition: New
+- Raw: raw/oh-my-openagent-omo/2026-10-09-stop-condition-and-intent-mechanisms.md
+- Created: wiki/agent-harness/omo-stop-condition-mechanisms.md
+- 要点：三层停止机制（代码层 &lt;promise&gt; 正则+状态机不解析自然语言；提示词纪律层 intent line 5.5/5.6/6 演进；门控层 STOP WHEN lint + EVIDENCE_RECORDED 门 + gate-reviewer）；防过度执行/漂移/假完成/半成品；grep.app 检索受前 10 项限制非穷尽
+
+## [2026-10-09] ingest | OmO 技能生态与 skills CLI 安装
+- Disposition: New
+- Raw: raw/oh-my-openagent-omo/2026-10-09-ulw-skills-and-skills-cli-install.md
+- Created: wiki/agent-harness/omo-ulw-skills-ecosystem.md
+- 要点：skills.sh 官方 44 技能 10.2K 安装；ulw 家族停止条件定义者差异；意图行无技能复刻；skills CLI 13 vs 44 差异为单次观察（源码扫描规则未核实）；直接路径安装绕过；lock 跟踪；PromptScript 不支持全局；agc manifest 只覆盖 lock 元数据

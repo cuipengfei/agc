@@ -8,6 +8,8 @@ Agent harness 的 prompt、上下文架构与运行形态差异。
 |---------|---------|---------|
 | [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 相同模型表现差异背后的 prompt、技能加载、压缩、记忆和用户建模因素 | 2026-08-30 |
 | [SoL-Pi 与 OMP 兼容性](agent-harness/sol-pi-omp-compat.md) | SoL-Pi 四机制核查、推广文章三处错漏、pi→oh-my-pi 身份链、Action Fusion 机制与 OMP 兼容矩阵：装得上但 actionFusion 兼容修复 #11991 未进入 18.3.0 | 2026-09-25 |
+| [OmO 停止条件与意图检测机制](agent-harness/omo-stop-condition-mechanisms.md) | OmO 三层停止机制：代码层 &lt;promise&gt; 标签正则+会话状态机（不解析自然语言）、提示词纪律层 Hephaestus intent line 三版演进（5.5 承诺做完→5.6 停止条件声明即承诺+Stop Goal→6 Intent Gate）、门控层 STOP WHEN 存在性 lint+EVIDENCE_RECORDED 四重校验收据门+gate-reviewer 终审；防过度执行/漂移/假完成/半成品 | 2026-10-09 |
+| [OmO 技能生态与 skills CLI 安装](agent-harness/omo-ulw-skills-ecosystem.md) | skills.sh 官方发布 44 技能 10.2K 安装；ulw 家族停止条件定义者差异（loop/ultrawork 目标级、mass-ulw 节点级、execute 继承）；意图行无技能复刻；skills CLI 单次观察 13 vs 44 差异与直接路径安装绕过、lock 跟踪、PromptScript 不支持全局 | 2026-10-09 |
 
 
 ## github-repo-analysis
