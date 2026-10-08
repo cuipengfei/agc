@@ -74,7 +74,7 @@ modelRoles:
   task: kimi-claw/k3-agent:medium
   vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
-  advisor: c8787/gpt-6-luna:xhigh
+  advisor: c8787/gpt-6-luna:low
   default: kimi-claw/k3-agent:xhigh
   web: web/firecrawl
   memory: c8787/gpt-6-luna:max
