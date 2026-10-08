@@ -1,8 +1,8 @@
 # OMP Extension 与 TTSR：执行护栏的分层方法
 
 > Sources: OMP Extension authoring 文档与当前源码；OMP 官方 TTSR 文档；TTSR Injection Lifecycle 参考
-> Raw: [Extension 生命周期与设计模式](../../raw/omp-extensions/2026-08-29-omp-extension-lifecycle-patterns.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 防护案例](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [OMP Extension 与 Hook 关系修正](../../raw/omp-extensibility/2026-09-09-extension-hook-relationship.md)
-> Updated: 2026-09-09
+> Raw: [Extension 生命周期与设计模式](../../raw/omp-extensions/2026-08-29-omp-extension-lifecycle-patterns.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 防护案例](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [OMP Extension 与 Hook 关系修正](../../raw/omp-extensibility/2026-09-09-extension-hook-relationship.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md)
+> Updated: 2026-10-08
 
 ## 核心判断
 
@@ -12,7 +12,7 @@
 |---|---|
 | 工具的通用字段类型、必填关系和默认值 | tool schema |
 | 已解析对象中的字段、数组和对象关系 | `tool_call` extension |
-| 模型输出流里的固定文本模式 | TTSR |
+| 模型输出流里的固定文本模式；只能在完成输出上判定的语义约束 | TTSR |
 | 工具如何执行、如何路由和如何处理业务语义 | tool implementation |
 | 给模型的长期工作方式 | AGENTS.md / CLAUDE.md |
 
@@ -73,6 +73,8 @@ TTSR 按 condition 匹配模型输出流。可用 scope 包括文本、thinking�
 
 它不适合用 regex 严格解析任意 JSON。嵌套对象、字符串中的花括号、字段顺序和同名字段都会制造漏报或误报。
 
+带 `question` 的规则走另一条路径：不参与流式条件匹配，改在 assistant 消息结束后由 judge 判定（`ttsr.judge` 控制；`condition`/`astCondition` 在这类规则上只作初筛）。判定的输入只有那一块输出的文本，目标条件必须仅凭这段文本就能判定。机制与边界见 [OMP TTSR 判定机制与 question 规则](ttsr-and-judge.md)。
+
 ### 规则身份和 repeat gate
 
 规则名来自规则文件名 stem，不是 frontmatter 中的 `name`。命中状态会进入 injected state。`repeatMode: after-gap` 会在达到规定的 completed-turn 间隔前阻止同一规则再次触发，而且这个 gate 先于 scope/condition 判断。
@@ -93,7 +95,7 @@ TTSR 按 condition 匹配模型输出流。可用 scope 包括文本、thinking�
 
 两层不要重复承担同一职责：
 
-- TTSR 负责早期文本级 best-effort guard。
+- TTSR 负责早期文本级 best-effort guard；带 `question` 的规则例外，它在输出完成后判定。
 - Extension 负责结构化值的 block、rewrite 或 reminder。
 - Schema 负责工具通用契约。
 - Implementation 负责真正执行。
@@ -155,7 +157,7 @@ task(tasks=[
 ```text
 1. 这是通用 schema 约束吗？放 schema。
 2. 需要解析后的对象关系吗？放 tool_call extension。
-3. 只需识别输出流里的固定文本吗？用 TTSR。
+3. 需要识别输出流里的固定文本，或只能靠语义判断表达的完成输出约束吗？用 TTSR（后者写成 `question` 规则）。
 4. 需要知道原始字段是否存在吗？先查 defaulting 时序。
 5. 需要提醒而不是阻断吗？用 nextTurn，并验证实际投递。
 6. 规则有 repeat state 吗？使用 fresh session 或正确测试顺序。
@@ -166,3 +168,4 @@ task(tasks=[
 
 - [OMP TTSR 与 /omfg：流式行为护栏](ttsr-and-omfg.md) — TTSR 的具体 scope、配置和历史实验
 - [TTSR keep vs discard](keep-vs-discard.md) — 错误上下文的生命周期选择
+- [OMP TTSR 判定机制与 question 规则](ttsr-and-judge.md) — judge 路径的机制、`claim()` 语义与 `question` 适用评估

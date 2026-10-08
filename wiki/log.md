@@ -1008,3 +1008,10 @@
 - Disposition: Update
 - Raw: raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md
 - Updated: wiki/agent-tooling/skills-cli-performance-model.md; wiki/omp-config/managed-skills.md
+
+## [2026-10-08] ingest | OMP TTSR 判定机制与 question 规则
+- Disposition: New; Update
+- Raw: raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md; raw/omp-ttsr/2026-10-08-ttsr-judge-config-migration.md
+- Created: OMP TTSR 判定机制与 question 规则
+- Updated: OMP TTSR 与 /omfg; OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界; OMP Extension 与 TTSR 分层防护
+- 要点：Rule.question 是 TTSR 两条路径（正则/AST 流匹配 vs judge 事后判定）的分流开关（ttsr.ts:745-785 addRule、992-998 #matchBuffer 过滤）；claim() 只把 YES verdict 的规则标 injected、NO 判定不消耗 once 状态，请求次数取决于首次 YES 位置——全 NO 时等于 pre-filter 命中数，一旦 YES 触发 claim 后剩余通过 pre-filter 的 output 因 `#canTrigger` 返回 false 不再进入候选（ttsr.ts:985-989、529）；ttsr.judge 三值 auto/on/off（ttsr-settings.ts:20-41），auto 要求 judge 角色链首 kindOf===native（judgment/index.ts:206-209）；omp ttsr test 对带 question 的规则直接过滤、不调 judge（ttsr-cli.ts:283-288），只能验证 YAML 与 regex，判定质量必须走真实会话 + omp usage purpose=ttsr 观测；judge state 只有 output.subject 与 content 两字段（ttsr.ts:96），结构性看不到对话历史、用户消息、外部状态，目标条件落在 output 之外的规则加 question 会结构性误报；TtsrManager.addRule() 对已存在规则名直接返回 false（ttsr.ts:749-750），同名规则不会同时注册、先加载胜出；本机第一条带 question 的规则 verify-before-mechanism-claims 走「.omp/rules → ~/.omp/agent/rules」迁移（commit bb2dcc7），manifest.json 只有一条 omp-rules 条目 ~/.omp/agent/rules→omp/agent/rules，.omp/rules/ 不在 manifest 覆盖内

@@ -1,8 +1,8 @@
 # OMP TTSR 与 /omfg：流式行为护栏
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24；本会话 18.1.21 源码核验与内存复现，2026-09-14
-> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [deferred 注入竞态调查](../../raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md)
-> Updated: 2026-09-14
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24；本会话 18.1.21 源码核验与内存复现，2026-09-14；本机 fork 736ce1d99a 直读，2026-10-08
+> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [deferred 注入竞态调查](../../raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [TTSR judge 规则同步边界与迁移](../../raw/omp-ttsr/2026-10-08-ttsr-judge-config-migration.md)
+> Updated: 2026-10-08
 
 ## 速查
 
@@ -10,7 +10,8 @@
 - **/omfg**：规则生成入口——`/omfg <你的抱怨>` → 生成规则 → 用会话历史验证 → 确认保存 → 即刻生效
 - **触发前提**：规则启用 + 命中 + scope/globs 匹配 + 未被重复抑制 + `interruptMode` 允许中断（以上为中途掐断前提；命中≠中断——`interruptMode: never` 下规则仍命中，只是不掐断、改为事后提醒）
 - **关键配置**：`ttsr.interruptMode: always`（掐断）+ `contextMode: discard`（抹掉出轨消息）
-- **不要用**：需要语义理解的判断（它只有 regex/AST，没有 LLM 分类器）；指望它阻止已流出的 token（中止的是"继续生成"，已流出的收不回）
+- **语义判断**：流式条件只有 regex 与 AST，做不到；带 `question` 的规则改走输出完成后的 judge 判定，见 [TTSR 判定机制与 question 规则](ttsr-and-judge.md)
+- **不要用**：指望它阻止已流出的 token（中止的是"继续生成"，已流出的收不回）
 
 ## 机制
 
@@ -20,7 +21,10 @@
 
 监控范围：`text_delta`/`thinking_delta`/`toolcall_delta` 三种流都进入管线，但**默认 scope 只覆盖正文 + 工具参数，不含 thinking**——需规则显式声明 scope 才监控 thinking（docs/ttsr-injection-lifecycle.md:54,258）。
 
-匹配只有两种：regex（`condition`）和 ast-grep 结构模式（`astCondition`）。零 LLM、零语义理解——这是刻意的成本取舍（上游 #8192 提议加 tiny model 分类器，未实现）。
+流式条件只有两类：regex（`condition`）逐增量匹配，ast-grep 结构模式（`astCondition`）在 edit/write 工具的归一化快照上匹配。
+
+> **Status: Outdated** (2026-10-08)
+> 原文写「匹配只有两种……零 LLM、零语义理解——这是刻意的成本取舍（上游 #8192 提议加 tiny model 分类器，未实现）」，对应 2026-08-24 的源码快照。声明了 `question` 的规则另有第二条路径：不经流式条件判定，改由 judge 角色在输出完成后做是/否概率判定，由 `ttsr.judge` 控制；流式条件下的匹配本身仍只有上面两类。机制见 [TTSR 判定机制与 question 规则](ttsr-and-judge.md)。
 
 ### /omfg
 
@@ -37,6 +41,7 @@
 | `ttsr.repeatGap` | 普通 `number`（非 enum；schema 未声明范围约束，未核验解析层边界） | after-gap 的间隔，单位是**已完成 turn**（turn_end 才加一）。UI 快捷档 5/10/15/20/30，默认 10 |
 | `ttsr.builtinRules` | `true`/`false` | 是否加载内置规则包。默认 `true` |
 | `ttsr.disabledRules` | string[] | 按名屏蔽，内置与自定义均生效。默认 `[]` |
+| `ttsr.judge` | `auto`/`on`/`off` | judge 判定开关，只影响带 `question` 的规则。默认 `auto`（judge 角色链首必须是原生 System One）；`on`（无条件判）；`off`（`question` 规则永不触发）。详见 [TTSR 判定机制与 question 规则](ttsr-and-judge.md) |
 
 **当前配置**（2026-09-14 pull 快照）：`discard` + `always` + `once` + `repeatGap: 5`（此前为 `after-gap`）。`always` + `once` 恰好绕开 deferred 竞态（见下文「已知问题」）。
 
@@ -98,7 +103,9 @@ TTSR 处理原始流式文本，适合做确定性的 best-effort 拦截；`tool
 
 **适合**：确定性的重复行为约束——格式、禁语、项目红线。出轨偶发时比 always-apply 规则省 context。
 
-**不适合**：语义判断（它不懂意图）；出轨高频的规则（abort+重试成本可能反超常驻提示）；指望它防住已流出的输出。
+**不适合**：需要严格结构校验的判断（交给 parser）；出轨高频的规则（abort+重试成本可能反超常驻提示）；指望它防住已流出的输出。
+
+**判定路径的适用面**：条件必须在输出文本自身可判定时才适合加 `question`；目标条件落在输出之外的规则会结构性误报。见 [TTSR 判定机制与 question 规则](ttsr-and-judge.md)。
 
 ## 未决问题
 
@@ -112,3 +119,4 @@ TTSR 处理原始流式文本，适合做确定性的 best-effort 拦截；`tool
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — TTSR 与 magic keywords 等触发机制的定位及组合边界
 - [OMP Extension 与 TTSR 分层防护](extension-and-ttsr-layering.md) — TTSR 与结构化 extension 的职责边界
 - [TTSR keep vs discard](keep-vs-discard.md) — 命中后保留或丢弃错误上下文的取舍
+- [OMP TTSR 判定机制与 question 规则](ttsr-and-judge.md) — judge 路径完整机制、claim() 语义、加 question 的评估方法

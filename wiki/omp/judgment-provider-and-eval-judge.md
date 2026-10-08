@@ -1,12 +1,12 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md)
-> Updated: 2026-09-26
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md)
+> Updated: 2026-10-08
 
 ## Overview
 
-OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `providers.judgmentProvider` 选择（合法值恰好 `auto`/`typesafe`/`llm` 三个，默认 `auto`）。该子系统为 OMP 自己的功能供电：auto-thinking 难度分类、smart unexpected-stop 检测、git TUI AI staging 三个自动消费方，外加 eval cell 内用户手动调用的 `judge(state, questions)` helper。本文全部结论来自本轮会话对本机安装的 18.2.5 的源码直读、GitHub API 核验与一次 eval smoke 实测；未使用真实 TypeSafe key 做端到端判定。
+OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `providers.judgmentProvider` 选择（合法值恰好 `auto`/`typesafe`/`llm` 三个，默认 `auto`）。该子系统为 OMP 自己的功能供电：auto-thinking 难度分类、smart unexpected-stop 检测、git TUI AI staging 三个自动消费方，外加 eval cell 内用户手动调用的 `judge(state, questions)` helper。**TTSR judge 已加入第 4 个自动消费方**（commit `ef6d8b2d0c`），`ttsr.judge: auto/on/off` 三值控制，每完成 output 独立判一次，走 `deliverAs: aside` 不中断运行。18.2.5 段落来自本机安装包的源码直读与 eval smoke 实测；TTSR judge 段落补录自本机 fork 736ce1d99a 的 TTSR 消费方源码，具体引入版本号未查证。
 
 ## 版本与发布沿革
 
@@ -35,9 +35,9 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 - LLM 桥内部按 feature 的 backend 二分：backend = `"online"`（两个相关设置的默认值）→ `OnlineChatJudge`，候选链 `tiny → smol → default`，调用方传了 `sessionModel` 且不在候选中则末尾追加会话当前模型；backend 指到本地 tiny-model key → `LocalJudge`（on-device，keyword 提示词，`LOCAL_ANSWER_MAX_TOKENS=16`，reasoning 模型给 1024）。
 - 完整 fallback chain：**TypeSafe（含退避与 key 轮换）→ tiny → smol → default → 会话当前模型**。`llm` 模式下永不触碰 TypeSafe；链内规则为无 API key 的候选跳过、凭据/provider 失败换下一个、caller abort/TimeoutError 直接抛、全灭才抛 `judgment: every tiny/smol candidate failed`。
 
-## 消费方：3 个自动 + 1 个手动（18.2.5 全枚举）
+## 消费方：4 个自动 + 1 个手动（18.2.5 时点为 3 自动 + 1 手动；commit `ef6d8b2d0c` 加 TTSR judge）
 
-对 `resolveJudge` / judgment 模块导入方全量 grep，恰好 4 个调用点，**没有第四个自动消费者**：
+对 `resolveJudge` / judgment 模块导入方全量 grep，18.2.5 时点（2026-09-19）恰好 4 个调用点：3 个自动 + 1 个手动，没有第四个自动消费者。**后续 commit `ef6d8b2d0c`（2026-09-23）引入 TTSR judge 成为第 4 个自动消费方**（`ttsr.judge` 三值控制），下表补录。
 
 | 消费方 | 触发条件 | 判定形态 | 结果如何改变控制流 |
 |---|---|---|---|
@@ -45,6 +45,7 @@ OMP 自 18.2.4（2026-09-17）起内置 TypeSafe（Jev）judgment 后端，由 `
 | smart unexpected-stop 检测 | `features.unexpectedStopDetection` 必须为 `smart`（`none` 不跑；`mechanical` 不跑 judge，只对无文本 thinking-only turn 走重试）；排除 toolCall/空内容 turn | 单题 NoulQuestion（是/否 + P(yes)）；阈值 `noul >= 0.5` 为 true（keyword judge 只给 0/1，TypeSafe 才给中间概率） | true 则 `unexpectedStopRetryCount++`（上限 3），未超帽注入 developer reminder 并 `scheduleAgentContinue` 自动继续该 turn；超帽放弃 |
 | git TUI AI staging | 用户在 unstaged 头部 wand pill 输入自然语言指令（用户触发、判定全自动）；自建 Settings/ModelRegistry，backend 硬编码 `"online"` 且未传 sessionModel | 两趟：file pass 每批 80 文件、每文件一道 NoulQuestion（`noul >= 0.5` 选入）；hunk pass 对选中文件的 hunk 再判 | 三档结果决定 `git apply --cached` 的范围；file pass 无逐条容错，一批 judge 抛错则整个 `aiStage` 抛错 |
 | eval cell `judge()` | **手动**：cell 代码显式调用，经 `__judge__` bridge → `runEvalJudgment`；三个自动功能不经过它 | 用户自定义 state 与 questions | 见下节 smoke 边界 |
+| TTSR judge（`ttsr.judge: auto/on/off`） | `ttsr.judge` 非 `off` 且（`auto` 时 judge 角色链首是原生 System One）；每条完成 output 单独一次请求；`stopReason` 是 `aborted`/`error` 时跳过 | 每 output 一次 `judge()`，`state = { output: subject, content: jevPrefix(content, 32000) }`；同 output 多个候选共享 state 计费；每题一道 NoulQuestion；阈值 `noul >= 0.7`（`ttsr.ts:57`） | verdict 走 `deliverRuleWarning` 发 `ttsr-injection` custom message，`deliverAs: aside`（运行中合入下一步，空闲开新轮）；**不中断**；违规才 `claim()` 标 injected，NO 判定下轮重问 |
 
 共同底线：两个会话内自动功能（auto-thinking、unexpected-stop）是吞错降级设计；唯一能把异常甩到用户面前的是 git TUI（错误条）与 eval cell（异常）。
 
@@ -101,3 +102,4 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 - [Jev 语义回归检查方法](../harness-engineering/jev-semantic-regression-testing.md)
 - [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md)
 - [OMP 配置语义手册](../omp-config/config-semantics.md)
+- [OMP TTSR 判定机制与 question 规则](../omp-ttsr/ttsr-and-judge.md) — 第 4 个自动消费方的完整机制、claim() 语义、可加 question 的评估方法

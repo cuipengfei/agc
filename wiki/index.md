@@ -270,9 +270,10 @@ OMP TTSR 流式行为护栏、Extension 分层与上下文处置。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | schema、tool_call extension 与 TTSR 的职责边界 | 2026-09-09 |
+| [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | schema、tool_call extension 与 TTSR 的职责边界；TTSR 两类规则（流式条件 vs `question` 判定）的适用范围 | 2026-10-08 |
 | [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | 命中规则后保留或丢弃错误上下文的证据与取舍 | 2026-08-26 |
-| [OMP TTSR 与 /omfg](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、配置、生命周期、规则生成与实测边界；deferred 注入竞态（#12057） | 2026-09-14 |
+| [OMP TTSR 与 /omfg](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、配置、生命周期、规则生成与实测边界；deferred 注入竞态（#12057）；2026-10-08 补 ttsr.judge 三值配置行 | 2026-10-08 |
+| [OMP TTSR 判定机制与 question 规则](omp-ttsr/ttsr-and-judge.md) | Rule.question 分流开关；claim() 语义（NO 不消耗 once 状态、请求次数=pre-filter 命中数）；ttsr.judge 三值；omp ttsr test 不调 judge 的 CLI 边界；judge 可见性边界；规则发现路径与 omp-rules 同步边界；加 question 的评估方法 | 2026-10-08 |
 
 ## personal-knowledge
 
@@ -358,7 +359,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，以及输�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、3 自动+1 手动消费方，judge() 双语言三题型与重复调用实测；jevify magic keyword 与 judge() 路由分离；18.2.8 起 modelRoles.judge + fallbackChains 路由层；judgeBatch 批量用法与常见误诊 | 2026-09-26 |
+| [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、4 自动+1 手动消费方（后续加 TTSR judge），judge() 双语言三题型与重复调用实测；jevify magic keyword 与 judge() 路由分离；18.2.8 起 modelRoles.judge + fallbackChains 路由层；judgeBatch 批量用法与常见误诊 | 2026-10-08 |
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 已切 jev-1.13 付费通道；18.2.8 解除 api: typesafe 版本限制 | 2026-09-22 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数、观测面（18.2.8：auto-thinking 与 eval judge 记 usage；unexpected-stop 两个成功 nudge 样本无新增 usage，原因未知）、zen 已实测兼容与 OpenRouter 不兼容 | 2026-09-22 |
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |
