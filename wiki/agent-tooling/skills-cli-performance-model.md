@@ -1,7 +1,7 @@
 # skills CLI 性能模型：目录发现比安装数量更关键
 
 > Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08
-> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md)
+> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md)
 > Updated: 2026-10-08
 
 ## Overview
@@ -42,6 +42,19 @@ CLI 在源码中静态列出多个 agent skill 目录，例如 `.agents/skills`�
 `skills remove -g -y <name...>` 按 key 精确匹配卸载，CLI 报告成功移除的 skill 数等于传入的 name 数；误卸可用 `skills add -g -y <repo> -s <skill>` 按原 repo 恢复。卸载对锁文件的净效果可由 git HEAD 快照对比验证：168 条减 16 条至 152 条，无新增 key。
 
 插件自带但未经安装器的 skill（googleworkspace/cli 的 gws-\*、recipe-\*、persona-\* 家族）不进锁文件，其 frontmatter 带 `version: 0.22.5` 与 `openclaw` metadata 块，与已锁定条目同版本同 schema——这是判断同源的文件级证据。删除这类目录不影响锁文件；卸载对应的 bun 全局 CLI 用 `bun remove -g @googleworkspace/cli`，`which gws` 无输出即生效。
+
+## 空格名 key 的卸载语义
+
+锁 key 含空格的显示名（`Poteto Mode`、`Make Bot UI`）在卸载时表现特殊（2026-10-08 实测案例，根因未证实）：
+
+- `skills remove -g -y "Poteto Mode" "Make Bot UI"`（位置参数）不匹配任何锁 key，输出 `No matching skills found`，锁与磁盘均不变。shell 引号会把 `"Poteto Mode"` 作为单个参数传入，CLI 是否按空格拆词未读源码证实。
+- `skills remove --skill "Poteto Mode" --skill "Make Bot UI" -g -y` 报告 removed 2，但删除对象是**磁盘安装**：若锁中旧显示名条目与新 slug 条目共享同一 `skillPath`，删除会连带删掉 slug 条目实际使用的技能目录，而锁记录本身不变化。
+- locked 条目与磁盘目录名可以不同（key `Poteto Mode` → 目录 `poteto-mode`）。是否能用 `skills ls -g` 核对锁 key 与磁盘目录对账，本次未验证。
+- 本次案例的恢复路径：手工编辑 `~/.agents/.skill-lock.json` 精确删键（原子写回：tempfile + os.replace），再用 slug 名 `skills add -y -g <repo>@<slug>` 重装；`backnotprop/pstack` 的 `poteto-mode`/`make-bot-ui` 重装后恢复。这是用户批准的单次操作，非验证过的通用流程。
+
+## 锁定文件变更的粗粒度确认
+
+锁 mtime 与条目 `installedAt`/`updatedAt` 都不足以单独断言某条命令写了锁：`installedAt` 只记录条目何时加入，`updatedAt` 未必随每次写入刷新；区分「命令是否修改锁」应以命令前后的锁文件快照 diff 为准（会话内用备份文件对比）。
 
 ## 证据边界
 

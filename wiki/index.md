@@ -35,7 +35,8 @@ Agent 周边工具、安装配置与工作流 Skill。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南 | 2026-08-31 |
-| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响；锁定文件结构、批量卸载与 bun remove 实测 | 2026-10-08 |
+| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响；锁定文件结构、批量卸载、空格名 key 卸载语义与锁清理实录 | 2026-10-08 |
+| [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言（零歧义机器解析）与简明语言（人类读者结果）的选型；中文无官方 ISO 适配、繁中层原创；两技能「编码规则不复制收费标准」范式 | 2026-10-08 |
 | [LLM 出图的两种作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG 与 archify 类型化 JSON 的作者模型、几何裸露面与选择 | 2026-09-04 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 | [Headroom 0.39 配置与兼容性](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动 | 2026-09-27 |
@@ -392,3 +393,11 @@ OpenCode V2 迁移：包身份、破坏变更、配置与插件兼容性、会�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OpenCode V2 迁移：发布、破坏变更与本机兼容性](opencode/opencode-v2-migration.md) | V2 包 `@opencode/cli` 2.0.18（v1 `opencode-ai` 无 2.x）；三个有意破坏变更（插件 API、server API、终端配置）；LSP 保留不运行；配置多数自动归一化、`server`/`compaction.prune` 被忽略；本机 8 个 v1 插件 + 5/6 第三方仅 V1；启动触发会话迁移写入 DB（581 行 skip、完整度未确认）与凭据暴露教训 | 2026-09-29 |
+
+## video-generation
+
+HTML 驱动的 agent 视频生成工具链。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [HyperFrames：HTML 写视频的 agent 管线](video-generation/hyperframes-html-video.md) | 59K+ stars、HTML 即视频、确定性渲染可进 CI；组合契约（时间轴协议、禁 opacity 初始态与 `<br>`、字体 lint）；WSL 实操（预览走用户浏览器、渲染需 headless Chrome）、core set 10 技能装法 | 2026-10-08 |

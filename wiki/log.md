@@ -1015,3 +1015,21 @@
 - Created: OMP TTSR 判定机制与 question 规则
 - Updated: OMP TTSR 与 /omfg; OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界; OMP Extension 与 TTSR 分层防护
 - 要点：Rule.question 是 TTSR 两条路径（正则/AST 流匹配 vs judge 事后判定）的分流开关（ttsr.ts:745-785 addRule、992-998 #matchBuffer 过滤）；claim() 只把 YES verdict 的规则标 injected、NO 判定不消耗 once 状态，请求次数取决于首次 YES 位置——全 NO 时等于 pre-filter 命中数，一旦 YES 触发 claim 后剩余通过 pre-filter 的 output 因 `#canTrigger` 返回 false 不再进入候选（ttsr.ts:985-989、529）；ttsr.judge 三值 auto/on/off（ttsr-settings.ts:20-41），auto 要求 judge 角色链首 kindOf===native（judgment/index.ts:206-209）；omp ttsr test 对带 question 的规则直接过滤、不调 judge（ttsr-cli.ts:283-288），只能验证 YAML 与 regex，判定质量必须走真实会话 + omp usage purpose=ttsr 观测；judge state 只有 output.subject 与 content 两字段（ttsr.ts:96），结构性看不到对话历史、用户消息、外部状态，目标条件落在 output 之外的规则加 question 会结构性误报；TtsrManager.addRule() 对已存在规则名直接返回 false（ttsr.ts:749-750），同名规则不会同时注册、先加载胜出；本机第一条带 question 的规则 verify-before-mechanism-claims 走「.omp/rules → ~/.omp/agent/rules」迁移（commit bb2dcc7），manifest.json 只有一条 omp-rules 条目 ~/.omp/agent/rules→omp/agent/rules，.omp/rules/ 不在 manifest 覆盖内
+
+## [2026-10-08] ingest | HyperFrames：HTML 写视频的 agent 管线
+- Disposition: New
+- Raw: raw/video-generation/2026-10-08-hyperframes-html-video.md
+- Created: wiki/video-generation/hyperframes-html-video.md
+- 要点：59K+ stars（2026-10-08 API 实测 59005）；14 包 13 发布 npm（0.8.141）；52 技能/11.4M 安装；core set 10 技能装法；组合契约（禁 opacity 初始态、禁 `<br>`、字体 lint、时间轴协议）；WSL 实操（预览走用户浏览器、渲染需 headless Chrome）
+
+## [2026-10-08] ingest | Plain Language 技能：ASD-STE100 与 ISO 24495-1
+- Disposition: New
+- Raw: raw/agent-tooling/2026-10-08-asd-ste100-iso24495-skills.md
+- Created: wiki/agent-tooling/plain-language-skills-asd-ste100-iso24495.md
+- 要点：受控语言（零歧义机器解析）vs 简明语言（人类读者结果）；ISO 24495-1 无中文官方适配、繁中层原创；两技能「编码规则分类不复制付费标准」范式
+
+## [2026-10-08] ingest | skills CLI 空格名 key 卸载语义
+- Disposition: Update
+- Raw: raw/skills-cli/2026-10-08-lock-space-name-cleanup.md
+- Updated: wiki/agent-tooling/skills-cli-performance-model.md
+- 要点：`skills remove` 位置参数调用返回 `No matching skills found`（根因未证实，CLI 是否按空格拆词未读源码）；`--skill` 调用删除磁盘安装、锁记录不变；新旧条目共享 skillPath 时 remove 连带删 slug 目录；本次恢复路径为手工清键 + slug 重装（单次案例，非通用流程）
