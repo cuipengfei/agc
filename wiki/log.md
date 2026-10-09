@@ -1065,3 +1065,15 @@
 ## [2026-10-09] lint | 212 issues found, 0 auto-fixed
 - check_evidence.py 全库（exit 0）：207 fidelity suspect、3 evidence error（wiki/omp-signature-verification/ 的 index/log/omp-method 无 Raw 字段）、2 unreferenced raw（omp-signature-verification）
 - 3 evidence error 与 2 unreferenced raw 均在本轮未改动的 omp-signature-verification 文件中，非本次 justwoker ingest 引入；本次改动的 justwoker 文章自身有 2 个日期 fidelity suspect（已知假阳性）；全库其余 suspect 未逐篇核对
+
+## [2026-10-09] update | 双层循环操控模型
+- Disposition: Update
+- Raw: raw/geekbang-agent-harness/2026-10-09-lesson-20-skills-best-practices.md
+- Updated: wiki/harness-engineering/dual-loop-steering-model.md
+- 要点：新增「Skills 最佳实践」section——判断标准可预测（每次类似过程不是相同输出）、四实践全落内层循环四环节：明确触发（description 是唯一竞争位，重点写什么时候用，撞车写边界，模型调用 vs 用户调用）、恰当自由度（低/中/高三档映射四环节交给模型比例）、体积控制与拆分（先看结构再看数字，四环膨胀各有诊断，500 行/5000 token 拐点，拆分需独立触发器+完整四环节）、内层循环本身即是最佳实践；Raw 字段追加第 20 讲 raw 文件；index.md Summary 追加「含 Skills 最佳实践（20 讲）」
+
+## [2026-10-10] ingest | OMP 官方文档对照：magic keywords 细节、prewalk 子命令/todo gate、tern 双身份、slash 表补四命令
+- Disposition: Update（omp-modes/modes-and-magic-keywords.md、omp-prewalk/prewalk.md、omp-slash-commands/builtin-slash-commands.md）+ New（omp-tips/tern-tsp-and-browser-backend.md）
+- Raw: raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md; raw/omp-prewalk/2026-10-10-prewalk-off-restart-todo-gate.md; raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md; raw/omp/2026-10-10-ratchet-mechanics.md; raw/omp-slash-commands/2026-10-10-builtin-modes-registry-additions.md
+- Updated: 四篇文章（见 Disposition）
+- 要点：与 oh-my-pi 当前源码（blob d485860）对照：magic keywords 四个单开关含 `magicKeywords.workflow`（workflowz 对应 key 不带 z）、ultrathink 绕过 `providers.autoThinkingMaxEffort`、HTML/XML 注释豁免与 expanded prompt 匹配时机；prewalk 删除「没有 off/status/toggle」旧说，补 `/prewalk off`、`/prewalk restart` 与 todo gate（任何成功 todo 调用含只读 view 打开 gate）；tern 主题首篇（TSP 原生渲染协议 + browser 后端，命名来历未证实）；slash 全表 Mode 类 17→21 条，补 `/slow` `/ratchet` `/modelpreset` `/effort`（源码注册核实）

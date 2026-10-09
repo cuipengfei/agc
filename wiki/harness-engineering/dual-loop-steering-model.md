@@ -1,8 +1,8 @@
 # 双层循环操控模型
 
 > Sources: 徐昊（极客时间《Agent 驾驭工程之美》），2026-09; Birgitta Böckeler（martinfowler.com），2026-04-02
-> Raw: [课程核心概念摘录](../../raw/geekbang-agent-harness/2026-09-30-course-concepts.md); [坏味道系列问题摘录](../../raw/geekbang-agent-harness/2026-10-02-qa-concepts.md); [08/09/13/17/18/19 讲摘录](../../raw/geekbang-agent-harness/2026-10-06-bad-smells-08-09-13.md)
-> Updated: 2026-10-06
+> Raw: [课程核心概念摘录](../../raw/geekbang-agent-harness/2026-09-30-course-concepts.md); [坏味道系列问题摘录](../../raw/geekbang-agent-harness/2026-10-02-qa-concepts.md); [08/09/13/17/18/19 讲摘录](../../raw/geekbang-agent-harness/2026-10-06-bad-smells-08-09-13.md); [第 20 讲 Skills 最佳实践](../../raw/geekbang-agent-harness/2026-10-09-lesson-20-skills-best-practices.md)
+> Updated: 2026-10-09
 
 ## Bad Smells 与重构手法
 
@@ -97,6 +97,37 @@ Agent 运行依赖的条件（运行时、依赖、外部服务、模型）没�
 
 消除手法：**模式基线化（Pattern Baseline）**，分四步：正向范例（给出新写法的样子，放在仓库固定位置）；确立架构约束（把约定变成会失败的自动化检查，强制不变量不微观管理实现）；建立基线（现存违规冻结，只许减少不许增加）；持续清理（改到哪清到哪）。前两步的分工：范例给方向，约束给边界。
 
+
+## Skills 最佳实践 → 怎么写出可预测的技能？
+
+技能好坏的判断标准是**可预测（Predictability）**：每次跑出类似的过程，不是相同的输出。结果每次可以不一样，但先做什么、后做什么、什么算做完必须稳定。
+
+四个实践全部落在内层循环（Guides → Action → Sensors → Steering）结构上：
+
+### 明确触发
+
+description 是唯一常驻上下文的字段，也是唯一参与竞争的位。要在几十上百个技能里被选中，重点写「什么时候用」，而不是「这个技能能干什么」。两个技能描述撞车时，把「不该用在哪儿」也写进去。有 description 的技能是模型调用（Model-Invoked），摘掉 description 后变成用户调用（User-Invoked）——前者有模糊性但灵活，后者消除模糊性但认知负载全压在人身上。
+
+### 恰当的自由度
+
+自由度量的其实是内层循环四环节里有多少交给模型：
+
+- 低自由度：四环节全定死，模型只执行 Action
+- 中自由度：Guides 和 Sensors 定住，Action 里的选择交给模型
+- 高自由度：只给 Guides 的方向和 Sensors 的标准，Action 和 Steering 都交给模型
+
+不同任务对确定性的要求不同，选哪一档看这一步做错了能不能倒回来。
+
+### 体积控制与拆分
+
+先看结构再看数字。先查四环节缺不缺（缺失比臃肿更常见），再看哪一环膨胀：前馈膨胀对应前馈痴迷，反馈膨胀对应反馈过载，Action 膨胀是自由度问题（该给方向的地方钉死了），Steering 膨胀是异常决策树太大（只留关键转向）。结构没问题之后才看行数与 token——实测拐点是 500 行 / 5000 token。
+
+拆分判据：能否提取独立触发器，且拆出来的技能必须有完整的四个环节。只有 Action 的不算新技能，只是被挪走的一段说明；只有 Sensors 的说明它应该是分级反馈里的一步。
+
+### 内层循环本身即是最佳实践
+
+四个实践不是独立的技巧清单，都叠加在内层循环结构上。配合前面的坏味道重构（保证流程一致性）和知识固化，写技能就不是难事。
+
 ## retro 与动态知识更新的关系
 
 retro skill 不对应课程的动态知识更新。retro 是对一次会话做回顾，找出**环境改进点**（导航指针、自动化检查、编码标准、工具经济性），按严重程度向用户展示候选项。它改的是 Harness 的基础设施，不是知识归位到 ADR/wiki/偏好文件。
@@ -149,6 +180,7 @@ Böckeler 的做法是把修正指引**写进 sensor 的输出**——lint 报�
 Feedforward 这个术语是 I. A. Richards 在 1951 年第八届 Macy 控制论会议（Macy Conference on Cybernetics）上创造的，明确作为 feedback 的对应词。OED 记录了这个起源。起源在 cybernetics 内部，后传入 control theory。
 
 Cybernetics（控制论）是 Wiener 1948 年创立的跨学科领域，研究一切系统的控制与通信。Control theory（控制理论）是工程学分支，专门研究动态系统的数学建模与控制器设计。前馈/反馈的明确区分来自 control theory，但术语本身起源于 cybernetics。
+
 
 ## 概念对应关系
 
