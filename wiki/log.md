@@ -1045,3 +1045,23 @@
 - Raw: raw/oh-my-openagent-omo/2026-10-09-ulw-skills-and-skills-cli-install.md
 - Created: wiki/agent-harness/omo-ulw-skills-ecosystem.md
 - 要点：skills.sh 官方 44 技能 10.2K 安装；ulw 家族停止条件定义者差异；意图行无技能复刻；skills CLI 13 vs 44 差异为单次观察（源码扫描规则未核实）；直接路径安装绕过；lock 跟踪；PromptScript 不支持全局；agc manifest 只覆盖 lock 元数据
+
+## [2026-10-09] ingest | OMP Compaction Methods & History URI Tool Support
+- Disposition: New
+- Raw: raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md
+- Created: wiki/omp-config/compaction-methods-and-history-uri.md
+- 要点：五种压缩方法（remote/snapcompact/handoff/shake/soft）fallback chain 默认顺序；soft 两次 LLM 调用（完整摘要+短摘要）vs handoff 一次（markdown 文档）；实验性 rollover 不调 LLM，依赖 notebook 和 history://current/full；history://current/full 实测支持 read/grep/find，glob/ast-grep 无效
+
+## [2026-10-09] ingest | JustWoker /v1/messages 实测行为
+- Disposition: Update; Disputed
+- Raw: raw/model-gateway-mismatch/2026-10-09-justwoker-stream-recovery-probe.md
+- Updated: JustWoker `/v1/messages` 实测行为
+- 要点：2026-10-09 单次探测直连上游与 shim 流式均返回完整内容块（含 text_delta，usage input_tokens 164）；与 2026-10-04 空流为时间不同的并列观测，稳定性未验证；shim 非流式返回 403 空体；model 字段返回请求名 claude-opus-4-8；方法论：fallbackResponse 合成 SSE 与透传同构，确认上游恢复须直连
+
+## [2026-10-09] update | OMP Compaction Methods — history URI gate 更正
+- 更正对象：本文件 2026-10-09 ingest | OMP Compaction Methods & History URI Tool Support
+- 内容：history://current/full 的 read/grep/find 支持仅在 compaction.experimentalContextManagement=true 且存在 caller-bound live session branch 时成立；每次解析重新调 getSessionBranch()，无 registry/on-disk fallback（history-protocol.ts:291,371-387）
+
+## [2026-10-09] lint | 212 issues found, 0 auto-fixed
+- check_evidence.py 全库（exit 0）：207 fidelity suspect、3 evidence error（wiki/omp-signature-verification/ 的 index/log/omp-method 无 Raw 字段）、2 unreferenced raw（omp-signature-verification）
+- 3 evidence error 与 2 unreferenced raw 均在本轮未改动的 omp-signature-verification 文件中，非本次 justwoker ingest 引入；本次改动的 justwoker 文章自身有 2 个日期 fidelity suspect（已知假阳性）；全库其余 suspect 未逐篇核对

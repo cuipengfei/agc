@@ -134,7 +134,7 @@ MCP server 清单筛选、star 真实性与生态知识。
 |---------|---------|---------|
 | [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数的分离及验证方法 | 2026-09-05 |
 | [Gateway catalog 是客户端配置的权威源](model-gateway-mismatch/gateway-catalog-as-config-authority.md) | claude_model_id 与计费档边界替代按窗口推算，真实窗口与计费档不可混用 | 2026-09-05 |
-| [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测；目录无能力字段与 UA 门槛；流式丢内容块、tools 与 system 被运行时替换、quince 代号溯源 | 2026-10-05 |
+| [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测；目录无能力字段与 UA 门槛；流式丢内容块、tools 与 system 被运行时替换、quince 代号溯源；2026-10-09 流式恢复探测（并列观测，稳定性未验证） | 2026-10-09 |
 | [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-04 |
 | [Relay 的 chunked 流不终止：诊断与最小修复](model-gateway-mismatch/relay-unterminated-chunked-stream.md) | 缺失 chunked 终止块造成的 60 秒挂起、客户端一致性验证与本地 shim 修复 | 2026-09-05 |
 | [SDK 对非标准 responses 帧的解析严格度差异](model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) | AI SDK 与 pi-ai 对同一 responses 帧的解析差异及 OpenCode/OMP 协议分配；senpi(OMO) 共享同套 adapter 与不补 /v1 规则 | 2026-09-27 |
@@ -165,6 +165,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Compaction Model 与 Thinking Level](omp-config/compaction-model.md) | compactionModel 只换压的人，thinking effort 继承自 session thinkingLevel | 2026-09-09 |
 | [OMP Compaction 阈值解析机制](omp-config/compaction-threshold.md) | 阈值基数只有 contextWindow（固定值/百分比/reserve 三模式，默认 -1 走 reserve = max(15%, 16384)）；maxTokens 不参与阈值，只做摘要输出预算 | 2026-10-01 |
 | [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
+| [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true） | 2026-10-09 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处；本机目录布局实测（无 ~/.omp/agent/skills，用户级 skills 在 ~/.agents/skills） | 2026-10-08 |
 | [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive | 2026-09-29 |
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |

@@ -99,6 +99,15 @@ providers:
       - image
       contextWindow: 292000
       maxTokens: 55000
+    - id: gpt-6.1-sol
+      compactionModel: c8787/gpt-5.6-luna
+      name: GPT-6.1 Sol
+      reasoning: true
+      input:
+      - text
+      - image
+      contextWindow: 292000
+      maxTokens: 55000
     - id: gpt-6-astra
       compactionModel: c8787/gpt-5.6-luna
       name: GPT-6 Astra

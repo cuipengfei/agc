@@ -1,8 +1,8 @@
 # JustWoker `/v1/messages` 实测行为
 
-> Sources: JustWoker API 实测, 2026-09-01; JustWoker `/v1/models` 目录与 UA 实测, 2026-09-05; JustWoker 流式空响应与工具替换实测, 2026-10-04 至 2026-10-05
-> Raw: [JustWoker `/v1/messages` 脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md); [Anthropic 兼容 relay 的 `/v1/models` 目录形态与 UA 门槛](../../raw/model-gateway-mismatch/2026-09-05-anthropic-relay-catalog-and-ua.md); [流式空响应诊断与断路器 shim 设计](../../raw/model-gateway-mismatch/2026-10-05-justwoker-empty-stream-and-breaker-shim.md); [运行时替换 tools 与 system 的实测](../../raw/model-gateway-mismatch/2026-10-05-justwoker-tools-and-system-replacement.md); [claude-quince 是 Bedrock Opus 4.8 的内部代号](../../raw/model-gateway-mismatch/2026-10-05-claude-quince-bedrock-codename.md); [shim 工具仿真层实现](../../raw/model-gateway-mismatch/2026-10-05-shim-tool-emulation-implementation.md)
-> Updated: 2026-10-05
+> Sources: JustWoker API 实测, 2026-09-01; JustWoker `/v1/models` 目录与 UA 实测, 2026-09-05; JustWoker 流式空响应与工具替换实测, 2026-10-04 至 2026-10-05; JustWoker 流式恢复探测, 2026-10-09
+> Raw: [JustWoker `/v1/messages` 脱敏实测摘录](../../raw/model-gateway-mismatch/2026-09-01-justwoker-v1-messages-observations.md); [Anthropic 兼容 relay 的 `/v1/models` 目录形态与 UA 门槛](../../raw/model-gateway-mismatch/2026-09-05-anthropic-relay-catalog-and-ua.md); [流式空响应诊断与断路器 shim 设计](../../raw/model-gateway-mismatch/2026-10-05-justwoker-empty-stream-and-breaker-shim.md); [运行时替换 tools 与 system 的实测](../../raw/model-gateway-mismatch/2026-10-05-justwoker-tools-and-system-replacement.md); [claude-quince 是 Bedrock Opus 4.8 的内部代号](../../raw/model-gateway-mismatch/2026-10-05-claude-quince-bedrock-codename.md); [shim 工具仿真层实现](../../raw/model-gateway-mismatch/2026-10-05-shim-tool-emulation-implementation.md); [JustWoker 流式恢复探测（2026-10-09）](../../raw/model-gateway-mismatch/2026-10-09-justwoker-stream-recovery-probe.md)
+> Updated: 2026-10-09
 
 ## Overview
 
@@ -24,6 +24,8 @@
 `claude-opus-4-8` 的三次最小重复请求均返回文本 `OK`，并记录 6844 input tokens、1 output token、`cost: 0.0006104893320066336` 和 `kiro_credits: 0.03052446660033168`。
 
 两条保留的 `claude-opus-5-thinking` 最小请求均返回文本 `OK`，并记录 6935 input tokens、1 output token、`cost: 0.0006270531794361527` 和 `kiro_credits: 0.03135265897180763`。
+
+2026-10-09 的一次探测中，`claude-opus-4-8` 的流式与非流式响应 model 字段均返回 `claude-opus-4-8`（请求名本身），不再是 `claude-opus-5`。这与上文是时间不同的并列观测，不覆盖历史记录。
 
 ## 响应包含请求中没有提供的身份与环境文字
 
@@ -103,6 +105,12 @@
 ## 流式 `/v1/messages` 丢内容块（2026-10-04 观测）
 
 `stream: true` 的请求返回 HTTP 200 SSE，但整个流只有信封事件（`message_start`/`message_delta`/`message_stop`），零个内容块事件。非流式同参数请求返回完整内容。OMP 只走流式，因此每个回合都拿到计费空响应，重试 3 次后报 empty stop。
+
+## 流式恢复探测（2026-10-09 观测）
+
+本次探测中，`stream: true` 返回 HTTP 200 且事件序列完整：message_start、ping、content_block_start、content_block_delta（含 text_delta）、content_block_stop、message_delta、message_stop，usage input_tokens 164、output_tokens 1。本地 shim 的流式路径返回同构序列（耗时 24534 ms）；shim 非流式路径返回 HTTP 403 空响应体。同轮直连非流式 input_tokens 为 6643，远大于流式的 164。
+
+本次与上节 2026-10-04 的空流观测为时间不同、结果不同的并列记录，是否稳定恢复未验证（单次采样）。方法论注意：shim 的 `fallbackResponse` 合成的 SSE 事件形态与透传一致（见 [justwoker-shim 设计](justwoker-shim-design.md) 的 SSE 合成），事件形态单独不能区分透传还是回退，确认上游流式恢复以直连上游结果为准。
 
 ## 运行时替换客户端 Tools 与 System（2026-10-04 至 2026-10-05 观测）
 
