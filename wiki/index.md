@@ -197,6 +197,7 @@ OMP 启动提示与交互快捷方式。
 | [OMP web search 自定义 Responses API 端点](omp-tips/web-search-custom-responses-provider.md) | codex provider 接入兼容 /codex/responses 的端点：路径拼接、请求形状、凭证分支、实测 | 2026-09-19 |
 | [OMP web search provider 清单与 fallback](omp-tips/web-search-provider-inventory.md) | 25 个 provider 四类分级、串行 fallback、public 并发合并、webSearchOrder 追加语义、Tavily MCP 与原生 `web/tavily` 凭证来源差异 | 2026-09-29 |
 | [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描全部 `*.ts`/`*.js` 扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法 | 2026-09-19 |
+| [Tern：TSP 与 browser 后端](omp-tips/tern-tsp-and-browser-backend.md) | Tern Surface Protocol（TUI 原生渲染协议，`PI_TUI_NATIVE` 开关）与 browser 工具后端的两个身份：探测、native 渲染、rows 回退、WKWebView 画中画、能力边界；命名来历未证实 | 2026-10-10 |
 
 ## kimi-claw
 
@@ -232,7 +233,7 @@ OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；jevify magic keyword | 2026-09-21 |
+| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；magic keywords 四词与单开关（含 `magicKeywords.workflow`）、ultrathink 旁路 `autoThinkingMaxEffort`、HTML/XML 豁免与 expanded prompt 匹配 | 2026-10-10 |
 
 ## omp-prewalk
 
@@ -240,7 +241,7 @@ OMP Prewalk 的模型切换机制与行为边界。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Prewalk：规划后切换模型](omp-prewalk/prewalk.md) | 规划后首次文件修改时切换模型的触发、配置与社区证据；xd:// 挂载导致 MCP 工具 prewalk false positive 及 `tools.xdev: false` 缓解 | 2026-09-29 |
+| [OMP Prewalk：规划后切换模型](omp-prewalk/prewalk.md) | 规划后首次文件修改时切换模型的触发、配置与社区证据；`/prewalk off`、`/prewalk restart` 子命令与 todo gate；xd:// 挂载导致 MCP 工具 prewalk false positive 及 `tools.xdev: false` 缓解 | 2026-10-10 |
 
 ## omp-discovery
 
@@ -265,7 +266,7 @@ OMP 内置 slash 命令的全量枚举与逐命令机制。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 内置 slash 命令全表（82 条）](omp-slash-commands/builtin-slash-commands.md) | core registry 79 条 + bundled /green /review + SDK /autoresearch；六类分组的机制、场景、收益与 ACP 可用性 | 2026-09-06 |
+| [OMP 内置 slash 命令全表（v18.1.10 快照 82 条；当前 core registry 85 条）](omp-slash-commands/builtin-slash-commands.md) | 口径一 v18.1.10 快照 82 条（core 79 + bundled /green /review + SDK /autoresearch）；口径二 2026-10-10 当前 blob core registry 85 条七类：Mode 21 / Collab 11 / Session 19 / Lifecycle 25 / Marketplace 3 / Skills 1 / Control 5；2026-10-10 补 Mode 类 `/slow` `/ratchet` `/modelpreset` `/effort` | 2026-10-10 |
 | [OMP Shake 机制](omp-slash-commands/shake-mechanics.md) | 无 LLM 外科裁剪：tool result + 消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档、useless 豁免、toolCall 不碰、artifact 占位符可回收 | 2026-10-01 |
 
 ## omp-ttsr

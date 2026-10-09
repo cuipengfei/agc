@@ -1,8 +1,8 @@
 # OMP Prewalk：规划后切换模型
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13；本机源码 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证，2026-09-29
-> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md)
-> Updated: 2026-09-29
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13；本机源码 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证，2026-09-29；oh-my-pi 官方 docs/prewalk.md，2026-10-10
+> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [Prewalk /prewalk off、/prewalk restart 与 todo gate 机制官方摘录](../../raw/omp-prewalk/2026-10-10-prewalk-off-restart-todo-gate.md)
+> Updated: 2026-10-10
 
 ## Overview
 
@@ -13,6 +13,8 @@ Prewalk 是 oh-my-pi 的一次性模型交接功能：当前模型先规划，to
 开启 prewalk 后，OMP 会让当前模型先形成 todo 计划。当前模型执行第一次 edit/write 文件修改操作并返回后，切换在包含该操作的 assistant 消息及其工具批次结束时执行；同一消息中已经生成的其他工具调用仍由当前模型执行，下一次模型请求起才使用便宜模型。
 
 触发条件只要求修改操作返回，不检查 `isError`。因此，失败的 edit/write 也会触发切换；失败后的实际影响没有实测，切换后出现的 checklist 只是给模型的验证提示，不构成正确性保证。
+
+todo gate 机制：`todo` 工具激活时，任何成功的 `todo` 调用（含只读 `view` 操作）打开 handoff gate；无 `todo` 工具时 gate 本来就敞开。与 todo gate 不同，edit/write 触发不要求结果成功。
 
 切换只发生一次。这里的“一次”是指 prewalk 自动切换机制：它切换后不再自动切回，也不会按剩余 todo 项逐项重新选择模型。用户仍可用 `/model` 手动切换；其他自动机制也可能改变模型。切换是当前会话级行为，不把模型选择写回配置；但 usage 统计仍可写入 settings storage。
 
@@ -28,7 +30,7 @@ omp --prewalk-into gpt-5.4-mini
 omp --no-prewalk
 ```
 
-也可在配置中启用 `prewalk.enabled: true`，或在会话中执行 `/prewalk`。`/prewalk` 固定使用 `@smol` 目标；没有 off/status/toggle 命令。恢复已有会话时，配置启用不会自动重新建立 prewalk 状态。
+也可在配置中启用 `prewalk.enabled: true`，或在会话中执行 `/prewalk`。`/prewalk` 固定使用 `@smol` 目标，已 armed 时保留现有 target 不变。会话中还有 `/prewalk off` 与 `/prewalk restart` 两个子命令：`/prewalk off` 取消 pending 的 handoff 并清除 planning steering，不改 active model、已保存配置或已交付的 continuation history，已 off 或 handoff 之后运行也安全、不会切回 planning model，取消仅对当前会话生效（`/new` 在配置启用时会重新 armed）；`/prewalk restart` 在 handoff 之后立即将会话回切到当前 `@default` 角色并重新武装指向 `@smol` 的 handoff，两个角色在命令运行时解析、循环不依赖具体模型名，也不改动任一角色的持久化配置，若已 armed 且现有 target 与当前 `@smol` 解析不同，restart 在改变 active model 之前被拒绝。恢复已有会话时，配置启用不会自动重新建立 prewalk 状态。
 
 目标解析失败或目标没有可用凭证时，OMP 发出 warning 并跳过，不阻止会话继续。未发现 prewalk 专属环境变量；`PI_SMOL_MODEL` 可以间接改变默认目标。
 

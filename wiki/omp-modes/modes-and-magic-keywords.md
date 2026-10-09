@@ -1,8 +1,8 @@
 # OMP 工作模式与 Magic Keywords
 
-> Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); OMP 源码 d49918fab2
-> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md)
-> Updated: 2026-09-21
+> Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); OMP 源码 d49918fab2; oh-my-pi 官方文档与源码，2026-10-10
+> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [OMP Magic Keywords 与 Vibe Mode 官方文档/源码摘录](../../raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md)
+> Updated: 2026-10-10
 
 ## 工作流模式
 
@@ -16,7 +16,7 @@
 | `/loop` | 重复检查、有界修复循环 | 每次 yield 后重复提交同一 prompt |
 | `/prewalk` | 强模型规划、便宜模型实现 | 第一次 `edit/write` 时一次性切换模型 |
 
-Plan、Goal、Vibe 互斥。
+Plan、Goal、Vibe 互斥；官方明确 Vibe 与 active 及 paused 的 plan/goal 均互斥，进入 Vibe 前需先退出这些模式。
 
 ## Vibe 的 fast/good 与 persistent
 
@@ -26,6 +26,7 @@ Plan、Goal、Vibe 互斥。
 `fast/good` 不是固定模型名，是 capability tier 到 agent/role 的映射；实际模型受 `task.agentModelOverrides`、`modelRoles` 等配置影响。
 
 **Persistent** 指 worker 有自己的 child session 和上下文；完成一次 turn 后进入 idle，可用 `vibe_send` 继续指导；退出 Vibe 才终止。
+- 官方 worker 控制工具共五个：`vibe_spawn`、`vibe_send`、`vibe_wait`（默认等 30 秒）、`vibe_kill`、`vibe_list`。
 
 ## Vibe vs 普通模式 + Task/Hub
 
@@ -55,16 +56,24 @@ Plan、Goal、Vibe 互斥。
 
 | Keyword | 效果 | 条件 |
 |---|---|---|
-| `ultrathink` | 当前 turn 深度推理；auto-thinking 时提升到最高 effort | 无 |
+| `ultrathink` | 当前 turn 深度推理；auto-thinking 激活时选择当前模型支持的最高 reasoning effort，绕过 `providers.autoThinkingMaxEffort` | 无 |
 | `orchestrate` | 用 `task` subagents 并行执行 | 需要 `task` 工具 |
 | `workflowz` | 用 `eval` 中的 `agent/parallel/pipeline/completion` 构建 DAG；依赖节点按边等待，独立节点仍可并行 | 需要 `task` + `eval` |
 | `jevify` | 追加隐藏提示，引导 agent 在 eval kernel 中调用 `judge()`：先冻结 rubric，再批量分类，最后人工复核低置信度、错误或边界项 | 需要 `eval` 工具；`magicKeywords.jevify` 默认开启，可用 `omp config set magicKeywords.jevify false` 关闭 |
+
+开关（settings key，全局与四个单关键词开关全部默认 `true`）：
+
+- 全局：`magicKeywords.enabled` 控制所有隐藏 notice 与编辑器动画，`omp config set magicKeywords.enabled false` 一次关闭全部。
+- 单关键词：`magicKeywords.ultrathink` / `magicKeywords.orchestrate` / `magicKeywords.workflow` / `magicKeywords.jevify` 各自只控制自己的 notice（以及 ultrathink 的最高 auto-thinking 覆写）。
+- `workflowz` 的开关 key 是 `magicKeywords.workflow`——源码 `MAGIC_KEYWORDS` 表 `id` 为 `workflow`（不带 z），`omp config set magicKeywords.workflow false` 只关 workflowz。
 
 匹配规则：
 
 - 精确小写、独立成词。
 - 只影响当前 turn。
-- 代码块、inline code、路径、函数名不触发。
+- 代码块、inline code、HTML/XML 注释/标签/元素及其内容不触发；路径、函数名同理。
+- 匹配基于 expanded prompt：slash 命令与 prompt 模板展开之后才匹配。
+- 系统/agent 发起的合成 prompt 不触发。
 - 可多关键词组合。
 
 Vibe 父 session 没有普通 `task`/`eval`，因此 `orchestrate`/`workflowz` 不会注入。

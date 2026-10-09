@@ -1,12 +1,12 @@
-# OMP 内置 slash 命令全表（82 条）
+# OMP 内置 slash 命令全表（v18.1.10 快照 82 条；2026-10-10 当前 blob core registry 85 条）
 
-> Sources: 本机 @oh-my-pi/pi-coding-agent v18.1.10 随包源码直读 + dist/cli.js bundle 对账；DeepWiki/Context7/官方 docs 补设计意图, 2026-09-05
-> Raw: [注册表定位与枚举](../../raw/omp-slash-commands/2026-09-05-registry-enumeration.md), [modes](../../raw/omp-slash-commands/2026-09-05-scout-modes.md), [collaboration](../../raw/omp-slash-commands/2026-09-05-scout-collaboration.md), [session](../../raw/omp-slash-commands/2026-09-05-scout-session.md), [lifecycle](../../raw/omp-slash-commands/2026-09-05-scout-lifecycle.md), [marketplace+control](../../raw/omp-slash-commands/2026-09-05-scout-marketplace-control.md), [bundled 三条](../../raw/omp-slash-commands/2026-09-05-scout-bundled.md), [外部信源](../../raw/omp-slash-commands/2026-09-05-external-intent.md), [补查 lifecycle](../../raw/omp-slash-commands/2026-09-05-followup-lifecycle.md), [补查 modes](../../raw/omp-slash-commands/2026-09-05-followup-modes.md), [补查 collab](../../raw/omp-slash-commands/2026-09-05-followup-collab.md), [压缩模型解析机制](../../raw/omp-slash-commands/2026-09-06-compaction-model-resolution.md)
-> Updated: 2026-09-06
+> Sources: 本机 @oh-my-pi/pi-coding-agent v18.1.10 随包源码直读 + dist/cli.js bundle 对账；DeepWiki/Context7/官方 docs 补设计意图, 2026-09-05；oh-my-pi 当前源码 code search 核实，2026-10-10
+> Raw: [注册表定位与枚举](../../raw/omp-slash-commands/2026-09-05-registry-enumeration.md), [modes](../../raw/omp-slash-commands/2026-09-05-scout-modes.md), [collaboration](../../raw/omp-slash-commands/2026-09-05-scout-collaboration.md), [session](../../raw/omp-slash-commands/2026-09-05-scout-session.md), [lifecycle](../../raw/omp-slash-commands/2026-09-05-scout-lifecycle.md), [marketplace+control](../../raw/omp-slash-commands/2026-09-05-scout-marketplace-control.md), [bundled 三条](../../raw/omp-slash-commands/2026-09-05-scout-bundled.md), [外部信源](../../raw/omp-slash-commands/2026-09-05-external-intent.md), [补查 lifecycle](../../raw/omp-slash-commands/2026-09-05-followup-lifecycle.md), [补查 modes](../../raw/omp-slash-commands/2026-09-05-followup-modes.md), [补查 collab](../../raw/omp-slash-commands/2026-09-05-followup-collab.md), [压缩模型解析机制](../../raw/omp-slash-commands/2026-09-06-compaction-model-resolution.md), [ratchet 机制源码摘录](../../raw/omp/2026-10-10-ratchet-mechanics.md), [builtin-modes 注册项增补摘录](../../raw/omp-slash-commands/2026-10-10-builtin-modes-registry-additions.md)
+> Updated: 2026-10-10
 
 ## 一句话
 
-OMP v18.1.10 有 **82 条内置 slash 命令**：79 条在 core registry（`slash-commands/builtin-registry.ts:38-45`，六类数组合并），外加 bundled 的 `/green`、`/review`（`extensibility/custom-commands/loader.ts:154-171`）和 SDK 注入的 `/autoresearch`（`sdk.ts:2133` + `autoresearch/index.ts:126`）。
+**口径一（v18.1.10 快照，本表主体）**：共 **82 条**——79 条在 core registry（`slash-commands/builtin-registry.ts:38-45`，六类数组合并），外加 bundled 的 `/green`、`/review`（`extensibility/custom-commands/loader.ts:154-171`）和 SDK 注入的 `/autoresearch`（`sdk.ts:2133` + `autoresearch/index.ts:126`）。**口径二（2026-10-10 当前 blob，GitHub 源码直读核算）**：core registry 已增至 **85 条、七类**（Mode 21 / Collaboration 11 / Session 19 / Lifecycle 25 / Marketplace 3 / Skills 1（新增类）/ Control 5，见 [builtin-modes 注册项增补摘录 raw](../../raw/omp-slash-commands/2026-10-10-builtin-modes-registry-additions.md)第 0 节）；其中 Mode 类比快照增补 4 条（`/slow`、`/ratchet`、`/modelpreset`、`/effort`，已列入下表），当前 blob 另有 `/skills`（Skills 类）与 `/pause`（Control 类）两条未列入本表；bundled/SDK 通道未重新核算。
 
 ## 读表前必知的三件事
 
@@ -14,7 +14,7 @@ OMP v18.1.10 有 **82 条内置 slash 命令**：79 条在 core registry（`slas
 2. **TUI/ACP 双通道**：spec 有 `handle` 则 ACP 文本模式可用；只有 `handleTui` 则 TUI 专属（builtin-registry.ts:109-114）。下表「ACP」列 = 文本/自动化模式能否用。
 3. **运行时对账已做**：82 个名字全部在 dist/cli.js 命中；extension/hook 的 `registerCommand` 是用户侧动态通道，不计入内置。
 
-## Mode 类（17 条）
+## Mode 类（21 条）
 
 | 命令                       | ACP | 干什么                                                                                                                   | 场景                                       | 收益                                     |
 | -------------------------- | --- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ | ---------------------------------------- |
@@ -35,6 +35,10 @@ OMP v18.1.10 有 **82 条内置 slash 命令**：79 条在 core registry（`slas
 | `/extended-context`        | ✅  | 开关付费长上下文窗口（写持久设置）                                                                                       | 超大代码库/长历史                          | 避免中途 truncation                      |
 | `/computer`                | ✅  | 会话级开关 computer-use prelude                                                                                          | 临时要截图/光标控制能力                    | 不改全局配置即可试用                     |
 | `/prewalk`                 | ✅  | arm 下一次 edit/write 动作用廉价模型，做完切回                                                                           | 思考用贵模型、批量写用便宜模型             | 动作级模型降级省 token                   |
+| `/ratchet`                 | ✅  | 构建（或复用）一条 LLM 流程的评测，再无人值守爬山迭代打磨（每轮一处改动，gate 定 keep/revert）                           | 系统性提升某 LLM 流程的 prompt/配置质量    | 评测驱动自动打磨，跑到 plateau/done 为止 |
+| `/slow`                    | ✅  | 开关 slow mode（原文："Toggle slow mode: flex tier on OpenAI/Google; on Anthropic, continue at low priority after the Claude session limit"）；子命令 on/off/status | 降成本，或订阅到限额后想继续跑 | 更低价格换更高延迟 |
+| `/modelpreset`             | ✅  | 保存与切换模型预设（role models + thinking level）（原文："Save and switch model presets (role models + thinking level)"）；子命令 list/save/switch/delete | 整套角色模型+思考档位的一键切换 | 预设复用整套模型配置 |
+| `/effort`                  | ✅  | 设置本会话推理强度（原文："Set reasoning effort (thinking level, intelligence) for this session; shift+tab cycles levels"）；无参开档位选择器，shift+tab 循环 | 按任务难度调节思考深度 | 一条命令切换思考档位 |
 
 ## Collaboration 类（11 条）
 
@@ -137,6 +141,7 @@ OMP v18.1.10 有 **82 条内置 slash 命令**：79 条在 core registry（`slas
 - **官方文档覆盖**：约 16 条命令有独立 docs 页（/vibe /collab /compact /shake /memory /mcp /advisor /share /handoff /ssh /tree /branch /fork /settings /setup 等，详见 external-intent raw）；/omfg /tan /btw /prewalk /fast /switch /queue /stats /usage 等 24 条无任何外部文档，只有源码描述。
 - **未实测**：表中行为全部来自源码静态阅读（附行号见各 scout raw），未逐条在 TUI 实操；`/live` /pause /quit 的内部实现细节 scout 标了「未确认」。
 - **不计入内置的通道**：用户/项目 `commands/` 目录的 .md 命令、marketplace 插件命令、skill 命令（`skillsSettings.enableSkillCommands` 门控）、extension/hook 的 `registerCommand`。
+- **当前源码增补（2026-10-10）**：Mode 表新增 `/ratchet` `/slow` `/modelpreset` `/effort` 四条，来自 oh-my-pi 当前仓库源码（`packages/coding-agent/src/slash-commands/builtin-modes.ts`，blob `d485860`），均为 v18.1.10 快照之后的注册；82 条口径不变。四条均经 search_code 命中 + file_read 逐字核实注册名与描述。
 
 ## 十问补遗（用户追问的源码实证答案）
 
