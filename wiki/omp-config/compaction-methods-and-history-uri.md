@@ -1,8 +1,8 @@
 # OMP Compaction Methods & History URI Tool Support
 
-> Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09
-> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md)
-> Updated: 2026-10-09
+> Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09; installed `@oh-my-pi/pi-coding-agent` 18.8.7 source, 2026-10-10; OMP session JSONL `01a1163e` + log `omp.2026-10-10.41920.log`, 2026-10-10
+> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md)
+> Updated: 2026-10-10
 
 ## Overview
 
@@ -39,7 +39,7 @@ OMP 提供五种本地压缩方法（remote、snapcompact、handoff、shake、so
 
 ## 实验性 rollover
 
-`experimentalContextManagement: true` 时，自动触发走 rollover，不调用任何压缩方法。用固定 prompt 作为 `summary` 写入 compaction entry，保留 `firstKeptEntryId` 之后的尾部消息。
+`experimentalContextManagement: true` 时，自动触发走 rollover，不调用任何压缩方法。用固定 prompt 作为 `summary` 写入 compaction entry，保留 `firstKeptEntryId` 之后的尾部消息。但配置开关为 true 不等于每次都走 rollover：`#usesExperimentalContextManagement()` 是开关 AND 工具表面（`session-maintenance.ts:576-582`），工具表面要求 `context_notes`、`new_context`、`read`、`grep` 四项都启用且已注册（`agent-session.ts:562-567`、`2238-2243`，18.8.7）。工具门不满足时，自动压缩退回 `methodOrder`。
 
 rollover 后模型有三样恢复机制：
 1. **notebook**：模型在 rollover 前被提醒写 `context_notes`，记录任务状态、决定、改动文件、阻塞点、下一步
@@ -47,6 +47,17 @@ rollover 后模型有三样恢复机制：
 3. **`history://current/full`**：完整历史入口，支持 read、grep、find
 
 如果模型没写 notebook，它仍可用 grep 或 find 搜索完整历史，找回之前的工作内容。
+
+## Vibe mode 使实验 rollover 失效
+
+进入 Vibe mode 时，主会话有效工具被改为 `read`、可选 `todo` 与五个 `vibe_*` 工具（`interactive-mode.ts:6002-6025` 调 `activateVibeTools(["read"]+可选 todo)`；`vibe.ts:30` 的 `VIBE_TOOL_NAMES` 为 `vibe_spawn/send/wait/kill/list`，`vibe.ts:275` 的 `createVibeTools` 安装它们），不含 `grep`、`context_notes`、`new_context`。因此即使 `experimentalContextManagement: true`，Vibe 期间的自动压缩也不满足上节的工具门。
+
+运行取证（邻近会话 `01a1163e`，JSONL + `omp.2026-10-10.41920.log`）：
+
+- 该会话全部 8 次压缩的模式—结果对应：普通模式 5 次全部 `experimental-context-rollover`；Vibe 模式 3 次全部 `soft`。
+- 当次 Vibe 压缩（`2026-10-09T16:29:54.047Z`，落在进入 `15:29:57.064Z`、退出 `17:17:23.286Z` 区间内）记录 `method: "soft"`，日志显示 `handoff` autoTriggered 无内容后由 `soft` 完成（263177 → 48597）。
+
+**证据边界**：Vibe 收缩工具表面导致工具门不满足属机制推断，由时间窗覆盖、安装版实现与 8 次模式—结果一致三项支撑。压缩那一刻的精确工具清单无独立 dump；当次运行的 OMP 应用版本未独立证实；`shake` 自动分支归属只见 advisor context reset，未独立确认。
 
 ## history://current/full 工具支持
 
@@ -71,7 +82,7 @@ rollover 后模型有三样恢复机制：
 - `compaction.methodOrder: [shake, handoff, soft]`
 - `compaction.experimentalContextManagement: true`
 
-自动压缩时实验性 rollover 优先，methodOrder 链只在手动 `/compact` 或 rollover 关闭时生效。
+自动压缩在工具门满足时走实验性 rollover；实验开关关闭、运行时工具门不满足（如 Vibe mode）、或手动带 mode/focus 的 `/compact` 时，走 methodOrder 链。
 
 ## See Also
 

@@ -1077,3 +1077,8 @@
 - Raw: raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md; raw/omp-prewalk/2026-10-10-prewalk-off-restart-todo-gate.md; raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md; raw/omp/2026-10-10-ratchet-mechanics.md; raw/omp-slash-commands/2026-10-10-builtin-modes-registry-additions.md
 - Updated: 四篇文章（见 Disposition）
 - 要点：与 oh-my-pi 当前源码（blob d485860）对照：magic keywords 四个单开关含 `magicKeywords.workflow`（workflowz 对应 key 不带 z）、ultrathink 绕过 `providers.autoThinkingMaxEffort`、HTML/XML 注释豁免与 expanded prompt 匹配时机；prewalk 删除「没有 off/status/toggle」旧说，补 `/prewalk off`、`/prewalk restart` 与 todo gate（任何成功 todo 调用含只读 view 打开 gate）；tern 主题首篇（TSP 原生渲染协议 + browser 后端，命名来历未证实）；slash 全表 Mode 类 17→21 条，补 `/slow` `/ratchet` `/modelpreset` `/effort`（源码注册核实）
+
+## [2026-10-10] ingest | OMP Compaction Methods & History URI Tool Support
+- Disposition: Update
+- Raw: raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md
+- 要点：实验性 rollover 的运行时门除开关与 live branch 外，还要求 read/grep/context_notes/new_context 四项工具都在生效工具表面（18.8.7：session-maintenance.ts:576-582、agent-session.ts:562-567/2238-2243）；Vibe mode 把主会话工具收缩为 read/可选 todo/五个 vibe_*（interactive-mode.ts:6002-6025、vibe.ts:30/275）；邻近会话 8 次压缩模式—结果（none→rollover 5、vibe→soft 3）与当前实现相符，「因此退回 methodOrder」为机制推断；精确工具快照、运行版本、shake 分支归属标为未证实
