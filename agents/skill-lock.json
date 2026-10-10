@@ -466,9 +466,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/tt-a1i/archify.git",
       "skillPath": "archify/SKILL.md",
-      "skillFolderHash": "7609a42cd29e0337121ddbbe2a0107659c97b64c",
+      "skillFolderHash": "a38bc1bc9e97804aa5d23f09c357ac23e096eb54",
       "installedAt": "2026-07-11T15:33:28.854Z",
-      "updatedAt": "2026-10-08T15:22:48.522Z"
+      "updatedAt": "2026-10-09T15:29:33.338Z"
     },
     "i-have-adhd": {
       "source": "ayghri/i-have-adhd",
@@ -1393,9 +1393,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-animation/SKILL.md",
-      "skillFolderHash": "affdf9f03f57d6b0a84a4f31f3953caf018d7a08",
+      "skillFolderHash": "4285f42d20ba34f0a27691648c9d0dc77e0270b5",
       "installedAt": "2026-10-08T14:50:55.461Z",
-      "updatedAt": "2026-10-08T15:05:31.536Z"
+      "updatedAt": "2026-10-09T15:29:47.183Z"
     },
     "hyperframes-audio": {
       "source": "heygen-com/hyperframes",
@@ -1411,9 +1411,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "ba2e2d06c9a5a8203e1799dbf694a3c18501ff73",
+      "skillFolderHash": "8c294104ba186b6c568e20b0ba81916e7a7dc095",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-08T15:05:55.781Z"
+      "updatedAt": "2026-10-09T15:29:56.813Z"
     },
     "hyperframes-core": {
       "source": "heygen-com/hyperframes",
@@ -1465,9 +1465,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "65a7d12cf85dd87e45845ad239e02ab47141c05b",
+      "skillFolderHash": "7e49432de1f47e3d55e4e9af009050f8de611a9f",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-08T16:30:27.224Z"
+      "updatedAt": "2026-10-09T15:30:53.496Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",

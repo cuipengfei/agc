@@ -300,6 +300,7 @@ compaction:
   dropUseless: true
   methodOrder:
     - shake
+    - handoff
     - soft
   experimentalContextManagement: true
 snapcompact:
