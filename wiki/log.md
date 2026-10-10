@@ -1082,3 +1082,8 @@
 - Disposition: Update
 - Raw: raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md
 - 要点：实验性 rollover 的运行时门除开关与 live branch 外，还要求 read/grep/context_notes/new_context 四项工具都在生效工具表面（18.8.7：session-maintenance.ts:576-582、agent-session.ts:562-567/2238-2243）；Vibe mode 把主会话工具收缩为 read/可选 todo/五个 vibe_*（interactive-mode.ts:6002-6025、vibe.ts:30/275）；邻近会话 8 次压缩模式—结果（none→rollover 5、vibe→soft 3）与当前实现相符，「因此退回 methodOrder」为机制推断；精确工具快照、运行版本、shake 分支归属标为未证实
+
+## [2026-10-10] ingest | LLM 出图的作者模型补 amwth 与 visual-explainer
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-10-10-amwth-and-visual-explainer.md
+- 要点：从两种作者模型扩为四轴：diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版（SKILL.md 自述 12 种组件、§4 选择表另列 table/image/code 等语法、dagre 算坐标、STE 写作检查默认警告 strict 拒绝、README 基准 4893→612 token 仅对比手写 HTML、未与其他 skill 对照）、visual-explainer 全手写 HTML+CSS+JS+SVG（figure-led、四种 register、Pi prepare→render / MCP render tools、scene player + MP4）；作者模型对照表补两列；选择表补行；amwth 安装命令 `skills add -g -y https://github.com/qingyuna/answer-me-with-html --skill answer-me-with-html`、版本 0.5.0 已渲染 3 页验证
