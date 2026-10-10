@@ -53,3 +53,4 @@ napi-rs 是在 Rust 里构建 Node.js 原生扩展的框架和工具链。gettin
 
 - [OMP Rust/TS architecture and pi-natives](rust-ts-architecture.md)
 - [OMP predictive text engine](predictive-text-engine.md)
+- [OMP 本地构建：依赖、步骤、产物与验证](local-build.md)

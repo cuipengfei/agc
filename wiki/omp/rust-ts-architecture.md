@@ -84,3 +84,4 @@ TS 编排 + Rust 执行的分层让 OMP 能在工具层做控制：bash 工具�
 
 - [OMP predictive text engine](predictive-text-engine.md)
 - [Node-API and napi-rs in OMP](napi-node-api.md)
+- [OMP 本地构建：依赖、步骤、产物与验证](local-build.md)
