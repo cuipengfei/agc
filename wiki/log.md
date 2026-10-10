@@ -1087,3 +1087,63 @@
 - Disposition: Update
 - Raw: raw/agent-tooling/2026-10-10-amwth-and-visual-explainer.md
 - 要点：从两种作者模型扩为四轴：diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版（SKILL.md 自述 12 种组件、§4 选择表另列 table/image/code 等语法、dagre 算坐标、STE 写作检查默认警告 strict 拒绝、README 基准 4893→612 token 仅对比手写 HTML、未与其他 skill 对照）、visual-explainer 全手写 HTML+CSS+JS+SVG（figure-led、四种 register、Pi prepare→render / MCP render tools、scene player + MP4）；作者模型对照表补两列；选择表补行；amwth 安装命令 `skills add -g -y https://github.com/qingyuna/answer-me-with-html --skill answer-me-with-html`、版本 0.5.0 已渲染 3 页验证
+
+## [2026-10-10] ingest | WSL2 Windows 宿主侧内存/swap 配置与发行版生命周期
+- Disposition: New（新主题 wsl-windows，三篇文章）
+- Raw: raw/wsl-windows/2026-10-10-microsoft-wsl-config-reference.md
+- Raw: raw/wsl-windows/2026-10-10-wsl2-memory-swap-session-measurements.md
+- Raw: raw/wsl-windows/2026-10-10-docker-desktop-quit-wsl-behavior.md
+- 要点：wsl2-memory-and-swap-config（.wslconfig 三段键与默认值、内存封顶 50%、swap 默认 25% 及迁移 D 盘、autoMemoryReclaim、改动需 wsl --shutdown）；windows-memory-reclamation-and-wsl-swap（清理≠压缩、四工具能力边界、WS 塌缩/Private 不变的逐出判别、pagefile 与 WSL swap 两层换页同 NVMe、删 VHD 核验纪律）；docker-desktop-quit-and-wsl2-lifecycle（日志证 Docker 退出只停自己发行版、空闲超时根因为推断、验证法）。RAMMap 触发命令未记录、Ubuntu 存活与空闲超时根因、常规发行版 swap 路径均标为未验证
+
+## [2026-10-10] lint | wsl-windows: 4 issues found, 4 fixed
+- malformed Status 块 2 处：windows-memory-reclamation 与 docker-desktop-quit 的 `Status: 未验证` 改为普通「证据边界（未验证）」段落（模板仅定义 Outdated/Disputed）
+- 范围过度 2 处：wsl2-memory-and-swap-config 删去 swapFile「实际在 GUID 子目录内」的默认路径泛化（官方默认 `%Temp%\swap.vhdx`）；windows-memory-reclamation「WSL swap VHD 每次运行重建」降级为「WSLC 路径源码证实、常规发行版路径本机观测未经源码验证」
+- evidence checker 重跑：0 evidence error；9 fidelity suspect 经核对均为假阳性（五位数被截成四位前缀 + 综述短语，完整值 15000/60000/12171MB/20273MB/21184MB 已逐字存在于对应 raw）
+
+## [2026-10-10] lint | wsl-windows 更正：WS/Private 去向改标未测
+- 更正前一条 lint 的判定：那次把 fidelity suspect「逐出到 standby/pagefile」记为假阳性并保留在 windows-memory-reclamation；该措辞把页面去向当成已测，实为未测。
+- 已改 windows-memory-reclamation 与对应 raw 的证据边界：WS/Private 背离改述为「工作集被修剪、页不再驻留物理内存」；页面具体去向（standby list / modified list / pagefile）未逐页测定，pagefile 用量不能证明这些页的去向。
+- 该次更改后实际重跑 evidence checker：0 evidence error；8 fidelity suspect（wsl2-memory 的 1500/6000、windows-memory 的 1217/2027/2118、docker 的 1500/6000 与一条箭头综述短语，均为假阳性）；2 个 unreferenced raw 为既有 omp-signature-verification/，与本主题无关。
+
+## [2026-10-10] lint | wsl-windows 更正：物理驻留状态改标未测
+- 更正前两条 lint 遗留的措辞：raw 与 windows-memory-reclamation 仍把被修剪页写成「不再驻留物理内存」；工作集下降只证明页不再计入进程工作集，standby / modified list 的页仍在物理内存，故物理驻留状态与去向均未测。
+- 已改 windows-memory-reclamation（line 28/30/32）与对应 raw（line 22）：改述为「工作集被修剪（页不再计入进程工作集）、内存未被释放（Private/Commit 不降）；物理驻留状态（standby/modified list）与最终去向（pagefile）均未测定」。
+- 该次更改后实际重跑 evidence checker：0 evidence error；8 fidelity suspect（wsl2-memory 的 1500/6000、windows-memory 的 1217/2027/2118、docker 的 1500/6000 与一条箭头综述短语），均假阳性；2 个 unreferenced raw 为既有 omp-signature-verification/，与本主题无关。
+
+## [2026-10-10] lint | wsl-windows 更正：Private/Commit 措辞与换页 I/O 条件化
+- 更正数字冲突：windows-memory-reclamation line 28/30 原写「Private/Commit 不动/未变」，但 raw:19 记录系统 Commit 从 31.2GB 升至 34.8GB，只有 vmmemWSL 的 Private 保持 12171MB；改为「WS 塌缩、vmmemWSL Private 不变、系统 Commit 不降反升」。index:416 的「Private/Commit 不动」同步更正。
+- 更正内部不一致：line 34 原把修剪工作集写成必然造成换页 I/O 和卡顿，与 line 32「物理驻留及去向未测」冲突；改为条件式——后续重新访问且页已写入 pagefile 才产生取回的磁盘 I/O，页若仍在 standby/modified list 则是廉价软缺页，本会话未测到去向。
+- 该次更改后实际重跑 evidence checker：0 evidence error；8 fidelity suspect（wsl2-memory 的 1500/6000、windows-memory 的 1217/2027/2118、docker 的 1500/6000 与一条箭头综述短语），均假阳性；2 个 unreferenced raw 为既有 omp-signature-verification/，与本主题无关。
+
+## [2026-10-10] ingest | OMP 本地构建：依赖、步骤、产物与验证
+- Disposition: New; Update
+- Raw: raw/omp/2026-10-10-local-build-source-excerpts.md
+- Raw: raw/omp/2026-10-10-local-build-and-global-comparison.md
+- Updated: OMP Rust/TS architecture and pi-natives（仅加 See Also 链接，知识内容未变，Updated 日期保留 2026-09-27）
+- Updated: Node-API and napi-rs in OMP（仅加 See Also 链接，知识内容未变，Updated 日期保留 2026-09-27）
+- 要点：WSL2/Ubuntu 26.04.1 x86_64 实测 v18.8.7（commit f261ed9）从零环境构建独立 omp。覆盖 Bun/rustup/系统依赖安装、取源码切 tag 核对 HEAD、nightly-2026-10-06 的实际需求（set_alloc_error_hook 官方标注 nightly-only #51245）、build:native 默认 local profile 与对照用 ci stripped、Bun compile 独立二进制、三种产物形态、与全局安装逐文件对照、本机 GLIBC 2.43 vs 官方 release 2.17 兼容边界。验证仅 --version（omp/18.8.7）、--help（15370 bytes）与一次会话恢复；功能测试、cli.js 与两处 Effort 声明差异原因、旧 glibc 系统均标为未确认/未验证。
+
+## [2026-10-10] lint | wsl-windows 更正：补齐工具/压缩来源 raw，删去未证断言
+- Grounding Invariant 缺口：windows-memory-reclamation 的 Memory Compression 行为与四工具能力表只链接本机 measurements raw，无来源材料支撑。
+- 已采集并新增 raw/wsl-windows/2026-10-10-windows-memory-tools-and-compression.md（RAMMap 官方页、Microsoft「Memory Compression in Windows 10 RTM」、Mem Reduct GitHub README、Bitsum Process Lasso 官网），文章 Raw/Sources 字段补链。
+- 据来源更正文章：Memory Compression 改为「自 Windows 10 RTM 起内置、修剪页压缩后留在 RAM、不一定写盘」（MS 原文）；工具表精简为 RAMMap（分析；官方页只记分析不记 Empty 菜单）+ Mem Reduct（Native API 清 working set/standby/modified、约 10-50%、需管理员）；删去 Process Lasso 的「内存清理」定位——官网实为 CPU 优化，改标注为非内存清理工具；EmptyStandbyList 来源抓取失败（wj32.org HTTP 500），删去其断言。index 摘要同步更新。
+- 该次更改后实际重跑 evidence checker：0 evidence error；8 fidelity suspect（数字前缀 1500/6000/1217/2027/2118 + 一条箭头综述短语），均假阳性；2 个 unreferenced raw 为既有 omp-signature-verification/，与本主题无关。
+
+## [2026-10-10] lint | wsl-windows 更正：absence-of-evidence 收口 + raw Published 规范
+- Process Lasso：文章:19 / index:417 / 新 raw:39 原由「官网主页没提内存清理」断言「不是内存清理工具」，属以无证据推断功能不存在；改为「官网主页未提及内存修剪，内存清理能力未验证，故不列入本表」。
+- Mem Reduct：文章:18 原写「支持常驻与定时清理」，但 README 只支持实时监控/清理、Native API 清列表、需管理员；删去未支撑的常驻/定时能力断言。
+- 新 raw 的 `Published: 见各条目` 不符模板（要求日期或 Unknown），改为 `Unknown`。
+- 该次更改后实际重跑 evidence checker：0 evidence error；8 fidelity suspect（数字前缀 1500/6000/1217/2027/2118 + 一条箭头综述短语），均假阳性；2 个 unreferenced raw 为既有 omp-signature-verification/，与本主题无关。
+
+## [2026-10-10] ingest | OMP 本地构建：便携环境准备与 ci 主流程
+- Disposition: Update
+- Raw: raw/omp/2026-10-10-local-build-portable-setup.md
+- Updated: OMP 本地构建：依赖、步骤、产物与验证
+- 操作流程：先安装系统依赖；Bun 安装支持指定 1.4.3，rustup 安装暂不下载默认 toolchain；工具检查前和安装后均设置当前 shell 的 Bun/Rust PATH；nightly 安装后检查 rustc/cargo；源码 tag 自动比对；主流程明确使用已实测 Cargo ci profile，再通过 Bun compile 生成独立 omp。
+- 证据：Bun/rustup 官方安装说明；不读取 shell 启动文件、初始 PATH=/usr/bin:/bin 的工具发现；从 /tmp 运行独立 omp 的 --version/--help 均退出 0。原有完整 ci 构建证据继续引用，另一台机器从零构建未验证。本轮未重新安装工具、重新编译或修改已有 raw。
+- 验证：用现有 markdown-it 解析修订后的实际文档，12 个 sh 命令块均通过 bash -n；隔离 Bash 执行文章中的首个工具检查块及产物 --version/--help 验证块，退出状态均为 0；142 个本地 Markdown 链接存在性检查通过。新文章 evidence checker 为 0 evidence error；两个数字 suspect 为已有 raw 中的 774.45s 和 60.34s，被检查器截取为 774.4/60.3；两个 unreferenced raw 为既有 omp-signature-verification/。未执行安装命令或重新编译。
+
+## [2026-10-10] lint | wsl-windows 更正：通用句限定到有来源对象 + 消除列表自相矛盾
+- 来源范围过度：windows-memory-reclamation line 9/13 原把「第三方内存工具」整体概括为清工作集/standby 的 API，但来源只为 Mem Reduct 证实这些 API（RAMMap 来源仅分析能力，Process Lasso 未验证）；改为限定到「清理工具（如 Mem Reduct）」。
+- 自相矛盾：line 19 原说 Process Lasso「故不列入本表」却仍列在本节项目符号中；改为「内存清理能力未验证，这里不纳入清理能力比较」。
+- 该次更改后实际重跑 evidence checker（windows-memory-reclamation）：0 evidence error；3 fidelity suspect（1217/2027/2118，vmmem 五位数前缀），均假阳性。

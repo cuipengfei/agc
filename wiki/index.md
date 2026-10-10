@@ -360,7 +360,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 ## omp
 
-OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，以及输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界。
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，以及从源码本地构建的依赖、步骤、产物与验证。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
@@ -373,6 +373,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，以及输�
 | [OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分](omp/find-tool-cascade.md) | jfind 固定四阶段（lexical + 文件名/草图/完整验证三波）、native grep + idf 加权粗筛（带超时、跳超大文件、不保证穷尽）、波间筛选常量（CANDIDATES=128/FILES=20/CUTOFF=0.45/THRESHOLD=0.2）、走注入的通用 judge 接口且请求无 wave 字段、实际后端未验证、find vs grep 适用性为机制推断；补与 jevgrep 入口机制对照 | 2026-10-01 |
 | [Node-API and napi-rs in OMP](omp/napi-node-api.md) | Node-API（原 N-API）稳定 ABI 逐字定义与边界（限 Node.js、不跨平台）；Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证；napi-rs 构建链（Rust 1.88+、#[napi]、平台分包）；pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1 证据 | 2026-09-27 |
 | [OMP judgment 对 chat 类 judge 的无 schema 文本解析机制](omp/judgment-chat-llm-parsing.md) | 普通 chat 模型当 judge 时不发 response_format/json_schema/text.format；temperature 0 + disableReasoning + maxTokens 4096 首次裸文本，prompt 约定关键词回答，三组解析器（choice/noul/score）取最早合法关键词，解析失败重试才挂 submit_judgment tool；与 jev /v1/systemone 路由分界；本机 judge 实配 typesafe-zen/jev-1.13 | 2026-10-07 |
+| [OMP 本地构建：依赖、步骤、产物与验证](omp/local-build.md) | Ubuntu x86_64 的 v18.8.7 构建流程：系统依赖先安装、Bun 1.4.3/rustup 与当前 shell PATH、HTTPS 源码/tag 检查、nightly-2026-10-06、Cargo ci stripped addon 与 Bun compile；全局安装保持不变，源码/绑定/资源对照与 GLIBC 2.43/2.17 边界；隔离 shell 和 --version/--help 已验证，另一台机器完整复现未验证 | 2026-10-10 |
 
 ## tokscale
 
@@ -405,3 +406,13 @@ HTML 驱动的 agent 视频生成工具链。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [HyperFrames：HTML 写视频的 agent 管线](video-generation/hyperframes-html-video.md) | 59K+ stars、HTML 即视频、确定性渲染可进 CI；组合契约（时间轴协议、禁 opacity 初始态与 `<br>`、字体 lint）；WSL 实操（预览走用户浏览器、渲染需 headless Chrome）、core set 10 技能装法 | 2026-10-08 |
+
+## wsl-windows
+
+WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为与 Docker 退出对发行版生命周期的影响。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [WSL2 内存与 swap 配置](wsl-windows/wsl2-memory-and-swap-config.md) | `.wslconfig` 三段（`[wsl2]`/`[general]`/`[experimental]`）；内存默认主机 50%、swap 默认内存 25%、swapFile 默认 C 盘 Temp；swap 扩容并迁移到 D 盘的转义写法；autoMemoryReclaim=dropCache 空闲回收；改动需 `wsl --shutdown` 生效 | 2026-10-10 |
+| [Windows 内存回收工具与 WSL swap](wsl-windows/windows-memory-reclamation-and-wsl-swap.md) | 清理≠压缩（压缩是内核 Memory Compression，自 Windows 10 RTM 起内置）；RAMMap（分析）、Mem Reduct（清理）能力边界，Process Lasso 为 CPU 优化工具（内存清理能力未验证、未列入）；"正在使用腰斩"= WS 塌缩而 Private 不变、系统 Commit 不降反升的未释放假象（vmmem WS 1768MB vs Private 12171MB）；pagefile 与 WSL swap 两层换页、单 NVMe 下 C:/D: 同盘；删 VHD 前 handle.exe、删除成功≠无占用 | 2026-10-10 |
+| [Docker Desktop 退出与 WSL2 发行版存活](wsl-windows/docker-desktop-quit-and-wsl2-lifecycle.md) | 后端日志证 Docker 退出只终止 docker-desktop 发行版、不执行 `wsl --shutdown`；用户发行版消失归因于空闲超时（instanceIdleTimeout 默认 15000ms、`-1` 禁用；vmIdleTimeout 默认 60000ms）为推断；给出验证方法 | 2026-10-10 |
