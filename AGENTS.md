@@ -140,6 +140,7 @@ find . -path './.git' -prune -o -type l -print
 | `omo/`      | `~/.omo/`             |
 | `omp/`      | `~/.omp/`             |
 | `prime/`    | `~/.prime/agent/`     |
+| `plannotator/` | `~/.plannotator/`     |
 
 ## 同步边界
 

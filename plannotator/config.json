@@ -1,0 +1,24 @@
+{
+  "diffOptions": {
+    "defaultDiffType": "since-base",
+    "diffStyle": "split",
+    "overflow": "wrap",
+    "diffIndicators": "bars",
+    "lineDiffType": "word-alt",
+    "lineBgIntensity": "subtle",
+    "hideWhitespace": true,
+    "fontFamily": "Source Code Pro"
+  },
+  "reviewAnalysis": {
+    "semanticDiff": true,
+    "callFlow": false
+  },
+  "conventionalComments": true,
+  "favicon": "totman",
+  "theme": {
+    "mode": "system",
+    "light": "plannotator",
+    "dark": "tokyo-night"
+  },
+  "agentTool": true
+}

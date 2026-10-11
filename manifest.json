@@ -244,6 +244,12 @@
       "protected": true,
       "directory": true,
       "include": ["*/uv-receipt.toml"]
+    },
+    {
+      "name": "plannotator-config",
+      "source": "~/.plannotator/config.json",
+      "repo": "plannotator/config.json",
+      "protected": true
     }
   ]
 }
