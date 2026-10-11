@@ -1,8 +1,8 @@
 # Mnemopi SQLite 损坏恢复
 
-> Sources: 本会话恢复实录, 2026-09-21; 本会话恢复实录, 2026-09-24; 本会话恢复实录, 2026-10-06; 本会话压测与排除实验, 2026-10-06
-> Raw: [2026-09-21-mnemopi-sqlite-recovery](../../raw/omp-mnemopi/2026-09-21-mnemopi-sqlite-recovery.md); [2026-09-24-agc-bank-second-corruption](../../raw/omp-mnemopi/2026-09-24-agc-bank-second-corruption.md); [2026-10-06-agc-bank-third-corruption](../../raw/omp-mnemopi/2026-10-06-agc-bank-third-corruption.md); [2026-10-06-write-contention-repro-attempt](../../raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt.md)
-> Updated: 2026-10-06
+> Sources: 本会话恢复实录, 2026-09-21; 本会话恢复实录, 2026-09-24; 本会话恢复实录, 2026-10-06; 本会话压测与排除实验, 2026-10-06; 本会话第四次损坏取证, 2026-10-09; 本会话根因复现与机制实验, 2026-10-11; 本会话缓解验证与应用, 2026-10-11
+> Raw: [2026-09-21-mnemopi-sqlite-recovery](../../raw/omp-mnemopi/2026-09-21-mnemopi-sqlite-recovery.md); [2026-09-24-agc-bank-second-corruption](../../raw/omp-mnemopi/2026-09-24-agc-bank-second-corruption.md); [2026-10-06-agc-bank-third-corruption](../../raw/omp-mnemopi/2026-10-06-agc-bank-third-corruption.md); [2026-10-06-write-contention-repro-attempt](../../raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt.md); [2026-10-09-agc-bank-fourth-corruption](../../raw/omp-mnemopi/2026-10-09-agc-bank-fourth-corruption.md); [2026-10-11-shm-lock-drop-root-cause](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-root-cause.md); [2026-10-11-shm-lock-drop-mitigations](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-mitigations.md)
+> Updated: 2026-10-11
 
 ## 恢复流程
 
@@ -92,6 +92,17 @@ bank `agc-djmfd5jv3zsd` 于 10-05 23:34 第三次物理损坏。签名与前两�
 - **.recover 实战**：官方 `sqlite3 .recover` 得 10 万行，FTS 虚拟表建失败属预期。逐表值级合并：新增 5485、更新 102、零冲突、零丢失。
 - **句柄陈旧陷阱**：修复落盘后，运行中的会话继续报 `malformed`（旧句柄指向损坏件）。重启会话后 `mem_retain`/`mem_recall` 恢复正常。换 bank 文件必须重启会话。
 
+## 第四次损坏（2026-10-09）
+
+bank `agc-djmfd5jv3zsd` 第四次物理损坏。最早 operation-error 事件 `2026-10-09T23:23:36.927+08:00`（ledger `2026-10-10 23:32:59` 是补录，非发生时刻）。agc 错误事件涉及多个 PID（35587 等共 10 个）；causation 不断言——corruption 字符串无法证明是 live DB 操作还是历史读取，health 扫描的 quick_check 损坏无归属 PID。
+
+隔离字节副本 + 官方 sqlite 3.53.4 取证（从不打开 live bank，来源 SHA256 前后一致）：26945 页、page_size 4096，损坏在 main（immutable 主视图与含 WAL 视图错误相同，WAL 不 shadow 损坏），freelist 203。
+
+- 跨树共享页（fts_working_data 损坏 × memory_embeddings overflow）：12000、12002、12038、12058、12059、12064、12065。
+- 同树重复引用页：12942、12972、12974、12975、16268。
+
+详见 [raw](../../raw/omp-mnemopi/2026-10-09-agc-bank-fourth-corruption.md)。
+
 ## 根因排除与压测
 
 | 假设 | 结果 |
@@ -105,34 +116,61 @@ bank `agc-djmfd5jv3zsd` 于 10-05 23:34 第三次物理损坏。签名与前两�
 
 压测详见 [raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt](../../raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt.md)。留档机制 `~/.omp/mem-ledger/` 持续运行，下次事件会当场记录。
 
+> **Status: Outdated（2026-10-11）** — 本节「bun:sqlite 多句柄（#7302 类）头号嫌疑，未证实」的判定已被下文「根因（已定位，2026-10-11）」取代：真正机制是 OMP 进程内 `Grep`/`Read` 打开活动 bank 的 `-shm` 释放本进程 WAL-index POSIX 锁，叠加第二个并发写入者直接产生物理 malformed，已在当前 SQLite 3.53.4 一手复现。保留本节记录当时的排除过程。
+
+## 根因（已定位，2026-10-11）
+
+**机制**：同一进程对 bank 的 `-shm`（WAL-index）做一次 `open()`+`close()`，释放该进程在该 inode 上的全部 POSIX advisory 锁（SQLite howtocorrupt §2.2）。`/proc/locks` 实测为 `POSIX ADVISORY WRITE`，非 OFD——OFD 才对 close 他 fd 免疫。打开者是 OMP 暴露给 LLM 的 `Grep`（native ripgrep，遍历目录 `fs.open` 每个普通文件含 32KB 的 `-shm`）与 `Read`（`Bun.file().bytes()` 读 `-shm`）；两者都在 OMP 主进程内，与 live Mnemopi 连接同进程。只读 sqlite 连接不释放锁。
+
+**grep-lock 2×2（真实 native grep + 真实 BeamMemory 持 BEGIN IMMEDIATE）**：无 grep → 锁保持、writer-B `SQLITE_BUSY`；默认 grep `filesSearched=4` → `shm:120` blocked→available、writer-B 提交、writer-A 丢失、integrity ok（静默丢更新）；`glob=*.txt` 不碰 `-shm` → 锁保持；`glob=*-shm` 只碰 `-shm` → 锁释放。触发点精确隔离到 `-shm` 的 open 本身。
+
+**grep-lock-bridge（丢锁 + 并发第二写入者）**：对照臂（无 grep）干净、无重复页；lockdrop 臂 **3/3 运行 `SQLITE_CORRUPT: database disk image is malformed`**，final 落盘运行 `lockDrops=43`、`committedA=34`、`committedB=360710`，一次报 `fts5: corruption found`。封闭了「锁释放 → 物理损坏」，损坏类同现场。
+
+**排除**：WAL-reset 竞态在当前 SQLite 3.53.4 不复现（`mmap=1073741824`、400 轮、`committed=674245`、`race_hit=false`、integrity ok；旧 3.51.2 同负载约 2014/4000 轮即 malformed）；CVE-2026-11822 FTS5 为读侧、需 DB 预先损坏、3.53.4 已含修复，不解释 on-disk 跨树重复页。
+
+**必要条件（三者同窗口叠加）**：① 进程内一条连接正处写事务握 `-shm` 锁；② **同一进程**调 `Grep`/`Read` 开该 bank 的 `-shm` 撤本进程锁（故调工具的进程须正好是握锁者）；③ 第二个并发写入者（另一连接或同 repo 第二个 omp 进程，bank 按项目分=同文件）趁空档写。单写入者被夺锁无后果。
+
+**证据边界**：机制、2×2、桥接、排除均一手实测（Bun 1.4.3 / SQLite 3.53.4）。未逐页复现历史事件的具体页面指纹，只复现同类；历史肇事 tool-call 与 PID 不可考（WAL 帧已清零）。详见 [raw](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-root-cause.md)。
+
+## 缓解（官方修复前）
+
+三要素破其一即断链。详见 [raw](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-mitigations.md)。
+
+- **给 bank 目录放 `.ignore`（已应用）**：列 `*.db`/`*.db-wal`/`*.db-shm`/`*.sqlite*`，让文件工具遍历时跳过 sidecar。实测 grep `filesSearched` 由 4 降到 2、`-shm` 不被 open、锁保持、writer-B BUSY。放在 bank 目录覆盖「根在 bank 目录及以上」的所有搜索；只放 memories/ 覆盖不到根在 mnemopi/ 的搜索。已落地到 `memories/`、`memories/mnemopi/` 与全部 11 个 bank 目录；新建 bank 需补放。限制：不拦对 `-shm` 完整路径的显式 `Read`。
+- **同一 repo 不并行跑两个 OMP 会话**：切断第二写入者。
+- **让 Grep/Read 待在项目目录、不指向 `~/.omp`**：历史触发向量就是 `grep path=~/.omp/agent`。
+- **兜底**：`sqlite3 <bank> ".backup <目标>"` 定期备份；替换 bank 文件后必须重启所有使用该 bank 的会话（旧句柄绑旧 inode 会一直报 malformed）。
+
+
  ## 上游已知 issue 对照
 
 2026-10-06 检索 `can1357/oh-my-pi`，发现同一缺陷家族的多个公开报告：
 
 | Issue | 与我们观察的匹配点 |
 |---|---|
-| [#8082](https://github.com/can1357/oh-my-pi/issues/8082)（open，macOS，agent.db） | 整页写错位：page 12 与 page 9 逐字节相同——页面缓冲写到错误文件偏移，与我们的页面双重引用/错位签名一致。WAL 校验和完好。根因同样未定。 |
+| [#8082](https://github.com/can1357/oh-my-pi/issues/8082)（open，macOS，agent.db） | 整页写错位：page 12 与 page 9 逐字节相同——页面缓冲写到错误文件偏移，与我们的页面双重引用/错位签名一致。WAL 校验和完好。根因同样未定。**2026-10-11 已向该 issue [追加根因评论](https://github.com/can1357/oh-my-pi/issues/8082#issuecomment-6107512539)**：in-process `-shm` 丢锁 + 并发写，当前 3.53.4 一手复现。 |
 | [#8351](https://github.com/can1357/oh-my-pi/issues/8351)（closed，Linux 17.2.15，mnemopi bank） | per-bank `malformed`，integrity_check 报 B-tree 错误、无效页号、rowid 乱序、重复页引用、索引不一致——与我们三次输出逐条对上。当时修复只加了 hook 边界防崩，未修产生损坏的机制。 |
 | [#7302](https://github.com/can1357/oh-my-pi/issues/7302)（open） | 审计 25 个 SQLite 打开点，4 个违反 busy-handler 时序（journal_mode=WAL 先于 busy_timeout）。该 issue 指向 PR #7301（统一 opener，未合并）。注意区分：#2421/#2423 是另一对——并发恢复时 SQLITE_BUSY_RECOVERY 的初始化顺序修复（已合并 2026-06-12）。 |
 | [#10509](https://github.com/can1357/oh-my-pi/issues/10509)（open，Linux 18.1.1） | 两进程并发拆机导致 agent.db 截断，机制未定（OMP/bun/SQLite/fs 四选一）。 |
 | [#9082](https://github.com/can1357/oh-my-pi/issues/9082)（open，wontfix） | NFS 共享 home 上 WAL 静默损坏，与本机本地盘场景不同。 |
 
-结论：三次损坏不是本环境孤例，属于同一未根因缺陷家族。上游没有任何已合并 PR 修过产生损坏的机制本身。
+结论：四次损坏不是本环境孤例，属同一缺陷家族；根因已于本机定位（见上「根因（已定位，2026-10-11）」）——OMP `Grep`/`Read` 同进程打开 bank `-shm` 丢 WAL-index POSIX 锁，叠加并发写。该机制与 OMP 版本无关（POSIX 锁语义 + 工具开 `-shm`）。上游没有任何已合并 PR 修过产生损坏的机制本身。
 
 ## 本机 18.6.1 代码核查（grep）
 
 - `packages/mnemopi/src/db.ts:94-97`：`busy_timeout=5000` 在 `journal_mode=WAL` 之前——主打开点合规。
 - `packages/mnemopi/src/core/query-cache.ts:108`：`openDatabase(path, { pragmas: false })` 后先 `PRAGMA journal_mode=WAL`，busy_timeout 仍为 0——**18.6.1 仍存在 #7302 报告的不合规打开点**（recall 查询缓存）。理论上打开/写查询缓存时遇并发写会立即报 BUSY 而非等待。
 
-## 三次事件与 OMP 版本时间线
+## 四次事件与 OMP 版本时间线
 
 | 事件 | 时间 | 当时 OMP 版本 |
 |---|---|---|
 | 第一次 | 2026-09-21 22:42 | v18.2.7（当日 02:13 发布） |
 | 第二次 | 2026-09-24 00:57 | v18.3.0（9-24 02:21 发布）/ v18.2.11 |
 | 第三次 | 2026-10-05 23:34 | v18.6.1（10-04 发布） |
+| 第四次 | 2026-10-09 23:23 | 事件期版本未精确核 |
 
-三次横跨 18.2.x→18.3.x→18.6.1 三个 minor 线，版本相关性弱；损坏间隔 3 天/12 天，与 OMP 发布节奏不吻合。
+四次横跨多个 minor 线，版本相关性弱；根因是版本无关的 POSIX 锁语义 + 工具开 `-shm`，不随 OMP 版本变化。
 
 
 ## See Also
