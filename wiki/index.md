@@ -9,6 +9,7 @@ Agent harness 的 prompt、上下文架构与运行形态差异。
 | [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 相同模型表现差异背后的 prompt、技能加载、压缩、记忆和用户建模因素 | 2026-08-30 |
 | [SoL-Pi 与 OMP 兼容性](agent-harness/sol-pi-omp-compat.md) | SoL-Pi 四机制核查、推广文章三处错漏、pi→oh-my-pi 身份链、Action Fusion 机制与 OMP 兼容矩阵：装得上但 actionFusion 兼容修复 #11991 未进入 18.3.0 | 2026-09-25 |
 | [OmO 停止条件与意图检测机制](agent-harness/omo-stop-condition-mechanisms.md) | OmO 三层停止机制：代码层 &lt;promise&gt; 标签正则+会话状态机（不解析自然语言）、提示词纪律层 Hephaestus intent line 三版演进（5.5 承诺做完→5.6 停止条件声明即承诺+Stop Goal→6 Intent Gate）、门控层 STOP WHEN 存在性 lint+EVIDENCE_RECORDED 四重校验收据门+gate-reviewer 终审；防过度执行/漂移/假完成/半成品 | 2026-10-09 |
+| [OMP 默认系统指令](agent-harness/omp-default-system-instruction.md) | v18.9.0 默认 system-instruction 的 bundle 位置、`cts` 模板结构、渲染关系、尺寸与 `SYSTEM.md` 覆盖边界 | 2026-10-11 |
 | [OmO 技能生态与 skills CLI 安装](agent-harness/omo-ulw-skills-ecosystem.md) | skills.sh 官方发布 44 技能 10.2K 安装；ulw 家族停止条件定义者差异（loop/ultrawork 目标级、mass-ulw 节点级、execute 继承）；意图行无技能复刻；skills CLI 单次观察 13 vs 44 差异与直接路径安装绕过、lock 跟踪、PromptScript 不支持全局 | 2026-10-09 |
 
 
@@ -179,6 +180,14 @@ OMP 配置项的源码级行为边界。
 | [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区；18.4.2 达 515 键 | 2026-09-28 |
 | [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
 
+## omp-context-files
+
+OMP 上下文文件的发现顺序、provider 优先级、作用域组合与 system-instruction 覆盖方式。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP 上下文文件发现与优先级](omp-context-files/context-file-discovery-and-priority.md) | AGENTS.md、RULES.md、APPEND_SYSTEM.md、SYSTEM.md 的作用、搜索顺序、provider shadow、@path 导入与 `/extensions` 验证 | 2026-10-11 |
+
 ## omp-extensibility
 
 OMP Extension 与 Hook 的职责边界。
@@ -225,7 +234,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 | [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-02 |
 | [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响 | 2026-09-21 |
 | [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表、facts 只读（memory_edit 不可改） | 2026-09-26 |
-| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程九步（2026-10-06 修订：验备份干净→.recover→值级合并→FTS 重建→重启会话）、三次损坏实录（9-21/9-24/10-06）、索引同坏时穷举点查证伪法、根因排除与压测记录（bun:sqlite 多句柄头号嫌疑未证实） | 2026-10-06 |
+| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程九步、四次损坏实录（9-21/9-24/10-06/10-09）、索引同坏时穷举点查证伪法；根因已定位（2026-10-11）：OMP `Grep`/`Read` 同进程开 bank `-shm` 丢 WAL-index POSIX 锁 + 并发写→物理 malformed，当前 SQLite 3.53.4 一手复现，WAL-reset/FTS5 CVE 已排除；缓解 `.ignore` 跳 sidecar（已应用）+ 同 repo 不并行 | 2026-10-11 |
 
 ## omp-modes
 
@@ -354,9 +363,9 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类 | 2026-10-01 |
-| [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-09-27 |
-| [Plannotator pi-extension 混版故障](herdr-plannotator/pi-extension-mixed-tree-failure.md) | Export named not found + ?mtime= 症状签名；根因为未完成安装写成的混版目录 + 进程内失败图谱缓存；修复 = 重装写齐 + 重开会话；npm pack 版本自洽取证法 | 2026-10-01 |
+| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类；第 9 节补 0.28.12 agent 工具与 Quick Labels 指引 | 2026-10-11 |
+| [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、agent 工具通道（`pi.registerTool`，0.28.12 起）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-10-11 |
+| [Plannotator agent tool 注入与 Quick Labels 机制](herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) | agent 工具开关链（env → config.agentTool → 主机默认，Pi 默认关）、OMP .env 注入通道、Quick Labels cookie 存储与 Settings 编辑能力（👍 硬编码例外）、config.json 38 键清单、脱敏实测 | 2026-10-11 |
 
 ## omp
 

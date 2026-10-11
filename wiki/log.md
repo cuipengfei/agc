@@ -1147,3 +1147,19 @@
 - 来源范围过度：windows-memory-reclamation line 9/13 原把「第三方内存工具」整体概括为清工作集/standby 的 API，但来源只为 Mem Reduct 证实这些 API（RAMMap 来源仅分析能力，Process Lasso 未验证）；改为限定到「清理工具（如 Mem Reduct）」。
 - 自相矛盾：line 19 原说 Process Lasso「故不列入本表」却仍列在本节项目符号中；改为「内存清理能力未验证，这里不纳入清理能力比较」。
 - 该次更改后实际重跑 evidence checker（windows-memory-reclamation）：0 evidence error；3 fidelity suspect（1217/2027/2118，vmmem 五位数前缀），均假阳性。
+
+## [2026-10-11] ingest | agc bank 第四次损坏与 SHM 丢锁根因定位 + 缓解
+- Disposition: Update（omp-mnemopi/sqlite-corruption-recovery.md）
+- Raw: raw/omp-mnemopi/2026-10-09-agc-bank-fourth-corruption.md; raw/omp-mnemopi/2026-10-11-shm-lock-drop-root-cause.md; raw/omp-mnemopi/2026-10-11-shm-lock-drop-mitigations.md
+
+## [2026-10-11] ingest | OMP 上下文文件发现与优先级
+- Disposition: New
+- Raw: raw/omp-context-files/2026-10-11-omp-sh-docs-context-files.md
+
+## [2026-10-11] ingest | OMP 默认系统指令
+- Disposition: New
+- Raw: raw/agent-harness/2026-10-11-omp-default-system-instruction-anatomy.md; raw/omp-context-files/2026-10-11-omp-sh-docs-context-files.md
+
+## [2026-10-11] ingest | Plannotator agent tool 注入与 Quick Labels 机制
+- Disposition: New + Update（plannotator-agent-tool-and-quick-labels.md 新建；plannotator-omp-plugin-mechanism.md、toolchain-reference.md 更新 0.28.12 机制）
+- Raw: raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md
