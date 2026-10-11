@@ -48,15 +48,6 @@
       "installedAt": "2026-04-29T16:01:06.642Z",
       "updatedAt": "2026-08-31T16:23:06.755Z"
     },
-    "dialectic-partner": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/dialectic-partner/SKILL.md",
-      "skillFolderHash": "0dd901a12f4e02f9e1ee235f0418c8ebc165432a",
-      "installedAt": "2026-04-29T16:01:24.563Z",
-      "updatedAt": "2026-07-14T14:32:18.510Z"
-    },
     "knowledge-fetch": {
       "source": "cuipengfei/prompts",
       "sourceType": "github",
@@ -65,15 +56,6 @@
       "skillFolderHash": "e6a2db0cb559bec009f433365140f7feeeac319c",
       "installedAt": "2026-04-29T16:01:30.173Z",
       "updatedAt": "2026-08-31T16:23:12.005Z"
-    },
-    "zellij-control": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/zellij-control/SKILL.md",
-      "skillFolderHash": "f4e8af3613e77290840ee8e18cb268ed886d2103",
-      "installedAt": "2026-04-29T16:01:33.008Z",
-      "updatedAt": "2026-07-14T13:42:12.701Z"
     },
     "improve-codebase-architecture": {
       "source": "mattpocock/skills",
@@ -239,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "23bfd6f1c3a975c948cd9d7a6614ea6e04e455cf",
+      "skillFolderHash": "779d855713c068e5d14530965c65871a211b0b1e",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-10T11:17:56.105Z"
+      "updatedAt": "2026-10-11T03:39:11.733Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -317,42 +299,6 @@
       "installedAt": "2026-07-08T15:32:08.792Z",
       "updatedAt": "2026-07-26T17:06:55.506Z"
     },
-    "openspec-apply-change": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": ".claude/skills/openspec-apply-change/SKILL.md",
-      "skillFolderHash": "f3522cc230616b614bb8851a74d1f43efe28d1a2",
-      "installedAt": "2026-07-08T15:35:10.823Z",
-      "updatedAt": "2026-07-14T13:42:12.702Z"
-    },
-    "openspec-archive-change": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": ".claude/skills/openspec-archive-change/SKILL.md",
-      "skillFolderHash": "b77a40105f464292daaab557a0aa2784e5c6fe35",
-      "installedAt": "2026-07-08T15:35:10.825Z",
-      "updatedAt": "2026-07-14T13:42:12.703Z"
-    },
-    "openspec-explore": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": ".claude/skills/openspec-explore/SKILL.md",
-      "skillFolderHash": "cfd0c820fcc526e7fb3b7ff90e86b3c51f040d30",
-      "installedAt": "2026-07-08T15:35:10.826Z",
-      "updatedAt": "2026-07-14T13:42:12.705Z"
-    },
-    "openspec-propose": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": ".claude/skills/openspec-propose/SKILL.md",
-      "skillFolderHash": "0e571fe84b09b66348bcfca37d241d11a0517244",
-      "installedAt": "2026-07-08T15:35:10.827Z",
-      "updatedAt": "2026-07-14T13:42:12.706Z"
-    },
     "natural-writing": {
       "source": "cuipengfei/prompts",
       "sourceType": "github",
@@ -361,105 +307,6 @@
       "skillFolderHash": "1f64316b3378855badb02b722dec8066a4444d7d",
       "installedAt": "2026-07-08T15:35:10.829Z",
       "updatedAt": "2026-07-26T17:06:55.518Z"
-    },
-    "foundational-principles": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/foundational-principles/SKILL.md",
-      "skillFolderHash": "86275aafc9af775b2d409a4ebcfeecdedf33c657",
-      "installedAt": "2026-07-08T15:35:10.830Z",
-      "updatedAt": "2026-07-14T14:33:00.850Z"
-    },
-    "quality-standards": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/quality-standards/SKILL.md",
-      "skillFolderHash": "3f4219aa1ee32cf4718f6b421da269ea7ca33b8b",
-      "installedAt": "2026-07-08T15:35:10.831Z",
-      "updatedAt": "2026-07-14T14:33:06.570Z"
-    },
-    "programming-workflow": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/programming-workflow/SKILL.md",
-      "skillFolderHash": "24e471256a238d5fbc15bae0a76d0790a05de815",
-      "installedAt": "2026-07-08T15:35:10.833Z",
-      "updatedAt": "2026-07-14T14:33:13.004Z"
-    },
-    "testing-guidelines": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/testing-guidelines/SKILL.md",
-      "skillFolderHash": "d16a4fbf36526432dfce0862194dfca908b152d8",
-      "installedAt": "2026-07-08T15:35:10.834Z",
-      "updatedAt": "2026-07-14T14:33:19.332Z"
-    },
-    "planning-workflow": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/planning-workflow/SKILL.md",
-      "skillFolderHash": "ae92ee832f65ce9400f50ea2863bf855b596a4b3",
-      "installedAt": "2026-07-08T15:35:10.835Z",
-      "updatedAt": "2026-07-14T14:33:28.928Z"
-    },
-    "ba-collaboration": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/ba-collaboration/SKILL.md",
-      "skillFolderHash": "9a564d57da454548557a8cf4add5baf77f6be3f4",
-      "installedAt": "2026-07-08T15:35:10.836Z",
-      "updatedAt": "2026-07-14T14:33:35.419Z"
-    },
-    "response-guidelines": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/response-guidelines/SKILL.md",
-      "skillFolderHash": "eabe55fb662491fed4e05145817b7a6f058ea32b",
-      "installedAt": "2026-07-08T15:35:10.837Z",
-      "updatedAt": "2026-07-14T14:33:42.070Z"
-    },
-    "sequential-thinking": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/sequential-thinking/SKILL.md",
-      "skillFolderHash": "19f19148466d2579538f7d1b776964bee18e324e",
-      "installedAt": "2026-07-08T15:35:10.838Z",
-      "updatedAt": "2026-07-14T14:33:48.503Z"
-    },
-    "shortcut-system": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/shortcut-system/SKILL.md",
-      "skillFolderHash": "f0d8be202a20313d49b5d425d4a86ff9bd1836c5",
-      "installedAt": "2026-07-08T15:35:10.839Z",
-      "updatedAt": "2026-07-14T14:33:52.998Z"
-    },
-    "codex-advisor": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/codex-advisor/SKILL.md",
-      "skillFolderHash": "ad24181151b548dca77466cbb61920bdf45cec0f",
-      "installedAt": "2026-07-08T15:35:10.843Z",
-      "updatedAt": "2026-07-14T14:34:16.509Z"
-    },
-    "cline-kanban": {
-      "source": "cuipengfei/prompts",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "skills/cline-kanban/SKILL.md",
-      "skillFolderHash": "2e1e6de88441db05c0847fe6646ba2c351fd5c85",
-      "installedAt": "2026-07-08T15:35:10.846Z",
-      "updatedAt": "2026-07-14T13:42:12.669Z"
     },
     "archify": {
       "source": "tt-a1i/archify",
@@ -1402,9 +1249,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-audio/SKILL.md",
-      "skillFolderHash": "b07e9925b5e3db845857f1ac78c87d0a017981d4",
+      "skillFolderHash": "1456df988f75c0f80a5210bdb2c4c5a415e129bf",
       "installedAt": "2026-10-08T14:50:55.463Z",
-      "updatedAt": "2026-10-10T11:19:10.944Z"
+      "updatedAt": "2026-10-11T03:39:16.717Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
@@ -1465,9 +1312,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "2e5bbff5ae484a125390022b3ecc7d0f9c5d29d1",
+      "skillFolderHash": "9fba897b879d9dccc8cdd3ec819ae9a4e931be93",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-10T11:19:53.366Z"
+      "updatedAt": "2026-10-11T09:18:29.134Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1502,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "841603f581caa0e8da90bf750d88f5fea7aeef0f",
+      "skillFolderHash": "6b1c5ec66ba56041b99baa889ecc598923cdaf5f",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-10T11:20:21.546Z"
+      "updatedAt": "2026-10-11T09:18:39.673Z"
     }
   },
   "dismissed": {
