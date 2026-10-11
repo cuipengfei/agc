@@ -1163,3 +1163,22 @@
 ## [2026-10-11] ingest | Plannotator agent tool 注入与 Quick Labels 机制
 - Disposition: New + Update（plannotator-agent-tool-and-quick-labels.md 新建；plannotator-omp-plugin-mechanism.md、toolchain-reference.md 更新 0.28.12 机制）
 - Raw: raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md
+
+## [2026-10-11] ingest | OMP 内建工具全集、会话暴露边界与内部地址空间
+- Disposition: New
+- Raw: raw/omp-tools/2026-10-11-omp-sh-docs-tools.md; raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md
+
+## [2026-10-11] ingest | OMP cfg:// 配置解析：合并视图与 source 归属
+- Disposition: New
+- Raw: raw/omp-config/2026-10-11-cfg-url-resolution-session.md
+
+## [2026-10-11] ingest | OMP 本地构建：内部 worker 与运行时依赖
+- Disposition: Update
+- Raw: raw/omp/2026-10-11-local-build-workers-runtime-assets.md
+- Updated: OMP 本地构建：依赖、步骤、产物与验证
+- 要点：daemon broker、LSP mux、text predict 等内部 worker 由同一 dist/omp 入口按内部参数启动（src/cli.ts:292-317），无需分别构建；文本预测原生 TextPredictor 内嵌在 Rust addon（daemon.ts:346），SmolLM2-135M 权重（145 MB Q8_0 GGUF）按需下载、非构建产物（smollm-weights.ts:7-29）；tiny-model/STT/TTS 走 Transformers.js + onnxruntime-node 按需安装路径，与 smollm 独立；LSP 实际 server 是外部程序；CodeGraph、mem-ledger 非 OMP 构建产物；本地 vs 全局进程以命令路径区分。未单独运行本地 worker、未执行权重下载验证。
+
+## [2026-10-11] ingest | 第五次损坏实况、恢复流程陷阱与根因改述（类层面两机制）
+- Disposition: Update; Disputed
+- Raw: raw/omp-mnemopi/2026-10-11-fifth-corruption-live-forensic.md; raw/omp-mnemopi/2026-10-11-recovery-procedure-and-pitfalls.md; raw/omp-mnemopi/2026-10-11-embedding-rebuild-after-recovery.md
+- Updated: Mnemopi SQLite 损坏恢复

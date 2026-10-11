@@ -179,6 +179,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Advisor 上下文标记](omp-config/advisor-context-markers.md) | `**user**:`/`**agent**:` 角色标记、会话更新状态头、工具结果渲染预算、evictStaleResults 清理、Advisor 直接回答的投递缺口（纯文本不渲染，只有 advise() 渲染）与 WATCHDOG.md L22 规则 | 2026-10-05 |
 | [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区；18.4.2 达 515 键 | 2026-09-28 |
 | [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
+| [OMP cfg:// 配置解析：合并视图与 source 归属](omp-config/cfg-url-resolution.md) | cfg:// 三层下钻键发现、合并视图 vs yaml、default/global config/项目/会话四层 source 归属、写入 session-only + save 持久化 | 2026-10-11 |
 
 ## omp-context-files
 
@@ -187,6 +188,14 @@ OMP 上下文文件的发现顺序、provider 优先级、作用域组合与 sys
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 上下文文件发现与优先级](omp-context-files/context-file-discovery-and-priority.md) | AGENTS.md、RULES.md、APPEND_SYSTEM.md、SYSTEM.md 的作用、搜索顺序、provider shadow、@path 导入与 `/extensions` 验证 | 2026-10-11 |
+
+## omp-tools
+
+OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察 | 2026-10-11 |
 
 ## omp-extensibility
 
@@ -234,7 +243,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 | [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-02 |
 | [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响 | 2026-09-21 |
 | [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表、facts 只读（memory_edit 不可改） | 2026-09-26 |
-| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程九步、四次损坏实录（9-21/9-24/10-06/10-09）、索引同坏时穷举点查证伪法；根因已定位（2026-10-11）：OMP `Grep`/`Read` 同进程开 bank `-shm` 丢 WAL-index POSIX 锁 + 并发写→物理 malformed，当前 SQLite 3.53.4 一手复现，WAL-reset/FTS5 CVE 已排除；缓解 `.ignore` 跳 sidecar（已应用）+ 同 repo 不并行 | 2026-10-11 |
+| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程、五次损坏实录（9-21/9-24/10-06/10-09/10-11）、索引同坏时穷举点查证伪法；根因类层面定位（多写入者 + `-shm` 协调失效，两条可达：grep/read 进程内夺锁、替换 bank 未重启致分裂 shm），逐次归因不可考，WAL-reset/FTS5 CVE 已排除；恢复流程与陷阱、embedding 重建停滞；缓解 `.ignore` 跳 sidecar（已应用）+ 同 repo 不并行 | 2026-10-11 |
 
 ## omp-modes
 
@@ -382,7 +391,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分](omp/find-tool-cascade.md) | jfind 固定四阶段（lexical + 文件名/草图/完整验证三波）、native grep + idf 加权粗筛（带超时、跳超大文件、不保证穷尽）、波间筛选常量（CANDIDATES=128/FILES=20/CUTOFF=0.45/THRESHOLD=0.2）、走注入的通用 judge 接口且请求无 wave 字段、实际后端未验证、find vs grep 适用性为机制推断；补与 jevgrep 入口机制对照 | 2026-10-01 |
 | [Node-API and napi-rs in OMP](omp/napi-node-api.md) | Node-API（原 N-API）稳定 ABI 逐字定义与边界（限 Node.js、不跨平台）；Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证；napi-rs 构建链（Rust 1.88+、#[napi]、平台分包）；pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1 证据 | 2026-09-27 |
 | [OMP judgment 对 chat 类 judge 的无 schema 文本解析机制](omp/judgment-chat-llm-parsing.md) | 普通 chat 模型当 judge 时不发 response_format/json_schema/text.format；temperature 0 + disableReasoning + maxTokens 4096 首次裸文本，prompt 约定关键词回答，三组解析器（choice/noul/score）取最早合法关键词，解析失败重试才挂 submit_judgment tool；与 jev /v1/systemone 路由分界；本机 judge 实配 typesafe-zen/jev-1.13 | 2026-10-07 |
-| [OMP 本地构建：依赖、步骤、产物与验证](omp/local-build.md) | Ubuntu x86_64 的 v18.8.7 构建流程：系统依赖先安装、Bun 1.4.3/rustup 与当前 shell PATH、HTTPS 源码/tag 检查、nightly-2026-10-06、Cargo ci stripped addon 与 Bun compile；全局安装保持不变，源码/绑定/资源对照与 GLIBC 2.43/2.17 边界；隔离 shell 和 --version/--help 已验证，另一台机器完整复现未验证 | 2026-10-10 |
+| [OMP 本地构建：依赖、步骤、产物与验证](omp/local-build.md) | Ubuntu x86_64 的 v18.8.7 构建流程：系统依赖先安装、Bun 1.4.3/rustup 与当前 shell PATH、HTTPS 源码/tag 检查、nightly-2026-10-06、Cargo ci stripped addon 与 Bun compile；内部 worker（daemon broker/LSP mux/text predict）随同一入口打包，SmolLM 权重与 tiny-model 运行库按需下载非构建产物；全局安装保持不变，源码/绑定/资源对照与 GLIBC 2.43/2.17 边界；隔离 shell 和 --version/--help 已验证，另一台机器完整复现未验证 | 2026-10-11 |
 
 ## tokscale
 
