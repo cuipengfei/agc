@@ -1,8 +1,8 @@
 # OMP 本地构建：依赖、步骤、产物与验证
 
 > Sources: 本机实测 2026-10-10（oh-my-pi v18.8.7, commit f261ed9）; Rust official docs; Bun official docs; rustup official site; 用户确定的 ci 构建流程与隔离 shell 复核
-> Raw: [本地构建源码与官方说明摘录](../../raw/omp/2026-10-10-local-build-source-excerpts.md); [v18.8.7 本地构建执行与全局对照实测](../../raw/omp/2026-10-10-local-build-and-global-comparison.md); [便携环境准备与 ci 主流程复核](../../raw/omp/2026-10-10-local-build-portable-setup.md)
-> Updated: 2026-10-10
+> Raw: [本地构建源码与官方说明摘录](../../raw/omp/2026-10-10-local-build-source-excerpts.md); [v18.8.7 本地构建执行与全局对照实测](../../raw/omp/2026-10-10-local-build-and-global-comparison.md); [便携环境准备与 ci 主流程复核](../../raw/omp/2026-10-10-local-build-portable-setup.md); [内部 worker 与运行时依赖](../../raw/omp/2026-10-11-local-build-workers-runtime-assets.md)
+> Updated: 2026-10-11
 
 ## Overview
 
@@ -175,7 +175,18 @@ test -x "$OMP_REPO/packages/coding-agent/dist/omp" || exit 1
 | npm cli.js | `packages/coding-agent/dist/cli.js` | 用外部 pi-natives 包 |
 | 源码 launcher | 全局 bin 的 `omp`（`bun setup` 创建） | 软链到 `src/cli.ts` |
 
-## 8. 与全局安装的对照（可选）
+## 8. 内部 worker 与运行时依赖
+
+编译产物已包含 OMP 的内部 worker 代码：daemon broker、LSP mux、文本预测等都由同一个 `dist/omp` 入口按内部参数启动，不需要分别编译可执行文件（`src/cli.ts:292-317`）。但「构建包含」不等于「运行所需全部就位」：
+
+- **文本预测的 SmolLM 引擎**：原生 `TextPredictor` 已内嵌在 Rust addon 中（`src/predict/daemon.ts:346`）；SmolLM2-135M 权重（约 145 MB 的 Q8_0 GGUF）按需下载，不属于构建产物（`src/predict/smollm-weights.ts:7-29`）。只有启用 `smollm` 引擎时交互进程才下载，daemon 在权重就绪前只用 ngram 回答。
+- **tiny-model / STT / TTS**：走 Transformers.js + onnxruntime-node 的子进程路径，运行库与模型均按需安装，不内嵌（`src/cli.ts:321-328`）；与 smollm 预测是两条独立路径。
+- **LSP mux**：代码随构建包含，实际 language server 是外部程序。
+- **CodeGraph、mem-ledger 监控等**：不属于 OMP 构建产物。
+
+进程列表中 OMP worker 是否来自本地版本，以命令路径区分：本地为 `packages/coding-agent/dist/omp`，全局安装为 `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js`。共享后台服务（如 daemon broker）可能由全局实例维护，未单独核查。
+
+## 9. 与全局安装的对照（可选）
 
 另一台机器没有全局 OMP 也能完成构建；本节仅在需要确认本地产物与已安装版本一致时执行。本次对照结果：
 
@@ -187,7 +198,7 @@ test -x "$OMP_REPO/packages/coding-agent/dist/omp" || exit 1
 - **addon 二进制**：内容不同，见下节。
 - 对照全程全局安装三个包的文件清单与 SHA-256 均未变，全局 `omp` 链接未被改动。
 
-## 9. GLIBC 兼容：本机构建 vs 官方发布
+## 10. GLIBC 兼容：本机构建 vs 官方发布
 
 `.node` addon 和编译出的二进制都依赖系统提供的 **GLIBC**（Linux 基础运行库：数学、时间、文件等）。用 `readelf` 查看 addon 对系统库的版本要求，本次观察到：
 
@@ -204,7 +215,7 @@ test -x "$OMP_REPO/packages/coding-agent/dist/omp" || exit 1
 
 `ci` profile 控制优化、调试信息与增量编译；本次本地 addon 的 GLIBC 要求来自实际二进制检查，不能通过选择 `ci` 宣称具有官方发布兼容性。默认 `local` profile 的产物未在本次比较中检查。
 
-## 10. 证据边界
+## 11. 证据边界
 
 - 完整构建使用已有部分工具的本机环境；Bun 1.4.3、nightly-2026-10-06、Cargo `ci` 的命令已实测。全新系统中的安装命令依据官方文档，另一台机器上的完整复现未验证。
 - 额外在不加载 shell 启动文件、初始 PATH 仅为 `/usr/bin:/bin` 的 Bash 中验证：加入 Bun/Rust 安装目录后可找到全部工具；在 `/tmp` 直接运行独立 `omp` 的 `--version`、`--help` 均退出 0，stderr 为空。
@@ -216,3 +227,4 @@ test -x "$OMP_REPO/packages/coding-agent/dist/omp" || exit 1
 
 - [OMP Rust/TS architecture and pi-natives](rust-ts-architecture.md)
 - [Node-API and napi-rs in OMP](napi-node-api.md)
+- [预测文字引擎：SmolLM 下载、引擎选择与 daemon 行为](predictive-text-engine.md)
