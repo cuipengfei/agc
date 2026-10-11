@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md)
-> Updated: 2026-10-01
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md)
+> Updated: 2026-10-11
 
 ---
 
@@ -983,3 +983,15 @@ OMP 插件 `@plannotator/pi-extension` 经 `@plannotator/webtui@0.1.0` 依赖 `n
 | herdr-plannotator manifest | https://github.com/plannotator/herdr-plannotator/blob/master/herdr-plugin.toml                                  | latest                |
 | herdr-plannotator src      | https://github.com/plannotator/herdr-plannotator/tree/master/src                                                | latest                |
 | GitHub plugin search       | `gh search repos "herdr-plugin"`                                                                                | 2026-09-17            |
+
+---
+
+## 9. Plannotator 0.28.12 新增机制（2026-10-11 实测）
+
+`@plannotator/pi-extension` 0.28.12 起新增 agent 工具注册与配置扩展，内容独立成文：
+
+- **agent 工具**：插件用 `pi.registerTool` 注册 `plannotator` 工具，开关链为 `PLANNOTATOR_AGENT_TOOL` env → `config.agentTool` → 主机默认值（Pi 默认关）。开启后 agent 可直接调工具开标注/审查。
+- **Quick Labels**：一键标注标签存浏览器 cookie（跨随机端口会话持久），Settings → Labels 可自定义 emoji/文字/颜色/tip/排序/增删；快速栏的 👍 "Looks good" 是硬编码例外，不可配置。
+- **config.json 全键清单**：38 个顶层配置键分组全录；`~/.plannotator/config.json` 已作为受保护条目纳入 agc 仓库 manifest 跟踪。
+
+详见 [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)。

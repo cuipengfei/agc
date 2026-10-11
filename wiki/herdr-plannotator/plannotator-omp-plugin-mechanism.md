@@ -1,12 +1,12 @@
 # Plannotator OMP 插件运行机制：slash command 归属、浏览器服务链路与 node-pty 编译门
 
-> Sources: 本机诊断与源码阅读, 2026-09-27
-> Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md)
-> Updated: 2026-09-27
+> Sources: 本机诊断与源码阅读，2026-09-27；本机 OMP pi-extension 0.28.12 实测，2026-10-11
+> Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md)
+> Updated: 2026-10-11
 
 ## Overview
 
-Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannotator/pi-extension`（2026-09-27 升级至 0.27.21）在 OMP 进程内注册原生 slash command 并自建 HTTP 服务器供浏览器标注；`~/.claude/skills` 下的同名 skill 家族（安装者未验证）让 agent shell 出去调独立二进制（`~/.local/bin/plannotator`，同为 0.27.21）。OMP 插件的升级受 node-pty 原生编译门约束：node-pty@1.1.0 的发布包不含 linux-x64 预编译产物，Linux 下安装脚本需 node-gyp 现场编译，缺它则整个插件安装失败。
+Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannotator/pi-extension`（2026-10-11 实测 0.28.12）在 OMP 进程内注册原生 slash command、`plannotator` agent 工具并自建 HTTP 服务器供浏览器标注；`~/.claude/skills` 下的同名 skill 家族（安装者未验证）让 agent shell 出去调独立二进制（`~/.local/bin/plannotator`）。OMP 插件的升级受 node-pty 原生编译门约束：node-pty@1.1.0 的发布包不含 linux-x64 预编译产物，Linux 下安装脚本需 node-gyp 现场编译，缺它则整个插件安装失败。0.28.12 起插件通过 `pi.registerTool` 注册 `plannotator` agent 工具，其开关链（env → config.agentTool → 主机默认值，Pi 默认关）详见 [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)。
 
 ## 双通道总览
 
@@ -15,6 +15,8 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 **skill 通道（~/.claude/skills）**：`~/.claude/skills/plannotator-last/SKILL.md` 声明 `allowed-tools: Bash(plannotator:*)`，正文是 bang 命令 ``!`plannotator annotate-last $ARGUMENTS` ``——agent 以 Bash 执行，PATH 解析到独立 CLI 二进制。家族共四个实体目录（plannotator、plannotator-annotate、plannotator-last、plannotator-review，修改时间 2026-09-27 10:25）加三个软链进 `~/.agents/skills`（plannotator-compound、plannotator-setup-goal、plannotator-visual-explainer）。安装者未验证，仅有软链结构与修改时间证据。
 
 两通道只是同名，各用各的实现：OMP 里敲 `/plannotator-last` 走插件注册的原生命令，不调全局二进制；skill 文件被哪个宿主加载未验证，但其执行内容是调 CLI。
+
+**agent 工具通道（0.28.12 起）**：插件 `index.ts` 用 `pi.registerTool` 注册 `plannotator` 工具（工具名常量 `generated/plannotator-tool.ts`，值 `'plannotator'`，schema 五个 action：annotate/review/last/list/close）。注册与否由 `resolveAgentTool(loadConfig(), process.env, "pi")` 判定，Pi 主机默认关；注册时 `defaultActive: false`，`session_start` 有交互 UI 时激活。它把 Plannotator 的能力以工具形式暴露给 agent 直接调用，与 slash command 通道（用户敲命令）和 skill 通道（agent 调 CLI）并列。
 
 ## /plannotator-last：注册与数据流
 
@@ -64,3 +66,4 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 ## See Also
 
 - [Herdr + Plannotator 工具链全量 Reference](toolchain-reference.md)
+- [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)
