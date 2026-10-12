@@ -1182,3 +1182,13 @@
 - Disposition: Update; Disputed
 - Raw: raw/omp-mnemopi/2026-10-11-fifth-corruption-live-forensic.md; raw/omp-mnemopi/2026-10-11-recovery-procedure-and-pitfalls.md; raw/omp-mnemopi/2026-10-11-embedding-rebuild-after-recovery.md
 - Updated: Mnemopi SQLite 损坏恢复
+
+## [2026-10-12] ingest | CLI 子命令全量参考
+- Disposition: New
+- Raw: raw/omp-commands/2026-10-12-cli-help-and-docs-reference.md
+- Created: CLI 子命令全量参考
+
+## [2026-10-12] ingest | gc 存储垃圾回收
+- Disposition: New
+- Raw: raw/omp-commands/2026-10-12-gc-storage-mechanism.md
+- Created: gc 存储垃圾回收

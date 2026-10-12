@@ -156,6 +156,8 @@ OMP 内置命令的机制与动态发现。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Cleanse：动态诊断修复](omp-commands/cleanse.md) | 按项目文件和可用 binary 动态发现 checker，多语言支持 | 2026-09-09 |
+| [CLI 子命令全量参考](omp-commands/cli-subcommands-reference.md) | omp v18.10.1 的 launch 入口形态、启动 flags 七组、子命令八组及网页文档差异 | 2026-10-12 |
+| [gc 存储垃圾回收](omp-commands/gc-storage-garbage-collection.md) | omp gc 四阶段存储清理：blobs/archive/wal/stale 的路径、阈值、保留额度与安全机制 | 2026-10-12 |
 
 ## omp-config
 
