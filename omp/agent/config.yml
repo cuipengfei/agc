@@ -69,10 +69,10 @@ modelRoles:
   slow: kimi-claw/k3-agent:xhigh
   commit: c8787/gpt-6-luna:high
   smol: sensenova/deepseek-v4-flash:high
-  task: justwoker/claude-opus-4-8:high
+  task: kimi-claw/k3-agent:high
   vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
-  advisor: justwoker/claude-opus-4-8:high
+  advisor: sensenova/deepseek-v4-flash:max
   default: kimi-claw/k3-agent:xhigh
   web: web/firecrawl
   memory: c8787/gpt-6-luna:max
@@ -150,6 +150,7 @@ display:
   showTurnTime: true
   pinnedAgents: full
   hideToolActivity: false
+  subagentLivePreview: true
 showHardwareCursor: true
 defaultThinkingLevel: high
 hideThinkingBlock: false
@@ -499,6 +500,10 @@ computer:
   display: all
   maxWidth: 1920
   maxHeight: 1200
+archive:
+  enabled: true
+ratchet:
+  enabled: true
 checkpoint:
   enabled: false
 fetch:
@@ -540,6 +545,7 @@ goal:
     - interactive
 title:
   refreshOnReplan: true
+  generator: tiny
 task:
   isolation:
     apply: true
@@ -634,5 +640,6 @@ thinkingBudgets:
 composer:
   shape: box
   tokenRate: true
+  predictions: true
 externalThinking: false
 skillful: true

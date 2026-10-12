@@ -81,7 +81,7 @@
  },
  "composer.tokenRate": {
   "label": "生成速率",
-  "desc": "在运行行上显示实时的生成 tok/s 读数，停靠在会话标题右侧。数值由流式增量估算，并在每条消息完成时按 provider 的计费输出 token 数校正。"
+ "desc": "在运行行的会话标题旁，或原生 composer bar 中思考级别之后，显示实时生成 tok/s；回合之间保留最后一次读数。数值由流式增量估算，并在每条消息完成时按 provider 的计费输出 token 数校正。"
  },
  "statusLine.preset": {
   "label": "状态栏预设",
@@ -105,7 +105,7 @@
  },
  "statusLine.compactThinkingLevel": {
   "label": "紧凑思维级别",
-  "desc": "在模型名称上用单个图标显示思维级别，而不是单独的 ` · <level>` 后缀。"
+ "desc": "在模型名称上用单个图标显示思维级别，而不单独显示 ` · <level>` 后缀；在 Tern 的 composer 中改为模型 chip 的图标，不单独显示 chip，点击图标可循环切换。"
  },
  "statusLine.showHookStatus": {
   "label": "显示 Hook 状态",
@@ -153,7 +153,7 @@
  },
  "terminal.showProgress": {
   "label": "原生终端进度",
-  "desc": "在 agent 或上下文维护运行期间发出 OSC 9;4 不定态进度"
+ "desc": "在 agent 或上下文维护运行期间发出 OSC 9;4 不定态进度；在 Tern 中始终开启。"
  },
  "tui.textSizing": {
   "label": "大标题（Kitty）",
@@ -353,7 +353,7 @@
  },
  "ask.timeout": {
   "label": "询问超时",
-  "desc": "多少秒后自动选择推荐的询问选项（0 表示禁用）"
+ "desc": "多少秒后自动选择推荐的询问选项（0 表示禁用）。该值也限制 cfg:// 批准提示；批准请求无人回答时拒绝写入，不自动选择。"
  },
  "ask.notify": {
   "label": "询问通知",
@@ -649,7 +649,7 @@
  },
  "codexResets.autoRedeem": {
   "label": "Codex 自动兑换已存重置",
-  "desc": "自动花费已存的 Codex 限流重置：当某回合卡住且没有其他账号能接手时，恢复因 5 小时或每周窗口耗尽而被封锁的账号，并抢救即将过期的额度。unset 在首次花费前询问，yes 直接花费不提示，no 同时禁用两项检查。"
+ "desc": "自动花费已存的 Codex 限流重置：当某回合卡住且没有其他账号能接手时，恢复因 5 小时或每周窗口耗尽而被封锁的账号，并抢救即将过期的额度。unset 在首次花费前询问；没有询问界面时，仅花费 5 分钟内过期的重置；yes 直接花费不提示，no 同时禁用两项检查。"
  },
  "codexResets.minBlockedMinutes": {
   "label": "Codex 自动兑换最小封锁时长",
@@ -661,11 +661,11 @@
  },
  "codexResets.salvageHorizonHours": {
   "label": "Codex 重置抢救时限",
-  "desc": "当一笔已存的 Codex 重置否则会在此小时内过期，且任一对话窗口（5 小时或每周）有值得恢复的用量时，自动花费它（0 禁用过期抢救）。"
+ "desc": "启用自动兑换时，在距一笔已存 Codex 重置过期不超过此小时数、且任一对话窗口有值得恢复的用量时花费它。0 禁用提前抢救；5 分钟内过期的额度无论用量如何都会尝试。"
  },
  "claudeResets.autoRedeem": {
   "label": "Claude 自动兑换重置",
-  "desc": "自动花费符合条件的 Claude Cedar 或 Juniper 重置。Cedar 只用于其覆盖的限额；Juniper 只能恢复单独的 5 小时封锁。unset 在首次花费前询问，yes 直接花费不提示，no 禁用封锁恢复和过期抢救。"
+ "desc": "自动花费符合条件的 Claude Cedar 或 Juniper 重置。Cedar 只用于其覆盖的限额；Juniper 只能恢复单独的 5 小时封锁。unset 在首次花费前询问；没有询问界面时，仅花费 5 分钟内过期的重置；yes 直接花费不提示，no 禁用封锁恢复和过期抢救。"
  },
  "claudeResets.minBlockedMinutes": {
   "label": "Claude 自动兑换最小封锁时长",
@@ -673,11 +673,11 @@
  },
  "claudeResets.keepCredits": {
   "label": "Claude 自动兑换保留额度",
-  "desc": "至少保留这么多笔 Claude 重置（0 允许最后一笔符合条件的重置被自动花费）。该保留额度同样适用于过期抢救。"
+ "desc": "至少保留这么多笔 Claude 重置（0 允许最后一笔符合条件的重置被自动花费）。该保留额度适用于提前抢救，但不适用于 5 分钟内过期的符合条件重置。"
  },
  "claudeResets.salvageHorizonHours": {
   "label": "Claude 重置抢救时限",
-  "desc": "仅在距过期不足此小时数、且其覆盖窗口有值得恢复的用量、并且授权允许提前使用或某覆盖窗口已耗尽时，才使用服务端选定的 Cedar 重置（0 禁用抢救）。"
+ "desc": "启用自动兑换时，在距过期不超过此小时数、且 Cedar 覆盖的窗口有值得恢复的用量时，使用服务端选定的 Cedar 重置。0 禁用提前抢救；符合条件的 Cedar 或 Juniper 重置若在 5 分钟内过期，仍会尝试使用，不受用量或保留额度影响；provider 限额要求仍然有效。"
  },
  "provider.appendOnlyContext": {
   "label": "仅追加上下文",
@@ -713,11 +713,11 @@
  },
  "advisor.syncBacklog": {
   "label": "Advisor 同步积压",
-  "desc": "当 advisor 落后达到这么多回合时，暂停主代理最多 30 秒。关闭则禁用追平延迟。"
+ "desc": "暂停主代理，直到 advisor 积压低于阈值。数字值将等待时间限制为最多 30 秒；strict 会等待所有已安排的评审，不设墙钟时间上限。关闭则禁用追平延迟；中止、失败和释放资源都会解除等待。"
  },
  "advisor.immuneTurns": {
   "label": "Advisor 免疫回合数",
-  "desc": "在 advisor 的 concern 或 blocker 造成中断后，接下来的这么多个主回合内，后续的 concern/blocker 改为不中断地送达。"
+ "desc": "advisor 的 concern 或 blocker 造成中断后，在接下来的这么多个主回合内，将后续 concern 作为不中断的附带提示发送；blocker 不受此冷却期限制。"
  },
  "advisor.maxNotesPerUpdate": {
   "label": "Advisor 每次更新最大备注数",
@@ -957,11 +957,11 @@
  },
  "mnemopi.polyphonicRecall": {
   "label": "Mnemopi 多声部召回",
-  "desc": "是否启用四路召回（向量、图、事实、时序），并用倒数排名融合进行融合"
+ "desc": "融合 graph、fact、vector 和 temporal 四路召回，让关联记忆即使没有关键词匹配也能浮现。"
  },
  "mnemopi.enhancedRecall": {
   "label": "Mnemopi 增强召回",
-  "desc": "是否为重复及相似的召回查询启用分层查询结果缓存"
+ "desc": "为选项完全相同的重复及相似召回查询缓存结果；任何记忆写入都会清除此缓存。"
  },
  "mnemopi.proactiveLinking": {
   "label": "Mnemopi 主动链接",
@@ -1341,15 +1341,15 @@
  },
  "computer.display": {
   "label": "Computer 显示",
-  "desc": "合成所有显示器，或选择某个原生显示 id"
+ "desc": "活动窗口所在的显示器（active）、所有显示器（all），或指定的原生显示 id。"
  },
  "computer.maxWidth": {
   "label": "Computer 截图宽度",
-  "desc": "合成截图的最大宽度（像素）"
+ "desc": "截图的最大宽度（像素）。"
  },
  "computer.maxHeight": {
   "label": "Computer 截图高度",
-  "desc": "合成截图的最大高度（像素）"
+ "desc": "截图的最大高度（像素）。"
  },
  "images.questionTimeoutMs": {
   "label": "图像提问超时",
@@ -1425,7 +1425,7 @@
  },
  "tools.xdev": {
   "label": "xd:// 工具",
-  "desc": "把很少使用的（可发现的）工具挂载到 xd:// 设备 URL 下，通过 read/write 驱动，而不是在每次请求都下发它们的 schema。会话的显式工具列表授予了 read 但省略了 write 时，通过仅设备写传输方式挂载设备（文件系统写入仍被拒绝）。禁用则把所有已启用的工具直接暴露在顶层。"
+ "desc": "把很少使用的（可发现的）工具挂载到 xd:// 设备 URL 下，通过 read/write 驱动，不在每次请求中下发它们的 schema。会话的显式工具列表授予 read 但省略 write 时，通过仅设备写传输方式挂载设备；除设备外，只有 local:// scratch 保持可写。禁用则把所有已启用的工具直接暴露在顶层。"
  },
  "tools.xdevDocs": {
   "label": "xd:// 提示文档",
@@ -1717,7 +1717,7 @@
  },
  "goal.continuationModes": {
   "label": "目标延续模式",
-  "desc": "启用目标后可以在回合之间自动延续的运行模式"
+ "desc": "启用目标后可以在回合之间自动延续的运行模式（`interactive`、`rpc`）。"
  },
  "title.refreshOnReplan": {
   "label": "重新规划时刷新标题",
@@ -1873,7 +1873,7 @@
  },
  "browser.idleCloseSec": {
   "label": "浏览器空闲关闭超时",
-  "desc": "关闭空闲超过这么多秒的 OMP 拥有的无头浏览器标签页（0 = 永不关闭；会话销毁仍会回收）。仅适用于 OMP 启动的无头标签页，从不适用于中继/CDP/外部启动的浏览器或其他会话的标签页。"
+ "desc": "关闭空闲超过这么多秒的 OMP 拥有的无头浏览器标签页和 Tern 浏览器画中画（0 = 永不关闭；会话销毁仍会回收）。从不处理 relay、CDP、外部启动的浏览器或其他会话的标签页。"
  },
  "browser.screenshotDir": {
   "label": "截图目录",
@@ -2059,6 +2059,138 @@
   "label": null,
   "desc": "归档阶段按工作目录保留条数：每个 cwd 下最新的一批非活跃会话（默认 10 个）不被归档，其余超龄的才移入 archive。"
  },
+"modelPresets": {
+ "label": null,
+ "desc": "保存命名的模型预设；每个预设记录角色分配和默认思考档位，可由 `/modelpreset` 或模型选择器整体保存与切换。"
+},
+"terminal.programStatus": {
+ "label": "程序状态（OSC 7501）",
+ "desc": "通过 OSC 7501 报告 agent 当前正在工作、等待你、已完成或失败，供终端标签页指示器和 agent 收件箱使用。"
+},
+"tui.renderSvg": {
+ "label": "渲染 SVG 图形",
+ "desc": "邀请 agent 使用 SVG 绘制图表和示意图，并在支持图形显示的终端中以内嵌图片渲染。"
+},
+"tui.autoGraph": {
+ "label": "自动绘制表格图表",
+ "desc": "在支持图形显示的终端中，根据数值表格在回答下方绘制图表，并使用当前主题的颜色。"
+},
+"display.subagentLivePreview": {
+ "label": "子 agent 实时预览",
+ "desc": "在每个固定子 agent 的条目下显示它当前或最近一次的工具调用。"
+},
+"input.bareExitOnEmptySession": {
+ "label": "空会话直接退出",
+ "desc": "在发送第一条消息前，单独提交 `exit`、`quit` 或 `q`（不区分大小写）时直接退出，不向模型发送提示。"
+},
+"input.bareSlashCommands": {
+ "label": "省略斜杠的命令",
+ "desc": "单独提交不带前导 `/` 的命令名（例如 `model`、`compact`）时运行对应的斜杠命令；会话已有消息后需要连续按两次 Enter 确认。"
+},
+"composer.predictions": {
+ "label": "输入框预测",
+ "desc": "每轮完成后，请当前模型预测你的下一条消息，并在空输入框中显示为幽灵文字；按 Tab 或右方向键插入但不发送。每轮会话都会额外产生一次计费请求，计入 `/stats`。"
+},
+"expandThinkingBlocks": {
+ "label": "展开思考区块",
+ "desc": "回合结束时保持已完成的思考区块展开，不自动折叠。"
+},
+"retry.fallbackOn": {
+ "label": "回退触发条件",
+ "desc": "指定哪些失败请求可以切换到已配置的回退模型：所有失败、用量限制，或除用量限制以外的失败。"
+},
+"providers.muse-code.storeResponses": {
+ "label": "保存 Muse Code 响应",
+ "desc": "将 Muse Code 结果保存到 Meta 服务器，使连接中断的回合可以恢复而无需重新运行；保存的运行记录会把提示词和输出保留在 Meta 一侧。"
+},
+"tts.localSpeed": {
+ "label": "本地 TTS 语速",
+ "desc": "本地 TTS backend（`tts` 工具、`omp say`）的朗读速度。1 表示正常速度，范围限制为 0.5–2.5。"
+},
+"speech.speed": {
+ "label": "语音朗读速度",
+ "desc": "朗读 assistant 输出时的语速。1 表示正常速度，范围限制为 0.5–2.5。"
+},
+"advisor.reviewMode": {
+ "label": "Advisor 评审模式",
+ "desc": "没有 WATCHDOG.yml 代理名单时的默认 Advisor 评审频率：`turn` 评审每个主回合，`agent-end` 只在最终交付时评审。"
+},
+"advisor.reviewInterval": {
+ "label": "Advisor 评审间隔",
+ "desc": "没有 WATCHDOG.yml 代理名单时，Advisor 每隔多少个符合条件的主更新进行一次评审。1 表示每次更新都评审；跳过的更新会在下一次计划评审时一并发送。"
+},
+"contextFiles.extra": {
+ "label": "额外上下文文件",
+ "desc": "在 AGENTS.md 旁边加载的额外指令文件名。使用 JSON 文件名列表而非路径，例如 `[\"AGENTS.local.md\"]`；`[]` 表示禁用额外文件。需要新建会话才会加载。"
+},
+"compaction.modelThresholds": {
+ "label": null,
+ "desc": "按 provider/model-id 或带 `*` 的模型前缀设置每个模型的自动压缩触发点；可使用 token 数、百分比或固定 token 触发值。精确模型匹配优先于最长匹配前缀。"
+},
+"compaction.modelThresholdsEnabled": {
+ "label": null,
+ "desc": "是否启用 `compaction.modelThresholds`。关闭后按模型设置的压缩触发点不生效；子 agent 的专用阈值也会使用这一开关所确定的根设置。"
+},
+"tools.artifactMaxBytes": {
+ "label": "Artifact 文件上限（MB）",
+ "desc": "为流式工具输出（bash、Python、JS eval）保存的 artifact 文件最大大小。超出时保留开头最多 3 MB 和最近的结尾，中间插入截断提示；设为 0 表示不限制。"
+},
+"ratchet.enabled": {
+ "label": "Ratchet",
+ "desc": "启用 ratchet eval/hillclimb 前置内容；`/ratchet` 可在当前会话中开启。"
+},
+"archive.enabled": {
+ "label": "Archive",
+ "desc": "启用只读 archive eval 前置内容：提供提示词历史、最近项目、过往会话和回顾记录的查询工具。它按需查询历史，不会自动把整段历史注入当前上下文，也不负责上下文压缩或记忆召回。"
+},
+"bash.gitGuard": {
+ "label": "Git 防护",
+ "desc": "拒绝 bash 工具中会丢弃或移动共享工作的 Git 命令：stash、`reset --hard` 或重置到其他提交，以及合并或变基冲突之外的 checkout、switch、restore。"
+},
+"worktree.onStart": {
+ "label": "启动时创建 Worktree",
+ "desc": "新的交互会话是否在独立的关联 worktree 中启动：关闭、询问或创建。"
+},
+"worktree.onExit": {
+ "label": "退出时处理 Worktree",
+ "desc": "退出时如何处理自 OMP 启动后创建的 worktree（启动时创建或通过 `/wt` 创建）：保留、询问或移除。"
+},
+"task.speculativeLaunch": {
+ "label": "提前启动子任务",
+ "desc": "批量 task 中某个 `tasks[]` 项开始流式完成后立即启动对应子 agent，无需等待整个 task 调用结束；如果完成调用未通过验证、被阻塞或参数发生变化，已启动的 agent 会被中止。需要自动允许 task 批准，且不能有扩展工具生命周期处理器。"
+},
+"task.completionProbe": {
+ "label": "子 agent 完成度探测",
+ "desc": "通过类似 `/btw` 的缓存旁路请求，让运行中的子 agent 估计任务完成度；探测时间为再过 2、5、10、30 分钟，之后每小时一次。估计值显示在 wait 和 task 视图中的子 agent 旁边；只探测交互会话主 agent 创建的子 agent。"
+},
+"task.agentAccountPools": {
+ "label": null,
+ "desc": "限制指定子 agent 可使用的 OAuth 账户：按 agent 名称映射到 provider，再映射到 OAuth identity key 列表。空映射表示不限制；格式错误会拒绝加载，避免限制意外失效。"
+},
+"title.icons": {
+ "label": "标题图标",
+ "desc": "新生成的会话标题或通过 `/rename` 设置的标题开头使用的图标和短代码：字体图标加 emoji、仅 emoji，或简洁模式。"
+},
+"title.generator": {
+ "label": "标题生成器",
+ "desc": "根据用户消息为尚未命名的会话生成标题。`fork` 从当前回复分叉临时侧回合，使用当前模型和提示缓存生成标题；`tiny` 直接使用专门的标题模型（TINY 角色或本地 tiny 模型）。"
+},
+"browser.tern": {
+ "label": "Tern 浏览器",
+ "desc": "在 Tern 窗格中打开浏览器标签页时，使用覆盖在 OMP 窗格上的原生画中画网页视图，而非无头 Chromium；没有可承载标签页的 Tern 窗口时回退到 Chromium。显式应用选项、relay 和 Browser CDP URL 优先级更高；`app.tern:false` 可关闭一次打开操作；也可使用 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 覆盖。"
+},
+"gc.stale": {
+ "label": null,
+ "desc": "是否启用 `omp gc --apply --stale` 的过期文件清理阶段；该阶段会删除用户可见的调试报告和协作副本，因此默认的 `omp gc --apply` 不会执行它。"
+},
+"gc.staleRetainNewest": {
+ "label": null,
+ "desc": "过期文件清理阶段无论年龄如何都保留的最新文件数量，默认保留 20 个。"
+},
+"gc.staleRetainDays": {
+ "label": null,
+ "desc": "过期文件清理阶段保留文件的天数，默认保留最近 30 天的文件；超过期限且不在最新文件保留数量内的文件才会被清理。"
+},
  "_groups": {
   "Prompt": "提示词",
   "Startup & Updates": "启动与更新",

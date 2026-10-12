@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "779d855713c068e5d14530965c65871a211b0b1e",
+      "skillFolderHash": "9134300117cb90d912aadcf66f6c453731e3b15d",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-11T03:39:11.733Z"
+      "updatedAt": "2026-10-12T11:41:21.601Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -633,9 +633,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/virgiliojr94/book-to-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "e180fc46365e8c1aab0120778cc8a40b9515324b",
+      "skillFolderHash": "a24e62f4d8caf2ee433f6e48d9073800f56f906e",
       "installedAt": "2026-08-17T13:12:19.212Z",
-      "updatedAt": "2026-10-06T12:21:29.539Z"
+      "updatedAt": "2026-10-12T11:41:36.031Z"
     },
     "humanizer": {
       "source": "blader/humanizer",
@@ -1249,9 +1249,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-audio/SKILL.md",
-      "skillFolderHash": "1456df988f75c0f80a5210bdb2c4c5a415e129bf",
+      "skillFolderHash": "a0f60ce0e9bfc8f7b406b8f366cd899150b3f765",
       "installedAt": "2026-10-08T14:50:55.463Z",
-      "updatedAt": "2026-10-11T03:39:16.717Z"
+      "updatedAt": "2026-10-12T11:41:44.713Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
@@ -1340,18 +1340,18 @@
       "sourceUrl": "https://github.com/code-yeongyu/oh-my-openagent.git",
       "ref": "dev",
       "skillPath": "packages/omo-senpi/skills/ultrawork/SKILL.md",
-      "skillFolderHash": "95d3359e0c80fa5f582c04a2105ea538d2698b1e",
+      "skillFolderHash": "a87daf9577d654e0da54068bd25d0a9b94090d7a",
       "installedAt": "2026-10-08T16:13:21.148Z",
-      "updatedAt": "2026-10-08T16:15:44.298Z"
+      "updatedAt": "2026-10-12T11:42:31.455Z"
     },
     "answer-me-with-html": {
       "source": "qingyuna/answer-me-with-html",
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "6b1c5ec66ba56041b99baa889ecc598923cdaf5f",
+      "skillFolderHash": "d890747ceec84682355e5b1ab240363f15b4e3d7",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-11T09:18:39.673Z"
+      "updatedAt": "2026-10-12T11:42:42.305Z"
     }
   },
   "dismissed": {
