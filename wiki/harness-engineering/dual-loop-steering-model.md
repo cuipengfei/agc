@@ -196,3 +196,4 @@ Cybernetics（控制论）是 Wiener 1948 年创立的跨学科领域，研究�
 - [Harness 格式与上下文载体](harness-formats-and-context-carriers.md) — 编辑格式与上下文载体的具体机制
 - [Claude Code 上下文与 Compaction](claude-code-context-and-compaction.md) — 上下文截断与压缩的具体实现
 - [用控制论评估 Agent 系统](evaluating-agent-systems-with-cybernetics.md) — 控制论四组检查清单、OpenAI 实践对应与七篇资源地图
+- [Behavioral Harness 的成本收益实验](behavioral-harness-cost-experiment.md) — guides/sensors 框架的对照实验：前沿模型 harness 纯开销、成本优化模型靠 harness 达同等可靠性且单次成本更低

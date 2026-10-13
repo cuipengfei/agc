@@ -1204,3 +1204,10 @@
 - Raw: raw/geekbang-agent-harness/2026-10-13-lesson-21-anchoring.md
 - Created: wiki/harness-engineering/anchoring.md
 - 要点：徐昊课程第 21 讲——四角度（输出/过程/风格/结构）+ 三种锚定方式（模板+示例/流程图+前馈反馈/领域模型图+前馈反馈）；流程锚定与双层循环的四点对比（启发式 vs 照图走、自由度只剩检查点判断、成本差异、可审计性）；反馈手段差异（过程靠验证命令动态、结构靠结构测试静态）；真实案例表按证据类型分级（wryan14 模板 ⚠️ 作者自述、Superpowers 流程 ✅ 可验证、LangGraph 图 ✅ 可验证、ArchUnit 结构 ✅ 可验证、SysMARA 实验 ⚠️ 受控实验声称开源但未给仓库地址、OpenAI 未验证 ❌ 官方博客 403）
+
+## [2026-10-14] ingest | Behavioral Harness 的成本收益实验
+- Disposition: New
+- Raw: raw/harness-engineering/2026-10-14-are-harnesses-worth-the-cost.md
+- Created: wiki/harness-engineering/behavioral-harness-cost-experiment.md
+- Updated: 双层循环操控模型（See Also 级联）
+- 要点：Naresh Jain 于 martinfowler.com 发表的对照实验，每模型 10 轮、178 项外环验收。GPT-6 Sol 带 harness 纯开销（约 10.5 倍 token、约 7 倍成本，两组均 10/10）；GPT-6 Luna 3/10→10/10，harness 后单次 $0.273 比无 harness Sol $0.406 低约 33%。失败集中在协议边界/弹性路径/集成缝（202 流程 4×503/2×400/1×429、Kafka __TypeId__ 头与 categories:null、415 违约、ORDER_API_API_KEY 配置名）。机制解释为 executable attention/attention lapse（作者自述未证因果）。结论：模型能力决定 sensors 何时运行。边界：API 等价估算、不含契约维护人工、guides+sensors 不可分离、brief 异常详细、作者利益相关（Specmatic 创始人）、n=10 无独立复现。
