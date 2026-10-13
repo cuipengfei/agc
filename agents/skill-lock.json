@@ -358,9 +358,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/ogulcancelik/herdr.git",
       "skillPath": "skills/herdr/SKILL.md",
-      "skillFolderHash": "67042ed7910d4177a9000e0679e78b0346060927",
+      "skillFolderHash": "2be0d86d481d1bb29c62e11ef37b78d27d01b478",
       "installedAt": "2026-08-02T09:22:30.144Z",
-      "updatedAt": "2026-09-29T15:04:54.779Z"
+      "updatedAt": "2026-10-13T16:16:39.295Z"
     },
     "to-questionnaire": {
       "source": "mattpocock/skills",
@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "a69f8176f262ab3e2c932663e5cf8b20c25e89ea",
+      "skillFolderHash": "a69818ab39f9978677a93b7ceac5ade5fb0005ec",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-13T12:32:32.340Z"
+      "updatedAt": "2026-10-13T16:18:04.919Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1349,18 +1349,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "2a2763245f58e36e36f79b3c041e3748ff4df3c3",
+      "skillFolderHash": "85cefb44dae95af570c943ce4092d65f9fc476c9",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-13T12:33:13.293Z"
+      "updatedAt": "2026-10-13T16:18:14.139Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
       "skillPath": "plugins/note/skills/note/SKILL.md",
-      "skillFolderHash": "3a61a47a398efbcb6c33b879aef19335a76607f0c71c4f06dfdd5fcf7569eae9",
+      "skillFolderHash": "a8fca2e341ef0201ddfc52e581b55fe4eb3880a0",
       "installedAt": "2026-10-13T15:14:23.157Z",
-      "updatedAt": "2026-10-13T15:14:23.157Z"
+      "updatedAt": "2026-10-13T16:16:11.789Z"
     }
   },
   "dismissed": {
