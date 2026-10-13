@@ -1211,3 +1211,11 @@
 - Created: wiki/harness-engineering/behavioral-harness-cost-experiment.md
 - Updated: 双层循环操控模型（See Also 级联）
 - 要点：Naresh Jain 于 martinfowler.com 发表的对照实验，每模型 10 轮、178 项外环验收。GPT-6 Sol 带 harness 纯开销（约 10.5 倍 token、约 7 倍成本，两组均 10/10）；GPT-6 Luna 3/10→10/10，harness 后单次 $0.273 比无 harness Sol $0.406 低约 33%。失败集中在协议边界/弹性路径/集成缝（202 流程 4×503/2×400/1×429、Kafka __TypeId__ 头与 categories:null、415 违约、ORDER_API_API_KEY 配置名）。机制解释为 executable attention/attention lapse（作者自述未证因果）。结论：模型能力决定 sensors 何时运行。边界：API 等价估算、不含契约维护人工、guides+sensors 不可分离、brief 异常详细、作者利益相关（Specmatic 创始人）、n=10 无独立复现。
+
+## [2026-10-14] ingest | Tern 网页字体修改与版本迁移
+- Disposition: Update
+- Raw: raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md; raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md; raw/omp-tips/2026-10-13-tern-web-maple-client-source.md; raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md
+- Updated: Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
+- Updated: Tern 网页 Markdown 中文触发无响应
+- Updated: Tern：TSP 与 browser 后端
+- 要点：保存完整工作源码、初始内存生成与字体定位方法、两条加载路径的全部指令对应关系及编译步骤；按版本配置和分层验收组织中文说明。字体是否需要修改由终端中文/图标验收决定，Markdown 单字符回归独立处理；完整英文报告保存在 raw，临时 txt 仅作便利副本。本轮只更新资料，不制作新补丁、不启动服务。

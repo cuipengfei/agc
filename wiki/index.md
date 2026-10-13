@@ -219,9 +219,9 @@ OMP 启动提示与交互快捷方式。
 | [OMP web search 自定义 Responses API 端点](omp-tips/web-search-custom-responses-provider.md) | codex provider 接入兼容 /codex/responses 的端点：路径拼接、请求形状、凭证分支、实测 | 2026-09-19 |
 | [OMP web search provider 清单与 fallback](omp-tips/web-search-provider-inventory.md) | 25 个 provider 四类分级、串行 fallback、public 并发合并、webSearchOrder 追加语义、Tavily MCP 与原生 `web/tavily` 凭证来源差异 | 2026-09-29 |
 | [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描全部 `*.ts`/`*.js` 扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法 | 2026-09-19 |
-| [Tern：TSP 与 browser 后端](omp-tips/tern-tsp-and-browser-backend.md) | Tern Surface Protocol（TUI 原生渲染协议，`PI_TUI_NATIVE` 开关）与 browser 工具后端的两个身份：探测、native 渲染、rows 回退、WKWebView 画中画、能力边界；命名来历未证实 | 2026-10-13 |
-| [Tern Web Maple Font Rebuild](omp-tips/tern-web-maple-font-rebuild.md) | Tern 网页客户端升级后重建 Maple Mono NF CN 修改：重新定位内嵌字体、描述符与实际加载指令，注入完整字体并分层验证 | 2026-10-13 |
-| [Tern Web Markdown CJK Freeze](omp-tips/tern-web-markdown-cjk-freeze.md) | Tern 0.8.3 原版网页客户端打开含一个中文字符的 Markdown 后失去响应；JSON/Python 正常，daemon CLI 可关闭 pane 恢复 | 2026-10-13 |
+| [Tern：TSP 与 browser 后端](omp-tips/tern-tsp-and-browser-backend.md) | Tern Surface Protocol（TUI 原生渲染协议，`PI_TUI_NATIVE` 开关）与 browser 工具后端的两个身份：探测、native 渲染、rows 回退、WKWebView 画中画、能力边界；命名来历未证实 | 2026-10-14 |
+| [Tern 网页字体修改与版本迁移](omp-tips/tern-web-maple-font-rebuild.md) | 升级后重建 Maple Mono NF CN 修改：原版字体验收、内存快照、所有加载引用、完整源码、版本配置与分层完成标准；Markdown 回归独立处理 | 2026-10-14 |
+| [Tern 网页 Markdown 中文触发无响应](omp-tips/tern-web-markdown-cjk-freeze.md) | 原版 0.8.3 的单字符 `中` 复现；按真实 `file`/`id` 字段关闭目标 pane，保留 shell/Git；稳定 raw 保存完整英文邮件 | 2026-10-14 |
 
 ## kimi-claw
 

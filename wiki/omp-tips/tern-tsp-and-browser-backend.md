@@ -1,8 +1,8 @@
 # Tern：TSP 与 browser 后端
 
-> Sources: oh-my-pi 官方文档与源码，2026-10-10
-> Raw: [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md)
-> Updated: 2026-10-10
+> Sources: oh-my-pi 官方文档与源码，2026-10-10; Tern 0.8.3 网页客户端实测，2026-10-13；资料复核，2026-10-14
+> Raw: [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md); [Tern 网页 Maple 字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [Tern 网页 Markdown 中文复现](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md)
+> Updated: 2026-10-14
 
 tern 在 oh-my-pi 中有两个身份：**Tern Surface Protocol（TSP，TUI 原生渲染协议）**与 **browser 工具后端**。本文按行为层整理：用户感知什么、什么时候发生、有哪些开关。identifier 逐字保留源码/文档原样。
 
@@ -91,3 +91,5 @@ oh-my-pi 官方三份来源（`docs/tui-core-renderer.md`、`docs/tools/browser.
 ## See Also
 
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — omp 模式与关键词机制总览
+- [Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移](tern-web-maple-font-rebuild.md) — 升级后重新定位字体、加载引用与校验信息
+- [Tern 网页 Markdown 中文触发无响应](tern-web-markdown-cjk-freeze.md) — 原版对照、复现材料与恢复方法
