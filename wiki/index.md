@@ -109,6 +109,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [三家宿主 MCP 配置、验证阶梯与凭据事故](harness-engineering/mcp-setup-validation.md) | Codex/OpenCode/OMP semgrep stdio 写法；静态解析/协议探针/真实加载三级验证各自边界；codex enabled 不代表连接、opencode list 有连接全部副作用；filterExa 设计行为；凭据暴露事故教训 | 2026-09-26 |
 | [双层循环操控模型](harness-engineering/dual-loop-steering-model.md) | 徐昊课程框架：双层循环（PDCA+操控循环）、四子系统、前馈/反馈/调整三环节；自我纠正就是 ReAct；edge 是窗口截断边界；Böckeler 的 guides/sensors 对应关系；feedforward 起源（Richards 1951 Macy Conference）；含 Bad Smells 目录（07–19 讲全十三种：需求模糊/隐式约定/信息散落/虚假胜利/指令腐化/前馈痴迷/反馈过载/上下文倾倒/上下文焦虑/跨会话知识丢失/状态污染/环境漂移/模式复制漂移）；含 Skills 最佳实践（20 讲：可预测标准、明确触发、恰当自由度、体积控制与拆分、内层循环）；retro 与动态知识更新的关系 | 2026-10-09 |
 | [用控制论评估 Agent 系统](harness-engineering/evaluating-agent-systems-with-cybernetics.md) | 控制论四组检查清单（基础部件/MPC 与规划/状态估计与稳定性/多环控制与工程修复）；OpenAI 一手数据与五大实践的控制论对应；各来源资源分工地图；Ashby 变异度定律与规约复杂度下界 | 2026-10-05 |
+| [锚定：用具体例子约束 Agent 的输出](harness-engineering/anchoring.md) | 徐昊课程第 21 讲：四角度（输出/过程/风格/结构）+ 三种锚定方式（模板+示例/流程图+前馈反馈/领域模型图+前馈反馈）；流程锚定与双层循环的四点对比；真实案例表（wryan14 模板、Superpowers 流程、LangGraph 图、ArchUnit 结构、SysMARA 实验、OpenAI 未验证） | 2026-10-13 |
 
 
 ## grok2api
@@ -217,7 +218,9 @@ OMP 启动提示与交互快捷方式。
 | [OMP web search 自定义 Responses API 端点](omp-tips/web-search-custom-responses-provider.md) | codex provider 接入兼容 /codex/responses 的端点：路径拼接、请求形状、凭证分支、实测 | 2026-09-19 |
 | [OMP web search provider 清单与 fallback](omp-tips/web-search-provider-inventory.md) | 25 个 provider 四类分级、串行 fallback、public 并发合并、webSearchOrder 追加语义、Tavily MCP 与原生 `web/tavily` 凭证来源差异 | 2026-09-29 |
 | [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描全部 `*.ts`/`*.js` 扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法 | 2026-09-19 |
-| [Tern：TSP 与 browser 后端](omp-tips/tern-tsp-and-browser-backend.md) | Tern Surface Protocol（TUI 原生渲染协议，`PI_TUI_NATIVE` 开关）与 browser 工具后端的两个身份：探测、native 渲染、rows 回退、WKWebView 画中画、能力边界；命名来历未证实 | 2026-10-10 |
+| [Tern：TSP 与 browser 后端](omp-tips/tern-tsp-and-browser-backend.md) | Tern Surface Protocol（TUI 原生渲染协议，`PI_TUI_NATIVE` 开关）与 browser 工具后端的两个身份：探测、native 渲染、rows 回退、WKWebView 画中画、能力边界；命名来历未证实 | 2026-10-13 |
+| [Tern Web Maple Font Rebuild](omp-tips/tern-web-maple-font-rebuild.md) | Tern 网页客户端升级后重建 Maple Mono NF CN 修改：重新定位内嵌字体、描述符与实际加载指令，注入完整字体并分层验证 | 2026-10-13 |
+| [Tern Web Markdown CJK Freeze](omp-tips/tern-web-markdown-cjk-freeze.md) | Tern 0.8.3 原版网页客户端打开含一个中文字符的 Markdown 后失去响应；JSON/Python 正常，daemon CLI 可关闭 pane 恢复 | 2026-10-13 |
 
 ## kimi-claw
 

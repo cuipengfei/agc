@@ -1192,3 +1192,15 @@
 - Disposition: New
 - Raw: raw/omp-commands/2026-10-12-gc-storage-mechanism.md
 - Created: gc 存储垃圾回收
+
+## [2026-10-13] ingest | Tern Web Maple Font Rebuild
+- Disposition: New; Update
+- Raw: raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md; raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md; raw/omp-tips/2026-10-13-tern-web-maple-client-source.md; raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md
+- Updated: Tern：TSP 与 browser 后端
+- 要点：记录 Tern 0.8.3 网页客户端字体来源、完整 Maple Mono NF CN 修改源码与版本迁移步骤；实测需同时覆盖描述符和实际加载指令，浏览器初始化与用户画面验收是独立完成条件。另记录原版网页客户端中 Markdown 单中文字符触发失去响应的复现、恢复与官方报告渠道。
+
+## [2026-10-13] ingest | 锚定：用具体例子约束 Agent 的输出
+- Disposition: New
+- Raw: raw/geekbang-agent-harness/2026-10-13-lesson-21-anchoring.md
+- Created: wiki/harness-engineering/anchoring.md
+- 要点：徐昊课程第 21 讲——四角度（输出/过程/风格/结构）+ 三种锚定方式（模板+示例/流程图+前馈反馈/领域模型图+前馈反馈）；流程锚定与双层循环的四点对比（启发式 vs 照图走、自由度只剩检查点判断、成本差异、可审计性）；反馈手段差异（过程靠验证命令动态、结构靠结构测试静态）；真实案例表按证据类型分级（wryan14 模板 ⚠️ 作者自述、Superpowers 流程 ✅ 可验证、LangGraph 图 ✅ 可验证、ArchUnit 结构 ✅ 可验证、SysMARA 实验 ⚠️ 受控实验声称开源但未给仓库地址、OpenAI 未验证 ❌ 官方博客 403）
