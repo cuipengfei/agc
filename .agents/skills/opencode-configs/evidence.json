@@ -1,12 +1,12 @@
 {
   "repository": "anomalyco/opencode",
-  "version": "2.0.28",
+  "version": "2.0.29",
   "sources": {
     "packages/core/src/snapshot.ts": { "sha256": "9b4405b32267dc3bcec000d80984378447798e02eec9bb63744c9c05f655fb3c" },
     "packages/core/src/session/compaction.ts": { "sha256": "e386ce7bbe0ce2008c3bb1c1ed7c517b45cf93d475c5f26549601b550c15189a" },
     "packages/core/src/image.ts": { "sha256": "d7f81a06fd941d0b45998a8d65da597bd3e3b53f4b9f996707b5abf6c4a204f9" },
     "packages/core/src/tool-output.ts": { "sha256": "52339aa19b673f654c048ec5579511785773c8f092dadf27e47a1d8bdb36198e" },
-    "packages/schema/src/config.ts": { "sha256": "45b7c7f329891e8e8425c8eba6c9c5b28d75bbdc8fc9ed0244b2989f25d3b3b8" },
+    "packages/schema/src/config.ts": { "sha256": "8e383e8506b5e29cb8f264237501146fae9c83df20f72d5da6bb4c2b585dc2df" },
     "packages/core/src/mcp/index.ts": { "sha256": "522849a479fca15852e43d4db6146ecf4fd83097dfa97005bd8101af879e1246" },
     "packages/schema/src/agent.ts": { "sha256": "2438abf1f8bbcc8ebad533b81035d739db4117b9df739a906d0113e851c0737e" },
     "packages/core/src/permission.ts": { "sha256": "d69278896f9a541dac7cf46056c859834d840ecc16ac57a639cbabc1afdda9a5" },
@@ -15,6 +15,8 @@
     "packages/core/src/plugin/agent.ts": { "sha256": "9e9cc7546a5a13b1e4655cfc14da2d96280be555e2c322f6b024ff93539ffa45" },
     "packages/core/src/shell/select.ts": { "sha256": "03427b391487a26cba5ca115bd294ebcbfecfdc98d03f5b9ea66ede151bda822" },
     "packages/core/src/filesystem/location-watcher-policy.ts": { "sha256": "326889029b5ca4966cc8a398fda2fde33ad2df4162fdec97c21d76addd755b1d" },
+    "packages/core/src/filesystem/location-watcher.ts": { "sha256": "38350f66e6f4afeebf5fbb38814ff2fda3fc52ce8ed88c2d9b87588309f1922e" },
+    "packages/core/src/config/plugin/location-watcher.ts": { "sha256": "b23a68b5e3d1d930efa52aa8e7a17d11c599f6a0e2ddce06d3fe99e2b3412fe4" },
     "packages/core/src/config/plugin/formatter.ts": { "sha256": "cf4f27b63e4de1e70225fe48eaf2882fe080c1a52b22dab7bf167b45068c07b7" },
     "packages/web/src/content/docs/lsp.mdx": { "sha256": "62584a2f8bafdf8c910c445c1887d689125f2b5123af264e73d89845b982b3cd" },
     "packages/core/src/tool/plugin/subagent.ts": { "sha256": "fc6e821262ea17c26e63f2955e6fc1ad17475894701ec79d79494318204ad74b" },
@@ -28,8 +30,10 @@
     "packages/core/src/plugin/command.ts": { "sha256": "a8efe5fb2fd28ec14d3286ed72beda982adad8ca76dddf26278475abf5ad3aa2" },
     "packages/core/src/config/plugin/reference.ts": { "sha256": "aa437f82aa3a673cac8d99c85815d0315b92b383326462f698c317c89a2e4c4a" },
     "packages/core/src/models-dev.ts": { "sha256": "b701e3291e0ed6218558c132c76ff53d5cbaf4ac28480067b7270b68172bb7c1" },
-    "packages/core/src/managed-policy.ts": { "sha256": "7c6af5e3024e53f38eaa05b71877daa0c299d5c94525c07bc3d07cc421f81918" },
-    "services/www/src/docs/content/config.mdx": { "sha256": "221d91b940ef4049437231c9827b270ae68567f0047305fe695ac2d9da43c7be" },
+    "packages/core/src/managed-policy.ts": { "sha256": "02987e38b43349bbae6d250acad0bdefd4610d44a566a2165072dcaf5bef7f3d" },
+    "packages/schema/src/config/policy.ts": { "sha256": "15097b9423bc1d84dfe30ce0e0655b69cdabd296735609ab8cf6ae14dc1442f8" },
+    "packages/schema/src/config/experimental.ts": { "sha256": "fd207aa68daa3550ada1ee41d9d1230be494fb7efb71115fa0f5398222908b9a" },
+    "services/www/src/docs/content/config.mdx": { "sha256": "8e3390f5cbb65f6f2084c2f21f93ea5251f32cbfffe67874335415dad543eb00" },
     "services/www/src/docs/content/warming.mdx": { "sha256": "68ea79bb5b59fecc75367160607f30be7050337269966813680f9607fc96a274" }
   },
   "keys": {
@@ -59,7 +63,7 @@
     "model.variant": ["packages/core/src/model.ts"],
     "agents": ["packages/core/src/plugin/agent.ts"],
     "shell": ["packages/core/src/shell/select.ts"],
-    "watcher.ignore": ["packages/core/src/filesystem/location-watcher-policy.ts"],
+    "watcher.ignore": ["packages/core/src/filesystem/location-watcher-policy.ts", "packages/core/src/filesystem/location-watcher.ts", "packages/core/src/config/plugin/location-watcher.ts"],
     "formatter": ["packages/core/src/config/plugin/formatter.ts"],
     "lsp": ["packages/web/src/content/docs/lsp.mdx"],
     "experimental.subagent_depth": ["packages/core/src/tool/plugin/subagent.ts"],
@@ -76,6 +80,7 @@
     "commands": ["packages/core/src/plugin/command.ts"],
     "references": ["packages/core/src/config/plugin/reference.ts"],
     "providers": ["packages/core/src/models-dev.ts"],
-    "experimental.policies": ["packages/core/src/managed-policy.ts"]
+    "policies": ["packages/schema/src/config.ts", "packages/schema/src/config/policy.ts", "packages/core/src/managed-policy.ts"],
+    "experimental.policies": ["packages/schema/src/config/experimental.ts", "packages/core/src/managed-policy.ts"]
   }
 }

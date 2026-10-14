@@ -25,7 +25,7 @@
   "model.variant": { "behavioral": "无内置默认：取可用列表中最新发布且支持文本的模型", "evidence": "tag v2.0.28 源码 packages/core/src/model.ts Model.default()" },
   "agents": { "behavioral": "6 个内置 agent：build、general、explore、compaction、title、summary", "evidence": "tag v2.0.28 源码 packages/core/src/plugin/agent.ts 依次注册六个内置 agent" },
   "shell": { "behavioral": "自动发现：$SHELL → PATH 中的 bash → /bin/sh（macOS 固定 /bin/zsh）", "evidence": "tag v2.0.28 源码 packages/core/src/shell/select.ts environment()/fallback()" },
-  "watcher.ignore": { "known": true, "value": [], "evidence": "tag v2.0.28 源码 packages/core/src/filesystem/location-watcher-policy.ts initial ignore:[]，无内置忽略项" },
+  "watcher.ignore": { "known": true, "value": [], "evidence": "tag v2.0.29 源码 packages/core/src/filesystem/location-watcher-policy.ts:31 initial ignore:[] 无内置忽略项；packages/core/src/filesystem/location-watcher.ts:61 ignore.includes(alias) 精确匹配，命中即停用版本库头文件（.git/HEAD 或 .hg/branch）监听" },
   "formatter": { "known": true, "value": false, "evidence": "tag v2.0.28 源码 packages/core/src/config/plugin/formatter.ts：配置为 falsy 时直接 return，内置集也不注册" },
   "lsp": { "known": true, "value": false, "evidence": "tag v2.0.28 文档 packages/web/src/content/docs/lsp.mdx：LSP is disabled by default（该 tag 开源树无 LSP 客户端运行时代码）" },
   "experimental.subagent_depth": { "known": true, "value": 1, "evidence": "tag v2.0.28 源码 packages/core/src/tool/plugin/subagent.ts：?? 1" },
@@ -42,5 +42,6 @@
   "commands": { "behavioral": "2 个内置命令（init、review）；MCP prompts 也注册为命令", "evidence": "tag v2.0.28 源码 packages/core/src/plugin/command.ts:28-54 无条件注册 init/review" },
   "references": { "behavioral": "空：未配置即一条不加载", "evidence": "tag v2.0.28 源码 packages/core/src/config/plugin/reference.ts:22-50 仅遍历 info.references ?? {}" },
   "providers": { "behavioral": "内置 models.dev 目录（models.opencode.ai 远程 + 打包快照兜底）", "evidence": "tag v2.0.28 源码 packages/core/src/models-dev.ts:279 defaultSource + :288-297 内置 snapshot" },
-  "experimental.policies": { "behavioral": "空：无内置策略；无匹配策略时默认 allow", "evidence": "tag v2.0.28 源码 ManagedPolicy.statements() 本地部分 info.experimental?.policies ?? []" }
+  "policies": { "behavioral": "空：无内置策略；无匹配策略时默认 allow", "evidence": "tag v2.0.29 源码 packages/core/src/managed-policy.ts:55 statements() 本地部分 info.policies ?? []；packages/schema/src/config/policy.ts action 限 provider.use/tool.use/integration.use、effect 限 allow/deny" },
+  "experimental.policies": { "inert": true, "evidence": "tag v2.0.29 源码 packages/schema/src/config/experimental.ts:14 注解 Deprecated: use top-level policies；packages/core/src/managed-policy.ts:55 只读 info.policies，不再消费此键" }
 }

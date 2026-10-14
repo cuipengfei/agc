@@ -157,7 +157,7 @@ describe("loadEvidence 校验", () => {
 
   test("真实 evidence.json 通过全部结构校验", () => {
     const ev = loadEvidence();
-    expect(ev.version).toBe("2.0.28");
+    expect(ev.version).toBe("2.0.29");
     expect(Object.keys(ev.keys).length).toBeGreaterThanOrEqual(44);
   });
 });

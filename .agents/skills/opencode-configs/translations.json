@@ -2,7 +2,7 @@
   "$schema": { "label": "schema 引用", "desc": "编辑器校验用的 JSON Schema 地址。只给编辑器用，运行时忽略。注意官方托管的 config.json 仍是旧键形，指向它对 V2 会误报。" },
   "shell": { "label": "shell", "desc": "终端与 shell 工具使用的 shell。不给则按系统自动发现（Linux/macOS 上 zsh 或 bash）。可写绝对路径或短名。" },
   "model": { "label": "默认模型", "desc": "会话与 agent 都没选模型时的默认模型。写 provider/model 字符串或对象形态。根级默认不保留 variant，variant 只能在 agent/command 的模型引用里选。" },
-  "model.providerID": { "label": "模型·provider", "desc": "模型对象形态的 provider ID。model 写成对象时用它指定提供方。" },
+  "model.providerID": { "label": "模型·provider", "desc": "模型对象形态的 provider ID。支持值两类：models.dev 目录里的 provider ID（完整列表用 opencode models 查看，随目录版本变化），以及 provider 块里自定义的 ID。认证要求随 provider 不同：目录里的云端 provider 一般要 API key 或 opencode auth login 授权，本地 provider 一般不需要；自定义 provider 取决于其端点要求。单个 provider 的具体认证方式未逐一验证。" },
   "model.model": { "label": "模型·型号", "desc": "模型对象形态的型号名。与 providerID 配套。" },
   "model.variant": { "label": "模型·变体", "desc": "模型对象形态的变体名（如推理档位）。根级 model 用对象形态才可携带。" },
   "default_agent": { "label": "默认 agent", "desc": "会话未显式指定时使用的主 agent。必须是 primary agent，写错或写成 subagent 会回退 build 并告警。TUI、CLI、桌面端、GitHub Action 都生效。" },
@@ -14,8 +14,8 @@
   "permissions": { "label": "权限规则", "desc": "有序规则列表，每条是 action + resource + effect（allow/deny/ask），控制 agent 用工具前是否放行、拒绝或询问。前面的规则先匹配。" },
   "agents": { "label": "agent 定义", "desc": "按名字覆盖内置 agent 或定义新 agent，可带 model、system、description、mode、permissions 等。文件式定义（agents/ 目录）与此并存。" },
   "snapshots": { "label": "快照", "desc": "开关文件系统快照，undo/revert 依赖它。关掉之后 agent 改的文件无法通过界面回滚。大仓库或多 submodule 时关掉可避免索引变慢。" },
-  "watcher": { "label": "文件监听", "desc": "文件系统监听配置。只有 ignore 一个子字段。" },
-  "watcher.ignore": { "label": "监听忽略", "desc": "glob 列表，命中的文件变更不触发更新。常见依赖目录、版本控制目录、构建产物已自动忽略。" },
+  "watcher": { "label": "文件监听", "desc": "版本库监听配置。只有 ignore 一个子字段。监听的是项目版本库头文件（git 的 .git/HEAD、hg 的 .hg/branch），用于检测分支切换，不监听项目源码文件。" },
+  "watcher.ignore": { "label": "监听忽略", "desc": "字符串列表，与版本库目录别名（.git、解析后路径等）精确匹配；命中则整个版本库监听停用。不是 glob，也不作用于普通项目文件。" },
   "formatter": { "label": "格式化器", "desc": "write/edit/patch 改完文件后跑格式化。true 启用全部内置 formatter，对象形态可禁用某个内置项或定义自定义 formatter（command/environment/extensions）。省略则全部关闭。" },
   "lsp": { "label": "LSP", "desc": "语言服务器配置。true 启用内置项，对象形态可禁用或自定义（command/extensions/env）。省略则全部关闭。" },
   "media": { "label": "媒体处理", "desc": "read 工具加载的图片送进模型前的处理配置。只有 image 一个子块。" },
@@ -52,8 +52,9 @@
   "warming.interval": { "label": "保温·间隔", "desc": "两次保温请求的空闲间隔。warming 设 true 时用四分钟。" },
   "warming.duration": { "label": "保温·窗口", "desc": "会话静默多久后停止保温。warming 设 true 时用三十分钟。" },
   "providers": { "label": "provider 定义", "desc": "按 ID 配置 provider 或覆盖其模型：settings（超时、transport、压缩策略）、headers、models（limit、variants、cost 等）。settings.apiKey 常含凭据。" },
-  "experimental": { "label": "实验选项", "desc": "开发中选项的容器块：portable_shell_scanner、subagent_depth、policies。" },
+  "experimental": { "label": "实验选项", "desc": "开发中选项的容器块：portable_shell_scanner、subagent_depth。policies 已废弃并迁移到顶层 policies。" },
   "experimental.portable_shell_scanner": { "label": "实验·shell 扫描器", "desc": "shell 工具的权限扫描用哪套解析器：开 = 内置 portable 扫描器，关 = tree-sitter WASM 语法解析。默认按构建渠道：workerd/local/dev 开，stable 关。" },
   "experimental.subagent_depth": { "label": "实验·子代理深度", "desc": "子代理允许再派子代理的嵌套深度。V1 顶层同名字段已移入 experimental。" },
-  "experimental.policies": { "label": "实验·策略", "desc": "有序策略声明（action 限 provider.use/tool.use/integration.use，effect 限 allow/deny），控制 provider 与工具使用，可被范围更大的配置覆盖。与 permissions 不同层：policies 管允许用谁，permissions 管执行前问不问。" }
+  "policies": { "label": "策略", "desc": "有序策略声明（action 限 provider.use/tool.use/integration.use，effect 限 allow/deny），控制 provider 与工具使用，可被范围更大的配置覆盖。与 permissions 不同层：policies 管允许用谁，permissions 管执行前问不问。" },
+  "experimental.policies": { "label": "实验·策略（已废弃）", "desc": "v2.0.29 起废弃，迁移到顶层 policies；引擎仍接受此键但不再消费。语义同顶层 policies。" }
 }
