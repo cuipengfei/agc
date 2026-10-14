@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "Interrupt": [
+      {
+        "hooks": [
+          {
+            "command": "bash '/home/cpf/.codex/herdr-agent-state.sh' idle",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
     "PermissionRequest": [
       {
         "hooks": [
@@ -69,6 +80,26 @@
         "hooks": [
           {
             "command": "/home/cpf/.codex/hooks/win-ntf-notify.sh idle",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "bash '/home/cpf/.codex/herdr-agent-state.sh' idle",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "bash '/home/cpf/.codex/herdr-agent-state.sh' working",
             "timeout": 10,
             "type": "command"
           }
