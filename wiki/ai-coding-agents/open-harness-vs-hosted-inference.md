@@ -1,8 +1,9 @@
 # 开源 Harness 与托管推理不是一回事
 
-> Sources: CodebuffAI Freebuff; OpenCode; OMP, 2026-09-01
-> Raw: [Freebuff 仓库证据](../../raw/ai-coding-agents/2026-09-01-freebuff-repository-study.md); [OpenCode Provider 证据](../../raw/ai-coding-agents/2026-09-01-opencode-provider-evidence.md); [OMP Provider 证据](../../raw/ai-coding-agents/2026-09-01-omp-provider-evidence.md)
-> Updated: 2026-09-01
+> Sources: CodebuffAI Freebuff; OpenCode; OMP, 2026-09-01; Meta Muse; Grok Bot; OpenAI Dots; Hermes; OpenClaw, 2026-10-14
+> Raw: [Freebuff 仓库证据](../../raw/ai-coding-agents/2026-09-01-freebuff-repository-study.md); [OpenCode Provider 证据](../../raw/ai-coding-agents/2026-09-01-opencode-provider-evidence.md); [OMP Provider 证据](../../raw/ai-coding-agents/2026-09-01-omp-provider-evidence.md); [Hosted Agents vs Self-Hosted Agents](../../raw/agent-harness/2026-10-14-hosted-agents-vs-hermes-openclaw.md)
+> Updated: 2026-10-14
+
 
 ## Overview
 
@@ -51,6 +52,16 @@ OpenCode 和 OMP 都把 provider 作为用户可替换配置：
 | OMP | 是 | 是 | 是 |
 
 这里的“脱离厂商服务”只指 harness 与路由主权，不代表脱离所有第三方模型。
+
+## 托管个人 Agent 与自托管 Agent
+
+Muse、Grok Bot 和 Dots 的资料描述托管云端电脑、账户连接、后台任务和用户审批。Hermes 与 OpenClaw 的本次资料只证明本地 skill、Gateway 和浏览器配置路径。关于模型 provider、运行位置、数据边界和维护责任，本次材料不作结论。
+
+Muse 和 Grok Bot 的资料明确描述云端电脑；Hermes 与 OpenClaw 的资料分别明确描述本地 skill 管理和 Gateway 浏览器控制。托管产品的其他集成，以及自托管产品的 provider、运行位置和数据边界，需要分别核实。使用云端模型时，发送给模型的上下文仍然会交给对应 provider。
+
+Hermes 的本次资料证明了本地 skill 管理与渐进式加载，OpenClaw 的资料证明了独立浏览器和自动化路径。两者的资料都没有证明邮件、日历、每日调度、回复草拟、发送前批准和实际发送组成的完整流程已经开箱即用；这类流程需要额外工具、skill、浏览器配置或外部服务，具体集成需要单独核实。
+
+当前没有同一任务、同一模型、同一权限条件下比较 Muse、Grok Bot、Dots、Hermes 和 OpenClaw 的可靠性数据。
 
 ## See Also
 

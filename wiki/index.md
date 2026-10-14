@@ -7,6 +7,7 @@ Agent harness 的 prompt、上下文架构与运行形态差异。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 相同模型表现差异背后的 prompt、技能加载、压缩、记忆和用户建模因素 | 2026-08-30 |
+| [托管个人 Agent 与自托管 Agent](agent-harness/hosted-agents-vs-self-hosted-agents.md) | Muse、Grok Bot、Dots 与 Hermes、OpenClaw 的托管云端电脑、账户集成、浏览器配置与证据边界 | 2026-10-14 |
 | [SoL-Pi 与 OMP 兼容性](agent-harness/sol-pi-omp-compat.md) | SoL-Pi 四机制核查、推广文章三处错漏、pi→oh-my-pi 身份链、Action Fusion 机制与 OMP 兼容矩阵：装得上但 actionFusion 兼容修复 #11991 未进入 18.3.0 | 2026-09-25 |
 | [OmO 停止条件与意图检测机制](agent-harness/omo-stop-condition-mechanisms.md) | OmO 三层停止机制：代码层 &lt;promise&gt; 标签正则+会话状态机（不解析自然语言）、提示词纪律层 Hephaestus intent line 三版演进（5.5 承诺做完→5.6 停止条件声明即承诺+Stop Goal→6 Intent Gate）、门控层 STOP WHEN 存在性 lint+EVIDENCE_RECORDED 四重校验收据门+gate-reviewer 终审；防过度执行/漂移/假完成/半成品 | 2026-10-09 |
 | [OMP 默认系统指令](agent-harness/omp-default-system-instruction.md) | v18.9.0 默认 system-instruction 的 bundle 位置、`cts` 模板结构、渲染关系、尺寸与 `SYSTEM.md` 覆盖边界 | 2026-10-11 |
@@ -57,7 +58,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测） | 2026-09-27 |
 | [omo native 合法 agent 名册与配置三层](ai-coding-agents/omo-native-agent-roster.md) | 10 categories 实配状态与内置默认、具名 subagent 的 categories 绑定耦合、三层配置分工 | 2026-09-27 |
 | [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-04 |
-| [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管 | 2026-09-01 |
+| [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管，并补充托管个人 Agent 与自托管 Agent 的边界 | 2026-10-14 |
 | [Coding Agent 候选发现方法](ai-coding-agents/candidate-discovery-method.md) | wide-narrow-deep 枚举流程、README 机制词扫描、流行度的真实用途 | 2026-09-04 |
 | [四 Agent CLI 能力面对比](ai-coding-agents/cli-capability-surface.md) | codex/opencode/omo/omp 递归 --help（179 页）九大功能域对比与结构差异 | 2026-10-06 |
 | [Codex 特性门系统与 Code Mode](ai-coding-agents/codex-feature-flags.md) | features stage×effective 正交、removed 冻结假设、Code Mode host 架构 | 2026-09-05 |

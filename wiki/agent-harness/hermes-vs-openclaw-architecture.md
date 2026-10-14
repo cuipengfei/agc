@@ -24,3 +24,4 @@ OpenClaw 是 gateway-first（40+ 消息平台、5 万+ 技能市场）；Hermes 
 
 - [Harness 格式与上下文载体](../harness-engineering/harness-formats-and-context-carriers.md) — harness 上下文设计模式
 - [四 AI Coding Agent 对比](../ai-coding-agents/4-agent-comparison.md) — 本机四套 agent 的对比
+- [托管个人 Agent 与自托管 Agent](hosted-agents-vs-self-hosted-agents.md) — Muse、Grok Bot、Dots 与 Hermes、OpenClaw 的运行位置、维护责任和能力重叠。

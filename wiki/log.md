@@ -1219,3 +1219,9 @@
 - Updated: Tern 网页 Markdown 中文触发无响应
 - Updated: Tern：TSP 与 browser 后端
 - 要点：保存完整工作源码、初始内存生成与字体定位方法、两条加载路径的全部指令对应关系及编译步骤；按版本配置和分层验收组织中文说明。字体是否需要修改由终端中文/图标验收决定，Markdown 单字符回归独立处理；完整英文报告保存在 raw，临时 txt 仅作便利副本。本轮只更新资料，不制作新补丁、不启动服务。
+
+## [2026-10-14] ingest | 托管个人 Agent 与自托管 Agent
+- Disposition: New; Update
+- Raw: raw/agent-harness/2026-10-14-hosted-agents-vs-hermes-openclaw.md
+- Updated: 托管个人 Agent 与自托管 Agent；开源 Harness 与托管推理不是一回事；Hermes vs OpenClaw 架构差异（See Also）
+- 要点：Muse、Grok Bot、Dots 的资料描述托管云端电脑、账户连接、后台任务和用户审批；Hermes 与 OpenClaw 的本次资料只证明本地 skill、Gateway 和浏览器配置路径，模型 provider、运行位置、数据边界和维护责任本次不作结论；Gmail 与 Calendar 的完整每日检查、草拟、批准和发送流程未对 Hermes 或 OpenClaw 核实。
