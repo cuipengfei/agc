@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "a69818ab39f9978677a93b7ceac5ade5fb0005ec",
+      "skillFolderHash": "d7d66b45810294ae98e8a2c1de72d4ce9af80616",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-13T16:18:04.919Z"
+      "updatedAt": "2026-10-14T12:26:25.943Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -940,9 +940,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/principle-fix-root-causes/SKILL.md",
-      "skillFolderHash": "0ec22d21fffd180573f49ea239ee76083d6a6f40",
+      "skillFolderHash": "5e98e3bef166d84f4a19e69feb7d1587f420557f",
       "installedAt": "2026-10-04T15:35:43.321Z",
-      "updatedAt": "2026-10-04T15:35:43.321Z"
+      "updatedAt": "2026-10-14T12:26:31.669Z"
     },
     "principle-foundational-thinking": {
       "source": "backnotprop/pstack",
@@ -1321,9 +1321,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "d46a6c1613a8dfbf67520a6b1c6a7f859768a74d",
+      "skillFolderHash": "f3d045de2316321f3281cdeec5278a4522561f02",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-10-12T14:01:54.872Z"
+      "updatedAt": "2026-10-14T12:26:42.295Z"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "85cefb44dae95af570c943ce4092d65f9fc476c9",
+      "skillFolderHash": "3db638b2ef4b5721994368deee5281daab541794",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-13T16:18:14.139Z"
+      "updatedAt": "2026-10-14T12:26:48.896Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
