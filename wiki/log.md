@@ -1225,3 +1225,19 @@
 - Raw: raw/agent-harness/2026-10-14-hosted-agents-vs-hermes-openclaw.md
 - Updated: 托管个人 Agent 与自托管 Agent；开源 Harness 与托管推理不是一回事；Hermes vs OpenClaw 架构差异（See Also）
 - 要点：Muse、Grok Bot、Dots 的资料描述托管云端电脑、账户连接、后台任务和用户审批；Hermes 与 OpenClaw 的本次资料只证明本地 skill、Gateway 和浏览器配置路径，模型 provider、运行位置、数据边界和维护责任本次不作结论；Gmail 与 Calendar 的完整每日检查、草拟、批准和发送流程未对 Hermes 或 OpenClaw 核实。
+
+## [2026-10-15] ingest | Headroom 版本升级与兼容性（0.39 / 0.41）
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-10-15-headroom-v041-release-notes.md
+- 要点：v0.41.0（2026-10-13）新功能 7 条（Antigravity、OpenCode 2.x、headroom-snip、Rust 代理省钱统计、max_output_tokens 路由、按 agent 归因、Teams 推广位）；关键修复（缓存 3 条、流式缓存用量、429/529 退避上限、嵌套 JSON、ML 压缩按请求限、CodeQL 23、quinn RUSTSEC-2026-0338..0342、beacon IP、探测路由）；性能懒加载与大量死代码清理。0.40.0 中间版本未入库记录。
+
+## [2026-10-15] ingest | Headroom Extras（Rust 核心与独立 Rust 代理）
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-10-15-headroom-rust-core-and-proxy-distribution.md
+- 要点：Rust 核心（crates/headroom-py → _core.abi3.so）随 maturin 混合 wheel 发布，本机代理进程已加载（maps 14 段，仅证加载未证调用）；独立 Rust 代理（crates/headroom-proxy）未发布（crates.io 404、v0.41.0 assets 无二进制、pyproject 只打包 headroom-py）。
+
+## [2026-10-15] ingest | OpenAI Decisions API：当前状态与请求格式
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md
+- Updated: Jev 在 OMP、Codex、OpenCode 的现成集成盘点（Decisions 段收窄并交叉引用新文章）
+- 要点：截至 2026-10-15 官方文档仍标注 public beta，GA 未宣布；官方 Create a decision 参考页提供完整 cURL 示例（POST `https://api.openai.com/v1/decisions`，predicate 题型）；请求格式要点与 schema 细节引用既有 raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md，不重复收录。

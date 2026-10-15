@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "9134300117cb90d912aadcf66f6c453731e3b15d",
+      "skillFolderHash": "6d7c30d8a0051bf0c893b787ee562ae00d279f48",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-12T11:41:21.601Z"
+      "updatedAt": "2026-10-15T11:07:26.583Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -480,18 +480,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-debt/SKILL.md",
-      "skillFolderHash": "deefc4f8538312cf548a93ca0ff8c9d884fef22b",
+      "skillFolderHash": "16c3b7953629510afa8f061f0fefa61a104e3020",
       "installedAt": "2026-08-05T15:58:21.828Z",
-      "updatedAt": "2026-10-13T12:32:21.712Z"
+      "updatedAt": "2026-10-15T11:07:40.549Z"
     },
     "ponytail-gain": {
       "source": "dietrichgebert/ponytail",
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-gain/SKILL.md",
-      "skillFolderHash": "3725b1222980f5643c52e19b96fa04a92b179152",
+      "skillFolderHash": "c41e9e90173ddc6844c0bc44a89ba739534e06b0",
       "installedAt": "2026-08-05T15:58:21.829Z",
-      "updatedAt": "2026-10-08T14:57:09.925Z"
+      "updatedAt": "2026-10-15T11:07:53.293Z"
     },
     "ponytail-help": {
       "source": "dietrichgebert/ponytail",
@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "d7d66b45810294ae98e8a2c1de72d4ce9af80616",
+      "skillFolderHash": "ee9e6703aa7a9946e4ac2b22ad3587e44dbde3fe",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-14T12:26:25.943Z"
+      "updatedAt": "2026-10-15T11:08:15.292Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1231,18 +1231,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "b54f6b34ebf233500ae8deacefd23162193ab450",
+      "skillFolderHash": "25cd8d00770e9a01a493b61ed3e54561d185997d",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-13T12:32:37.008Z"
+      "updatedAt": "2026-10-15T11:08:20.127Z"
     },
     "hyperframes-animation": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-animation/SKILL.md",
-      "skillFolderHash": "fad18db082c04926d1f4da2ba19c38a08138ed97",
+      "skillFolderHash": "34d472ffc620da974ebef48882b9b81971712ecb",
       "installedAt": "2026-10-08T14:50:55.461Z",
-      "updatedAt": "2026-10-13T12:32:42.841Z"
+      "updatedAt": "2026-10-15T11:08:28.607Z"
     },
     "hyperframes-audio": {
       "source": "heygen-com/hyperframes",
@@ -1258,9 +1258,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "f84561c282f08d2c032216fae088d2f6b03c90b5",
+      "skillFolderHash": "629e4a51bcb8872c3fc49ed2f5c5afea677af060",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-13T12:32:48.790Z"
+      "updatedAt": "2026-10-15T11:08:32.616Z"
     },
     "hyperframes-core": {
       "source": "heygen-com/hyperframes",
@@ -1276,9 +1276,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-creative/SKILL.md",
-      "skillFolderHash": "bff0d727f60698ae4697506b060c0a63f8df1e56",
+      "skillFolderHash": "240b73aca6fa12575f473909b99dc96527fe0d6a",
       "installedAt": "2026-10-08T14:50:55.478Z",
-      "updatedAt": "2026-10-08T15:09:54.139Z"
+      "updatedAt": "2026-10-15T11:09:14.130Z"
     },
     "hyperframes-keyframes": {
       "source": "heygen-com/hyperframes",
@@ -1303,9 +1303,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-studio/SKILL.md",
-      "skillFolderHash": "1fcbcc4917aac198abc081bcf8a2e19d7221ddeb",
+      "skillFolderHash": "d6839000fac37b56ff86526e115074f8d7ecc2bd",
       "installedAt": "2026-10-08T14:50:55.483Z",
-      "updatedAt": "2026-10-08T15:10:26.532Z"
+      "updatedAt": "2026-10-15T11:09:18.554Z"
     },
     "media-use": {
       "source": "heygen-com/hyperframes",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "3db638b2ef4b5721994368deee5281daab541794",
+      "skillFolderHash": "cc8378de4df888df7e9e10d0e1e22919ddbd9864",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-14T12:26:48.896Z"
+      "updatedAt": "2026-10-15T11:09:30.100Z"
     },
     "note": {
       "source": "cuipengfei/prompts",

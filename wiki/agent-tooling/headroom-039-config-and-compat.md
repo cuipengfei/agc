@@ -1,12 +1,41 @@
-# Headroom 0.39：配置行为、Timeouts 与升级兼容性
+# Headroom 版本升级与兼容性（0.39 配置 / 0.41 变更）
 
-> Sources: 本机 headroom-ai 0.39.0 源码核验 + dist-info METADATA + Settings 页面, 2026-09-26; 本机 headroom-ai 0.39.1 源码直读 + OMP 会话实测, 2026-09-27
-> Raw: [2026-09-26-headroom-039-config-and-compat](../../raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md); [2026-09-27-headroom-read-command-whitelist](../../raw/agent-tooling/2026-09-27-headroom-read-command-whitelist.md)
-> Updated: 2026-09-27
+> Sources: 本机 headroom-ai 0.39.0 源码核验 + dist-info METADATA + Settings 页面, 2026-09-26; 本机 headroom-ai 0.39.1 源码直读 + OMP 会话实测, 2026-09-27; GitHub release v0.41.0 + CHANGELOG 0.41.0 区段, 2026-10-13
+> Raw: [2026-09-26-headroom-039-config-and-compat](../../raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md); [2026-09-27-headroom-read-command-whitelist](../../raw/agent-tooling/2026-09-27-headroom-read-command-whitelist.md); [2026-10-15-headroom-v041-release-notes](../../raw/agent-tooling/2026-10-15-headroom-v041-release-notes.md)
+> Updated: 2026-10-15
 
 ## Overview
 
 Headroom 0.38 → 0.39 对已装 `[proxy,mcp,code,html,relevance]` 部署是无破坏升级：CLI 参数、Kompress env var 全部未改名。0.39 官方新增 4 个 extras（langgraph、pytorch-mps、sandbox、vector），对本地 coding agent 代理链都不需要装。本文记录 0.39 的 Timeouts 全清单、记忆检索超时的跨 handler 范围、`HEADROOM_PROTECT_READS` 的保护边界，以及升级后唯一值得改的一处。
+
+## v0.41.0 发布变更（2026-10-13）
+
+0.39 之后经历了 0.40.0、0.41.0 两个 minor 版本（中间版本未入库记录），本文补记 v0.41.0。
+
+**新功能：**
+
+- Google Antigravity IDE 原生集成、OpenCode 2.x 插件 API 适配（#3817、#3999）
+- headroom-snip：Claude Code mod，压缩过程动画化（#3980）
+- Rust 代理获得原生 spend/savings 统计与仪表盘（#2321）
+- 模型路由新增 `max_output_tokens` 条件，可把小请求/不带工具/低输出要求路由到便宜模型（#3898）
+- 节省统计按 agent 归因（#2627）
+- 商业项：dashboard/docs/llms.txt 展示 Headroom for Teams 推广位（#3991）
+
+**对本地代理链有实质影响的修复：**
+
+- 缓存：Claude Code 重发自己最后一条回复时保持缓存模式（#4003）；子代理 fork 会话不再冷启动会话 lineage（#4043）；前缀跟踪器保留到 provider 缓存生命周期（#4023）
+- 流式：从 message_delta 读取流式缓存用量（#4174）；容忍畸形上游 SSE 事件（#2558）；失败流归类为失败请求（#3747）
+- 计费：缓存计费与模型特定 LiteLLM 费率对齐（#3033）；流式轮记录 provider 计费输入数（#4052）
+- 限流：无法在退避上限内成功的 429/529 不再重试（#3992）
+- 上下文：靠近真实上下文窗口时打破每轮压缩循环（#2942）
+- 压缩保真：嵌套 JSON 记录压缩后保持完整（#3680）；ML 压缩按请求设总量上限而非仅按块（#3721）
+- 接入：Codex 解包移除 headroom init 路由（#3920）、auth.json API key 原样保留（#3355）；Copilot 默认尊重 GitHub 广告的 Business/Enterprise 主机（#4155）、VS Code next-edit 走 completions 主机（#4188）；`wrap opencode` 可指向第三方 OpenAI 兼容上游（#3125）；/api/hello 探测正确路由到 Anthropic（#3336）
+- 记忆：存在未应答客户端工具调用时不发送记忆续写（#4009）；模型与客户端工具并发调用 headroom_retrieve 时也能服务（#4034）
+- 安全与稳定：23 个 CodeQL 告警与高严重级告警修复（#4045、#4005）；quinn-proto 升 0.11.19 修复 RUSTSEC-2026-0338..0342（#4178）；beacon 不再记录发送者 IP（#4018）；onnx 空闲核修复（#4189）
+- 性能：避免急切依赖导入，启动更快（#3546）
+
+**清理（对外行为无变化）：** 大量未接线组件弃用/删除——never-wired 记忆写入器（#4101）、孤儿 Mem0SystemAdapter（#4114）、Rust log/search selector 的 Python mirror（#4096、#4103）、test-only UniversalCompressor（#4095）等。
+
 
 ## 升级兼容性判定
 

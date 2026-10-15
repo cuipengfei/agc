@@ -1,12 +1,21 @@
 # Headroom Extras：本地 Coding Agent 安装指南
 
-> Sources: headroomlabs-ai/headroom v0.37.0 pyproject.toml; `headroom/image/compressor.py` v0.37.0 源码; 本机安装调查
-> Raw: [2026-08-31-headroom-extras-survey](../../raw/agent-tooling/2026-08-31-headroom-extras-survey.md)
-> Updated: 2026-08-31
+> Sources: headroomlabs-ai/headroom v0.37.0 pyproject.toml; `headroom/image/compressor.py` v0.37.0 源码; 本机安装调查; v0.41.0 pyproject `[tool.maturin]` + crates/headroom-proxy Cargo.toml + crates.io + GitHub release assets + 本机进程验证, 2026-10-15
+> Raw: [2026-08-31-headroom-extras-survey](../../raw/agent-tooling/2026-08-31-headroom-extras-survey.md); [2026-10-15-headroom-rust-core-and-proxy-distribution](../../raw/agent-tooling/2026-10-15-headroom-rust-core-and-proxy-distribution.md)
+> Updated: 2026-10-15
 
 ## 概述
 
 Headroom 用 extras 分组安装依赖。不同 extra 代表不同压缩介质、部署场景和 SDK 集成。对本地 coding agent 代理链（Claude Code/Codex/OMP），并非全部有用。
+
+## Rust 核心与独立 Rust 代理
+
+`headroom-ai` 的 wheel 是 maturin 混合构建：一个 wheel 同时装 Python 源码和编译好的 Rust 扩展（模块名 `headroom._core`，PyO3 abi3，本机文件名 `_core.abi3.so`，约 29 MB），Rust cdylib 来源是仓库的 `crates/headroom-py`。安装一步到位，没有单独的 core 包，也没有安装顺序依赖。
+
+本机实测（2026-10-15）：`import headroom._core` 成功；运行中的代理进程（`headroom proxy --mode cache`）的 `/proc/<pid>/maps` 含 14 段 `_core.abi3.so` 映射（含可执行段），说明扩展已加载进进程。证据边界：这只证明扩展已加载，不证明具体压缩请求调用了 Rust 函数（Python 侧与 Rust 侧实现并存，各路径走向未验证）。
+
+仓库里还有一个独立 Rust 代理 `crates/headroom-proxy`（axum 反向代理，v0.1.0），Cargo.toml 自述「Phase 1: drop-in passthrough in front of the Python proxy」。它未发布：crates.io 上 `headroom-proxy` 返回 404；v0.41.0 的 GitHub release 资产只有 5 个平台 wheel + 2 个 tgz + 1 个 sdist，无独立二进制；pyproject 的 maturin `manifest-path` 只指向 `crates/headroom-py`。「未见发布」限定于 crates.io 与 GitHub assets 查证范围。
+
 
 ## 核心五件套（已验证安装）
 
