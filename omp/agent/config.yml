@@ -84,14 +84,14 @@ cycleOrder:
   - default
   - slow
 theme:
-  dark: dark-tokyo-night
-  light: light-arctic
+  dark: dark-aurora
+  light: dark-tokyo-night
 symbolPreset: nerd
 colorBlindMode: false
 statusLine:
   preset: default
-  separator: slash
-  sessionAccent: true
+  separator: powerline
+  sessionAccent: false
   transparent: false
   compactThinkingLevel: false
   showHookStatus: true
@@ -141,10 +141,11 @@ tui:
   resizeScrollback: rebuild
   reactions: true
   mouse: false
+  autoGraph: always
 display:
   shimmer: kitt
   smoothStreaming: true
-  showTokenUsage: true
+  showTokenUsage: false
   cacheMissMarker: true
   collapseCompacted: false
   showTurnTime: true
@@ -546,6 +547,7 @@ goal:
 title:
   refreshOnReplan: true
   generator: tiny
+  icons: nf+emoji
 task:
   isolation:
     apply: true
@@ -638,7 +640,7 @@ thinkingBudgets:
   xhigh: 32768
   max: 32768
 composer:
-  shape: box
+  shape: claude
   tokenRate: true
   predictions: true
 externalThinking: false
