@@ -84,7 +84,7 @@ cycleOrder:
   - default
   - slow
 theme:
-  dark: dark-aurora
+  dark: dark-tokyo-night
   light: dark-tokyo-night
 symbolPreset: nerd
 colorBlindMode: false
