@@ -1238,6 +1238,6 @@
 
 ## [2026-10-15] ingest | OpenAI Decisions API：当前状态与请求格式
 - Disposition: New; Update
-- Raw: raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md
-- Updated: Jev 在 OMP、Codex、OpenCode 的现成集成盘点（Decisions 段收窄并交叉引用新文章）
-- 要点：截至 2026-10-15 官方文档仍标注 public beta，GA 未宣布；官方 Create a decision 参考页提供完整 cURL 示例（POST `https://api.openai.com/v1/decisions`，predicate 题型）；请求格式要点与 schema 细节引用既有 raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md，不重复收录。
+- Raw: raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md; raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md
+- Updated: Jev 在 OMP、Codex、OpenCode 的现成集成盘点（Decisions 段收窄并交叉引用新文章）；wiki/index.md（新增 openai-decisions-api 条目）
+- 要点：截至 2026-10-15 官方文档仍标注 public beta，GA 未宣布；官方 Create a decision 参考页提供完整 cURL 示例（POST `https://api.openai.com/v1/decisions`，predicate 题型）；Copilot 上游 `/v1/decisions` 被区别处理、结构校验与普通 Responses 交叉结果见文章；schema 细节引用既有 raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md，不重复收录。
