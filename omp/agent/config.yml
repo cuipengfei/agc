@@ -197,7 +197,7 @@ retry:
   usageReservePolicy: confirm
   fallbackChains:
     advisor:
-      - c8787/gpt-5.6-luna
+      - c8787/gpt-6-luna
     web:
       - web/tavily
       - web/exa
@@ -220,8 +220,8 @@ retry:
       - web/synthetic
       - web/ollama
     judge:
-      - typesafe-zen/jev-1.13
       - typesafe-zen/jev-1.13-free
+      - typesafe-zen/jev-1.13
       - "@tiny"
       - "@smol"
       - "@default"

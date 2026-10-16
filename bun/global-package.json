@@ -7,7 +7,7 @@
     "@earendil-works/pi-coding-agent": "1.2.0",
     "@fission-ai/openspec": "1.14.2",
     "@fresh-editor/fresh-editor": "0.5.3",
-    "@oh-my-pi/pi-coding-agent": "18.11.0",
+    "@oh-my-pi/pi-coding-agent": "^18.11.1",
     "@openai/codex": "0.162.1",
     "@opencode/cli": "2.0.29",
     "@upstash/context7-mcp": "4.4.1",
