@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md)
-> Updated: 2026-10-11
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md)
+> Updated: 2026-10-16
 
 ---
 
@@ -402,6 +402,14 @@ onboarding = false
 | `HERDR_BIN_PATH`                                        | 当前 herdr 二进制路径                   |
 | `HERDR_LOG`                                             | 日志过滤，如 herdr=debug                |
 | `HERDR_AGENT`                                           | VM/沙箱包装器 agent 提示                |
+
+### 2.4 server 进程与 pane 环境 [实测 2026-10-16]
+
+- 每个命名 session 对应一个常驻 `herdr server` 进程：socket 位于 `~/.config/herdr/sessions/<name>/herdr.sock`；server PPID=1，cgroup 落在 logind session scope（`session-cXX.scope`）。
+- pane 进程的环境变量推断继承自 server：omp pane 内可见 `HERDR_SOCKET_PATH` 指向 main 会话 socket（pane 侧实测；server 进程自身环境未读出该变量）。server 不重启，旧 pane 树拿不到新环境（zsh pane 启动时会读 `~/.zshenv`，shell 级配置仍可在新 pane 生效）。
+- main↔server(154864) 由 omp 父链 + omp 环境 socket 变量推断；mon 侧对应为用户确认 + 侧证（仅此两个 server、存在 `--session mon` 客户端）。
+- 剪贴板案例（omp 因读取路线的环境变量门控全断报 "Clipboard is empty"、`~/.zshenv` 补 `WAYLAND_DISPLAY` 修复）见 [浏览器终端链路的剪贴板路径](../terminal-multiplexers/browser-terminal-clipboard-paths.md)。
+
 
 ---
 
@@ -995,3 +1003,7 @@ OMP 插件 `@plannotator/pi-extension` 经 `@plannotator/webtui@0.1.0` 依赖 `n
 - **config.json 全键清单**：38 个顶层配置键分组全录；`~/.plannotator/config.json` 已作为受保护条目纳入 agc 仓库 manifest 跟踪。
 
 详见 [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)。
+
+## See Also
+
+- [浏览器终端链路的剪贴板路径](../terminal-multiplexers/browser-terminal-clipboard-paths.md)

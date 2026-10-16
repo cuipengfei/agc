@@ -1,8 +1,8 @@
 # ttyd 前端编译模型与 xterm 版本锁定
 
-> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06
-> Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md)
-> Updated: 2026-10-06
+> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16
+> Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md)
+> Updated: 2026-10-16
 
 ## Overview
 
@@ -47,6 +47,11 @@ xterm.js 不是运行时可换的外部依赖，而是 webpack 打进 ttyd 前�
 
 除这两块外整份 html 与官方默认逐字节一致（公共前缀 728,570 / 731,235 字节；官方默认首页 729,693 字节）。
 
+## 两个定制块的剪贴板方向语义
+
+OSC52 块服务「复制方向」：终端应用发出 OSC52 序列，前端解码后写浏览器剪贴板（浏览器放行网页写剪贴板，Clipboard API 不可用时降级 `execCommand`）。「粘贴方向」不经过该块：浏览器只允许网页在真实 paste 事件里读剪贴板，OSC52 回查未实现。因此浏览器终端里两条粘贴路径并存——终端层粘贴（如 Ctrl+Shift+V 的 paste 事件）由前端直接注入文本；应用层粘贴（应用收到 `^V` 按键后自己读系统剪贴板）需要应用侧自带读取路线。本机 omp 因读取路线的环境变量门控全断而报 "Clipboard is empty"、补 `WAYLAND_DISPLAY` 后恢复的案例，见 [浏览器终端链路的剪贴板路径](browser-terminal-clipboard-paths.md)。
+
+
 ## 浏览器终端工具前端全是 xterm.js
 
 ttyd、Wetty、GoTTY、sshwifty 等浏览器终端工具的前端都基于 xterm.js。这意味着 WebGL atlas 那一类渲染 bug 不会因为换外壳工具而消失——核心变量是各自打包的 xterm 版本和默认渲染器类型。换工具的收益在后端能力（SSH/SFTP/多用户），不在渲染。
@@ -54,3 +59,4 @@ ttyd、Wetty、GoTTY、sshwifty 等浏览器终端工具的前端都基于 xterm
 ## See Also
 
 - [tuios workspace 与 session rail](tuios-workspace-and-sidebar.md)
+- [浏览器终端链路的剪贴板路径](browser-terminal-clipboard-paths.md)

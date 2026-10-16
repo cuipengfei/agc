@@ -353,8 +353,9 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；浏览器终端前端全是 xterm.js | 2026-10-06 |
+| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；两个定制块的剪贴板方向语义（OSC52 服务复制方向，粘贴方向不经过） | 2026-10-16 |
 | [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | tuios 的 workspace 是编号 1-9 无名字的分组，window 是一等实体；session rail 四区块 sessions/terminals/files/agents；内嵌 herdr 二进制当 agent 上报协议 | 2026-10-06 |
+| [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
 
 ## proxy-ops
 

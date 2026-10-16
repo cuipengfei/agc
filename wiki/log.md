@@ -1241,3 +1241,9 @@
 - Raw: raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md; raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md
 - Updated: Jev 在 OMP、Codex、OpenCode 的现成集成盘点（Decisions 段收窄并交叉引用新文章）；wiki/index.md（新增 openai-decisions-api 条目）
 - 要点：截至 2026-10-15 官方文档仍标注 public beta，GA 未宣布；官方 Create a decision 参考页提供完整 cURL 示例（POST `https://api.openai.com/v1/decisions`，predicate 题型）；Copilot 上游 `/v1/decisions` 被区别处理、结构校验与普通 Responses 交叉结果见文章；schema 细节引用既有 raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md，不重复收录。
+
+## [2026-10-16] ingest | 浏览器终端链路的剪贴板路径
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md
+- Updated: ttyd 前端编译模型与 xterm 版本锁定; Herdr + Plannotator 工具链全量 Reference
+- 要点：copy/paste 在浏览器终端链上不对称——复制由前端写浏览器剪贴板（OSC52 块服务该方向），粘贴表现为按键字节时须 omp 自己读；omp 文本/图片读取各三条路线，分别被 WSL env 变量（oS() 纯环境判定）/WAYLAND_DISPLAY/DISPLAY 门控，本机 logind 会话三者全缺故报 "Clipboard is empty"；修复 `~/.zshenv` 加 `export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"` 走 wl-paste→WSLg 路线（powershell.exe 路线为等价备选），`env -u` 隔离验证通过、用户确认 Win+V 恢复；herdr 一会话一 server（用户确认+侧证）、pane 环境继承 server（推断）补入 toolchain-reference §2.4；xterm.js ctrl+v 内部求值与右键选区复制触发方式列证据边界未验证。
