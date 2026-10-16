@@ -1247,3 +1247,8 @@
 - Raw: raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md
 - Updated: ttyd 前端编译模型与 xterm 版本锁定; Herdr + Plannotator 工具链全量 Reference
 - 要点：copy/paste 在浏览器终端链上不对称——复制由前端写浏览器剪贴板（OSC52 块服务该方向），粘贴表现为按键字节时须 omp 自己读；omp 文本/图片读取各三条路线，分别被 WSL env 变量（oS() 纯环境判定）/WAYLAND_DISPLAY/DISPLAY 门控，本机 logind 会话三者全缺故报 "Clipboard is empty"；修复 `~/.zshenv` 加 `export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"` 走 wl-paste→WSLg 路线（powershell.exe 路线为等价备选），`env -u` 隔离验证通过、用户确认 Win+V 恢复；herdr 一会话一 server（用户确认+侧证）、pane 环境继承 server（推断）补入 toolchain-reference §2.4；xterm.js ctrl+v 内部求值与右键选区复制触发方式列证据边界未验证。
+
+## [2026-10-17] ingest | Copilot 延迟调查：社区报告、本机用量与 OMP 计时
+- Disposition: New
+- Raw: raw/copilot-gateway/2026-10-17-copilot-october-community-latency-reports.md; raw/copilot-gateway/2026-10-17-local-usage-and-omp-speed-measurements.md
+- 要点：区分社区延迟报告、本机用量事件与 OMP 客户端请求计时；c8787 模型 9 月和 10 月 TPS／TTFT 对比，注明请求构成与本地转发对归因的限制。
