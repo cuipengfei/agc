@@ -1,8 +1,8 @@
 # ttyd 前端编译模型与 xterm 版本锁定
 
-> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16
-> Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md)
-> Updated: 2026-10-16
+> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16; ttyd 官方依赖与 Client Options, 2026-10-17
+> Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md)
+> Updated: 2026-10-17
 
 ## Overview
 
@@ -56,7 +56,12 @@ OSC52 块服务「复制方向」：终端应用发出 OSC52 序列，前端解�
 
 ttyd、Wetty、GoTTY、sshwifty 等浏览器终端工具的前端都基于 xterm.js。这意味着 WebGL atlas 那一类渲染 bug 不会因为换外壳工具而消失——核心变量是各自打包的 xterm 版本和默认渲染器类型。换工具的收益在后端能力（SSH/SFTP/多用户），不在渲染。
 
+## 图像协议能力：SIXEL + iTerm2 IIP，无 Kitty graphics
+
+1.7.7 锁定的 `@xterm/addon-image` 0.7.0 支持 SIXEL 和 iTerm2 inline image protocol (IIP)，不支持 Kitty graphics protocol。`enableSixel` 客户端选项（默认关闭）控制 ImageAddon 的加载；iTerm2 IIP 默认开启。这意味着 ttyd 1.7.7 前端能接收 SIXEL 和 IIP 图像，但不能接收 Kitty graphics 序列。与只支持 Kitty graphics 的 Herdr 组合使用时，两层无共同图像协议，pane 内图像和图形图表无法显示。详见 [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)。
+
 ## See Also
 
 - [tuios workspace 与 session rail](tuios-workspace-and-sidebar.md)
+- [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)
 - [浏览器终端链路的剪贴板路径](browser-terminal-clipboard-paths.md)

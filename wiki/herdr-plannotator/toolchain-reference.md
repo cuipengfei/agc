@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md)
-> Updated: 2026-10-16
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md)
+> Updated: 2026-10-17
 
 ---
 
@@ -1004,6 +1004,11 @@ OMP 插件 `@plannotator/pi-extension` 经 `@plannotator/webtui@0.1.0` 依赖 `n
 
 详见 [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)。
 
+## 10. Herdr 图像协议：Kitty graphics only
+
+0.9.2 删除了私有 pane graphics API（§1.14），应用直接写标准 Kitty graphics，herdr 原生渲染。0.9.5 当前 `terminal.kitty_graphics` 配置项只启用 Kitty graphics protocol；SIXEL 渲染或传递不受支持，两个相关 issue（#3030、#4330）均关闭为 NOT_PLANNED。维护者说明 Herdr 解析 pane 输出并重新绘制，外部终端的 SIXEL 能力不会透传；增加 SIXEL 属于新增协议支持。这意味着 SIXEL-only 外部终端（如 ttyd 1.7.7 前端）与 Herdr 组合时，pane 内图像无法显示。详见 [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)。
+
 ## See Also
 
 - [浏览器终端链路的剪贴板路径](../terminal-multiplexers/browser-terminal-clipboard-paths.md)
+- [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)

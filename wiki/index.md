@@ -354,9 +354,17 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；两个定制块的剪贴板方向语义（OSC52 服务复制方向，粘贴方向不经过） | 2026-10-16 |
+| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；两个定制块的剪贴板方向语义（OSC52 服务复制方向，粘贴方向不经过） | 2026-10-17 |
 | [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | tuios 的 workspace 是编号 1-9 无名字的分组，window 是一等实体；session rail 四区块 sessions/terminals/files/agents；内嵌 herdr 二进制当 agent 上报协议 | 2026-10-06 |
 | [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
+
+## terminal-graphics
+
+终端图像协议（SIXEL、Kitty graphics、iTerm2 IIP）在 ttyd、Herdr、TUIOS、OMP 中的支持矩阵与链路兼容性。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd 1.7.7 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠 | 2026-10-17 |
 
 ## proxy-ops
 
@@ -381,7 +389,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类；第 9 节补 0.28.12 agent 工具与 Quick Labels 指引 | 2026-10-11 |
+| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类；第 9 节补 0.28.12 agent 工具与 Quick Labels 指引；第 10 节补 Kitty graphics only 与 SIXEL NOT_PLANNED | 2026-10-17 |
 | [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、agent 工具通道（`pi.registerTool`，0.28.12 起）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-10-11 |
 | [Plannotator agent tool 注入与 Quick Labels 机制](herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) | agent 工具开关链（env → config.agentTool → 主机默认，Pi 默认关）、OMP .env 注入通道、Quick Labels cookie 存储与 Settings 编辑能力（👍 硬编码例外）、config.json 38 键清单、脱敏实测 | 2026-10-11 |
 

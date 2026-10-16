@@ -1252,3 +1252,12 @@
 - Disposition: New
 - Raw: raw/copilot-gateway/2026-10-17-copilot-october-community-latency-reports.md; raw/copilot-gateway/2026-10-17-local-usage-and-omp-speed-measurements.md
 - 要点：区分社区延迟报告、本机用量事件与 OMP 客户端请求计时；c8787 模型 9 月和 10 月 TPS／TTFT 对比，注明请求构成与本地转发对归因的限制。
+
+## [2026-10-17] ingest | 终端图像协议支持矩阵
+- Disposition: New; Update
+- Raw: raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md; raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md; raw/terminal-graphics/2026-10-17-tuios-sixel-support.md; raw/terminal-graphics/2026-10-17-omp-image-protocols.md
+- Updated: ttyd 前端编译模型与 xterm 版本锁定; Herdr + Plannotator 工具链全量 Reference
+- 要点：ttyd 1.7.7 锁 addon-image 0.7.0 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED（#3030/#4330）；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough（实验性、无像素级裁剪）；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠链路不可显示图像。
+
+## [2026-10-17] correction | 终端图像协议支持矩阵
+- 修订：TUIOS SIXEL 的「无像素级裁剪」绝对表述改为裁剪层级说明（pane 可见区域裁剪与像素级裁剪，关系未验证），并去除文章状态标签；OMP 小节补入 `TableChartMode`（`smart`/`always`/`off`）定义。原 ingest 条目保留不改。
