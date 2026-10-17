@@ -256,6 +256,12 @@
       "source": "~/.plannotator/config.json",
       "repo": "plannotator/config.json",
       "protected": true
+    },
+    {
+      "name": "starship-config",
+      "source": "~/.config/starship.toml",
+      "repo": "starship/starship.toml",
+      "protected": false
     }
   ]
 }
