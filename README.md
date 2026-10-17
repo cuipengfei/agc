@@ -53,3 +53,7 @@
 - `~/.prime/agent/` 下的 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）、sessions/logs/venv 等运行时产物
 
 详细规则见 [`AGENTS.md`](AGENTS.md)。
+
+## Tern 升级辅助工具
+
+[`tools/tern-maintain`](tools/tern-maintain/README.md) 提供官方资源校验、WASM 结构与字体定位、人工修改清单、字体清单生成、结构报告和无界面检查。它独立于配置同步，不自动改写 WASM 指令，不接触现有 pane。行为测试由 `.github/workflows/tern-maintain.yml` 执行。

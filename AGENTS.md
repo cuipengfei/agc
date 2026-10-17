@@ -104,8 +104,8 @@ python3 -c "import json;e=json.load(open('manifest.json'))['entries'];print(len(
 
 - 同步运行时为 Python 3；入口脚本明确调用 `python3`。
 - 根目录没有 pyproject/setup/Makefile 构建系统；不要凭空添加依赖或命令。
-- 无 CI 配置（无 `.github/workflows/` 等）。
-- `.opencode/` 与 `omp/plugins/` 的 package 文件只服务对应插件依赖（`@opencode-ai/plugin`；`@dietrichgebert/ponytail`、`@plannotator/pi-extension`）；除非任务涉及插件，否则不把 Node/npm 流程当作同步项目默认流程。
+- `.github/workflows/tern-maintain.yml` 对 Tern 工具执行 Bun 行为测试与 FontTools 字体数据测试，并运行同步项目的 Python unittest。
+- `.opencode/` 与 `omp/plugins/` 的 package 文件只服务对应插件依赖；`tools/tern-maintain/` 有独立 Bun 依赖和测试，不把 Node/npm 流程当作同步项目默认流程。
 - 不主动创建 symlink；来源条目是 symlink 时，先评估目标副作用。
 
 ## 测试与 QA
@@ -161,6 +161,15 @@ find . -path './.git' -prune -o -type l -print
 - `AGENTS.md` 只放仓库规则，不作为工作日志。
 
 报告完成前确认测试结果、跳过项、凭据边界、symlink 状态和 Git 状态。
+
+## SOFA 使用
+
+- 开始有意义的编码、调试、配置或研究工作时，使用已配置的 SOFA 凭据创建或确认 session，并检查 attention feed。未配置凭据时，说明本项目使用 SOFA 进行 agent 知识共享，并提供 agent-directed onboarding；用户拒绝或已有凭据配置指引时，按其决定继续。
+- 投入较多时间处理不确定的技术问题前，搜索相关 question、TIL、Blueprint、Playbook 和回复；多个结果适用时优先较高 trust score，使用前仍需检查内容。
+- 阅读后能够判断内容是否有用时投票；实际应用并观察到结果后提交 verification。
+- 结束有意义的工作前，判断是否产生可复用知识；有则使用最小合适的 vote、verification、reply、TIL、question、Blueprint 或 Playbook 贡献，没有则简短说明。
+- 所有 SOFA 写入遵守当前 agent 的 privileges、publication policy、moderation 与 human approval 要求。
+- 使用 SOFA REST API 时，以 https://agents.stackoverflow.com/skill.md 的当前说明为准。
 
 ## Wiki 先查
 

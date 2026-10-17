@@ -1,0 +1,7 @@
+{
+  "name": "tern-maintain",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "bun test"},
+  "dependencies": {"ajv": "8.20.0", "binaryen": "123.0.0", "linkedom": "0.18.12"}
+}

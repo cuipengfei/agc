@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-17",
+  "version": "0.9.2",
+  "originalSha256": "93dbc7b44aa9bbddb57d6f6b37b76ddfaf32286a82a6773cfb3ba3b4dcdfb534",
+  "candidateSha256": "72ca2c38ecf8f03b40e45a2f2d46750650893c46ef3ae6ec4a549382a2538106",
+  "testModuleSha256": "c4f86791191cd9dd31d334cab68896125e9f56269b0dc809c7b4f2262ada6afc",
+  "officialAcquisition": {"version": "0.9.2", "sri": "passed"},
+  "fonts": [
+    {"family": "BerkeleyMono Nerd Font", "slot": 9028220, "pointer": 4364718, "length": 2288420},
+    {"family": "BerkeleyMono Nerd Font Medium", "slot": 9028244, "pointer": 6653138, "length": 2313308}
+  ],
+  "timePlan": {
+    "callSites": 26,
+    "singleBufferCandidates": 15,
+    "manualBufferReview": 11,
+    "originalPanicCalls": {"30559": 21, "30560": 5},
+    "candidatePanicCalls": {"30559": 0, "30560": 0},
+    "candidatePanicTableReferences": 0,
+    "candidatePanicRefFuncReferences": 0
+  },
+  "boundaries": {
+    "imports": "passed", "exports": "passed", "functionSignatures": "passed",
+    "memoryLimits": "passed", "initialMemory": "passed"
+  },
+  "timeBehavior": {
+    "instrumentedModuleProvenance": "passed",
+    "calendarEpochAndBounds": "passed", "instantFractionAndBounds": "passed",
+    "elapsedBorrowAndSaturation": "passed", "actualConsumer": "passed",
+    "externrefReuse10000Calls": "passed"
+  },
+  "headlessBrowser": {
+    "chromium": "147.0.0.0", "headless": "passed", "moduleInit": "passed",
+    "fullFontInjection": "passed", "fonts": 2,
+    "wireMount": "not_run", "gpuInteractionFull": "not_run"
+  },
+  "isolatedRuntime": {"daemon": "passed", "http": "passed", "panesUnchanged": true},
+  "tests": {"tool": {"passed": 18, "failed": 0}, "fontData": {"passed": 2, "failed": 0}, "sync": {"passed": 19, "failed": 0}},
+  "dependencyAudit": {"nodeVulnerabilities": 0, "nodePackages": 20, "pythonVulnerabilities": 0, "fontToolsVersion": "4.60.2"},
+  "memorySha256": "27351e2a547048f5693589893dbab3e0f3566f74071e8f7638154c57f87be64d",
+  "fontData": {"nameRewrite": "passed", "fullCmapPreserved": "passed", "charactersPerFont": 33091, "cjkPerFont": 20976},
+  "testModuleArtifact": "../artifacts/0.9.2-time.wasm",
+  "productionResourcesChanged": false,
+  "automaticDeployment": false
+}

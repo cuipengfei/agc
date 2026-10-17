@@ -1,0 +1,24 @@
+name: Tern maintenance checks
+on:
+  push:
+    paths: ['tools/tern-maintain/**', '.github/workflows/tern-maintain.yml']
+  pull_request:
+    paths: ['tools/tern-maintain/**', '.github/workflows/tern-maintain.yml']
+permissions:
+  contents: read
+jobs:
+  behavior:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.3'
+      - run: bun install --frozen-lockfile
+        working-directory: tools/tern-maintain
+      - run: bun test
+        working-directory: tools/tern-maintain
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run --with-requirements requirements.txt python -m unittest discover -s python_tests -v
+        working-directory: tools/tern-maintain
+      - run: python3 -m unittest discover -s tests -v

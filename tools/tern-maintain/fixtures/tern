@@ -1,0 +1,27 @@
+#!/usr/bin/env bun
+import net from 'node:net';
+import {parseArgs} from 'node:util';
+const [command,...args]=process.argv.slice(2),socket=process.env.TERN_DAEMON_SOCKET;
+if(!socket)throw Error('Fixture requires an isolated daemon socket');
+const snapshot={sessions:[{id:1,tabs:[{id:2,blocks:[{id:3,program:'shell',title:'private title',cwd:'/private',command:'token=fixture-private'}]}]}]};
+if(command==='daemon'){
+ const server=net.createServer(connection=>connection.end(JSON.stringify(snapshot)));
+ server.listen(socket);
+ process.on('SIGTERM',()=>server.close(()=>process.exit(0)));
+}else if(command==='ls'){
+ const client=net.connect(socket);let data='';
+ client.on('data',chunk=>data+=chunk);
+ client.on('end',()=>{process.stdout.write(data);process.exit(0);});
+ client.on('error',()=>{process.stderr.write('No daemon\n');process.exit(2);});
+}else if(command==='web'){
+ const {values}=parseArgs({args:args.slice(1),options:{listen:{type:'string'},token:{type:'string'},assets:{type:'string'}}});
+ for(const key of ['DISPLAY','WAYLAND_DISPLAY','WAYLAND_SOCKET','DBUS_SESSION_BUS_ADDRESS','BROWSER'])if(process.env[key])throw Error('Unexpected desktop environment');
+ const client=net.connect(socket);
+ client.on('data',()=>{});
+ await new Promise((resolve,reject)=>{client.once('end',resolve);client.once('error',reject);});
+ process.stdout.write('http://127.0.0.1/?token=fixture-');
+ await new Promise(resolve=>setTimeout(resolve,20));process.stdout.write('private\n');
+ const port=Number(values.listen.split(':').at(-1));
+ const server=Bun.serve({hostname:'127.0.0.1',port,fetch(){return new Response('fixture',{status:Number(process.env.TERN_FIXTURE_HTTP_STATUS??200)});}});
+ process.on('SIGTERM',()=>{server.stop(true);process.exit(0);});
+}else throw Error(`Unsupported fixture command ${command}`);

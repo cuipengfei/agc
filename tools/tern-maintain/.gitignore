@@ -1,0 +1,7 @@
+node_modules/
+artifacts/
+state/
+*.wasm
+*.wat
+*.bin
+*.ttf
