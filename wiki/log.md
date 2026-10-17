@@ -1298,3 +1298,17 @@
 - Created: wiki/omp-auth/sofa-mcp-maintenance.md
 - Updated: 三家宿主 MCP 配置、验证阶梯与凭据事故
 - 要点：以单篇维护入口关联 OMP 配置及原生凭据、Clash 持久规则与运行状态、SOFA 权限和草稿管理；保留 OAuth 与调用成功及 ECONNRESET 失败证据。逐项工具测试确认接口调用与草稿生命周期，公开帖编辑、删除和持续稳定性未验证。原始摘录与文章均移除凭据、个人身份及私人代理标识；浏览器 CDP 仅记文档机制和本机未验证边界。
+
+## [2026-10-17] ingest | TUIOS Web、安装升级与配置用户体验
+- Disposition: New; Update; Disputed
+- Raw: raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md; raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md; raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md; raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md; raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md; raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md; raw/terminal-multiplexers/2026-10-17-agc-tuios-config-tracking.md
+- Created: wiki/terminal-multiplexers/tuios-web-and-updates.md; wiki/terminal-multiplexers/tuios-config-user-experience.md
+- Updated: tuios workspace 与 session rail
+- 要点：记录 Web 独立运行、sip 与 xterm.js 分工、gh 认证安装、更新职责、ttyd 端口冲突和远程安全；按当前配置与合法范围解释启动、布局、外观、输入、侧栏、通知和多客户端体验；保留旧右侧栏实测日期，并补入当前左侧栏配置。
+
+## [2026-10-17] evidence review | TUIOS Web、安装升级与配置用户体验
+- 首次检查 7 个 fidelity suspects：`Fetching latest release`、`55%`、`90%`、`30%`、`75%`、`2026-10-17`、`0.10.0`，0 个 evidence error。
+- 修正 4 份本机 raw 的 Published 为 Unknown，并把官方安装脚本 raw 缩减为版本查询、release 下载、checksum 和安装目录摘录。
+- `30%` 与 `75%` 在 raw 中只有数值配置项，文章已改用对应数值表述；`55%` 与 `90%` 有 raw 的百分比单位依据，恢复直接说明。
+- 复检 5 个 suspects 均判为假阳性：`Fetching latest release` 是脚本及命令原文；`55%` 与 `90%` 来自当前值和百分比单位；`2026-10-17` 与 `0.10.0` 是采集日期和版本标识。
+- 0 个 evidence error。2 个 unreferenced raw 为既有 omp-signature-verification backlog，与本次新增材料无关。

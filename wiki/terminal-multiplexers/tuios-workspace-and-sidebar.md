@@ -1,8 +1,8 @@
 # tuios workspace 与 session rail
 
-> Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06
-> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md)
-> Updated: 2026-10-06
+> Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06; 本机 TUIOS 0.10.0 配置与选项元数据, 2026-10-17
+> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md)
+> Updated: 2026-10-17
 
 ## Overview
 
@@ -34,12 +34,14 @@ tuios capture-pane                       # 抓当前 pane 屏幕文本
 
 ## session rail：herdr sidebar 的对应物
 
-tuios 的侧栏叫 session rail，当前实测配置（全为 default）：
+tuios 的侧栏叫 session rail。2026-10-06 实测配置为：
 
 - `appearance.sidebar.enabled` = `true`
 - `appearance.sidebar.position` = `right`
 - `appearance.sidebar.sections` = `sessions:25,terminals,files:25,agents:34`
 - `appearance.sidebar.show_counts` = `true`
+
+2026-10-17 的 TUIOS 0.10.0 本机配置中，启用状态与 sections 字符串保持上述值，`position` 已为 `left`，`width` 为 `24`。当前配置快照没有 `appearance.sidebar.show_counts` 行。
 
 `sessions:25,terminals,files:25,agents:34` 表示四个区块自上而下、百分比是高度占比。一个名字从列表里去掉，对应区块就不画。四区块：
 
@@ -76,3 +78,5 @@ herdr 的 workspace 子命令完整表见 [Herdr + Plannotator 工具链全量 R
 - [ttyd 前端编译模型](ttyd-frontend-compilation.md)
 - [Herdr + Plannotator 工具链全量 Reference](../herdr-plannotator/toolchain-reference.md)
 - [四 Agent CLI 能力面对比](../ai-coding-agents/cli-capability-surface.md)
+- [TUIOS 配置与用户体验](tuios-config-user-experience.md)
+- [TUIOS Web 与安装升级](tuios-web-and-updates.md)

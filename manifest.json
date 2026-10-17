@@ -190,6 +190,12 @@
       "directory": true
     },
     {
+      "name": "tuios-config",
+      "source": "~/.config/tuios/config.toml",
+      "repo": "tuios/config.toml",
+      "protected": true
+    },
+    {
       "name": "prime-settings",
       "source": "~/.prime/agent/settings.json",
       "repo": "prime/settings.json",
