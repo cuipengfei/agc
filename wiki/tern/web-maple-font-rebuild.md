@@ -93,5 +93,5 @@
 
 ## See Also
 
-- [Tern：TSP 与 browser 后端](tern-tsp-and-browser-backend.md)
-- [Tern 网页 Markdown 中文触发无响应](tern-web-markdown-cjk-freeze.md)
+- [Tern：TSP 与 browser 后端](tsp-and-browser-backend.md)
+- [Tern 网页 Markdown 中文触发无响应](web-markdown-cjk-freeze.md)

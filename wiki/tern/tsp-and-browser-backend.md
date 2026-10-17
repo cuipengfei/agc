@@ -1,8 +1,8 @@
 # Tern：TSP 与 browser 后端
 
-> Sources: oh-my-pi 官方文档与源码，2026-10-10; Tern 0.8.3 网页客户端实测，2026-10-13；资料复核，2026-10-14
-> Raw: [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md); [Tern 网页 Maple 字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [Tern 网页 Markdown 中文复现](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md)
-> Updated: 2026-10-14
+> Sources: oh-my-pi 官方文档与源码，2026-10-10; Tern 0.8.3 网页客户端实测，2026-10-13；资料复核，2026-10-14; Tern 0.9.2 CLI 帮助实测，2026-10-17
+> Raw: [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md); [Tern 网页 Maple 字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [Tern 网页 Markdown 中文复现](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md); [Tern CLI 帮助行为](../../raw/tern/2026-10-17-cli-help-behavior.md)
+> Updated: 2026-10-17
 
 tern 在 oh-my-pi 中有两个身份：**Tern Surface Protocol（TSP，TUI 原生渲染协议）**与 **browser 工具后端**。本文按行为层整理：用户感知什么、什么时候发生、有哪些开关。identifier 逐字保留源码/文档原样。
 
@@ -88,8 +88,16 @@ const DEFAULT_REQUEST_TIMEOUT_MS = 30_000;
 
 oh-my-pi 官方三份来源（`docs/tui-core-renderer.md`、`docs/tools/browser.md`、`wire.ts`）均未解释 "tern" 命名来历或词源，**命名来历未证实**，不做推断。"Tern Surface Protocol" 缩写 TSP 见 `docs/tui-core-renderer.md` §5 小节标题 "Native rendering (Tern Surface Protocol)"。
 
+## CLI 帮助获取边界
+
+Tern 0.9.2 中，18 个已验证命令可通过 `--help` 得到完整说明：inspect、new、split、run、move、pip、dock、rename、focus、close、kill、wait、keep-open、send、capture、process、events、browser。
+
+该参数不能对所有子命令通用。`remote update --help` 将参数作为意外输入，`remote setup --help` 和 `remote login --help` 会尝试对 `--help` 这个主机名进行 SSH 登录；`serve --help` 会进入持续运行的 headless session 并出现超时。对这些分支，帮助调用可能产生实际行为，不能作为只读探测。
+
+扫描中止后，现有会话、pane 和插件目录复查无变化，未留下本次调用创建的 serve、shot 或 bundle 进程。远程安装、更新、信任和连接行为未因此得到验证。官方 `reference/cli.md` 只覆盖 `tern plugin`，不能补全 Tern 全部命令。
+
 ## See Also
 
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — omp 模式与关键词机制总览
-- [Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移](tern-web-maple-font-rebuild.md) — 升级后重新定位字体、加载引用与校验信息
-- [Tern 网页 Markdown 中文触发无响应](tern-web-markdown-cjk-freeze.md) — 原版对照、复现材料与恢复方法
+- [Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移](web-maple-font-rebuild.md) — 升级后重新定位字体、加载引用与校验信息
+- [Tern 网页 Markdown 中文触发无响应](web-markdown-cjk-freeze.md) — 原版对照、复现材料与恢复方法

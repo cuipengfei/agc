@@ -34,5 +34,5 @@ Stencil Terms of Use 第 17.9 节给出的联系邮箱是 `help@stencil.so`。�
 
 ## See Also
 
-- [Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移](tern-web-maple-font-rebuild.md)
-- [Tern：TSP 与 browser 后端](tern-tsp-and-browser-backend.md)
+- [Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移](web-maple-font-rebuild.md)
+- [Tern：TSP 与 browser 后端](tsp-and-browser-backend.md)

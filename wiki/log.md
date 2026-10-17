@@ -1267,3 +1267,27 @@
 - Raw: raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md; raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md
 - Updated: 终端图像协议支持矩阵
 - 要点：Tern 走 TSP UI 树绘制路径，image 节点为官方文档定义；kitty graphics 支持来自第三方 tern-video-block README 实测声明（非官方背书）；SIXEL/iTerm2 在官方文档未找到证据。矩阵文章新增协议全景（ReGIS/Tektronix 历史矢量 + 字符伪图像）与测试方法小节（真实读回包、img2sixel 只验 SIXEL、tmux passthrough 区分），并补 autoGraph 数值表实测记录（生成环节确认，Tern 绘制显示未确认）。
+
+## [2026-10-17] ingest | Tern 升级辅助工具与验收边界
+- Disposition: New
+- Raw: raw/tern/2026-10-17-maintenance-toolkit-and-validation.md
+- 要点：记录官方资源获取、只读结构分析、人工指令修改、字体处理、后台管理和 0.9.2 实际验收；完整 GPU、Markdown、笔记与 GitHub 端 CI 未覆盖。
+
+## [2026-10-17] ingest | Tern 设置存储位置
+- Disposition: New
+- Raw: raw/tern/2026-10-17-web-settings-storage.md
+- 要点：原生设置使用配置目录文件；Web 0.9.2 使用浏览器 localStorage 的 settings.json 键，按浏览器配置文件和 origin 隔离；主机插件开关与 Web 全部设置的范围分开。
+
+## [2026-10-17] ingest | Tern 插件架构与平台边界
+- Disposition: New
+- Raw: raw/tern/2026-10-17-plugin-sdk-four-pages.md
+- 要点：官方 Packages、Architecture、Support Matrix 与 CLI 四页整理插件目录、host/window 分工、Web tab 能力和 tern plugin 管理行为。
+
+## [2026-10-17] ingest | Tern CLI 帮助行为
+- Disposition: Update
+- Raw: raw/tern/2026-10-17-cli-help-behavior.md
+- Updated: Tern：TSP 与 browser 后端
+- 要点：18 个命令确认支持 --help；部分 remote 与 serve 分支会把它当普通参数或执行实际操作，不能用于只读递归探测；中止后复查现有会话、pane 和插件目录无变化。
+
+## [2026-10-17] migration | Tern 独立主题
+- 将 wiki/omp-tips 下三篇 Tern 文章迁移到 wiki/tern，更新相互链接与索引；raw/omp-tips 的已提交原始材料保持原位不变。

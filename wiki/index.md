@@ -221,9 +221,6 @@ OMP 启动提示与交互快捷方式。
 | [OMP web search 自定义 Responses API 端点](omp-tips/web-search-custom-responses-provider.md) | codex provider 接入兼容 /codex/responses 的端点：路径拼接、请求形状、凭证分支、实测 | 2026-09-19 |
 | [OMP web search provider 清单与 fallback](omp-tips/web-search-provider-inventory.md) | 25 个 provider 四类分级、串行 fallback、public 并发合并、webSearchOrder 追加语义、Tavily MCP 与原生 `web/tavily` 凭证来源差异 | 2026-09-29 |
 | [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描全部 `*.ts`/`*.js` 扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法 | 2026-09-19 |
-| [Tern：TSP 与 browser 后端](omp-tips/tern-tsp-and-browser-backend.md) | Tern Surface Protocol（TUI 原生渲染协议，`PI_TUI_NATIVE` 开关）与 browser 工具后端的两个身份：探测、native 渲染、rows 回退、WKWebView 画中画、能力边界；命名来历未证实 | 2026-10-14 |
-| [Tern 网页字体修改与版本迁移](omp-tips/tern-web-maple-font-rebuild.md) | 升级后重建 Maple Mono NF CN 修改：原版字体验收、内存快照、所有加载引用、完整源码、版本配置与分层完成标准；Markdown 回归独立处理 | 2026-10-14 |
-| [Tern 网页 Markdown 中文触发无响应](omp-tips/tern-web-markdown-cjk-freeze.md) | 原版 0.8.3 的单字符 `中` 复现；按真实 `file`/`id` 字段关闭目标 pane，保留 shell/Git；稳定 raw 保存完整英文邮件 | 2026-10-14 |
 
 ## kimi-claw
 
@@ -366,6 +363,19 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 |---------|---------|---------|
 | [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd 1.7.7 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠 | 2026-10-17 |
 | [Tern Surface Protocol](terminal-graphics/tern-surface-protocol.md) | Tern 的 TSP UI 树绘制路径与 image 节点；kitty graphics 支持来自第三方插件声明（非官方）；SIXEL/iTerm2 未找到证据 | 2026-10-17 |
+
+## tern
+
+Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体和时间定位、人工修改边界、0.9.2 分层验收与未覆盖范围 | 2026-10-17 |
+| [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围 | 2026-10-17 |
+| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为 | 2026-10-17 |
+| [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议及 CLI 帮助参数的副作用边界 | 2026-10-17 |
+| [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 升级后重建 Maple Mono NF CN 修改：原版字体验收、内存快照、加载引用、源码、版本配置与分层完成标准 | 2026-10-14 |
+| [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 原版 0.8.3 的单字符 `中` 复现；按真实 `file`/`id` 字段关闭目标 pane，保留 shell/Git | 2026-10-14 |
 
 ## proxy-ops
 
