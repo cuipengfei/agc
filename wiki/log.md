@@ -1291,3 +1291,10 @@
 
 ## [2026-10-17] migration | Tern 独立主题
 - 将 wiki/omp-tips 下三篇 Tern 文章迁移到 wiki/tern，更新相互链接与索引；raw/omp-tips 的已提交原始材料保持原位不变。
+
+## [2026-10-17] ingest | SOFA 官方 MCP：OMP 接入、维护与验证
+- Disposition: New; Update
+- Raw: raw/omp-auth/2026-10-17-sofa-http-oauth-session.md; raw/omp-auth/2026-10-17-omp-oauth-loopback-callback.md; raw/proxy-ops/2026-10-17-sofa-routing-and-validation.md; raw/agent-tooling/2026-10-17-chrome-cdp-existing-profile.md; raw/agent-tooling/2026-10-17-sofa-mcp-smoke-test.md
+- Created: wiki/omp-auth/sofa-mcp-maintenance.md
+- Updated: 三家宿主 MCP 配置、验证阶梯与凭据事故
+- 要点：以单篇维护入口关联 OMP 配置及原生凭据、Clash 持久规则与运行状态、SOFA 权限和草稿管理；保留 OAuth 与调用成功及 ECONNRESET 失败证据。逐项工具测试确认接口调用与草稿生命周期，公开帖编辑、删除和持续稳定性未验证。原始摘录与文章均移除凭据、个人身份及私人代理标识；浏览器 CDP 仅记文档机制和本机未验证边界。

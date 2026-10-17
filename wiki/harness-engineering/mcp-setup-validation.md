@@ -1,8 +1,8 @@
 # 三家宿主 MCP 配置、验证阶梯与凭据事故
 
-> Sources: 本机三家配置文件实际编辑 + tomllib/json5/json.load 解析 + stdio JSON-RPC 探针 + `codex mcp get semgrep` + `opencode mcp list` + OMP 无头会话枚举 + OMP 会话内状态显示, 2026-09-26
-> Raw: [2026-09-26-mcp-setup-validation-and-credential-incident](../../raw/harness-engineering/2026-09-26-mcp-setup-validation-and-credential-incident.md)
-> Updated: 2026-09-26
+> Sources: 本机三家配置文件实际编辑 + tomllib/json5/json.load 解析 + stdio JSON-RPC 探针 + `codex mcp get semgrep` + `opencode mcp list` + OMP 无头会话枚举 + OMP 会话内状态显示, 2026-09-26; SOFA 原生 HTTP OAuth 与逐项工具测试, 2026-10-17
+> Raw: [2026-09-26-mcp-setup-validation-and-credential-incident](../../raw/harness-engineering/2026-09-26-mcp-setup-validation-and-credential-incident.md); [SOFA 原生 OAuth](../../raw/omp-auth/2026-10-17-sofa-http-oauth-session.md); [SOFA 网络验证](../../raw/proxy-ops/2026-10-17-sofa-routing-and-validation.md); [SOFA 逐项测试](../../raw/agent-tooling/2026-10-17-sofa-mcp-smoke-test.md)
+> Updated: 2026-10-17
 
 ## Overview
 
@@ -59,7 +59,18 @@ OMP 的 `loadAllMCPConfigs()` 默认启用 `filterExa`；`filterExaMCPServers()`
 - 手写 parser 剥注释违反规则；用现成 parser。
 - advisory blocker 是硬约束；违反后的披露必须时间线准确，不粉饰。
 
+## HTTP OAuth 与外部写入的验证边界
+
+对需要 OAuth 的 HTTP MCP，分别记录 discovery、注册、授权回调、凭据交换与保存、刷新、工具发现、实际调用的结果。独立探针或手动注入 Bearer 的成功，只覆盖对应请求；宿主自动读取与刷新凭据，需要原生宿主路径的证据。
+
+本次 SOFA 原生流程完成 OAuth、凭据保存和工具调用，也出现过初始化或 `tools/list` 收到 `ECONNRESET` 的样本。原生管理器验证覆盖配置和认证链路；模型在实际任务中是否选择某工具，是另一个问题。某次成功不能证明长期稳定。
+
+外部写入还要记录返回对象的生命周期。接口返回私有草稿时，只能确认草稿创建；公开发布、公开回复及 canonical post 编辑或删除需要各自的有效目标和成功证据。不得将 draft ID 当作 post ID。verification 必须基于实际应用结果，单独搜索或阅读不足以证明应用成功。
+
+HTTP 429 出现后停止密集测试；取消的测试不计为通过。保留成功与失败条件，不用单个最终成功样本覆盖中途失败。具体组件和本次状态见 [SOFA 维护入口](../omp-auth/sofa-mcp-maintenance.md)。
+
 ## See Also
 
 - [Semgrep MCP：工具清单、传输条件与实测边界](../agent-tooling/semgrep-mcp.md)
 - [Jev 语义回归检查方法](jev-semantic-regression-testing.md)
+- [SOFA 官方 MCP：OMP 接入、维护与验证](../omp-auth/sofa-mcp-maintenance.md)
