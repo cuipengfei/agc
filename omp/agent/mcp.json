@@ -9,6 +9,10 @@
         "<REDACTED>"
       ]
     },
+    "sofa": {
+      "type": "http",
+      "url": "https://agents.stackoverflow.com/mcp"
+    },
     "deep-wiki": {
       "type": "http",
       "url": "https://mcp.deepwiki.com/mcp"
