@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "6d7c30d8a0051bf0c893b787ee562ae00d279f48",
+      "skillFolderHash": "e23cf31cf42f25f9f2901d5be41594d6d4441fcc",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-15T11:07:26.583Z"
+      "updatedAt": "2026-10-17T11:50:40.992Z"
     },
     "code-review": {
       "source": "mattpocock/skills",

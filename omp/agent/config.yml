@@ -132,6 +132,7 @@ tui:
   maxInlineImages: 8
   textSizing: false
   renderMermaid: true
+  renderSvg: true
   codexResetFireworks: false
   titleState: true
   hyperlinks: auto
