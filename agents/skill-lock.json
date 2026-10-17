@@ -462,9 +462,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail/SKILL.md",
-      "skillFolderHash": "db8acd3ce9e04ef4a5d42bbd90924b6d0a488318",
+      "skillFolderHash": "e8d3fa76e7ff9223a784dbd4bcfc9ff46b3fa55d",
       "installedAt": "2026-08-05T15:58:21.825Z",
-      "updatedAt": "2026-10-08T16:28:27.647Z"
+      "updatedAt": "2026-10-16T16:29:19.862Z"
     },
     "ponytail-audit": {
       "source": "dietrichgebert/ponytail",
@@ -498,9 +498,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
       "skillPath": "skills/ponytail-help/SKILL.md",
-      "skillFolderHash": "87f25f262420cf82267b3170d75d4b295ab2d986",
+      "skillFolderHash": "f293d9e0ecff5da72cb4accf8a9e4717892cf0ad",
       "installedAt": "2026-08-05T15:58:21.829Z",
-      "updatedAt": "2026-10-08T16:29:12.384Z"
+      "updatedAt": "2026-10-17T03:05:02.524Z"
     },
     "ponytail-review": {
       "source": "dietrichgebert/ponytail",
@@ -642,10 +642,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8",
+      "skillFolderHash": "8c307f367c91bd974002f10f2be2965d642c13df",
       "pluginName": "humanizer",
       "installedAt": "2026-09-02T12:55:58.315Z",
-      "updatedAt": "2026-09-28T14:34:39.771Z"
+      "updatedAt": "2026-10-17T03:05:07.788Z"
     },
     "codebase-onboarding": {
       "source": "affaan-m/ecc",
@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "ee9e6703aa7a9946e4ac2b22ad3587e44dbde3fe",
+      "skillFolderHash": "01e393ce6ef4820bc71b90102895815fa6e6676b",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-15T11:08:15.292Z"
+      "updatedAt": "2026-10-17T03:05:19.108Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1120,18 +1120,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/show-me-your-work/SKILL.md",
-      "skillFolderHash": "394ff81db63306dfd5068c6d74c5541cf866aca3",
+      "skillFolderHash": "638a5105f2b35744654e0c223ee388e4abed1969",
       "installedAt": "2026-10-04T15:35:43.351Z",
-      "updatedAt": "2026-10-04T15:35:43.351Z"
+      "updatedAt": "2026-10-16T16:29:52.484Z"
     },
     "swarm": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/swarm/SKILL.md",
-      "skillFolderHash": "6a54af03607dc51df19aa7edb109ab7e9a997be3",
+      "skillFolderHash": "c88053588fa587ccc14f39ead517a1ba81c4e733",
       "installedAt": "2026-10-04T15:35:43.352Z",
-      "updatedAt": "2026-10-04T15:35:43.352Z"
+      "updatedAt": "2026-10-16T16:29:58.618Z"
     },
     "technical-writing": {
       "source": "backnotprop/pstack",
@@ -1165,9 +1165,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/why/SKILL.md",
-      "skillFolderHash": "164c7695e4bebb87009f931320a3f7ce81dc52c7",
+      "skillFolderHash": "618d5de7e9e463ba2d25a40368986acedb2d5c3a",
       "installedAt": "2026-10-04T15:35:43.361Z",
-      "updatedAt": "2026-10-12T14:01:46.296Z"
+      "updatedAt": "2026-10-16T16:30:04.538Z"
     },
     "implement-spec": {
       "source": "mattpocock/skills",
@@ -1231,9 +1231,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "25cd8d00770e9a01a493b61ed3e54561d185997d",
+      "skillFolderHash": "85b42c0ba5f986597dc6a0f1b91086756f7316eb",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-15T11:08:20.127Z"
+      "updatedAt": "2026-10-17T03:05:27.591Z"
     },
     "hyperframes-animation": {
       "source": "heygen-com/hyperframes",
@@ -1258,18 +1258,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "629e4a51bcb8872c3fc49ed2f5c5afea677af060",
+      "skillFolderHash": "aee8c579e00d5f4f598e0717cc7f980f4c3a9f51",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-15T11:08:32.616Z"
+      "updatedAt": "2026-10-16T16:30:13.465Z"
     },
     "hyperframes-core": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-core/SKILL.md",
-      "skillFolderHash": "9ecced1a32e1f2840ca5642da6103f3aba57e18b",
+      "skillFolderHash": "2585691179d4e90b29fc406fb6cac55ff30b6699",
       "installedAt": "2026-10-08T14:50:55.467Z",
-      "updatedAt": "2026-10-08T15:06:07.819Z"
+      "updatedAt": "2026-10-17T03:05:34.642Z"
     },
     "hyperframes-creative": {
       "source": "heygen-com/hyperframes",
@@ -1321,9 +1321,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "f3d045de2316321f3281cdeec5278a4522561f02",
+      "skillFolderHash": "1de0a4c66cabf3f32a0d829450f5f865e58b2b31",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-10-14T12:26:42.295Z"
+      "updatedAt": "2026-10-16T16:30:09.146Z"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "cc8378de4df888df7e9e10d0e1e22919ddbd9864",
+      "skillFolderHash": "52b92950b5ac81cacfb2a6e5b688c9a24966f410",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-15T11:09:30.100Z"
+      "updatedAt": "2026-10-16T16:30:19.807Z"
     },
     "note": {
       "source": "cuipengfei/prompts",

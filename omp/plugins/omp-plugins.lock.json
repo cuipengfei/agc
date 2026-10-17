@@ -1,12 +1,12 @@
 {
   "plugins": {
     "@plannotator/pi-extension": {
-      "version": "0.28.21",
+      "version": "0.28.22",
       "enabledFeatures": null,
       "enabled": true
     },
     "@dietrichgebert/ponytail": {
-      "version": "5.2.0",
+      "version": "5.3.2",
       "enabledFeatures": null,
       "enabled": true
     },
