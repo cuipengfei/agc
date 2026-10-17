@@ -360,11 +360,12 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 ## terminal-graphics
 
-终端图像协议（SIXEL、Kitty graphics、iTerm2 IIP）在 ttyd、Herdr、TUIOS、OMP 中的支持矩阵与链路兼容性。
+终端图像协议（SIXEL、Kitty graphics、iTerm2 IIP）在 ttyd、Herdr、TUIOS、OMP 中的支持矩阵与链路兼容性，含历史矢量协议全景、探测测试方法与 Tern TSP 专题。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd 1.7.7 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠 | 2026-10-17 |
+| [Tern Surface Protocol](terminal-graphics/tern-surface-protocol.md) | Tern 的 TSP UI 树绘制路径与 image 节点；kitty graphics 支持来自第三方插件声明（非官方）；SIXEL/iTerm2 未找到证据 | 2026-10-17 |
 
 ## proxy-ops
 

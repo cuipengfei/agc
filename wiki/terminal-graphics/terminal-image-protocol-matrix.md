@@ -1,7 +1,7 @@
 # 终端图像协议支持矩阵
 
-> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026
-> Raw: [ttyd 图像协议](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [Herdr 图像协议](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md)
+> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17
+> Raw: [ttyd 图像协议](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [Herdr 图像协议](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md)
 > Updated: 2026-10-17
 
 ## 概述
@@ -15,6 +15,18 @@
 | SIXEL | `\x1bPq` | DEC VT 系列终端的位图图形协议 |
 | Kitty graphics | `\x1b_G` | kitty 终端引入，支持传输、放置、删除、Unicode 占位符、动画帧 |
 | iTerm2 IIP | `\x1b]1337;File=` | iTerm2 终端的内联图像协议，支持 PNG/JPEG/GIF |
+
+协议全景（修正后按「是否仍在实际使用」单表排列，历史出身单独标注）：
+
+| 协议 | 类型 | 起始标记 | 出身 | 当前实际使用 |
+|---|---|---|---|---|
+| SIXEL | 位图 | `ESC P q` | DEC VT 系列，1980s | 仍在使用（ttyd、TUIOS、OMP 实现） |
+| Kitty graphics protocol | 位图 | `ESC _ G` | kitty 终端，2020s | 仍在使用（Herdr、TUIOS、OMP 实现） |
+| iTerm2 IIP（inline images） | 位图 | `OSC 1337 ; File =` | iTerm2 | 仍在使用（ttyd、OMP 实现） |
+| ReGIS | 矢量 | `ESC P p`（DCS 前缀 + `p`） | DEC，VT330/VT340 | 少见，Contour 明确实现；ReGIS 在 xterm 的支持程度未确认 |
+| Tektronix 4010/4014 mode | 矢量（存储管） | 进入靠终端私有模式切换，之后走 GVT 字符序列 | Tektronix，1970s | 少见；支持者未逐条核实 |
+
+除协议路线外还存在**不走协议的字符渲染**：半块字符（U+2580/U+2584/U+2588，每格上下半格各一色）与 Braille patterns（U+2800 区，每格 2×4 点阵）。它们依赖终端支持相应颜色控制（256 色或真彩色）与字形可用，tmux、远端链路、字体都可能影响显示效果。这类技术与图像协议链路无关。
 
 ## 各组件支持情况
 
@@ -124,7 +136,20 @@ TUIOS 同时支持两种协议。按 v0.8.3 release notes 描述的支持方向�
 
 OMP 的终端能力解析器将 Herdr 标记为需要显式覆盖图像协议。在 Herdr pane 中，自动协议选择会被设为 `null`，除非通过 `PI_FORCE_IMAGE_PROTOCOL` 显式指定。但即使强制设为 `kitty`，ttyd 1.7.7 前端也无法渲染 Kitty graphics；强制设为 `sixel`，Herdr 也不会传递 SIXEL。强制协议无法绕过中间层缺失。
 
+## 测试方法
+
+探测 SIXEL/Kitty 支持的两类命令，以及被淘汰的第一版：
+
+- **不可靠写法（已废弃）**：`printf '\033[c'; sleep 0.3; echo` 这类只发查询的命令——`echo` 不读取终端回包，「同一行看到回复」的说明不可靠；XTSMGRAPHICS 回包按「非 `?` 即支持 SIXEL」的判据也已撤回（语义未核实）。
+- **转义序列探测（需真实读回包）**：把 `/dev/tty` 设为原始模式后依次发 DA1（`\033[c`）、XTSMGRAPHICS（`\033[?1;1;0S`）、Kitty query（`\033_Gi=31,s=1,v=1,a=q,t=d,f=24;AAAA\033\\`），实际读取回包。判读：Kitty 回 `_Gi=31;OK` 为支持；DA1 回包含属性 `4` 只说明终端**声明**支持 SIXEL，不代表实际支持。
+- **实际绘图（最终验证）**：`img2sixel` 只能实测 SIXEL；Kitty 的实际绘图验证用 `kitty +kitten icat` 或 `chafa -f kitty`——SIXEL 的绘图结果不能当作 Kitty 证据。
+- **tmux 注意事项**：tmux 会拦截协议序列。Kitty/iTerm2 IIP 可用 `tmux set -g allow-passthrough on`；SIXEL 取决于 tmux 版本与 `terminal-features` 配置，非简单开关。最省事的对照是先在 tmux 外测一遍再进 tmux 测。
+- 环境变量（`KITTY_WINDOW_ID`、`WEZTERM_PANE` 等）只说明「在哪个终端里」，不代表协议一定可用。
+
+探测脚本 `/tmp/term-probe.sh` 按上述思路实现（语法检查通过，非 tty 时拒绝运行）；其**成功分支未实测**——本机工具链 shell 不是 tty，实际运行须在交互式终端里手敲。
+
 ## See Also
 
+- [Tern Surface Protocol](tern-surface-protocol.md) — Tern 的图表绘制路径与图像节点
 - [ttyd 前端编译模型与 xterm 版本锁定](../terminal-multiplexers/ttyd-frontend-compilation.md)
 - [Herdr + Plannotator 工具链全量 Reference](../herdr-plannotator/toolchain-reference.md)

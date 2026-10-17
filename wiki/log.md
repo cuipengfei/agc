@@ -1261,3 +1261,9 @@
 
 ## [2026-10-17] correction | 终端图像协议支持矩阵
 - 修订：TUIOS SIXEL 的「无像素级裁剪」绝对表述改为裁剪层级说明（pane 可见区域裁剪与像素级裁剪，关系未验证），并去除文章状态标签；OMP 小节补入 `TableChartMode`（`smart`/`always`/`off`）定义。原 ingest 条目保留不改。
+
+## [2026-10-17] ingest | Tern Surface Protocol
+- Disposition: New; Update
+- Raw: raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md; raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md
+- Updated: 终端图像协议支持矩阵
+- 要点：Tern 走 TSP UI 树绘制路径，image 节点为官方文档定义；kitty graphics 支持来自第三方 tern-video-block README 实测声明（非官方背书）；SIXEL/iTerm2 在官方文档未找到证据。矩阵文章新增协议全景（ReGIS/Tektronix 历史矢量 + 字符伪图像）与测试方法小节（真实读回包、img2sixel 只验 SIXEL、tmux passthrough 区分），并补 autoGraph 数值表实测记录（生成环节确认，Tern 绘制显示未确认）。
