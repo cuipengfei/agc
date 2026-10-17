@@ -73,10 +73,10 @@ modelRoles:
   vision: c8787/gpt-6-luna:high
   tiny: kimi-claw/k2d8-preview:high
   advisor: c8787/gpt-6-luna:low
-  default: kimi-claw/k3-agent:xhigh
+  default: kimi-code/k3:high
   web: web/firecrawl
   memory: c8787/gpt-6-luna:max
-  judge: typesafe-zen/jev-1.13
+  judge: typesafe-zen/jev-1.13-free
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
