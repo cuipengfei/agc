@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "e23cf31cf42f25f9f2901d5be41594d6d4441fcc",
+      "skillFolderHash": "7b10d6ba7601fe7a6480d6c18e611e2f587b8dff",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-17T11:50:40.992Z"
+      "updatedAt": "2026-10-17T16:10:13.852Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "52b92950b5ac81cacfb2a6e5b688c9a24966f410",
+      "skillFolderHash": "dbc09664323884debfda6e32b7cac23343bf7ae6",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-16T16:30:19.807Z"
+      "updatedAt": "2026-10-17T16:10:21.147Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
