@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "4d6a39167c96d839bcb5edeceff2f2acdbbff123",
+      "skillFolderHash": "a2bec5f84d9c16e1fa8a3d9b9f7c985540b3e2f8",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-18T01:55:33.387Z"
+      "updatedAt": "2026-10-18T13:48:25.296Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -1312,9 +1312,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "cc2b1fc4a9e85619da48de709316c86a6e32a66c",
+      "skillFolderHash": "0ce1bee471566b4577c0e2a726716e91bcc8ea06",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-13T12:33:07.821Z"
+      "updatedAt": "2026-10-18T13:49:16.330Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "284e1f397ad52744a84f207c037473f4860de128",
+      "skillFolderHash": "50ff11e6ee8e81f1b0b30c360ee0edebe0e507d5",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-18T03:49:07.590Z"
+      "updatedAt": "2026-10-18T13:49:21.296Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
