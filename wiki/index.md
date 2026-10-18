@@ -467,3 +467,12 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为与 Do
 | [WSL2 内存与 swap 配置](wsl-windows/wsl2-memory-and-swap-config.md) | `.wslconfig` 三段（`[wsl2]`/`[general]`/`[experimental]`）；内存默认主机 50%、swap 默认内存 25%、swapFile 默认 C 盘 Temp；swap 扩容并迁移到 D 盘的转义写法；autoMemoryReclaim=dropCache 空闲回收；改动需 `wsl --shutdown` 生效 | 2026-10-10 |
 | [Windows 内存回收工具与 WSL swap](wsl-windows/windows-memory-reclamation-and-wsl-swap.md) | 清理≠压缩（压缩是内核 Memory Compression，自 Windows 10 RTM 起内置）；RAMMap（分析）、Mem Reduct（清理）能力边界，Process Lasso 为 CPU 优化工具（内存清理能力未验证、未列入）；"正在使用腰斩"= WS 塌缩而 Private 不变、系统 Commit 不降反升的未释放假象（vmmem WS 1768MB vs Private 12171MB）；pagefile 与 WSL swap 两层换页、单 NVMe 下 C:/D: 同盘；删 VHD 前 handle.exe、删除成功≠无占用 | 2026-10-10 |
 | [Docker Desktop 退出与 WSL2 发行版存活](wsl-windows/docker-desktop-quit-and-wsl2-lifecycle.md) | 后端日志证 Docker 退出只终止 docker-desktop 发行版、不执行 `wsl --shutdown`；用户发行版消失归因于空闲超时（instanceIdleTimeout 默认 15000ms、`-1` 禁用；vmIdleTimeout 默认 60000ms）为推断；给出验证方法 | 2026-10-10 |
+
+## agent-development-environments
+
+多 Agent 工作台（ADE）候选发现、筛选与选型。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 26 个公开仓库 + Tern + Orca 桌面过滤；准入条件：Terminal/Web、Agent 状态可见、workspace 切换、1k stars；stars 与 pushed_at 来自 GitHub API 2026-10-18 快照 | 2026-10-18 |
+| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | pushed_at vs updated_at 核验纪律、REST/GraphQL 交叉、scout 数据复核、排除项（Orca/Superset/OpenCode/Agent Orchestrator）、Tern 插件型归类、本机 WSL2+OMP 推荐排序 | 2026-10-18 |

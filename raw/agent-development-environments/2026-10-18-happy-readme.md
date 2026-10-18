@@ -1,0 +1,43 @@
+# Happy — README 关键段落摘录
+
+> Source: https://github.com/slopus/happy (official README)
+> Collected: 2026-10-18
+> Published: Unknown
+
+## GitHub API 指标快照（2026-10-18）
+
+```json
+{"archived":false,"desc":"Orchestrate Claude, Codex and Grok in one app. Open-source (MIT), reuses the subscriptions you already pay for.","pushed":"2026-10-18T06:12:21Z","stars":24197,"url":"https://github.com/slopus/happy"}
+```
+
+## README 关键段落（按 ADE 判断关键词筛选，保留原文，完整段落边界）
+
+1. **Multi-provider.** Astra, Fable, and Grok in one app, each with its
+   vendor's own prompts and tools. Give every task the model that fits, and
+   delegate to subagents on any of them.
+2. **Reuse your subscriptions.** Sign in with the Claude, Codex, and Grok
+   subscriptions you already pay for. Happy adds a harness, not another bill.
+3. **Open source MIT.** It runs on your own hardware and your projects stay
+   ordinary folders. Read the code, fork it, ship your own build.
+4. **End-to-end encrypted mobile app.** Left your desk? The same sessions are
+   already on your phone, and what moves between your devices is encrypted.
+5. **Natively multiplayer.** Invite a colleague or a friend into the session.
+   You both watch the same agent work, and either of you can steer it.
+
+<p align="center">
+<a href="https://happy.engineering/">Website</a> · <a href="https://happy.engineering/welcome/">Documentation</a> · <a href="https://discord.gg/fX9WBAhyfD">Discord</a> · <a href="docs/CONTRIBUTING.md">Development guide</a> · <a href="LICENSE">MIT License</a>
+</p>
+
+| Repository                                                                            | What it is                                                                 |
+| ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **[slopus/happy](https://github.com/slopus/happy)** ← this repository | **The mobile app (iOS, Android, web), the original CLI, and the relay server** |
+| [slopus/happy-desktop](https://github.com/slopus/happy-desktop) | The desktop app for macOS, Windows, and Linux |
+| [slopus/happy-agent](https://github.com/slopus/happy-agent)                           | Happy Agent, the open-source agent runtime the desktop app runs on         |
+| [slopus/slopus.github.io](https://github.com/slopus/slopus.github.io)                 | The website and docs at happy.engineering                                  |
+
+For multi-model sessions and teams, move to the desktop app and Happy Harness.
+
+- [happy-app](packages/happy-app): the Happy mobile app and web client (Expo)
+- [happy-cli](packages/happy-cli): the original Happy CLI (`happy` on npm)
+- [happy-agent](packages/happy-agent): remote session control for the original Happy CLI (not the Happy Agent runtime)
+- [happy-server](packages/happy-server): the relay server for encrypted sync
