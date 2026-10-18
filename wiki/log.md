@@ -1312,3 +1312,9 @@
 - `30%` 与 `75%` 在 raw 中只有数值配置项，文章已改用对应数值表述；`55%` 与 `90%` 有 raw 的百分比单位依据，恢复直接说明。
 - 复检 5 个 suspects 均判为假阳性：`Fetching latest release` 是脚本及命令原文；`55%` 与 `90%` 来自当前值和百分比单位；`2026-10-17` 与 `0.10.0` 是采集日期和版本标识。
 - 0 个 evidence error。2 个 unreferenced raw 为既有 omp-signature-verification backlog，与本次新增材料无关。
+
+## [2026-10-18] ingest | Tern 升级辅助工具与验收边界
+- Disposition: Update
+- Raw: raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md
+- Updated: Tern 网页字体修改与版本迁移
+- 要点：0.9.3 原版字体无 CJK、时间 panic 实际复现；26 处调用点补丁与分层验收；替换路径不改变已运行进程，统一版本需重启 daemon 并重建 pane。

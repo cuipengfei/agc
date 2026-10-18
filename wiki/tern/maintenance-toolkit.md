@@ -1,8 +1,8 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md)
-> Updated: 2026-10-17
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md)
+> Updated: 2026-10-18
 
 ## 用途
 
@@ -29,6 +29,18 @@
 FontTools 数据测试确认 lookup 名称转换后完整 cmap 保留。每份字体有 33091 个字符映射，其中 20976 个属于记录的 CJK 范围。Headless Chromium 147 完成实际模块初始化与两份完整字体注入；没有执行 mount 或 WebSocket。
 
 工具行为测试 18 项、字体数据测试 2 项、同步项目测试 19 项均通过。Node 与 Python 依赖审查当时未发现已知漏洞，FontTools 使用 4.60.2。
+
+## 0.9.3 实际结果
+
+原生版本为 `tern 0.9.3 (e96e848)`。官方 WASM SHA-256 `224e2fc0…`，glue SHA-256 `99d2c293…`，SRI 校验通过。补丁 WASM SHA-256 `bcb60f01…`，测试模块 SHA-256 `87136dec…`。
+
+原版两份 Berkeley 字体仍无 CJK 字符（各 11217 个字符映射）；Regular pointer `4367806`、length `2288420`、槽位 `9031308`，Medium pointer `6656226`、length `2313308`、槽位 `9031332`。字体初始化改为读取新槽位 `9031308`/`9031312`、`9031332`/`9031336` 的 descriptor。
+
+原版时间 panic 实际复现：函数 `30563`（21 个直接调用）与 `30564`（5 个直接调用）抛出 `unreachable`，消息 `time not implemented on this platform`。26 处调用点中，日历时间复用既有函数 `25011`，新增 `32181`（performance.now）与 `32182`（elapsed），跨秒相减复用既有饱和函数 `22956`，externref 由既有 `24515` 释放；没有新增 import，原函数编号保持。
+
+结构检查 5 项与时间回归 6 项全部通过。Headless 浏览器完成模块初始化与两份完整字体注入，收到 33 个 WebSocket frame、pageerror 0；视觉效果由用户检查。正式服务 HTTP 200、补丁 WASM 指纹与既有 token 认证通过。
+
+统一版本需重启 daemon；观察到的结果：重启后查询返回四个 pane ID 与重启前一致（`326417514501`、`326417514503`、`347892350977`、`382252089349`），可继续使用。运行进程不随二进制路径替换更新：`/proc/<pid>/exe` 的 inode 与安装文件一致才能确认版本。当前 daemon、Web 服务与安装文件 inode 均为 `238854`；daemon 与 Web 各由一个 Python 父进程（`daemon.py`、`serve.py`）管理子进程生命周期，属预期结构。
 
 ## 未完成与使用限制
 

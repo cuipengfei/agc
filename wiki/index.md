@@ -373,7 +373,8 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体和时间定位、人工修改边界、0.9.2 分层验收与未覆盖范围 | 2026-10-17 |
+| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体和时间定位、人工修改边界、0.9.2 与 0.9.3 分层验收、运行进程与统一版本重启 | 2026-10-18 |
+| [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 升级后重建 Maple Mono NF CN 修改：0.8.3 与 0.9.3 历史映射、原版字体验收、内存快照、加载引用、源码、版本配置与分层完成标准 | 2026-10-18 |
 | [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围 | 2026-10-17 |
 | [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为 | 2026-10-17 |
 | [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议及 CLI 帮助参数的副作用边界 | 2026-10-17 |

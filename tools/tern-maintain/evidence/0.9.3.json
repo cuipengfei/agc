@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-18",
+  "version": "0.9.3",
+  "nativeVersion": "0.9.3 (e96e848)",
+  "originalSha256": "224e2fc05bfcf6a826cb06d3f10be0a288291197888c2ff9d2aa51c0fd6cdb0a",
+  "candidateSha256": "bcb60f010b308af22da907513c992b073a51fd427b8702da3b9a6425ec8d1492",
+  "testModuleSha256": "87136dec3aa01b8a844b11ae504928e68210825062e022e5a3a6067edf281055",
+  "officialAcquisition": {"version": "0.9.3", "sri": "passed"},
+  "fonts": [
+    {"family": "BerkeleyMono Nerd Font", "slot": 9031308, "pointer": 4367806, "length": 2288420, "originalCjk": 0},
+    {"family": "BerkeleyMono Nerd Font Medium", "slot": 9031332, "pointer": 6656226, "length": 2313308, "originalCjk": 0}
+  ],
+  "fontData": {"fullCmapPreserved": "passed", "charactersPerFont": 33091, "cjkPerFont": 20976},
+  "timePlan": {
+    "callSites": 26,
+    "originalPanicCalls": {"30563": 21, "30564": 5},
+    "originalPanicReproduced": [30563, 30564],
+    "candidatePanicCalls": {"30563": 0, "30564": 0},
+    "candidatePanicTableReferences": 0,
+    "candidatePanicRefFuncReferences": 0
+  },
+  "boundaries": {
+    "imports": "passed", "exports": "passed", "functionSignatures": "passed",
+    "memoryLimits": "passed", "initialMemory": "passed"
+  },
+  "timeBehavior": {
+    "instrumentedModuleProvenance": "passed", "calendarEpochAndBounds": "passed",
+    "instantFractionAndBounds": "passed", "elapsedBorrowAndSaturation": "passed",
+    "actualConsumer": "passed", "externrefReuse10000Calls": "passed"
+  },
+  "headlessBrowser": {
+    "moduleInit": "passed", "fullFontInjection": "passed", "fonts": 2,
+    "wireMount": "passed", "receivedFrames": 33, "pageErrors": 0,
+    "visualAcceptance": "user_owned",
+    "warnings": ["software rendering", "daemon presence worker unsupported", "opaque swapchain", "canvas format copy"]
+  },
+  "productionRuntime": {
+    "cli": "0.9.3", "daemon": "0.9.3", "web": "0.9.3", "port": 8378,
+    "httpStatus": 200, "servedWasmHash": "passed", "existingTokenAuthentication": "passed",
+    "inode": 238854,
+    "unifiedRestart": "daemon, web and installed file share inode 238854",
+    "panesUnchanged": true,
+    "paneIds": [326417514501, 326417514503, 347892350977, 382252089349]
+  },
+  "testModuleArtifact": "../artifacts/0.9.3-time.wasm",
+  "productionResourcesChanged": true,
+  "automaticDeployment": false
+}

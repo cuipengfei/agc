@@ -5,3 +5,5 @@ state/
 *.wat
 *.bin
 *.ttf
+!profiles/
+!profiles/*.json

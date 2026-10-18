@@ -39,7 +39,7 @@ bun cli.mjs function --wasm /tmp/tern-candidate/pkg/original.wasm --index NUMBER
 
 `decision: manual_review_required` 表示需要通过文件编辑工具修改 compiler 生成的文本源，再通过标准 WASM compiler 编译。工具不自动修改指令、不调用 Binaryen mutation/optimization API，不从旧版本地址表套用新版本。未知结构不能据此批准部署。当前工具不会自动生成完整可编译的替换函数。
 
-已有 Tern 0.9.2 的补丁保存在 `~/.local/share/tern-web-0.9.2/`。这里不保存 WASM、字体文件或凭据；已有补丁的函数编号和行为结果以该目录的 `PATCH.md` 为证据。升级时不能将旧版本验证结果直接用于新版本。
+已有 Tern 0.9.2 和 0.9.3 的补丁分别保存在 `~/.local/share/tern-web-0.9.2/`、`~/.local/share/tern-web-0.9.3/`。这里不保存 WASM、字体文件或凭据；补丁的函数编号和行为结果以对应目录的 `PATCH.md` 为证据。升级时不能将旧版本验证结果直接用于新版本。
 
 ## 字体清单
 
@@ -65,7 +65,7 @@ bun cli.mjs browser --url http://127.0.0.1:PORT \
 
 结构报告检查 imports、exports、函数签名、内存限制和初始内存。时间精度、进位、跨秒相减、饱和时长和 externref 生命周期需要对应版本的实际行为测试；结构报告会将未执行项写为 `not_run`，`deployable` 始终为 `false`，不得将它当成自动部署批准。浏览器检查强制 `headless: true`，初始化实际模块并验证完整字体注入，不打开桌面窗口。完整 GPU/Markdown/笔记操作没有通过这项检查得到证明。
 
-`verify-time.mjs` 保留实际模块的时间回归。测试模块由标准 compiler 的独立文本副本，通过文件编辑工具增加 `profiles/0.9.2.json` 中列出的五个 exports 后编译；不修改候选模块。编译产物放在已忽略的 `artifacts/`，后续验收可直接复用，不需要重新生成整个 WAT。
+`verify-time.mjs` 保留实际模块的时间回归。测试模块由标准 compiler 的独立文本副本，通过文件编辑工具增加对应 `profiles/<version>.json` 中列出的五个 exports 后编译；不修改候选模块。当前包含 0.9.2 和 0.9.3 的 profile。编译产物放在已忽略的 `artifacts/`，后续验收可直接复用，不需要重新生成整个 WAT。
 
 ```bash
 bun verify-time.mjs --candidate /path/to/instant.wasm \
@@ -95,4 +95,4 @@ bun cli.mjs start --binary /path/to/tern --socket /path/to/daemon.sock --port PO
 
 `start` 仅用于已经人工审核并完成行为验证的资源目录；结构报告不会自动调用它。端口已占用或状态目录已有 PID 记录时拒绝启动，保留原服务。为每个 web 进程指定独立的私有 `state-dir`，目录放在仓库外；工具生成独立认证文件和脱敏日志，检查前后 pane 状态，不终止已有 daemon，不提供停止已有 daemon 的命令。真实隔离烟雾检查入口为 `bun runtime-smoke.mjs /path/to/tern /path/to/assets`，仅结束自身创建的进程。
 
-GitHub Actions 工作流运行 Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；不会下载真实 WASM，不启动桌面浏览器，不访问本机凭据。本机实际验收结果保存在 [`evidence/0.9.2.json`](evidence/0.9.2.json)，大型二进制验收产物保存在已忽略的 `artifacts/`。
+GitHub Actions 工作流运行 Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；不会下载真实 WASM，不启动桌面浏览器，不访问本机凭据。本机实际验收结果保存在 [`evidence/0.9.2.json`](evidence/0.9.2.json) 和 [`evidence/0.9.3.json`](evidence/0.9.3.json)，大型二进制验收产物保存在已忽略的 `artifacts/`。

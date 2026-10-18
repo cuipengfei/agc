@@ -1,8 +1,8 @@
 # Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
 
-> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14
-> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md)
-> Updated: 2026-10-14
+> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18
+> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md)
+> Updated: 2026-10-18
 
 ## 适用范围与完成标准
 
@@ -88,8 +88,18 @@
 |---|---:|---:|---:|---:|---:|
 | Regular | 4299258 | 2288420 | 8962760 | 8962764 | 20,564,496 |
 | Bold，对应原 Medium | 6587678 | 2313308 | 8962784 | 8962788 | 20,517,844 |
-
 原 lookup family 分别是 `BerkeleyMono Nerd Font` 与 `BerkeleyMono Nerd Font Medium`。修改版 WASM SHA-256 为 `dba5a764b1e225d451b6376757e247214ec1002f60d2ae26dfb75574cc2e2d9b`。完整源码、输入 hash 和验证结果以关联 raw 为准。
+
+
+## 0.9.3 历史映射
+
+| 替换文件 | 原 pointer | 原 length | pointer 记录 | length 记录 | 保存的 Maple bytes | 槽位 |
+|---|---:|---:|---:|---:|---:|---:|
+| Regular | 4367806 | 2288420 | 9031308 | 9031312 | 20,564,496 | 9031308 |
+| Bold，对应原 Medium | 6656226 | 2313308 | 9031332 | 9031336 | 20,517,844 | 9031332 |
+
+原 lookup family 分别是 `BerkeleyMono Nerd Font` 与 `BerkeleyMono Nerd Font Medium`。修改版 WASM SHA-256 为 `bcb60f010b308af22da907513c992b073a51fd427b8702da3b9a6425ec8d1492`，glue SHA-256 `99d2c293…`。字体槽位在 0.9.2 后从旧地址（0.8.3 的 `8962760` 等）变为 `9031308`/`9031332` 等新常量；原版两份字体仍无 CJK 字符（各 11217 个字符映射）。完整源码、输入 hash 和验证结果以关联 raw 为准。
+
 
 ## See Also
 
