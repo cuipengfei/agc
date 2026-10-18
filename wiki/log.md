@@ -4,7 +4,7 @@
 - Disposition: New
 - Raw: raw/agent-tooling/2026-10-18-anatomy-skill-mechanics.md
 - Wiki: Created: wiki/agent-tooling/anatomy-skill-mechanics.md; Updated: wiki/agent-tooling/llm-diagram-authoring-models.md（See Also 追加 Anatomy 链接）; Updated: wiki/index.md
-- 要点：Anatomy 作者模型「object is the explanation」概念→物理装置一对一映射，40–150+ 零件、四档明暗、geometry audit + line check 双重门槛全归零，Standalone HTML/静态 SVG/React/gallery 四交付；制作实证 anatomy-skill-explainer.html 为 136 solids 仪器柜，六例 iframe srcdoc + 两例 Bun bundle React，主题切换重注入 srcdoc；合规要点：生成脚本只存在于 /tmp 一次性构建，成品进仓库后一切改动走手动文件编辑，禁止重跑脚本覆盖。
+- 要点：Anatomy 作者模型「object is the explanation」概念→物理装置一对一映射，40–150+ 零件、四档明暗、geometry audit + line check 双重门槛全归零，Standalone HTML/静态 SVG/React/gallery 四交付；制作实证 anatomy-skill-explainer.html 为 136 solids 仪器柜，六例 iframe srcdoc + 两例 Bun bundle React，主题切换重注入 srcdoc；合规要点：暗色版 HTML 由一次性构建脚本直接写入仓库路径，成品进仓库后一切改动必须走手动文件编辑，禁止重跑脚本覆盖。
 
 ## [2026-10-06] ingest | agc bank 第三次 SQLite 损坏修复与根因排除压测
 - Disposition: Update（omp-mnemopi/sqlite-corruption-recovery.md）
