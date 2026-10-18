@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "7b10d6ba7601fe7a6480d6c18e611e2f587b8dff",
+      "skillFolderHash": "4d6a39167c96d839bcb5edeceff2f2acdbbff123",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-17T16:10:13.852Z"
+      "updatedAt": "2026-10-18T01:55:33.387Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "dbc09664323884debfda6e32b7cac23343bf7ae6",
+      "skillFolderHash": "284e1f397ad52744a84f207c037473f4860de128",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-17T16:10:21.147Z"
+      "updatedAt": "2026-10-18T03:49:07.590Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
@@ -1361,6 +1361,15 @@
       "skillFolderHash": "a8fca2e341ef0201ddfc52e581b55fe4eb3880a0",
       "installedAt": "2026-10-13T15:14:23.157Z",
       "updatedAt": "2026-10-13T16:16:11.789Z"
+    },
+    "anatomy": {
+      "source": "wheresryan22/anatomy",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/wheresryan22/anatomy.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "e9488296a44211c42701ff71705b7901470ec78f",
+      "installedAt": "2026-10-18T01:58:17.999Z",
+      "updatedAt": "2026-10-18T01:58:17.999Z"
     }
   },
   "dismissed": {
