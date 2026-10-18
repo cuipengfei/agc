@@ -366,6 +366,7 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
   };
 
   let token = null;
+  let candidateSha256 = null;
   try {
     if (!url) throw new Error('browserCheck: url is required');
     if (!playwrightModule) throw new Error('browserCheck: playwrightModule is required');
@@ -432,6 +433,7 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
           }
           return {
             ok: true,
+            candidateSha256: Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), value => value.toString(16).padStart(2, '0')).join(''),
             family: injected.family ?? null,
             version: injected.version ?? null,
             fonts: Array.isArray(injected.fonts) ? injected.fonts.length : null,
@@ -441,6 +443,7 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
         }
       });
       if (init.ok) {
+        candidateSha256 = init.candidateSha256;
         const version = init.version ? `, maple ${init.version}` : '';
         add('client_init', 'passed', `pkg/client.js init + loadClient + injectMaple OK (${init.family}${version}, ${init.fonts} fonts)`);
       } else {
@@ -464,5 +467,5 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
   const result = order.map(name => checks.get(name));
   // Final defensive scrub: the token value must never leave this function.
   const finalChecks = token ? JSON.parse(JSON.stringify(result).split(token).join('<REDACTED>')) : result;
-  return { schemaVersion: 1, checks: finalChecks };
+  return { schemaVersion: 1, candidateSha256, checks: finalChecks };
 }

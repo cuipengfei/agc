@@ -7,3 +7,4 @@ state/
 *.ttf
 !profiles/
 !profiles/*.json
+!patches/*/exports/*.wat

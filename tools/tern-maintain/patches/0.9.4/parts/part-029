@@ -1,0 +1,2 @@
+    local.get 4
+    call 32182

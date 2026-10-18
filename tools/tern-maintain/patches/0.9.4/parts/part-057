@@ -1,0 +1,111 @@
+  (func (;32182;) (param i32)
+    (local i32 f64 i64)
+    call 583
+    local.tee 1
+    table.get 1
+    call 564
+    call 563
+    local.set 2
+    local.get 1
+    call 24517
+    local.get 2
+    f64.const 1000
+    f64.div
+    i64.trunc_f64_u
+    local.set 3
+    local.get 0
+    local.get 3
+    i64.store
+    local.get 0
+    local.get 2
+    local.get 3
+    f64.convert_i64_u
+    f64.const 1000
+    f64.mul
+    f64.sub
+    f64.const 1000000
+    f64.mul
+    i32.trunc_f64_u
+    i32.store offset=8)
+  (func (;32183;) (param i32 i64 i32)
+    local.get 0
+    call 32182
+    local.get 0
+    local.get 0
+    i64.load
+    local.get 0
+    i32.load offset=8
+    local.get 1
+    local.get 2
+    call 22958)
+  (table (;0;) 12586 12586 funcref)
+  (table (;1;) 1024 externref)
+  (memory (;0;) 296)
+  (global (;0;) (mut i32) (i32.const 1048576))
+  (global (;1;) i32 (i32.const 17523744))
+  (global (;2;) i32 (i32.const 17526080))
+  (global (;3;) i32 (i32.const 17526016))
+  (global (;4;) i32 (i32.const 17524464))
+  (global (;5;) i32 (i32.const 17526656))
+  (global (;6;) i32 (i32.const 17527488))
+  (global (;7;) i32 (i32.const 17526918))
+  (global (;8;) i32 (i32.const 17527040))
+  (global (;9;) i32 (i32.const 17527360))
+  (global (;10;) i32 (i32.const 19383012))
+  (global (;11;) i32 (i32.const 19392140))
+  (export "memory" (memory 0))
+  (export "__wbg_tern_free" (func 19952))
+  (export "mount" (func 28856))
+  (export "tern_unmount" (func 24433))
+  (export "dav1d_apply_grain" (func 14128))
+  (export "dav1d_close" (func 22627))
+  (export "dav1d_data_create" (func 18007))
+  (export "dav1d_data_props_unref" (func 18848))
+  (export "dav1d_data_unref" (func 14912))
+  (export "dav1d_data_wrap" (func 15455))
+  (export "dav1d_data_wrap_user_data" (func 10716))
+  (export "dav1d_default_settings" (func 25447))
+  (export "dav1d_flush" (func 32123))
+  (export "dav1d_get_decode_error_data_props" (func 15799))
+  (export "dav1d_get_event_flags" (func 18722))
+  (export "dav1d_get_frame_delay" (func 22303))
+  (export "dav1d_get_picture" (func 16890))
+  (export "dav1d_open" (func 17528))
+  (export "dav1d_parse_sequence_header" (func 18849))
+  (export "dav1d_picture_unref" (func 18663))
+  (export "dav1d_send_data" (func 12931))
+  (export "dav1d_version" (func 32168))
+  (export "dav1d_version_api" (func 32169))
+  (export "dav1d_set_cpu_flags_mask" (func 31843))
+  (export "dav1d_mc_subpel_filters" (global 1))
+  (export "dav1d_resize_filter" (global 2))
+  (export "dav1d_obmc_masks" (global 3))
+  (export "dav1d_mc_warp_filter" (global 4))
+  (export "dav1d_sgr_x_by_x" (global 5))
+  (export "dav1d_gaussian_sequence" (global 6))
+  (export "dav1d_dr_intra_derivative" (global 7))
+  (export "dav1d_filter_intra_taps" (global 8))
+  (export "dav1d_sm_weights" (global 9))
+  (export "__abort_handler" (global 10))
+  (export "__instance_terminated" (global 11))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___f64______true_" (func 28815))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___js_sys_43dac9a800284a8b___Function_fn_wasm_bindgen_ca4b211fdf4ec8a3___JsValue_____wasm_bindgen_ca4b211fdf4ec8a3___sys__Undefined___js_sys_43dac9a800284a8b___Function_fn_wasm_bindgen_ca4b211fdf4ec8a3___JsValue_____wasm_bindgen_ca4b211fdf4ec8a3___sys__Undefined_______true_" (func 28729))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___JsValue__core_3cb842e049bdb8e___result__Result_____wasm_bindgen_ca4b211fdf4ec8a3___JsError___true_" (func 27976))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___sys__JsNullable_wgpu_4bf2f1047f7a4563___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_3cb842e049bdb8e___result__Result_____wasm_bindgen_ca4b211fdf4ec8a3___JsError___true_" (func 27977))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___sys__JsNullable_wgpu_4bf2f1047f7a4563___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_3cb842e049bdb8e___result__Result_____wasm_bindgen_ca4b211fdf4ec8a3___JsError___true__11" (func 27977))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___sys__JsNullable_wgpu_4bf2f1047f7a4563___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_3cb842e049bdb8e___result__Result_____wasm_bindgen_ca4b211fdf4ec8a3___JsError___true__12" (func 27977))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___JsValue______true_" (func 29568))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___JsValue______true__6" (func 29568))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wasm_bindgen_ca4b211fdf4ec8a3___JsValue______true__7" (func 29568))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___web_sys_ca1114d20ff1c65d___features__gen_MessageEvent__MessageEvent______true_" (func 29569))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke___wgpu_4bf2f1047f7a4563___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_" (func 29570))
+  (export "wasm_bindgen_ca4b211fdf4ec8a3___convert__closures_____invoke_______true_" (func 28959))
+  (export "__wbindgen_malloc" (func 27292))
+  (export "__wbindgen_realloc" (func 27559))
+  (export "__wbindgen_exn_store" (func 30113))
+  (export "__externref_table_alloc" (func 16791))
+  (export "__wbindgen_externrefs" (table 1))
+  (export "__wbindgen_free" (func 29556))
+  (export "__wbindgen_destroy_closure" (func 27438))
+  (export "__externref_table_dealloc" (func 24517))
+  (export "__wbindgen_start" (func 612))

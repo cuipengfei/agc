@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["schemaVersion", "version", "inputs", "profile", "runtime", "verification", "sources"],
+  "properties": {
+    "schemaVersion": {"const": 2},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "inputs": {
+      "type": "object",
+      "required": ["originalSha256", "candidateSha256", "glueSha256", "profileSha256"],
+      "properties": {
+        "originalSha256": {"$ref": "#/definitions/hash"},
+        "candidateSha256": {"$ref": "#/definitions/hash"},
+        "glueSha256": {"$ref": "#/definitions/hash"},
+        "profileSha256": {"$ref": "#/definitions/hash"}
+      }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["version", "candidateSha256", "sha256"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "candidateSha256": {"$ref": "#/definitions/hash"},
+        "sha256": {"$ref": "#/definitions/hash"}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["version", "installed", "processes", "paneIds", "httpStatus"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "installed": {
+          "type": "object",
+          "required": ["path", "sha256", "device", "inode"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "sha256": {"$ref": "#/definitions/hash"},
+            "device": {"type": "integer"},
+            "inode": {"type": "integer"}
+          }
+        },
+        "processes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["role", "pid", "managerPid", "version", "device", "inode", "sha256", "matchesInstalled"],
+            "properties": {
+              "role": {"enum": ["daemon", "web"]},
+              "pid": {"type": "integer", "minimum": 2},
+              "managerPid": {"type": "integer", "minimum": 1},
+              "version": {"type": "string", "minLength": 1},
+              "device": {"type": "integer"},
+              "inode": {"type": "integer"},
+              "sha256": {"$ref": "#/definitions/hash"},
+              "matchesInstalled": {"type": "boolean"}
+            }
+          }
+        },
+        "paneIds": {"type": "array", "items": {"type": "integer"}},
+        "httpStatus": {"type": ["integer", "null"]}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": ["structure", "time", "fonts", "headless", "service", "skipped"],
+      "properties": {
+        "structure": {
+          "type": "object",
+          "required": ["passed", "notRun"],
+          "properties": {
+            "passed": {"type": "array", "items": {"type": "string", "minLength": 1}},
+            "notRun": {
+              "type": "object",
+              "required": ["time_behavior", "full_ui"],
+              "properties": {
+                "time_behavior": {"type": "string", "minLength": 1},
+                "full_ui": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        },
+        "time": {
+          "type": "object",
+          "required": ["passed"],
+          "properties": {"passed": {"type": "array", "items": {"type": "string", "minLength": 1}}}
+        },
+        "fonts": {
+          "type": "object",
+          "required": ["fonts"],
+          "properties": {
+            "fonts": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "required": ["style", "characters", "cjk", "sha256"],
+                "properties": {
+                  "style": {"type": "string", "minLength": 1},
+                  "characters": {"type": "integer", "minimum": 1},
+                  "cjk": {"type": "integer", "minimum": 1},
+                  "sha256": {"$ref": "#/definitions/hash"}
+                }
+              }
+            }
+          }
+        },
+        "headless": {
+          "type": "object",
+          "required": ["candidateSha256", "checks"],
+          "properties": {
+            "candidateSha256": {"$ref": "#/definitions/hash"},
+            "checks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "status"],
+                "properties": {
+                  "name": {"type": "string", "minLength": 1},
+                  "status": {"enum": ["passed", "failed", "not_run"]},
+                  "details": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "service": {
+          "type": "object",
+          "required": ["passed"],
+          "properties": {"passed": {"type": "array", "items": {"type": "string", "minLength": 1}}}
+        },
+        "skipped": {
+          "type": "object",
+          "required": ["visualTests", "fullGpuAndApplicationInteraction", "syncProjectTests", "sofa"],
+          "properties": {
+            "visualTests": {"type": "string", "minLength": 1},
+            "fullGpuAndApplicationInteraction": {"type": "string", "minLength": 1},
+            "syncProjectTests": {"type": "string", "minLength": 1},
+            "sofa": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "required": ["original", "candidate", "glue", "profile", "structureReport", "timeReport", "fontReport", "runtimeReport", "serviceReport", "headlessReport"],
+      "properties": {
+        "original": {"type": "string", "minLength": 1},
+        "candidate": {"type": "string", "minLength": 1},
+        "glue": {"type": "string", "minLength": 1},
+        "profile": {"type": "string", "minLength": 1},
+        "structureReport": {"type": "string", "minLength": 1},
+        "timeReport": {"type": "string", "minLength": 1},
+        "fontReport": {"type": "string", "minLength": 1},
+        "runtimeReport": {"type": "string", "minLength": 1},
+        "serviceReport": {"type": "string", "minLength": 1},
+        "headlessReport": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "definitions": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

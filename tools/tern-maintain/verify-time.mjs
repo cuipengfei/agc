@@ -9,7 +9,8 @@ import {initialMemory,sha256} from './analyze.mjs';
 
 const {values:v}=parseArgs({args:process.argv.slice(2),options:Object.fromEntries(['candidate','test-module','glue','profile','out'].map(k=>[k,{type:'string'}]))});
 for(const key of ['candidate','test-module','glue','profile','out'])if(!v[key])throw Error(`Missing --${key}`);
-const profile=JSON.parse(await readFile(v.profile,'utf8'));
+const profileBytes=await readFile(v.profile),glueBytes=await readFile(v.glue);
+const profile=JSON.parse(profileBytes.toString('utf8'));
 const validate=new Ajv().compile({type:'object',required:['schemaVersion','candidateSha256','exports','consumerFlags'],properties:{schemaVersion:{const:1},candidateSha256:{type:'string',pattern:'^[a-f0-9]{64}$'},exports:{type:'object',required:['test_calendar','test_epoch','test_instant','test_elapsed','test_consumer'],additionalProperties:{type:'integer',minimum:0}},consumerFlags:{type:'array',items:{type:'object',required:['address','value'],properties:{address:{type:'integer',minimum:0,maximum:4294967295},value:{type:'integer',minimum:0,maximum:255}}}}}});
 if(!validate(profile))throw Error(`Invalid time profile: ${JSON.stringify(validate.errors)}`);
 const candidate=new Uint8Array(await readFile(v.candidate)),instrumented=new Uint8Array(await readFile(v['test-module']));
@@ -79,7 +80,7 @@ try{
   if(descriptor)Object.defineProperty(globalThis,'performance',descriptor);else delete globalThis.performance;
  }
 }catch(error){failure=error;}
-const report={schemaVersion:1,candidateSha256:sha256(candidate),testModuleSha256:sha256(instrumented),checks};
+const report={schemaVersion:1,candidateSha256:sha256(candidate),testModuleSha256:sha256(instrumented),profileSha256:sha256(profileBytes),glueSha256:sha256(glueBytes),checks};
 await writeFile(v.out,JSON.stringify(report,null,2)+'\n',{flag:'wx'});
 console.log(JSON.stringify(report));
 if(failure){console.error(failure.message);process.exitCode=1;}

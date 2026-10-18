@@ -1,0 +1,5 @@
+  (export "test_calendar" (func 25013))
+  (export "test_epoch" (func 18547))
+  (export "test_instant" (func 32182))
+  (export "test_elapsed" (func 32183))
+  (export "test_consumer" (func 25305))

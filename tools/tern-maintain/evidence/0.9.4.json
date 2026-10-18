@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 2,
+  "version": "0.9.4",
+  "inputs": {
+    "originalSha256": "8672d8320fa49ea4f31fd50cf18a0fa7917a9727265331bfe3686299a01acc18",
+    "candidateSha256": "f5f8e036dfbba59f6ddae2636d367355de05ca8e12874f3ff12fc8e6e5ca5a75",
+    "glueSha256": "05c24604720770dadcb995867527d8e7dd0741673332be7c82179a45352385b5",
+    "profileSha256": "f8e7a9e147b622f735cc9de662d98495f0bdb4b5a9b2038ac6677764445a07f3"
+  },
+  "profile": {
+    "version": "0.9.4",
+    "candidateSha256": "f5f8e036dfbba59f6ddae2636d367355de05ca8e12874f3ff12fc8e6e5ca5a75",
+    "sha256": "f8e7a9e147b622f735cc9de662d98495f0bdb4b5a9b2038ac6677764445a07f3"
+  },
+  "runtime": {
+    "version": "0.9.4",
+    "installed": {
+      "path": "/home/cpf/.local/bin/tern",
+      "sha256": "8f8abf754a800bf8556651164772f0fda3f394614688bbd5badb3cdd4fbe9b92",
+      "device": 2128,
+      "inode": 1110618
+    },
+    "processes": [
+      {
+        "role": "daemon",
+        "pid": 1180316,
+        "managerPid": 1180314,
+        "version": "0.9.4",
+        "device": 2128,
+        "inode": 1110618,
+        "sha256": "8f8abf754a800bf8556651164772f0fda3f394614688bbd5badb3cdd4fbe9b92",
+        "matchesInstalled": true
+      },
+      {
+        "role": "web",
+        "pid": 1180448,
+        "managerPid": 1180447,
+        "version": "0.9.4",
+        "device": 2128,
+        "inode": 1110618,
+        "sha256": "8f8abf754a800bf8556651164772f0fda3f394614688bbd5badb3cdd4fbe9b92",
+        "matchesInstalled": true
+      }
+    ],
+    "paneIds": [
+      326417514501,
+      326417514503,
+      347892350977,
+      489626271772,
+      489626271757,
+      382252089349
+    ],
+    "httpStatus": 200
+  },
+  "verification": {
+    "structure": {
+      "passed": [
+        "imports",
+        "exports",
+        "function_signatures",
+        "memory_limits",
+        "initial_memory"
+      ],
+      "notRun": {
+        "time_behavior": "covered by the time behavior report",
+        "full_ui": "用户要求不执行完整 GPU 和界面交互；仅执行无界面模块初始化及字体注入"
+      }
+    },
+    "time": {
+      "passed": [
+        "instrumented_module_provenance",
+        "calendar_epoch_and_output_bounds",
+        "instant_fractional_seconds_and_bounds",
+        "elapsed_borrow_and_saturation",
+        "actual_consumer",
+        "externref_reuse_10000_calls"
+      ]
+    },
+    "fonts": {
+      "fonts": [
+        {
+          "style": "Regular",
+          "characters": 33091,
+          "cjk": 20976,
+          "sha256": "fe14b378a0a0c299c186bdac3370c0a66c358f44d27283fa8ee004c8ad90a900"
+        },
+        {
+          "style": "Bold",
+          "characters": 33091,
+          "cjk": 20976,
+          "sha256": "a399807f27b9af23fdb62f878e8cd7eee3c0bdb915d8b2f4395ef3633e89a418"
+        }
+      ]
+    },
+    "headless": {
+      "candidateSha256": "f5f8e036dfbba59f6ddae2636d367355de05ca8e12874f3ff12fc8e6e5ca5a75",
+      "checks": [
+        {
+          "name": "headless_forced",
+          "status": "passed",
+          "details": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/147.0.0.0 Safari/537.36"
+        },
+        {
+          "name": "page_served",
+          "status": "passed",
+          "details": "GET /maple.js -> 200"
+        },
+        {
+          "name": "webgpu_available",
+          "status": "passed",
+          "details": "navigator.gpu present"
+        },
+        {
+          "name": "client_init",
+          "status": "passed",
+          "details": "pkg/client.js init + loadClient + injectMaple OK (Maple Mono NF CN, 2 fonts)"
+        },
+        {
+          "name": "wire_mount",
+          "status": "not_run",
+          "details": "本轮仅模块 init 与完整 Maple 注入，不执行 mount/WebSocket，避免连接或操作任何 pane"
+        },
+        {
+          "name": "token_redaction",
+          "status": "passed",
+          "details": "no token provided; nothing to redact"
+        },
+        {
+          "name": "gpu_interaction_full",
+          "status": "not_run",
+          "details": "本轮仅验证模块初始化与字体注入，未执行完整 GPU 交互"
+        }
+      ]
+    },
+    "service": {
+      "passed": [
+        "served_wasm",
+        "served_glue",
+        "versioned_page",
+        "missing_token_rejected",
+        "invalid_token_rejected",
+        "existing_token_accepted"
+      ]
+    },
+    "skipped": {
+      "visualTests": "用户要求不执行视觉测试或截图",
+      "fullGpuAndApplicationInteraction": "用户要求不执行完整 GPU 和界面交互；仅执行无界面模块初始化及字体注入",
+      "syncProjectTests": "本次只修改独立 Tern 维护工具，没有修改同步实现",
+      "sofa": "本会话 SOFA attention 查询返回 MCP server not connected，知识共享检查未完成",
+      "patchCandidateRebuild": "已保存人工 WAT 片段与定位记录；完整 WAT 的读取结果缺少可编辑快照，本轮未完成完整源码整理、candidate 重建与 SHA-256 比对"
+    }
+  },
+  "sources": {
+    "original": "/home/cpf/.local/share/tern-web-0.9.4-original/pkg/original.wasm",
+    "candidate": "/home/cpf/.local/share/tern-web-0.9.4/pkg/client.wasm",
+    "glue": "/home/cpf/.local/share/tern-web-0.9.4/pkg/client.js",
+    "profile": "profiles/0.9.4.json",
+    "structureReport": "/home/cpf/.local/share/tern-web-0.9.4/verification/tern-094-structure.json",
+    "timeReport": "/home/cpf/.local/share/tern-web-0.9.4/verification/tern-094-toolkit-time.json",
+    "fontReport": "/home/cpf/.local/share/tern-web-0.9.4/fonts.json",
+    "runtimeReport": "/home/cpf/.local/share/tern-web-0.9.4/verification/tern-094-toolkit-runtime.json",
+    "serviceReport": "/home/cpf/.local/share/tern-web-0.9.4/verification/tern-094-toolkit-service.json",
+    "headlessReport": "/home/cpf/.local/share/tern-web-0.9.4/verification/tern-094-toolkit-headless.json"
+  }
+}

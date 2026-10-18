@@ -1,0 +1,2 @@
+    local.get 3
+    call 25013

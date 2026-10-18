@@ -1,0 +1,4 @@
+        i32.const 9032524
+        i32.load
+        i32.const 9032528
+        i32.load

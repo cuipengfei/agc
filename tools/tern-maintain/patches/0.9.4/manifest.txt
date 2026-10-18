@@ -1,0 +1,66 @@
+# 定位 manifest：WAT part ↔ original.wat 行区间 ↔ 人工修改
+# 生成方式：WABT 1.0.42 wasm2wat 反汇编官方 0.9.4 original.wasm（19,623,037 行，SHA-256 8672d832…acc18），
+# 再按下列 58 个行号 csplit（与 2026-10-18 补丁会话完全相同）：
+#   csplit -s -f part- -n 3 original.wat 2708719 2708720 2709675 2709676 3216862 3216863 4519099 4519100 8266043 8266045 8266181 8266183 10779280 10779281 10780879 10780880 11746268 11746269 11882961 11882962 11883007 11883008 11883070 11883071 13415699 13415700 13415711 13415712 14224127 14224128 16687758 16687759 16832094 16832095 17264385 17264386 17323012 17323013 18460340 18460341 18464720 18464721 18464979 18464980 18702692 18702693 19006596 19006597 19097026 19097027 19127507 19127508 19136108 19136109 19137021 19137022 19612459 19612530
+# 共 59 个 part（part-000..part-058）。本目录只保存 29 个经人工修改的 part（001..057 奇数）；
+# 未修改的 part 按上面行号重新 csplit 即可原样得到。
+# 列：part \t 原行区间 \t 原内容 \t 人工修改
+part-000	1-2708718	（大块未修改）	—
+part-001	2708719	缩进 call 30564 (Instant)	改为 local.get 8; i32.const 32; i32.add; call 32182
+part-002	2708720-2709674	（大块未修改）	—
+part-003	2709675	缩进 call 30564 (Instant)	改为 elapsed：local.get 8; i32.const 32; i32.add; local.get 8; i64.load offset=72; local.get 8; i32.load offset=80; call 32183
+part-004	2709676-3216861	（大块未修改）	—
+part-005	3216862	call 30565 (SystemTime)	改为日历：local.get 3; i32.const 424; i32.add; call 25013
+part-006	3216863-4519098	（大块未修改）	—
+part-007	4519099	call 30565 (SystemTime)	改为日历：local.get 3; i32.const 216; i32.add; call 25013
+part-008	4519100-8266042	（大块未修改）	—
+part-009	8266043-8266044	字体常量 i32.const 4369022 / i32.const 2288420 (Regular)	改为 descriptor 读取：i32.const 9032524; i32.load; i32.const 9032528; i32.load
+part-010	8266045-8266180	（小块未修改）	—
+part-011	8266181-8266182	字体常量 i32.const 6657442 / i32.const 2313308 (Medium)	改为 descriptor 读取：i32.const 9032548; i32.load; i32.const 9032552; i32.load
+part-012	8266183-10779279	（大块未修改）	—
+part-013	10779280	call 30564 (Instant)	改为 local.get 5; i32.const 88; i32.add; call 32182
+part-014	10779281-10780878	（大块未修改）	—
+part-015	10780879	call 30564 (Instant)	改为 elapsed：local.get 5; i32.const 88; i32.add; local.get 5; i64.load offset=48; local.get 5; i32.load offset=56; call 32183
+part-016	10780880-11746267	（大块未修改）	—
+part-017	11746268	call 30564 (Instant)	改为 local.get 5; call 32182
+part-018	11746269-11882960	（大块未修改）	—
+part-019	11882961	call 30564 (Instant)	改为 local.get 3; i32.const 120; i32.add; call 32182
+part-020	11882962-11883006	（小块未修改）	—
+part-021	11883007	call 30564 (Instant)	改为 local.get 5; call 32182
+part-022	11883008-11883069	（小块未修改）	—
+part-023	11883070	call 30564 (Instant)	改为 elapsed：local.get 3; i32.const 8; i32.add; local.get 12; local.get 4; call 32183
+part-024	11883071-13415698	（大块未修改）	—
+part-025	13415699	call 30564 (Instant)	改为 local.get 10; call 32182
+part-026	13415700-13415710	（小块未修改）	—
+part-027	13415711	call 30565 (SystemTime)	改为日历：local.get 11; call 25013
+part-028	13415712-14224126	（大块未修改）	—
+part-029	14224127	call 30564 (Instant)	改为 local.get 4; call 32182
+part-030	14224128-16687757	（大块未修改）	—
+part-031	16687758	call 30565 (SystemTime)	改为日历：local.get 3; call 25013
+part-032	16687759-16832093	（大块未修改）	—
+part-033	16832094	call 30564 (Instant)	改为 local.get 12; i32.const 64; i32.add; call 32182
+part-034	16832095-17264384	（大块未修改）	—
+part-035	17264385	call 30565 (SystemTime)	改为日历：local.get 2; i32.const 144; i32.add; call 25013
+part-036	17264386-17323011	（大块未修改）	—
+part-037	17323012	call 30564 (Instant)	改为 local.get 6; i32.const 8; i32.add; call 32182
+part-038	17323013-18460339	（大块未修改）	—
+part-039	18460340	call 30564 (Instant)	改为 local.get 2; i32.const 40; i32.add; call 32182
+part-040	18460341-18464719	（大块未修改）	—
+part-041	18464720	call 30564 (Instant)	改为 local.get 3; i32.const 432; i32.add; call 32182
+part-042	18464721-18464978	（小块未修改）	—
+part-043	18464979	call 30564 (Instant)	改为 local.get 4; i32.const 128; i32.add; call 32182
+part-044	18464980-18702691	（大块未修改）	—
+part-045	18702692	call 30564 (Instant)	改为 local.get 2; i32.const 64; i32.add; call 32182
+part-046	18702693-19006595	（大块未修改）	—
+part-047	19006596	call 30564 (Instant)	改为 local.get 1; call 32182
+part-048	19006597-19097025	（大块未修改）	—
+part-049	19097026	call 30564 (Instant)	改为 elapsed：local.get 1; i32.const 16; i32.add; local.get 1; i64.load; local.get 1; i32.load offset=8; call 32183
+part-050	19097027-19127506	（大块未修改）	—
+part-051	19127507	call 30564 (Instant)	改为 local.get 2; call 32182
+part-052	19127508-19136107	（大块未修改）	—
+part-053	19136108	call 30564 (Instant)	改为 local.get 2; i32.const 128; i32.add; call 32182
+part-054	19136109-19137020	（大块未修改）	—
+part-055	19137021	call 30564 (Instant)	改为 local.get 2; i32.const 128; i32.add; call 32182
+part-056	19137022-19612458	（大块未修改）	—
+part-057	19612459-19612529	模块尾部（table/memory/global/export，71 行）	文件首部插入新函数 32182（instant，经 imports 583/564/563 + externref 释放 24517）与 32183（elapsed，调用 32182 + 饱和相减 22958）
+part-058	19612530-19623037	（elem/data 尾部，大块未修改）	—
