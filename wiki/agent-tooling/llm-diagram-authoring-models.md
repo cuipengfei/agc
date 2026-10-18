@@ -173,3 +173,4 @@ amwth 的设计目标是减少模型手写 HTML 所需 token。README 基准只�
 - [视觉人机交互全景](../agent-interaction/visual-canvas-interaction-landscape.md) — 该文明确把「agent 生成图表交付给人看、人只看不动」判为出局；本文正是那一类被排除的工具。
 - [Agent 产出结构化产物](../agent-interaction/agent-authored-structured-artifacts.md) — 产物能否被稳定寻址与增量修改。
 - [mcp_excalidraw：给 Agent 一块活画布](../agent-interaction/mcp-excalidraw.md) — draw → look → adjust 的反馈闭环，正是本文两者都缺的那一步。
+- [Anatomy skill：物理装置隐喻的交互式等距出图机制与自解释成品](anatomy-skill-mechanics.md) — 四者之外的第五种作者模型：概念映射为可交互物理装置，几何由自动审计把关。
