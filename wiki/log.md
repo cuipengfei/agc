@@ -1339,6 +1339,6 @@
 
 ## [2026-10-18] ingest | ADE Provider 源码复核
 - Disposition: Update
-- Raw: raw/agent-development-environments/2026-10-18-paseo-source.md; raw/agent-development-environments/2026-10-18-bb-source.md; raw/agent-development-environments/2026-10-18-ekko-source.md; raw/agent-development-environments/2026-10-18-t3code-source.md; raw/agent-development-environments/2026-10-18-nodeterm-source.md
+- Raw: raw/agent-development-environments/2026-10-18-paseo-source.md; raw/agent-development-environments/2026-10-18-bb-source.md; raw/agent-development-environments/2026-10-18-ekko-source.md; raw/agent-development-environments/2026-10-18-t3code-source.md; raw/agent-development-environments/2026-10-18-nodeterm-source.md; raw/agent-development-environments/2026-10-18-openchamber-source.md; raw/agent-development-environments/2026-10-18-codenomad-source.md
 - Updated: ADE 候选清单; ADE 选型方法
 - 要点：Paseo 内置 OMP provider 且 Web agent row 显示 host；bb 注册 acp-omp 并以 omp acp 启动；Ekko 列出十四种 Coding runtime；T3 内置 Pi 与 ACP Registry；Nodeterm 无 Pi/OMP 内置项。
