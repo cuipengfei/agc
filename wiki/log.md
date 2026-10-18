@@ -1324,3 +1324,10 @@
 - Raw: raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md
 - Updated: Tern 网页字体修改与版本迁移
 - 要点：0.9.3 原版字体无 CJK、时间 panic 实际复现；26 处调用点补丁与分层验收；替换路径不改变已运行进程，统一版本需重启 daemon 并重建 pane。
+
+## [2026-10-18] ingest | OpenAI Decisions API：当前状态、请求格式与 GitHub Copilot 后端探测
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md; raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md
+- Updated: OpenAI Decisions API：当前状态、请求格式与 GitHub Copilot 后端探测（官方状态刷新至 10-18，Copilot 探测节补充 10-18 复测）
+- 要点：官方 10-18 直读仍 public beta、GA 未宣布；changelog 新增 Oct 15 GPT-Live 原生 Decisions 集成、Oct 16 prompt-to-voice；SDK 示例新增图片输入、存在 Decisions Playground；Copilot `/v1/decisions` 复测基线模型与其他被测模型全部 `model_not_supported`（与 10-15 一致），Responses 路径多模型对照被测模型 A/B 返回 200 无 answers、被测模型 C 返回 400 `unsupported_api_for_model`；用量修正为 10-18 三次成功 Responses 推理。
+
