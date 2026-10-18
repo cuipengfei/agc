@@ -474,5 +474,5 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为与 Do
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 26 个公开仓库 + Tern + Orca 桌面过滤；准入条件：Terminal/Web、Agent 状态可见、workspace 切换、1k stars；stars 与 pushed_at 来自 GitHub API 2026-10-18 快照 | 2026-10-18 |
-| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | pushed_at vs updated_at 核验纪律、REST/GraphQL 交叉、scout 数据复核、排除项（Orca/Superset/OpenCode/Agent Orchestrator）、Tern 插件型归类、本机 WSL2+OMP 推荐排序 | 2026-10-18 |
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 26 个公开仓库 + Tern + Orca 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 2026-10-18 快照 | 2026-10-18 |
+| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项 | 2026-10-18 |
