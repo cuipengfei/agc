@@ -108,3 +108,8 @@ Schema error: providers.typesafe-zen.api: must be "openai-completions", …, "go
 > 「zen 免费额度按 UTC 午夜重置」的推断已被推翻：429 的 `Retry-After` 恒指次日 UTC 午夜，但 2026-09-20 00:00 UTC 过后免费通道依旧 429——**重置周期未定，`Retry-After` 非可靠预测器**；另实测免费池与付费余额相互独立（充值不解锁免费池）。时点快照证据见 [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md) §⑥。
 
 - `hasAuth` 途径 3 的 agent.db 凭据表当前 0 行——`/login typesafe` 路径本机未使用。
+
+## See Also
+
+- [OMP 环境变量全量参考](env-variables-reference.md) —— 本文 `TYPESAFE_*` 与 `.env` 加载链在 11 组全量参考中的定位
+

@@ -1347,3 +1347,14 @@
 - Disposition: New
 - Raw: raw/harness-engineering/2026-10-19-backpass-agc-run-evidence.md
 - 要点：输入会话来源与分析 harness 是两套独立选择，`--harness pi` 只影响输入；acpx 的 `pi` 经 pi-acp 启动上游 `pi --mode rpc`，与 OMP 无关；`omp acp` 可作为 acpx 自定义 agent，但 backpass 0.1.36 的覆盖允许清单不含自定义 agent，角色默认 effort 又必然触发覆盖，故 OMP 不能当分析工人；OMP ACP 会话公布 882 个模型，`openai/gpt-5.6-*` 不在其中，本机可用的是 `c8787/gpt-5.6-luna`、`c8787/gpt-5.6-sol` 与 `opencode-zen/deepseek-v4.1-flash-free`；抽样为近期加权粘性样本；缓存键不含模型，换模型须 `--force`。
+
+## [2026-10-19] ingest | OMP 环境变量全量参考
+- Disposition: New
+- Raw: raw/omp/2026-10-19-omp-environment-variables-reference.md
+- Updated: OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入（See Also 交叉引用，事实不动）
+- 要点：官方 runtime reference 全文进 raw（HEAD 5d72f5d3f4），官网入口 omp.sh/docs/env（/docs/environment-variables 为 404）；wiki 文章落全量表（11 组 + 第 12 组源码补遗）；未收录变量经扫描预筛 169 个 test-only、批量分类 126 名（user_config 77 / instrument 31 / test_internal 16 / external 2）后收编；三处文档-源码校正（websocket 8 参数、PI_CODEX_CONCURRENT_SUMMARIES 上游注释、PI_AI_ANTIGRAVITY_VERSION 源码钉 2.19.1）；UA 伪装限 gemini-cli 与 google-antigravity 两 provider；本机 agent .env 已实测追加 PI_TUI_NATIVE=0。
+
+
+## [2026-10-19] lint | 18 issues reported, 0 auto-fixed
+- check_evidence.py 范围仅限新文章与级联文章：18 个 fidelity suspects 全部核为假阳性（doc 默认值数字、fenced code 摘录内的 0.83/1.67、日期与节号），0 个 evidence error，2 个 unreferenced raw 为既有 omp-signature-verification backlog。
+

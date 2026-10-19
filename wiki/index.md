@@ -412,11 +412,12 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 ## omp
 
-OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，以及从源码本地构建的依赖、步骤、产物与验证。
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，全量环境变量参考，以及从源码本地构建的依赖、步骤、产物与验证。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、4 自动+1 手动消费方（后续加 TTSR judge），judge() 双语言三题型与重复调用实测；jevify magic keyword 与 judge() 路由分离；18.2.8 起 modelRoles.judge + fallbackChains 路由层；judgeBatch 批量用法与常见误诊 | 2026-10-08 |
+| [OMP 环境变量全量参考](omp/env-variables-reference.md) | 官方 runtime reference（691 行 11 组）+ 源码扫描补遗 Mnemopi/Stencil/TUI 调试与构建期；`.env` 五层加载链与 `OMP_*`→`PI_*` 镜像；UA 伪装只限 gemini-cli/google-antigravity 两 provider；三处文档-源码校正（websocket 8 参数、concurrent summaries、antigravity 2.19.1）、126 名未收录变量判定名册 | 2026-10-19 |
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 已切 jev-1.13 付费通道；18.2.8 解除 api: typesafe 版本限制 | 2026-09-22 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数、观测面（18.2.8：auto-thinking 与 eval judge 记 usage；unexpected-stop 两个成功 nudge 样本无新增 usage，原因未知）、zen 已实测兼容与 OpenRouter 不兼容 | 2026-09-22 |
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |
