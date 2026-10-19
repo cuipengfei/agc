@@ -1358,3 +1358,12 @@
 ## [2026-10-19] lint | 18 issues reported, 0 auto-fixed
 - check_evidence.py 范围仅限新文章与级联文章：18 个 fidelity suspects 全部核为假阳性（doc 默认值数字、fenced code 摘录内的 0.83/1.67、日期与节号），0 个 evidence error，2 个 unreferenced raw 为既有 omp-signature-verification backlog。
 
+
+## [2026-10-19] ingest | Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复
+- Disposition: New
+- Raw: raw/prompt-caching/2026-10-19-github-copilot-model-hosting.md; raw/prompt-caching/2026-10-19-gemini-durable-cache-eviction.md; raw/prompt-caching/2026-10-19-gemini-cache-community-reports.md; raw/prompt-caching/2026-10-19-copilot-gemini-direct-backend-probe.md; raw/prompt-caching/2026-10-19-gemini-cache-local-chain-evidence.md
+- Updated: Prompt Cache：前缀匹配与 cache key 的真实分工（See Also 交叉引用，事实不动）
+- 要点：4139 历史显示同会话 Gemini 主对话 39 请求 3 次缓存读取量下降、GPT 6.1 Sol 排除首次 57 请求 0 下降（加权 98.65%）；逐跳排除 OMP（compactionEpoch 0、prunedAt 晚于低点）、Headroom（低点 compressed=0）、copilot-api（原样转发）；直连 Copilot 真实后端分两次运行——前置 2 次（独立 session，合计 input 188,782 / cached 90,029）与主实验 5 轮（新 session，合计 input 482,168 / cached 274,140，含暂停 4 分 50 秒后归零再恢复），7 次合计 670,950 / 364,169，本地链路非必要条件；归因倾向 Google 缓存保留/淘汰策略，接入路径未排除；结构化实验记录在 experiments/2026-10-19-gemini-38-flash-cache-drop-repro.md。
+
+## [2026-10-19] lint | 3 issues reported, 0 auto-fixed
+- check_evidence.py 范围限新文章与级联文章：3 个 fidelity suspects 核为假阳性（两处为本文自撰限定语、数字 0%/92% 在 OmniRoute raw 标题行可查；一处为既有 3.8 版本号），0 个 evidence error，2 个 unreferenced raw 为既有 omp-signature-verification backlog。

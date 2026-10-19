@@ -330,7 +330,8 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界 | 2026-09-04 |
+| [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界 | 2026-10-19 |
+| [Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复](prompt-caching/gemini-38-flash-copilot-cache-drop.md) | 暂停约五分钟后缓存归零、下一轮恢复的直连后端复现与逐跳排除；归因倾向 Google 缓存策略，接入路径未排除 | 2026-10-19 |
 
 ## keyboard-input
 
