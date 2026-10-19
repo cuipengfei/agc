@@ -54,3 +54,6 @@ omp/agent/extensions/umans-status.ts
 .pi/better-harness/
 graphify-out/
 .omx/
+
+# Local-only analysis materials (never committed)
+local/
