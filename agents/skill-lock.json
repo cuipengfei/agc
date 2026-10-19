@@ -221,9 +221,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "a2bec5f84d9c16e1fa8a3d9b9f7c985540b3e2f8",
+      "skillFolderHash": "0c447e2bc5c9c8d885ecc7551906623e88a1ae5e",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-18T13:48:25.296Z"
+      "updatedAt": "2026-10-19T11:21:14.333Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -313,9 +313,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/tt-a1i/archify.git",
       "skillPath": "archify/SKILL.md",
-      "skillFolderHash": "7e1de2b2cf3a9a91823ee5dcc2089c1d96a7e4f1",
+      "skillFolderHash": "39069dd190f574064fe410aa3af1b6dfd98a522c",
       "installedAt": "2026-07-11T15:33:28.854Z",
-      "updatedAt": "2026-10-13T16:55:36.830Z"
+      "updatedAt": "2026-10-19T11:21:49.984Z"
     },
     "i-have-adhd": {
       "source": "ayghri/i-have-adhd",
@@ -1231,18 +1231,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "85b42c0ba5f986597dc6a0f1b91086756f7316eb",
+      "skillFolderHash": "c69b4817a1fbedf43ce9cf5dddb146fa6e0b8fa3",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-17T03:05:27.591Z"
+      "updatedAt": "2026-10-19T11:21:53.700Z"
     },
     "hyperframes-animation": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-animation/SKILL.md",
-      "skillFolderHash": "34d472ffc620da974ebef48882b9b81971712ecb",
+      "skillFolderHash": "284a8f10bb196a6087d52ff6e0e13827602d10ed",
       "installedAt": "2026-10-08T14:50:55.461Z",
-      "updatedAt": "2026-10-15T11:08:28.607Z"
+      "updatedAt": "2026-10-19T11:21:57.726Z"
     },
     "hyperframes-audio": {
       "source": "heygen-com/hyperframes",
@@ -1258,9 +1258,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "aee8c579e00d5f4f598e0717cc7f980f4c3a9f51",
+      "skillFolderHash": "6386daeb43e830f6a346edd72398869fac235fc6",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-16T16:30:13.465Z"
+      "updatedAt": "2026-10-19T11:22:00.953Z"
     },
     "hyperframes-core": {
       "source": "heygen-com/hyperframes",
@@ -1312,9 +1312,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "0ce1bee471566b4577c0e2a726716e91bcc8ea06",
+      "skillFolderHash": "03569e35d5eb05382c4fa6b6bee76dd20e9d0ef9",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-18T13:49:16.330Z"
+      "updatedAt": "2026-10-19T11:22:55.146Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1367,9 +1367,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/wheresryan22/anatomy.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "e9488296a44211c42701ff71705b7901470ec78f",
+      "skillFolderHash": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
       "installedAt": "2026-10-18T01:58:17.999Z",
-      "updatedAt": "2026-10-18T01:58:17.999Z"
+      "updatedAt": "2026-10-19T11:23:11.141Z"
     }
   },
   "dismissed": {
