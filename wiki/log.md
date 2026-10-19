@@ -1342,3 +1342,8 @@
 - Raw: raw/agent-development-environments/2026-10-18-paseo-source.md; raw/agent-development-environments/2026-10-18-bb-source.md; raw/agent-development-environments/2026-10-18-ekko-source.md; raw/agent-development-environments/2026-10-18-t3code-source.md; raw/agent-development-environments/2026-10-18-nodeterm-source.md; raw/agent-development-environments/2026-10-18-openchamber-source.md; raw/agent-development-environments/2026-10-18-codenomad-source.md
 - Updated: ADE 候选清单; ADE 选型方法
 - 要点：Paseo 内置 OMP provider 且 Web agent row 显示 host；bb 注册 acp-omp 并以 omp acp 启动；Ekko 列出十四种 Coding runtime；T3 内置 Pi 与 ACP Registry；Nodeterm 无 Pi/OMP 内置项。
+
+## [2026-10-19] ingest | backpass：把会话证据回灌到指令文件
+- Disposition: New
+- Raw: raw/harness-engineering/2026-10-19-backpass-agc-run-evidence.md
+- 要点：输入会话来源与分析 harness 是两套独立选择，`--harness pi` 只影响输入；acpx 的 `pi` 经 pi-acp 启动上游 `pi --mode rpc`，与 OMP 无关；`omp acp` 可作为 acpx 自定义 agent，但 backpass 0.1.36 的覆盖允许清单不含自定义 agent，角色默认 effort 又必然触发覆盖，故 OMP 不能当分析工人；OMP ACP 会话公布 882 个模型，`openai/gpt-5.6-*` 不在其中，本机可用的是 `c8787/gpt-5.6-luna`、`c8787/gpt-5.6-sol` 与 `opencode-zen/deepseek-v4.1-flash-free`；抽样为近期加权粘性样本；缓存键不含模型，换模型须 `--force`。

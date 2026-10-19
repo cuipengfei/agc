@@ -114,6 +114,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [用控制论评估 Agent 系统](harness-engineering/evaluating-agent-systems-with-cybernetics.md) | 控制论四组检查清单（基础部件/MPC 与规划/状态估计与稳定性/多环控制与工程修复）；OpenAI 一手数据与五大实践的控制论对应；各来源资源分工地图；Ashby 变异度定律与规约复杂度下界 | 2026-10-05 |
 | [锚定：用具体例子约束 Agent 的输出](harness-engineering/anchoring.md) | 徐昊课程第 21 讲：四角度（输出/过程/风格/结构）+ 三种锚定方式（模板+示例/流程图+前馈反馈/领域模型图+前馈反馈）；流程锚定与双层循环的四点对比；真实案例表（wryan14 模板、Superpowers 流程、LangGraph 图、ArchUnit 结构、SysMARA 实验、OpenAI 未验证） | 2026-10-13 |
 | [Behavioral Harness 的成本收益实验](harness-engineering/behavioral-harness-cost-experiment.md) | Naresh Jain 对照实验（martinfowler.com）：同一 BFF 任务有/无 behavioral harness，GPT-6 Sol 两种条件均 10/10（harness 纯开销）、GPT-6 Luna 3/10→10/10 且单次 $0.273 低于无 harness Sol 的 $0.406 约 33%；失败分类学（202 流程断裂/Kafka 契约/HTTP 契约/配置名）；executable attention 机制；条件化结论：模型能力决定 sensors 何时运行而非是否运行；含经济学口径与利益相关边界（作者为 Specmatic 创始人，n=10 无独立复现） | 2026-10-14 |
+| [backpass：把会话证据回灌到指令文件](harness-engineering/backpass-instruction-backward-pass.md) | 输入会话与执行分析的 harness 相互独立；`--harness pi` 读 OMP 存储但 `--analysis-agent pi` 启动上游 pi；acpx 可注册 `omp acp` 自定义 agent，backpass 0.1.36 的覆盖允许清单只含 pi/grok/claude/codex/opencode，故 OMP 暂不能当分析工人；OMP ACP 公布 882 个模型，`openai/gpt-5.6-*` 不在其中；近期加权抽样与 seed 语义；缓存不含模型须 `--force` | 2026-10-19 |
 
 
 ## grok2api
