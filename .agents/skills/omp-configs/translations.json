@@ -151,6 +151,10 @@
   "label": "重排滚动缓冲",
   "desc": "终端尺寸变化稳定后，如何刷新保留在终端滚动缓冲中的会话记录行"
  },
+ "tui.completeScrollback": {
+  "label": "完整滚动缓冲",
+  "desc": "HUD 或对话框变高把会话记录行挤出屏幕时，把这些行直接送入终端滚动缓冲；当 HUD 或对话框变矮时，会话记录与输入框之间会留下空行，直到有新输出填入。"
+ },
  "terminal.showProgress": {
   "label": "原生终端进度",
  "desc": "在 agent 或上下文维护运行期间发出 OSC 9;4 不定态进度；在 Tern 中始终开启。"
@@ -374,6 +378,14 @@
  "prewalk.enabled": {
   "label": "启用 Prewalk",
   "desc": "先用当前模型开始，在计划提示的待办列表建立后、第一次编辑/写入时切换到快速/便宜模型（默认为 'smol' 角色）——强模型负责规划、提交待办并开始实现，然后交接。可在每个会话中用 --prewalk / --no-prewalk 覆盖。"
+ },
+ "prewalk.auto": {
+  "label": "自动 Prewalk",
+  "desc": "让通过 'judge' 角色解析出的原生 judge 模型判定每个新的顶层用户任务是否适合前置推理。需要配置原生 judge，没有则不做任何分类。独立于「启用 Prewalk」开关。"
+ },
+ "prewalk.autoTarget": {
+  "label": "自动 Prewalk 目标模型",
+  "desc": "自动 prewalk 在第一次编辑/写入时把任务交接给哪个模型或角色（默认 '@smol'）。"
  },
  "providers.maxInFlightRequests": {
   "label": "最大并发请求数",
@@ -727,6 +739,10 @@
  "label": "Advisor 清理过期工具输出",
  "desc": "每次 advisor 评审前，把 advisor 自己在更早评审中产生的 read/grep/glob 工具输出替换成短占位符，只保留最近一次的完整输出。advisor 评审的增量 diff 和它写下的备注不动。用于控制 advisor 自身上下文体积，在压缩判定之前运行。"
 },
+"advisor.continueSeverity": {
+"label": "Advisor 唤醒严重级别",
+"desc": "advisor 备注的最低严重级别，达到该级别的备注会在 agent 给出最终答案后把它唤醒。低于此级别的备注只作为会话记录末尾的卡片保留，随你的下一条消息再送达 agent。"
+},
  "workspace.additionalDirectories": {
   "label": "额外工作区目录",
   "desc": "作为附加根目录加入每个会话的额外工作区目录（多根工作区）。通过 /add-dir 和 /remove-dir 实时管理。路径相对于 cwd 解析；建议使用绝对路径。Agent 会被告知这些根目录存在，可对其 read/grep/glob。"
@@ -918,6 +934,10 @@
  "sharpshooter.injectionTokenLimit": {
   "label": null,
   "desc": "注入到系统提示的 sharpshooter 项目决策记忆（各 memory 文件拼接）的总 token 截断上限，超出部分被截掉。"
+ },
+ "sharpshooter.minPromptLength": {
+  "label": null,
+  "desc": "触发 sharpshooter 抽取的用户 prompt 最短长度（按用户感知字符计数，一个 emoji 算 1 个字符，低于此数的短 prompt 跳过）。以 '/' 开头的命令始终跳过抽取。"
  },
  "autolearn.enabled": {
   "label": "自动学习（实验性）",
@@ -1351,6 +1371,10 @@
   "label": "Computer 截图高度",
  "desc": "截图的最大高度（像素）。"
  },
+ "computer.backgroundFallback": {
+  "label": "Computer 后台回退策略",
+  "desc": "窗口输入的后台路由不可用时如何处理：在 takeover 中重跑并把焦点交还你的应用（macOS；其他平台为普通 takeover），或拒绝执行（同时也会阻止 agent 自己抢占前台或打开 macOS 菜单）。"
+ },
  "images.questionTimeoutMs": {
   "label": "图像提问超时",
   "desc": "read 的 ?q= 图像提问背后视觉模型调用的单请求超时（毫秒）。卡住的上游会快速以超时错误失败，而不是阻塞到手动中止。设为 0 表示禁用该超时。"
@@ -1423,6 +1447,10 @@
   "label": null,
   "desc": "后台异步任务（如后台 bash 作业）允许同时运行的最大数量，运行时实时读取可调，实现端再封顶到 100。调低限制并发、减轻机器负载。"
  },
+ "async.widgets": {
+  "label": "实时作业小部件",
+  "desc": "为每个运行中的后台作业绘制实时小部件（由作业输出派生的图表、进度条、状态网格），显示在等待卡片、作业徽标和作业面板中。由 'widget' 模型角色（默认 'smol'）为每个作业写一份规格，之后的更新不需要额外的模型调用。"
+ },
  "tools.xdev": {
   "label": "xd:// 工具",
  "desc": "把很少使用的（可发现的）工具挂载到 xd:// 设备 URL 下，通过 read/write 驱动，不在每次请求中下发它们的 schema。会话的显式工具列表授予 read 但省略 write 时，通过仅设备写传输方式挂载设备；除设备外，只有 local:// scratch 保持可写。禁用则把所有已启用的工具直接暴露在顶层。"
@@ -1479,9 +1507,17 @@
   "label": "诊断去重",
   "desc": "抑制已对该文件展示过的编辑后 LSP 诊断；只显示新的或有变化的诊断"
  },
+"lsp.requestTimeout": {
+"label": "请求超时（秒）",
+"desc": "agent 未单独设置超时时，等待语言服务器返回诊断、悬停等应答的秒数；编辑后迟到的诊断至少等待这么久。对冷启动慢的服务器可调大。lsp 工具的 timeout 参数仍可按次调用调高或调低。"
+},
  "shellPath": {
   "label": null,
   "desc": "指定 bash 工具及所有派生 shell 进程使用的 shell 可执行文件路径。设置后 OMP 直接用它 spawn 命令（路径不存在会启动时报错并提示修改此键）；不设则按平台自动探测（Windows 解析默认 shell，Unix 优先 $SHELL 中的 bash/zsh，兜底 sh）。影响 bash 执行、交互终端、launch 托管服务和 eval Python 内核的环境解析。"
+ },
+ "shellCommandPrefix": {
+  "label": null,
+  "desc": "转发给旧版扩展的 Pi shell 命令前缀；OMP 的原生 shell 不应用它。默认未设置。"
  },
  "bash.enabled": {
   "label": "Bash",
@@ -1690,6 +1726,14 @@
  "task.showResolvedModelBadge": {
   "label": "显示解析后的模型徽标",
   "desc": "在任务小部件的状态行中显示每个子代理实际使用的模型 ID"
+ },
+ "task.structured": {
+  "label": "结构化任务结果",
+  "desc": "在 task 工具上开放 outputSchema/schemaMode，并让子代理结果通过 yield 工具返回、按调用方或代理的 output schema 校验。关闭时 task 子代理没有 yield 工具，最终结果以纯文本返回（其定义里设了 structured: true 的代理除外）。eval 的 agent()/workpool 派生始终使用结构化结果。"
+ },
+ "task.agentSoftRequestBudget": {
+  "label": null,
+  "desc": "精确代理名 → 软请求预算（每轮运行的 assistant 请求数）的映射表。某代理的条目会同时取代 task.softRequestBudget 和该代理的内置预算上限；0 表示关闭该代理的这道防护；条目设为 null 可清除从低优先级配置层继承的值。"
  },
  "plan.enabled": {
   "label": "计划模式",
@@ -2059,6 +2103,14 @@
   "label": null,
   "desc": "归档阶段按工作目录保留条数：每个 cwd 下最新的一批非活跃会话（默认 10 个）不被归档，其余超龄的才移入 archive。"
  },
+"gc.compress": {
+"label": null,
+"desc": "gc 命令是否执行原地压缩阶段：通过文件系统的透明压缩（APFS、NTFS）把冷会话文件原地重写。属于 opt-in，因为与其他阶段不同它会改写到用户可见的文件。"
+},
+"gc.compressAfterDays": {
+"label": null,
+"desc": "压缩阶段的冷却期（天数，默认 7）：会话 transcript 超过该天数且没有运行中的进程持有其归属租约时才被原地压缩；比该期限新的文件不动。中断的最后一轮不会排除会话（路径、字节、mtime 不变，history/stats 记录也不变）。"
+},
 "modelPresets": {
  "label": null,
  "desc": "保存命名的模型预设；每个预设记录角色分配和默认思考档位，可由 `/modelpreset` 或模型选择器整体保存与切换。"

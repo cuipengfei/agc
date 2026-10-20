@@ -8,6 +8,9 @@ advisor:
   immuneTurns: 3
   maxNotesPerUpdate: 4
   evictStaleResults: true
+  continueSeverity: concern
+  reviewMode: turn
+  reviewInterval: 1
 prewalk:
   enabled: false
 git:
@@ -418,6 +421,7 @@ bash:
   direnv: auto
   direnvLoadTimeoutMs: 30000
   allowCompoundCommands: false
+  gitGuard: false
 bashInterceptor:
   enabled: true
 shellMinimizer:
@@ -500,6 +504,7 @@ async:
   enabled: true
   maxJobs: 12
   pollWaitDuration: smart
+  widgets: true
 irc:
   timeoutMs: 120000
 mcp:
@@ -541,6 +546,7 @@ task:
   agentPrewalk: {}
   prewalk: false
   showResolvedModelBadge: true
+  structured: true
 tasks:
   todoClearDelay: 60
 skills:
