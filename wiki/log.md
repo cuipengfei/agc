@@ -1367,3 +1367,30 @@
 
 ## [2026-10-19] lint | 3 issues reported, 0 auto-fixed
 - check_evidence.py 范围限新文章与级联文章：3 个 fidelity suspects 核为假阳性（两处为本文自撰限定语、数字 0%/92% 在 OmniRoute raw 标题行可查；一处为既有 3.8 版本号），0 个 evidence error，2 个 unreferenced raw 为既有 omp-signature-verification backlog。
+
+## [2026-10-20] ingest | Tern 官方文档全书入库
+- Disposition: New（8 篇）+ Update（3 篇）
+- Raw: raw/tern/2026-10-20-official-docs-concepts-guides-reference.md; raw/tern/2026-10-20-official-docs-protocol-chapter.md; raw/tern/2026-10-20-official-docs-scripts-elements-styles.md; raw/tern/2026-10-20-settings-schema-from-binary-strings.md
+- Updated: Tern 官方文档地图; Tern 对象模型：包含关系、数量与生命周期; Tern 设置项全集; Tern 命令透镜（command lens）; Tern 插件能力全集; Tern Surface Protocol 官方规范要点; Tern 脚本与自动化面; Tern 视图元素与样式体系; Tern 插件架构与平台边界; Tern：TSP 与 browser 后端; Tern 设置存储位置
+- 要点：官方文档站全书 82 页九分区（docs.stencil.so/tern，含 .md 单页与 print.html 单页版、SDK 仓库七个示例插件、社区 awesome-tern 列表）；新增八篇覆盖对象模型、设置 schema（本机 0.9.4 二进制内嵌结构体全字段提取）、命令透镜、插件九域能力、TSP 官方规范、脚本自动化面、元素与样式体系、官方文档地图；更新三篇补生命周期/预算/信任模型与官方协议章口径。
+
+## [2026-10-20] lint | 本次新增/更新文章 0 issues reported, 0 auto-fixed
+- check_evidence.py 全量扫描：tern 主题八篇新文章与三篇更新文章的 fidelity suspects 全部核为假阳性（原文逐字引句、更新日期、raw 内可查数字如 5522/100%），0 个 evidence error，2 个 unreferenced raw 为既有 omp-signature-verification backlog。
+
+## [2026-10-20] ingest | Tern Inbox 特征行为
+- Disposition: New
+- Raw: raw/tern/2026-10-20-inbox-feature-evidence.md
+- Updated: Tern 脚本与自动化面; Tern 官方文档地图
+- 要点：`tern help dev` 的 world commands 段确认 inbox 四条命令（inbox / inbox go / inbox clear / inbox close）及行为说明；`tern inbox --help` 返回 No such file or directory，证实 inbox 无 CLI 子命令；binary strings 显示 macOS 默认键位 ctrl+cmd+h 标注为 "Opens the inbox."；用户报告 cmd+shift+I 也可打开，对应关系未确认；omp 发送协议与消息格式无证据，列为未验证项。
+
+## [2026-10-20] ingest | omp 到 Tern inbox 的消息通道
+- Disposition: Update
+- Raw: raw/tern/2026-10-20-inbox-feature-evidence.md
+- Updated: Tern Inbox 特征行为
+- 要点：oh-my-pi 源码直读确认 omp 经 TERMINAL.sendNotification 发 OSC 99 转义序列到 pane 的 pty（Tern TerminalInfo 声明 notifyProtocol=Osc99），不经 TSP（TSP 动词集无 inbox/alert）；Tern 侧 OSC 99 → inbox 条目的转换逻辑仍未确认。
+
+## [2026-10-20] ingest | Tern inbox 通道修正：排除 Herdr
+- Disposition: Update
+- Raw: raw/tern/2026-10-20-osc99-inbox-test.md
+- Updated: Tern Inbox 特征行为
+- 要点：用户澄清当前会话在 Tern web mode 跑 OMP，无 Herdr；`env | grep HERDR_` 确认无 Herdr 环境变量；此前把 Herdr 当作通知通道的推断不成立。差异假设改为：Tern web mode 对 shell 与 agent 块 pane 的处理差异、OMP 经 alert scenario 命令、或 OSC 99 需 hello 协商。

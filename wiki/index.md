@@ -377,10 +377,19 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体和时间定位、人工修改边界、0.9.2 与 0.9.3 分层验收、运行进程与统一版本重启 | 2026-10-18 |
+| [Tern 官方文档地图](tern/official-docs-map.md) | 官方文档站 82 页结构、获取方式、九分区页数、七个示例插件与概念导航 | 2026-10-20 |
+| [Tern 对象模型：包含关系、数量与生命周期](tern/object-model.md) | 核心对象定义、数量与包含关系、所有权、生命周期、进程拓扑实测与术语冲突记录 | 2026-10-20 |
+| [Tern 设置项全集](tern/settings-schema.md) | 本机 0.9.4 二进制内嵌设置结构体全字段、提取方法与分组整理 | 2026-10-20 |
+| [Tern 命令透镜（command lens）](tern/command-lenses.md) | 透镜定义、认领流程、block/lens 分工与声明式认领的架构论证 | 2026-10-20 |
+| [Tern 插件能力全集](tern/plugin-capabilities.md) | 九域能力清单、事件、动作形态、预算与容量表、生命周期、信任模型与示例配方 | 2026-10-20 |
+| [Tern Surface Protocol 官方规范要点](tern/tsp-official-spec.md) | TSP 核心实体、三种 mode、握手、流控、驱逐、blob、主题、安全边界与 SDK | 2026-10-20 |
+| [Tern 脚本与自动化面](tern/scripting-surface.md) | 控制端点、脚本三路径、命令域、状态导出与块类型脚本能力 | 2026-10-20 |
+| [Tern 视图元素与样式体系](tern/elements-and-styles.md) | 视图模型、九族元素、样式 sheet cascade、主题变量与动画时钟 | 2026-10-20 |
 | [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 升级后重建 Maple Mono NF CN 修改：0.8.3 与 0.9.3 历史映射、原版字体验收、内存快照、加载引用、源码、版本配置与分层完成标准 | 2026-10-18 |
-| [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围 | 2026-10-17 |
-| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为 | 2026-10-17 |
-| [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议及 CLI 帮助参数的副作用边界 | 2026-10-17 |
+| [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围 | 2026-10-20 |
+| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算 | 2026-10-20 |
+| [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点 | 2026-10-20 |
+| [Tern Inbox 特征行为](tern/inbox-feature.md) | 四条 ctl/scenario 命令、默认键位、OSC 99 直写 pty 实测不进 inbox、Herdr 已排除、真实通道待查 | 2026-10-20 |
 | [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 升级后重建 Maple Mono NF CN 修改：原版字体验收、内存快照、加载引用、源码、版本配置与分层完成标准 | 2026-10-14 |
 | [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 原版 0.8.3 的单字符 `中` 复现；按真实 `file`/`id` 字段关闭目标 pane，保留 shell/Git | 2026-10-14 |
 

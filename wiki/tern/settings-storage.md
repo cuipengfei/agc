@@ -2,7 +2,7 @@
 
 > Sources: Tern 0.9.2 module strings and local CLI, 2026-10-17; Stencil official plugin SDK documentation, 2026-10-17
 > Raw: [Web 设置存储实现](../../raw/tern/2026-10-17-web-settings-storage.md); [Packages and Manifests 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md)
-> Updated: 2026-10-17
+> Updated: 2026-10-20
 
 ## 原生与 Web 使用不同存储
 
@@ -25,6 +25,6 @@ Web 存储只写相对默认设置发生变化的值；全新的未修改设置�
 这两个键的证明范围是主机端插件加载，不能用来解释 Web 浏览器中的全部设置内容。
 
 ## See Also
-
+- [Tern 设置项全集](settings-schema.md)
 - [Tern 插件架构与平台边界](plugin-architecture.md)
 - [Tern 升级辅助工具与验收边界](maintenance-toolkit.md)

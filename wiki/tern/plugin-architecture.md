@@ -1,8 +1,8 @@
 # Tern 插件架构与平台边界
 
-> Sources: Stencil official Tern Plugin SDK documentation, 2026-10-17
-> Raw: [Packages、Architecture、Support Matrix 与 CLI 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md)
-> Updated: 2026-10-17
+> Sources: Stencil official Tern Plugin SDK documentation, 2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20
+> Raw: [Packages、Architecture、Support Matrix 与 CLI 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [Tern 官方文档：Concepts / Guides / Reference / Examples 摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-concepts-guides-reference.md)
+> Updated: 2026-10-20
 
 ## 插件包与配置目录
 
@@ -34,7 +34,19 @@ install、remove、link 和 unlink 修改目录后请求重载。install 与 lin
 
 `types` 写出当前 Tern 的 Luau API 定义文件，供编辑器使用；它不修改插件目录，也不连接 daemon。
 
+## 生命周期与预算（2026-10-20 补）
+
+重载以整个上下文为单位替换全部 VM：运行中的块移到新 worker 并以其 `save` 返回的状态重启，运行中的 lens 捕获在旧 worker 跑完，hooks、spawn filter、timer 与未完成的进程/请求回调随旧 VM 终结，`tern.kv` 与数据目录不动。daemon 重启时先加载插件再恢复 pane：shell 作为登录 shell 回来，插件块从 `save` 状态在空白屏上重建。Unix 原地升级把 daemon 交给新构建而不结束任何程序，shell 保住 pty、画面与滚动历史。
+
+预算按调用计：host 2 s、window 50 ms、chrome formatter 与 `available` 4 ms；超预算的 hook 在该 VM 内禁用至下次重载。每插件每 host 一个 worker 线程一个 VM，每插件每窗口一个 VM，VM 内存上限 256 MiB。
+
+安装即信任：官方明确插件没有审查、签名或权限清单，`tern` API 可以写文件和起进程，能力边界就是用户自身的能力边界。
+
+逐域能力清单（命令、绑键、覆盖、路由、chrome、布局、Carly、canvas 等）与事件全集见 [Tern 插件能力全集](plugin-capabilities.md)。
+
 ## See Also
 
 - [Tern 设置存储位置](settings-storage.md)
 - [Tern：TSP 与 browser 后端](tsp-and-browser-backend.md)
+- [Tern 插件能力全集](plugin-capabilities.md)
+- [Tern 官方文档地图](official-docs-map.md)
