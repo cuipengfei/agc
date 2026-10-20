@@ -535,10 +535,10 @@
   "label": "等待用量重置",
   "desc": "当 provider 报告用量上限耗尽并给出重置时间时（任何 provider 的 5 小时或每周配额窗口），睡眠到重置时刻，而不是超过 retry.maxDelayMs 后快速失败。等待可按 Esc 中止，但也会拖住子代理，因此无人值守运行请保持关闭。"
  },
- "retry.modelFallback": {
-  "label": "重试模型回退",
-  "desc": "允许通过重试恢复切换到已配置的回退模型"
- },
+"retry.modelFallback": {
+ "label": "重试模型回退",
+ "desc": "允许通过重试恢复在 provider 报错后切换到 retry.fallbackChains 里配置的模型；独立于「自动升级上下文」。"
+},
  "retry.usageAwareFallback": {
   "label": "用量感知回退",
   "desc": "使用可靠的编码套餐配额报告，在触及硬性用量上限前优先使用同 provider 的账号，其次使用已配置的回退模型。普通配置的 API key 不在此列。"
@@ -659,10 +659,10 @@
   "label": "抓取 Provider",
   "desc": "fetch/read URL 工具的读取后端优先级"
  },
- "codexResets.autoRedeem": {
-  "label": "Codex 自动兑换已存重置",
- "desc": "自动花费已存的 Codex 限流重置：当某回合卡住且没有其他账号能接手时，恢复因 5 小时或每周窗口耗尽而被封锁的账号，并抢救即将过期的额度。unset 在首次花费前询问；没有询问界面时，仅花费 5 分钟内过期的重置；yes 直接花费不提示，no 同时禁用两项检查。"
- },
+"codexResets.autoRedeem": {
+ "label": "Codex 自动兑换已存重置",
+ "desc": "自动花费已存的 Codex 限流重置：当某回合卡住且没有其他账号能接手时，恢复因 5 小时或每周窗口耗尽而被封锁的账号，并抢救即将过期的额度。unset 在首次花费前询问（没有询问界面时，仅花费 5 分钟内过期的重置）；yes 直接花费不提示；no 同时禁用两项检查。"
+},
  "codexResets.minBlockedMinutes": {
   "label": "Codex 自动兑换最小封锁时长",
   "desc": "只有当自然解封——耗尽的 5 小时/每周窗口中最晚的重置——距今至少还有这么多分钟时才自动兑换（不要为省去短暂等待而花费稀缺的额度）。调高它（如 360）可忽略仅 5 小时的封锁。"
@@ -671,10 +671,10 @@
   "label": "Codex 自动兑换保留额度",
   "desc": "已存重置永远不低于这个数才自动花费（0 = 最后一笔额度也可自动花费）。即将过期的额度除外——被保留的额度一旦过期什么也保不住。"
  },
- "codexResets.salvageHorizonHours": {
-  "label": "Codex 重置抢救时限",
- "desc": "启用自动兑换时，在距一笔已存 Codex 重置过期不超过此小时数、且任一对话窗口有值得恢复的用量时花费它。0 禁用提前抢救；5 分钟内过期的额度无论用量如何都会尝试。"
- },
+"codexResets.salvageHorizonHours": {
+ "label": "Codex 重置抢救时限",
+ "desc": "启用自动兑换时，在距过期不超过此小时数、且任一对话窗口（5 小时或每周）有值得恢复的用量时，花费一笔已存重置。0 禁用提前抢救；5 分钟内过期的额度无论用量如何都会尝试。"
+},
  "claudeResets.autoRedeem": {
   "label": "Claude 自动兑换重置",
  "desc": "自动花费符合条件的 Claude Cedar 或 Juniper 重置。Cedar 只用于其覆盖的限额；Juniper 只能恢复单独的 5 小时封锁。unset 在首次花费前询问；没有询问界面时，仅花费 5 分钟内过期的重置；yes 直接花费不提示，no 禁用封锁恢复和过期抢救。"
@@ -723,10 +723,10 @@
   "label": "启用 Advisor",
   "desc": "搭配第二个模型（分配到 'advisor' 角色），被动审查每个回合并注入备注。"
  },
- "advisor.syncBacklog": {
-  "label": "Advisor 同步积压",
- "desc": "暂停主代理，直到 advisor 积压低于阈值。数字值将等待时间限制为最多 30 秒；strict 会等待所有已安排的评审，不设墙钟时间上限。关闭则禁用追平延迟；中止、失败和释放资源都会解除等待。"
- },
+"advisor.syncBacklog": {
+ "label": "Advisor 同步积压",
+ "desc": "advisor 落后时暂停主代理：数字值最多等 30 秒；strict 无墙钟上限，等所有已安排的评审追平；off 关闭追平延迟；中止、失败和释放资源都会解除等待。"
+},
  "advisor.immuneTurns": {
   "label": "Advisor 免疫回合数",
  "desc": "advisor 的 concern 或 blocker 造成中断后，在接下来的这么多个主回合内，将后续 concern 作为不中断的附带提示发送；blocker 不受此冷却期限制。"
@@ -747,10 +747,10 @@
   "label": "额外工作区目录",
   "desc": "作为附加根目录加入每个会话的额外工作区目录（多根工作区）。通过 /add-dir 和 /remove-dir 实时管理。路径相对于 cwd 解析；建议使用绝对路径。Agent 会被告知这些根目录存在，可对其 read/grep/glob。"
  },
- "contextPromotion.enabled": {
-  "label": "自动升级上下文",
-  "desc": "上下文溢出时升级到更大上下文的模型，而不是压缩"
- },
+"contextPromotion.enabled": {
+ "label": "自动升级上下文",
+ "desc": "上下文溢出时升级到该模型的 contextPromotionTarget，而不是压缩。重试模型回退由「重试模型回退」单独控制。"
+},
  "extendedContext": {
   "label": "扩展上下文",
   "desc": "在支持时使用更大的上下文窗口；可能产生溢价。关闭则保持默认或标准价格窗口"
@@ -819,10 +819,10 @@
   "label": "空闲压缩阈值",
   "desc": "触发空闲压缩的 token 数"
  },
- "compaction.idleTimeoutSeconds": {
-  "label": "空闲压缩延迟",
-  "desc": "空闲后等待多少秒再进行压缩"
- },
+"compaction.idleTimeoutSeconds": {
+ "label": "空闲压缩延迟",
+ "desc": "空闲后等待多少秒再进行压缩；配合 1 小时提示词缓存时，压缩改在缓存过期前一刻执行。"
+},
  "compaction.supersedeReads": {
   "label": "替换过期读取",
   "desc": "同一文件被再次读取时修剪较旧的读取结果（缓存感知，每回合运行）"
@@ -835,10 +835,10 @@
   "label": "Snapcompact 系统提示词",
   "desc": "实验性：把选定的系统提示词文本渲染为高密度 PNG 图片并附加到第一条用户消息（仅限视觉模型）。节省 token；但图片化文本会失去提示词缓存。"
  },
- "snapcompact.toolResults": {
-  "label": "Snapcompact 工具结果",
-  "desc": "实验性：把大型历史工具结果渲染为高密度 PNG 图片而非文本（仅限视觉模型）。在累积的读取/搜索输出上节省 token。"
- },
+"snapcompact.toolResults": {
+ "label": "Snapcompact 工具结果",
+ "desc": "实验性：把大型历史工具结果渲染为高密度 PNG 图片而非文本（含最新的那条；仅限视觉模型）。在累积的搜索和命令输出上节省 token；读取结果保持文本，除非已知该模型能完全按图片编辑。"
+},
  "tools.format": {
   "label": "工具调用模式",
   "desc": "控制工具如何暴露给模型。Auto 使用 provider 原生工具调用，除非所选模型被标记为不支持，此时回退到 GLM 自有方言。Native 强制使用 provider 原生工具；其他值强制使用对应的自有方言。"
@@ -1287,10 +1287,10 @@
   "label": "工具审批策略",
   "desc": "按工具配置审批策略。设为 'allow' 表示自动批准，'prompt' 表示需要确认，'deny' 表示阻止。这些覆盖项在任何审批模式下都生效。"
  },
- "tools.approvalMode": {
-  "label": "工具审批",
-  "desc": "工具调用的默认审批行为。'Always ask' 只对只读工具自动批准。'Write' 对读取和工作区写入工具自动批准。'Yolo' 对所有层级自动批准；用户策略仍可能要求确认或阻止。"
- },
+"tools.approvalMode": {
+ "label": "工具审批",
+ "desc": "工具调用的默认审批行为。'Always ask' 只对只读工具自动批准。'Ask and remember' 对文件读取也要询问，并能记住某个文件或文件夹。'Write' 对读取和工作区写入工具自动批准。'Yolo' 对所有层级自动批准；用户策略仍可能要求确认或阻止。"
+},
  "todo.enabled": {
   "label": "Todos",
   "desc": "是否启用 todo 工具进行任务跟踪"
@@ -1487,10 +1487,10 @@
   "label": "LSP 懒启动",
   "desc": "在首次使用时（lsp 工具或编辑匹配的文件类型）才启动语言服务器，而不是在会话启动时"
  },
- "lsp.shared": {
-  "label": "共享语言服务器",
-  "desc": "通过 daemon broker 在多个 omp 实例之间按项目共享一个语言服务器（不可用时回退到私有服务器）"
- },
+"lsp.shared": {
+ "label": "共享语言服务器",
+ "desc": "通过按项目的 daemon broker 启动语言服务器。每个连接有独立服务器；同项目另一个 omp 实例运行期间，已释放的服务器保持热备，下一个连接直接复用而无需冷启动（broker 不可用时回退到私有服务器）。"
+},
  "lsp.formatOnWrite": {
   "label": "写入时格式化",
   "desc": "写入后使用 LSP 自动格式化代码文件"
@@ -1619,10 +1619,10 @@
   "label": "Python 解释器",
   "desc": "指向某个精确 Python 可执行文件的可选路径。设置后将跳过自动 Python 运行时探测。"
  },
- "task.isolation.enabled": {
-  "label": "隔离子代理",
-  "desc": "在检出内容的隔离副本中运行子代理，之后合并它们的改动"
- },
+"task.isolation.enabled": {
+ "label": "隔离子代理",
+ "desc": "允许用 isolated: true 按任务启用隔离；未加标记的任务继续在共享检出内容里运行。"
+},
  "isolation.backend": {
   "label": "隔离后端",
   "desc": "用于子代理隔离和 worktree 克隆的后端"
@@ -1683,10 +1683,10 @@
   "label": "代理空闲 TTL",
   "desc": "空闲子代理在内存中保持存活多久后被转储到磁盘（毫秒）。被转储的代理在被发消息或恢复时自动唤醒。0 表示让空闲代理一直存活到退出。"
  },
- "task.softRequestBudget": {
-  "label": "子代理软请求预算",
-  "desc": "每轮运行中每个子代理的软请求预算（assistant 请求次数）。超过后注入一条收尾引导提示（见 task.softRequestBudgetNotice）；达到预算的 1.5 倍时运行被强制停止，agent 必须交出其部分发现。0 表示禁用该保护。内置的 scout/sonic 代理有更低的内置预算上限，低于该上限的值对它们仍然生效。"
- },
+"task.softRequestBudget": {
+ "label": "子代理软请求预算",
+ "desc": "每轮运行中每个子代理的软请求预算（assistant 请求次数）。超过后注入一条收尾引导提示（见 task.softRequestBudgetNotice）；达到预算的 1.5 倍时运行被强制停止，agent 必须交出其部分发现。0 表示禁用该保护。内置的 scout/sonic 代理有更低的内置预算上限，低于该上限的值对它们仍然生效。task.agentSoftRequestBudget 的条目会取代此预算（针对其点名的代理）。"
+},
  "task.softRequestBudgetNotice": {
   "label": "软请求预算提示",
   "desc": "当子代理超过其软请求预算时注入一条引导提示，要求它在 1.5 倍强制交出结果之前收尾。"
@@ -1915,10 +1915,10 @@
   "label": "回合结束时冻结浏览器标签页",
   "desc": "回合结束时冻结 OMP 拥有的无头浏览器标签页，让动画页面在空闲时不再消耗 CPU/GPU。下次使用时会自动解冻；打开标签页时传入 persist:true 可选择退出冻结。"
  },
- "browser.idleCloseSec": {
-  "label": "浏览器空闲关闭超时",
+"browser.idleCloseSec": {
+ "label": "浏览器空闲关闭超时",
  "desc": "关闭空闲超过这么多秒的 OMP 拥有的无头浏览器标签页和 Tern 浏览器画中画（0 = 永不关闭；会话销毁仍会回收）。从不处理 relay、CDP、外部启动的浏览器或其他会话的标签页。"
- },
+},
  "browser.screenshotDir": {
   "label": "截图目录",
   "desc": "保存截图的目录。未设置时截图会保存到临时文件。支持 ~。例如：~/Downloads、~/Desktop、/sdcard/Download（Android）"
