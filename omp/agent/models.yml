@@ -105,6 +105,15 @@ providers:
           - text
         contextWindow: 1048576
         maxTokens: 65536
+      - id: gemini-4-argon
+        compactionModel: c8787/gpt-6-luna
+        name: Gemini 4 Argon
+        reasoning: true
+        input:
+          - text
+          - image
+        contextWindow: 1048576
+        maxTokens: 65536
   justwoker:
     api: anthropic-messages
     baseUrl: https://api.justwoker.icu

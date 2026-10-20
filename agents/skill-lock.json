@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "d018cf1970b6f9a177ff62123e8584ceb750724c",
+      "skillFolderHash": "ec88ecff6d246e645fff0c10fba317d4072d993f",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-20T11:48:46.588Z"
+      "updatedAt": "2026-10-20T16:04:14.868Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
