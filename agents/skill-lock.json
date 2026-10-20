@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "01e393ce6ef4820bc71b90102895815fa6e6676b",
+      "skillFolderHash": "5407fb5a5d4593ba6f79713d1fecaad7a49dbafe",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-17T03:05:19.108Z"
+      "updatedAt": "2026-10-20T11:47:19.163Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -850,9 +850,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/interrogate/SKILL.md",
-      "skillFolderHash": "1314ba47642b5a4419c5a4cda384437735748163",
+      "skillFolderHash": "79b84559a62265eb4d284e35e5ea24ea7ba5fdae",
       "installedAt": "2026-10-04T15:35:43.305Z",
-      "updatedAt": "2026-10-15T14:56:57.966Z"
+      "updatedAt": "2026-10-20T11:47:23.160Z"
     },
     "maintain-verification-skill": {
       "source": "backnotprop/pstack",
@@ -985,9 +985,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
-      "skillFolderHash": "7b49b9000c86ea1ae142af47d0ff5f9f95199c34",
+      "skillFolderHash": "cf45195158110569ac6a97d0e8dbed04531373ed",
       "installedAt": "2026-10-04T15:35:43.329Z",
-      "updatedAt": "2026-10-04T15:35:43.329Z"
+      "updatedAt": "2026-10-20T11:47:28.376Z"
     },
     "principle-minimize-reader-load": {
       "source": "backnotprop/pstack",
@@ -1084,9 +1084,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/principle-type-system-discipline/SKILL.md",
-      "skillFolderHash": "d7369475f3516094c0a3509cb9e37c6ad5200d07",
+      "skillFolderHash": "32850aaddd70478a6dacb153bbcef8532bf7d626",
       "installedAt": "2026-10-04T15:35:43.345Z",
-      "updatedAt": "2026-10-12T14:01:19.558Z"
+      "updatedAt": "2026-10-20T11:47:32.500Z"
     },
     "recall": {
       "source": "backnotprop/pstack",
@@ -1111,9 +1111,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/setup-pstack/SKILL.md",
-      "skillFolderHash": "c3f51bce3a00dfd66327e766299f9677aa7175f7",
+      "skillFolderHash": "a79d54d14b4a67fb1512ccc028efe625d9a4087a",
       "installedAt": "2026-10-04T15:35:43.349Z",
-      "updatedAt": "2026-10-08T15:04:47.395Z"
+      "updatedAt": "2026-10-20T11:47:36.757Z"
     },
     "show-me-your-work": {
       "source": "backnotprop/pstack",
@@ -1129,9 +1129,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/swarm/SKILL.md",
-      "skillFolderHash": "c88053588fa587ccc14f39ead517a1ba81c4e733",
+      "skillFolderHash": "4a548e582db1bac009b8c56fe8c1a86ecdb62295",
       "installedAt": "2026-10-04T15:35:43.352Z",
-      "updatedAt": "2026-10-16T16:29:58.618Z"
+      "updatedAt": "2026-10-20T11:47:42.903Z"
     },
     "technical-writing": {
       "source": "backnotprop/pstack",
@@ -1147,9 +1147,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/typescript-best-practices/SKILL.md",
-      "skillFolderHash": "319e39dfd8c0da0602db8d50ce6e48b0945bbf3a",
+      "skillFolderHash": "1ccca3c7c0d358c0cd5edd313cd03a31fc75ee5f",
       "installedAt": "2026-10-04T15:35:43.358Z",
-      "updatedAt": "2026-10-04T15:35:43.358Z"
+      "updatedAt": "2026-10-20T11:47:46.690Z"
     },
     "unslop": {
       "source": "backnotprop/pstack",
@@ -1312,9 +1312,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "03569e35d5eb05382c4fa6b6bee76dd20e9d0ef9",
+      "skillFolderHash": "9bb4d31b5e0e4de1e66a345f9dd1bfa24fc686f5",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-19T11:22:55.146Z"
+      "updatedAt": "2026-10-20T11:48:40.090Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1349,9 +1349,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
       "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "50ff11e6ee8e81f1b0b30c360ee0edebe0e507d5",
+      "skillFolderHash": "d018cf1970b6f9a177ff62123e8584ceb750724c",
       "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-18T13:49:21.296Z"
+      "updatedAt": "2026-10-20T11:48:46.588Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
