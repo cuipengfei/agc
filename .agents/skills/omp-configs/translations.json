@@ -725,7 +725,7 @@
  },
 "advisor.syncBacklog": {
  "label": "Advisor 同步积压",
- "desc": "advisor 落后时暂停主代理：数字值最多等 30 秒；strict 无墙钟上限，等所有已安排的评审追平；off 关闭追平延迟；中止、失败和释放资源都会解除等待。"
+ "desc": "advisor 积压时暂停主代理：数字值最多等待 30 秒；strict 无墙钟上限，等待所有已安排的评审追平；off 关闭追平延迟；中止、失败和释放资源都会解除等待。"
 },
  "advisor.immuneTurns": {
   "label": "Advisor 免疫回合数",
@@ -749,7 +749,7 @@
  },
 "contextPromotion.enabled": {
  "label": "自动升级上下文",
- "desc": "上下文溢出时升级到该模型的 contextPromotionTarget，而不是压缩。重试模型回退由「重试模型回退」单独控制。"
+ "desc": "上下文溢出时改用该模型的 contextPromotionTarget；重试模型回退由「重试模型回退」单独控制。"
 },
  "extendedContext": {
   "label": "扩展上下文",
