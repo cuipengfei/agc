@@ -2,7 +2,7 @@
 
 > Sources: GitHub docs, 2026-10-19; Google Cloud docs, 2026-10-19; googleapis/python-genai issues, 2026; OmniRoute, 2026-09-11; Google 开发者论坛, 2026-08-28; Cursor 论坛, 2026-10-16; 本机实测, 2026-10-19
 > Raw: [GitHub 模型托管](../../raw/prompt-caching/2026-10-19-github-copilot-model-hosting.md); [Google 缓存淘汰规则](../../raw/prompt-caching/2026-10-19-gemini-durable-cache-eviction.md); [社区报告](../../raw/prompt-caching/2026-10-19-gemini-cache-community-reports.md); [直连后端探针](../../raw/prompt-caching/2026-10-19-copilot-gemini-direct-backend-probe.md); [本机链路证据](../../raw/prompt-caching/2026-10-19-gemini-cache-local-chain-evidence.md)
-> Updated: 2026-10-19
+> Updated: 2026-10-20
 
 ## Overview
 
@@ -71,4 +71,5 @@ GitHub 官方文档确认 Copilot 的 Gemini 托管于 Google Cloud Platform 并
 ## See Also
 
 - [Prompt Cache：前缀匹配与 cache key 的真实分工](cache-key-and-prefix-matching.md)
+- [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](gemini-4-argon-copilot-cache-drop.md)
 - [Copilot 延迟调查：社区报告、本机用量与 OMP 计时](../copilot-gateway/copilot-latency-evidence-boundaries.md)

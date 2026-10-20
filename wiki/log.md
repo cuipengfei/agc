@@ -1394,3 +1394,14 @@
 - Raw: raw/tern/2026-10-20-osc99-inbox-test.md
 - Updated: Tern Inbox 特征行为
 - 要点：用户澄清当前会话在 Tern web mode 跑 OMP，无 Herdr；`env | grep HERDR_` 确认无 Herdr 环境变量；此前把 Herdr 当作通知通道的推断不成立。差异假设改为：Tern web mode 对 shell 与 agent 块 pane 的处理差异、OMP 经 alert scenario 命令、或 OSC 99 需 hello 协商。
+
+## [2026-10-21] ingest | Tern 确定性构建与迁移验收
+- Disposition: Update
+- Raw: raw/tern/2026-10-21-deterministic-build-and-portability.md
+- Updated: Tern 时间 API 补丁与验收; Tern 网页字体修改与版本迁移
+- 要点：固定 WABT 1.0.42 安装脚本实测通过（Linux x86_64、全新目录、tarball SHA-256 与双工具版本断言）；0.9.4 历史测试模块 sha256sum 与 recipe 固定 hash 一致。已观察真实输出：FontTools 2 项与同步项目 19 项 unittest 通过；`bun audit --json` 退出 0；真实 analyze 链路 panics33 为静态候选计数；`font_manifest.py` 真实生产退出 0，两字体 hash 与 0.9.4/0.9.5 证据一致（--wasm 为现有正式 0.9.5 candidate，只读）。源码事实入库：check-build 精确要求结构五项 passed（time_behavior/full_ui 允许 not_run）与时间六项 passed 且无 not_run 余量，checks 集合须完全一致；构建清单绑定 7 个 producer 源码 hash（含 interface.mjs、package.json、bun.lock）；assets 绑定已验证 bundle candidate，verify-page 八项检查序列与 hash 错误路径。真实 .4/.5 build/rebuild、跨 HOME 重建、assets 与 verify-page 双路径截至当日未完成（跨写流 drain 缺陷修复中）；物理异机、其他 OS、完整 GPU、mount、native UI 未验证。
+
+## [2026-10-20] ingest | Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
+- Disposition: New
+- Raw: raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md; raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md
+- 要点：Argon 仅支持 implicit caching（6,144 tokens 起，best-effort），不支持 explicit caching（报错 400），默认开启 durable caching（持久存储最长 24 小时）。社区报告各来源观察到的现象形态不同：AI Studio / Vertex Global 直连连续零命中（#189019）、OpenCode Go 命中率随时间段大幅波动（#55449）、Vertex 3.8 Flash 多轮会话中部分轮次归零（#43628）。Google 官方论坛确认正在排查。费用影响：按 token 计费入口上，掉缓存的未命中部分按标准输入价计费（比缓存价贵 10 倍），社区用户实测 Vertex 成本是 AI Studio 的 2.1 倍，有开发者称这种额外费用为 "Gemini Tax"。归因（推断）：Google 侧隐式缓存路由与持久化快照策略 > 接入路径路由与配置 > 客户端本地链路。
