@@ -1399,9 +1399,15 @@
 - Disposition: Update
 - Raw: raw/tern/2026-10-21-deterministic-build-and-portability.md
 - Updated: Tern 时间 API 补丁与验收; Tern 网页字体修改与版本迁移
-- 要点：固定 WABT 1.0.42 安装脚本实测通过（Linux x86_64、全新目录、tarball SHA-256 与双工具版本断言）；0.9.4 历史测试模块 sha256sum 与 recipe 固定 hash 一致。已观察真实输出：FontTools 2 项与同步项目 19 项 unittest 通过；`bun audit --json` 退出 0；真实 analyze 链路 panics33 为静态候选计数；`font_manifest.py` 真实生产退出 0，两字体 hash 与 0.9.4/0.9.5 证据一致（--wasm 为现有正式 0.9.5 candidate，只读）。源码事实入库：check-build 精确要求结构五项 passed（time_behavior/full_ui 允许 not_run）与时间六项 passed 且无 not_run 余量，checks 集合须完全一致；构建清单绑定 7 个 producer 源码 hash（含 interface.mjs、package.json、bun.lock）；assets 绑定已验证 bundle candidate，verify-page 八项检查序列与 hash 错误路径。真实 .4/.5 build/rebuild、跨 HOME 重建、assets 与 verify-page 双路径截至当日未完成（跨写流 drain 缺陷修复中）；物理异机、其他 OS、完整 GPU、mount、native UI 未验证。
+- 要点：固定 WABT 1.0.42 安装脚本实测通过（Linux x86_64、全新目录、tarball SHA-256 与双工具版本断言）；0.9.4 历史测试模块 sha256sum 与 recipe 固定 hash 一致。已观察真实输出：FontTools 2 项与同步 19 项 unittest 通过；`bun audit --json` 退出 0；真实 analyze 链路 panics33 为静态候选计数；`font_manifest.py` 真实生产退出 0，两字体 hash 与 0.9.4/0.9.5 证据一致。最终验收（bg27-bg30，receipt portability-smoke.json、real-page-smoke.json 及两份页面报告）：全量 Bun 测试 61 pass / 0 fail；故障注入 ENOSPC 27ms 拒绝且失败目录保留；bg19 测试模块 hash 失败后经根因修复（expected hash 未改），真实 0.9.4/0.9.5 build + check-build 锁定 SHA 匹配，复制包删除私有初始输入与首包后 fresh HOME 重建两 SHA 一致；assets 生成 site（7 文件 hash 核对 + deploy-manifest.json），verify-page 正常 6 passed/2 not_run（exit 0）、错误字体 hash 3 failed/3 passed/2 not_run（exit 1）；producer 七文件终值以 portable-0.9.5/build.json 为准重记（buildMjs `a14d9176…`）。源码事实入库：check-build 精确要求结构五项 passed（time_behavior/full_ui 允许 not_run）与时间六项 passed 且无 not_run 余量；构建清单绑定 7 个 producer 源码 hash（含 interface.mjs、package.json、bun.lock）；assets 绑定已验证 bundle candidate，verify-page 八项检查序列与 hash 错误路径。未验证：完整 GPU、mount、native desktop UI、其他物理机器与操作系统。
 
 ## [2026-10-20] ingest | Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
 - Disposition: New
 - Raw: raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md; raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md
 - 要点：Argon 仅支持 implicit caching（6,144 tokens 起，best-effort），不支持 explicit caching（报错 400），默认开启 durable caching（持久存储最长 24 小时）。社区报告各来源观察到的现象形态不同：AI Studio / Vertex Global 直连连续零命中（#189019）、OpenCode Go 命中率随时间段大幅波动（#55449）、Vertex 3.8 Flash 多轮会话中部分轮次归零（#43628）。Google 官方论坛确认正在排查。费用影响：按 token 计费入口上，掉缓存的未命中部分按标准输入价计费（比缓存价贵 10 倍），社区用户实测 Vertex 成本是 AI Studio 的 2.1 倍，有开发者称这种额外费用为 "Gemini Tax"。归因（推断）：Google 侧隐式缓存路由与持久化快照策略 > 接入路径路由与配置 > 客户端本地链路。
+
+## [2026-10-21] lint | Tern 构建与跨机器手册证据校验
+- Disposition: Update
+- Raw: raw/tern/2026-10-21-deterministic-build-and-portability.md
+- Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册; Tern 时间 API 补丁与验收; Tern 网页字体修改与版本迁移
+- 要点：四篇文章证据校验为 0 evidence errors；9 个数字标记逐项核对，小数耗时与 fenced code 中的版本、时间断言均有 raw 依据。本次新增三份 raw 均有文章引用；既有其他主题的 2 个未引用 raw 保持原样。双版本真实重建、删除初始输入后的 fresh HOME 复验、真实网页正常及错误字体 hash 路径全部已有实际输出；物理异机、其他 OS、完整 GPU/mount 与 native desktop UI 未验证。

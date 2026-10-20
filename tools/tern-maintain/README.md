@@ -2,6 +2,21 @@
 
 运行目录为 `tools/tern-maintain`。本工具与配置同步独立，不修改 manifest，不写入来源配置，不提交 Git。
 
+## 0.9.5 本机验收
+
+正式 daemon、Web 和安装 binary 已统一为 `0.9.5 (2863c37)`，端口继续使用 `8378`，保留原认证文件及升级前的 pane 集合。后台进程由 `runtime.mjs __redact` 管理。
+
+[`evidence/0.9.5.json`](evidence/0.9.5.json) 来自正式服务与实际资源。部署目录 `~/.local/share/tern-web-0.9.5/verification/` 另保存实际入口初始化检查、非空 pane 隔离升级和正式升级报告。入口检查没有 token，不执行 mount 或完整 GPU 交互。
+
+人工 WAT 修改记录保存在 [`patches/0.9.5/`](patches/0.9.5/README.md)：26 处调用点替换、两个完整时间函数、独立测试 exports、原版定位清单和锁定全部输入 hash 的 [`recipe.json`](patches/0.9.5/recipe.json)。原临时分片已清理，本归档手工恢复自会话编辑记录。
+
+0.9.4 与 0.9.5 的完整重建已用确定性路径实际完成：`build` 重放 recipe、`check-build` 校验构建包，真实 smoke `workflow-eV2Po2` 以 308.22s、退出码 0 通过。两个版本的 candidate、独立测试模块、glue、profile 四处 SHA-256 与 recipe 锁定值完全一致（0.9.4 candidate `f5f8e036…5a75`、测试模块 `b6017a4b…9c9a9c`；0.9.5 candidate `b132e0fe…eefdbe`、测试模块 `ce28ecb4…9cc0d`），结构检查与六项真实时间行为检查均重新执行并通过。0.9.5 完整构建包另经 portable 复制、删除私有初始输入与原包后，在 fresh HOME 用 `rebuild` 重建并通过 `check-build`，candidate 与测试模块 hash 不变。实际结果记录于 `raw/tern/2026-10-21-deterministic-build-and-portability.md`，receipt 为 `artifacts/workflow-eV2Po2/portability-smoke.json`。
+
+时间行为以重建后重新执行的六项真实时间检查为准（0.9.4 与 0.9.5 均通过）。原版时间分支的用户操作可达性及 native desktop 全部 UI 路径未验证。完整范围见验收记录中的 `skipped`。
+
+WAT 中间表示、补丁、测试模块和验收报告允许程序化生成、组装、编译与验证；维护工具自身的程序源码使用文件编辑工具维护。
+
+
 ## 安装与行为检查
 
 ```bash
@@ -45,11 +60,41 @@ bun cli.mjs function --wasm /tmp/tern-candidate/pkg/original.wasm --index NUMBER
 
 ## 修改和编译
 
-`decision: manual_review_required` 表示需要通过文件编辑工具修改 compiler 生成的文本源，再通过标准 WASM compiler 编译。工具不自动修改指令、不调用 Binaryen mutation/optimization API，不从旧版本地址表套用新版本。未知结构不能据此批准部署。当前工具不会自动生成完整可编译的替换函数。
+`decision: manual_review_required` 表示新版本的指令位置、ABI 和替换语义需要人工审核。WAT 中间表示可由程序生成、组装，再通过标准 WASM compiler 编译。未知结构不能据此批准部署，不从旧版本地址表套用新版本。
 
 已有 Tern 0.9.2、0.9.3 和 0.9.4 的补丁分别保存在 `~/.local/share/tern-web-0.9.2/`、`~/.local/share/tern-web-0.9.3/`、`~/.local/share/tern-web-0.9.4/`。这里不保存 WASM、字体文件或凭据；补丁的函数编号和行为结果以对应目录的 `PATCH.md` 为证据。升级时不能将旧版本验证结果直接用于新版本。
 
 0.9.4 的人工 WAT 源码、原版 hash、分片位置和重建步骤另见 [`patches/0.9.4/README.md`](patches/0.9.4/README.md)。源码归档保留修改的指令；完整 WAT 和 WASM 保存在仓库外。
+
+## 确定性构建与固定 WABT
+
+已登记版本（当前为 0.9.4、0.9.5）用 recipe 确定性重建。recipe 锁定 WABT 版本、原版/candidate/测试模块/glue/profile 的 SHA-256、原版 WAT 行数和每处片段对原文的 hash 断言。`build` 流式重放片段生成候选 WAT 与测试 WAT，用固定 WABT 编译并逐一核对两个输出 hash，执行结构检查与真实时间行为检查，组装完整构建包后 `check-build` 自检；期望 hash 绝不因失败改写，失败构建保留目录供检查。`check-build` 只承认 `passed`：`not_run` 不等于通过（结构报告仅 `time_behavior`/`full_ui` 允许 `not_run`，时间报告要求六项全部 `passed`），未知检查名同样使校验失败。测试 exports 在 recipe 锁定原版行之前插入（insertBefore）；锁定行不要求一定是 export（0.9.4 为首个 export，0.9.5 为 exports 之后的 elem 行）。anchor 可位于 replace 区间内，此时替换片段必须包含唯一原文 anchor。
+
+WABT 用固定脚本安装：仅支持 Linux x86_64，安装目录必须不存在；下载官方 `wabt-1.0.42-linux-x64.tar.gz`，解压前校验 SHA-256，并要求 `wat2wasm`/`wasm2wat` 两个 binary 精确报告 `1.0.42`。2026-10-21 已在原机实测通过（`bash ci/install-wabt.sh /tmp/tern-wabt-verified-20261021-ok`）；其他平台未验证。最后一行 stdout 为包含 `wat2wasm`/`wasm2wat` 的 bin 目录：
+
+```bash
+bash ci/install-wabt.sh /absolute/path/to/new-wabt-dir
+```
+
+```bash
+bun cli.mjs build --original /path/to/original.wasm --glue /path/to/client.js \
+  --profile profiles/0.9.4.json --recipe patches/0.9.4/recipe.json \
+  --wabt-dir /absolute/path/to/new-wabt-dir/wabt-1.0.42/bin \
+  --out /tmp/tern-bundle
+bun cli.mjs check-build --bundle /tmp/tern-bundle
+bun cli.mjs rebuild --bundle /tmp/tern-bundle \
+  --wabt-dir /absolute/path/to/new-wabt-dir/wabt-1.0.42/bin \
+  --out /tmp/tern-rebuilt
+bun cli.mjs assets --bundle /tmp/tern-bundle --fonts /tmp/tern-font-assets \
+  --out /tmp/tern-site
+bun cli.mjs verify-page --url http://127.0.0.1:PORT \
+  --playwright-module /path/to/playwright/index.mjs \
+  --chromium-executable /path/to/chrome --out /tmp/tern-page.json
+```
+
+构建包包含 `original.wasm`、`glue.js`、`profile.json`、`recipe.json`、全部 `parts/` 与 `exports/` 片段、`candidate.wasm`、`test.wasm`、`structure.json`、`time.json` 和 `build.json`；`build.json` 记录构建工具源码（`build.mjs`、`analyze.mjs`、`resources.mjs`、`interface.mjs`、`verify-time.mjs`、`package.json`、`bun.lock`）的 SHA-256 以及 WABT 与运行时版本。`rebuild` 仅凭包内相对路径输入重建到新目录，是跨机器重建所需的全部输入，不需要原机器的绝对路径或历史临时文件；工具源码身份与构建记录不一致时校验停止，不手工修改清单。
+
+`assets` 将通过 `check-build` 的候选 WASM（绝不接受测试模块）、glue、字体清单、两份完整 Maple 字体、加载器和 `index.template.html` 生成的实际入口页面装配到新目录，写入 `deploy-manifest.json` 记录每个输出文件的实际 SHA-256；输出目录必须不存在。`verify-page` 强制 headless，访问 `assets` 生成的真实 `index.html` 入口，页面在浏览器内执行真实 WASM init 与字体注入；检查按页面自己发布的结构化状态核对初始化完成、两份字体真实注入、页面报告的 candidate SHA-256 与服务字节一致、全程零 WebSocket 构造；无 token 入口不执行 mount，完整 GPU 交互与 mount 始终记 `not_run`。真实页面 smoke（`workflow-eV2Po2`）对该入口通过：6 passed（含 page_ready、fonts_injected、candidate_hash）、2 `not_run`；把 `fonts.json` 中任一 font SHA-256 改写后 verify-page 退出 1，`page_ready`/`fonts_injected`/`candidate_hash` 失败并拒绝，其余检查不受影响（`artifacts/workflow-eV2Po2/real-page-smoke.json`、`real-page-valid.json`、`real-page-invalid-font-hash.json`）。
 
 ## 字体清单
 
@@ -75,7 +120,7 @@ bun cli.mjs browser --url http://127.0.0.1:PORT \
 
 结构报告检查 imports、exports、函数签名、内存限制和初始内存。时间精度、进位、跨秒相减、饱和时长和 externref 生命周期需要对应版本的实际行为测试；结构报告会将未执行项写为 `not_run`，`deployable` 始终为 `false`，不得将它当成自动部署批准。浏览器检查强制 `headless: true`，初始化实际模块并验证完整字体注入，不打开桌面窗口。完整 GPU/Markdown/笔记操作没有通过这项检查得到证明。
 
-`verify-time.mjs` 保留实际模块的时间回归。测试模块由标准 compiler 的独立文本副本，通过文件编辑工具增加对应 `profiles/<version>.json` 中列出的五个 exports 后编译；不修改候选模块。当前包含 0.9.2、0.9.3 和 0.9.4 的 profile。编译产物放在已忽略的 `artifacts/`，后续验收可直接复用，不需要重新生成整个 WAT。
+`verify-time.mjs` 保留实际模块的时间回归。测试模块由独立 WAT 副本增加对应 `profiles/<version>.json` 中列出的五个 exports 后编译，不修改候选模块。当前包含 0.9.2、0.9.3、0.9.4 和 0.9.5 的 profile。编译产物放在已忽略的 `artifacts/`，后续验收可直接复用，不需要重新生成整个 WAT。
 
 ```bash
 bun verify-time.mjs --candidate /path/to/instant.wasm \
@@ -144,4 +189,4 @@ bun cli.mjs evidence --version 0.9.4 \
 
 `skipped.json` 是列明未执行事项及原因的 JSON object，必须提供 `visualTests`、`fullGpuAndApplicationInteraction`、`syncProjectTests` 和 `sofa`，也可记录其他未执行事项，例如 `{"visualTests":"用户要求不执行视觉测试","fullGpuAndApplicationInteraction":"用户要求不执行完整 GPU 交互","syncProjectTests":"未修改同步实现","sofa":"连接不可用"}`。每个原因都必须为非空字符串。分层报告中的 `not_run` 会保留原因；独立时间报告可以证明时间行为，结构检查本身继续保留其验证范围。跳过项目不记为通过。
 
-GitHub Actions 工作流运行 Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；不会下载真实 WASM，不启动桌面浏览器，不访问本机凭据。本机实际验收结果保存在 [`evidence/0.9.2.json`](evidence/0.9.2.json)、[`evidence/0.9.3.json`](evidence/0.9.3.json) 和 [`evidence/0.9.4.json`](evidence/0.9.4.json)，大型二进制验收产物保存在已忽略的 `artifacts/`。
+GitHub Actions 工作流运行 Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；不会下载真实 WASM，不启动桌面浏览器，不访问本机凭据。本机实际验收结果保存在 [`evidence/0.9.2.json`](evidence/0.9.2.json)、[`evidence/0.9.3.json`](evidence/0.9.3.json)、[`evidence/0.9.4.json`](evidence/0.9.4.json) 和 [`evidence/0.9.5.json`](evidence/0.9.5.json)，大型二进制验收产物保存在已忽略的 `artifacts/`。

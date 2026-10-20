@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "version": "0.9.5",
+  "candidateSha256": "b132e0fe9e1ada03339ed222f2dd04b08385c79f39b1797d2610c253c4eefdbe",
+  "exports": {"test_calendar": 25181, "test_epoch": 18649, "test_instant": 32361, "test_elapsed": 32362, "test_consumer": 25472},
+  "consumerFlags": [{"address": 19428976, "value": 3}, {"address": 19428977, "value": 1}]
+}

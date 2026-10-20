@@ -1,0 +1,4 @@
+    local.get 3
+    i32.const 216
+    i32.add
+    call 25181

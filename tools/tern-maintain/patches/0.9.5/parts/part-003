@@ -1,0 +1,8 @@
+    local.get 8
+    i32.const 32
+    i32.add
+    local.get 8
+    i64.load offset=72
+    local.get 8
+    i32.load offset=80
+    call 32362

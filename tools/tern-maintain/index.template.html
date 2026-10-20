@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tern <!--TERN:VERSION--> · Maple Mono NF CN</title>
+  <link rel="icon" href="data:,">
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1b1f; }
+    canvas { display: block; width: 100vw; height: 100vh; outline: none; }
+    #status { position: fixed; inset: 0; display: grid; place-items: center; font: 14px system-ui; color: #b4b4bc; white-space: pre-line; text-align: center; }
+    #status.error { color: #ff7a85; }
+  </style>
+</head>
+<body>
+  <canvas id="tern" tabindex="0"></canvas>
+  <div id="status" role="status">正在加载 Tern 和完整 Maple Mono NF CN 字体…</div>
+  <script type="module">
+    import init, { mount } from './pkg/client.js';
+    import { loadClient, injectMaple } from './maple.js';
+    const status = document.getElementById('status');
+    // checkPage 读取的结构化验收状态；绝不携带 token。
+    const verification = window.__ternVerification = {
+      ready: false, failed: false, mounted: false, tokenPrompt: false,
+      candidateSha: null, fonts: null, error: null,
+    };
+    try {
+      const bytes = await loadClient();
+      verification.candidateSha = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), value => value.toString(16).padStart(2, '0')).join('');
+      const wasm = await init({ module_or_path: bytes });
+      window.ternMaple = await injectMaple(wasm);
+      verification.fonts = window.ternMaple.fonts;
+      verification.ready = true;
+      status.textContent = '完整 Maple 字体已注入，正在连接 Tern 会话…';
+      const token = new URLSearchParams(location.search).get('token');
+      if (!token) {
+        // Fonts and init are fully verified above; without a token we stop here.
+        verification.tokenPrompt = true;
+        status.textContent = '请打开服务启动时打印的带 token 网址。';
+      } else {
+        if (!navigator.gpu) throw new Error('浏览器未提供 WebGPU，请使用支持 WebGPU 的浏览器并启用图形加速。');
+        const wire = new URL(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/wire`);
+        wire.searchParams.set('token', token);
+        const canvas = document.getElementById('tern');
+        window.tern = await mount(canvas, wire.href);
+        verification.mounted = true;
+        status.remove();
+        canvas.focus();
+      }
+    } catch (error) {
+      verification.failed = true;
+      verification.error = String((error && error.message) || error);
+      status.textContent = `Tern 启动失败：${verification.error}`;
+      status.className = 'error';
+      console.error(error);
+    }
+  </script>
+</body>
+</html>

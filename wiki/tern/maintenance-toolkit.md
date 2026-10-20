@@ -1,8 +1,8 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md)
-> Updated: 2026-10-18
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md)
+> Updated: 2026-10-21
 
 ## 用途
 
@@ -12,11 +12,17 @@
 
 1. 从不带认证参数的本机原生 Web 服务取得官方 WASM URL 和 SHA-384 SRI；版本从 URL 计算，资源必须通过完整性校验。
 2. 生成初始内存并用 FontTools 识别内嵌字体。分析器按实际 pointer/length 搜索唯一 descriptor，收集直接调用、函数表引用和局部指令上下文。未知 Binaryen IR 节点会使分析失败。
-3. 报告给出 `decision: manual_review_required`。实际指令修改通过文件编辑工具完成，再由标准 WASM compiler 编译。工具不自动改写指令，不把旧版本地址表用于新版本。
+3. 报告给出 `decision: manual_review_required`。新版本的指令位置、ABI 和替换语义须人工审核；WAT 中间表示及其补丁允许程序化生成、组装和编译。维护工具自身的程序源码使用文件编辑工具维护，不把旧版本地址表用于新版本。
 4. 字体处理校验初始内存 SHA-256，复制原字体的 lookup name records，保留 Maple 的完整 cmap、glyphs 和其他表。两个字体都通过校验后才修改 descriptor。
 5. 结构、时间、字体、浏览器和后台服务分别验收。结构报告的 `deployable` 始终为 `false`，不会成为自动部署批准。
 
-内存初始化会执行可信官方模块的 start function；遇到初始化 import 调用或不支持的 import 类型会停止。该过程不是不可信 WASM 的隔离环境。
+## 确定性构建与跨机器重建
+
+已登记版本（0.9.4、0.9.5）的补丁由 recipe 确定性重建：`build` 重放锁定片段并用固定 WABT `1.0.42` 编译候选与独立测试模块、核对 SHA-256、执行结构与时间行为检查后组装完整构建包；`check-build` 校验包内文件身份、报告关联与工具源码身份，只承认 `passed`，`not_run` 不计为通过；`rebuild` 仅凭构建包在另一台机器重建，不需要原机器路径。测试 exports 在 recipe 锁定原版行之前插入（该行不要求一定是 export）；anchor 位于 replace 区间内时替换片段必须包含唯一原文 anchor。WABT 固定安装脚本 `ci/install-wabt.sh` 校验官方 tarball SHA-256 与两个 binary 的精确版本，仅支持 Linux x86_64 且安装目录必须不存在；2026-10-21 已在原机实测通过，其他平台未验证。`assets` 将校验过的候选、glue、字体与 `index.template.html` 生成的实际入口装配成新目录；`verify-page` 强制 headless 验收该真实入口，完整 GPU 与 mount 始终记 `not_run`，篡改 `fonts.json` 中 font SHA-256 会被拒绝。
+
+0.9.4 与 0.9.5 的完整重建已完成：双版本 `build` + `check-build` 通过，candidate、独立测试模块、glue、profile 四处 SHA-256 与 recipe 锁定值一致，结构检查与六项真实时间行为检查重新执行并通过；0.9.5 构建包删除私有初始输入与原包后，在 fresh HOME `rebuild` 复验同样通过，candidate 与测试模块 hash 不变（真实 smoke `workflow-eV2Po2`，308.22s，退出码 0）。真实入口 `assets` 装配与 `verify-page` 无头验收同样通过（有效 6 passed、2 `not_run`；篡改 font SHA-256 被拒绝），receipt 在 `tools/tern-maintain/artifacts/workflow-eV2Po2/`。实际结果以 [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md) 记录为准；操作顺序与跨机器步骤见 [跨机器补丁手册](portable-patching-runbook.md)。
+
+内存初始化会执行可信官方模块的 start function；遇到初始化 import 调用或不支持的 import 类型会停止。工具只接受可信官方模块，不提供执行不可信 WASM 所需的隔离环境。
 
 ## 0.9.2 实际结果
 
@@ -40,15 +46,16 @@ FontTools 数据测试确认 lookup 名称转换后完整 cmap 保留。每份�
 
 结构检查 5 项与时间回归 6 项全部通过。Headless 浏览器完成模块初始化与两份完整字体注入，收到 33 个 WebSocket frame、pageerror 0；视觉效果由用户检查。正式服务 HTTP 200、补丁 WASM 指纹与既有 token 认证通过。
 
-统一版本需重启 daemon；观察到的结果：重启后查询返回四个 pane ID 与重启前一致（`326417514501`、`326417514503`、`347892350977`、`382252089349`），可继续使用。运行进程不随二进制路径替换更新：`/proc/<pid>/exe` 的 inode 与安装文件一致才能确认版本。当前 daemon、Web 服务与安装文件 inode 均为 `238854`；daemon 与 Web 各由一个 Python 父进程（`daemon.py`、`serve.py`）管理子进程生命周期，属预期结构。
+该次统一版本操作重启了 daemon；重启后查询返回四个 pane ID 与重启前一致（`326417514501`、`326417514503`、`347892350977`、`382252089349`），可继续使用。运行进程不随二进制路径替换更新；核对 `/proc/<pid>/exe` 的版本、SHA-256 和 device/inode，可确认实际运行身份。该次记录中的 daemon、Web 服务与安装文件 inode 均为 `238854`；daemon 与 Web 各由一个 Python 父进程（`daemon.py`、`serve.py`）管理子进程生命周期。
 
 ## 未完成与使用限制
 
-完整 GPU、Markdown 和笔记交互未由本工具验收；GitHub 端 CI 未执行。真实 native 后台烟雾检查只覆盖隔离 daemon、HTTP 和 pane 集合不变，不影响原有服务。
+完整 GPU、Markdown 和笔记交互未由本工具验收。GitHub Actions 工作流运行 Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；它不下载真实 WASM、不启动桌面浏览器、不访问本机凭据，CI 结果以 Actions 运行记录为准。真实 native 后台烟雾检查只覆盖隔离 daemon、HTTP 和 pane 集合不变，不影响原有服务。
 
 新 Tern 版本必须重新生成分析并人工审核。旧版本的 profile 只用于固定 SHA 的行为回归，不用于推导新版本的地址或函数编号。
 
 ## See Also
 
 - [Tern 网页字体修改与版本迁移](web-maple-font-rebuild.md)
+- [Tern 跨机器补丁手册](portable-patching-runbook.md)
 - [Tern 设置存储位置](settings-storage.md)

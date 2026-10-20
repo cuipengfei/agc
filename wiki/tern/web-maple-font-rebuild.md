@@ -1,8 +1,8 @@
 # Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
 
-> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18
-> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md)
-> Updated: 2026-10-18
+> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21
+> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md)
+> Updated: 2026-10-21
 
 ## 适用范围与完成标准
 
@@ -11,6 +11,8 @@
 已成功的实例为 Tern 0.8.3、Maple Mono NF CN 7.9：完整 Regular 与 Bold 字体进入 WASM 新分配的内存，两个实际加载路径改为读取新引用；页面在 `init()` 后、`mount()` 前注入字体。用户已确认 Windows 浏览器的终端中文和 Nerd Font 图标正常。
 
 新版本的地址、长度、family、引用位置及 hash 必须重新确认。发现结构变化就停止套用旧值，报告具体不匹配项。
+
+已登记版本的工具安装、资源获取、构建与验收入口见[跨机器补丁手册](portable-patching-runbook.md)。本文说明字体处理方法与历史证据；时间指令修改另见[时间 API 补丁与验收](time-api-patch-and-verification.md)。
 
 ## 重建步骤
 
@@ -40,7 +42,7 @@
 
 ### 4. 修改指令并编译
 
-通过文件编辑工具把确认的 `i32.const <原值>` 改为 `i32.const <记录地址>` 后接 `i32.load`。保留原版 WASM，输出不同文件。
+二进制/WAT 处理允许程序化执行，补丁工具源码仍使用文件编辑工具修改。需要改写字体常量的版本，把确认的 `i32.const <原值>` 改为 `i32.const <记录地址>` 后接 `i32.load`。保留原版 WASM，输出独立候选模块。
 
 关联 raw 保存了大文件分成原顺序片段、通过 Edit 修改、把片段传给标准 `wat2wasm` 的实际方法及编译脚本。使用浏览器兼容的编译输出，并由实际目标引擎解析；工具验证结果不代替浏览器兼容性检查。
 
@@ -98,8 +100,24 @@
 | Regular | 4367806 | 2288420 | 9031308 | 9031312 | 20,564,496 | 9031308 |
 | Bold，对应原 Medium | 6656226 | 2313308 | 9031332 | 9031336 | 20,517,844 | 9031332 |
 
-原 lookup family 分别是 `BerkeleyMono Nerd Font` 与 `BerkeleyMono Nerd Font Medium`。修改版 WASM SHA-256 为 `bcb60f010b308af22da907513c992b073a51fd427b8702da3b9a6425ec8d1492`，glue SHA-256 `99d2c293…`。字体槽位在 0.9.2 后从旧地址（0.8.3 的 `8962760` 等）变为 `9031308`/`9031332` 等新常量；原版两份字体仍无 CJK 字符（各 11217 个字符映射）。完整源码、输入 hash 和验证结果以关联 raw 为准。
+原 lookup family 分别是 `BerkeleyMono Nerd Font` 与 `BerkeleyMono Nerd Font Medium`。修改版 WASM SHA-256 为 `bcb60f010b308af22da907513c992b073a51fd427b8702da3b9a6425ec8d1492`，glue SHA-256 `99d2c293…`。原版两份字体仍无 CJK 字符（各 11217 个字符映射）。完整源码、输入 hash 和验证结果以关联 raw 为准。
 
+
+## 0.9.5 历史结果
+
+此版本通过运行时分配完整字体并更新 descriptor 完成注入，归档没有修改字体相关 WAT 常量。时间补丁与字体注入分别验收，不能把旧版本字体常量修改步骤直接用于此版本。
+
+Regular、Bold 各保留 33091 个字符映射，其中 20976 个属于证据记录的 CJK 范围；两份字体 hash 与 0.9.4 证据一致。初始化和数据检查覆盖了实际字体注入；精确 fallback 顺序与最终字形外观未由这些检查证明。
+
+正式入口曾在无 token 的 headless 环境完成初始化与注入，没有执行 mount/WebSocket。完整 GPU 和 native desktop UI 未验证，不能由 Web 模块初始化推断其他平台表现。
+
+## 确定性资产装配与页面验收（2026-10-21 工具状态）
+
+`assets` CLI 从已通过 `check-build` 的 bundle 与 `font_manifest.py` 输出装配站点目录：`fonts.json` 的 `wasmSha256` 必须等于已验证 bundle 的 candidate（绝不接受 test 模块）；字体恰为 Regular、Bold 两份，URL 固定为 `./pkg/MapleMono-NF-CN-<style>.ttf`；slot、expectedPointer、expectedLength、bytes 必须是正安全整数且槽位间隔至少 8；叶文件或父目录经 symlink 越界即拒绝。输出含 index.html、maple.js、fonts.json、pkg/client.wasm、pkg/client.js、两份字体和逐文件记录 SHA-256 的 deploy-manifest.json。
+
+`verify-page` 只访问无凭据、无 query 的 loopback 真实入口，页面内监测并拒绝 WebSocket 构造（构造时抛出错误）。检查序列为 page_served、headless_forced、page_ready、fonts_injected、candidate_hash、websocket_absent；wire_mount 与 gpu_interaction_full 恒 `not_run`。fonts_injected 要求页面自报的 family 为 `Maple Mono NF CN` 且恰有 Bold、Regular 两份；candidate_hash 要求页面自报的 candidate SHA-256 与本次导航实际服务的 `/pkg/client.wasm` 字节一致。字体或模块 hash 错误路径体现为 fonts_injected 或 candidate_hash `failed`。
+
+2026-10-21 已观察：`font_manifest.py` 真实生产退出 0，产出 fonts.json 与两份字体；字符映射与 CJK 计数、两个字体 SHA-256 与上文 0.9.5 历史结果一致；全量 Bun 测试最终 61 pass / 0 fail（7 个测试文件）。`assets` 真实 CLI 用已验证 bundle 与上述 fonts 生成 `workflow-eV2Po2/site`（index.html、maple.js、fonts.json、pkg/ 与 deploy-manifest.json，7 个文件逐字节 hash 核对）。verify-page 正常路径 6 项 passed、2 项 not_run（退出 0）；错误字体 hash 路径仅经 HTTP 替换 `/fonts.json` 响应，3 项 failed、3 项 passed、2 项 not_run（退出 1）；receipt 为 `real-page-smoke.json` 与两份报告。未验证：完整 GPU、mount、native desktop UI、其他物理机器与操作系统。
 
 ## See Also
 

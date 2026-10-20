@@ -1,0 +1,6 @@
+    local.get 3
+    i32.const 112
+    i32.add
+    local.get 12
+    local.get 4
+    call 32362

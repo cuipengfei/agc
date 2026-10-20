@@ -1,0 +1,2 @@
+    local.get 10
+    call 32361

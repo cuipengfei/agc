@@ -1,0 +1,40 @@
+  (func (param i32)
+    (local i32 f64 i64)
+    call 583
+    local.tee 1
+    table.get 1
+    call 564
+    call 563
+    local.set 2
+    local.get 1
+    call 24679
+    local.get 2
+    f64.const 1000
+    f64.div
+    i64.trunc_f64_u
+    local.set 3
+    local.get 0
+    local.get 3
+    i64.store
+    local.get 0
+    local.get 2
+    local.get 3
+    f64.convert_i64_u
+    f64.const 1000
+    f64.mul
+    f64.sub
+    f64.const 1000000
+    f64.mul
+    i32.trunc_f64_u
+    i32.store offset=8)
+  (func (param i32 i64 i32)
+    local.get 0
+    call 32361
+    local.get 0
+    local.get 0
+    i64.load
+    local.get 0
+    i32.load offset=8
+    local.get 1
+    local.get 2
+    call 23099)

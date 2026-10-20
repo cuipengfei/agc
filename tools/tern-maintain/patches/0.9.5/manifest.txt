@@ -1,0 +1,49 @@
+Tern 0.9.5 人工修改定位清单
+
+原版 WASM SHA-256：1e6a49eaf33e3575e3a1c67c522cea76ece874dde2b4c8a98af5b16397cfbca5
+现有 candidate SHA-256：b132e0fe9e1ada03339ed222f2dd04b08385c79f39b1797d2610c253c4eefdbe
+既有测试模块 SHA-256：ce28ecb43c18861f96c63575f53d99998eaee81e9626b778ba7eae40c399cc0d
+定位依据：会话中 WABT 1.0.42 wasm2wat 原版输出，共 19690137 行。
+所有行号都相对于未修改的原版 WAT；不随插入内容调整。
+
+片段           原始行号    原始指令     修改类型
+parts/part-001 2819712     call 30737   Instant；输出 local 8 + 32
+parts/part-003 2820668     call 30737   elapsed；输出 local 8 + 32；起点 local 8 的 offset 72/80
+parts/part-005 3308163     call 30738   SystemTime；输出 local 3 + 424
+parts/part-007 3869253     call 30738   SystemTime；输出 local 3 + 216
+parts/part-009 10946618    call 30737   Instant；输出 local 5 + 88
+parts/part-011 10948217    call 30737   elapsed；输出 local 5 + 88；起点 local 5 的 offset 48/56
+parts/part-013 11908057    call 30737   Instant；输出 local 5
+parts/part-015 12178632    call 30737   Instant；输出 local 3 + 8
+parts/part-017 12178678    call 30737   Instant；输出 local 5
+parts/part-019 12178741    call 30737   elapsed；输出 local 3 + 112；起点 local 12/local 4
+parts/part-021 13564223    call 30737   Instant；输出 local 10
+parts/part-023 13564235    call 30738   SystemTime；输出 local 11
+parts/part-025 14388420    call 30737   Instant；输出 local 4
+parts/part-027 16815578    call 30738   SystemTime；输出 local 3
+parts/part-029 16967199    call 30737   Instant；输出 local 12 + 64
+parts/part-031 17425436    call 30738   SystemTime；输出 local 2 + 144
+parts/part-033 17489724    call 30737   Instant；输出 local 6 + 8
+parts/part-035 18625778    call 30737   Instant；输出 local 2 + 40
+parts/part-037 18632199    call 30737   Instant；输出 local 3 + 432
+parts/part-039 18632458    call 30737   Instant；输出 local 4 + 128
+parts/part-041 18870631    call 30737   Instant；输出 local 2 + 64
+parts/part-043 19065261    call 30737   Instant；输出 local 1
+parts/part-045 19158355    call 30737   elapsed；输出 local 1 + 16；起点 local 1 的 offset 0/8
+parts/part-047 19188990    call 30737   Instant；输出 local 2；所属 consumer 为 25472
+parts/part-049 19197476    call 30737   Instant；输出 local 2 + 128
+parts/part-051 19198389    call 30737   Instant；输出 local 2 + 128
+
+parts/part-053 是两个新增函数的完整文本，插入原版第 19679549 行之前，即第一个 table 声明之前。
+该文件仅保存新增函数，不包含未修改的原版 table、export、elem、data 段或模块末尾括号。
+插入后预期新增函数全局索引为 32361 和 32362；索引包含导入函数，不能只用定义函数数量计算。
+函数 32361 使用既有 imports 583/564/563、externref table 1，并调用 24679 释放临时 externref。
+函数 32362 取得当前时间后，调用既有函数 23099 完成饱和相减。
+5 个 SystemTime 调用改为既有日历函数 25181；既有 epoch 函数为 18649。
+
+exports/time-exports.wat 仅用于独立测试模块，在原版 export 列表末尾、start 声明之前插入。
+正式 candidate 不应包含这五个 test_* exports。
+consumerFlags 和测试导出对应 profiles/0.9.5.json。
+
+本清单与片段均从会话中的人工 Edit 内容及已观察行号手工恢复；原临时分片与测试模块已清理。
+本次归档没有重新生成完整 WAT、编译模块或比对重建产物 hash；以上现有模块 hash 不代表归档已通过重建验证。
