@@ -132,11 +132,17 @@ async function applyRecipe({ wasm2wat, originalPath, recipe, replacements, expor
   const rl = createInterface({ input: child.stdout, terminal: false, crlfDelay: Infinity });
   const wat = createWriteStream(outWat), testWat = createWriteStream(outTestWat);
   const streamsFinished = Promise.allSettled([finished(wat), finished(testWat)]);
-  // 任一流 error 立即经 AbortController 打断另一流的 drain 等待与输入消费；
-  // 已 errored/destroyed 的流在 write 前直接抛错，不等已过去的事件。
+  // 任一写流出错时停止输入，并经 AbortController 中断另一写流的 drain 等待。
+  // 已 errored/destroyed 的流在 write 前直接抛出错误，不等待已触发的事件。
   const streamAbort = new AbortController();
   let streamFailure = null;
-  const onStreamError = error => { streamFailure ??= error; streamAbort.abort(); };
+  const onStreamError = error => {
+    streamFailure ??= error;
+    streamAbort.abort();
+    rl.close();
+    child.stdout.destroy();
+    child.kill('SIGKILL');
+  };
   wat.once('error', onStreamError);
   testWat.once('error', onStreamError);
   const streamDown = new Promise((_, reject) => streamAbort.signal.addEventListener('abort', () => reject(streamFailure), { once: true }));
@@ -205,6 +211,7 @@ async function applyRecipe({ wasm2wat, originalPath, recipe, replacements, expor
         if (shared.length >= 64 * 1024) await flushShared();
       }
     }
+    if (streamFailure) throw streamFailure;
     await flushShared();
     if (spawnFailed) fail(`wasm2wat failed: ${childErr.trim()}`);
     const code = await exit;
@@ -217,13 +224,14 @@ async function applyRecipe({ wasm2wat, originalPath, recipe, replacements, expor
     const outcomes = await streamsFinished;
     for (const outcome of outcomes) if (outcome.status === 'rejected') throw outcome.reason;
   } catch (error) {
+    const failure = streamFailure ?? error;
     child.kill('SIGKILL');
     child.stdout.destroy();
     wat.destroy();
     testWat.destroy();
     rl.close();
     await Promise.all([exit, streamsFinished]);
-    throw error;
+    throw failure;
   }
 }
 

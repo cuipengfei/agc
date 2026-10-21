@@ -70,6 +70,8 @@ bun cli.mjs function --wasm /tmp/tern-candidate/pkg/original.wasm --index NUMBER
 
 已登记版本（当前为 0.9.4、0.9.5）用 recipe 确定性重建。recipe 锁定 WABT 版本、原版/candidate/测试模块/glue/profile 的 SHA-256、原版 WAT 行数和每处片段对原文的 hash 断言。`build` 流式重放片段生成候选 WAT 与测试 WAT，用固定 WABT 编译并逐一核对两个输出 hash，执行结构检查与真实时间行为检查，组装完整构建包后 `check-build` 自检；期望 hash 绝不因失败改写，失败构建保留目录供检查。`check-build` 只承认 `passed`：`not_run` 不等于通过（结构报告仅 `time_behavior`/`full_ui` 允许 `not_run`，时间报告要求六项全部 `passed`），未知检查名同样使校验失败。测试 exports 在 recipe 锁定原版行之前插入（insertBefore）；锁定行不要求一定是 export（0.9.4 为首个 export，0.9.5 为 exports 之后的 elem 行）。anchor 可位于 replace 区间内，此时替换片段必须包含唯一原文 anchor。
 
+WAT 写流失败时会立即关闭 readline 和子进程 stdout、终止输入子进程，并取消另一写流的 drain 等待；保留首个写入错误与失败目录。补丁原文校验等失败原因会在清理前保存，清理产生的后续 stream error 不替换该原因。独立子进程回归覆盖“输入仍在等待时发生真实 EISDIR”，断言原始错误、生产者退出信号与失败目录状态。
+
 WABT 用固定脚本安装：仅支持 Linux x86_64，安装目录必须不存在；下载官方 `wabt-1.0.42-linux-x64.tar.gz`，解压前校验 SHA-256，并要求 `wat2wasm`/`wasm2wat` 两个 binary 精确报告 `1.0.42`。2026-10-21 已在原机实测通过（`bash ci/install-wabt.sh /tmp/tern-wabt-verified-20261021-ok`）；其他平台未验证。最后一行 stdout 为包含 `wat2wasm`/`wasm2wat` 的 bin 目录：
 
 ```bash

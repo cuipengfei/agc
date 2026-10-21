@@ -1,7 +1,7 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md)
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md)
 > Updated: 2026-10-21
 
 ## 用途
@@ -21,6 +21,10 @@
 已登记版本（0.9.4、0.9.5）的补丁由 recipe 确定性重建：`build` 重放锁定片段并用固定 WABT `1.0.42` 编译候选与独立测试模块、核对 SHA-256、执行结构与时间行为检查后组装完整构建包；`check-build` 校验包内文件身份、报告关联与工具源码身份，只承认 `passed`，`not_run` 不计为通过；`rebuild` 仅凭构建包在另一台机器重建，不需要原机器路径。测试 exports 在 recipe 锁定原版行之前插入（该行不要求一定是 export）；anchor 位于 replace 区间内时替换片段必须包含唯一原文 anchor。WABT 固定安装脚本 `ci/install-wabt.sh` 校验官方 tarball SHA-256 与两个 binary 的精确版本，仅支持 Linux x86_64 且安装目录必须不存在；2026-10-21 已在原机实测通过，其他平台未验证。`assets` 将校验过的候选、glue、字体与 `index.template.html` 生成的实际入口装配成新目录；`verify-page` 强制 headless 验收该真实入口，完整 GPU 与 mount 始终记 `not_run`，篡改 `fonts.json` 中 font SHA-256 会被拒绝。
 
 0.9.4 与 0.9.5 的完整重建已完成：双版本 `build` + `check-build` 通过，candidate、独立测试模块、glue、profile 四处 SHA-256 与 recipe 锁定值一致，结构检查与六项真实时间行为检查重新执行并通过；0.9.5 构建包删除私有初始输入与原包后，在 fresh HOME `rebuild` 复验同样通过，candidate 与测试模块 hash 不变（真实 smoke `workflow-eV2Po2`，308.22s，退出码 0）。真实入口 `assets` 装配与 `verify-page` 无头验收同样通过（有效 6 passed、2 `not_run`；篡改 font SHA-256 被拒绝），receipt 在 `tools/tern-maintain/artifacts/workflow-eV2Po2/`。实际结果以 [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md) 记录为准；操作顺序与跨机器步骤见 [跨机器补丁手册](portable-patching-runbook.md)。
+
+写流失败时会立即停止读取输入并终止输入子进程，原始写入错误与失败目录保留；资源清理产生的后续错误不会替换已捕获的补丁断言等失败原因。定向回归控制输入保持等待并由文件系统产生真实 `EISDIR`，核对原始错误、`SIGKILL` 与失败目录状态；修复后全套 Bun 测试 62 项通过。另一次独立 Node 故障 smoke 在 19ms 内返回原始错误。该回归控制了外部输入边界，实际构建逻辑和文件系统错误处理仍由真实代码执行。
+
+写流取消修正后，0.9.4 与 0.9.5 又分别完成真实 `build` 和 `check-build`；删除私有初始输入与首份包后，全新 HOME 重建 0.9.5 同样通过，两个模块 SHA-256 保持不变，新包也成功生成七份实际网页资源。此次源码身份、命令结果与 receipt 见 [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md)。
 
 内存初始化会执行可信官方模块的 start function；遇到初始化 import 调用或不支持的 import 类型会停止。工具只接受可信官方模块，不提供执行不可信 WASM 所需的隔离环境。
 

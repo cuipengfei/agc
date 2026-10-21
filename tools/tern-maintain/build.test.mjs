@@ -25,6 +25,16 @@ async function buildInto(name) {
   return buildMinimalBundle(fx, wabtDir, join(fx.dir, name));
 }
 
+test('a write error while awaiting input cancels the producer and preserves the original failure', async () => {
+  const child = Bun.spawn([process.execPath, join(import.meta.dir, 'fixtures/write-error.mjs')], { stdout: 'pipe', stderr: 'pipe' });
+  const [code, stdout, stderr] = await Promise.all([child.exited, new Response(child.stdout).text(), new Response(child.stderr).text()]);
+  expect({ code, stderr }).toEqual({ code: 0, stderr: '' });
+  const result = JSON.parse(stdout);
+  expect(result.error).toMatch(/EISDIR/);
+  expect(result.producerSignal).toBe('SIGKILL');
+  expect(result.directoryPreserved).toBe(true);
+});
+
 test('checkBundle accepts a deterministic build with bound reports', async () => {
   const result = await buildInto('out-ok');
   expect(result.outputs.candidateSha256).toBe(fx.candidateSha);

@@ -1411,3 +1411,9 @@
 - Raw: raw/tern/2026-10-21-deterministic-build-and-portability.md
 - Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册; Tern 时间 API 补丁与验收; Tern 网页字体修改与版本迁移
 - 要点：四篇文章证据校验为 0 evidence errors；9 个数字标记逐项核对，小数耗时与 fenced code 中的版本、时间断言均有 raw 依据。本次新增三份 raw 均有文章引用；既有其他主题的 2 个未引用 raw 保持原样。双版本真实重建、删除初始输入后的 fresh HOME 复验、真实网页正常及错误字体 hash 路径全部已有实际输出；物理异机、其他 OS、完整 GPU/mount 与 native desktop UI 未验证。
+
+## [2026-10-21] ingest | Tern 写流失败时取消输入等待
+- Disposition: Update
+- Raw: raw/tern/2026-10-21-write-error-input-cancellation.md
+- Updated: Tern 升级辅助工具与验收边界
+- 要点：定向回归先复现等待输入期间的真实 EISDIR 未立即结束处理、原始错误被替换；修正后关闭输入并终止输入子进程，保留首个失败原因与失败目录，清理错误不替换已有补丁断言。独立子进程回归检查 EISDIR、SIGKILL 与失败目录；全套 Bun 62 项通过，独立 Node 故障 smoke 在 19ms 内返回原始错误。最终源码真实重建 0.9.4/0.9.5 并完成 check-build，复制完整包、删除私有输入与首包后 fresh HOME 重建通过，原锁定模块 hash 全部不变；新包 assets 生成成功。receipt 为 tools/tern-maintain/artifacts/write-cancel-llvnoA/receipt.json。
