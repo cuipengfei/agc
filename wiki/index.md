@@ -489,3 +489,11 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为与 Do
 |---------|---------|---------|
 | [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 26 个公开仓库 + Tern + Orca 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 2026-10-18 快照 | 2026-10-18 |
 | [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项 | 2026-10-18 |
+
+## vscode
+
+VS Code（含 serve-web）的设置分层、Web 客户端存储与 Remote 配置位置。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [VS Code serve-web 的设置分层：浏览器 User 与 WSL Remote](vscode/serve-web-settings-layers.md) | Web 客户端用户设置存于浏览器 IndexedDB（`vscode-web-db` / `vscode-userdata-store`）；serve-web 以请求 Host 作为 `remoteAuthority`，Remote 层读取服务端 `data/Machine/settings.json`；优先级 User < Remote < Workspace < Policy；`window.title` 默认 scope 为 WINDOW，Workspace 层接受、Folder 层不接受；Remote 层值为 `${rootName}`，最终生效值未验证 | 2026-10-21 |

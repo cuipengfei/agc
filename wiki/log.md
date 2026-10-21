@@ -1417,3 +1417,8 @@
 - Raw: raw/tern/2026-10-21-write-error-input-cancellation.md
 - Updated: Tern 升级辅助工具与验收边界
 - 要点：定向回归先复现等待输入期间的真实 EISDIR 未立即结束处理、原始错误被替换；修正后关闭输入并终止输入子进程，保留首个失败原因与失败目录，清理错误不替换已有补丁断言。独立子进程回归检查 EISDIR、SIGKILL 与失败目录；全套 Bun 62 项通过，独立 Node 故障 smoke 在 19ms 内返回原始错误。最终源码真实重建 0.9.4/0.9.5 并完成 check-build，复制完整包、删除私有输入与首包后 fresh HOME 重建通过，原锁定模块 hash 全部不变；新包 assets 生成成功。receipt 为 tools/tern-maintain/artifacts/write-cancel-llvnoA/receipt.json。
+
+## [2026-10-21] ingest | VS Code serve-web 的设置分层：浏览器 User 与 WSL Remote
+- Disposition: New
+- Raw: raw/vscode/vscode-settings-precedence-official.md; raw/vscode/2026-10-21-vscode-serve-web-remote-settings-source.md; raw/vscode/2026-10-21-wsl-machine-settings-snapshot.md
+- 要点：serve-web 将请求 Host 作为 `remoteAuthority`，Web 客户端用户设置由浏览器 IndexedDB（`vscode-web-db`、`vscode-userdata-store`）提供；Remote 层通过 `RemoteUserConfiguration` 读取服务端 `settingsPath`，服务端返回 `userDataPath/Machine/settings.json`。本地用户配置与远程用户配置合并时远程覆盖本地；`window.title` 未声明 scope，注册表默认 WINDOW，`REMOTE_MACHINE_SCOPES` 含 WINDOW，`WORKSPACE_SCOPES` 含 WINDOW，`FOLDER_SCOPES` 不含 WINDOW，因此可写入 Machine 设置，Workspace 可写，Folder 不可写；Policy 最后生效。本机 Machine 设置 20 个键、956B，含 `${rootName}`；工作区与 Policy 是否覆盖未检查；服务端仍在下载更新，浏览器标签标题未观察。
