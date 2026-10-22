@@ -1,7 +1,7 @@
 # Kiro 认证凭据路径速查（免费 vs 付费）
 
 > Sources: kiro.dev 官方文档直读 + 插件源码, 2026-10-22; 本会话 Kiro CLI 与目录实测, 2026-10-23
-> Raw: [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md); [Kiro 模型目录刷新与 OMP 可见性排查](../../raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md)
+> Raw: [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md); [Kiro 模型目录刷新与 OMP 可见性排查](../../raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md); [Kiro 模型目录刷新与 OMP 可见性排查（无日期前缀副本）](../../raw/omp-tips/kiro-omp-model-visibility-fix.md)
 > Updated: 2026-10-23
 
 ## Overview
