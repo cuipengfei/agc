@@ -1,7 +1,7 @@
 {
   "plugins": {
     "@plannotator/pi-extension": {
-      "version": "0.28.25",
+      "version": "0.28.26",
       "enabledFeatures": null,
       "enabled": true
     },
@@ -12,6 +12,11 @@
     },
     "@qoder-ai/better-harness": {
       "version": "0.7.0-alpha2",
+      "enabledFeatures": null,
+      "enabled": true
+    },
+    "ns-omp-provider-kiro": {
+      "version": "0.5.3",
       "enabledFeatures": null,
       "enabled": true
     }

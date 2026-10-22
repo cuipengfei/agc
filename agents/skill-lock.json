@@ -1204,9 +1204,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/obra/superpowers.git",
       "skillPath": "skills/writing-skills/SKILL.md",
-      "skillFolderHash": "f761162236b19330da62b22ad0da20f5dac7c6ab",
+      "skillFolderHash": "660ede63b84ce5d07ef28cccc2973165e2ca06e2",
       "installedAt": "2026-10-07T15:54:16.444Z",
-      "updatedAt": "2026-10-07T15:54:16.444Z"
+      "updatedAt": "2026-10-22T12:27:26.359Z"
     },
     "skill-development": {
       "source": "anthropics/claude-plugins-official",
@@ -1231,9 +1231,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "1677476734685435e91839cf62871443c4b83dfc",
+      "skillFolderHash": "a650bb04800097a6492bd1dce4415f89fe5cf1b6",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-21T13:07:19.345Z"
+      "updatedAt": "2026-10-22T12:28:32.646Z"
     },
     "hyperframes-animation": {
       "source": "heygen-com/hyperframes",
@@ -1258,9 +1258,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "6386daeb43e830f6a346edd72398869fac235fc6",
+      "skillFolderHash": "fa6e574ba98b8df6d3bc900896d23c38f5eb8d9d",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-19T11:22:00.953Z"
+      "updatedAt": "2026-10-22T12:29:29.366Z"
     },
     "hyperframes-core": {
       "source": "heygen-com/hyperframes",

@@ -36,6 +36,7 @@ enabledModels:
   - openai-codex/*
   - typesafe-zen/*
   - nvidia/**
+  - kiro/*
 disabledProviders: []
 providers:
   maxInFlightRequests:
@@ -68,18 +69,19 @@ providers:
 disabledExtensions: []
 modelRoleStorage: global
 modelRoles:
-  plan: kimi-code/k3:high
-  slow: kimi-claw/k3-agent:xhigh
+  plan: c8787/gpt-6.1-sol:high
+  slow: c8787/gpt-6.1-sol:high
   commit: c8787/gpt-6-luna:high
   smol: sensenova/deepseek-v4-flash:high
-  task: kimi-claw/k3-agent:high
-  vision: c8787/gpt-6-luna:high
-  tiny: kimi-claw/k2d8-preview:high
+  task: opencode-zen/deepseek-v4.1-flash-free:max
+  vision: sensenova/glm-5.2:high
+  tiny: sensenova/glm-5.2:high
   advisor: sensenova/deepseek-flash:max
-  default: kimi-code/k3:high
+  default: opencode-zen/deepseek-v4.1-flash-free:max
   web: web/firecrawl
-  memory: c8787/gpt-6-luna:max
+  memory: sensenova/glm-5.2:high
   judge: typesafe-zen/jev-1.13-free
+  widget: opencode-zen/glm-5.3-flash-free:high
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
