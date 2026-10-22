@@ -1,7 +1,7 @@
 # Kiro 接入 OMP：ns-omp-provider-kiro 设置与验证实录
 
 > Sources: 本会话 OMP 18.12.5 + ns-bridge 0.1.15 实测, 2026-10-22; 2026-10-23 DNS 超时与 Kiro 目录刷新修复
-> Raw: [Kiro OMP 设置实录](../../raw/omp-tips/2026-10-22-kiro-omp-setup-via-ns-bridge.md); [Kiro 模型目录刷新与 OMP 可见性排查](../../raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md); [Kiro 模型目录刷新与 OMP 可见性排查（无日期前缀副本）](../../raw/omp-tips/kiro-omp-model-visibility-fix.md); [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md)
+> Raw: [Kiro OMP 设置实录](../../raw/omp-tips/2026-10-22-kiro-omp-setup-via-ns-bridge.md); [Kiro 模型目录刷新与 OMP 可见性排查](../../raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md); [Kiro 模型目录刷新验证记录](../../raw/omp-tips/kiro-omp-model-visibility-fix.md); [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md)
 > Updated: 2026-10-23
 
 ## Overview
