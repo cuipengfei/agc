@@ -1,8 +1,8 @@
 # Kiro 认证凭据路径速查（免费 vs 付费）
 
-> Sources: kiro.dev 官方文档直读 + 插件源码, 2026-10-22
-> Raw: [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md)
-> Updated: 2026-10-22
+> Sources: kiro.dev 官方文档直读 + 插件源码, 2026-10-22; 本会话 Kiro CLI 与目录实测, 2026-10-23
+> Raw: [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md); [Kiro 模型目录刷新与 OMP 可见性排查](../../raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md)
+> Updated: 2026-10-23
 
 ## Overview
 
@@ -25,6 +25,12 @@
 | `~/.omp/agent/agent.db` | `ns-omp-provider-kiro` 登录写入 |
 | `~/.local/share/kiro-cli/data.sqlite3` | kiro-cli 凭据库存 `kirocli:social:token`、`kirocli:odic:token`、`kirocli:external-idp:token` |
 | `~/.aws/sso/cache/kiro-auth-token.json` | Kiro IDE 缓存，pi-provider-kiro 兼容读取 |
+
+## Free 计划模型观察
+
+- 本会话中，Kiro 账户处于 Free 计划；在报告为美国出口的环境下，原生 Kiro CLI 对 `claude-sonnet-4.5` 的请求返回 `MODEL_OK`。同次目录刷新列出 `claude-sonnet-4-5` 与 `claude-haiku-4-5`；Haiku 只验证目录可见，未进行生成请求。
+- `gpt-5.6-sol` 和 `claude-opus-5.5` 的请求返回 `not available`；失败请求是否扣减 credits 未核账。
+- 这是单账户、单次环境观察；没有受控比较 IP 因果，也不能推广到所有 Free 账户或地区。
 
 ## SoT 与风控
 
