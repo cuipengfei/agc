@@ -6,11 +6,11 @@
 - Wiki: Updated: wiki/omp-tips/kiro-omp-setup-via-ns-bridge.md; wiki/model-gateway-mismatch/kiro-auth-paths-cheatsheet.md; Updated: wiki/index.md
 - 要点：Node 默认 DNS lookup 等 IPv6 约 11 秒，超出 undici 10 秒连接超时；给 Kiro management 请求使用同版 Undici IPv4 lookup dispatcher 后，目录刷新成功并含 Sonnet/Haiku。Free 下 Sonnet 原生请求返回成功，Haiku 仅目录可见；菜单后来出现但原因未捕获。新 raw 不含个人账号、具体 IP、token 或完整 transcript。
 
-## [2026-10-23] update | Kiro raw 文件名元数据修正
+## [2026-10-23] update | Kiro 管理目录刷新与 OMP 模型可见性
 - Disposition: Update
-- Raw: raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md; raw/omp-tips/kiro-omp-model-visibility-fix.md
+- Raw: raw/omp-tips/kiro-omp-model-visibility-fix.md
 - Wiki: Updated: wiki/omp-tips/kiro-omp-setup-via-ns-bridge.md; wiki/model-gateway-mismatch/kiro-auth-paths-cheatsheet.md
-- 要点：原始 raw 已提交并冻结，保持不动；新增无日期前缀副本以符合 Published: Unknown 命名规则，两个 wiki 的 Raw 字段并列引用旧文件与校正副本。
+- 要点：Node 默认 DNS lookup 耗时超过 undici 10 秒连接超时；Kiro management 请求使用同版 Undici IPv4 lookup 后刷新成功，目录含 8 个模型。Free 下原生 Sonnet 请求成功；Haiku 仅确认目录可见。菜单后来出现，触发原因未知。
 
 ## [2026-10-23] lint | 4 suspects found, 0 auto-fixed
 - 范围：本次更新的两篇 Kiro 文章。4 个 suspect 均在关联 raw 中可查：OMP 版本号 18.12.5、2026-10-23 日期、因行内代码剥离导致的模型验证句、ksk_ Key 类型名称。Evidence errors 为 0；两项 unreferenced raw 是旧条目，未处理。
