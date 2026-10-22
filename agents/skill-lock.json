@@ -1294,9 +1294,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "44e994d09c67b38791680e8f3ee33d454f7b98e2",
+      "skillFolderHash": "ca95458584add658afa2a9eaa986795949970103",
       "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-10-08T15:10:15.416Z"
+      "updatedAt": "2026-10-22T16:09:29.716Z"
     },
     "hyperframes-studio": {
       "source": "heygen-com/hyperframes",
@@ -1312,9 +1312,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "9bb4d31b5e0e4de1e66a345f9dd1bfa24fc686f5",
+      "skillFolderHash": "3d12ce2c00ff80ea4bfb2a067eca515c6052748b",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-20T11:48:40.090Z"
+      "updatedAt": "2026-10-22T16:10:37.597Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
