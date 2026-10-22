@@ -1431,3 +1431,8 @@
 - Disposition: New
 - Raw: raw/vscode/vscode-settings-precedence-official.md; raw/vscode/2026-10-21-vscode-serve-web-remote-settings-source.md; raw/vscode/2026-10-21-wsl-machine-settings-snapshot.md
 - 要点：serve-web 将请求 Host 作为 `remoteAuthority`，Web 客户端用户设置由浏览器 IndexedDB（`vscode-web-db`、`vscode-userdata-store`）提供；Remote 层通过 `RemoteUserConfiguration` 读取服务端 `settingsPath`，服务端返回 `userDataPath/Machine/settings.json`。本地用户配置与远程用户配置合并时远程覆盖本地；`window.title` 未声明 scope，注册表默认 WINDOW，`REMOTE_MACHINE_SCOPES` 含 WINDOW，`WORKSPACE_SCOPES` 含 WINDOW，`FOLDER_SCOPES` 不含 WINDOW，因此可写入 Machine 设置，Workspace 可写，Folder 不可写；Policy 最后生效。本机 Machine 设置 20 个键、956B，含 `${rootName}`；工作区与 Policy 是否覆盖未检查；服务端仍在下载更新，浏览器标签标题未观察。
+
+## [2026-10-22] ingest | OMP task 工具中的 seance 历史会话咨询
+- Disposition: New; Update
+- Raw: raw/omp-background-agents/2026-10-22-task-seance-historical-consult.md; raw/ai-coding-agents/2026-10-22-kiro-api-gateway-landscape.md
+- Updated: OMP task 工具中的 seance 历史会话咨询; Kiro 后端 API 给任意 agent 用

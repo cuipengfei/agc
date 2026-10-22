@@ -243,6 +243,7 @@ OMP 后台 agent 派遣机制：/tan fork 分身、缓存 lineage 与 side-turn 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP /tan：后台 fork 分身命令](omp-background-agents/tan-command.md) | /tan 的 fork 语义、隔离指令与 session 身份分离 + cache key 共享的缓存设计 | 2026-09-05 |
+| [OMP task 工具中的 seance 历史会话咨询](omp-background-agents/task-seance-historical-consult.md) | 主 agent 派遣指引、参数范围、历史 fork、模型选择与上下文检索边界 | 2026-10-22 |
 
 ## omp-mnemopi
 

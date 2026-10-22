@@ -17,7 +17,7 @@ Kiro 订阅用户可以让任何 agent（OMP、Claude Code、OpenCode 等）消�
 | 3 | [ZyphrZero/kiro.rs](https://github.com/ZyphrZero/kiro.rs) | 489 | 多协议网关 | OAuth 浏览器登录 / Key | 需要多客户端或多账号时适合 |
 | 4 | [minpeter/kiro-lb](https://github.com/minpeter/kiro-lb) | 31 | OpenAI + Anthropic 网关 | 浏览器 / device-code | 独立 OAuth 登录、多账号 |
 
-完整 20 项筛选表与剔除理由见 raw。**星数与位次弱相关**：有 `pi-provider-kiro` 1963★ 排在中游、`AIClient2API` 8907★ 因 Kiro 风控前科降到第 5。
+完整 20 项筛选表与剔除理由见 raw。**星数与位次弱相关**：`hank9999/kiro.rs` 1963★ 排在中游；`mikeyobrien/pi-provider-kiro` 为 106★；`AIClient2API` 8907★ 因 Kiro 风控前科降到第 5。
 
 ## 认证与支付边界
 
