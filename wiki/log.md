@@ -1,5 +1,14 @@
 # Wiki Log
 
+## [2026-10-22] ingest | Kiro 后端 API 接入 OMP：生态排名、设置实录与认证边界
+- Disposition: New (+ Cascade Update: agent-harness/sol-pi-omp-compat.mdseealso 补钩子断层链接)
+- Raw: raw/ai-coding-agents/2026-10-22-kiro-api-gateway-landscape.md; raw/omp-tips/2026-10-22-kiro-omp-setup-via-ns-bridge.md; raw/omp-discovery/2026-10-22-omp-custom-provider-kiro-mismatch.md; raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md
+- Wiki: Created: wiki/ai-coding-agents/kiro-backend-api-for-agents.md; wiki/omp-tips/kiro-omp-setup-via-ns-bridge.md; wiki/model-gateway-mismatch/kiro-auth-credential-paths-cheatsheet.md; Updated: wiki/agent-harness/sol-pi-omp-compat.md; Updated: wiki/index.md
+- 要点：pi-provider-kiro 0.12.1 与 OMP 18.12.5 钩子断层（refreshModels vs fetchDynamicModels、$KIRO_API_KEY 不解析）PR #170 未合并，ns-omp-provider-kiro 为 OMP 原生适配首选；本机实测 kiro/minimax-m2-1 SDK+CLI 两层验证通过，目录 5 个模型中其余 4 个未逐一实测；免费账号 ksk_ Key 不可用，Billing FAQ 禁第三方 automation harness 绕 Kiro 原生接口。
+
+## [2026-10-22] lint | 4 suspects found, 0 auto-fixed
+- 范围限定本次 Kiro 三篇新文与 cascade 更新：4 个 fidelity suspect 全为已知假阳性形态（OMP 版本号 18.12.5、行内代码被剥离的整行、既有 sol-pi 文章日期 2026-09-25）；Evidence errors 与 unreferenced raw 中的 omp-signature-verification 条目为存量问题，与本次无关。
+
 ## [2026-10-18] ingest | Anatomy skill：物理装置隐喻的交互式等距出图机制与自解释成品
 - Disposition: New
 - Raw: raw/agent-tooling/2026-10-18-anatomy-skill-mechanics.md
