@@ -76,7 +76,7 @@ modelRoles:
   task: opencode-zen/deepseek-v4.1-flash-free:max
   vision: sensenova/glm-5.2:high
   tiny: sensenova/glm-5.2:high
-  advisor: sensenova/deepseek-flash:max
+  advisor: opencode-zen/mimo-v2.6-flash-free:high
   default: opencode-zen/deepseek-v4.1-flash-free:max
   web: web/firecrawl
   memory: sensenova/glm-5.2:high
@@ -95,8 +95,8 @@ symbolPreset: nerd
 colorBlindMode: false
 statusLine:
   preset: default
-  separator: powerline
-  sessionAccent: false
+  separator: slash
+  sessionAccent: true
   transparent: false
   compactThinkingLevel: false
   showHookStatus: true
@@ -618,7 +618,7 @@ thinkingBudgets:
   xhigh: 32768
   max: 32768
 composer:
-  shape: claude
+  shape: rule
   tokenRate: true
   predictions: true
 externalThinking: false

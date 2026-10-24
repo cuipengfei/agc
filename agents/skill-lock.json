@@ -330,19 +330,19 @@
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/improve-skill/skills/improve-skill/SKILL.md",
+      "skillPath": "skills/improve-skill/SKILL.md",
       "skillFolderHash": "a2fdf4b7d0e56a155140db1c4418316962766b75",
       "installedAt": "2026-07-25T10:29:32.719Z",
-      "updatedAt": "2026-07-26T17:06:55.512Z"
+      "updatedAt": "2026-10-24T16:05:21.037Z"
     },
     "fuck": {
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/fuck/skills/fuck/SKILL.md",
+      "skillPath": "skills/fuck/SKILL.md",
       "skillFolderHash": "dbf9ec1078b6973e20789651a28826d17a2e9801",
       "installedAt": "2026-07-25T10:29:35.657Z",
-      "updatedAt": "2026-07-30T14:08:38.076Z"
+      "updatedAt": "2026-10-24T16:05:26.125Z"
     },
     "exploring-generative-ai": {
       "source": "cuipengfei/prompts",
@@ -515,10 +515,10 @@
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/no-bs/skills/no-bs/SKILL.md",
-      "skillFolderHash": "8523367119eb8e00e5340d90c096faaa0bb09361",
+      "skillPath": "skills/no-bs/SKILL.md",
+      "skillFolderHash": "ba821ee7f83e73b08e7a5eda41a92248b5e39679",
       "installedAt": "2026-08-13T16:12:33.065Z",
-      "updatedAt": "2026-10-01T16:50:58.925Z"
+      "updatedAt": "2026-10-24T16:05:29.972Z"
     },
     "mao-zedong-perspective": {
       "source": "leezythu/maoxuan-skill",
@@ -705,10 +705,10 @@
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/github-repo-osint/skills/github-repo-osint/SKILL.md",
+      "skillPath": "skills/github-repo-osint/SKILL.md",
       "skillFolderHash": "95c0ebc7e293e7e453205e63e4dbc393f63a1d50",
       "installedAt": "2026-09-06T07:29:05.471Z",
-      "updatedAt": "2026-09-06T09:49:46.467Z"
+      "updatedAt": "2026-10-24T16:05:34.590Z"
     },
     "diagram-design": {
       "source": "cathrynlavery/diagram-design",
@@ -732,19 +732,19 @@
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/uncharted/skills/uncharted/SKILL.md",
+      "skillPath": "skills/uncharted/SKILL.md",
       "skillFolderHash": "f172bf9fb21b54267a1642b8a1ab57de5803c438",
       "installedAt": "2026-09-20T14:59:10.401Z",
-      "updatedAt": "2026-09-20T14:59:10.401Z"
+      "updatedAt": "2026-10-24T16:05:48.838Z"
     },
     "talk-behavior": {
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/talk-behavior/skills/talk-behavior/SKILL.md",
-      "skillFolderHash": "20c7800a5a97510bcaafc6699746dca3df1b3b22",
+      "skillPath": "skills/talk-behavior/SKILL.md",
+      "skillFolderHash": "968a328865a494a02c4608abd6ebe4e67d84a1e8",
       "installedAt": "2026-10-01T16:50:26.236Z",
-      "updatedAt": "2026-10-01T16:50:26.236Z"
+      "updatedAt": "2026-10-24T16:05:51.980Z"
     },
     "visual-pr": {
       "source": "humanlayer/skills",
@@ -1231,9 +1231,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "64d8858972128ce54c75e3eccc373d348ff85600",
+      "skillFolderHash": "065a922b2d291b8c1d7d2860c0eac8346a708b0b",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-24T07:07:05.507Z"
+      "updatedAt": "2026-10-24T15:10:55.562Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
@@ -1294,10 +1294,10 @@
       "source": "cuipengfei/prompts",
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
-      "skillPath": "plugins/note/skills/note/SKILL.md",
+      "skillPath": "skills/note/SKILL.md",
       "skillFolderHash": "a8fca2e341ef0201ddfc52e581b55fe4eb3880a0",
       "installedAt": "2026-10-13T15:14:23.157Z",
-      "updatedAt": "2026-10-13T16:16:11.789Z"
+      "updatedAt": "2026-10-24T16:05:57.189Z"
     },
     "anatomy": {
       "source": "wheresryan22/anatomy",
@@ -1307,6 +1307,24 @@
       "skillFolderHash": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
       "installedAt": "2026-10-18T01:58:17.999Z",
       "updatedAt": "2026-10-19T11:23:11.141Z"
+    },
+    "asd-ste100": {
+      "source": "danyuchn/asd-ste100-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "cd62d297d5ef7cf9f59718cadc233ab2876ea013",
+      "installedAt": "2026-10-24T07:57:31.304Z",
+      "updatedAt": "2026-10-24T07:57:31.304Z"
+    },
+    "restating-complete-answers": {
+      "source": "cuipengfei/prompts",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cuipengfei/prompts.git",
+      "skillPath": "skills/restating-complete-answers/SKILL.md",
+      "skillFolderHash": "886b64691692e670625ae2cd3c07713b6e4cdc78",
+      "installedAt": "2026-10-24T14:42:37.999Z",
+      "updatedAt": "2026-10-24T16:06:05.355Z"
     }
   },
   "dismissed": {
