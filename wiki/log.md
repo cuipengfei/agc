@@ -1451,3 +1451,15 @@
 - Disposition: New; Update
 - Raw: raw/omp-background-agents/2026-10-22-task-seance-historical-consult.md; raw/ai-coding-agents/2026-10-22-kiro-api-gateway-landscape.md
 - Updated: OMP task 工具中的 seance 历史会话咨询; Kiro 后端 API 给任意 agent 用
+
+## [2026-10-24] ingest | Responses API WebSocket 模式与 OMP Codex 传输判定
+- Disposition: New; Update
+- Raw: raw/openai-api/openai-websocket-mode-guide.md; raw/omp-config/2026-10-24-omp-codex-websocket-transport.md
+- Updated: OMP 环境变量全量参考
+- 要点：通用篇记录 `response.create` 帧、`stream_id` 通道规则与每连接 16/32 上限、同通道先进先出、连接内内存缓存与 `previous_response_id`、`store=false` 兼容、60 分钟寿命与三条重连路径、四个错误码、SDK 版本门，条目全部来自 OpenAI 平台指南。OMP 篇记录 `stream.ts` 按 `api` 分派、三处开关与五步判定、状态函数与实际判定的用途区分、`responses_websockets=2026-02-06` 与 `responses=experimental` 的头差异、帧内信息走 `client_metadata`、致命错误触发 `disableWebsocket` 回退，范围为 OMP 客户端实现。Azure Foundry 文档本轮不收录。
+
+## [2026-10-24] ingest | OpenAI Responses API Remote Compaction 对比与 CLAUDE.md 表达规则跨机器手册
+- Disposition: New; Update
+- Raw: raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md; raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md
+- Updated: OMP Compaction Methods & History URI Tool Support; Plain Language 技能：ASD-STE100 与 ISO 24495-1
+- 要点：新建 `wiki/openai-api/responses-compaction-vs-normal-compaction.md`（区分 `normal compact`、`remote compact` 方式 A 独立无状态 `/responses/compact`、方式 B `/responses` 内联自动压缩及其 B1/B2 接续路径，说明 UI Transcript 与 Active Context 分离省 Token 机制、共有能力 vs 增量差异与锁死/黑盒代价、Kangwook Lee 提示词同源性研究与 Codex/Hermes/OMP 生态选型）与 `wiki/harness-engineering/agent-expression-coherence-and-claude-md-rules.md`（记录 7 类多轮表达混乱模式、微软/Salesforce 多轮退化数据、`skills.sh` 外部同类 Skills 安装量对比，以及 `~/.claude/CLAUDE.md` 第 100–170 行修改后完整定稿全文与新机器 3 步复刻手册）。级联更新 `compaction-methods-and-history-uri.md` 与 `plain-language-skills-asd-ste100-iso24495.md`。

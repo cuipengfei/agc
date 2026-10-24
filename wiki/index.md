@@ -40,7 +40,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 |---------|---------|---------|
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南；Rust 核心随 wheel 发布、独立 Rust 代理未发布 | 2026-10-15 |
 | [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、软链与共享更新路径对 CLI 耗时的影响；锁定文件结构、批量卸载、空格名 key 卸载语义与锁清理实录 | 2026-10-08 |
-| [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言（零歧义机器解析）与简明语言（人类读者结果）的选型；中文无官方 ISO 适配、繁中层原创；两技能「编码规则不复制收费标准」范式 | 2026-10-08 |
+| [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言（零歧义机器解析）与简明语言（人类读者结果）的选型；中文无官方 ISO 适配、繁中层原创；两技能「编码规则不复制收费标准」范式；2026-10-24 全局安装 `asd-ste100` 并纳入 `CLAUDE.md` 中英文交流规则 | 2026-10-24 |
 | [LLM 出图的作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版、visual-explainer 全手写 HTML+SVG 四轴作者模型；amwth 含 image 的组件清单（SKILL.md 自述 12 种）、diagram-design SKILL.md 自述 44 种 type（实测 39）、archify 5 类 schema、figure-led register；几何裸露面与选择；2026-10-10 补 amwth 与 visual-explainer | 2026-10-10 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 | [Headroom 版本升级与兼容性（0.39 / 0.41）](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动；v0.41.0（2026-10-13）新功能与关键修复 | 2026-10-15 |
@@ -116,6 +116,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [锚定：用具体例子约束 Agent 的输出](harness-engineering/anchoring.md) | 徐昊课程第 21 讲：四角度（输出/过程/风格/结构）+ 三种锚定方式（模板+示例/流程图+前馈反馈/领域模型图+前馈反馈）；流程锚定与双层循环的四点对比；真实案例表（wryan14 模板、Superpowers 流程、LangGraph 图、ArchUnit 结构、SysMARA 实验、OpenAI 未验证） | 2026-10-13 |
 | [Behavioral Harness 的成本收益实验](harness-engineering/behavioral-harness-cost-experiment.md) | Naresh Jain 对照实验（martinfowler.com）：同一 BFF 任务有/无 behavioral harness，GPT-6 Sol 两种条件均 10/10（harness 纯开销）、GPT-6 Luna 3/10→10/10 且单次 $0.273 低于无 harness Sol 的 $0.406 约 33%；失败分类学（202 流程断裂/Kafka 契约/HTTP 契约/配置名）；executable attention 机制；条件化结论：模型能力决定 sensors 何时运行而非是否运行；含经济学口径与利益相关边界（作者为 Specmatic 创始人，n=10 无独立复现） | 2026-10-14 |
 | [backpass：把会话证据回灌到指令文件](harness-engineering/backpass-instruction-backward-pass.md) | 输入会话与执行分析的 harness 相互独立；`--harness pi` 读 OMP 存储但 `--analysis-agent pi` 启动上游 pi；acpx 可注册 `omp acp` 自定义 agent，backpass 0.1.36 的覆盖允许清单只含 pi/grok/claude/codex/opencode，故 OMP 暂不能当分析工人；OMP ACP 公布 882 个模型，`openai/gpt-5.6-*` 不在其中；近期加权抽样与 seed 语义；缓存不含模型须 `--force` | 2026-10-19 |
+| [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](harness-engineering/agent-expression-coherence-and-claude-md-rules.md) | 7 类多轮表达混乱模式、微软/Salesforce 多轮退化数据与 S2A/CoVe 对标、`skills.sh` 4 组外部 Skills 盘点、本机 Skills 覆盖映射，以及 `~/.claude/CLAUDE.md` 修改后完整可移植定稿与新机器 3 步复刻指令 | 2026-10-24 |
 
 
 ## grok2api
@@ -149,6 +150,15 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [justwoker-shim 设计](model-gateway-mismatch/justwoker-shim-design.md) | 断路器状态机、SSE 合成、文本协议工具仿真、路由（带工具无条件走 emulation）、断路器饥饿修复、工具描述不截断、非法 JSON 回退 | 2026-10-05 |
 | [Kiro 认证凭据路径速查](model-gateway-mismatch/kiro-auth-paths-cheatsheet.md) | 免费社交登录 vs 付费 ksk_、凭据落点与 Billing FAQ SoT；Free 计划下原生 Sonnet 4.5 请求通过，目录含 Haiku，Opus/GPT 请求不可用；IP 因果未受控 | 2026-10-23 |
 
+## openai-api
+
+OpenAI API 协议层传输模式与事件语义。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Responses API WebSocket 模式](openai-api/responses-websocket-mode.md) | `response.create` 帧、`stream_id` 通道与 16/32 上限、连接内内存缓存与 `previous_response_id` 续接、`store=false` 兼容、60 分钟寿命与三条重连路径、四个错误码、SDK 版本门；条目来自 OpenAI 平台指南 | 2026-10-24 |
+| [OpenAI Responses API Remote Compaction 与客户端 Normal Compaction 对比](openai-api/responses-compaction-vs-normal-compaction.md) | 四个核心定义、三条固定方案路径（`normal compact`、无状态 `/responses/compact`、`/responses` 内联自动压缩）、本地保留完整记录省 Token 原理、共有能力 vs 增量差异与代价、Kangwook Lee 提示词同源性观察与跨模型 Agent 取舍 | 2026-10-24 |
+
 ## omp-auth
 
 OMP 认证、MCP OAuth、凭据管理，以及 Auth Broker/Gateway 的代理访问。
@@ -177,7 +187,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Compaction Model 与 Thinking Level](omp-config/compaction-model.md) | compactionModel 只换压的人，thinking effort 继承自 session thinkingLevel | 2026-09-09 |
 | [OMP Compaction 阈值解析机制](omp-config/compaction-threshold.md) | 阈值基数只有 contextWindow（固定值/百分比/reserve 三模式，默认 -1 走 reserve = max(15%, 16384)）；maxTokens 不参与阈值，只做摘要输出预算 | 2026-10-01 |
 | [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
-| [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；邻近会话一次 Vibe 压缩走 soft、与当前实现相符，因果仍有证据边界 | 2026-10-10 |
+| [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；邻近会话一次 Vibe 压缩走 soft、与当前实现相符，因果仍有证据边界 | 2026-10-24 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处；本机目录布局实测（无 ~/.omp/agent/skills，用户级 skills 在 ~/.agents/skills） | 2026-10-08 |
 | [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive | 2026-09-29 |
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
@@ -191,6 +201,7 @@ OMP 配置项的源码级行为边界。
 | [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区；18.4.2 达 515 键 | 2026-09-28 |
 | [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
 | [OMP cfg:// 配置解析：合并视图与 source 归属](omp-config/cfg-url-resolution.md) | cfg:// 三层下钻键发现、合并视图 vs yaml、default/global config/项目/会话四层 source 归属、写入 session-only + save 持久化 | 2026-10-11 |
+| [OMP Codex WebSocket 传输判定与回退](omp-config/websocket-transport-policy.md) | 仅 `openai-codex-responses` 有 WebSocket 路径；三处开关与五步判定（模型级 false 挡住环境变量、全局 off 位于环境变量之后）；状态函数与 `lastTransport` 用途区分；V2 beta 头、帧内走 `client_metadata`、致命错误触发 `disableWebsocket` 回退 | 2026-10-24 |
 
 ## omp-context-files
 
@@ -432,7 +443,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、4 自动+1 手动消费方（后续加 TTSR judge），judge() 双语言三题型与重复调用实测；jevify magic keyword 与 judge() 路由分离；18.2.8 起 modelRoles.judge + fallbackChains 路由层；judgeBatch 批量用法与常见误诊 | 2026-10-08 |
-| [OMP 环境变量全量参考](omp/env-variables-reference.md) | 官方 runtime reference（691 行 11 组）+ 源码扫描补遗 Mnemopi/Stencil/TUI 调试与构建期；`.env` 五层加载链与 `OMP_*`→`PI_*` 镜像；UA 伪装只限 gemini-cli/google-antigravity 两 provider；三处文档-源码校正（websocket 8 参数、concurrent summaries、antigravity 2.19.1）、126 名未收录变量判定名册 | 2026-10-19 |
+| [OMP 环境变量全量参考](omp/env-variables-reference.md) | 官方 runtime reference（691 行 11 组）+ 源码扫描补遗 Mnemopi/Stencil/TUI 调试与构建期；`.env` 五层加载链与 `OMP_*`→`PI_*` 镜像；UA 伪装只限 gemini-cli/google-antigravity 两 provider；三处文档-源码校正（websocket 8 参数、concurrent summaries、antigravity 2.19.1）、126 名未收录变量判定名册；WebSocket 变量补条件说明 | 2026-10-24 |
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 已切 jev-1.13 付费通道；18.2.8 解除 api: typesafe 版本限制 | 2026-09-22 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数、观测面（18.2.8：auto-thinking 与 eval judge 记 usage；unexpected-stop 两个成功 nudge 样本无新增 usage，原因未知）、zen 已实测兼容与 OpenRouter 不兼容 | 2026-09-22 |
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |

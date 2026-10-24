@@ -1,8 +1,8 @@
 # Plain Language 技能：ASD-STE100 与 ISO 24495-1
 
-> Sources: danyuchn/asd-ste100-skill SKILL.md 全文, 2026-10-08; danyuchn/iso-24495-skill SKILL.md + references/ 全文, 2026-10-08
-> Raw: [asd-ste100 与 iso24495 技能读点](../../raw/agent-tooling/2026-10-08-asd-ste100-iso24495-skills.md)
-> Updated: 2026-10-08
+> Sources: danyuchn/asd-ste100-skill SKILL.md 全文, 2026-10-08; danyuchn/iso-24495-skill SKILL.md + references/ 全文, 2026-10-08; 本机 `~/.claude/CLAUDE.md` 与 `.skill-lock.json`, 2026-10-24
+> Raw: [asd-ste100 与 iso24495 技能读点](../../raw/agent-tooling/2026-10-08-asd-ste100-iso24495-skills.md); [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)
+> Updated: 2026-10-24
 
 ## Overview
 
@@ -45,6 +45,8 @@
 
 "读者是人还是机器"是唯一决策点；两个技能边界节均明确此分界。
 
+2026-10-24 本机已全局安装 `asd-ste100`（`npx skills add -y -g https://github.com/danyuchn/asd-ste100-skill --skill asd-ste100`），并在 `~/.claude/CLAUDE.md` 的 `### 表达 Skill 调用` 中将两者的核心原则（同一事物同名、主语清楚、条件写全、一段一主题）纳入中英文日常交流与回答规则（其中 `iso-24495` 的“只交改写结果”格式仅在用户明确要求改写现成文字时触发）。
+
 ## 共同范式（可复用）
 
 两技能都：默认只输出改写文本（无前言无规则表）；`Kept as-is:` 单行标注保留的必要精度；提供 before/after 规则表仅按需；明确"不添加原文未陈述的事实"；对许可标准的版权边界一致（转述原则、不复制条款文本）。
@@ -52,3 +54,4 @@
 ## See Also
 
 - [HyperFrames：HTML 写视频的 agent 管线](../video-generation/hyperframes-html-video.md) — 视频文案层同样讲受控/简明表达
+- [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](../harness-engineering/agent-expression-coherence-and-claude-md-rules.md) — 7 类表达混乱模式、与本机 Skills 的映射及 `CLAUDE.md` 跨机器可移植全文

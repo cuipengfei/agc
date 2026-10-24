@@ -1,8 +1,8 @@
 # OMP Compaction Methods & History URI Tool Support
 
 > Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09; installed `@oh-my-pi/pi-coding-agent` 18.8.7 source, 2026-10-10; OMP session JSONL `01a1163e` + log `omp.2026-10-10.41920.log`, 2026-10-10
-> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md)
-> Updated: 2026-10-10
+> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md); [OpenAI Responses API Compaction 官方指南、Codex 源码与社区取舍摘录](../../raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md)
+> Updated: 2026-10-24
 
 ## Overview
 
@@ -90,3 +90,4 @@ rollover 后模型有三样恢复机制：
 - [Compaction Model 与 Thinking Level](compaction-model.md) — 压缩模型选择与 thinking 档位
 - [Compaction 阈值解析机制](compaction-threshold.md) — 阈值计算与后备空间
 - [Snapcompact 机制](snapcompact-mechanics.md) — 视觉模型读图的压缩方法
+- [OpenAI Responses API Remote Compaction 与客户端 Normal Compaction 对比](../openai-api/responses-compaction-vs-normal-compaction.md) — OpenAI 原生加密压缩的三条路径、增量差异与跨模型 Agent 双轨取舍
