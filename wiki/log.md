@@ -1463,3 +1463,7 @@
 - Raw: raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md; raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md
 - Updated: OMP Compaction Methods & History URI Tool Support; Plain Language 技能：ASD-STE100 与 ISO 24495-1
 - 要点：新建 `wiki/openai-api/responses-compaction-vs-normal-compaction.md`（区分 `normal compact`、`remote compact` 方式 A 独立无状态 `/responses/compact`、方式 B `/responses` 内联自动压缩及其 B1/B2 接续路径，说明 UI Transcript 与 Active Context 分离省 Token 机制、共有能力 vs 增量差异与锁死/黑盒代价、Kangwook Lee 提示词同源性研究与 Codex/Hermes/OMP 生态选型）与 `wiki/harness-engineering/agent-expression-coherence-and-claude-md-rules.md`（记录 7 类多轮表达混乱模式、微软/Salesforce 多轮退化数据、`skills.sh` 外部同类 Skills 安装量对比，以及 `~/.claude/CLAUDE.md` 第 100–170 行修改后完整定稿全文与新机器 3 步复刻手册）。级联更新 `compaction-methods-and-history-uri.md` 与 `plain-language-skills-asd-ste100-iso24495.md`。
+## [2026-10-25] ingest | Skills CLI lock 核对与 skill 文案精度
+- Disposition: Update
+- Raw: raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md; raw/agent-tooling/2026-10-25-skill-wording-precision-and-authorization.md
+- Updated: skills CLI 性能模型; Plain Language 技能：ASD-STE100 与 ISO 24495-1

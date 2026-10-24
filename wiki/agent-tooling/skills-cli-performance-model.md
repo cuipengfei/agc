@@ -1,8 +1,8 @@
 # skills CLI 性能模型：目录发现比安装数量更关键
 
-> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08
-> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md)
-> Updated: 2026-10-08
+> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08; 全局 skill 更新与 lock 核对, 2026-10-24
+> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md); [全局 skill 更新与 lock 核对](../../raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md)
+> Updated: 2026-10-25
 
 ## Overview
 
@@ -51,6 +51,14 @@ CLI 在源码中静态列出多个 agent skill 目录，例如 `.agents/skills`�
 - `skills remove --skill "Poteto Mode" --skill "Make Bot UI" -g -y` 报告 removed 2，但删除对象是**磁盘安装**：若锁中旧显示名条目与新 slug 条目共享同一 `skillPath`，删除会连带删掉 slug 条目实际使用的技能目录，而锁记录本身不变化。
 - locked 条目与磁盘目录名可以不同（key `Poteto Mode` → 目录 `poteto-mode`）。是否能用 `skills ls -g` 核对锁 key 与磁盘目录对账，本次未验证。
 - 本次案例的恢复路径：手工编辑 `~/.agents/.skill-lock.json` 精确删键（原子写回：tempfile + os.replace），再用 slug 名 `skills add -y -g <repo>@<slug>` 重装；`backnotprop/pstack` 的 `poteto-mode`/`make-bot-ui` 重装后恢复。这是用户批准的单次操作，非验证过的通用流程。
+
+## 全局更新检查与仓库安装记录
+
+2026-10-24，对照本仓库 35 项 skill、全局 CLI 清单、`~/.agents/skills/` 与 `~/.agents/.skill-lock.json`：18 项有来自 `cuipengfei/prompts` 的全局安装记录，其中 8 项随仓库路径更新，另 10 项已有安装；本次核对时安装内容与仓库源文件逐文件一致。另 17 项未出现在该 CLI 清单、共享安装目录或 lock 中；这不排除机器其他位置存在手动副本。
+
+18 项记录的 `source`、`sourceType`、`sourceUrl` 和 `skillPath` 均与提交后的仓库来源相符。每项 `skillFolderHash` 均与对应 Git tree hash 相等，安装文件与仓库内容一致。`restating-complete-answers` 的 `skillPath` 从旧插件路径改为 `skills/restating-complete-answers/SKILL.md`；正文未变，因此 hash 保持一致。会话未保留完整更新前 lock 快照，无法据此声称掌握整份 lock 的所有变化。
+
+全局检查曾报告 `restating-complete-answers` 的本地路径无法自动检查。按 CLI 输出手动安装后，八个本次更新项均有 GitHub 来源记录。该安装日志还报告 PromptScript 不支持全局安装，但 Claude Code 与共享目录的安装成功。对当次检查进程启用 TLS 证书验证后，`skills check -g` 输出 `All global skills are up to date`。
 
 ## 锁定文件变更的粗粒度确认
 

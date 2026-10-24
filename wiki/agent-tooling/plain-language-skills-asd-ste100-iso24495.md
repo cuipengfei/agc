@@ -1,8 +1,8 @@
 # Plain Language 技能：ASD-STE100 与 ISO 24495-1
 
-> Sources: danyuchn/asd-ste100-skill SKILL.md 全文, 2026-10-08; danyuchn/iso-24495-skill SKILL.md + references/ 全文, 2026-10-08; 本机 `~/.claude/CLAUDE.md` 与 `.skill-lock.json`, 2026-10-24
-> Raw: [asd-ste100 与 iso24495 技能读点](../../raw/agent-tooling/2026-10-08-asd-ste100-iso24495-skills.md); [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)
-> Updated: 2026-10-24
+> Sources: danyuchn/asd-ste100-skill SKILL.md 全文, 2026-10-08; danyuchn/iso-24495-skill SKILL.md + references/ 全文, 2026-10-08; 本机 `~/.claude/CLAUDE.md` 与 `.skill-lock.json`, 2026-10-24; Agent skill 文案修订与隔离问答, 2026-10-24
+> Raw: [asd-ste100 与 iso24495 技能读点](../../raw/agent-tooling/2026-10-08-asd-ste100-iso24495-skills.md); [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [Skill 文案精度与授权边界](../../raw/agent-tooling/2026-10-25-skill-wording-precision-and-authorization.md)
+> Updated: 2026-10-25
 
 ## Overview
 
@@ -24,7 +24,7 @@
 
 ## ISO 24495-1：按读者结果定义简明
 
-首个国际简明语言标准（2023-06，ISO TC 37 + IPLF），四原则有序：Relevant（说什么）→ Findable（放哪里）→ Understandable（怎么说）→ Usable（怎么行动）。
+首个国际简明语言标准（2023 年 6 月，ISO TC 37 + IPLF），四原则有序：Relevant（说什么）→ Findable（放哪里）→ Understandable（怎么说）→ Usable（怎么行动）。
 
 中文适配现状：截至 2026-08 IPLF 国家采纳列表 12 种语言无东亚语言；无国家机构中文适配。iso-24495-skill 的繁体中文层是作者原创实现，针对中文自身问题：
 
@@ -50,6 +50,12 @@
 ## 共同范式（可复用）
 
 两技能都：默认只输出改写文本（无前言无规则表）；`Kept as-is:` 单行标注保留的必要精度；提供 before/after 规则表仅按需；明确"不添加原文未陈述的事实"；对许可标准的版权边界一致（转述原则、不复制条款文本）。
+
+## Skill 文案修订的精度边界
+
+2026-10-24 修订本机 `talk-behavior` 时，用户指出把「最多保留 128 个候选」写成「只保留前 128 个候选」会额外暗示按顺序选择。最终例子保留数量上限的原意。修订 `no-bs` 时，也分别规定证据不足、当前环境无法取得凭据、外部副作用尚未获授权时的处理方式：继续授权范围内查证、请求所需凭据、等待批准。
+
+这次例子说明自然表达仍要保留精确上限和适用条件。隔离问答中，原版与无目标 skill 同样没有复现部分担忧；这些样本不能证明所有模型或真实工具执行都会遵守修订后的规则。这是本机应用记录，不代表 ASD-STE100 或 ISO 24495-1 的标准要求。
 
 ## See Also
 
