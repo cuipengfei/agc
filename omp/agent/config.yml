@@ -204,7 +204,6 @@ retry:
   fallbackChains:
     advisor:
       - c8787/gpt-6-luna
-      - opencode-zen/glm-5.3-flash-free
     web:
       - web/tavily
       - web/exa
