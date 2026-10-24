@@ -190,6 +190,12 @@
       "directory": true
     },
     {
+      "name": "herdr-config",
+      "source": "~/.config/herdr/config.toml",
+      "repo": "herdr/config.toml",
+      "protected": true
+    },
+    {
       "name": "tuios-config",
       "source": "~/.config/tuios/config.toml",
       "repo": "tuios/config.toml",

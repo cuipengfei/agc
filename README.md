@@ -6,6 +6,7 @@
 - OpenCode
 - OMO
 - OMP
+- Herdr
 - Prime Agent
 - Starship
 
@@ -17,11 +18,14 @@
 | `opencode/` | `~/.config/opencode/` |
 | `omo/` | `~/.omo/` |
 | `omp/` | `~/.omp/` |
+| `herdr/config.toml` | `~/.config/herdr/config.toml` |
 | `prime/` | `~/.prime/agent/` |
 | `starship/` | `~/.config/starship.toml` |
 | `plannotator/` | `~/.plannotator/` |
 
 仓库保存来源文件的副本，不使用 symlink。同步是单向的：来源 -> 仓库。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。实际同步范围由 `manifest.json` 控制。
+
+Herdr 的同步范围限定为主配置 `config.toml`，作为 protected 条目处理。
 
 ## 代码结构
 

@@ -139,6 +139,7 @@ find . -path './.git' -prune -o -type l -print
 | `opencode/` | `~/.config/opencode/` |
 | `omo/`      | `~/.omo/`             |
 | `omp/`      | `~/.omp/`             |
+| `herdr/config.toml` | `~/.config/herdr/config.toml` |
 | `prime/`    | `~/.prime/agent/`     |
 | `plannotator/` | `~/.plannotator/`     |
 
