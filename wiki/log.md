@@ -1467,3 +1467,8 @@
 - Disposition: Update
 - Raw: raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md; raw/agent-tooling/2026-10-25-skill-wording-precision-and-authorization.md
 - Updated: skills CLI 性能模型; Plain Language 技能：ASD-STE100 与 ISO 24495-1
+## [2026-10-25] lint | 363 issues found, 0 auto-fixed
+- Scope: full wiki evidence check.
+- Fidelity suspects: 358 (candidates; not confirmed mismatches).
+- Evidence errors: 3.
+- Unreferenced raw files: 2.
