@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "5407fb5a5d4593ba6f79713d1fecaad7a49dbafe",
+      "skillFolderHash": "fc621a41771cbfa1836b9e41592c6e123936d133",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-20T11:47:19.163Z"
+      "updatedAt": "2026-10-24T07:06:21.596Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1102,9 +1102,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/reflect/SKILL.md",
-      "skillFolderHash": "0c90907911757bea373efe8ab5b5a1033afde094",
+      "skillFolderHash": "849de06c8b7882505e72805d93e0a3abf6d36719",
       "installedAt": "2026-10-04T15:35:43.348Z",
-      "updatedAt": "2026-10-21T13:06:56.718Z"
+      "updatedAt": "2026-10-24T07:06:27.894Z"
     },
     "setup-pstack": {
       "source": "backnotprop/pstack",
@@ -1129,9 +1129,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/swarm/SKILL.md",
-      "skillFolderHash": "bee1ab8d016e734c8353a2ae82c45f1b039ac88b",
+      "skillFolderHash": "f5148d80e9cca464397a6a1f0a5cf28e27d3478b",
       "installedAt": "2026-10-04T15:35:43.352Z",
-      "updatedAt": "2026-10-21T13:07:05.737Z"
+      "updatedAt": "2026-10-24T07:06:34.365Z"
     },
     "technical-writing": {
       "source": "backnotprop/pstack",
@@ -1231,63 +1231,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "a650bb04800097a6492bd1dce4415f89fe5cf1b6",
+      "skillFolderHash": "64d8858972128ce54c75e3eccc373d348ff85600",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-22T12:28:32.646Z"
-    },
-    "hyperframes-animation": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-animation/SKILL.md",
-      "skillFolderHash": "284a8f10bb196a6087d52ff6e0e13827602d10ed",
-      "installedAt": "2026-10-08T14:50:55.461Z",
-      "updatedAt": "2026-10-19T11:21:57.726Z"
-    },
-    "hyperframes-audio": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-audio/SKILL.md",
-      "skillFolderHash": "a0f60ce0e9bfc8f7b406b8f366cd899150b3f765",
-      "installedAt": "2026-10-08T14:50:55.463Z",
-      "updatedAt": "2026-10-12T11:41:44.713Z"
+      "updatedAt": "2026-10-24T07:07:05.507Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "fa6e574ba98b8df6d3bc900896d23c38f5eb8d9d",
+      "skillFolderHash": "918cc84dcafea67f01171ccc74bb9c015804259d",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-22T12:29:29.366Z"
-    },
-    "hyperframes-core": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-core/SKILL.md",
-      "skillFolderHash": "2585691179d4e90b29fc406fb6cac55ff30b6699",
-      "installedAt": "2026-10-08T14:50:55.467Z",
-      "updatedAt": "2026-10-17T03:05:34.642Z"
-    },
-    "hyperframes-creative": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-creative/SKILL.md",
-      "skillFolderHash": "9f6199a8f8cceeb215e1d97129079c80383be4eb",
-      "installedAt": "2026-10-08T14:50:55.478Z",
-      "updatedAt": "2026-10-21T13:07:58.466Z"
-    },
-    "hyperframes-keyframes": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-keyframes/SKILL.md",
-      "skillFolderHash": "3f631bbe5e46e487c9d73af4cbc60a0cc4f48cd3",
-      "installedAt": "2026-10-08T14:50:55.480Z",
-      "updatedAt": "2026-10-08T15:10:03.980Z"
+      "updatedAt": "2026-10-24T07:07:12.256Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1298,32 +1253,23 @@
       "installedAt": "2026-10-08T14:50:55.482Z",
       "updatedAt": "2026-10-22T16:09:29.716Z"
     },
-    "hyperframes-studio": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-studio/SKILL.md",
-      "skillFolderHash": "d6839000fac37b56ff86526e115074f8d7ecc2bd",
-      "installedAt": "2026-10-08T14:50:55.483Z",
-      "updatedAt": "2026-10-15T11:09:18.554Z"
-    },
     "media-use": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "3d12ce2c00ff80ea4bfb2a067eca515c6052748b",
+      "skillFolderHash": "dc08ee0718e130db9705fc840efa60e6fa6e7743",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-22T16:10:37.597Z"
+      "updatedAt": "2026-10-24T07:07:31.979Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "5420589f053298b5e879c205d23192d9ab164216",
+      "skillFolderHash": "da8b3b609beab3b99d1781616e42560bc7d50ca4",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-10-21T13:07:13.993Z"
+      "updatedAt": "2026-10-24T07:06:39.290Z"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1343,15 +1289,6 @@
       "skillFolderHash": "a87daf9577d654e0da54068bd25d0a9b94090d7a",
       "installedAt": "2026-10-08T16:13:21.148Z",
       "updatedAt": "2026-10-12T11:42:31.455Z"
-    },
-    "answer-me-with-html": {
-      "source": "qingyuna/answer-me-with-html",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/qingyuna/answer-me-with-html.git",
-      "skillPath": "skills/answer-me-with-html/SKILL.md",
-      "skillFolderHash": "e5044cf31d7e7cf4fbb2405b2ca6edf4692dc10b",
-      "installedAt": "2026-10-10T05:51:26.307Z",
-      "updatedAt": "2026-10-21T13:08:05.575Z"
     },
     "note": {
       "source": "cuipengfei/prompts",
