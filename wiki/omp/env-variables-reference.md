@@ -1,7 +1,7 @@
 # OMP 环境变量全量参考
 > Sources: omp.sh docs, 2026-10-19; oh-my-pi repo docs/environment-variables.md, 2026-10-17
-> Raw: [../../raw/omp/2026-10-19-omp-environment-variables-reference.md](../../raw/omp/2026-10-19-omp-environment-variables-reference.md)
-> Updated: 2026-10-19
+> Raw: [../../raw/omp/2026-10-19-omp-environment-variables-reference.md](../../raw/omp/2026-10-19-omp-environment-variables-reference.md); [../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md](../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md)
+> Updated: 2026-10-24
 
 OMP（`@oh-my-pi/pi-coding-agent`，源码版本 oh-my-pi `5d72f5d3f4`，2026-10-19 更新）的全量环境变量参考。官方已维护两份载体：仓库内 `docs/environment-variables.md`（自称 Current Runtime Reference，691 行 11 组，从 `packages/coding-agent`、`packages/ai`、`packages/utils`、`packages/tui` 当前代码路径推导，只记录活跃行为）与官网渲染页 `https://omp.sh/docs/env`（注意路径是 `/docs/env`；`/docs/environment-variables` 实测 404）。本文在其 11 组之上补第 12 组「源码扫描补遗」，并收录三处文档-源码校正。
 
@@ -189,7 +189,7 @@ OMP（`@oh-my-pi/pi-coding-agent`，源码版本 oh-my-pi `5d72f5d3f4`，2026-10
 | Variable | 行为 |
 |---|---|
 | `PI_CODEX_DEBUG` | `1`/`true` 开 Codex provider 调试日志 |
-| `PI_CODEX_WEBSOCKET` | `1`/`true` 优先 websocket 传输 |
+| `PI_CODEX_WEBSOCKET` | `1`/`true` 在模型与会话未禁用时优先 websocket 传输；模型写 `preferWebsockets: false` 或会话已回退时不生效，次序见 [OMP Codex WebSocket 传输判定](../omp-config/websocket-transport-policy.md) |
 | `PI_CODEX_RESPONSES_LITE` | `1` 让普通推理走 Responses Lite |
 | `PI_OPENAI_STATEFUL` | 覆盖 `previous_response_id` 链式默认（api.openai.com 默认开，其他默认关） |
 | `PI_CODEX_WEBSOCKET_IDLE_TIMEOUT_MS` | 默认 300000 |
