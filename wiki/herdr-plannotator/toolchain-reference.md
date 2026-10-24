@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md)
-> Updated: 2026-10-17
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17; Herdr v0.9.5 config-reference.json 与 configuration.mdx, 2026-10-25
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md)
+> Updated: 2026-10-25
 
 ---
 
@@ -237,6 +237,8 @@
 
 **来源：** `herdr --default-config` [实测] + https://raw.githubusercontent.com/herdrdev/herdr/v0.9.1/docs/next/website/src/data/config-reference.json [文档]
 
+v0.9.5 复核（2026-10-25）：`config-reference.json` 共 14 section、211 key；`ui.toast.delivery` 默认 `off`（四值 off/herdr/terminal/system，active tab 抑制弹窗）；`tab_bar_right` 取值 zoom/hostname/datetime/text/command，command 的 `interval_seconds` 1–31536000、`timeout_seconds` 1–3600；`window_title` token 列表与空值渲染空；侧栏每布局最多 16 行 × 16 token、`rows_by_agent` 替换 `rows` 不扩展、canonical agent ID、`row_gap` 默认 0、折叠/移动端不受影响；`session.startup_per_agent_delay_ms` 默认 100、改后重启 server。校验入口 `herdr config check` 与 `herdr --default-config`。详见 [Herdr 配置项与用户体验](herdr-config-user-experience.md)。
+
 ### 2.1 完整配置结构
 
 ```toml
@@ -374,7 +376,7 @@ onboarding = false
 | `remote.manage_ssh_config`                         | `true`                                                   | bool       | 管理 SSH keepalive               | 实测 |
 | `experimental.allow_nested`                        | `false`                                                  | bool       | 允许嵌套启动                     | 实测 |
 | `experimental.pane_history`                        | `false`                                                  | bool       | 保存 pane 历史                   | 实测 |
-| `experimental.kitty_graphics`                      | unset                                                    | bool       | 已废弃，移至 terminal            | 实测 |
+| `experimental.kitty_graphics`                      | unset                                                    | bool       | 已废弃别名，`terminal.kitty_graphics` 优先（双设时） | 实测 0.9.5 |
 | `experimental.switch_ascii_input_source_in_prefix` | `false`                                                  | bool       | IME ASCII 切换                   | 实测 |
 | `experimental.reveal_hidden_cursor_for_cjk_ime`    | `false`                                                  | bool       | CJK IME 光标                     | 实测 |
 | `experimental.cjk_ime_agents`                      | `[]`                                                     | list       | 限定 agent                       | 实测 |
@@ -834,14 +836,13 @@ struct InvocationContext {
 - `ogulcancelik/herdr-browser`（插件 ID `official.browser`）
 - Bun
 - Google Chrome / Chromium
-- `experimental.kitty_graphics = true`（0.9.2 起被 `terminal.kitty_graphics` 取代，原键废弃）
 
 
 ### 6.3 安装 [README]
 
 ```bash
 herdr plugin install ogulcancelik/herdr-browser --yes
-# config.toml: [experimental] kitty_graphics = true
+# config.toml: [terminal] kitty_graphics = true
 herdr server reload-config
 
 herdr plugin install plannotator/herdr-plannotator --yes

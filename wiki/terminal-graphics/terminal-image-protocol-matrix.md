@@ -1,8 +1,8 @@
 # 终端图像协议支持矩阵
 
-> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17
-> Raw: [ttyd 图像协议](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [Herdr 图像协议](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md)
-> Updated: 2026-10-17
+> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25
+> Raw: [ttyd 图像协议](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [Herdr 图像协议](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md)
+> Updated: 2026-10-25
 
 ## 概述
 
@@ -55,7 +55,7 @@ iTerm2 IIP 默认开启（`iipSupport: true`），不需要额外配置。
 
 ### Herdr 0.9.5：Kitty graphics only，SIXEL NOT_PLANNED
 
-Herdr 的图像显示路径只实现 Kitty graphics protocol，配置项为 `terminal.kitty_graphics`，默认开启。
+Herdr 的图像显示路径只实现 Kitty graphics protocol，配置项为 `terminal.kitty_graphics`，默认开启。`experimental.kitty_graphics` 是弃用别名，双设时 `terminal.kitty_graphics` 优先；改后需重启 server 或重连 client。
 
 维护者在 #3030（Herdr 0.8.0 报告）中说明：Herdr 的图像路径当前只支持 Kitty graphics，`img2sixel` 发出的是 Sixel，属于独立协议；Mintty 外部终端的支持不会透传，因为 Herdr 解析 pane 输出并重新绘制 pane。增加 Sixel 解析和渲染属于新增图形协议支持，不是修复已有行为。
 

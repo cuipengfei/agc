@@ -383,7 +383,7 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd 1.7.7 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠 | 2026-10-17 |
+| [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd 1.7.7 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED，`experimental.kitty_graphics` 为弃用别名、`terminal.*` 优先；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠 | 2026-10-25 |
 | [Tern Surface Protocol](terminal-graphics/tern-surface-protocol.md) | Tern 的 TSP UI 树绘制路径与 image 节点；kitty graphics 支持来自第三方插件声明（非官方）；SIXEL/iTerm2 未找到证据 | 2026-10-17 |
 
 ## tern
@@ -432,7 +432,9 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类；第 9 节补 0.28.12 agent 工具与 Quick Labels 指引；第 10 节补 Kitty graphics only 与 SIXEL NOT_PLANNED | 2026-10-17 |
+| [Herdr + Plannotator 工具链全量 Reference](herdr-plannotator/toolchain-reference.md) | Herdr 0.9.1 基线 + 0.9.2 增量实测（placement 五值、popup、`keys.command`、graphics API 删除）；Plannotator 0.27.15 完整 CLI flags、配置项、插件生态、两个集成仓库机制；第 8 节补 2026-10-01 混版故障类；第 9 节补 0.28.12 agent 工具与 Quick Labels 指引；第 10 节补 Kitty graphics only 与 SIXEL NOT_PLANNED；第 2 节补 0.9.5 复核（14 section/211 key、`ui.toast.delivery` 默认 off、`tab_bar_right` 取值与 interval/timeout、侧栏 16×16/`row_gap` 默认 0/`rows_by_agent` 替换语义、`startup_per_agent_delay_ms` 默认 100、`config check`/`--default-config` 入口、`experimental.kitty_graphics` 别名优先级） | 2026-10-25 |
+
+| [Herdr 配置项与用户体验](herdr-plannotator/herdr-config-user-experience.md) | v0.9.5 `config.toml` 主配置与校验入口（本轮在官方 docs 与仓库中未找到 JSON Schema；`herdr config check`/`--default-config`/Config reference/`config-reference.json` 14 section 211 key）；按主题/侧栏/tab 栏与外层标题/快捷键与临时工具/终端默认/通知与声音/会话恢复与历史/图像光标输入法/远程更新启动九维度讲当前值、可取值与体验含义；本机取舍（tokyo-night、dots、Herdr 内通知且声音关、kitty_graphics 关、pane_history 关、恢复开、新增 OMP 标题行与时钟与 popup/btop 快捷键）与证据边界 | 2026-10-25 |
 | [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、agent 工具通道（`pi.registerTool`，0.28.12 起）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-10-11 |
 | [Plannotator agent tool 注入与 Quick Labels 机制](herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) | agent 工具开关链（env → config.agentTool → 主机默认，Pi 默认关）、OMP .env 注入通道、Quick Labels cookie 存储与 Settings 编辑能力（👍 硬编码例外）、config.json 38 键清单、脱敏实测 | 2026-10-11 |
 
