@@ -1258,9 +1258,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "dc08ee0718e130db9705fc840efa60e6fa6e7743",
+      "skillFolderHash": "9a10d808c6a11cfe2e55dcda2e9ef20dc04eef16",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-24T07:07:31.979Z"
+      "updatedAt": "2026-10-25T03:41:37.527Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1313,9 +1313,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "cd62d297d5ef7cf9f59718cadc233ab2876ea013",
+      "skillFolderHash": "c7b11cd9258708909d8574c8176d4c70969c8b29",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-10-24T07:57:31.304Z"
+      "updatedAt": "2026-10-25T03:41:40.456Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
