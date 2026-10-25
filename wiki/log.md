@@ -1519,3 +1519,15 @@
 - Raw: raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md
 - Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 - 要点：`~/.claude/CLAUDE.md` 事实陈述协议新增「不确定性的写法」：写清还缺哪项证据、它影响哪个具体判断、下一步用哪个文件或命令确认；事实陈述结束后不追加「不能证明」「不代表所有情况」这类泛化免责。复刻指南的协议代码块同步该条，第 8 类映射表补入分工，Raw 并列第三个 raw 文件。
+
+## [2026-10-25] ingest | 表达规则复刻的 Skill 依赖与来源记录
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md; raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：仓库允许直接更正已核实的 raw 错误，包括已提交文件；泛化免责句式无论在正文、句尾或独立段落都不使用。指南按实际启用的表达调用列出 11 项相关 Skill，`restating-complete-answers` 从 `cuipengfei/prompts` 安装；本机同源仓库的全部安装记录不作为复刻依赖清单。
+
+## [2026-10-25] ingest | 按任务类型与授权范围选择验证方式
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：用户级「工作流程」按任务类型选择验证方式；代码功能运行相关测试并验证实际行为，文档、规则和 skill 文案核对内容、格式、引用与示例一致性，对 skill 文案进行真实模型调用、付费 API 实验、压力测试或对照抽样须获明确授权。「别让 skill 改掉当前任务」保持原文，复刻指南记录完整条款、替换位置、逐字一致性检查与共享链接核对。

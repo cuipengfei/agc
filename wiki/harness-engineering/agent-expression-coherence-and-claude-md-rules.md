@@ -1,7 +1,7 @@
 # Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 
-> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25
-> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md)
+> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25
+> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md)
 > Updated: 2026-10-25
 
 ## Overview
@@ -73,7 +73,7 @@
 
 ### 步骤 1：安装前置全局 Skills
 
-根据本机 `~/.agents/.skill-lock.json` 记录，确认目标机器 `~/.agents/skills/` 已安装以下 10 个外部 Skill（及 OMP managed skill `restating-complete-answers`）：
+根据实际启用的表达规则安装对应 Skill。完整复刻本文所列调用时，使用以下 11 项清单；其他用途的 Skill 不在本指南依赖范围内。`restating-complete-answers` 的当前来源为 `cuipengfei/prompts`，路径为 `skills/restating-complete-answers/SKILL.md`。
 
 ```bash
 npx skills add -y -g https://github.com/danyuchn/iso-24495-skill --skill iso-24495
@@ -82,6 +82,7 @@ npx skills add -y -g https://github.com/backnotprop/pstack --skill technical-wri
 npx skills add -y -g https://github.com/mattpocock/skills --skill writing-shape
 npx skills add -y -g https://github.com/cuipengfei/prompts --skill talk-behavior
 npx skills add -y -g https://github.com/cuipengfei/prompts --skill no-bs
+npx skills add -y -g https://github.com/cuipengfei/prompts --skill restating-complete-answers
 npx skills add -y -g https://github.com/blader/humanizer --skill humanizer
 npx skills add -y -g https://github.com/petergyang/no-ai-slop --skill no-ai-slop
 npx skills add -y -g https://github.com/backnotprop/pstack --skill unslop
@@ -99,7 +100,7 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 
 ### 步骤 3：写入 `~/.claude/CLAUDE.md` 的改动段落
 
-以下三段是 2026-10-25 改动后的文本。文件其余部分沿用原样，完整旧版见 [2026-10-24 raw](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)。
+以下四段是 2026-10-25 改动后的文本。文件其余部分沿用原样，完整旧版见 [2026-10-24 raw](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)。
 
 **首句**
 
@@ -110,6 +111,16 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 
 **首句**：「兄台，久候了。」
 ```
+
+**验证要求：`### 工作流程` 中的验证条款**
+
+仅替换 `### 工作流程` 中的验证条款，其他工作流程条目及「别让 skill 改掉当前任务」保持原样：
+
+```markdown
+- 对于已获授权的实现或修改，必须完成与改动相匹配的验证并处理发现的问题。代码功能应运行相关测试并验证实际行为；文档、规则和 skill 文案应检查内容、格式、引用与示例一致性。对 skill 文案进行真实模型调用、付费 API 实验、压力测试或对照抽样，须经用户明确授权。验证结果按实际执行的项目报告，不把未执行的检查写成通过。
+```
+
+复刻后，确认此条款在用户级源文件中只出现一次，并与上方文本逐字一致。用 `readlink -e ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.omp/agent/AGENTS.md` 核对源文件及两个共享链接，三个路径应解析至同一文件。
 
 **表达 Skill 调用：`no-bs` 与去 AI 腔分组**
 
@@ -137,6 +148,8 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
   - **不确定性的写法**：写清还缺哪项证据、它影响哪个具体判断，以及下一步用哪个文件、命令或场景确认。事实陈述结束后，不追加「不能证明」「不代表所有情况」这类泛化免责。
 - **普通结果直说结果**：不要把常规操作或单次命令输出包装成「这证明了……」，直接写做了什么、看到了什么结果。
 ```
+
+不确定性说明保留具体证据缺项、受影响的判断和确认动作。泛化免责句式无论位于正文、句尾或独立段落，都不使用。
 
 ## See Also
 
