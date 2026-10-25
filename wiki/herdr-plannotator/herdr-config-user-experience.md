@@ -90,7 +90,7 @@ Popup 可设宽高（字符格数或 `"80%"`）；打开期间接收全部终端
 
 本机：六个 annotate 动作走 `plugin_action`（`prefix+a`、`prefix+shift+a`、`prefix+ctrl+a`、`prefix+m`、`prefix+o`、`prefix+shift+o`）；新增 `prefix+t` 起临时 shell popup（80% 宽高），`prefix+alt+b` 起运行 btop 的临时 pane。
 
-键位会撞：本机把 `prefix+o` 绑给了 `annotate.open`（在 plannotator-tui 打开聚焦 pane 所在目录，带文件树，反馈发回该 pane 的 agent），而官方 `keys.open_notification_target` 的默认值也是 `prefix+o`。同键两条绑定时，跳到通知来源 pane 那条按不出来。
+键位会撞：本机把 `prefix+o` 绑给了 `annotate.open`（在 plannotator-tui 打开聚焦 pane 所在目录，带文件树，反馈发回该 pane 的 agent），而官方 `keys.open_notification_target` 的默认值也是 `prefix+o`。配置层面这两条占用同一个键，运行时按下去实际触发哪一条尚未实测。
 
 ## 终端默认与 worktree
 

@@ -4,6 +4,8 @@
 > - https://raw.githubusercontent.com/herdrdev/herdr/v0.9.5/docs/next/website/src/content/docs/configuration.mdx
 > - https://github.com/herdrdev/herdr/issues/318
 > - https://raw.githubusercontent.com/herdrdev/herdr/v0.9.5/docs/next/website/src/data/config-reference.json
+> - https://raw.githubusercontent.com/herdrdev/herdr/v0.9.5/src/app/agent_view.rs
+> - https://raw.githubusercontent.com/herdrdev/herdr/v0.9.5/src/app/api_helpers.rs
 >
 > Collected: 2026-10-25
 > Published: Unknown
@@ -324,7 +326,8 @@ pub(super) fn tab_attention_priority(state: crate::detect::AgentState, seen: boo
 }
 ```
 
-排序键是二元组：优先档位降序，其次 `last_agent_state_change_seq` 降序。`entries` 的初始顺序按 workspace/pane 生成，`sort_by_key` 为稳定排序，所以只有状态变更序号相同时才保留 workspace/pane 原顺序。issue #318 正文写的「Stable sort within a status, so workspace order remains a natural tiebreaker」是提案阶段描述；维护者评论中提议的 `last_state_change_at` 次级排序已进入发布代码，实际行为以上面源码为准。
+排序键是二元组：优先档位降序，其次 `last_agent_state_change_seq` 降序。`entries` 的初始顺序按 workspace/pane 生成，`sort_by_key` 为稳定排序，所以只有状态变更序号相同时才保留 workspace/pane 原顺序。issue #318 正文写的「Stable sort within a status, so workspace order remains a natural tiebreaker」是提案阶段描述；维护者评论里提议用 `last_state_change_at`（`Option<Instant>`）做次级排序，发布代码用的是 `last_agent_state_change_seq`（序号而非时刻），两者语义相近、实现不同，实际行为以上面源码为准。
+
 ## L. 证据边界
 
 - 文档声明：A、B、E 节来自 Herdr v0.9.5 官方 docs 与 `config-reference.json` 原文；D 节来自本机 `herdr --default-config` 输出。
