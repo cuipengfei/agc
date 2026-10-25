@@ -1507,3 +1507,9 @@
 - Raw: raw/wsl-windows/2026-10-25-windows-working-set-page-lists-sources.md; raw/wsl-windows/2026-10-25-nonadmin-working-set-trim-measurement.md
 - Updated: Windows 内存回收工具与 WSL swap
 - 要点：新建 nonadmin-physical-memory-reduction.md（标准账户只能按进程清空自有进程工作集，句柄需 PROCESS_SET_QUOTA 与 PROCESS_QUERY_INFORMATION，按令牌所有者 SID 筛选；146 个本人进程清理成功、182 个打不开；3 秒「使用中」降 1,362 MB、工作集 3,726→556 MB，63 秒回到 2,296 MB 且使用中反超 657 MB；适用场景与定期清理无收益）。级联更新既有文章：Overview 与「正在使用腰斩」的页面去向由未测定改为已测定，新增「页离开工作集后的去向」一节（Modified 计使用中、Standby 计可用，账目口径引微软原文；四时间点实测表）。RAMMap Empty 五项名称与开关取自 RamMAP-Shortcut README 全文；五项的作用范围与权限要求无一手来源，4sysops 正文 403、Administrator's Reference 原页未取得，均按未核实处理。Priority 0 单项未测（StandbyCacheCoreBytes 与优先级编号的映射无出处）。
+
+## [2026-10-25] ingest | 修正：可用内存口径与所有者条件
+- Disposition: Update
+- Raw: raw/wsl-windows/2026-10-25-page-list-mechanism-sources.md; raw/wsl-windows/2026-10-25-nonadmin-trim-measurement-addendum.md（前次两个 raw 已冻结，新增依据另起文件）
+- Updated: 标准用户降低 Windows 物理内存占用的可达范围; Windows 内存回收工具与 WSL swap
+- 要点：补入 MEMORYSTATUSEX 的 ullAvailPhys 定义（可用 = standby + free + zero，无需先写盘）、WPT 的 MMList 分类原文与 Modified Page Writer 写回后转入 Standby 的原文；两篇文章改为「清空工作集后可用立即上升约 1.36 GB、63 秒时低于基线 657 MB、提交占用本次未采集」。「标准账户只能操作自有进程」改为「本次脚本按 SID 筛选，API 只要求两项句柄权限、无所有者条件」。定期清理一段改为按页面是否长期闲置判断收益。

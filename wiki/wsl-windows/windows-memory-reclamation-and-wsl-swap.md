@@ -1,12 +1,12 @@
 # Windows 内存回收工具与 WSL swap
 
-> Sources: Microsoft Sysinternals RAMMap (Mark Russinovich), 2026-03-26; Microsoft `EmptyWorkingSet`（psapi）; Microsoft「Working Set Information」; Microsoft「Exercise 1 - Identify Processes with Large Working Sets」; Shadowblazer93/RamMAP-Shortcut README; Microsoft「Memory Compression in Windows 10 RTM」(Mehmet Iyigun / Seth Juarez); Mem Reduct (henrypp); Bitsum Process Lasso; 本机实测, 2026-10-10 与 2026-10-25
-> Raw: [Windows 内存工具与压缩来源](../../raw/wsl-windows/2026-10-10-windows-memory-tools-and-compression.md); [WSL2 内存/swap 本机实测](../../raw/wsl-windows/2026-10-10-wsl2-memory-swap-session-measurements.md); [工作集与页列表来源](../../raw/wsl-windows/2026-10-25-windows-working-set-page-lists-sources.md); [标准账户清空工作集实测](../../raw/wsl-windows/2026-10-25-nonadmin-working-set-trim-measurement.md)
+> Sources: Microsoft Sysinternals RAMMap (Mark Russinovich), 2026-03-26; Microsoft `EmptyWorkingSet`（psapi）; Microsoft「Working Set Information」; Microsoft「Exercise 1 - Identify Processes with Large Working Sets」; Microsoft「MEMORYSTATUSEX」; Microsoft「Data corruption on IO write」（Modified Page Writer）; Shadowblazer93/RamMAP-Shortcut README; Microsoft「Memory Compression in Windows 10 RTM」(Mehmet Iyigun / Seth Juarez); Mem Reduct (henrypp); Bitsum Process Lasso; 本机实测, 2026-10-10 与 2026-10-25
+> Raw: [Windows 内存工具与压缩来源](../../raw/wsl-windows/2026-10-10-windows-memory-tools-and-compression.md); [WSL2 内存/swap 本机实测](../../raw/wsl-windows/2026-10-10-wsl2-memory-swap-session-measurements.md); [工作集与页列表来源](../../raw/wsl-windows/2026-10-25-windows-working-set-page-lists-sources.md); [标准账户清空工作集实测](../../raw/wsl-windows/2026-10-25-nonadmin-working-set-trim-measurement.md); [页列表分类、写回路径与可用内存定义](../../raw/wsl-windows/2026-10-25-page-list-mechanism-sources.md); [实测追加说明](../../raw/wsl-windows/2026-10-25-nonadmin-trim-measurement-addendum.md)
 > Updated: 2026-10-25
 
 ## Overview
 
-Windows 上的「内存清理」工具（本文有来源的是 Mem Reduct）做的是清理：清 standby、修剪工作集。压缩由操作系统内核的 Memory Compression 负责。清理工具不终止进程，但修剪工作集只是把页移出工作集、并不释放内存：任务管理器的「正在使用」骤降，提交内存（Commit）不降；页的第一站是 Standby 或 Modified 页列表（见「页离开工作集后的去向」）。本文给出工具能力边界、「正在使用腰斩」的判别方法，以及删除 WSL swap VHD 的核验纪律。
+Windows 上的「内存清理」工具（本文有来源的是 Mem Reduct）做的是清理：清 standby、修剪工作集。压缩由操作系统内核的 Memory Compression 负责。清理工具不终止进程，修剪工作集只是把页移出工作集：页转入 Standby 时按微软口径立即计入「可用」，转入 Modified 时仍算「使用中」；任务管理器的「正在使用」骤降，提交内存（Commit）不降。本文给出工具能力边界、「正在使用腰斩」的判别方法，以及删除 WSL swap VHD 的核验纪律。
 
 ## 清理 ≠ 压缩
 
@@ -33,9 +33,9 @@ RAMMap 用于诊断（看清内存去哪了），Mem Reduct 用于清理。两�
 
 ## 页离开工作集后的去向
 
-页在离开工作集的那一刻按修改位分流：被改写过的页进入 Modified 页列表，未被改写过的页进入 Standby 页列表。微软的账目口径把这两类分算两侧：`Memory In Use = Process working sets + non-paged memory + modified pages`、`Available memory = Standby memory + free memory`。Modified 上的页仍计入「使用中」，Standby 上的页计入「可用」，可被任何程序直接取用。
+页在离开工作集的那一刻按修改位分流。微软的页列表定义把两类分开写：Standby 是未修改的页、属于可用内存；Modified 是最后一次写入磁盘之后又被改动的页，需要先由系统的 Modified Page Writer 写回后备文件或 pagefile，写回完成后转入 Standby。微软的账目口径与此一致：`Memory In Use = Process working sets + non-paged memory + modified pages`、`Available memory = Standby memory + free memory`。因此 Modified 上的页仍计入「使用中」，Standby 上的页计入「可用」，可被任何程序直接取用。
 
-Modified 上的页需要先写回来源文件或 pagefile 才能复用，写回时机由内存管理器按压力决定，写完转入 Standby。备用页本身按使用情况分层，回收从最低层开始，分层由系统决定，用户既不能指定页进入哪一层，也不能清空某一层。
+备用页本身按使用情况分层，回收从最低层开始，分层由系统决定，用户既不能指定页进入哪一层，也不能清空某一层。写回时机由内存管理器按压力决定，压力高时提前写。
 
 2026-10-25 的本机实测（标准账户，清空 146 个本人进程的工作集，单位 MB）：
 
@@ -45,7 +45,7 @@ Modified 上的页需要先写回来源文件或 pagefile 才能复用，写回�
 | 清理后 3 秒 | 11,046 | 21,446 | 838 | 7,208 | 556 |
 | 清理后 63 秒 | 13,065 | 19,427 | 358 | 6,478 | 2,296 |
 
-3 秒时间点使用中下降 1,362 MB、Modified 增加 761 MB、Standby 增加 1,238 MB、本人进程工作集从 3,726 MB 降到 556 MB；63 秒后工作集回到 2,296 MB，使用中比清理前高 657 MB。整机计数器无法分离到单个进程；本人进程工作集减少 3,170 MB，而两张页列表的增量合计对不上，差额不作归属。
+3 秒时间点使用中下降 1,362 MB，可用上升同额（Standby 立即计入可用）；Modified 增加 761 MB，Standby 增加 1,238 MB，本人进程工作集从 3,726 MB 降到 556 MB。63 秒后工作集回到 2,296 MB，使用中比清理前高 657 MB，可用比基线低 657 MB；这段时间里其他程序也在活动。提交占用（Commit）本次未采集。整机计数器无法分离到单个进程；本人进程工作集减少 3,170 MB，而两张页列表的增量合计对不上，差额不作归属。
 
 ## pagefile 与 WSL swap：两层换页
 
