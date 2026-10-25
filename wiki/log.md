@@ -1501,3 +1501,9 @@
 - Raw: raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md
 - Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册; Watchdog Review Design; Plain Language 技能：ASD-STE100 与 ISO 24495-1
 - 要点：`~/.claude/CLAUDE.md` 首句改为「兄台，久候了。」，新增去 AI 腔 Skill 调用组与「事实与判断陈述协议」（硬禁「不能证明」句式，改用最佳猜测/最佳解释 + 下一步验证）；`~/.omp/agent/WATCHDOG.md` 同步硬禁令并改写命令覆盖范围表述；`no-bs` 0.1.8（commit b2cf1ed）新增两项反模式；复刻指南改为只收录改动段落并补齐 4 个去 AI 腔 Skill 安装命令。外部来源为 Wikipedia `WP:AIDISCLAIMER`、Graphite Research、The Strategic Linguist、LessWrong `n=900`，属有限观察，未覆盖成因。
+
+## [2026-10-25] ingest | 标准用户降低 Windows 物理内存占用的可达范围
+- Disposition: New; Update
+- Raw: raw/wsl-windows/2026-10-25-windows-working-set-page-lists-sources.md; raw/wsl-windows/2026-10-25-nonadmin-working-set-trim-measurement.md
+- Updated: Windows 内存回收工具与 WSL swap
+- 要点：新建 nonadmin-physical-memory-reduction.md（标准账户只能按进程清空自有进程工作集，句柄需 PROCESS_SET_QUOTA 与 PROCESS_QUERY_INFORMATION，按令牌所有者 SID 筛选；146 个本人进程清理成功、182 个打不开；3 秒「使用中」降 1,362 MB、工作集 3,726→556 MB，63 秒回到 2,296 MB 且使用中反超 657 MB；适用场景与定期清理无收益）。级联更新既有文章：Overview 与「正在使用腰斩」的页面去向由未测定改为已测定，新增「页离开工作集后的去向」一节（Modified 计使用中、Standby 计可用，账目口径引微软原文；四时间点实测表）。RAMMap Empty 五项名称与开关取自 RamMAP-Shortcut README 全文；五项的作用范围与权限要求无一手来源，4sysops 正文 403、Administrator's Reference 原页未取得，均按未核实处理。Priority 0 单项未测（StandbyCacheCoreBytes 与优先级编号的映射无出处）。
