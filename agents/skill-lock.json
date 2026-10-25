@@ -313,9 +313,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/tt-a1i/archify.git",
       "skillPath": "archify/SKILL.md",
-      "skillFolderHash": "39069dd190f574064fe410aa3af1b6dfd98a522c",
+      "skillFolderHash": "d5fc699feb186e8be4e2d9e86f850a8ea1b6959e",
       "installedAt": "2026-07-11T15:33:28.854Z",
-      "updatedAt": "2026-10-19T11:21:49.984Z"
+      "updatedAt": "2026-10-25T07:45:57.499Z"
     },
     "i-have-adhd": {
       "source": "ayghri/i-have-adhd",
@@ -516,9 +516,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
       "skillPath": "skills/no-bs/SKILL.md",
-      "skillFolderHash": "ba821ee7f83e73b08e7a5eda41a92248b5e39679",
+      "skillFolderHash": "239b1c5fd623bc90c51def3c156624f808d97998",
       "installedAt": "2026-08-13T16:12:33.065Z",
-      "updatedAt": "2026-10-24T16:05:29.972Z"
+      "updatedAt": "2026-10-25T07:45:02.672Z"
     },
     "mao-zedong-perspective": {
       "source": "leezythu/maoxuan-skill",
