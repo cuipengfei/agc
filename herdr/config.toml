@@ -8,6 +8,7 @@ auto_switch = true
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "spaces"
 status_indicators = "dots"
+pane_scrollbars = true
 tab_bar_right = [
   { type = "zoom" },
   { type = "datetime", format = "%H:%M" },

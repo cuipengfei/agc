@@ -1,0 +1,867 @@
+{
+  "_groups": {
+    "General": "通用",
+    "Server": "服务端",
+    "Theme": "主题",
+    "Terminal": "终端",
+    "Updates": "更新",
+    "Keybindings": "快捷键",
+    "UI and sidebar": "界面与侧栏",
+    "Notifications": "通知",
+    "Sound": "声音",
+    "Session": "会话",
+    "Worktrees": "Worktree",
+    "Remote": "远程",
+    "Advanced": "高级",
+    "Experimental": "实验",
+    "Local extras": "本地扩展"
+  },
+  "onboarding": {
+    "label": "首次引导",
+    "desc": "启动时显示首次运行设置流程。缺省或设为 true 都会显示引导；从引导里走完一遍会写入 onboarding = false。"
+  },
+  "server.allow_unelevated_clients": {
+    "label": "允许普通客户端连接管理员服务端",
+    "desc": "仅 Windows：允许同一账户的普通权限客户端控制以管理员权限运行的 Herdr 服务端及其管理员 pane。在服务端启动时生效，需要重启；重载配置不改变访问权限。启动参数 --allow-unelevated-clients 即使此项为 false 也会开启共享。"
+  },
+  "server.headless_cols": {
+    "label": "无客户端时的虚拟终端宽度",
+    "desc": "没有客户端连接时，用于布局和新建 pane 的虚拟终端宽度（列）。必须大于零。"
+  },
+  "server.headless_rows": {
+    "label": "无客户端时的虚拟终端高度",
+    "desc": "没有客户端连接时，用于布局和新建 pane 的虚拟终端高度（行）。必须大于零。"
+  },
+  "terminal.default_shell": {
+    "label": "新交互 pane 的 shell",
+    "desc": "新建交互 pane 时使用的可执行文件。留空时依次取 SHELL、/bin/sh；Windows 上优先 PATH 里的 pwsh.exe，否则 powershell.exe。"
+  },
+  "terminal.shell_mode": {
+    "label": "shell 启动模式",
+    "desc": "新建交互 pane 时 shell 的启动方式：auto 按平台自动选择，login 以登录 shell 启动，non_login 不读登录配置。"
+  },
+  "terminal.new_cwd": {
+    "label": "新终端的工作目录策略",
+    "desc": "新建交互 pane、tab、workspace 时从哪个目录开始：follow 跟随来源 pane，home 进主目录，current 用 Herdr 进程目录，path 用指定路径。CLI 显式 --cwd 优先。"
+  },
+  "terminal.kitty_graphics": {
+    "label": "Kitty 图像渲染",
+    "desc": "在兼容 Kitty graphics 的外层终端里渲染 pane 图像。应用通过 pane 输出走标准 Kitty graphics 协议；外部 socket pane-overlay API 已移除。设为 false 关闭图像渲染。改动后需重启服务端或重连客户端。远端会话中，服务端的设置控制协议解析，本地客户端的设置控制对外层终端的输出。"
+  },
+  "update.channel": {
+    "label": "更新渠道",
+    "desc": "后台版本检查与 herdr update 使用的更新渠道。Windows 正式版默认 stable；已安装的 Windows 预览版保持 preview，除非显式切换。Homebrew、mise、Nix 安装会忽略 preview 渠道。"
+  },
+  "update.version_check": {
+    "label": "检查新版本",
+    "desc": "在后台向 herdr.dev 检查 Herdr 是否有新版本。"
+  },
+  "update.manifest_check": {
+    "label": "检查 agent 识别清单",
+    "desc": "在后台向 herdr.dev 检查 agent 屏幕识别清单的远程更新。内置清单与本地覆盖仍然生效。"
+  },
+  "session.resume_agents_on_restore": {
+    "label": "恢复时续接 agent 对话",
+    "desc": "恢复 Herdr 会话时，把受支持的 AI agent pane 续接回它们原生的对话会话。"
+  },
+  "session.startup_per_agent_delay_ms": {
+    "label": "自动恢复间隔",
+    "desc": "服务端重启后自动恢复多个 agent 时，相邻两个之间的等待毫秒数。第一个 agent 立即启动；0 表示不间隔。不影响手动启动与显式 attach。改动后需重启服务端。"
+  },
+  "worktrees.directory": {
+    "label": "worktree 根目录",
+    "desc": "Herdr 创建 <repo>/<branch-slug> checkout 时使用的根目录。"
+  },
+  "remote.manage_ssh_config": {
+    "label": "托管 SSH 配置",
+    "desc": "为 herdr --remote 增加保活兜底与私有连接复用。设为 false 则原样执行 ssh。"
+  },
+  "advanced.scrollback_limit_bytes": {
+    "label": "scrollback 上限",
+    "desc": "每个 pane 终端保留的 scrollback 缓冲区上限（字节）。旧键名 scrollback_lines 仍作为别名接受。"
+  },
+  "experimental.allow_nested": {
+    "label": "允许嵌套 Herdr",
+    "desc": "允许在已有 Herdr pane 内再启动一个 herdr。"
+  },
+  "experimental.kitty_graphics": {
+    "label": "Kitty 图像渲染（已弃用）",
+    "desc": "terminal.kitty_graphics 的弃用兼容键。已有的 true/false 值仍被接受；两者同时设置时 terminal.kitty_graphics 优先。"
+  },
+  "experimental.pane_history": {
+    "label": "持久化 pane 屏幕历史",
+    "desc": "把 pane 屏幕历史写入 session-history.json，供重启后重新显示。"
+  },
+  "experimental.reveal_hidden_cursor_for_cjk_ime": {
+    "label": "为输入法暴露隐藏光标",
+    "desc": "即使 pane 请求隐藏光标（?25l），也把聚焦 pane 的光标位置暴露给外层终端，让 macOS 原生输入法的候选窗在 TUI 自绘光标时仍能跟随（Claude Code、pi、codex 等）。默认 false。pane 没有报告光标位置时回退到 pane 左上角，保证输入法锚点始终存在。开启的代价：对隐藏光标又不自绘替代光标的程序（如 vim 普通模式），外层终端会多出一个硬件光标。"
+  },
+  "experimental.cjk_ime_agents": {
+    "label": "限定输入法锚点适用的 agent",
+    "desc": "把 reveal_hidden_cursor_for_cjk_ime 限制在检测到的 agent 名称命中列表的聚焦 pane 上（不区分大小写）。空列表表示对所有聚焦 pane 生效。未知名称被忽略；列表里没有有效名称时不生效。"
+  },
+  "experimental.cjk_ime_cursor_shape": {
+    "label": "输入法锚点光标形状",
+    "desc": "开启 reveal_hidden_cursor_for_cjk_ime 时锚点使用的光标形状：block 闪烁方块、steady_block 常亮方块、underline 闪烁下划线、steady_underline 常亮下划线、bar 闪烁竖线、steady_bar 常亮竖线。"
+  },
+  "experimental.switch_ascii_input_source_in_prefix": {
+    "label": "前缀模式切 ASCII 输入",
+    "desc": "前缀模式激活期间临时把宿主输入源切成 ASCII 模式，让前缀命令按 ASCII 读取，退出前缀模式后恢复原输入源。macOS 上切换到 ASCII 键盘布局；Windows 上把输入法切到英文。Windows 目前仅支持韩文输入法，其他语言输入法保持原状。仅在 macOS 与 Windows 生效，其他平台无操作；切换失败时按尽力而为处理。"
+  },
+  "theme.name": {
+    "label": "内置主题",
+    "desc": "使用的内置主题名称。"
+  },
+  "theme.auto_switch": {
+    "label": "跟随明暗自动切换",
+    "desc": "跟随外层终端的明暗外观，在两组主题名之间自动切换。"
+  },
+  "theme.dark_name": {
+    "label": "暗色主题名",
+    "desc": "auto_switch 选中暗色外观时使用的主题名。"
+  },
+  "theme.light_name": {
+    "label": "亮色主题名",
+    "desc": "auto_switch 选中亮色外观时使用的主题名。"
+  },
+  "theme.custom.accent": {
+    "label": "自定义：强调色",
+    "desc": "在基础主题之上覆盖 accent 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.panel_bg": {
+    "label": "自定义：面板背景",
+    "desc": "在基础主题之上覆盖 panel_bg 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.sidebar_bg": {
+    "label": "自定义：侧栏背景",
+    "desc": "单独设置桌面侧栏背景，不改动其他面板表面。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.active_row_bg": {
+    "label": "自定义：当前行背景",
+    "desc": "设置当前 Space 行与聚焦 Agent 行的背景，不改动分隔符与滚动条轨道。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.selection_bg": {
+    "label": "自定义：导航选中背景",
+    "desc": "设置侧栏 Navigate 模式光标所在行的背景，不改动其他选中表面。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.surface0": {
+    "label": "自定义：surface0",
+    "desc": "在基础主题之上覆盖 surface0 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.surface1": {
+    "label": "自定义：surface1",
+    "desc": "在基础主题之上覆盖 surface1 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.surface_dim": {
+    "label": "自定义：surface_dim",
+    "desc": "在基础主题之上覆盖 surface_dim 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.overlay0": {
+    "label": "自定义：overlay0",
+    "desc": "在基础主题之上覆盖 overlay0 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.overlay1": {
+    "label": "自定义：overlay1",
+    "desc": "在基础主题之上覆盖 overlay1 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.text": {
+    "label": "自定义：正文颜色",
+    "desc": "在基础主题之上覆盖 text 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.subtext0": {
+    "label": "自定义：次级文字",
+    "desc": "在基础主题之上覆盖 subtext0 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.mauve": {
+    "label": "自定义：紫红",
+    "desc": "在基础主题之上覆盖 mauve 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.green": {
+    "label": "自定义：绿色",
+    "desc": "在基础主题之上覆盖 green 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.yellow": {
+    "label": "自定义：黄色",
+    "desc": "在基础主题之上覆盖 yellow 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.red": {
+    "label": "自定义：红色",
+    "desc": "在基础主题之上覆盖 red 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.blue": {
+    "label": "自定义：蓝色",
+    "desc": "在基础主题之上覆盖 blue 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.teal": {
+    "label": "自定义：青色",
+    "desc": "在基础主题之上覆盖 teal 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.peach": {
+    "label": "自定义：桃色",
+    "desc": "在基础主题之上覆盖 peach 颜色。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.accent": {
+    "label": "亮色覆盖：强调色",
+    "desc": "auto_switch 选中亮色外观时覆盖 accent 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.panel_bg": {
+    "label": "亮色覆盖：面板背景",
+    "desc": "auto_switch 选中亮色外观时覆盖 panel_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.sidebar_bg": {
+    "label": "亮色覆盖：侧栏背景",
+    "desc": "auto_switch 选中亮色外观时覆盖 sidebar_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.active_row_bg": {
+    "label": "亮色覆盖：当前行背景",
+    "desc": "auto_switch 选中亮色外观时覆盖 active_row_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.selection_bg": {
+    "label": "亮色覆盖：导航选中背景",
+    "desc": "auto_switch 选中亮色外观时覆盖 selection_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.surface0": {
+    "label": "亮色覆盖：surface0",
+    "desc": "auto_switch 选中亮色外观时覆盖 surface0 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.surface1": {
+    "label": "亮色覆盖：surface1",
+    "desc": "auto_switch 选中亮色外观时覆盖 surface1 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.surface_dim": {
+    "label": "亮色覆盖：surface_dim",
+    "desc": "auto_switch 选中亮色外观时覆盖 surface_dim 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.overlay0": {
+    "label": "亮色覆盖：overlay0",
+    "desc": "auto_switch 选中亮色外观时覆盖 overlay0 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.overlay1": {
+    "label": "亮色覆盖：overlay1",
+    "desc": "auto_switch 选中亮色外观时覆盖 overlay1 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.text": {
+    "label": "亮色覆盖：正文颜色",
+    "desc": "auto_switch 选中亮色外观时覆盖 text 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.subtext0": {
+    "label": "亮色覆盖：次级文字",
+    "desc": "auto_switch 选中亮色外观时覆盖 subtext0 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.mauve": {
+    "label": "亮色覆盖：紫红",
+    "desc": "auto_switch 选中亮色外观时覆盖 mauve 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.green": {
+    "label": "亮色覆盖：绿色",
+    "desc": "auto_switch 选中亮色外观时覆盖 green 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.yellow": {
+    "label": "亮色覆盖：黄色",
+    "desc": "auto_switch 选中亮色外观时覆盖 yellow 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.red": {
+    "label": "亮色覆盖：红色",
+    "desc": "auto_switch 选中亮色外观时覆盖 red 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.blue": {
+    "label": "亮色覆盖：蓝色",
+    "desc": "auto_switch 选中亮色外观时覆盖 blue 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.teal": {
+    "label": "亮色覆盖：青色",
+    "desc": "auto_switch 选中亮色外观时覆盖 teal 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.light.peach": {
+    "label": "亮色覆盖：桃色",
+    "desc": "auto_switch 选中亮色外观时覆盖 peach 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.accent": {
+    "label": "暗色覆盖：强调色",
+    "desc": "auto_switch 选中暗色外观时覆盖 accent 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.panel_bg": {
+    "label": "暗色覆盖：面板背景",
+    "desc": "auto_switch 选中暗色外观时覆盖 panel_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.sidebar_bg": {
+    "label": "暗色覆盖：侧栏背景",
+    "desc": "auto_switch 选中暗色外观时覆盖 sidebar_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.active_row_bg": {
+    "label": "暗色覆盖：当前行背景",
+    "desc": "auto_switch 选中暗色外观时覆盖 active_row_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.selection_bg": {
+    "label": "暗色覆盖：导航选中背景",
+    "desc": "auto_switch 选中暗色外观时覆盖 selection_bg 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.surface0": {
+    "label": "暗色覆盖：surface0",
+    "desc": "auto_switch 选中暗色外观时覆盖 surface0 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.surface1": {
+    "label": "暗色覆盖：surface1",
+    "desc": "auto_switch 选中暗色外观时覆盖 surface1 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.surface_dim": {
+    "label": "暗色覆盖：surface_dim",
+    "desc": "auto_switch 选中暗色外观时覆盖 surface_dim 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.overlay0": {
+    "label": "暗色覆盖：overlay0",
+    "desc": "auto_switch 选中暗色外观时覆盖 overlay0 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.overlay1": {
+    "label": "暗色覆盖：overlay1",
+    "desc": "auto_switch 选中暗色外观时覆盖 overlay1 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.text": {
+    "label": "暗色覆盖：正文颜色",
+    "desc": "auto_switch 选中暗色外观时覆盖 text 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.subtext0": {
+    "label": "暗色覆盖：次级文字",
+    "desc": "auto_switch 选中暗色外观时覆盖 subtext0 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.mauve": {
+    "label": "暗色覆盖：紫红",
+    "desc": "auto_switch 选中暗色外观时覆盖 mauve 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.green": {
+    "label": "暗色覆盖：绿色",
+    "desc": "auto_switch 选中暗色外观时覆盖 green 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.yellow": {
+    "label": "暗色覆盖：黄色",
+    "desc": "auto_switch 选中暗色外观时覆盖 yellow 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.red": {
+    "label": "暗色覆盖：红色",
+    "desc": "auto_switch 选中暗色外观时覆盖 red 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.blue": {
+    "label": "暗色覆盖：蓝色",
+    "desc": "auto_switch 选中暗色外观时覆盖 blue 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.teal": {
+    "label": "暗色覆盖：青色",
+    "desc": "auto_switch 选中暗色外观时覆盖 teal 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "theme.custom.dark.peach": {
+    "label": "暗色覆盖：桃色",
+    "desc": "auto_switch 选中暗色外观时覆盖 peach 颜色，在 theme.custom 之后应用。接受十六进制、颜色名、rgb(r,g,b)，或 reset 别名恢复默认。"
+  },
+  "ui.sidebar_width": {
+    "label": "侧栏宽度",
+    "desc": "展开侧栏的默认宽度（列），会按 workspace 名称自动伸缩。"
+  },
+  "ui.sidebar_min_width": {
+    "label": "侧栏最小宽度",
+    "desc": "展开侧栏的最小宽度（列）。"
+  },
+  "ui.sidebar_max_width": {
+    "label": "侧栏最大宽度",
+    "desc": "展开侧栏的最大宽度（列）。"
+  },
+  "ui.sidebar_start_collapsed": {
+    "label": "启动时收起侧栏",
+    "desc": "启动 Herdr 时侧栏处于收起状态。改动在下次启动生效。"
+  },
+  "ui.sidebar_collapsed_mode": {
+    "label": "收起时的呈现方式",
+    "desc": "侧栏收起后的显示方式：compact 保留窄条，hidden 完全隐藏。"
+  },
+  "ui.mobile_width_threshold": {
+    "label": "移动端布局阈值",
+    "desc": "终端宽度小于等于该值时，Herdr 使用移动端单列布局。"
+  },
+  "ui.mouse_capture": {
+    "label": "捕获鼠标",
+    "desc": "为 Herdr 的鼠标界面捕获鼠标输入。"
+  },
+  "ui.copy_on_select": {
+    "label": "选中即复制",
+    "desc": "鼠标拖选或双击选中的文字自动复制。关闭后需按 Ctrl+C 或宿主转发的 Cmd+C 复制并清除保留的选区。"
+  },
+  "ui.host_cursor": {
+    "label": "宿主光标策略",
+    "desc": "使用外层终端原生光标（native）、Herdr 自绘光标（drawn），或自动选择（auto，WSL 与 Windows 下用自绘）。"
+  },
+  "ui.right_click_passthrough_modifier": {
+    "label": "右键透传修饰键",
+    "desc": "按住该修饰键时右键手势透传给 pane 内的程序。留空表示禁用。接受 ctrl、alt、cmd、super、meta、hyper 或用 + 连接的组合；shift 被拒绝，因为很多终端把 Shift+鼠标 留作自用。"
+  },
+  "ui.redraw_on_focus_gained": {
+    "label": "获焦时整屏重绘",
+    "desc": "外层终端重新获得焦点时强制整屏重绘。"
+  },
+  "ui.mouse_scroll_lines": {
+    "label": "滚轮行数",
+    "desc": "鼠标滚轮每格滚动的行数。"
+  },
+  "ui.confirm_close": {
+    "label": "关闭 workspace 前确认",
+    "desc": "关闭 workspace 前询问确认。"
+  },
+  "ui.prompt_new_tab_name": {
+    "label": "新建 tab 时询问名称",
+    "desc": "创建新 tab 前询问 tab 名称。"
+  },
+  "ui.prompt_new_workspace_name": {
+    "label": "新建 workspace 时询问名称",
+    "desc": "交互式创建 workspace 前询问名称。"
+  },
+  "ui.pane_borders": {
+    "label": "pane 边框",
+    "desc": "是否在分屏 pane 周围画边框。auto 只给分屏画，always 连单个 pane 也加外框（需 pane_outer_borders 开启，因为单个 pane 的每条边都是外边），off 关闭。旧布尔值仍可解析：true 等同 auto，false 等同 off。"
+  },
+  "ui.pane_outer_borders": {
+    "label": "pane 区外框",
+    "desc": "沿 pane 区域外缘画边框。与 pane_gaps 一起关闭，可得到 tmux 风格的内部隔线且没有外框。"
+  },
+  "ui.pane_scrollbars": {
+    "label": "pane 滚动条",
+    "desc": "在终端 pane 旁画可交互的滚动条。关闭可回收那一列，并让它不干扰终端自身的选区。"
+  },
+  "ui.pane_gaps": {
+    "label": "pane 间距",
+    "desc": "让分屏 pane 之间保持视觉间隔，而不是共用分隔线。"
+  },
+  "ui.show_agent_labels_on_pane_borders": {
+    "label": "边框显示 agent 名",
+    "desc": "没有手动 pane 名称时，在分屏边框上显示 agent 标签。"
+  },
+  "ui.hide_tab_bar_when_single_tab": {
+    "label": "单 tab 时隐藏 tab 栏",
+    "desc": "workspace 只有一个 tab 时隐藏 tab 行。"
+  },
+  "ui.tab_bar_position": {
+    "label": "tab 栏位置",
+    "desc": "桌面 tab 行放在终端 pane 上方还是下方。"
+  },
+  "ui.tab_bar_right": {
+    "label": "tab 栏右侧状态",
+    "desc": "配置 tab 行右端的按序状态条目。支持的类型是 zoom（放大徽标）、hostname（机器名）、datetime（strftime 时间）、text（固定文字）、command（定期运行命令取最后一行输出）。"
+  },
+  "ui.tab_bar_right_separator": {
+    "label": "右侧状态分隔符",
+    "desc": "可见的右侧状态条目之间插入的文字。设为空字符串则直接拼接。"
+  },
+  "ui.window_title": {
+    "label": "外层窗口标题",
+    "desc": "Herdr 写给承载它的终端的标题。可用占位符：{hostname}、{workspace}、{tab}、{pane}、{terminal_title}。没有值的占位符渲染为空。留空表示不改动外层标题。"
+  },
+  "ui.agent_panel_sort": {
+    "label": "agent 列表排序",
+    "desc": "agent 侧栏的排序方式。spaces 按 workspace 分组、保持 workspace 出现顺序，状态不影响位置（workspaces 是它的别名）；priority 按 Herdr 自己算出的待办队列排序，顺序为 blocked → 已结束但未查看 → working → 已查看的空闲 → 未知，同一档内保持 workspace 顺序，且 prefix+n/p 会按新顺序遍历。这里的优先级由 agent 上报的状态与「是否已查看」决定，不是用户手工设定的优先级。"
+  },
+  "ui.status_indicators": {
+    "label": "状态指示样式",
+    "desc": "agent 状态用紧凑的彩色圆点（dots）还是用形状不同的静态符号（symbols）。符号不播放动画。"
+  },
+  "ui.sidebar.agents.row_gap": {
+    "label": "agent 条目间距",
+    "desc": "展开的 Agent 侧栏条目之间插入的空白行数。设为 1 可恢复旧间距。不影响 rows 内部的行距。"
+  },
+  "ui.sidebar.agents.rows": {
+    "label": "agent 行默认布局",
+    "desc": "展开的 Agent 侧栏默认布局。条目可以是 token 字符串，也可以是内联 { token, fg, bold, dim, rules } 样式表。文本类内置 token 与 $name 元数据 token 支持最多 16 条有序规则（equals、contains、starts_with、gt、lt），首个命中覆盖对应样式；文本条件可选 ignore_case 做 ASCII 匹配，数值条件要求完整的有限数字。state_icon 只接受固定样式。最多 16 行、每行 16 个 token。"
+  },
+  "ui.sidebar.agents.rows_by_agent": {
+    "label": "按 agent 覆盖行布局",
+    "desc": "按严格 canonical agent id（如 claude、codex、pi、omp）覆盖整个 Agent 行布局。覆盖是替换 rows 而不是扩展它。没有覆盖的 agent 使用 ui.sidebar.agents.rows。"
+  },
+  "ui.sidebar.spaces.row_gap": {
+    "label": "space 条目间距",
+    "desc": "worktree 组之间以及不相关的顶层 Space 之间插入的空白行数。worktree 父项与其缩进子项保持紧贴。"
+  },
+  "ui.sidebar.spaces.rows": {
+    "label": "space 行布局",
+    "desc": "展开的 Space 侧栏布局。条目可以是 token 字符串，也可以是内联样式表。文本类内置 token 与 $name 元数据 token 支持最多 16 条有序规则；state_icon 与 git_status 只接受固定样式。最多 16 行、每行 16 个 token。"
+  },
+  "ui.accent": {
+    "label": "强调色",
+    "desc": "高亮、边框与导航界面使用的强调色。接受十六进制（#89b4fa）、颜色名（cyan、blue）或 RGB（rgb(137,180,250)）。"
+  },
+  "ui.toast.delivery": {
+    "label": "弹窗通知去向",
+    "desc": "弹出通知的投递方式：off 关闭弹窗，herdr 显示应用内 toast，terminal 请外层终端发桌面通知，system 直接调用系统通知服务。"
+  },
+  "ui.toast.delay_seconds": {
+    "label": "通知延迟",
+    "desc": "发送完成或需要输入通知前的等待秒数。延迟到期时 pane 仍处于同一状态才会通知。0 表示立即；有效范围 0 到 3600。"
+  },
+  "ui.toast.herdr.position": {
+    "label": "应用内 toast 位置",
+    "desc": "应用内 toast 相对于整个 Herdr 画面的位置。"
+  },
+  "ui.toast.clipboard.enabled": {
+    "label": "复制提示",
+    "desc": "鼠标复制后显示已复制到剪贴板的提示。"
+  },
+  "ui.toast.clipboard.position": {
+    "label": "复制提示位置",
+    "desc": "已复制提示的显示位置。"
+  },
+  "ui.sound.enabled": {
+    "label": "声音提醒",
+    "desc": "后台 workspace 里的 agent 状态变化时播放声音。"
+  },
+  "ui.sound.path": {
+    "label": "通用提示音",
+    "desc": "所有通知声音统一使用的 mp3 路径。相对路径按配置文件所在目录解析。"
+  },
+  "ui.sound.done_path": {
+    "label": "完成提示音",
+    "desc": "done 通知使用的 mp3 路径。相对路径按配置文件所在目录解析。"
+  },
+  "ui.sound.request_path": {
+    "label": "需要输入提示音",
+    "desc": "request 通知使用的 mp3 路径。相对路径按配置文件所在目录解析。"
+  },
+  "ui.sound.agents.pi": {
+    "label": "Pi 的声音开关",
+    "desc": "检测到 Pi 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.claude": {
+    "label": "Claude Code 的声音开关",
+    "desc": "检测到 Claude Code 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.codex": {
+    "label": "Codex 的声音开关",
+    "desc": "检测到 Codex 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.gemini": {
+    "label": "Gemini CLI 的声音开关",
+    "desc": "检测到 Gemini CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.cursor": {
+    "label": "Cursor Agent 的声音开关",
+    "desc": "检测到 Cursor Agent CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.devin": {
+    "label": "Devin 的声音开关",
+    "desc": "检测到 Devin 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.agy": {
+    "label": "Agy 的声音开关",
+    "desc": "检测到 Agy 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.cline": {
+    "label": "Cline 的声音开关",
+    "desc": "检测到 Cline 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.open_code": {
+    "label": "OpenCode 的声音开关",
+    "desc": "检测到 OpenCode 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.github_copilot": {
+    "label": "GitHub Copilot CLI 的声音开关",
+    "desc": "检测到 GitHub Copilot CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.kimi": {
+    "label": "Kimi Code CLI 的声音开关",
+    "desc": "检测到 Kimi Code CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.kiro": {
+    "label": "Kiro 的声音开关",
+    "desc": "检测到 Kiro 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.droid": {
+    "label": "Droid 的声音开关",
+    "desc": "检测到 Droid 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。此项默认 off，即 Droid 默认静音。"
+  },
+  "ui.sound.agents.amp": {
+    "label": "Amp 的声音开关",
+    "desc": "检测到 Amp 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.grok": {
+    "label": "Grok CLI 的声音开关",
+    "desc": "检测到 Grok CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.hermes": {
+    "label": "Hermes Agent 的声音开关",
+    "desc": "检测到 Hermes Agent 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.kilo": {
+    "label": "Kilo Code CLI 的声音开关",
+    "desc": "检测到 Kilo Code CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.qodercli": {
+    "label": "Qoder CLI 的声音开关",
+    "desc": "检测到 Qoder CLI 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.qwen": {
+    "label": "Qwen Code 的声音开关",
+    "desc": "检测到 Qwen Code 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.letta": {
+    "label": "Letta Code 的声音开关",
+    "desc": "检测到 Letta Code 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.maki": {
+    "label": "Maki 的声音开关",
+    "desc": "检测到 Maki 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "ui.sound.agents.muse": {
+    "label": "Muse 的声音开关",
+    "desc": "检测到 Muse 时的声音覆盖：default 跟随全局，on 强制开启，off 静音。"
+  },
+  "keys.prefix": {
+    "label": "前缀键",
+    "desc": "进入前缀模式的按键（如 ctrl+b、f12、esc），也可以用数组同时接受多个前缀键。"
+  },
+  "keys.help": {
+    "label": "快捷键帮助",
+    "desc": "打开快捷键帮助面板。"
+  },
+  "keys.settings": {
+    "label": "设置面板",
+    "desc": "打开设置界面。"
+  },
+  "keys.new_workspace": {
+    "label": "新建 workspace",
+    "desc": "创建一个新 workspace。"
+  },
+  "keys.new_worktree": {
+    "label": "新建 Git worktree",
+    "desc": "从选中的 workspace 创建一个 Git worktree。"
+  },
+  "keys.open_worktree": {
+    "label": "打开已有 worktree",
+    "desc": "从选中的 workspace 打开一个已有的 Git worktree。默认未绑定。"
+  },
+  "keys.remove_worktree": {
+    "label": "删除 worktree",
+    "desc": "确认后删除选中的受管 worktree checkout。默认未绑定。"
+  },
+  "keys.rename_workspace": {
+    "label": "重命名 workspace",
+    "desc": "重命名选中的 workspace。"
+  },
+  "keys.close_workspace": {
+    "label": "关闭 workspace",
+    "desc": "关闭选中的 workspace。"
+  },
+  "keys.workspace_picker": {
+    "label": "workspace 选择器",
+    "desc": "打开 workspace 导航界面。"
+  },
+  "keys.goto": {
+    "label": "会话导航",
+    "desc": "打开会话导航器。"
+  },
+  "keys.navigate_workspace_up": {
+    "label": "导航模式：上移 workspace",
+    "desc": "在导航模式下把 workspace 选择上移一项。"
+  },
+  "keys.navigate_workspace_down": {
+    "label": "导航模式：下移 workspace",
+    "desc": "在导航模式下把 workspace 选择下移一项。"
+  },
+  "keys.navigate_pane_left": {
+    "label": "导航模式：左移焦点",
+    "desc": "在导航模式下聚焦左侧 pane。左方向键始终是别名。"
+  },
+  "keys.navigate_pane_down": {
+    "label": "导航模式：下移焦点",
+    "desc": "在导航模式下聚焦下方 pane。"
+  },
+  "keys.navigate_pane_up": {
+    "label": "导航模式：上移焦点",
+    "desc": "在导航模式下聚焦上方 pane。"
+  },
+  "keys.navigate_pane_right": {
+    "label": "导航模式：右移焦点",
+    "desc": "在导航模式下聚焦右侧 pane。右方向键始终是别名。"
+  },
+  "keys.detach": {
+    "label": "断开客户端",
+    "desc": "把当前客户端从其 Herdr 服务端断开。"
+  },
+  "keys.reload_config": {
+    "label": "重载配置",
+    "desc": "在运行中的应用与服务端重新读取 config.toml。"
+  },
+  "keys.open_notification_target": {
+    "label": "跳转到通知来源",
+    "desc": "聚焦当前可见通知对应的目标。"
+  },
+  "keys.previous_workspace": {
+    "label": "上一个 workspace",
+    "desc": "选中上一个 workspace。默认未绑定。"
+  },
+  "keys.next_workspace": {
+    "label": "下一个 workspace",
+    "desc": "选中下一个 workspace。默认未绑定。"
+  },
+  "keys.previous_agent": {
+    "label": "上一个 agent",
+    "desc": "聚焦 agent 面板中的上一个 agent。默认未绑定。"
+  },
+  "keys.next_agent": {
+    "label": "下一个 agent",
+    "desc": "聚焦 agent 面板中的下一个 agent。默认未绑定。"
+  },
+  "keys.focus_agent": {
+    "label": "按序号聚焦 agent",
+    "desc": "按序号 1-9 聚焦 agent。默认未绑定。"
+  },
+  "keys.remote_image_paste": {
+    "label": "粘贴图片到远端会话",
+    "desc": "本地客户端快捷键，把剪贴板里的图片发送到远端 Herdr 会话。"
+  },
+  "keys.new_tab": {
+    "label": "新建 tab",
+    "desc": "在当前 workspace 中创建一个新 tab。"
+  },
+  "keys.rename_tab": {
+    "label": "重命名 tab",
+    "desc": "重命名当前 tab。"
+  },
+  "keys.previous_tab": {
+    "label": "上一个 tab",
+    "desc": "选中上一个 tab。"
+  },
+  "keys.next_tab": {
+    "label": "下一个 tab",
+    "desc": "选中下一个 tab。"
+  },
+  "keys.move_tab_previous": {
+    "label": "tab 前移",
+    "desc": "把当前 tab 向前移动一个位置。默认未绑定。"
+  },
+  "keys.move_tab_next": {
+    "label": "tab 后移",
+    "desc": "把当前 tab 向后移动一个位置。默认未绑定。"
+  },
+  "keys.switch_tab": {
+    "label": "切换 tab 1-9",
+    "desc": "切换到第 1-9 个 tab。"
+  },
+  "keys.switch_workspace": {
+    "label": "切换 workspace 1-9",
+    "desc": "在前缀模式下切换到第 1-9 个 workspace。默认未绑定。"
+  },
+  "keys.close_tab": {
+    "label": "关闭 tab",
+    "desc": "关闭当前 tab。"
+  },
+  "keys.rename_pane": {
+    "label": "重命名 pane",
+    "desc": "重命名聚焦 pane。"
+  },
+  "keys.edit_scrollback": {
+    "label": "在编辑器中打开 scrollback",
+    "desc": "用 $EDITOR 打开聚焦 pane 的 scrollback。"
+  },
+  "keys.clear_pane": {
+    "label": "清空 pane 屏幕",
+    "desc": "清空聚焦 pane 的屏幕与 scrollback，保留当前光标行及其可见的软换行行。不向运行中的程序发送输入，在备用屏幕上（例如 Vim）无操作。默认未绑定；例如 clear_pane = \"prefix+ctrl+k\"。"
+  },
+  "keys.copy_mode": {
+    "label": "进入复制模式",
+    "desc": "为聚焦 pane 进入键盘复制模式。"
+  },
+  "keys.focus_pane_left": {
+    "label": "聚焦左侧 pane",
+    "desc": "聚焦左侧 pane。"
+  },
+  "keys.focus_pane_down": {
+    "label": "聚焦下方 pane",
+    "desc": "聚焦下方 pane。"
+  },
+  "keys.focus_pane_up": {
+    "label": "聚焦上方 pane",
+    "desc": "聚焦上方 pane。"
+  },
+  "keys.focus_pane_right": {
+    "label": "聚焦右侧 pane",
+    "desc": "聚焦右侧 pane。"
+  },
+  "keys.swap_pane_left": {
+    "label": "与左侧 pane 交换",
+    "desc": "把聚焦 pane 与左侧 pane 交换位置。"
+  },
+  "keys.swap_pane_down": {
+    "label": "与下方 pane 交换",
+    "desc": "把聚焦 pane 与下方 pane 交换位置。"
+  },
+  "keys.swap_pane_up": {
+    "label": "与上方 pane 交换",
+    "desc": "把聚焦 pane 与上方 pane 交换位置。"
+  },
+  "keys.swap_pane_right": {
+    "label": "与右侧 pane 交换",
+    "desc": "把聚焦 pane 与右侧 pane 交换位置。"
+  },
+  "keys.cycle_pane_next": {
+    "label": "循环到下一个 pane",
+    "desc": "按顺序循环到下一个 pane。"
+  },
+  "keys.cycle_pane_previous": {
+    "label": "循环到上一个 pane",
+    "desc": "按顺序循环到上一个 pane。"
+  },
+  "keys.last_pane": {
+    "label": "回到上次的 pane",
+    "desc": "聚焦跨 workspace 与 tab 的上一个聚焦 pane。默认未绑定。"
+  },
+  "keys.split_vertical": {
+    "label": "垂直分屏",
+    "desc": "垂直分屏（左右并排）。"
+  },
+  "keys.split_horizontal": {
+    "label": "水平分屏",
+    "desc": "水平分屏（上下堆叠）。"
+  },
+  "keys.close_pane": {
+    "label": "关闭 pane",
+    "desc": "关闭聚焦 pane。"
+  },
+  "keys.zoom": {
+    "label": "放大 pane",
+    "desc": "切换聚焦 pane 的放大状态。旧键名 fullscreen 仍作为别名接受。"
+  },
+  "keys.resize_mode": {
+    "label": "进入调整模式",
+    "desc": "进入 pane 尺寸调整模式。"
+  },
+  "keys.resize_pane_left": {
+    "label": "向左调整 pane 尺寸",
+    "desc": "把聚焦 pane 的边界向左移动。默认未绑定。"
+  },
+  "keys.resize_pane_down": {
+    "label": "向下调整 pane 尺寸",
+    "desc": "把聚焦 pane 的边界向下移动。默认未绑定。"
+  },
+  "keys.resize_pane_up": {
+    "label": "向上调整 pane 尺寸",
+    "desc": "把聚焦 pane 的边界向上移动。默认未绑定。"
+  },
+  "keys.resize_pane_right": {
+    "label": "向右调整 pane 尺寸",
+    "desc": "把聚焦 pane 的边界向右移动。默认未绑定。"
+  },
+  "keys.toggle_sidebar": {
+    "label": "切换侧栏收起",
+    "desc": "切换侧栏的展开与收起。"
+  },
+  "keys.indexed.tabs": {
+    "label": "tab 数字直切修饰键",
+    "desc": "tab 1-9 快捷键使用的修饰键组合。默认未绑定。"
+  },
+  "keys.indexed.workspaces": {
+    "label": "workspace 数字直切修饰键",
+    "desc": "workspace 1-9 快捷键使用的修饰键组合。默认未绑定。"
+  },
+  "keys.indexed.agents": {
+    "label": "agent 数字直切修饰键",
+    "desc": "agent 1-9 快捷键使用的修饰键组合。默认未绑定。"
+  },
+  "keys.command": {
+    "label": "自定义命令快捷键",
+    "desc": "把快捷键接到自定义命令或插件的数组表。type 取 popup（浮动临时窗口，接收全部输入含 Escape）、pane（临时放大 pane）、shell（后台运行）、plugin_action（调用已装插件的操作）。命令退出后 popup 与 pane 自动关闭；width/height 可用字符格数或 \"80%\" 这类百分比。官方参考未单列此键，属本地扩展。"
+  }
+}
