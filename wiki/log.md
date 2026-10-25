@@ -1531,3 +1531,8 @@
 - Raw: raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md
 - Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 - 要点：用户级「工作流程」按任务类型选择验证方式；代码功能运行相关测试并验证实际行为，文档、规则和 skill 文案核对内容、格式、引用与示例一致性，对 skill 文案进行真实模型调用、付费 API 实验、压力测试或对照抽样须获明确授权。「别让 skill 改掉当前任务」保持原文，复刻指南记录完整条款、替换位置、逐字一致性检查与共享链接核对。
+
+## [2026-10-25] ingest | Herdr 配置项与用户体验
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md
+- 要点：补 CLI 与客户端重载边界（`herdr config` 仅 `check`/`reset-keys`，客户端显示类设置须界面 `reload config`，`herdr status client` 不报配置状态）；补 `ui.agent_panel_sort` 两模式，priority 先按 `tab_attention_priority` 档位降序（Blocked 4 / Idle+unseen 3 / Working 2 / Idle+seen 1 / Unknown 0），同档按 `last_agent_state_change_seq` 降序，稳定排序保底 workspace/pane 原顺序，issue #318 正文的同档描述以 v0.9.5 源码为准；补 `shell_mode=auto` 仅 macOS 登录 shell；补 `keys.command` 的 `description`、`HERDR_*` 变量、Windows `cmd.exe /d /c` 与 `prefix+o` 撞键。同日旧 raw 已冻结，新证据另起文件。客户端重载与 priority 运行时排序未实测。

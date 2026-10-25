@@ -1,7 +1,7 @@
 # Herdr 配置项与用户体验
 
 > Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25
-> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md)
+> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md)
 > Updated: 2026-10-25
 
 ## Overview
@@ -29,6 +29,10 @@ reload 的配置来源分两端：
 - **客户端本地**：主题、侧栏布局、复制行为等显示设置，即使 `herdr --remote` 连接远端机器也用本地配置。
 - **pane 所在 server**：pane 默认值、worktree、integration、自定义命令。
 
+CLI 只有 server 侧入口：`herdr config` 的子命令是 `check` 与 `reset-keys`，没有重载客户端本地配置的命令。客户端显示类设置（`theme.*`、`ui.*` 里的 `ui.pane_scrollbars` 这类界面项、本地键位绑定）改完后，必须在 Herdr 界面走 `menu → reload config` 才会反映到已打开的客户端；`herdr server reload-config` 只覆盖 server 那一半（`terminal.*`、`worktrees.*`、`update.*`、`[[keys.command]]`）。`herdr status client` 只报版本、channel、协议号与二进制路径，不显示配置是否已重载。
+
+判断「改完是否已生效」要按归属分开看：写在 server 侧的键跑一次 `reload-config` 即可；写在客户端侧的键在没有界面重载前，运行中的窗口仍用旧值，即使配置文件与 `herdr config check` 都已经认可新内容。
+
 本机校验实测：真实配置 `config: ok`；未知键报 `unknown config key ui.sidebar_wdith; ignoring key`、退出码 1；类型错误报 `invalid type: string "wide", expected u16`、退出码 1。
 
 ## 主题、颜色与界面排列
@@ -53,6 +57,7 @@ reload 的配置来源分两端：
 - **`row_gap` 默认 `0`**：条目紧贴；设 `1` 恢复旧间距；不影响 `rows` 内部行距。
 - **`$name` 是动态值**：在 layout 加入后，由脚本或 plugin 经 `herdr pane report-metadata` 上报其值；不上报就消失。
 - **自定义行布局只影响展开的桌面侧栏**：收起状态和移动端仍用紧凑布局。
+- **两种面板排序**：`ui.agent_panel_sort` 取 `"spaces"`（默认，`"workspaces"` 是别名）时，条目按 workspace 分组、保持 workspace 出现顺序，状态变化不会让行上下跳动；取 `"priority"` 时面板变成待办队列，先按优先档位降序排（blocked → 未查看的 done → working → 已查看的 idle → unknown），同档再按最近一次状态变更排序、新的在前，序号相同才保持 workspace/pane 原顺序。`prefix+n`/`prefix+p` 按显示顺序遍历。本机保持 `"spaces"`，侧栏是静态地图而非队列。
 
 本机为 OMP 配了三行：`["state_icon","machine","workspace","tab"]` / `["terminal_title"]` / `["agent"]`。
 
@@ -79,14 +84,20 @@ reload 的配置来源分两端：
 
 Popup 可设宽高（字符格数或 `"80%"`）；打开期间接收全部终端输入，含 Escape，通常靠退出其中的程序关闭。
 
-本机：六个 `prefix+a`/`prefix+o` 系列走 `plugin_action` 的 annotate 操作；新增 `prefix+t` 起临时 shell popup（80% 宽高），`prefix+alt+b` 起运行 btop 的临时 pane。
+`description` 可选，写了就替换 `prefix+?` 帮助面板里的 `'custom command'` 标签。命令能拿到 `HERDR_SOCKET_PATH`、`HERDR_BIN_PATH`、`HERDR_ACTIVE_WORKSPACE_ID`、`HERDR_ACTIVE_TAB_ID`、`HERDR_ACTIVE_PANE_ID`、`HERDR_ACTIVE_PANE_CWD`；shell 命令在能检测到时从聚焦 pane 的目录运行。Windows 上命令串经 `cmd.exe /d /c` 执行，环境变量写 `%HERDR_BIN_PATH%` 这种形式。
+
+`plugin_action` 用的是插件动作 id；动作 id 可能不唯一，此时写 `<插件 id>.<动作 id>`。插件的每个动作声明自己的 context（`pane`、`workspace`、`global`），pane 类动作需要有聚焦 pane 才有终端可写。
+
+本机：六个 annotate 动作走 `plugin_action`（`prefix+a`、`prefix+shift+a`、`prefix+ctrl+a`、`prefix+m`、`prefix+o`、`prefix+shift+o`）；新增 `prefix+t` 起临时 shell popup（80% 宽高），`prefix+alt+b` 起运行 btop 的临时 pane。
+
+键位会撞：本机把 `prefix+o` 绑给了 `annotate.open`（在 plannotator-tui 打开聚焦 pane 所在目录，带文件树，反馈发回该 pane 的 agent），而官方 `keys.open_notification_target` 的默认值也是 `prefix+o`。同键两条绑定时，跳到通知来源 pane 那条按不出来。
 
 ## 终端默认与 worktree
 
 `terminal.*` 决定新交互终端如何开始：
 
 - `default_shell`：executable 名称或路径，不接受整条 shell 命令；空时按 `SHELL`→`/bin/sh`，Windows 按 `pwsh.exe`→`powershell.exe`。
-- `shell_mode`：`auto`/`login`/`non_login`，影响 shell 读哪些启动配置。
+- `shell_mode`：`auto`/`login`/`non_login`，影响 shell 读哪些启动配置。`auto` 只在 macOS 起登录 shell（为了让 `/usr/libexec/path_helper`、Homebrew 这类登录才跑的 PATH 初始化生效），其他平台保持非登录；`login`/`non_login` 强制指定。命令 pane、后台运行的自定义命令键位、显式 argv 启动各自走原有路径，不受这项影响。
 - `new_cwd`：跟随来源 pane 目录、home、Herdr 进程目录或指定目录；创建时显式 `--cwd` 优先。
 
 `worktrees.directory` 决定 Git worktree checkout 的根目录。`server.headless_cols`/`headless_rows` 是无客户端连接时新建布局的虚拟终端尺寸，默认 `120×40`。修改 shell 默认值不影响已运行的 shell，只对后续新建 pane 生效。
@@ -133,9 +144,10 @@ Popup 可设宽高（字符格数或 `"80%"`）；打开期间接收全部终端
 
 ## 证据边界
 
-- 文档声明：字段、默认值、取值、token 列表、约束（16 行 × 16 token、`row_gap` 默认 0、override 替换不扩展、active tab 抑制、interval/timeout 范围、kitty_graphics 别名优先级与重启要求）来自 Herdr v0.9.5 官方 docs 与 `config-reference.json`。
-- 本机直读：`config.toml` 全文、三组 `herdr config check` 输出、`herdr integration status` 与 `herdr agent explain` 输出、`config-reference.json` 的 14 section/211 key 统计与抽样。
-- 未验证：blocked 状态上报的运行时表现（代码可证、未实测）；外层窗口标题在浏览器标签页的实际显示；`prefix+t`/`prefix+alt+b` 的实际触发结果；临时客户端观察到的时钟与 OMP 标题行只证明新开客户端加载了配置，未证明原客户端已加载。
+- 文档声明：字段、默认值、取值、token 列表、约束（16 行 × 16 token、`row_gap` 默认 0、override 替换不扩展、active tab 抑制、interval/timeout 范围、kitty_graphics 别名优先级与重启要求、`shell_mode=auto` 的平台差异、客户端与 server 的配置归属）来自 Herdr v0.9.5 官方 docs 与 `config-reference.json`。
+- 上游源码：`priority` 的排序键与档位表取自 `herdrdev/herdr` v0.9.5 的 `src/app/agent_view.rs` 与 `src/app/api_helpers.rs`；issue #318 正文与评论是提案记录，其同档顺序描述与发布代码不同，以源码为准。
+- 本机直读：`config.toml` 全文、`herdr config check` 输出、`herdr config --help`、`herdr integration status` 与 `herdr agent explain` 输出、`config-reference.json` 的 14 section/211 key 统计与抽样、annotate 插件的 `herdr-plugin.toml` 与 README。
+- 未验证：blocked 状态上报的运行时表现（代码可证、未实测）；外层窗口标题在浏览器标签页的实际显示；`prefix+t`/`prefix+alt+b` 的实际触发结果；临时客户端观察到的时钟与 OMP 标题行只证明新开客户端加载了配置，未证明原客户端已加载；`priority` 模式在本机的运行时排序（本机未切换）；客户端侧设置是否已在运行中的客户端加载（只跑过 `herdr server reload-config`，客户端需界面 `reload config`）；`prefix+o` 的键位覆盖只按配置推断，未实测按键。
 
 ## See Also
 
