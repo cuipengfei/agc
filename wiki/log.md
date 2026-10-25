@@ -1478,3 +1478,14 @@
 - Raw: raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md
 - Updated: Herdr + Plannotator 工具链全量 Reference; 终端图像协议支持矩阵
 - 要点：新建 herdr-config-user-experience.md（talk behavior 风格，按主题/侧栏/tab 栏与外层标题/快捷键与临时工具/终端默认/通知与声音/会话恢复与历史/图像光标输入法/远程更新启动九维度，每节给当前值+可取值+体验含义），raw 含 config-reference.json 14 section/211 key 统计与抽样、configuration.mdx 原文片段、本机 config.toml 全文与 herdr config check 三组输出、OMP 集成与 multiplexer 证据。级联 toolchain-reference 第 2 节补 0.9.5 复核、第 379 行 experimental.kitty_graphics 别名优先级；image matrix 补 0.9.5 别名优先级与重启要求。blocked 上报、外层标题浏览器显示、新快捷键触发未验证。
+
+## [2026-10-25] ingest | OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md; raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md; raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md
+- Updated: OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测（官方状态改 GA、补 10-25 复测、新增 Responses 返回值辨析节）
+- 要点：Decisions API 2026-10-22 GA（仍只支持 gpt-6-luna，题目上限 400，新增九项能力）；Copilot 上游 /v1/decisions 三次复测全拒、未随 GA 放行；Decisions 正文打 Responses 路径的 200 经未知字段对照证伪为普通文本生成；新建 copilot-decision-routing.md 记录 /auto 与 /models/session/intent、Auto 与 HydraFusion 边界、HydraFusion 地址未公开。
+
+## [2026-10-25] ingest | Copilot 的决策路由端点与 Auto／HydraFusion 边界
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md
+- 要点：新建 copilot-decision-routing.md；对外无 system-one 式决策 API，对内 /auto（请求 {prompt,tier}，响应 selected_model/session_token/expires_at/discounted_costs）与 /models/session/intent 题目固定；Auto 每请求选一模型、HydraFusion 选工作流并协调多模型（changelog 2026-09-30）；hydra_scores 归属 /auto/Auto V2，HydraFusion 独立上游地址未公开未确认。
