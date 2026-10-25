@@ -40,7 +40,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 |---------|---------|---------|
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南；Rust 核心随 wheel 发布、独立 Rust 代理未发布 | 2026-10-15 |
 | [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、symlink 与共享更新路径；lock 匹配和批量卸载；2026-10-24 全局核对：18 项有安装记录，8 项更新、10 项已最新，另 17 项未见全局记录 | 2026-10-25 |
-| [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言与简明语言选型；中文适配边界；本机 skill 文案案例：保留数值上限、区分证据/凭据/授权条件，并说明行为测试范围 | 2026-10-25 |
+| [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言与简明语言选型；中文适配边界；本机 skill 文案案例：保留数值上限、区分证据/凭据/授权条件；免责句式禁令的落点 | 2026-10-25 |
 | [LLM 出图的作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版、visual-explainer 全手写 HTML+SVG 四轴作者模型；amwth 含 image 的组件清单（SKILL.md 自述 12 种）、diagram-design SKILL.md 自述 44 种 type（实测 39）、archify 5 类 schema、figure-led register；几何裸露面与选择；2026-10-10 补 amwth 与 visual-explainer | 2026-10-10 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 | [Headroom 版本升级与兼容性（0.39 / 0.41）](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动；v0.41.0（2026-10-13）新功能与关键修复 | 2026-10-15 |
@@ -109,7 +109,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [文档、测验与 AI 代码库的认知债务](harness-engineering/documentation-and-cognitive-debt.md) | 用文档保存意图与决策，用 Quiz 暴露理解偏差，用测试验证行为 | 2026-09-01 |
 | [Jev 语义回归检查方法](harness-engineering/jev-semantic-regression-testing.md) | 原子 question、可引用 criteria、基线复用、重复调用与完整输入输出记录；jevify 批量分类工作流（冻结 rubric、升级规则、人工复核、双通道验证） | 2026-09-26 |
 | [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-20 |
-| [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计、发送条件有序散文列表（非高危 blocker 与用户直接呼叫漏网分支）、jevify 盘点验证方法 | 2026-09-26 |
+| [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计、发送条件有序散文列表、jevify 盘点验证方法；2026-10-25 新增 Advisor 禁用「不能证明」免责话术与「已确认 X + 下一步跑 Y」替代表达 | 2026-10-25 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
 | [三家宿主 MCP 配置、验证阶梯与凭据事故](harness-engineering/mcp-setup-validation.md) | stdio 配置与验证阶梯；HTTP OAuth 的宿主认证、调用与发布状态边界；凭据安全及状态命令副作用 | 2026-10-17 |
 | [双层循环操控模型](harness-engineering/dual-loop-steering-model.md) | 徐昊课程框架：双层循环（PDCA+操控循环）、四子系统、前馈/反馈/调整三环节；自我纠正就是 ReAct；edge 是窗口截断边界；Böckeler 的 guides/sensors 对应关系；feedforward 起源（Richards 1951 Macy Conference）；含 Bad Smells 目录（07–19 讲全十三种：需求模糊/隐式约定/信息散落/虚假胜利/指令腐化/前馈痴迷/反馈过载/上下文倾倒/上下文焦虑/跨会话知识丢失/状态污染/环境漂移/模式复制漂移）；含 Skills 最佳实践（20 讲：可预测标准、明确触发、恰当自由度、体积控制与拆分、内层循环）；retro 与动态知识更新的关系 | 2026-10-09 |
@@ -117,7 +117,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [锚定：用具体例子约束 Agent 的输出](harness-engineering/anchoring.md) | 徐昊课程第 21 讲：四角度（输出/过程/风格/结构）+ 三种锚定方式（模板+示例/流程图+前馈反馈/领域模型图+前馈反馈）；流程锚定与双层循环的四点对比；真实案例表（wryan14 模板、Superpowers 流程、LangGraph 图、ArchUnit 结构、SysMARA 实验、OpenAI 未验证） | 2026-10-13 |
 | [Behavioral Harness 的成本收益实验](harness-engineering/behavioral-harness-cost-experiment.md) | Naresh Jain 对照实验（martinfowler.com）：同一 BFF 任务有/无 behavioral harness，GPT-6 Sol 两种条件均 10/10（harness 纯开销）、GPT-6 Luna 3/10→10/10 且单次 $0.273 低于无 harness Sol 的 $0.406 约 33%；失败分类学（202 流程断裂/Kafka 契约/HTTP 契约/配置名）；executable attention 机制；条件化结论：模型能力决定 sensors 何时运行而非是否运行；含经济学口径与利益相关边界（作者为 Specmatic 创始人，n=10 无独立复现） | 2026-10-14 |
 | [backpass：把会话证据回灌到指令文件](harness-engineering/backpass-instruction-backward-pass.md) | 输入会话与执行分析的 harness 相互独立；`--harness pi` 读 OMP 存储但 `--analysis-agent pi` 启动上游 pi；acpx 可注册 `omp acp` 自定义 agent，backpass 0.1.36 的覆盖允许清单只含 pi/grok/claude/codex/opencode，故 OMP 暂不能当分析工人；OMP ACP 公布 882 个模型，`openai/gpt-5.6-*` 不在其中；近期加权抽样与 seed 语义；缓存不含模型须 `--force` | 2026-10-19 |
-| [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](harness-engineering/agent-expression-coherence-and-claude-md-rules.md) | 7 类多轮表达混乱模式、微软/Salesforce 多轮退化数据与 S2A/CoVe 对标、`skills.sh` 4 组外部 Skills 盘点、本机 Skills 覆盖映射，以及 `~/.claude/CLAUDE.md` 修改后完整可移植定稿与新机器 3 步复刻指令 | 2026-10-24 |
+| [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](harness-engineering/agent-expression-coherence-and-claude-md-rules.md) | 8 类表达问题（含「不能证明」免责句式）、微软/Salesforce 多轮退化数据与 S2A/CoVe 对标、Wikipedia/Graphite/Strategic Linguist/LessWrong 的纠偏式表述观察、`skills.sh` 安装量对比、本机 Skills 覆盖映射，以及 `~/.claude/CLAUDE.md` 三段改动定稿与新机器 3 步复刻指令 | 2026-10-25 |
 
 
 ## grok2api

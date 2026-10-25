@@ -1,16 +1,16 @@
 # Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 
-> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24
-> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)
-> Updated: 2026-10-24
+> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25
+> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md)
+> Updated: 2026-10-25
 
 ## Overview
 
-在复杂技术问答与多轮澄清中，LLM/Agent 常因换讨论对象不换代词、混用不同分类标准、漏掉结论前提、跨组件动作断链、新概念不交代来路、比较时拿共同点充当优势、以及在作废旧草稿上打局部补丁，导致读者难以建立一致心智模型。本文记录这 **7 类表达混乱模式**、外部多轮对话退化研究与 `skills.sh` 生态对标，并给出已写入 `~/.claude/CLAUDE.md`（同步至 `~/.omp/agent/AGENTS.md` 与 `~/.codex/AGENTS.md`）的**修改后完整定稿全文与前置 Skill 安装清单**，供新机器一键复刻。
+在复杂技术问答与多轮澄清中，LLM/Agent 常因换讨论对象不换代词、混用不同分类标准、漏掉结论前提、跨组件动作断链、新概念不交代来路、比较时拿共同点充当优势、以及在作废旧草稿上打局部补丁，导致读者难以建立一致心智模型。另有第 8 类由 2026-10-25 批注归纳的反模式：用「不能证明 X」的免责句替代判断。本文记录这 **8 类表达问题**、外部多轮对话退化研究与 `skills.sh` 生态对标，并给出 `~/.claude/CLAUDE.md`（同步至 `~/.omp/agent/AGENTS.md` 与 `~/.codex/AGENTS.md`）**改动后的定稿段落与前置 Skill 安装清单**，供新机器复刻。
 
-## 七类导致读者困惑的表达模式与覆盖映射
+## 八类导致读者困惑的表达模式与覆盖映射
 
-下表汇总本次从实战批注中提炼的 7 类通用模式、本机已安装 Skill 原文的真实覆盖范围，以及 `~/.claude/CLAUDE.md` 常驻规则补齐的空白：
+下表汇总从实战批注中提炼的 8 类通用模式、本机已安装 Skill 原文的真实覆盖范围，以及 `~/.claude/CLAUDE.md` 常驻规则补齐的空白：
 
 | 序号  | 表达混乱模式                                                                                     | 本机已安装 Skill 原文直接覆盖项                                                                                                   | `CLAUDE.md` 常驻规则直接补齐的空白                                                                                                            |
 | ----- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -21,6 +21,7 @@
 | **5** | **在功能、流程和内部机制之间乱跳，新概念不交代来路**                                             | `talk-behavior`（控制讲解层次，默认不下沉代码实现）、`writing-shape`（后文依赖概念须先介绍）、`no-bs`（陌生术语用一句普通话解释） | **常驻第 5 条**：提起新概念、内部机制或实现细节时，先说它用来解释前面哪个问题。                                                               |
 | **6** | **要求比较差异，回答却列两边都有的共同特点**                                                     | 无直接命中的 Skill（`no-bs` 要求先比较证据、给明确倾向，`technical-writing` 要求说明取舍，均未直接规定区分共有能力与增量差异）    | **常驻第 6 条**：放在同一套条件和标准下比；两边都有的能力直接说都有；讲优势必须写清相对谁多了什么、什么情况下有用、代价是什么。               |
 | **7** | **追问或纠错后只打局部补丁，不重新理顺整体关系**                                                 | `restating-complete-answers`（交付完整重述版，但原文件要求保留原结构）、`writing-shape`（检查段落承接）                           | **常驻第 7 条 + 调用说明**：重写前先分清哪些前提还成立、哪些旧说法已作废，不在作废旧草稿上贴补丁；旧结构让人看混时直接重排结构。              |
+| **8** | **用「不能证明 X」的免责句替代判断**（普通命令结果被写成「这证明了……」，或在事实后追加「不代表所有场景/所有客户端/未来调用都成立」） | `humanizer` §9、`no-ai-slop`、`natural-writing` 已覆盖词级过度限定与知识截止免责；`unslop` 覆盖抽象黑话与空洞修饰 | **事实与判断陈述协议**：硬性禁用否定式免责句式，改为「当前最佳猜测／最佳解释 + 下一步怎么验证得更准」；普通结果直说结果。 |
 
 ## 外部学术研究与 `skills.sh` 生态对标
 
@@ -46,15 +47,33 @@
 | **第三组：轻量技术解释消歧**<br>`ste` (Clear Technical English)                                               | `23jmo/jmo-skills`                                                                                                      | `64`                          | `142`             | 要求指明执行组件、前后依赖的想法用连贯 prose 而非孤立列表、分离已确认行为/假设/建议。核心要求已由本机 `technical-writing`、`asd-ste100`、`talk-behavior` 与事实性陈述协议覆盖。                                                                                                         |
 | **第四组：读者分流门禁**<br>`clarity`                                                                         | `flowcopilot/skills`                                                                                                    | `3`                           | —                 | 按人类读者 vs Agent 读者分流，内部直接打包调用 `writing-for-agents`、`technical-writing`、`how`、`why`（本机均已安装原版）。                                                                                                                                                            |
 
+### 3. 2026-10-25 追加：免责句式与纠偏式表述的外部观察
+
+以下来源均为本会话直接读取原文。
+
+- **Wikipedia `WP:AIDISCLAIMER`**（`https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=raw`）：把「关于来源可得性与建议用法的限定声明」列为常见 AI 写作特征；Mid-2026–present 段落记录了 `"...does not by itself establish..."` 一类句式，以及关于「preserved」「retained」信息与「avoided」错误的程序性陈述。
+- **Graphite Research AI Tells**（`https://graphite.io/five-percent/research/ai-tells`，2026-09-16；`…/ai-tells-gemini-4-argon-update`，2026-10-21）：样本为 `10,000` 篇人类文章与 `90,000` 篇 AI 文章。测得 AI 讲「某事物不是什么」的频率约为人类的 `12` 倍，`not necessarily` 为 `18x`，`may provide` 为 `36x`，`distinction matters` 在人类样本中为 `0` 次。这组数字是文本频率测量，不解释生成原因。
+- **Rebecca Wicker, The Strategic Linguist**（`https://thestrategiclinguist.substack.com/p/when-hedging-has-nothing-to-do-with`）：区分两种限定。一种交代具体的认知状态，例如还没看到哪份材料；另一种是披着限定外衣的免责声明，作用是保护发言者，而非传达证据强度。
+- **LessWrong `Demands Are All You Need`**（2026-02-06，`n=900`）：`3×2×3` 实验中，提高指令祈使程度后，主观题 hedging 从 `M = 2.38` 降到 `M = 0.43`（`Cohen's d = 2.67`）。论文 Table 7 另记录一个个案：hedging 从答案之前迁移到答案之后。这是单项实验结果加个案观察，能提示「禁令可能把免责推到句尾」这一假说，不能确定本会话出现的句尾免责由提示词迁移造成。
+
+`skills.sh` 上的去 AI 腔候选（页面当前显示值）与本机已装项高度重叠：
+
+| Skill | 仓库 | 页面显示安装量 | GitHub Stars | 处理 |
+| --- | --- | --- | --- | --- |
+| `@unslop` | `cursor/plugins` | `27.7K` | `13.9K` | 与本机 `backnotprop/pstack@unslop` 内容高度重叠，属不同仓库的候选，未验证同名安装会互相覆盖；不新装 |
+| `@stop-slop` | `hardikpandya/stop-slop` | `18.0K` | `18.3K` | 吸收两条规则：不用 `every`／`always`／`never` 承担模糊论证；陈述事实后跳过软化、辩解与免责。不新装 |
+| `@unslop` | `backnotprop/pstack` | `6.4K`（CLI 搜索显示 `6.3K`） | — | 本机已安装 |
+| `@unslop` | `theclaymethod/unslop` | `4.2K` | — | 吸收一条规则：周围文字已交代冲突与不确定性时不再追加编辑。不新装 |
+
 ---
 
-## 新机器一键复刻指南（含 `~/.claude/CLAUDE.md` 修改后完整定稿）
+## 新机器一键复刻指南（`~/.claude/CLAUDE.md` 改动段落）
 
 在另一台机器 clone 本仓库后，按以下 3 步即可完整复刻本套表达规则与 Skill 体系：
 
 ### 步骤 1：安装前置全局 Skills
 
-根据本机 `~/.agents/.skill-lock.json` 记录，确认目标机器 `~/.agents/skills/` 已安装以下 6 个外部 Skill（及 OMP managed skill `restating-complete-answers`）：
+根据本机 `~/.agents/.skill-lock.json` 记录，确认目标机器 `~/.agents/skills/` 已安装以下 10 个外部 Skill（及 OMP managed skill `restating-complete-answers`）：
 
 ```bash
 npx skills add -y -g https://github.com/danyuchn/iso-24495-skill --skill iso-24495
@@ -63,6 +82,10 @@ npx skills add -y -g https://github.com/backnotprop/pstack --skill technical-wri
 npx skills add -y -g https://github.com/mattpocock/skills --skill writing-shape
 npx skills add -y -g https://github.com/cuipengfei/prompts --skill talk-behavior
 npx skills add -y -g https://github.com/cuipengfei/prompts --skill no-bs
+npx skills add -y -g https://github.com/blader/humanizer --skill humanizer
+npx skills add -y -g https://github.com/petergyang/no-ai-slop --skill no-ai-slop
+npx skills add -y -g https://github.com/backnotprop/pstack --skill unslop
+npx skills add -y -g https://github.com/cuipengfei/prompts --skill natural-writing
 ```
 
 ### 步骤 2：确认跨 Agent 共享规则 Symlink
@@ -74,82 +97,44 @@ ln -sfn ~/.claude/CLAUDE.md ~/.codex/AGENTS.md
 ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 ```
 
-### 步骤 3：写入 `~/.claude/CLAUDE.md` 修改后的完整定稿区块
+### 步骤 3：写入 `~/.claude/CLAUDE.md` 的改动段落
 
-在目标机器的 `~/.claude/CLAUDE.md` 中，将 `## 工具发现与调用` 与 `## 思维与表达 Skill` 开头部分（接在 `### 求是系` 之前，对应本机第 `100–170` 行）直接写为以下**最终定稿全文**：
+以下三段是 2026-10-25 改动后的文本。文件其余部分沿用原样，完整旧版见 [2026-10-24 raw](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)。
+
+**首句**
 
 ```markdown
-## 工具发现与调用
+# 最高优先级规则
 
-- **发现机制**：工具可能通过 `xd://` 虚拟设备、MCP routes、或动态挂载方式暴露。发现方法：先查系统提示的完整工具暴露机制，不要假设工具只在静态工具列表里。
-- **调用失败时**：先确认工具暴露形式和调用协议，不要翻源码找签名。
+**每次回复（包括中间进度更新与最终答复）都必须以指定首句开头**
 
-## 思维与表达 Skill
+**首句**：「兄台，久候了。」
+```
 
-### 与用户交流时的表达规则
+**表达 Skill 调用：`no-bs` 与去 AI 腔分组**
 
-日常回答、解释、讨论、比较，以及文档、报告、指令的撰写和修改，都按下面几条来。中文、英文和混合内容都一样。
+```markdown
+- `no-bs`（对应第 1、3、5、6 条 + 信息不完整时的最佳判断与合理猜测）：需要直接给结论、拿现有信息给出当前最佳猜测/最佳解释（best guess / best interpretation）与下一步确认动作、去掉免责套话、把话写得像正常人说话时用。
 
-1. **说清楚在讲谁、什么情况**（对应：`technical-writing`、`asd-ste100`、`iso-24495`、`no-bs`）
-   一个东西从头到尾用一个名字。换了对象、场景或前提，直接说清楚。几个对象来回出现时，用名字或小标题分开。“它”“这里”“这种方式”如果可能指不止一个东西，就直接写名字。
+#### 去除 AI 腔与免责套话（写长文、改稿、或发现输出带机器味时主动读取）
 
-2. **说清楚几种说法是什么关系**（常驻核心约束；段落与主题切分辅助：`writing-shape`、`iso-24495`）
-   同一组分类只按一个标准分。按不同标准分出来的，分开讲。说明白哪些能同时成立，哪些只能二选一，哪些是先后步骤，让用户分得清是在讲不同方案，还是同一件事的不同侧面。
+- `unslop`（位于 `~/.agents/skills/unslop/SKILL.md`，含 `disable-model-invocation: true`，需主动 `read`）：写技术说明、PR、文档或长回复需要砍掉抽象黑话（substrate/wedge/harness 等）、被动句和空洞修饰时用。
+- `humanizer` / `no-ai-slop` / `natural-writing`：用户要求去 AI 味、改写得像人话，或自检发现回复里出现「不是 X 而是 Y」、凑三件套、句尾免责尾巴时读取。
+```
 
-3. **条件和结论写在一起**（对应：`iso-24495`、`asd-ste100`、`technical-writing`、`no-bs`；配合全局 `caveman` 简短模式）
-   写“必须”“不用”“自动”“默认”时，带上对谁、什么情况下、在哪一步成立。会改变意思的限制和拿不准的地方一起写出来，别隔几段才补。
+**事实与判断陈述协议**
 
-4. **把过程连起来**（对应：`talk-behavior`、`technical-writing`、`asd-ste100`）
-   一件事情经过好几方处理时，按顺序写清谁拿到什么、做了什么、交给了谁、下一步怎么接着用。存放在哪、状态怎么变会影响理解时，一并写出来。只讲跟当前问题有关的步骤。
+```markdown
+**事实与判断陈述协议：**
 
-5. **新概念要先交代来路**（对应：`talk-behavior`、`writing-shape`、`no-bs`）
-   按用户问的层次回答。提起新概念、内部机制或实现细节时，先说它用来解释前面哪个问题。后面要用的概念，前面先讲明白，除非对话里已经讲过。
-
-6. **做比较时重点讲差别**（常驻核心约束；立场与去套话配合：`no-bs`）
-   放在同一套条件和标准下比。两边都有的能力，直接说都有；说到哪边更好，写清相对谁多了什么、在什么情况下有用、代价是什么。没验证过的差别写明未验证。
-
-7. **补内容或改错后，整篇回答要自洽**（对应：`restating-complete-answers`、`writing-shape`）
-   重写前先分清哪些前提还成立、哪些旧说法已经作废，不在作废的旧草稿上贴补丁。改了对象、定义、前提、分类或结论，就把受影响的地方一起改掉，给出一份能直接顺着读完的完整回答。旧结构让人看混时，重排结构，保留还成立的事实和证据。独立的新信息可以单独回答。
-
-### 发送前检查
-
-发出前从头读一遍，对照上面适用于本次回答的条款，检查本次涉及的对象、条件、分类、流程或比较关系是否可以直接看出来；重点盯一眼“都、必须、不用、任何”这类全称说法，确认没有把只对部分情况成立的条件写成普遍结论。
-
-有漏项或前后冲突，修改后再发。拿不准的内容按事实性陈述协议写明。只发用户要看的回答，不单列自检过程，也别为了凑齐条款硬塞无关内容。
-
-### 表达 Skill 调用
-
-看当前问题需要什么，就主动去读对应的 skill，不等宿主推荐。同一个会话里已经完整读过、也没发现改动的正文，可以直接复用。
-
-这些 skill 平时跟用户说话也用，不限于写文档；中英文适用范围同上。名字统一、主语清楚、条件写全、概念按顺序讲，这些原则中文也照做；英文词典、语法和词数限制只管英文。
-
-#### 别让 skill 改掉当前任务
-
-用户问什么、要什么格式，就按用户的要求交。借用 skill 里的表达原则时，保留当前回答需要的解释、条件和证据。
-
-skill 里自带的只交改写稿、逐段确认、写文件等流程，只有用户真让你做这些事时才走。读了 skill 不代表用户多授权了别的动作。
-
-#### 解决表达与结构混乱（对应上面第 1–7 条）
-
-- `iso-24495`（对应第 1、3 条；一段一主题辅助第 2 条）：把话说得容易找、容易懂、容易用，回答问题、解释事情、改文字都能用。只有用户明确让改写现成文字时，才按它那种“只交改写结果”的格式输出。
-
-- `technical-writing`（对应第 1、3、4 条）：需要统一名字、把“它/这个”指清楚、理顺条件，或者写明谁干什么时用。平时回答问题也照此执行。
-
-- `talk-behavior`（对应第 4、5 条）：讲工具、技术、系统、机制或概念时用，重点讲有什么用、什么时候用、怎么走流程、靠什么运转。讲到哪一层，跟着用户的问题走。
-
-- `writing-shape`（对应第 2、5、7 条）：回答比较长、概念有先后依赖、需要把段落关系理顺时用。它那套逐段推进和写文章的流程，只有用户要求时才走。
-
-- `asd-ste100`（对应第 1、3、4 条）：指令、步骤、条件、责任不能让人看成两样时用。同一事物同名、主语清楚、条件写全，中文交流也一样遵守。
-
-- `restating-complete-answers`（对应第 7 条）：被纠正，或者要改上一条回答时用。给出改好后的完整回答；旧结构本来就让人看混时，重排后再给。
-
-- `no-bs`（对应第 1、3、5、6 条）：需要直接给判断、去掉套话、把话写得像正常人说话时用。准确术语、必要条件和证据照留，事实性陈述协议照守。
-
-#### 篇幅模式与战略视角补充
-
-- `caveman`（全局简短表达规则，配合第 3 条）：短状态、命令、单点结论时用，不能把条件、风险和证据一起省掉。
-
-- `mao-zedong-perspective`（战略分析 Skill）：分析战略方向、力量对比、主要矛盾、调查实践、试点起步和长期推进时用，不替代事实与专业验证。
+- **已核实的信息**：直接写事实与证据出处（已读文件、命令输出、日志、测试结果或当前会话已获取的文档/搜索结果）。
+- **信息不完整时的写法（硬性禁用「不能证明」免责句式，鼓励给出 Best Guess）**：
+  - **严禁**在思考、回复或文档中写「不能证明 X」「无法证明 Y」「不能据此断定 Z」「也不代表在所有场景/所有客户端/未来调用中都成立」这类负面免责废话。永远不要去说“现有信息证明不了什么”。
+  - **不要害怕猜测（Do not be afraid to guess）**：信息不完整时，不要缩回去打太极或贴免责标签，只要标明这是基于现有线索的猜测或判断（不把猜测伪装成已核实的实测结果即可），就大胆给出判断。
+  - **统一按两步正面表达**：
+    1. **当前最佳猜测 / 最佳解释（Best guess / Best interpretation）**：基于目前已拿到的信息，直接说出你当前最倾向的猜测或解释（「基于目前看到的 X 和 Y，当前最合理的猜测/解释是……」）。
+    2. **下一步怎么验证得更准**：直接写明要让这个猜测或解释更准，下一步可以去看哪个文件、跑哪条命令或测哪个场景（「要进一步确认 Z，下一步可以看/跑……」）。
+- **普通结果直说结果**：不要把常规操作或单次命令输出包装成「这证明了……」，直接写做了什么、看到了什么结果。
 ```
 
 ## See Also

@@ -1,10 +1,10 @@
 # watchdog-review-design
 
-> Sources: raw/harness-engineering/2026-09-20-watchdog-review-design.md, 2026-09-20; 本会话 WATCHDOG.md 重构记录, 2026-09-26
-> Raw: [watchdog 审查设计笔记摘录](../../raw/harness-engineering/2026-09-20-watchdog-review-design.md); [WATCHDOG.md 重构与 jevify 盘点](../../raw/harness-engineering/2026-09-26-watchdog-md-restructure.md)
-> Updated: 2026-09-26
+> Sources: raw/harness-engineering/2026-09-20-watchdog-review-design.md, 2026-09-20; 本会话 WATCHDOG.md 重构记录, 2026-09-26; WATCHDOG.md 免责句式禁令, 2026-10-25
+> Raw: [watchdog 审查设计笔记摘录](../../raw/harness-engineering/2026-09-20-watchdog-review-design.md); [WATCHDOG.md 重构与 jevify 盘点](../../raw/harness-engineering/2026-09-26-watchdog-md-restructure.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md)
+> Updated: 2026-10-25
 
-Advisor 自审需要结构化框架，以区分可观测的会话数据、Advisor 的明确断言以及其无法证明的推断。
+Advisor 自审需要结构化框架，以便区分可观测的会话数据、Advisor 的明确断言，以及缺少可核对证据的部分。
 
 ## 设计依据
 
@@ -12,7 +12,7 @@ Advisor 自审需要结构化框架，以区分可观测的会话数据、Adviso
 
 - 会话数据本身说了什么？
 - Advisor 声称了什么？
-- Advisor 无法从自身上下文证明什么？
+- Advisor 的说法里，哪些部分能对上具体的 JSONL 行或会话状态？
 
 ## 三桶审查思路
 
@@ -42,10 +42,22 @@ WATCHDOG.md 原有发送时机规则散在三处（重复提醒限制、系统�
 
 双通道验证：同一批 54 个 state 同时用 judge() 循环和 judgeBatch 跑了一遍，dest 判定 53/54 一致。唯一差异块正是人工已裁定进发送条件的那块。
 
+## 禁止「不能证明」式提醒（2026-10-25）
+
+Advisor 的提醒曾反复使用「X 不能证明 Y」这类句式，并把同样的话术传导给主代理，要求它在回给用户的正文里补「但这不代表所有场景/客户端/未来调用都成立」。2026-10-25 对 `~/.omp/agent/WATCHDOG.md` 做了三处改动，命令覆盖范围那节同时去掉了原有的三个「不能证明」示范。
+
+- 猜测判级：主代理基于现有信息给出当前最佳猜测或最佳解释（best guess / best interpretation）属正常行为。只有把未核实的猜测写成已执行的实测事实，或违背已有证据时，才继续检查和判级。
+- 命令覆盖范围改写为「已确认 X；要确认 Y，下一步需运行 Z」：只跑 `check:ts` 已确认类型检查通过；`bun test … | tail` 未开 `pipefail` 时，`⇒ ok` 只确认 `tail` 成功；测试未走管道且显示 `⇒ ok` 才确认测试通过。
+- 硬禁令：Advisor 的提醒里不出现「不能证明」「无法证明」「不能直接证明」「不能据此断定」「没有单一研究证明」「不代表所有场景/所有客户端/未来调用都成立」，也不要求主代理添加同类免责声明。
+
+信息不完整或验证未完成时，Advisor 只保留两种提法：要求主代理给出最佳猜测或最佳解释并写明下一步查什么；点名当前任务还缺哪条具体验证命令。
+
+规则在 `~/.omp/agent/WATCHDOG.md` 生效，通过 `./pull.sh` 同步到本仓库 `omp/agent/WATCHDOG.md`。改后未在带真实工具权限的会话里复测 Advisor 行为。
+
 ## 相关
 
 - reviewer-blind-spots.md（harness-engineering/） — Advisor 自审的常见盲区，本设计旨在减少此类错误
-- advisor-context-markers.md（omp-config/） — 证明角色与来源嵌入在会话更新中
+- advisor-context-markers.md（omp-config/） — 表明角色与来源嵌入在会话更新中
 - omp-sessions/jsonl-format-and-third-party-parsers.md — 第三方解析器对 JSONL 格式的兼容性
 
 ---

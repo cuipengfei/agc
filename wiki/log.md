@@ -1495,3 +1495,9 @@
 - Raw: raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md
 - Updated: OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测（补充模型上架与独立 Decisions API 接入的日期对照、公开源码端点类型及最佳判断）
 - 要点：OpenAI 与 GitHub changelog 均记录 2026-09-22 的模型发布/可用公告；OpenAI 于 2026-10-22 宣布 Decisions GA。VS Code Copilot 端点类型未列 Decisions；既有三次上游探测仅在各自测试条件下返回 model_not_supported。最佳判断是模型上架不自动带来新 API surface 接入，端点支持需单独开发，Copilot 产品优先级可能较低；原因非 GitHub 官方说明。
+
+## [2026-10-25] ingest | 「不能证明」免责句式禁令与 Best Guess 替代规则
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册; Watchdog Review Design; Plain Language 技能：ASD-STE100 与 ISO 24495-1
+- 要点：`~/.claude/CLAUDE.md` 首句改为「兄台，久候了。」，新增去 AI 腔 Skill 调用组与「事实与判断陈述协议」（硬禁「不能证明」句式，改用最佳猜测/最佳解释 + 下一步验证）；`~/.omp/agent/WATCHDOG.md` 同步硬禁令并改写命令覆盖范围表述；`no-bs` 0.1.8（commit b2cf1ed）新增两项反模式；复刻指南改为只收录改动段落并补齐 4 个去 AI 腔 Skill 安装命令。外部来源为 Wikipedia `WP:AIDISCLAIMER`、Graphite Research、The Strategic Linguist、LessWrong `n=900`，属有限观察，未覆盖成因。

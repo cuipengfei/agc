@@ -55,9 +55,11 @@
 
 2026-10-24 修订本机 `talk-behavior` 时，用户指出把「最多保留 128 个候选」写成「只保留前 128 个候选」会额外暗示按顺序选择。最终例子保留数量上限的原意。修订 `no-bs` 时，也分别规定证据不足、当前环境无法取得凭据、外部副作用尚未获授权时的处理方式：继续授权范围内查证、请求所需凭据、等待批准。
 
-这次例子说明自然表达仍要保留精确上限和适用条件。隔离问答中，原版与无目标 skill 同样没有复现部分担忧；这些样本不能证明所有模型或真实工具执行都会遵守修订后的规则。这是本机应用记录，不代表 ASD-STE100 或 ISO 24495-1 的标准要求。
+这次例子说明自然表达仍要保留精确上限和适用条件。隔离问答用的是模型自答，没有带真实工具执行权限，因此在真实会话中是否遵守这些修订仍未实测。原版与无目标 skill 在同样场景下的输出也没有复现部分担忧。这是本机应用记录，不代表 ASD-STE100 或 ISO 24495-1 的标准要求。
+
+2026-10-25 追加：`~/.claude/CLAUDE.md` 的「事实与判断陈述协议」改为硬性禁用「不能证明 X」「不能据此断定 Z」一类否定式免责句式，统一改写成当前最佳猜测或最佳解释，外加下一步怎么验证得更准。这条规则的来源与外部观察见 [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](../harness-engineering/agent-expression-coherence-and-claude-md-rules.md)。
 
 ## See Also
 
 - [HyperFrames：HTML 写视频的 agent 管线](../video-generation/hyperframes-html-video.md) — 视频文案层同样讲受控/简明表达
-- [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](../harness-engineering/agent-expression-coherence-and-claude-md-rules.md) — 7 类表达混乱模式、与本机 Skills 的映射及 `CLAUDE.md` 跨机器可移植全文
+- [Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册](../harness-engineering/agent-expression-coherence-and-claude-md-rules.md) — 8 类表达问题、与本机 Skills 的映射及 `CLAUDE.md` 跨机器改动段落
