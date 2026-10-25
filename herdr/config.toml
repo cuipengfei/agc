@@ -15,6 +15,7 @@ tab_bar_right = [
 ]
 tab_bar_right_separator = " · "
 window_title = "{hostname}: {workspace} / {tab} {terminal_title}"
+copy_on_select = true
 
 [ui.sidebar.agents.rows_by_agent]
 omp = [
@@ -28,6 +29,9 @@ enabled = false
 
 [ui.toast]
 delivery = "herdr"
+
+[session]
+resume_agents_on_restore = true
 
 [experimental]
 pane_history = false
