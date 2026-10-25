@@ -138,19 +138,6 @@ providers:
           - image
         contextWindow: 1000000
         maxTokens: 32768
-  grok2api:
-    api: openai-completions
-    baseUrl: http://127.0.0.1:8000/v1
-    apiKey: <REDACTED>
-    models:
-      - id: grok-chat-fast
-        compactionModel: c8787/gpt-6-luna
-        name: Grok Chat Fast
-        reasoning: true
-        input:
-          - text
-        contextWindow: 128000
-        maxTokens: 16000
   motomoto-chat:
     api: openai-completions
     baseUrl: http://127.0.0.1:4150/v1
@@ -235,24 +222,6 @@ providers:
         compactionModel: c8787/gpt-6-luna
       kimi-k2.5:
         compactionModel: c8787/gpt-6-luna
-  tokenrouter:
-    api: openai-completions
-    baseUrl: https://api.tokenrouter.com/v1
-    apiKey: <REDACTED>
-    models:
-      - id: minimax/minimax-m3.1-flash
-        compactionModel: c8787/gpt-6-luna
-        name: MiniMax M3.1 Flash
-        reasoning: true
-        input:
-          - text
-        contextWindow: 1000000
-        maxTokens: 131072
-        cost:
-          input: 0
-          output: 0
-          cacheRead: 0
-          cacheWrite: 0
   sensenova:
     api: openai-completions
     baseUrl: https://token.sensenova.cn/v1
@@ -362,22 +331,3 @@ providers:
         reasoning: false
         input:
           - text
-  husky:
-    api: anthropic-messages
-    baseUrl: https://huskyapi.com/v1
-    apiKey: <REDACTED>
-    models:
-      - id: claude-opus-5-5
-        compactionModel: c8787/gpt-6-luna
-        name: Claude Opus 5.5 (Husky)
-        reasoning: true
-        input:
-          - text
-          - image
-        contextWindow: 1000000
-        maxTokens: 64000
-        cost:
-          input: 0.8
-          output: 4.0
-          cacheRead: 0.04
-          cacheWrite: 1.0

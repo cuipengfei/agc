@@ -455,24 +455,6 @@
         },
       },
     },
-    "grok2api": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Grok2API",
-      "options": {
-        "baseURL": "http://127.0.0.1:8000/v1",
-        "apiKey": "<REDACTED>",
-      },
-      "models": {
-        "grok-chat-fast": {
-          "name": "Grok Chat Fast",
-          "reasoning": true,
-          "limit": {
-            "context": 128000,
-            "output": 16000,
-          },
-        },
-      },
-    },
     "kimi-claw": {
       "npm": "@ai-sdk/anthropic",
       "name": "Kimi Claw",

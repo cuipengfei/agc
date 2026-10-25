@@ -418,24 +418,6 @@
           "maxTokens": 128000
         }
       ]
-    },
-    "grok2api": {
-      "name": "Grok2API",
-      "baseUrl": "http://127.0.0.1:8000/v1",
-      "api": "openai-completions",
-      "apiKey": "<REDACTED>",
-      "models": [
-        {
-          "id": "grok-chat-fast",
-          "name": "Grok Chat Fast",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "contextWindow": 128000,
-          "maxTokens": 16000
-        }
-      ]
     }
   }
 }

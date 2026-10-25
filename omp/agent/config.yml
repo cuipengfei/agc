@@ -22,16 +22,13 @@ enabledModels:
   - c8787/*
   - c8787-chat/*
   - justwoker/*
-  - husky/*
   - motomoto-chat/*
-  - grok2api/*
   - opencode-zen/*
   - opencode-go/*
   - kimi-code/*
   - kimi-claw/*
   - deepseek/*
   - sensenova/*
-  - tokenrouter/**
   - openrouter/**
   - openai-codex/*
   - typesafe-zen/*
@@ -73,15 +70,15 @@ modelRoles:
   slow: c8787/gpt-6.1-sol:high
   commit: c8787/gpt-6-luna:high
   smol: sensenova/deepseek-v4-flash:high
-  task: opencode-zen/deepseek-v4.1-flash-free:max
+  task: opencode-go/deepseek-v4.1-flash:max
   vision: sensenova/glm-5.2:high
   tiny: sensenova/glm-5.2:high
-  advisor: opencode-zen/mimo-v2.6-flash-free:high
-  default: opencode-zen/deepseek-v4.1-flash-free:max
+  advisor: c8787/gpt-6-luna:max
+  default: opencode-go/deepseek-v4.1-flash:max
   web: web/firecrawl
   memory: sensenova/glm-5.2:high
   judge: typesafe-zen/jev-1.13-free
-  widget: opencode-zen/glm-5.3-flash-free:high
+  widget: sensenova/glm-5.2:max
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
