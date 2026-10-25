@@ -1,7 +1,7 @@
 # Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 
 > Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25
-> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md)
+> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md)
 > Updated: 2026-10-25
 
 ## Overview
@@ -21,7 +21,7 @@
 | **5** | **在功能、流程和内部机制之间乱跳，新概念不交代来路**                                             | `talk-behavior`（控制讲解层次，默认不下沉代码实现）、`writing-shape`（后文依赖概念须先介绍）、`no-bs`（陌生术语用一句普通话解释） | **常驻第 5 条**：提起新概念、内部机制或实现细节时，先说它用来解释前面哪个问题。                                                               |
 | **6** | **要求比较差异，回答却列两边都有的共同特点**                                                     | 无直接命中的 Skill（`no-bs` 要求先比较证据、给明确倾向，`technical-writing` 要求说明取舍，均未直接规定区分共有能力与增量差异）    | **常驻第 6 条**：放在同一套条件和标准下比；两边都有的能力直接说都有；讲优势必须写清相对谁多了什么、什么情况下有用、代价是什么。               |
 | **7** | **追问或纠错后只打局部补丁，不重新理顺整体关系**                                                 | `restating-complete-answers`（交付完整重述版，但原文件要求保留原结构）、`writing-shape`（检查段落承接）                           | **常驻第 7 条 + 调用说明**：重写前先分清哪些前提还成立、哪些旧说法已作废，不在作废旧草稿上贴补丁；旧结构让人看混时直接重排结构。              |
-| **8** | **用「不能证明 X」的免责句替代判断**（普通命令结果被写成「这证明了……」，或在事实后追加「不代表所有场景/所有客户端/未来调用都成立」） | `humanizer` §9、`no-ai-slop`、`natural-writing` 已覆盖词级过度限定与知识截止免责；`unslop` 覆盖抽象黑话与空洞修饰 | **事实与判断陈述协议**：硬性禁用否定式免责句式，改为「当前最佳猜测／最佳解释 + 下一步怎么验证得更准」；普通结果直说结果。 |
+| **8** | **用「不能证明 X」的免责句替代判断**（普通命令结果被写成「这证明了……」，或在事实后追加「不代表所有场景/所有客户端/未来调用都成立」） | `humanizer` §9、`no-ai-slop`、`natural-writing` 已覆盖词级过度限定与知识截止免责；`unslop` 覆盖抽象黑话与空洞修饰 | **事实与判断陈述协议**：硬性禁用否定式免责句式，改为「当前最佳猜测／最佳解释 + 下一步怎么验证得更准」；普通结果直说结果；不确定性写成「缺少什么 + 下一步怎么确认」，事实后不追加泛化免责。 |
 
 ## 外部学术研究与 `skills.sh` 生态对标
 
@@ -134,6 +134,7 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
   - **统一按两步正面表达**：
     1. **当前最佳猜测 / 最佳解释（Best guess / Best interpretation）**：基于目前已拿到的信息，直接说出你当前最倾向的猜测或解释（「基于目前看到的 X 和 Y，当前最合理的猜测/解释是……」）。
     2. **下一步怎么验证得更准**：直接写明要让这个猜测或解释更准，下一步可以去看哪个文件、跑哪条命令或测哪个场景（「要进一步确认 Z，下一步可以看/跑……」）。
+  - **不确定性的写法**：写清还缺哪项证据、它影响哪个具体判断，以及下一步用哪个文件、命令或场景确认。事实陈述结束后，不追加「不能证明」「不代表所有情况」这类泛化免责。
 - **普通结果直说结果**：不要把常规操作或单次命令输出包装成「这证明了……」，直接写做了什么、看到了什么结果。
 ```
 

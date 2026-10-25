@@ -1513,3 +1513,9 @@
 - Raw: raw/wsl-windows/2026-10-25-page-list-mechanism-sources.md; raw/wsl-windows/2026-10-25-nonadmin-trim-measurement-addendum.md（前次两个 raw 已冻结，新增依据另起文件）
 - Updated: 标准用户降低 Windows 物理内存占用的可达范围; Windows 内存回收工具与 WSL swap
 - 要点：补入 MEMORYSTATUSEX 的 ullAvailPhys 定义（可用 = standby + free + zero，无需先写盘）、WPT 的 MMList 分类原文与 Modified Page Writer 写回后转入 Standby 的原文；两篇文章改为「清空工作集后可用立即上升约 1.36 GB、63 秒时低于基线 657 MB、提交占用本次未采集」。「标准账户只能操作自有进程」改为「本次脚本按 SID 筛选，API 只要求两项句柄权限、无所有者条件」。定期清理一段改为按页面是否长期闲置判断收益。
+
+## [2026-10-25] ingest | 不确定性写法条款：缺少什么与下一步确认
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：`~/.claude/CLAUDE.md` 事实陈述协议新增「不确定性的写法」：写清还缺哪项证据、它影响哪个具体判断、下一步用哪个文件或命令确认；事实陈述结束后不追加「不能证明」「不代表所有情况」这类泛化免责。复刻指南的协议代码块同步该条，第 8 类映射表补入分工，Raw 并列第三个 raw 文件。
