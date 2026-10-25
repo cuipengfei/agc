@@ -1,12 +1,12 @@
 # OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测
 
 > Sources: OpenAI 官方文档, 2026-10-25; 本会话对 GitHub Copilot 上游的实测, 2026-10-25; 微软 VS Code 仓库源码与 npm 包核查, 2026-10-25
-> Raw: [openai-decisions-api-ga](../../raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md); [copilot-decisions-retest-and-payload-validation](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md); [openai-decisions-api-status-check-1018](../../raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1018](../../raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md); [openai-decisions-api-status-check-1015](../../raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1015](../../raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md)
+> Raw: [openai-decisions-api-ga](../../raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md); [copilot-decisions-retest-and-payload-validation](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md); [copilot-decisions-follow-up-research](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md); [openai-decisions-api-status-check-1018](../../raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1018](../../raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md); [openai-decisions-api-status-check-1015](../../raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1015](../../raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md)
 > Updated: 2026-10-25
 
 ## Overview
 
-OpenAI Decisions API 于 2026-10-22 正式 GA，仍只支持 `gpt-6-luna`，端点 `POST /v1/decisions`，请求体含 `model`/`input`/`questions`（predicate/choice/score 三题型）。GitHub Copilot 上游 `/v1/decisions` 被路由层区别处理，但在 10-15、10-18、10-25 三次复测中被测模型全部被拒，未随 OpenAI GA 放行。把 Decisions 正文发往 Copilot 的 Responses 路径会返回 200，但该结果在未知字段对照下被证伪为普通文本生成。
+OpenAI Decisions API 于 2026-10-22 正式 GA，仍只支持 `gpt-6-luna`，端点 `POST /v1/decisions`，请求体含 `model`/`input`/`questions`（predicate/choice/score 三题型）。Copilot 上游 `/v1/decisions` 在 10-15、10-18、10-25 三次特定测试条件下均返回 `model_not_supported`。Decisions 正文发往 Copilot Responses 路径会返回 200，但未知字段对照显示这是普通文本生成，不代表 Decisions 兼容。
 
 ## 官方状态（2026-10-25 核验）
 
@@ -97,6 +97,14 @@ guide "What's new" 节列出九项：prompt caching、题目级图片、`input_j
 - 在该目录检索 `/v1/decisions`：无命中；检索 `decisions`：命中均为普通英文词；检索 `questions`：命中均为 `vscode_askQuestions` 工具的问题轮播 UI，非请求体字段。（[raw](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md) §④）
 - 主仓库锁定 `@vscode/copilot-api@0.5.2`；该版本无 Decisions 请求类型与 URL 映射，`ModelRouter` 映射到 `/models/session/intent`。
 - DomainService 声明中存在独立 Model Lab 主机（`isModelLab` 选项控制），尚未探测。
+
+## 为什么模型上架不代表 Decisions 端点接入
+
+OpenAI 与 GitHub 的官方 changelog 都记录了 2026-09-22 的模型发布与 Copilot 上架；OpenAI 另于 2026-10-22 将 Decisions API GA。前者是现有 Responses/Chat Completions 生成模型的可用性，后者是独立的 `/v1/decisions` API surface，包含专用请求与结构化答案。（[OpenAI changelog](https://developers.openai.com/api/docs/changelog)；[GitHub Copilot 公告](https://github.blog/changelog/2026-09-22-openais-gpt-6-sol-and-gpt-6-luna-now-available/)）
+
+VS Code Copilot 的公开模型端点类型列出 Chat Completions、Responses、WebSocket Responses、Messages，没有 Decisions。（[endpointProvider.ts](https://github.com/microsoft/vscode/blob/main/extensions/copilot/src/platform/endpoint/common/endpointProvider.ts)）三次探测也只在各自测试条件下得到 `model_not_supported`，不能扩展为所有 Copilot 产品或账号都不支持。（[后续跟进分析 raw](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md)）
+
+**最佳判断（推断）**：模型上架不会自动带来新 API surface 支持。Decisions 需要单独接入端点能力及结构化请求/响应处理；Copilot 的聊天与编码入口暂时没有明显的通用 bounded-question 产品位置，因此该集成很可能优先级较低。GitHub 未公开说明内部原因或排期；本次检索范围内也未找到 Copilot 跟进声明。
 
 ## 证据边界
 

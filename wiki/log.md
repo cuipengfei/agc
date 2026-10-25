@@ -1489,3 +1489,9 @@
 - Disposition: New
 - Raw: raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md
 - 要点：新建 copilot-decision-routing.md；对外无 system-one 式决策 API，对内 /auto（请求 {prompt,tier}，响应 selected_model/session_token/expires_at/discounted_costs）与 /models/session/intent 题目固定；Auto 每请求选一模型、HydraFusion 选工作流并协调多模型（changelog 2026-09-30）；hydra_scores 归属 /auto/Auto V2，HydraFusion 独立上游地址未公开未确认。
+
+## [2026-10-25] ingest | Copilot 是否跟进 OpenAI Decisions API：公开资料与最佳判断
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md
+- Updated: OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测（补充模型上架与独立 Decisions API 接入的日期对照、公开源码端点类型及最佳判断）
+- 要点：OpenAI 与 GitHub changelog 均记录 2026-09-22 的模型发布/可用公告；OpenAI 于 2026-10-22 宣布 Decisions GA。VS Code Copilot 端点类型未列 Decisions；既有三次上游探测仅在各自测试条件下返回 model_not_supported。最佳判断是模型上架不自动带来新 API surface 接入，端点支持需单独开发，Copilot 产品优先级可能较低；原因非 GitHub 官方说明。

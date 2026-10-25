@@ -53,7 +53,7 @@ pull.sh / sync.py pull
 | `omo/`          | OMO 配置                                         |
 | `omp/agent/`    | OMP 配置、模型、MCP、WATCHDOG、extensions、hooks |
 | `omp/plugins/`  | OMP 插件包与锁定文件                             |
-| `prime/`        | Prime Agent 配置（settings、models）            |
+| `prime/`        | Prime Agent 配置（settings、models）             |
 | `raw/`          | 学习记录原始材料（repo-owned，不同步）           |
 | `experiments/`  | 结构化实验记录（repo-owned，不同步）             |
 | `wiki/`         | 编译后的知识文章（repo-owned，不同步）           |
@@ -86,19 +86,19 @@ python3 -c "import json;e=json.load(open('manifest.json'))['entries'];print(len(
 
 ## 重要文件
 
-| 文件                        | 用途                          |
-| --------------------------- | ----------------------------- |
-| `manifest.json`             | 同步边界唯一权威清单          |
-| `src/agc_sync/manifest.py`  | 清单解析与文件遍历            |
-| `src/agc_sync/policy.py`    | 凭据安全策略                  |
-| `src/agc_sync/sync_plan.py` | pull 内容准备                 |
-| `src/agc_sync/transfer.py`  | 比较与原子写入                |
-| `src/agc_sync/cli.py`       | 命令编排与错误出口            |
-| `sync.py`                   | 兼容 Python 入口              |
-| `pull.sh`                   | 用户入口脚本                  |
-| `tests/test_sync.py`        | 同步行为回归测试              |
-| `wiki/index.md`             | 学习记录全局索引              |
-| `wiki/log.md`               | 学习记录操作日志              |
+| 文件                        | 用途                 |
+| --------------------------- | -------------------- |
+| `manifest.json`             | 同步边界唯一权威清单 |
+| `src/agc_sync/manifest.py`  | 清单解析与文件遍历   |
+| `src/agc_sync/policy.py`    | 凭据安全策略         |
+| `src/agc_sync/sync_plan.py` | pull 内容准备        |
+| `src/agc_sync/transfer.py`  | 比较与原子写入       |
+| `src/agc_sync/cli.py`       | 命令编排与错误出口   |
+| `sync.py`                   | 兼容 Python 入口     |
+| `pull.sh`                   | 用户入口脚本         |
+| `tests/test_sync.py`        | 同步行为回归测试     |
+| `wiki/index.md`             | 学习记录全局索引     |
+| `wiki/log.md`               | 学习记录操作日志     |
 
 ## 运行时与工具偏好
 
@@ -133,15 +133,15 @@ find . -path './.git' -prune -o -type l -print
 
 ## 来源映射
 
-| 仓库路径    | 本机来源              |
-| ----------- | --------------------- |
-| `codex/`    | `~/.codex/`           |
-| `opencode/` | `~/.config/opencode/` |
-| `omo/`      | `~/.omo/`             |
-| `omp/`      | `~/.omp/`             |
+| 仓库路径            | 本机来源                      |
+| ------------------- | ----------------------------- |
+| `codex/`            | `~/.codex/`                   |
+| `opencode/`         | `~/.config/opencode/`         |
+| `omo/`              | `~/.omo/`                     |
+| `omp/`              | `~/.omp/`                     |
 | `herdr/config.toml` | `~/.config/herdr/config.toml` |
-| `prime/`    | `~/.prime/agent/`     |
-| `plannotator/` | `~/.plannotator/`     |
+| `prime/`            | `~/.prime/agent/`             |
+| `plannotator/`      | `~/.plannotator/`             |
 
 ## 同步边界
 
@@ -162,15 +162,6 @@ find . -path './.git' -prune -o -type l -print
 - `AGENTS.md` 只放仓库规则，不作为工作日志。
 
 报告完成前确认测试结果、跳过项、凭据边界、symlink 状态和 Git 状态。
-
-## SOFA 使用
-
-- 有意义的编码、调试、配置或研究任务开始时，第一项检查是使用已配置的 SOFA 凭据创建或确认 session，并读取 attention feed；在首次进度更新中报告结果。未配置凭据或工具不可用时，立即说明本项目使用 SOFA 进行 agent 知识共享，并提供 agent-directed onboarding；用户拒绝或已有凭据配置指引时，按其决定继续。
-- 投入较多时间处理不确定的技术问题前，搜索相关 question、TIL、Blueprint、Playbook 和回复；多个结果适用时优先较高 trust score，使用前仍需检查内容。
-- 阅读后能够判断内容是否有用时投票；实际应用并观察到结果后提交 verification。
-- 结束有意义的工作前，判断是否产生可复用知识；有则使用最小合适的 vote、verification、reply、TIL、question、Blueprint 或 Playbook 贡献，没有则简短说明。
-- 所有 SOFA 写入遵守当前 agent 的 privileges、publication policy、moderation 与 human approval 要求。
-- 使用 SOFA REST API 时，以 https://agents.stackoverflow.com/skill.md 的当前说明为准。
 
 ## Wiki 先查
 
