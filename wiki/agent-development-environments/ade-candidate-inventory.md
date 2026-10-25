@@ -1,16 +1,16 @@
 # ADE 候选清单
 
-> Sources: GitHub API (stargazers_count, pushed_at), 2026-10-18; 各仓库官方 README/docs, 2026-10-18
-> Raw: [openhands](../../raw/agent-development-environments/2026-10-18-openhands-readme.md); [herdr](../../raw/agent-development-environments/2026-10-18-herdr-readme.md); [vibe-kanban](../../raw/agent-development-environments/2026-10-18-vibe-kanban-readme.md); [t3code](../../raw/agent-development-environments/2026-10-18-t3code-readme.md); [t3code-source](../../raw/agent-development-environments/2026-10-18-t3code-source.md); [happy](../../raw/agent-development-environments/2026-10-18-happy-readme.md); [paseo](../../raw/agent-development-environments/2026-10-18-paseo-readme.md); [paseo-source](../../raw/agent-development-environments/2026-10-18-paseo-source.md); [gas-town](../../raw/agent-development-environments/2026-10-18-gas-town-readme.md); [openchamber](../../raw/agent-development-environments/2026-10-18-openchamber-readme.md); [openchamber-source](../../raw/agent-development-environments/2026-10-18-openchamber-source.md); [ekko-studio](../../raw/agent-development-environments/2026-10-18-ekko-studio-readme.md); [ekko-source](../../raw/agent-development-environments/2026-10-18-ekko-source.md); [claude-squad](../../raw/agent-development-environments/2026-10-18-claude-squad-readme.md); [openrig](../../raw/agent-development-environments/2026-10-18-openrig-readme.md); [mission-control](../../raw/agent-development-environments/2026-10-18-mission-control-readme.md); [tuios](../../raw/agent-development-environments/2026-10-18-tuios-readme.md); [agent-deck](../../raw/agent-development-environments/2026-10-18-agent-deck-readme.md); [cao](../../raw/agent-development-environments/2026-10-18-cao-readme.md); [bb](../../raw/agent-development-environments/2026-10-18-bb-readme.md); [bb-source](../../raw/agent-development-environments/2026-10-18-bb-source.md); [toad](../../raw/agent-development-environments/2026-10-18-toad-readme.md); [agent-of-empires](../../raw/agent-development-environments/2026-10-18-agent-of-empires-readme.md); [automaker](../../raw/agent-development-environments/2026-10-18-automaker-readme.md); [codenomad](../../raw/agent-development-environments/2026-10-18-codenomad-readme.md); [codenomad-source](../../raw/agent-development-environments/2026-10-18-codenomad-source.md); [nodeterm](../../raw/agent-development-environments/2026-10-18-nodeterm-readme.md); [nodeterm-source](../../raw/agent-development-environments/2026-10-18-nodeterm-source.md); [dmux](../../raw/agent-development-environments/2026-10-18-dmux-readme.md); [ai-devkit](../../raw/agent-development-environments/2026-10-18-ai-devkit-readme.md); [jean](../../raw/agent-development-environments/2026-10-18-jean-readme.md); [fusion](../../raw/agent-development-environments/2026-10-18-fusion-readme.md); [ccmanager](../../raw/agent-development-environments/2026-10-18-ccmanager-readme.md); [orca](../../raw/agent-development-environments/2026-10-18-orca-readme.md); [orca-cli](../../raw/agent-development-environments/2026-10-18-orca-cli-overview.md); [tern-architecture](../../raw/agent-development-environments/2026-10-18-tern-architecture.md)
-> Updated: 2026-10-18
+> Sources: GitHub API (stargazers_count, pushed_at), 2026-10-18; 各仓库官方 README/docs, 2026-10-18; ThinkRail README/官网/规格/安装脚本与用户终端输出, 2026-10-26; JetBrains Air/Fleet/Gateway/Projector/CodeCanvas 官方页面, 2026-10-26
+> Raw: [openhands](../../raw/agent-development-environments/2026-10-18-openhands-readme.md); [herdr](../../raw/agent-development-environments/2026-10-18-herdr-readme.md); [vibe-kanban](../../raw/agent-development-environments/2026-10-18-vibe-kanban-readme.md); [t3code](../../raw/agent-development-environments/2026-10-18-t3code-readme.md); [t3code-source](../../raw/agent-development-environments/2026-10-18-t3code-source.md); [happy](../../raw/agent-development-environments/2026-10-18-happy-readme.md); [paseo](../../raw/agent-development-environments/2026-10-18-paseo-readme.md); [paseo-source](../../raw/agent-development-environments/2026-10-18-paseo-source.md); [gas-town](../../raw/agent-development-environments/2026-10-18-gas-town-readme.md); [openchamber](../../raw/agent-development-environments/2026-10-18-openchamber-readme.md); [openchamber-source](../../raw/agent-development-environments/2026-10-18-openchamber-source.md); [ekko-studio](../../raw/agent-development-environments/2026-10-18-ekko-studio-readme.md); [ekko-source](../../raw/agent-development-environments/2026-10-18-ekko-source.md); [claude-squad](../../raw/agent-development-environments/2026-10-18-claude-squad-readme.md); [openrig](../../raw/agent-development-environments/2026-10-18-openrig-readme.md); [mission-control](../../raw/agent-development-environments/2026-10-18-mission-control-readme.md); [tuios](../../raw/agent-development-environments/2026-10-18-tuios-readme.md); [agent-deck](../../raw/agent-development-environments/2026-10-18-agent-deck-readme.md); [cao](../../raw/agent-development-environments/2026-10-18-cao-readme.md); [bb](../../raw/agent-development-environments/2026-10-18-bb-readme.md); [bb-source](../../raw/agent-development-environments/2026-10-18-bb-source.md); [toad](../../raw/agent-development-environments/2026-10-18-toad-readme.md); [agent-of-empires](../../raw/agent-development-environments/2026-10-18-agent-of-empires-readme.md); [automaker](../../raw/agent-development-environments/2026-10-18-automaker-readme.md); [codenomad](../../raw/agent-development-environments/2026-10-18-codenomad-readme.md); [codenomad-source](../../raw/agent-development-environments/2026-10-18-codenomad-source.md); [nodeterm](../../raw/agent-development-environments/2026-10-18-nodeterm-readme.md); [nodeterm-source](../../raw/agent-development-environments/2026-10-18-nodeterm-source.md); [dmux](../../raw/agent-development-environments/2026-10-18-dmux-readme.md); [ai-devkit](../../raw/agent-development-environments/2026-10-18-ai-devkit-readme.md); [jean](../../raw/agent-development-environments/2026-10-18-jean-readme.md); [fusion](../../raw/agent-development-environments/2026-10-18-fusion-readme.md); [ccmanager](../../raw/agent-development-environments/2026-10-18-ccmanager-readme.md); [orca](../../raw/agent-development-environments/2026-10-18-orca-readme.md); [orca-cli](../../raw/agent-development-environments/2026-10-18-orca-cli-overview.md); [tern-architecture](../../raw/agent-development-environments/2026-10-18-tern-architecture.md); [thinkrail](../../raw/agent-development-environments/2026-10-26-thinkrail-readme-specs-and-install.md); [jetbrains-air](../../raw/agent-development-environments/2026-10-26-jetbrains-air-and-ade-landscape.md)
+> Updated: 2026-10-26
 
 ## Overview
 
-本文记录 2026-10-18 调研的 ADE（Agent/Agentic Development Environment）候选清单。ADE 指管理多个并发 coding agent 的工作台，区别于 coding-agent 引擎本身（如 OpenCode）和 IDE。准入条件：Terminal TUI/CLI 或独立 Web UI 可完整使用（排除纯桌面应用）；能清楚显示哪些 Agent 在运行及所在 project/workspace/worktree/session/host 至少一种位置；能方便切换 workspace/session/context；GitHub stars ≥ 1000。Tern 因用户要求保留为插件型终端 ADE，产品本体无公开 GitHub 仓库，指标标 `[unknown]`。Orca 因仅桌面应用形态被过滤，保留为排除记录。
+本文记录 2026-10-18 调研、2026-10-26 增补的 ADE（Agent/Agentic Development Environment）候选清单。ADE 指管理多个并发 coding agent 的工作台，区别于 coding-agent 引擎本身（如 OpenCode）和 IDE。准入条件：Terminal TUI/CLI 或独立 Web UI 可完整使用（排除纯桌面应用）；能清楚显示哪些 Agent 在运行及所在 project/workspace/worktree/session/host 至少一种位置；能方便切换 workspace/session/context；GitHub stars ≥ 1000。Tern 因用户要求保留为插件型终端 ADE，产品本体无公开 GitHub 仓库，指标标 `[unknown]`。Orca 与 JetBrains Air 因仅桌面应用形态被过滤，保留为排除记录。
 
 ## 候选表
 
-按 stars 降序排列。Stars 与 last push 来自 GitHub API `stargazers_count` 和 `pushed_at`，快照日期 2026-10-18，日期取 UTC。功能描述为官方 README/docs 声明。
+按 stars 降序排列。Stars 与 last push 来自 GitHub API `stargazers_count` 和 `pushed_at`，快照日期 2026-10-18，日期取 UTC；ThinkRail 行为 2026-10-26 快照（差异见证据边界）。功能描述为官方 README/docs 声明。
 
 | 候选 | 来源 | 可用形态 | Agent 在哪里运行、状态如何显示 | Workspace / context 如何切换 | Stars | Last push |
 |---|---|---|---|---|---:|---|
@@ -39,6 +39,7 @@
 | [Jean](https://github.com/coollabsio/jean) | 新增 | Headless Web server | 按 server、project、worktree 管理并行 agent；worktree 显示 branch、terminal 和运行状态 | 在 project/worktree/chat 间切换；可连接本地或远程 headless server | 1339 | 2026-10-18 |
 | [Fusion](https://github.com/Runfusion/Fusion) | 新增 | Web、CLI | Dashboard 与 workspace gallery 显示 session 类型、project directory、state | 按 workspace/session 切换；支持保存、恢复与并行运行 | 1279 | 2026-10-18 |
 | [CCManager](https://github.com/kbwo/ccmanager) | Seed | Terminal TUI、Web | 按 project、worktree、session 显示 busy、waiting、idle | 在项目与 worktree 间切换 session；恢复操作只重启命令，不恢复之前的 Agent 对话 | 1265 | 2026-10-18 |
+| [ThinkRail](https://github.com/JetBrains/thinkrail) | 新增 | 桌面应用（Electrobun）、CLI + 自托管浏览器界面 | pi 会话运行在 host 进程内；会话头部实时显示 token 与花费；Changes 视图与 PTY 终端按工作区显示 | 项目登记表保存多个打开项目（Projects 面板）；工作区为 git worktree（含内置 Default）；同一工作区多 pi 会话并行 | ≈1200 | 2026-10-26† |
 | [Agent Deck](https://github.com/asheshgoplani/agent-deck) | Seed | Terminal TUI、Web | 按 group、project、session、host 显示 waiting、running、done | `Enter` 接管 session；支持 fork OMP 等 Agent session，继承对话历史 | 1109 | 2026-10-18 |
 
 ## 单独保留
@@ -54,18 +55,23 @@ Tern 的 Web 是否具备与终端插件相同的 Agent 总览能力尚未核实
 | 候选 | 形态 | 功能是否满足 | 过滤原因 | Stars | Last push |
 |---|---|---|---|---:|---|
 | [Orca](https://github.com/stablyai/orca) | 桌面应用 + mobile companion + CLI 依赖运行中的 Orca editor | 功能符合（并行 worktree、Agent 总览、快速切换、支持 OMP） | 无独立 terminal ADE 或 self-hosted Web UI 证据；CLI 需运行中的 Orca editor | 96086 | 2026-10-18 |
+| JetBrains Air（JetBrains 主线产品，无公开仓库） | 桌面应用（macOS/Windows/Linux）+ 云端浏览器（air.jetbrains.cloud） | 功能符合（多 agent 并发、Git Worktree/Docker 隔离、diff 行评论回传、Review with agent） | 无自托管 Web UI：浏览器模式为 JetBrains 云端托管运行，agent 运行在云上 | `[unknown]` | `[unknown]` |
+
+JetBrains Air 于 2026-03 公开预览、预览期免费，构建在已停止分发的 Fleet 平台上；细节见 [ThinkRail 与 JetBrains 的 ADE 版图](thinkrail-and-jetbrains-air.md)。
 
 ## 维护状态提示
 
 - **Vibe Kanban**：官方 README 当前明确写着 sunsetting。
 - **Automaker**：官方 README 当前明确写着 no longer actively maintained。
 - **Mission Control**：官方 README 当前标为 alpha。
+- **CodeCanvas**：JetBrains 2025-10 官宣停止当前形态的开发，现有实例可使用至 2026-03-31；未入候选表（团队级环境编排，非单机 ADE）。
 
 ## 证据边界
 
 - 功能描述为官方文档声明或源码一手直读 `[single-source]`；stars/push 为 GitHub API 一手直读。
 - 未做本机安装运行验证；界面实际表现、OMP 集成、维护状态变化有实测风险。
 - Paseo 源码已证实 Web agent row 显示 host；本机 watchdog、OMP 配置编辑与插件管理未验证。Tern Web Agent 总览、OpenRig OMP 支持仍标 `[unknown]`。
+- ThinkRail/Air 两行快照日期为 2026-10-26（其余行为 2026-10-18）。ThinkRail stars 取官方页 1.2k 显示值、pushed_at 未直读（† 以 2026-10-25 发布的 nightly 0.3.0-nightly.6 作为活跃证据）；ThinkRail 已在本机 WSL 安装并观察 CLI 帮助与 `update` 行为，界面未操作；Air 未安装实测。
 
 ## See Also
 
@@ -73,3 +79,4 @@ Tern 的 Web 是否具备与终端插件相同的 Agent 总览能力尚未核实
 - [TUIOS workspace 与 session rail](../terminal-multiplexers/tuios-workspace-and-sidebar.md)
 - [TUIOS Web 与安装升级](../terminal-multiplexers/tuios-web-and-updates.md)
 - [Herdr 工具链参考](../herdr-plannotator/toolchain-reference.md)
+- [ThinkRail 与 JetBrains 的 ADE 版图](thinkrail-and-jetbrains-air.md)

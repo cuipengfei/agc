@@ -507,9 +507,9 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-25 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-25） | 2026-10-25 |
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26） | 2026-10-26 |
 | [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项 | 2026-10-18 |
-| [ThinkRail 与 JetBrains 的 ADE 版图](agent-development-environments/thinkrail-and-jetbrains-air.md) | ThinkRail 深挖：worktree 工作区、自托管浏览器模式、update 无版本比较、遥测与回环边界、WSL 实测；Air 2026-03 预览接管 Fleet 平台；Gateway WSL2 原生客户端；Projector 独立版暂停；CodeCanvas 停止开发 | 2026-10-25 |
+| [ThinkRail 与 JetBrains 的 ADE 版图](agent-development-environments/thinkrail-and-jetbrains-air.md) | ThinkRail 深挖：worktree 工作区、自托管浏览器模式、update 无版本比较、遥测与回环边界、WSL 实测；Air 2026-03 预览接管 Fleet 平台；Gateway WSL2 原生客户端；Projector 独立版暂停；CodeCanvas 停止开发 | 2026-10-26 |
 
 ## vscode
 
