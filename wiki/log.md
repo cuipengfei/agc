@@ -1536,3 +1536,20 @@
 - Disposition: Update
 - Raw: raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md
 - 要点：补 CLI 与客户端重载边界（`herdr config` 仅 `check`/`reset-keys`，客户端显示类设置须界面 `reload config`，`herdr status client` 不报配置状态）；补 `ui.agent_panel_sort` 两模式，priority 先按 `tab_attention_priority` 档位降序（Blocked 4 / Idle+unseen 3 / Working 2 / Idle+seen 1 / Unknown 0），同档按 `last_agent_state_change_seq` 降序，稳定排序保底 workspace/pane 原顺序，issue #318 正文的同档描述以 v0.9.5 源码为准；补 `shell_mode=auto` 仅 macOS 登录 shell；补 `keys.command` 的 `description`、`HERDR_*` 变量、Windows `cmd.exe /d /c` 与 `prefix+o` 撞键。同日旧 raw 已冻结，新证据另起文件。客户端重载与 priority 运行时排序未实测。
+
+## [2026-10-26] ingest | OMP /model 内置端侧模型目录（local-inference）
+- Disposition: New
+- Raw: raw/omp/2026-10-25-bundled-local-models-catalog.md
+- Updated: OMP /model 模型浏览器：角色解析与 kind 过滤（补 See Also 反向链接）
+- 要点：`local` provider 14 条目（`api="local-inference"` `base-url="local://inference"` `bundle="always"`，cost 全 0、`supports-tools #false`）；kind 分配（kokoro→tts、sherpa/whisper→stt、其余→tiny）；8 语言模型分工与 Qwen3 `onnxUnsupportedReason`（onnxruntime-node 不支持 RotaryEmbedding cache updates，仅 MLX）；sherpa 固定 `provider: "cpu"` 与 resolve URL 模板；kokoro 设备映射（wasm/webgpu 显式外全 CPU）；设备 14 值与 `[请求设备, cpu]` 回退（告警可闻、末档才抛）；缓存 `~/.omp/agent/cache/tiny-models` 且 `allowLocalModels=false`；2026-10-25 实测：`/usr/lib/wsl/lib/nvidia-smi -L` 见 RTX 3050 Laptop 4GB（驱动 580.88、CUDA Version 13.0、当时 818/4096 MiB 占用），`libonnxruntime_providers_cuda.so` 缺 CUDA 13 的 cublas/curand/cudart 而驱动层 libcuda 在，缓存目录不存在零模型已下载；HF blobs API 探测 14 仓逐文件字节，whisper sizeHint 60/190/600 与实测 81.1/253.3/763.2 及 kokoro ~100 注释 vs 92.9 的差异记录；条件式结论（default→CPU，cuda 在缺库时回退）代替已回退断言；显存容纳与常驻内存为推断并标注。
+
+## [2026-10-25] ingest | ThinkRail 与 JetBrains 的 ADE 版图
+- Disposition: New; Update
+- Raw: raw/agent-development-environments/2026-10-25-thinkrail-readme-specs-and-install.md; raw/agent-development-environments/2026-10-25-jetbrains-air-and-ade-landscape.md
+- Updated: ADE 候选清单
+- 要点：新建 thinkrail-and-jetbrains-air.md（ThinkRail 定位/形态/安装/命令行为/安全边界/WSL 实测；JetBrains ADE 版图：Air 2026-03 公开预览接管 Fleet 平台、Gateway WSL2 输出原生客户端、Projector 独立版暂停但技术仍在 Gateway 内、CodeCanvas 2025-10 宣布停止开发实例用到 2026-03-31、Junie 为 agent 非工作台）。候选清单增 ThinkRail 行（≈1200 stars，2026-10-25 快照，† nightly 发布作活跃证据）与 Air 桌面过滤行（无自托管 Web UI，浏览器模式为云端托管）。OMP 迁移上游 Pi 需检查认证/MCP 迁移并逐项核对扩展兼容性；OMP 经 ACP 接入 Air 未验证。
+
+## [2026-10-26] lint | 3 篇范围校验 0 错误；全库 395 suspect 未逐判，3 个存量 evidence error
+- 范围：wiki/omp/bundled-local-models.md、wiki/omp-config/model-browser-role-resolution.md、wiki/index.md
+- 处理：首跑 28 suspects 逐条对照 raw 判定——模型名后缀、描述引文与设备文案均为 raw 原文摘录（假阳性），See Also 中「135M」来自另一篇文章且不在本 raw，已从链接注释删除；1.2–1.5 内存倍率是标注推断非事实。修正后范围重跑：27 suspects（全部假阳性）、0 evidence error；index.md/log.md 由校验器按设计跳过。
+- 存量报告（与本次无关）：wiki/omp-signature-verification/ 下 index.md、log.md、omp-method.md 无 Raw 字段；raw/omp-signature-verification/ 两文件未被任何文章引用。未处置，等待人工决定。

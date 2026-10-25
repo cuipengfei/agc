@@ -441,7 +441,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 ## omp
 
-OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，全量环境变量参考，以及从源码本地构建的依赖、步骤、产物与验证。
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，`/model` 内置端侧模型目录，全量环境变量参考，以及从源码本地构建的依赖、步骤、产物与验证。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
@@ -456,6 +456,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [Node-API and napi-rs in OMP](omp/napi-node-api.md) | Node-API（原 N-API）稳定 ABI 逐字定义与边界（限 Node.js、不跨平台）；Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证；napi-rs 构建链（Rust 1.88+、#[napi]、平台分包）；pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1 证据 | 2026-09-27 |
 | [OMP judgment 对 chat 类 judge 的无 schema 文本解析机制](omp/judgment-chat-llm-parsing.md) | 普通 chat 模型当 judge 时不发 response_format/json_schema/text.format；temperature 0 + disableReasoning + maxTokens 4096 首次裸文本，prompt 约定关键词回答，三组解析器（choice/noul/score）取最早合法关键词，解析失败重试才挂 submit_judgment tool；与 jev /v1/systemone 路由分界；本机 judge 实配 typesafe-zen/jev-1.13 | 2026-10-07 |
 | [OMP 本地构建：依赖、步骤、产物与验证](omp/local-build.md) | Ubuntu x86_64 的 v18.8.7 构建流程：系统依赖先安装、Bun 1.4.3/rustup 与当前 shell PATH、HTTPS 源码/tag 检查、nightly-2026-10-06、Cargo ci stripped addon 与 Bun compile；内部 worker（daemon broker/LSP mux/text predict）随同一入口打包，SmolLM 权重与 tiny-model 运行库按需下载非构建产物；全局安装保持不变，源码/绑定/资源对照与 GLIBC 2.43/2.17 边界；隔离 shell 和 --version/--help 已验证，另一台机器完整复现未验证 | 2026-10-11 |
+| [OMP /model 内置端侧模型目录（local-inference）](omp/bundled-local-models.md) | 14 个端侧模型清单（三标题/五记忆/五听写/一朗读）、local.kdl seed 条目（api/base/bundle 原文）与各 dtype 的实测下载量组件分解、local://inference 子进程传输、设备 14 值与 [请求设备, cpu] 回退、Qwen3 ONNX 拒绝与 sherpa/kokoro 无 CUDA 路径；WSL2 RTX 3050 实测：驱动可见、CUDA 13 运行时库缺失、条件式回退结论 | 2026-10-26 |
 
 ## tokscale
 
@@ -506,8 +507,9 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 26 个公开仓库 + Tern + Orca 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 2026-10-18 快照 | 2026-10-18 |
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-25 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-25） | 2026-10-25 |
 | [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项 | 2026-10-18 |
+| [ThinkRail 与 JetBrains 的 ADE 版图](agent-development-environments/thinkrail-and-jetbrains-air.md) | ThinkRail 深挖：worktree 工作区、自托管浏览器模式、update 无版本比较、遥测与回环边界、WSL 实测；Air 2026-03 预览接管 Fleet 平台；Gateway WSL2 原生客户端；Projector 独立版暂停；CodeCanvas 停止开发 | 2026-10-25 |
 
 ## vscode
 

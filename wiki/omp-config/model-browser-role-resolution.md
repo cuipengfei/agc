@@ -77,3 +77,7 @@
 ## designer 角色已移除
 
 `designer` 曾是内置角色 + 独立 prompt 子 agent（`prompts/agents/designer.md`），由提交 `2493ba99c4`「removed designer subagent and model role」（2026-09-03，自 v18.1.5 起）移除，从 `model-roles.ts`、agent 注册、优先级表、docs 一并拔除。提交正文未给出动机。若 `config.yml` 残留 `designer:` 一行，会以自定义角色继续显示在 `/model`，删掉该行重进会话即消失。本机实证如此。
+
+## See Also
+
+- [OMP /model 内置端侧模型目录（local-inference）](../omp/bundled-local-models.md) — `local` provider 的 14 个端侧模型清单，本篇 TINY/MEMORY/SPEECH/DICTATION/JUDGE 接受规则在这些模型上的实际应用
