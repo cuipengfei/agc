@@ -54,7 +54,7 @@
 - **Wikipedia `WP:AIDISCLAIMER`**（`https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=raw`）：把「关于来源可得性与建议用法的限定声明」列为常见 AI 写作特征；Mid-2026–present 段落记录了 `"...does not by itself establish..."` 一类句式，以及关于「preserved」「retained」信息与「avoided」错误的程序性陈述。
 - **Graphite Research AI Tells**（`https://graphite.io/five-percent/research/ai-tells`，2026-09-16；`…/ai-tells-gemini-4-argon-update`，2026-10-21）：样本为 `10,000` 篇人类文章与 `90,000` 篇 AI 文章。测得 AI 讲「某事物不是什么」的频率约为人类的 `12` 倍，`not necessarily` 为 `18x`，`may provide` 为 `36x`，`distinction matters` 在人类样本中为 `0` 次。这组数字是文本频率测量，不解释生成原因。
 - **Rebecca Wicker, The Strategic Linguist**（`https://thestrategiclinguist.substack.com/p/when-hedging-has-nothing-to-do-with`）：区分两种限定。一种交代具体的认知状态，例如还没看到哪份材料；另一种是披着限定外衣的免责声明，作用是保护发言者，而非传达证据强度。
-- **LessWrong `Demands Are All You Need`**（2026-02-06，`n=900`）：`3×2×3` 实验中，提高指令祈使程度后，主观题 hedging 从 `M = 2.38` 降到 `M = 0.43`（`Cohen's d = 2.67`）。论文 Table 7 另记录一个个案：hedging 从答案之前迁移到答案之后。这是单项实验结果加个案观察，能提示「禁令可能把免责推到句尾」这一假说，不能确定本会话出现的句尾免责由提示词迁移造成。
+- **LessWrong `Demands Are All You Need`**（2026-02-06，`n=900`）：`3×2×3` 实验中，提高指令祈使程度后，主观题 hedging 从 `M = 2.38` 降到 `M = 0.43`（`Cohen's d = 2.67`）。论文 Table 7 另记录一个个案：hedging 从答案之前迁移到答案之后。由此得到一个候选解释：提示词把限定推到句尾。检验方法是用强祈使与弱祈使两种提示词各生成同类问题，比较句尾限定的数量与位置，看这个解释是否适用于本会话的输出。
 
 `skills.sh` 上的去 AI 腔候选（页面当前显示值）与本机已装项高度重叠：
 
