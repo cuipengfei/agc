@@ -1563,3 +1563,15 @@
 - Disposition: New
 - Raw: raw/omp-signature-verification/2026-10-26-anthropic-signature-source-review.md; raw/omp-signature-verification/real-opus5-signature.md; raw/omp-signature-verification/omp-parser-analysis.md
 - 要点：signature 为 base64 protobuf，outer `{1: version, 2: envelope}`、envelope `{1: header, 2..5}`、header 含 field 6 模型与 field 8 块类型；`servedModelFromAnthropicSignature` 取 header field 6，空或超 128 字节或字符集不匹配 `^[A-Za-z0-9][A-Za-z0-9._:/-]*$` 时返回 undefined；`isAnthropicNarrationSignature` 只认精确 `narration`；版本 4 外层格式（`CAQS…`）的 header 无 field 6，解码得空；函数不校验密文部分的密码学有效性。本机样本 274 bytes、首字节 `0x08`、解析出 `claude-opus-5`。结构整理：原 `wiki/omp-signature-verification/` 的 index.md、log.md、omp-method.md 删除，文章迁入 model-gateway-mismatch 并改为合规 Raw 字段。
+
+## [2026-10-26] ingest | OMP browser prelude 与 relay 架构
+- Disposition: New
+- Raw: raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md; raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md; raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md
+- Updated: OMP 内建工具全集、会话暴露边界与内部地址空间; OMP 配置语义手册; CLI 子命令全量参考
+- 要点：browser 是 eval prelude（`browser.enabled`/`browser.relay` 默认 false、`browser.headless` 默认 true）；八条顺位依次为 `app.cdp_url`、`app.path`、`app.relay`、`browser.relay`、`browser.cdpUrl`、Tern、cmux、受管 Chromium；relay 绑 `127.0.0.1:9224`，`/ext` 校验 token 与 `chrome-extension://` Origin，`/cdp` 与 `/json/*` 不校验，故安全边界只有 loopback 与账户隔离；扩展把地址固定为 `ws://127.0.0.1:${settings.port}/ext`，选项页无远端主机；Chrome 136 起默认数据目录不再接受远程调试开关，因此驱动日常浏览器只能走中继；下载目录由 OMP 通过 `Browser.setDownloadBehavior` 下发 `os.tmpdir()/omp-downloads-${tabId}`，`perTab` 为 true 时搬移 GUID 文件、false 时直接用事件路径，跨系统落点未实测；本机 WSL `mirrored` 下 Windows→WSL 9224 得 503、WSL→Windows 18082 得 `win-ok`，扩展握手与页面打开未验证。
+
+## [2026-10-26] ingest | OMP computer prelude 与桌面自动化
+- Disposition: New
+- Raw: raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md; raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md; raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md
+- Updated: OMP 内建工具全集、会话暴露边界与内部地址空间; OMP 配置语义手册
+- 要点：`computer` 不是独立工具，`computer.enabled` 默认 false；AX 路径按控件操作、元素动作不需要截图，像素坐标取自最近一次同目标完整截图，AX 坐标是全局桌面坐标，两者禁止混用；原生层为 `DesktopSession`（持久、串行），Linux 走 AT-SPI over D-Bus 加 x11rb/XTest 或 libei/uinput/pipewire；`ax()` 上限 800 节点/深度 24，`find()` 上限 5000/24、默认返回 100、最多 5000，注册表 5000 溢出淘汰；Windows 后端用 UIA，坐标点击仅允许 Button/MenuItem/Hyperlink/CheckBox/RadioButton/TabItem，注释点名 WPF/WinUI 3/Tk/GTK 会丢投递式点击；Electron 需无障碍激活（Chromium 按 `WM_GETOBJECT` 检测，覆盖方式为 `--force-renderer-accessibility`、`chrome://accessibility`、`setAccessibilitySupportEnabled(true)`），Chrome 138 起 Windows 默认原生 UIA；Relay 无法接入 Electron 应用，Direct CDP 需应用开 `--remote-debugging-port`，VS Code 是否透传未验证；本机 WSL 探针为 backend wayland、capture false、ax true、0 显示器 0 窗口、110 个应用条目，因此像素路径不可用且看不到 Windows 宿主窗口。

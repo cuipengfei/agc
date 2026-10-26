@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
 > Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md)
-> Updated: 2026-09-29
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md)
+> Updated: 2026-10-26
 
 ## 这份手册讲什么
 
@@ -67,7 +67,8 @@
 
 | 设置 | 做什么 | 何时触发 | 影响与取舍 |
 |---|---|---|---|
-| `browser.enabled: false` | 禁用 OMP scripted Chromium browser 工具 | tool surface 组装时 | agent 不走内置浏览器自动化链路 |
+| `browser.enabled: false` | 不向 eval 内核注入 `browser` 这个 prelude | eval 内核启动与设置变更时 | agent 不走内置浏览器自动化链路；运行时架构见 [OMP browser prelude 与 relay 架构](../omp-tools/browser-prelude-and-relay-architecture.md) |
+| `computer.enabled: false` | 不向 eval 内核注入 `computer` 这个 prelude（默认关闭，会话内可用 `/computer` 临时开启） | eval 内核启动与设置变更时 | agent 不能用桌面截图、AX 树与原生输入；架构与平台覆盖见 [OMP computer prelude 与桌面自动化](../omp-tools/computer-prelude-desktop-automation.md) |
 | `secrets.enabled: true` | outbound provider context 中对匹配 secret 做 obfuscation/redaction | provider request 组装时 | 主 agent 和 Advisor 的动态上下文都走 obfuscator；但 static system prompt、tool schema 原样通过 |
 | `eval.tools.enabled: true` | eval 定义的 tools 可暴露给 task/agent/workpool children | task/agent/workpool 组装时 | 子 agent 可用当前会话临时定义的工具 |
 | `eval.autoBackground.enabled: true` | 长时间 eval cell 自动后台化 | eval cell 运行超阈值时 | 主对话不被长 eval 阻塞 |

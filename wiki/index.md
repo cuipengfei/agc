@@ -177,7 +177,7 @@ OMP 内置命令的机制与动态发现。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Cleanse：动态诊断修复](omp-commands/cleanse.md) | 按项目文件和可用 binary 动态发现 checker，多语言支持 | 2026-09-09 |
-| [CLI 子命令全量参考](omp-commands/cli-subcommands-reference.md) | omp v18.10.1 的 launch 入口形态、启动 flags 七组、子命令八组及网页文档差异 | 2026-10-12 |
+| [CLI 子命令全量参考](omp-commands/cli-subcommands-reference.md) | omp v18.10.1 的 launch 入口形态、启动 flags 七组、子命令八组及网页文档差异；browser-relay 行指向 browser prelude 架构 | 2026-10-26 |
 | [gc 存储垃圾回收](omp-commands/gc-storage-garbage-collection.md) | omp gc 四阶段存储清理：blobs/archive/wal/stale 的路径、阈值、保留额度与安全机制 | 2026-10-12 |
 
 ## omp-config
@@ -191,7 +191,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
 | [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；邻近会话一次 Vibe 压缩走 soft、与当前实现相符，因果仍有证据边界 | 2026-10-24 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处；本机目录布局实测（无 ~/.omp/agent/skills，用户级 skills 在 ~/.agents/skills） | 2026-10-08 |
-| [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive | 2026-09-29 |
+| [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive；browser.enabled 与 computer.enabled 的 prelude 语义 | 2026-10-26 |
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
@@ -219,7 +219,9 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察 | 2026-10-11 |
+| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用 | 2026-10-26 |
+| [OMP browser prelude 与 relay 架构](omp-tools/browser-prelude-and-relay-architecture.md) | prelude 定位与启用条件；四后端八顺位路由表；relay 端点鉴权矩阵（token 只管 /ext，/cdp 无校验）与 loopback 边界；扩展来源与 Chrome 136 限制；标签页借用与冻结范围；跨系统上传回退与下载 perTab 分支；Kerberos 落在浏览器进程；WSL 双向回环实测与扩展握手待验证；API/CLI 与界面选型顺位 | 2026-10-26 |
+| [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批与接管语义；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-10-26 |
 
 ## omp-extensibility
 

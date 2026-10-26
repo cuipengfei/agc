@@ -69,7 +69,7 @@ OMP 的 shell 接口由一个默认命令 `launch`、约 60 个子命令和 50 �
 | `render` | 完整会话线程过生产级终端渲染管线 |
 | `ps` | 管理守护进程监管的后台进程（logs/stop/kill/restart） |
 | `shell` | 交互 shell 控制台 |
-| `browser-relay` | 本地 CDP 中继，让 browser prelude 驱动 Chrome 标签页 |
+| `browser-relay` | 本地 CDP 中继，让 browser prelude 驱动 Chrome 标签页；端点与安全边界见 [OMP browser prelude 与 relay 架构](../omp-tools/browser-prelude-and-relay-architecture.md) |
 | `acp` | 以 stdio 跑 ACP 服务器 |
 
 ### 认证与 provider 检查
