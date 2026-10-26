@@ -150,6 +150,7 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [SDK 对非标准 responses 帧的解析严格度差异](model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) | AI SDK 与 pi-ai 对同一 responses 帧的解析差异及 OpenCode/OMP 协议分配；senpi(OMO) 共享同套 adapter 与不补 /v1 规则 | 2026-09-27 |
 | [justwoker-shim 设计](model-gateway-mismatch/justwoker-shim-design.md) | 断路器状态机、SSE 合成、文本协议工具仿真、路由（带工具无条件走 emulation）、断路器饥饿修复、工具描述不截断、非法 JSON 回退 | 2026-10-05 |
 | [Kiro 认证凭据路径速查](model-gateway-mismatch/kiro-auth-paths-cheatsheet.md) | 免费社交登录 vs 付费 ksk_、凭据落点与 Billing FAQ SoT；Free 计划下原生 Sonnet 4.5 请求通过，目录含 Haiku，Opus/GPT 请求不可用；IP 因果未受控 | 2026-10-23 |
+| [用 Anthropic thinking signature 判断网关实际服务的模型](model-gateway-mismatch/anthropic-signature-model-verification.md) | signature 明文头三层结构（outer/envelope/header）、field 6 模型 ID 与 field 8 块类型、解析链与 128 字节长度门、版本 4 格式无 field 6 返回 undefined、不校验密码学有效性 | 2026-10-26 |
 
 ## openai-api
 
@@ -412,12 +413,13 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 
 ## proxy-ops
 
-专有代理客户端迁移与代理节点出口指纹的通用取证方法（不含具体服务商信息）。
+代理客户端迁移、域名定向规则与出口指纹的取证方法。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界 | 2026-09-16 |
 | [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 批量测出口、BGP origin 收敛 ASN 冲突、命名审计 | 2026-09-16 |
+| [域名定向代理规则：把指定域名固定到代理组](proxy-ops/domain-targeted-proxy-rules.md) | 前置 DOMAIN 完整域名与首条匹配停止、填组名跟随组内选择 vs 填节点名锁定、option.rules → profiles/UID.yaml 的 prepend、clash-verge.yaml 才是生成配置、controller /rules 与 /connections 核对 | 2026-10-26 |
 
 ## llm-proxy-sse
 

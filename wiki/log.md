@@ -1553,3 +1553,13 @@
 - Raw: raw/agent-development-environments/2026-10-26-thinkrail-readme-specs-and-install.md; raw/agent-development-environments/2026-10-26-jetbrains-air-and-ade-landscape.md
 - Updated: ADE 候选清单
 - 要点：新建 thinkrail-and-jetbrains-air.md（ThinkRail 定位/形态/安装/命令行为/安全边界/WSL 实测；JetBrains ADE 版图：Air 2026-03 公开预览接管 Fleet 平台、Gateway WSL2 输出原生客户端、Projector 独立版暂停但技术仍在 Gateway 内、CodeCanvas 2025-10 宣布停止开发实例用到 2026-03-31、Junie 为 agent 非工作台）。候选清单增 ThinkRail 行（≈1200 stars，2026-10-26 快照，以 2026-10-25 发布的 nightly 作活跃证据）与 Air 桌面过滤行（无自托管 Web UI，浏览器模式为云端托管）。OMP 迁移上游 Pi 需检查认证/MCP 迁移并逐项核对扩展兼容性；OMP 经 ACP 接入 Air 未验证。
+
+## [2026-10-26] ingest | 域名定向代理规则：把指定域名固定到代理组
+- Disposition: New
+- Raw: raw/proxy-ops/2026-10-26-domain-rule-clash-verge-rev.md
+- 要点：前置 `DOMAIN` 完整域名匹配与首条匹配停止（Clash Verge Rev 界面文档、mihomo 文档）；规则第三项填组名时跟随组内当前节点、填节点名时锁定该节点，本机 `prepend` 两条即两种写法对照；界面「编辑规则」对应 `profiles.yaml` 的 `option.rules` → `profiles/UID.yaml` 的 `prepend`，生成配置为 `clash-verge.yaml`（627 条规则），同目录 `config.yaml` 的 `rules` 为空；controller `127.0.0.1:9097` 需 Bearer（裸请求 401），`/rules` 第 0 条即目标规则；WSL `mirrored` 模式、六个代理环境变量为空仍经 `198.18.0.2` 走宿主 TUN（`mode=rule`、`tun.enable=True`、`tun.stack=gvisor`），`127.0.0.1:7897` 在 WSL 内可达。连接命中仅一次隧道观察，未做重复测量；订阅更新后的规则保留来自文档说明，未做触发验证。
+
+## [2026-10-26] ingest | 用 Anthropic thinking signature 判断网关实际服务的模型
+- Disposition: New
+- Raw: raw/omp-signature-verification/2026-10-26-anthropic-signature-source-review.md; raw/omp-signature-verification/real-opus5-signature.md; raw/omp-signature-verification/omp-parser-analysis.md
+- 要点：signature 为 base64 protobuf，outer `{1: version, 2: envelope}`、envelope `{1: header, 2..5}`、header 含 field 6 模型与 field 8 块类型；`servedModelFromAnthropicSignature` 取 header field 6，空或超 128 字节或字符集不匹配 `^[A-Za-z0-9][A-Za-z0-9._:/-]*$` 时返回 undefined；`isAnthropicNarrationSignature` 只认精确 `narration`；版本 4 外层格式（`CAQS…`）的 header 无 field 6，解码得空；函数不校验密文部分的密码学有效性。本机样本 274 bytes、首字节 `0x08`、解析出 `claude-opus-5`。结构整理：原 `wiki/omp-signature-verification/` 的 index.md、log.md、omp-method.md 删除，文章迁入 model-gateway-mismatch 并改为合规 Raw 字段。
