@@ -715,9 +715,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "fc621a41771cbfa1836b9e41592c6e123936d133",
+      "skillFolderHash": "e2a09829c7d3e3f178360d7719a9e8a24e51fb69",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-24T07:06:21.596Z"
+      "updatedAt": "2026-10-26T12:50:33.598Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -868,9 +868,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/no-comments/SKILL.md",
-      "skillFolderHash": "1e03669ece796e1c9cb6b1f663e9d50232ef7325",
+      "skillFolderHash": "297745926d3234c73740514f4ba3d21fba1647ca",
       "installedAt": "2026-10-04T15:35:43.307Z",
-      "updatedAt": "2026-10-15T14:57:17.588Z"
+      "updatedAt": "2026-10-26T12:50:40.003Z"
     },
     "principle-attack-the-premise": {
       "source": "backnotprop/pstack",
@@ -1231,18 +1231,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "787ff290585e2b67a9c0d3e16197fc633fe50036",
+      "skillFolderHash": "2bc693e9d9d02aeac67e77a12e9a1f209ebfa741",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-10-25T10:40:02.033Z"
+      "updatedAt": "2026-10-26T12:51:25.823Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "918cc84dcafea67f01171ccc74bb9c015804259d",
+      "skillFolderHash": "3f76a7d5ea38f248785195cd655907a39c07eaac",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-24T07:07:12.256Z"
+      "updatedAt": "2026-10-26T12:51:29.091Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1258,18 +1258,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "972d0c8fb1ba4e545cfd34fc121ef1c809072cbf",
+      "skillFolderHash": "18ae23d75e0c001c41adf963e9906f4c1d92e590",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-25T14:28:58.465Z"
+      "updatedAt": "2026-10-26T12:52:08.572Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "da8b3b609beab3b99d1781616e42560bc7d50ca4",
+      "skillFolderHash": "3464db76499751da7e5ef05ba6f33fc63d058503",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-10-24T07:06:39.290Z"
+      "updatedAt": "2026-10-26T12:50:45.893Z"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1313,9 +1313,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "c7b11cd9258708909d8574c8176d4c70969c8b29",
+      "skillFolderHash": "8da6b6340aa22faf46fd07db8efbdea010cd38d9",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-10-25T03:41:40.456Z"
+      "updatedAt": "2026-10-26T12:52:12.133Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
