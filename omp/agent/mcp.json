@@ -19,7 +19,8 @@
       "oauth": {
         "redirectUri": "http://127.0.0.1:3000/callback",
         "callbackPort": 3000
-      }
+      },
+      "enabled": false
     },
     "deep-wiki": {
       "type": "http",
@@ -59,7 +60,7 @@
     "context-mode": {
       "type": "stdio",
       "command": "context-mode",
-      "enabled": false
+      "enabled": true
     },
     "grep-app-github": {
       "type": "http",

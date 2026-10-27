@@ -1,7 +1,7 @@
 {
   "plugins": {
     "@plannotator/pi-extension": {
-      "version": "0.28.31",
+      "version": "0.28.32",
       "enabledFeatures": null,
       "enabled": true
     },
