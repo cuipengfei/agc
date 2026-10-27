@@ -1,8 +1,8 @@
 # OMP Mnemopi Auto-Recall 注入机制
 
 > Sources: 本地 @oh-my-pi/pi-coding-agent 与 @oh-my-pi/pi-mnemopi 包源码, 2026-09-06; OMP 源码 d49918fab2
-> Raw: [2026-09-06-mnemopi-auto-recall-injection](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md); [2026-09-06-mnemopi-auto-recall-corrections](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-corrections.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md)
-> Updated: 2026-09-21
+> Raw: [2026-09-06-mnemopi-auto-recall-injection](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md); [2026-09-06-mnemopi-auto-recall-corrections](../../raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-corrections.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [2026-10-27 Mnemopi 捕获与 LLM 边界](../../raw/omp-mnemopi/2026-10-27-mnemopi-capture-and-llm-boundaries.md); [2026-10-27 本机 Mnemopi 库统计](../../raw/omp-mnemopi/2026-10-27-local-mnemopi-bank-stats.md)
+> Updated: 2026-10-27
 
 ## Overview
 
@@ -10,7 +10,9 @@ Mnemopi 的记忆注入不是「session 一启动就发生」，而是在**首�
 
 ## 注入时机与次数
 
-`beforeAgentStartPrompt(promptText)` 在当前 user turn 已提交、模型首次生成前调用。三个前置检查（state.ts:473-475）：`autoRecall` 须开启、`hasRecalledForFirstTurn` 须为 false、当前 prompt 非空。注入后 `hasRecalledForFirstTurn` 置 true（state.ts:481），后续常规 turn 全部跳过——**常规 auto-recall 仅注入一次**，不是每 turn 都注入。compaction 场景另有 `recallForCompaction`，不在常规路径。
+`beforeAgentStartPrompt(promptText)` 在当前 user turn 已提交、模型首次生成前调用。三个前置检查（state.ts:628）：`autoRecall` 须开启、`hasRecalledForFirstTurn` 须为 false、当前 prompt 非空。注入后 `hasRecalledForFirstTurn` 置 true（state.ts:671），后续常规 turn 全部跳过——**常规 auto-recall 仅注入一次**，不是每 turn 都注入。compaction 场景另有 `recallForCompaction`，不在常规路径。
+
+`hasRecalledForFirstTurn` 在三个位置起作用：`beforeAgentStartPrompt` 入口早退（state.ts:628）、`#commitRecall` 提交注入后置真（state.ts:671）、`maybeRecallOnAgentStart` 入口同样早退（state.ts:802）。新建 transcript 时该标志会被重置为 false（state.ts:293，`resetConversationTracking` 经 `resetContextForNewTranscript` 调用），所以新会话仍会重新召回一次。本机 `mnemopi.recallLimit` 为 8、`injectionTokenLimit` 为 5000、`recallContextTurns` 为 3，取值来自 `~/.omp/agent/config.yml`；这三项的默认值分别是 8、5000、3（settings.ts:290-306）。
 
 ## query 构造
 

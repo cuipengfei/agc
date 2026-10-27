@@ -1,12 +1,22 @@
 # OMP Mnemopi Consolidation 生命周期
 
 > Sources: OMP session investigation, 2026-08-23; can1357/oh-my-pi Git history, source, issues and PRs, 2026-08-31; OMP 源码 d49918fab2
-> Raw: [2026-08-23-omp-mnemopi-investigation](../../raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md); [2026-08-31-mnemopi-scoping-history](../../raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [2026-09-28-mnemopi-scoping-global-retain-test](../../raw/omp-mnemopi/2026-09-28-mnemopi-scoping-global-retain-test.md); [2026-09-27-omp-18-3-3-predictive-text-engine](../../raw/omp/2026-09-27-omp-18-3-3-predictive-text-engine.md)
-> Updated: 2026-09-28
+> Raw: [2026-08-23-omp-mnemopi-investigation](../../raw/omp-mnemopi/2026-08-23-omp-mnemopi-investigation.md); [2026-08-31-mnemopi-scoping-history](../../raw/omp-mnemopi/2026-08-31-mnemopi-scoping-history.md); [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [2026-09-28-mnemopi-scoping-global-retain-test](../../raw/omp-mnemopi/2026-09-28-mnemopi-scoping-global-retain-test.md); [2026-09-27-omp-18-3-3-predictive-text-engine](../../raw/omp/2026-09-27-omp-18-3-3-predictive-text-engine.md); [2026-10-27 Mnemopi 捕获与 LLM 边界](../../raw/omp-mnemopi/2026-10-27-mnemopi-capture-and-llm-boundaries.md); [2026-10-27 本机 Mnemopi 库统计](../../raw/omp-mnemopi/2026-10-27-local-mnemopi-bank-stats.md)
+> Updated: 2026-10-27
 
 ## Overview
 
 OMP 的 Mnemopi 记忆后端有三条相关路径：`dispose()`（普通退出，**不执行 sleep**，所以不 promote）、`/memory enqueue`（显式 full consolidation），以及 standalone `pi-mnemopi sleep` CLI（可无交互触发 full consolidation）。**只有 full sleep 路径受 12 小时年龄门槛限制**；`dispose()` 不是被 age gate 拦住，而是根本不跑 sleep。因此 fresh rows 在普通退出和立即 enqueue 后，都不会被晋升到 episodic memory。
+
+## 写入触发与提取边界（18.13.1 源码）
+
+自动 retain 的判定发生在 `agent_end` 阶段（`state.ts:688-704`）：`userTurns - this.lastRetainedTurn < this.config.retainEveryNTurns` 时直接返回；通过门槛后用 `sliceUnretainedMessages(flat, this.lastRetainedTurn)` 只取上次游标之后的消息，写完后把游标推到 `userTurns`。`retainEveryNTurns` 默认值为 4（`settings.ts:286-295`），本机配置同样取 4。
+
+retain 写入时是否提取事实由两个条件共同决定（`state.ts:721-755`）：`shouldExtract = options.extract !== false && extractText !== null`，`extractText` 取自用户侧消息转录。`extract`、`extractEntities`、`extractText` 三项一起随 `rememberInScope` 下发，同一次写入也会排程嵌入。普通退出路径在 `consolidate` 调用处写死 `extract: false`（`state.ts:966-973`），`consolidate` 再把它转交 `forceRetainCurrentSession`（`state.ts:901-905`），所以退出时只写转录，facts 不新增。
+
+整合自身不调用模型。`consolidate` 返回 `llm_used: 0`、`method: "aaak"`（`consolidate.ts:1168-1180`），写入 episodic 的 metadata 为 `llm_used: false`（`consolidate.ts:1130-1145`），`sleepAllSessions` 的汇总结果同样报 `llm_used: 0`（`consolidate.ts:1225-1235`）。摘要由 `buildSleepSummary` 确定性拼接，库内 facts 与 KG 三元组由正则启发式补齐（`consolidate.ts:742-752`）。
+
+唯一模型调用点是事实提取：`extraction.ts:395-412` 在 host 注入 completion 时以 temperature 0 调用模型；模型不可用时退回 `heuristicExtractFacts` 正则（`extraction.ts:448-458`）。`llmMode: smol` 时 `backend.ts:560-600` 通过 `resolveRoleChain("memory", ...)` 解析 `memory` 角色链，解析不到即 warn 并退化为无 LLM 路径；本机该角色配置为 `sensenova/glm-5.2:high`。
 
 ## Consolidation 路径
 

@@ -1,8 +1,8 @@
 # OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter
 
 > Sources: vectorize-io/hindsight GitHub, 2026-09-01; can1357/oh-my-pi 源码与 git history, 2026-09-01；本地 OMP v18.1.3 源码复核, 2026-09-02
-> Raw: [2026-09-01-hindsight-official-installation](../../raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md); [2026-09-01-hindsight-official-configuration](../../raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md); [2026-09-01-omp-hindsight-sharpshooter-source](../../raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md); [2026-09-02-omp-hindsight-source-recheck](../../raw/omp-mnemopi/2026-09-02-omp-hindsight-source-recheck.md); [OMP Hindsight 配置默认值](../../raw/omp-mnemopi/2026-09-11-omp-hindsight-defaults.md)
-> Updated: 2026-09-11
+> Raw: [2026-09-01-hindsight-official-installation](../../raw/omp-mnemopi/2026-09-01-hindsight-official-installation.md); [2026-09-01-hindsight-official-configuration](../../raw/omp-mnemopi/2026-09-01-hindsight-official-configuration.md); [2026-09-01-omp-hindsight-sharpshooter-source](../../raw/omp-mnemopi/2026-09-01-omp-hindsight-sharpshooter-source.md); [2026-09-02-omp-hindsight-source-recheck](../../raw/omp-mnemopi/2026-09-02-omp-hindsight-source-recheck.md); [OMP Hindsight 配置默认值](../../raw/omp-mnemopi/2026-09-11-omp-hindsight-defaults.md); [2026-10-27 ai-memory README 摘录](../../raw/ai-memory/2026-10-27-ai-memory-readme.md); [2026-10-27 ai-memory OMP 接入与 MCP 工具](../../raw/ai-memory/2026-10-27-ai-memory-omp-integration-and-mcp-tools.md)
+> Updated: 2026-10-27
 
 ## Overview
 
@@ -72,6 +72,18 @@ env override 只覆盖部分字段（URL/token/bankId/mission/retain/recall/time
 ## Sharpshooter
 
 2026-08-28 引入（上游 commit `ffee26b`，随 v18.0.10 发布；本地 v18.1.3 已含）。功能是「friction-gated project decision memory」：每条 user prompt 异步触发 extraction，只收「有摩擦的决策」（回归、反复纠正、代码里看不出来的规则）。提取模型先按配置的 selector 解析，解析不到时回退到 `smol` role（`extract.ts:166` 是 fallback 分支，不是唯一路径）。存储为每项目 3 个固定 markdown（`architecture.md`/`product.md`/`style.md`，各限 120 行）。**无 embedding 召回**：启动时全量注入 developer instructions，另有 `search()` 对三份 markdown 做大小写不敏感的逐行字面搜索（`backend.ts:156` 的 `searchable: true`、`backend.ts:223` 的 `search()`）。额外成本：每 user prompt 一次 extraction 调用 + 5 分钟定时 consolidation。
+
+## 外部叠加方案：ai-memory
+
+ai-memory 不占用 `memory.backend` 五个取值里的任何位置，是并行挂载的独立服务：内建后端仍由 `memory.backend` 挑选，ai-memory 以自己的 MCP server 加一个 OMP 扩展进入同一个会话。
+
+接入产物两条：`ai-memory install-mcp --client omp` 写 `~/.omp/agent/mcp.json`，把 ai-memory 的 HTTP MCP 端点注册给 OMP；`ai-memory install-hooks --agent omp --apply` 生成 `~/.omp/agent/extensions/ai-memory-omp.ts`，OMP 启动时会直接发现 `extensions/` 下的 `*.ts`，无需合并 settings。该扩展用 OMP 的生命周期 API 做捕获，并在 `before_agent_start` 返回一条 `customType: "ai-memory-handoff"` 的消息，把跨 agent 交接内容注入首轮。
+
+与三个内建后端的取舍：收益是 markdown 加 git 的可审阅载体（源文件是普通 `.md`，可 grep、可手改）、默认零 LLM（衰减按可调 schedule 走，冷笔记的 LLM 改写需要显式开启）、跨 agent 与跨机器共享（多个 harness 共用一个自建服务器）、类型化交接（交接内容过隐私边界后才落库）；代价是多一个常驻服务与一套鉴权（每次安装生成 bearer token）。
+
+同时启用时的重叠：两端都在启动阶段注入，`before_agent_start` 与 mnemopi 的召回各占一份上下文；生命周期事件也被两边各捕获一份。因此切换前需把 `memory.backend` 设为 `off`，让 OMP 侧不再触发内建后端的召回与 retain。
+
+→ [ai-memory：跨 agent 的长期记忆服务](../ai-coding-agents/ai-memory-service.md)
 
 ## 迁移（Mnemopi → Hindsight）
 

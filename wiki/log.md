@@ -1586,3 +1586,15 @@
 - Scope: wiki/agent-tooling/code-intelligence-tool-landscape.md
 - Handling: scoped evidence check reported 0 evidence errors and 0 unreferenced raw files. 6 fidelity suspects were reviewed as paraphrases or dated snapshot references, not exact-quote errors; none auto-fixed.
 - Reconciliation: CodeGraph README direct read at commit `69af19ace270f2e940444d514de6dde971df12df` observed 916 lines; an earlier subagent report of 1058 lines remains recorded as an unresolved observation only. Total line count is not used as a fact.
+
+## [2026-10-27] ingest | ai-memory：跨 agent 的长期记忆服务
+- Disposition: New; Update
+- Raw: raw/ai-memory/2026-10-27-ai-memory-readme.md; raw/ai-memory/2026-10-27-ai-memory-omp-integration-and-mcp-tools.md; raw/omp-mnemopi/2026-10-27-mnemopi-capture-and-llm-boundaries.md; raw/omp-mnemopi/2026-10-27-local-mnemopi-bank-stats.md
+- Updated: OMP Mnemopi Consolidation 生命周期; OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter; OMP Mnemopi Auto-Recall 注入机制; Mnemopi 数据模型与 Recall/Reflect
+- 要点：新建 ai-memory-service.md（单二进制常驻 127.0.0.1:49374、markdown 加 git 权威源与 SQLite 派生索引、hook 级捕获含 16 KiB 与 2 KB 上限、默认零 LLM 与本地 384 维嵌入约 87 MB、claim-once handoff、OMP 侧 `install-mcp` 写 mcp.json 加 `install-hooks` 生成 ai-memory-omp.ts 并在 before_agent_start 注入 handoff；它不在 memory.backend 五值内，只能并行挂载）；mnemopi 侧补自动 retain 每 4 个用户轮、extract 标志、退出不提取、整合 llm_used 0、唯一模型调用在事实提取、分层打分默认 0.5/0.3/0.2 与首轮一次性注入。本机现状：OMP 18.13.1、agc 库 130908160 字节（working 1038 / episodic 171 / facts 4085）、ai-memory 未安装，ai-memory 运行行为未实测。
+
+## [2026-10-27] lint | 11 issues found, 0 auto-fixed
+- Scope: wiki/ai-coding-agents/ai-memory-service.md; wiki/omp-mnemopi/consolidation-lifecycle.md; wiki/omp-mnemopi/auto-recall-injection.md; wiki/omp-mnemopi/data-model-and-retrieval.md; wiki/omp-mnemopi/memory-backends-comparison.md
+- Handling: 0 evidence error、0 unreferenced raw。11 条 fidelity suspect 逐条对照 raw 判定为假阳性：`2026-10-27` 与 `2026-09-26` 出自 raw 的 Collected/Sources 行（校验器跳过 metadata）；`4843`/`10770` 在 raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md:222-238；`1506-15` 在 raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md:78；`1.0`/`0.8`/`0.7`/`0.6` 为同一 raw:69-72 的 VERACITY_WEIGHTS；`18.13.1` 在 raw/omp-mnemopi/2026-10-27-local-mnemopi-bank-stats.md:77 与该 raw 的 metadata；`0.65` 在 raw/omp-mnemopi/2026-10-27-mnemopi-capture-and-llm-boundaries.md:395。未改动任何数字。
+- 顺带修正：auto-recall-injection.md 的旧行号 `state.ts:473-475`/`state.ts:481` 与新增段落的 `state.ts:628`/`671` 指向同一机制，已统一为当前源码行号，默认值引用范围改为 `settings.ts:290-306`。
+- 摘录边界修正：raw/ai-memory 的第五节省改为 `DATA_HANDLING.md:21-33`，补齐段首句与结尾（请求地址与时间对 Hugging Face 及其 CDN 可见、请求不携带正文、可设 `embedding_provider = "none"` 或离线预置）；ai-memory-service.md 对应句子同步补全。重跑范围校验：0 evidence error、0 unreferenced raw，11 条 suspect 认定不变。

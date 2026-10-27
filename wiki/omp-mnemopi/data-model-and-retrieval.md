@@ -1,8 +1,8 @@
 # Mnemopi 数据模型与 Recall/Reflect
 
 > Sources: OMP 源码 d49918fab2; 本会话 memory_edit 实测, 2026-09-26
-> Raw: [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md)
-> Updated: 2026-09-26
+> Raw: [2026-09-21-mnemopi-data-model](../../raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [2026-10-27 Mnemopi 捕获与 LLM 边界](../../raw/omp-mnemopi/2026-10-27-mnemopi-capture-and-llm-boundaries.md)
+> Updated: 2026-10-27
 
 Mnemopi 的记忆分为主内容表、事实表、关系表和辅助索引表。普通 `recall` 只直接消费主内容表与事实表，辅以 FTS 和 embedding 索引；`triples`、graph、memoria 系列表有独立用途。
 
@@ -61,6 +61,18 @@ OMP 调用 `recallEnhanced(..., { includeFacts: true })`：
 | facts | `facts` | `fts_facts` | 无 |
 
 启用 embedding 时，`recall` 直接读取 `memory_embeddings` 的 `memory_id` 和 `embedding_json`，对 working 和 episodic 候选做向量相似度。facts 当前只走 FTS 和主表查询，没有向量检索。
+
+## 打分如何融合（18.13.1 源码）
+
+候选先过相关度门槛：词面相关度低于最低相关度且向量相似度低于 0.65 时直接丢弃（`recall.ts:705-733`）。
+
+episodic 层的基底分取两式中的较大值：`dense*vecWeight + fts*ftsWeight + importance*importanceWeight` 与 `lexical*0.8`。
+
+working 层及其它层使用 `keyword*kwShare + importance*importanceWeight + keyword²*0.08`；候选带向量信号时，该基底分再按 0.2 的份额与向量分混合。
+
+默认权重为 `vecWeight 0.5`、`ftsWeight 0.3`、`importanceWeight 0.2`，recency 半衰期 72 小时，最终分数乘 `0.7 + 0.3 * decay`（`recall.ts:705-733`、`beam/index.ts:60-75`）。
+
+开启意图分类后，三路权重先经 `classifyIntent` 识别结果交给 `adjustWeights` 调整（`recall.ts:953-970`）。
 
 ## reflect 直接读取哪些表
 

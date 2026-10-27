@@ -73,6 +73,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [pstack 移植版生态全景](ai-coding-agents/pstack-ports-landscape.md) | 原版为 Lauren Tan cursor/plugins；20+ 移植按 star 排行（1103/944 两强断层）；backnotprop 内部结构已验证：50 skills（24 principle + 26 功能）、poteto-mode 路由 23 playbooks | 2026-10-05 |
 | [mattpocock/skills：两轴分类的工程 skill 集](ai-coding-agents/mattpocock-skills-system.md) | 27 skills 按 user-invoked/model-invoked 分层、ask-matt 可选路由、主线流程与三条 on-ramp、反流程拥有型哲学 | 2026-10-05 |
 | [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照 | 2026-10-05 |
+| [ai-memory：跨 agent 的长期记忆服务](ai-coding-agents/ai-memory-service.md) | 单二进制常驻、markdown 加 git 为权威源、hook 级捕获与零 LLM 默认、claim-once handoff、OMP 以 MCP 加扩展并行接入；与 mnemopi 的机制差异、选型条件与并存边界（未实测安装） | 2026-10-27 |
 
 ## better-harness
 
@@ -267,10 +268,10 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、retain scope:"global" 参数与实测、模式切换与 consolidation 边界 | 2026-09-28 |
-| [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径 | 2026-09-02 |
-| [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响 | 2026-09-21 |
-| [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表、facts 只读（memory_edit 不可改） | 2026-09-26 |
+| [OMP Mnemopi Consolidation 生命周期](omp-mnemopi/consolidation-lifecycle.md) | 三种 scoping 的写入/召回路由、retain scope:"global" 参数与实测、模式切换与 consolidation 边界；自动 retain 每 4 个用户轮与 extract 边界、整合 `llm_used: 0` 的源码依据 | 2026-10-27 |
+| [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径；外部叠加方案 ai-memory（非第五个后端、并存需先关 memory.backend） | 2026-10-27 |
+| [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响；一次性注入的三处标志位与 8/5000/3 取值 | 2026-10-27 |
+| [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表、facts 只读（memory_edit 不可改）；分层打分与默认权重 0.5/0.3/0.2 | 2026-10-27 |
 | [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程、五次损坏实录（9-21/9-24/10-06/10-09/10-11）、索引同坏时穷举点查证伪法；根因类层面定位（多写入者 + `-shm` 协调失效，两条可达：grep/read 进程内夺锁、替换 bank 未重启致分裂 shm），逐次归因不可考，WAL-reset/FTS5 CVE 已排除；恢复流程与陷阱、embedding 重建停滞；缓解 `.ignore` 跳 sidecar（已应用）+ 同 repo 不并行 | 2026-10-11 |
 
 ## omp-modes
