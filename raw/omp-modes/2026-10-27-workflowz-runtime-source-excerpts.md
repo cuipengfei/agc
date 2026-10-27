@@ -206,3 +206,28 @@ export interface WorkPoolPeekResult {
 | 2026-10-19 | `5d72f5d3` | 当前检出 |
 
 “deterministic” 在首版 notice、旧 `modes/workflow.ts` 注释、CHANGELOG 与当前文档中均指编排由显式代码写定；没有关于顺序可复现、种子或逐字节一致结果的承诺。
+
+## 14. 继承的 subagent 设置
+
+`packages/coding-agent/src/eval/workpool-bridge.ts:79-84` 创建池时调用 `resolveEffectiveSubagentPolicy`；`packages/coding-agent/src/task/structured-subagent.ts:414-428` 读取以下设置：
+
+```ts
+const agentModelOverrides = cfgTaskAgentModelOverrides.get(request.session.settings);
+const agentServiceTierOverrides = validateAgentServiceTierOverrides(
+  cfgTaskAgentServiceTierOverrides.get(request.session.settings),
+);
+const compactionThresholdOverrides = validateAgentCompactionThresholdOverrides(
+  cfgTaskAgentCompactionThresholdOverrides.get(request.session.settings),
+);
+const agentAccountPools = validateAgentAccountPools(cfgTaskAgentAccountPools.get(request.session.settings));
+```
+
+| 设置项 | 默认值 | 作用 |
+|---|---|---|
+| `task.agentModelOverrides` | `{}` | 按 agent 名覆盖模型 |
+| `task.agentServiceTierOverrides` | `{}` | 按 agent 名覆盖服务层级 |
+| `task.agentCompactionThresholdOverrides` | `{}` | 按 agent 名覆盖压缩阈值 |
+| `task.agentAccountPools` | `{}` | 按 agent 名指定 OAuth 账号池 |
+| `task.agentIdleTtlMs` | `420_000` | 空闲 subagent 在内存中的驻留时长；超时停放到磁盘，消息或恢复时自动唤醒；`0` 保持到退出 |
+
+`task.agentIdleTtlMs` 的 UI 描述原文：“How long an idle subagent stays live in memory before being parked to disk (ms). Parked agents are revived automatically when messaged or resumed. 0 keeps idle agents live until exit.”

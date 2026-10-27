@@ -281,7 +281,7 @@ OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；magic keywords 四词与单开关（含 `magicKeywords.workflow`）、ultrathink 旁路 `autoThinkingMaxEffort`、HTML/XML 豁免与 expanded prompt 匹配；workflowz 以 workpool 规则描述并指向专题 | 2026-10-27 |
+| [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；magic keywords 四词与单开关（含 `magicKeywords.workflow`）、ultrathink 旁路 `autoThinkingMaxEffort`、HTML/XML 元素内容按配对屏蔽与 expanded prompt 匹配；workflowz 以 workpool 规则描述并指向专题 | 2026-10-27 |
 | [workflowz 运行机制与生命周期](omp-modes/workflowz-runtime-and-lifecycle.md) | 触发与 notice 位置、池对象与批次、配置项默认值、投递与截断、匹配边界、历史与文档/测试落差 | 2026-10-27 |
 
 ## omp-prewalk

@@ -73,7 +73,7 @@ Plan、Goal、Vibe 互斥；官方明确 Vibe 与 active 及 paused 的 plan/goa
 
 - 精确小写、独立成词。
 - 只影响当前 turn。
-- 代码块、inline code、HTML/XML 注释与标签不触发；未闭合或闭合名字不匹配的 XML 元素仍可能命中，缩进代码不识别。
+- 代码块、inline code、HTML/XML 注释与标签不触发；未闭合或闭合名字不匹配的 XML 元素仍可能命中，缩进代码不会被掩码，关键词仍可能触发。
 - 匹配基于 expanded prompt：slash 命令与 prompt 模板展开之后才匹配。
 - 系统/agent 发起的合成 prompt 不触发。
 - 可多关键词组合。

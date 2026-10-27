@@ -32,6 +32,18 @@
 
 `task.batch` 的值仍传入 `MagicKeywordContext`，但当前 notice 模板没有 `taskBatch` 分支，因此不改变 workflowz 的规则文本。
 
+### 继承的 subagent 设置
+
+池创建时调用 `resolveEffectiveSubagentPolicy`，每个工作者回合仍走 `runStructuredSubagent`，会再次解析 subagent policy。以下设置不直接控制池调度，但会改变工作者的模型与生命周期：
+
+| 设置项 | 默认值 | 作用 |
+|---|---|---|
+| `task.agentModelOverrides` | `{}` | 按 agent 名覆盖模型 |
+| `task.agentServiceTierOverrides` | `{}` | 按 agent 名覆盖服务层级 |
+| `task.agentCompactionThresholdOverrides` | `{}` | 按 agent 名覆盖压缩阈值 |
+| `task.agentAccountPools` | `{}` | 按 agent 名指定 OAuth 账号池 |
+| `task.agentIdleTtlMs` | `420_000` | 空闲工作者在内存中的驻留时长；超时停放到磁盘，消息或恢复时自动唤醒；`0` 保持到退出 |
+
 ## 池对象与数据形状
 
 `workpool()` 返回池对象，`name` 同时是聚合任务 id。
@@ -81,7 +93,7 @@
 匹配用的掩码不是 CommonMark 解析器，只有围栏扫描与行内处理两层。结果是：
 
 - 未闭合或闭合名字不匹配的 XML 元素只掩码标签本身，内容仍会命中；`<?xml …?>` 与 CDATA 也会命中。
-- 4 个空格缩进的代码块不识别；4 个空格缩进的波浪线围栏会命中。
+- 4 个空格缩进的代码块不会被掩码，里面的关键词仍可能触发；4 个空格缩进的波浪线围栏会命中。
 - 转义反引号被当成代码边界，`Array<workflowz>` 被当成未闭合标签。
 - 汉字紧贴关键词两侧会阻断；中文标点、引号、emoji、撇号不阻断。
 - `workflowz,`、`workflowz's`、`workflowz (now)` 命中；`workflowz()`、`workflowz.ts`、`foo::workflowz`、`workflowzs` 不命中。
