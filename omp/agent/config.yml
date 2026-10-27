@@ -36,16 +36,7 @@ enabledModels:
   - kiro/*
 disabledProviders: []
 providers:
-  maxInFlightRequests:
-    c8787: 5
-    c8787-chat: 5
-    opencode-zen: 5
-    opencode-go: 5
-    kimi-code: 5
-    kimi-claw: 5
-    deepseek: 5
-    sensenova: 5
-    nvidia: 5
+  maxInFlightRequests: {}
   anthropic:
     serverSideFallback: false
   ollama-cloud:
@@ -326,7 +317,7 @@ memory:
   backend: mnemopi
 autolearn:
   enabled: true
-  autoContinue: false
+  autoContinue: true
   minToolCalls: 5
 mnemopi:
   scoping: per-project-tagged
@@ -447,8 +438,8 @@ julia:
 todo:
   enabled: true
   reminders: true
-  remindersMax: 1
-  eager: default
+  remindersMax: 2
+  eager: preferred
 glob:
   enabled: true
 grep:
@@ -500,7 +491,7 @@ browser:
   cmux: true
 async:
   enabled: true
-  maxJobs: 12
+  maxJobs: 100
   pollWaitDuration: smart
   widgets: true
 irc:
@@ -529,9 +520,9 @@ task:
     commits: generic
     enabled: false
   eager: default
-  batch: false
+  batch: true
   enableEffort: true
-  maxConcurrency: 4
+  maxConcurrency: 32
   enableLsp: true
   maxRecursionDepth: 1
   maxRuntimeMs: 1800000
