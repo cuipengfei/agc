@@ -1416,6 +1416,15 @@
       "skillFolderHash": "57a8bdd28e45ed41900ace0bafa2ff76dd9ed70f",
       "installedAt": "2026-10-27T14:26:16.135Z",
       "updatedAt": "2026-10-27T14:26:16.135Z"
+    },
+    "data-visualization": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/knowledge-work-plugins.git",
+      "skillPath": "data/skills/data-visualization/SKILL.md",
+      "skillFolderHash": "cc2b5235344f14558b0da842510e87952cc9063b",
+      "installedAt": "2026-10-27T14:31:04.079Z",
+      "updatedAt": "2026-10-27T14:31:04.079Z"
     }
   },
   "dismissed": {
