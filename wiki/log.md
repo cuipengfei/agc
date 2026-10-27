@@ -1604,3 +1604,9 @@
 - Raw: raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md; raw/omp-modes/2026-10-27-workflowz-live-pool-run.md; raw/ai-coding-agents/2026-10-27-cross-harness-orchestration-official-docs.md; raw/oh-my-openagent-omo/2026-10-27-mass-ulw-native-only.md
 - Updated: OMP 工作模式与 Magic Keywords; AI Coding Agent 对比：真正独特优势（19 家）; OMO 5.0：独立版与插件版
 - 要点：新建 workflowz 运行与生命周期、跨 harness 编排两篇；总览文章补 workflowz 的 workpool 与 agent handle 规则及 9 个直接配置项；专题文章另列 5 个继承的 subagent 设置（模型、服务层级、压缩阈值、账号池、空闲驻留）；跨 harness 文章映射 Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO task 与 mass ulw；OMO 文章补 mass ulw 独立版专属的源码证据。
+
+## [2026-10-27] ingest | OMP subagent 并行度闸门与 autolearn 跳过条件
+- Disposition: Update
+- Raw: raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md
+- Updated: OMP 配置语义手册; workflowz 运行机制与生命周期
+- 要点：config-semantics 子 Agent 表更新为 2026-10-27 当前值（batch: true、maxConcurrency: 32、autoContinue: true、reminders: true、remindersMax: 2、eager: preferred），新增 subagent 并行度四道闸门节与 b750424/03d688c 历史记录；autolearn.autoContinue 补 6 个跳过条件；workflowz 专题补 maxInFlightRequests 与 async.maxJobs 交叉引用及 maxConcurrency 历史说明。

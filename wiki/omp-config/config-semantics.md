@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
 > Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md)
-> Updated: 2026-10-26
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md)
+> Updated: 2026-10-27
 
 ## 这份手册讲什么
 
@@ -56,12 +56,29 @@
 | 设置 | 做什么 | 何时触发 | 影响与取舍 |
 |---|---|---|---|
 | `task.eager: default` | 去掉"偏向委派"的 system prompt 软提示 | system prompt 组装时 | 更依赖模型自行判断是否拆分工作 |
-| `task.batch: false` | task 从批量 `{context,tasks[]}` 切为单任务 flat 形态 | task tool schema 解析时 | 每次 task call 派一个 agent；批量字段不再合法 |
-| `task.maxConcurrency: 4` | 限制同时运行的 child agent 数 | task workpool 调度时 | 并发更少，排队更久 |
+| `task.batch: true` | task 接受批量 `{context,tasks[]}`，一次派发多个 subagent | task tool schema 解析时 | 单次调用批量派发；配合 `task.speculativeLaunch: true`（默认），流式输出完某一项就提前启动该 subagent；启动的 agent 在调用校验失败或被拦截时中止 |
+| `task.maxConcurrency: 32` | 限制同时运行的 child agent 数 | task spawn 信号量与 eval workpool 池调度时 | 32 个并发上限，超出排队；两处消费点都在每次调度时实时读取，中途调整立即生效；`0` 为不限制 |
 | `task.maxEffort: high` | 限制 task 调用显式传入的 effort hint | task spawn 带 `effort` 时 | 只约束显式 hint，不表示未传 hint 的 spawn 被强制降级 |
-| `autolearn.autoContinue: false` | autolearn 完成后不再自动开 continuation turn | autolearn 一轮结束时 | 减少自动延长；不删除已有 lesson，也不关闭 learn/manage_skill |
-| `todo.reminders: false` | 退出前不再提醒未完成 todo | session exit 时 | 更安静；复杂任务更依赖模型自己管理计划 |
-| `todo.eager: default` | 去掉创建 todo 的软提示 | system prompt 组装时 | 是否建 todo 更交给模型判断 |
+| `autolearn.autoContinue: true` | 允许 autolearn 在回合结束后自动发起私有 capture 回合 | `agent_end` 时 | 达到 `autolearn.minToolCalls`（当前 `5`）只是必要条件之一；依次跳过：回合以 aborted 结束、`autolearn.enabled: false`、本回合工具调用数不足、plan 模式启用、回合开始或结束处于 goal 模式。全部通过才续轮；capture 在运行时新 stop 标 pending，不并发 |
+| `todo.reminders: true` | 存在未完成且未阻塞 todo、模型要提前结束回复时拦截提醒 | 回合结束时 | 最多拦截 `todo.remindersMax` 次 |
+| `todo.remindersMax: 2` | 限制每回合 todo 拦截提醒次数 | todo 拦截时 | 系统默认 `3` |
+| `todo.eager: preferred` | 在初始 system prompt 中注入软引导，鼓励先建 todo 列表 | system prompt 组装时 | 比 `default` 更积极建 todo；另有 `always` |
+
+### subagent 并行度的四道闸门（18.13.1 核验）
+
+把 subagent 并行度拉满需要同时解开四道闸门，任何一道卡住都会成为瓶颈：
+
+| 闸门 | 默认值 | 卡住时的现象 |
+|---|---|---|
+| `task.maxConcurrency` | `32` | 同时运行的 subagent 数到顶，新 spawn 排队等槽位 |
+| `async.maxJobs` | `100` | 会话级后台任务槽位占满，新后台任务被拒绝 |
+| `providers.maxInFlightRequests` | `{}`（不限制） | 同一 provider 同一时刻在途 HTTP LLM 请求数到顶，subagent 的 LLM 流排队 |
+| `task.batch` | `true` | 主 agent 只能每次 tool call 派一个 flat subagent，`tasks[]` 字段被拒绝 |
+
+provider 级并发另有一条窄槽位路径（`provider-concurrency.ts`）：信号量只包住单次流式请求本身，父代理流结束即释放，避免深 spawn 树因父占槽而互相等待死锁（issue #3749）。该机制目前只注册了 `ollama-cloud`。
+
+历史记录：2026-09-11（commit `b750424`）曾把 `task.batch: true → false`、`task.maxConcurrency: 5 → 4` 与 `task.eager: preferred → default` 一起收紧；2026-10-27（commit `03d688c`）已恢复为 `batch: true`、`maxConcurrency: 32`，并把 `providers.maxInFlightRequests` 从每 provider `5` 改为 `{}`。
+
 
 ## 工具暴露与安全
 
@@ -114,5 +131,6 @@
 - [OMP Compaction Model 与 Thinking Level](compaction-model.md) — compaction effort 继承自 session thinkingLevel
 - [OMP Compaction 阈值解析机制](compaction-threshold.md) — 阈值三模式与 reserve 公式；contextWindow 是唯一基数
 - [OMP Snapcompact 机制](snapcompact-mechanics.md) — 位图帧归档：帧预算、methodOrder 语义、detail:"original" 链
+- [workflowz 运行机制与生命周期](../omp-modes/workflowz-runtime-and-lifecycle.md) — workflowz 池、批次、notice 生命周期与相关配置项
 - [OMP 实验性上下文管理与 OpenCode DCP 对比](experimental-context-vs-dcp.md) — rollover/notes 机制与 DCP outbound transform 的对比
 - [OMP 运行时控制](runtime-controls.md) — steering / follow-up / interrupt 与 parse regression tooling

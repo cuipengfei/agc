@@ -194,7 +194,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
 | [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；邻近会话一次 Vibe 压缩走 soft、与当前实现相符，因果仍有证据边界 | 2026-10-24 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处；本机目录布局实测（无 ~/.omp/agent/skills，用户级 skills 在 ~/.agents/skills） | 2026-10-08 |
-| [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive；browser.enabled 与 computer.enabled 的 prelude 语义 | 2026-10-26 |
+| [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive；browser.enabled 与 computer.enabled 的 prelude 语义；subagent 并行度四道闸门（maxConcurrency、async.maxJobs、maxInFlightRequests、batch）与 autolearn 六跳过条件 | 2026-10-27 |
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
@@ -282,7 +282,7 @@ OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；magic keywords 四词与单开关（含 `magicKeywords.workflow`）、ultrathink 旁路 `autoThinkingMaxEffort`、HTML/XML 元素内容按配对屏蔽与 expanded prompt 匹配；workflowz 以 workpool 规则描述并指向专题 | 2026-10-27 |
-| [workflowz 运行机制与生命周期](omp-modes/workflowz-runtime-and-lifecycle.md) | 触发与 notice 位置、池对象与批次、配置项默认值、投递与截断、匹配边界、历史与文档/测试落差 | 2026-10-27 |
+| [workflowz 运行机制与生命周期](omp-modes/workflowz-runtime-and-lifecycle.md) | 触发与 notice 位置、池对象与批次、配置项默认值、投递与截断、匹配边界、历史与文档/测试落差；交叉引用并行度四道闸门与 maxInFlightRequests 关系 | 2026-10-27 |
 
 ## omp-prewalk
 

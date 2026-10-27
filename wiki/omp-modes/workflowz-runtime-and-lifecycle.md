@@ -1,7 +1,7 @@
 # workflowz 运行机制与生命周期
 
 > Sources: oh-my-pi 官方文档与源码，2026-10-27；本机会话实测，2026-10-27
-> Raw: [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md)
+> Raw: [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md)
 > Updated: 2026-10-27
 
 ## Overview
@@ -26,9 +26,11 @@
 | `eval.workpool.freshAgents` | `false` | `true` 时每个工作项新起一个 agent；创建池时读取一次 |
 | `eval.tools.enabled` | `true` | 决定 `tools=` 与 `@tool` 段落是否出现；允许工作者调用内核定义的工具 |
 | `task.maxRuntimeMs` | `0` | 单个工作者回合的墙钟上限；`0` 表示关闭；第一回合继承，后续回合实时读取 |
-| `async.maxJobs` | `100` | 会话级后台任务上限；批次任务计入运行槽，聚合任务以 `queued` 登记，不占运行槽 |
+| `async.maxJobs` | `100` | 会话级后台任务上限；批次任务计入运行槽，聚合任务以 `queued` 登记，不占运行槽；四道并发闸门的联动见 [OMP 配置语义手册](../omp-config/config-semantics.md) |
 | `task.maxRecursionDepth` | `2` | eval 子 agent 的嵌套深度；负值表示不限制 |
 | `task.disabledAgents` | `[]` | 影响 `scout` 可用性与 notice 文本；禁用 agent 在创建池时报错 |
+
+另有一条按 provider 的在途请求闸门：`providers.maxInFlightRequests`（默认 `{}`，不限制）。四道闸门的完整联动与历史配置记录见 [OMP 配置语义手册](../omp-config/config-semantics.md) 的"subagent 并行度的四道闸门"一节。
 
 `task.batch` 的值仍传入 `MagicKeywordContext`，但当前 notice 模板没有 `taskBatch` 分支，因此不改变 workflowz 的规则文本。
 
@@ -77,7 +79,7 @@
 
 ## 五项池实测
 
-本机 18.13.1、`task.maxConcurrency=4` 下，五项进入名为 `workflowz-probe` 的池：4 个工作项立即运行，1 个排队。1 号工作者完成第 1 项后接下第 5 项，`turns=2`。批次结果在 6000 字符处截断，完整内容从 `agent://` 读取；聚合结果 `completed (5 item(s), 5 batch(es))` 只投递一次。
+本机 18.13.1 下，五项进入名为 `workflowz-probe` 的池：4 个工作项立即运行，1 个排队。当时的 `task.maxConcurrency=4` 是用户配置，系统默认 `32`；2026-10-27 已改为 `32`。1 号工作者完成第 1 项后接下第 5 项，`turns=2`。批次结果在 6000 字符处截断，完整内容从 `agent://` 读取；聚合结果 `completed (5 item(s), 5 batch(es))` 只投递一次。
 
 ## notice 生命周期
 
