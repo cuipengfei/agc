@@ -1,8 +1,8 @@
 # OMP 工作模式与 Magic Keywords
 
-> Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); OMP 源码 d49918fab2; oh-my-pi 官方文档与源码，2026-10-10
-> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [OMP Magic Keywords 与 Vibe Mode 官方文档/源码摘录](../../raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md)
-> Updated: 2026-10-10
+> Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); OMP 源码 d49918fab2; oh-my-pi 官方文档与源码，2026-10-10; workflowz 运行时源码与实测，2026-10-27
+> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [OMP Magic Keywords 与 Vibe Mode 官方文档/源码摘录](../../raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md); [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md)
+> Updated: 2026-10-27
 
 ## 工作流模式
 
@@ -58,8 +58,10 @@ Plan、Goal、Vibe 互斥；官方明确 Vibe 与 active 及 paused 的 plan/goa
 |---|---|---|
 | `ultrathink` | 当前 turn 深度推理；auto-thinking 激活时选择当前模型支持的最高 reasoning effort，绕过 `providers.autoThinkingMaxEffort` | 无 |
 | `orchestrate` | 用 `task` subagents 并行执行 | 需要 `task` 工具 |
-| `workflowz` | 用 `eval` 中的 `agent/parallel/pipeline/completion` 构建 DAG；依赖节点按边等待，独立节点仍可并行 | 需要 `task` + `eval` |
+| `workflowz` | 在 `eval` 内核用 `workpool()` 建池；依赖链或需要 schema 时用 `agent()` handle；共享 `context` 只在工作者第一回合进入系统提示 | 需要 `task` + `eval` |
 | `jevify` | 追加隐藏提示，引导 agent 在 eval kernel 中调用 `judge()`：先冻结 rubric，再批量分类，最后人工复核低置信度、错误或边界项 | 需要 `eval` 工具；`magicKeywords.jevify` 默认开启，可用 `omp config set magicKeywords.jevify false` 关闭 |
+
+当前触发词是 `workflowz`，源码 id 与设置键是 `workflow`。池、批次、notice 生命周期与匹配边界的详细行为见 [workflowz 运行机制与生命周期](workflowz-runtime-and-lifecycle.md)。
 
 开关（settings key，全局与四个单关键词开关全部默认 `true`）：
 
@@ -71,7 +73,7 @@ Plan、Goal、Vibe 互斥；官方明确 Vibe 与 active 及 paused 的 plan/goa
 
 - 精确小写、独立成词。
 - 只影响当前 turn。
-- 代码块、inline code、HTML/XML 注释/标签/元素及其内容不触发；路径、函数名同理。
+- 代码块、inline code、HTML/XML 注释与标签不触发；未闭合或闭合名字不匹配的 XML 元素仍可能命中，缩进代码不识别。
 - 匹配基于 expanded prompt：slash 命令与 prompt 模板展开之后才匹配。
 - 系统/agent 发起的合成 prompt 不触发。
 - 可多关键词组合。
@@ -115,3 +117,4 @@ Vibe 父 session 没有普通 `task`/`eval`，因此 `orchestrate`/`workflowz` �
 
 - [OMP Prewalk：规划后切换模型](../omp-prewalk/prewalk.md) — `/prewalk` 的触发门槛、模型交接与生命周期细节。
 - [OMP TTSR 与 /omfg：流式行为护栏](../omp-ttsr/ttsr-and-omfg.md) — 与 magic keywords 对照的规则匹配、提示注入与流式中断机制。
+- [workflowz 运行机制与生命周期](workflowz-runtime-and-lifecycle.md) — 池与批次、配置项、notice 生命周期和匹配边界。

@@ -1,8 +1,8 @@
 # OMO 5.0：独立版（omo-ai）与插件版（oh-my-openagent）
 
-> Sources: oh-my-openagent v5.0.0 release notes（code-yeongyu，2026-09-26）; npm registry（oh-my-openagent、omo-ai）; 本机实测（omo-ai 5.0.0 / engine senpi 2026.9.26），2026-09-27
-> Raw: [OMO 5.0 独立版与插件版区别](../../raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md); [omo 命令面与首启迁移观察](../../raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md); [Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [Codex 特性门与 Code Mode 直读](../../raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md)
-> Updated: 2026-09-27
+> Sources: oh-my-openagent v5.0.0 release notes（code-yeongyu，2026-09-26）; npm registry（oh-my-openagent、omo-ai）; 本机实测（omo-ai 5.0.0 / engine senpi 2026.9.26），2026-09-27; oh-my-openagent dev 源码核对，2026-10-27
+> Raw: [OMO 5.0 独立版与插件版区别](../../raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md); [omo 命令面与首启迁移观察](../../raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md); [Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [Codex 特性门与 Code Mode 直读](../../raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md); [OMO mass ulw 独立版专属证据](../../raw/oh-my-openagent-omo/2026-10-27-mass-ulw-native-only.md)
+> Updated: 2026-10-27
 
 术语：**插件版** = 装进宿主里跑的扩展；**独立版** = 自带引擎的独立命令行程序；**lane / category** = omo 按任务类型自动挑模型的通道；**bin** = npm 包声明的可执行命令名。
 
@@ -33,7 +33,7 @@ release notes 声明的独立版独有能力（插件版无）：
 - **Kibitzer**：常驻的第二个 agent loop，碰到没判断过的记忆时自动唤醒提醒，只有 5 个只读工具，不能改记忆。
 - **CodeMode**：一个步骤可以是一段能直接调用工具的可执行单元，把多次工具往返压成一次。release notes 自述为独立版独有；与 Codex 的 Code Mode 同轴，两边实现均未直读，机制等价性未验证，不据此判市场级独有。
 - **git-markdown 长期记忆 + 后台反思**：记忆存成 git 仓库里的文件。
-- **mass ulw**：任务拆成带依赖的图，节点按类型路由到不同模型并行跑。
+- **mass ulw**：任务拆成带依赖的图，节点按类型路由到不同模型并行跑。源码核对：skill 位于 `packages/omo-senpi/skills/mass-ulw/`，要求 native `workflow` 工具与 eval cell；插件版 keyword-detector 没有此项，`packages/omo-opencode` 中搜索 `mass-ulw` 与 `tool.workflow` 均为 0 条。详见 [跨 Harness 编排](cross-harness-orchestration.md)。
 - **内置浏览器（omowright）**、子会话共享一个后台 daemon（本机 `omo host` 命令的存在与此一致）。
 
 适合：想要常驻记忆、并行委派、内置浏览器、更省资源的重度 agent 工作流。插件版仍可运行；Native 新功能优先，部分功能永远不会进入插件版。

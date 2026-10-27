@@ -1598,3 +1598,9 @@
 - Handling: 0 evidence error、0 unreferenced raw。11 条 fidelity suspect 逐条对照 raw 判定为假阳性：`2026-10-27` 与 `2026-09-26` 出自 raw 的 Collected/Sources 行（校验器跳过 metadata）；`4843`/`10770` 在 raw/omp-mnemopi/2026-09-21-mnemopi-data-model.md:222-238；`1506-15` 在 raw/omp-mnemopi/2026-09-06-mnemopi-auto-recall-injection.md:78；`1.0`/`0.8`/`0.7`/`0.6` 为同一 raw:69-72 的 VERACITY_WEIGHTS；`18.13.1` 在 raw/omp-mnemopi/2026-10-27-local-mnemopi-bank-stats.md:77 与该 raw 的 metadata；`0.65` 在 raw/omp-mnemopi/2026-10-27-mnemopi-capture-and-llm-boundaries.md:395。未改动任何数字。
 - 顺带修正：auto-recall-injection.md 的旧行号 `state.ts:473-475`/`state.ts:481` 与新增段落的 `state.ts:628`/`671` 指向同一机制，已统一为当前源码行号，默认值引用范围改为 `settings.ts:290-306`。
 - 摘录边界修正：raw/ai-memory 的第五节省改为 `DATA_HANDLING.md:21-33`，补齐段首句与结尾（请求地址与时间对 Hugging Face 及其 CDN 可见、请求不携带正文、可设 `embedding_provider = "none"` 或离线预置）；ai-memory-service.md 对应句子同步补全。重跑范围校验：0 evidence error、0 unreferenced raw，11 条 suspect 认定不变。
+
+## [2026-10-27] ingest | workflowz 运行机制与跨 harness 编排
+- Disposition: New; Update
+- Raw: raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md; raw/omp-modes/2026-10-27-workflowz-live-pool-run.md; raw/ai-coding-agents/2026-10-27-cross-harness-orchestration-official-docs.md; raw/oh-my-openagent-omo/2026-10-27-mass-ulw-native-only.md
+- Updated: OMP 工作模式与 Magic Keywords; AI Coding Agent 对比：真正独特优势（19 家）; OMO 5.0：独立版与插件版
+- 要点：新建 workflowz 运行与生命周期、跨 harness 编排两篇；总览文章补 workflowz 的 workpool 与 agent handle 规则及 9 个相关配置项的默认值与作用；跨 harness 文章映射 Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO task 与 mass ulw；OMO 文章补 mass ulw 独立版专属的源码证据。
