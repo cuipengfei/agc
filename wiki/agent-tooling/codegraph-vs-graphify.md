@@ -2,7 +2,7 @@
 
 > Sources: 本会话 codegraph MCP 单查询探测 + graphify 0.9.79 图谱实测, 2026-10-07
 > Raw: [2026-10-07-codegraph-graphify-probe](../../raw/agent-tooling/2026-10-07-codegraph-graphify-probe.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md)
-> Updated: 2026-10-07
+> Updated: 2026-10-27
 
 ## Overview
 
@@ -36,4 +36,5 @@
 
 - [graphifyy 工作机制](graphify-mechanics.md) — graphify 全命令清单与六条环境边界
 - [MCP 配置与验证阶梯](../harness-engineering/mcp-setup-validation.md) — codegraph 与 semgrep 等 MCP 的宿主配置与三级验证
+- [代码智能工具全景与选型](code-intelligence-tool-landscape.md) — CodeGraph、Semble、Graphify 与相邻方案的横向对比
 - [Prompt Cache：前缀匹配与 cache key 的真实分工](../prompt-caching/cache-key-and-prefix-matching.md) — 本次探测所用的 wiki 侧知识样例

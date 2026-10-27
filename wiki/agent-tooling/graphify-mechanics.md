@@ -1,8 +1,8 @@
 # graphifyy 工作机制
 
-> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07
-> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md)
-> Updated: 2026-10-07
+> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07; Graphify v8 README 与核心源码摘录, 2026-10-27
+> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md); [Graphify v8 README 与核心源码摘录](../../raw/agent-tooling/2026-10-27-graphify-v8-readme-and-source-excerpts.md)
+> Updated: 2026-10-27
 
 ## Overview
 
@@ -145,7 +145,20 @@ INFERRED 边 33 条分布：references 23 / uses 8 / indirect_call 2；来源 AG
   - `update --force` 的少节点防护未触发（删空沙箱代码后普通 update 直接重建空图），防护条件未验证。
   - `benchmark` 的 token 压缩比仅在 3 节点沙箱图测过一次。
 
+## 2026-10-27 v8 源码快照补充
+
+子代理只读核查 v8 commit `dac063456bc1f5d92354ec3936fd9dd1513a83f3`，包版本 `graphifyy 0.9.96`。该快照显示：
+
+- 查询打分集中在 `graphify/serve.py::_score_query`：精确匹配 +1000、前缀 +100、子串 +1，乘以 IDF 与覆盖率平方；字符 trigram 只做候选预筛。
+- 查询期没有 BM25，也没有向量检索；BM25 在产品 Python 代码中检索为 0，只出现在 benchmark 对照说明里。
+- 代码提取路径没有导入 `graphify.llm`；LLM 只用于非代码材料的语义提取、社区命名、`--dedup-llm` 灰区仲裁和 `prs --triage`。
+- 社区检测回退顺序为 `graspologic_native.leiden` → `graspologic.partition.leiden` → `networkx` Louvain；默认社区命名按最高度数 hub，确定性完成。
+- MCP 工具面在 `serve.py:2303-2422` 核查到 10 个：`query_graph`、`get_node`、`get_neighbors`、`get_community`、`god_nodes`、`graph_stats`、`shortest_path`、`list_prs`、`get_pr_impact`、`triage_prs`。
+
+上述内容来自源码快照，未运行安装或基准测试；与 0.9.79 的实测记录并列保留。
+
 ## See Also
 
 - [Headroom 0.39 配置与兼容性](headroom-039-config-and-compat.md) — 同 topic 下 agent-tooling 层工具
 - [codegraph 与 graphify 的分工边界](codegraph-vs-graphify.md) — 符号级索引与混合语料地图的对照
+- [代码智能工具全景与选型](code-intelligence-tool-landscape.md) — CodeGraph、Semble、Graphify 与相邻方案的横向对比

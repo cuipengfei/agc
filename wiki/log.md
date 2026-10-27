@@ -1575,3 +1575,14 @@
 - Raw: raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md; raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md; raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md
 - Updated: OMP 内建工具全集、会话暴露边界与内部地址空间; OMP 配置语义手册
 - 要点：`computer` 不是独立工具，`computer.enabled` 默认 false；AX 路径按控件操作、元素动作不需要截图，像素坐标取自最近一次同目标完整截图，AX 坐标是全局桌面坐标，两者禁止混用；原生层为 `DesktopSession`（持久、串行），Linux 走 AT-SPI over D-Bus 加 x11rb/XTest 或 libei/uinput/pipewire；`ax()` 上限 800 节点/深度 24，`find()` 上限 5000/24、默认返回 100、最多 5000，注册表 5000 溢出淘汰；Windows 后端用 UIA，坐标点击仅允许 Button/MenuItem/Hyperlink/CheckBox/RadioButton/TabItem，注释点名 WPF/WinUI 3/Tk/GTK 会丢投递式点击；Electron 需无障碍激活（Chromium 按 `WM_GETOBJECT` 检测，覆盖方式为 `--force-renderer-accessibility`、`chrome://accessibility`、`setAccessibilitySupportEnabled(true)`），Chrome 138 起 Windows 默认原生 UIA；Relay 无法接入 Electron 应用，Direct CDP 需应用开 `--remote-debugging-port`，VS Code 是否透传未验证；本机 WSL 探针为 backend wayland、capture false、ax true、0 显示器 0 窗口、110 个应用条目，因此像素路径不可用且看不到 Windows 宿主窗口。
+
+## [2026-10-27] ingest | 代码智能工具全景与选型
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-10-27-codegraph-readme-and-source-excerpts.md; raw/agent-tooling/2026-10-27-semble-readme-and-source-excerpts.md; raw/agent-tooling/2026-10-27-graphify-v8-readme-and-source-excerpts.md; raw/agent-tooling/2026-10-27-code-intelligence-concepts-and-alternatives.md
+- Updated: graphifyy 工作机制; codegraph 与 graphify 的分工边界
+- 要点：新建 code-intelligence-tool-landscape.md（CodeGraph / Semble / Graphify 的机制核对、Tree-sitter/LSP/BM25/embedding/图/LLM/RAG 分层、七类相邻方案与编码 agent 选型）；graphify-mechanics.md 补 v8 源码快照；codegraph-vs-graphify.md 补横向对比入口。OMP find 对比沿用 2026-10-01 前源码快照，未复核当前入口。
+
+## [2026-10-27] lint | 6 fidelity suspects found, 0 auto-fixed
+- Scope: wiki/agent-tooling/code-intelligence-tool-landscape.md
+- Handling: scoped evidence check reported 0 evidence errors and 0 unreferenced raw files. 6 fidelity suspects were reviewed as paraphrases or dated snapshot references, not exact-quote errors; none auto-fixed.
+- Reconciliation: CodeGraph README direct read at commit `69af19ace270f2e940444d514de6dde971df12df` observed 916 lines; an earlier subagent report of 1058 lines remains recorded as an unresolved observation only. Total line count is not used as a fact.

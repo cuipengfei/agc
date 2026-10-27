@@ -44,9 +44,10 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [LLM 出图的作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版、visual-explainer 全手写 HTML+SVG 四轴作者模型；amwth 含 image 的组件清单（SKILL.md 自述 12 种）、diagram-design SKILL.md 自述 44 种 type（实测 39）、archify 5 类 schema、figure-led register；几何裸露面与选择；2026-10-10 补 amwth 与 visual-explainer | 2026-10-10 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
 | [Headroom 版本升级与兼容性（0.39 / 0.41）](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动；v0.41.0（2026-10-13）新功能与关键修复 | 2026-10-15 |
-| [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型与两段式提取、code-only corpus、edge schema；2026-10-07 补 0.9.79 全命令清单实测（查询七件、导出七种、合并/全局/记忆层）与六条环境边界（伪 IP 拦截、watchdog、openai 包、gh 登录等）与 skill 自动刷新副作用 | 2026-10-07 |
+| [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型与两段式提取、code-only corpus、edge schema；2026-10-07 补 0.9.79 全命令清单实测（查询七件、导出七种、合并/全局/记忆层）与六条环境边界；2026-10-27 补 v8 源码快照：查询打分、10 个 MCP 工具、社区回退与 LLM 边界 | 2026-10-27 |
 | [Semgrep MCP：工具清单、传输条件与实测边界](agent-tooling/semgrep-mcp.md) | 主 CLI 子命令形态、9 注册 7 实见、daemon 与 token 两个前提；2026-10-07 复核 1.179.0：自定义规则须相对路径、p/default 拉取也超时、非安全规则（print）实测命中 | 2026-10-07 |
-| [codegraph 与 graphify 的分工边界](agent-tooling/codegraph-vs-graphify.md) | 符号级索引 vs 混合语料地图：单查询探测 codegraph 未达 wiki 条目而 graphify 以 wiki 为枢纽；分层分工、选用建议与证据边界 | 2026-10-07 |
+| [codegraph 与 graphify 的分工边界](agent-tooling/codegraph-vs-graphify.md) | 符号级索引 vs 混合语料地图：单查询探测 codegraph 未达 wiki 条目而 graphify 以 wiki 为枢纽；分层分工、选用建议与证据边界；2026-10-27 补横向对比入口 | 2026-10-27 |
+| [代码智能工具全景与选型](agent-tooling/code-intelligence-tool-landscape.md) | CodeGraph、Semble、Graphify 的机制核对、相似方案、概念分层与编码 agent 选型；含 OMP find 对比，该部分标注 2026-10-01 前源码快照 | 2026-10-27 |
 | [Anatomy skill：物理装置隐喻的交互式等距出图机制与自解释成品](agent-tooling/anatomy-skill-mechanics.md) | 概念→可交互物理装置的一对一映射；几何 audit + line check 双重门槛；Standalone HTML/静态 SVG/React/gallery 四交付；136 solids 自解释成品的 iframe srcdoc + Bun bundle 嵌入方式与后续改动走手动编辑的合规流程 | 2026-10-18 |
 | [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv 无全局清单、per-tool receipt 为唯一事实来源；receipt 字段与凭据省略；浅层 glob 同步方案与 94,152 文件递归风险 | 2026-10-05 |
 
