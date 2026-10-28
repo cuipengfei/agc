@@ -643,19 +643,19 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/virgiliojr94/book-to-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "a24e62f4d8caf2ee433f6e48d9073800f56f906e",
+      "skillFolderHash": "7540eefbe74933f5fc84c86becac52486b347778",
       "installedAt": "2026-08-17T13:12:19.212Z",
-      "updatedAt": "2026-10-12T11:41:36.031Z"
+      "updatedAt": "2026-10-28T15:10:07.123Z"
     },
     "humanizer": {
       "source": "blader/humanizer",
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "skillFolderHash": "0ef9fe5bc3572734fd3ae6c448fe00a30cd5dcf0",
       "pluginName": "humanizer",
       "installedAt": "2026-09-02T12:55:58.315Z",
-      "updatedAt": "2026-10-17T03:05:07.788Z"
+      "updatedAt": "2026-10-28T15:10:10.578Z"
     },
     "codebase-onboarding": {
       "source": "affaan-m/ecc",
@@ -725,9 +725,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "c08bd09cdf53ddd0475e91cb17114be8e38dc640",
+      "skillFolderHash": "bcecaf90a9082b1820d32c9416665bec0d9d713e",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-27T12:18:37.442Z"
+      "updatedAt": "2026-10-28T15:10:28.375Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1250,18 +1250,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "41fad5f46b05f8d99838f131fa293c25a3bac7e6",
+      "skillFolderHash": "868ad5e85d916e53dd26c18ddeb924869abfbb29",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-27T12:19:30.572Z"
+      "updatedAt": "2026-10-28T15:10:31.650Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "ca95458584add658afa2a9eaa986795949970103",
+      "skillFolderHash": "11ed312989f8ae0a41f461f5d47f2f46a6d32eb4",
       "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-10-22T16:09:29.716Z"
+      "updatedAt": "2026-10-28T15:10:35.171Z"
     },
     "media-use": {
       "source": "heygen-com/hyperframes",
