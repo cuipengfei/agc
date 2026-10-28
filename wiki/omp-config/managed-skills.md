@@ -1,8 +1,8 @@
 # OMP Managed Skills 生命周期
 
-> Sources: OMP upstream source code; 本机目录与锁定文件实测, 2026-10-08
-> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md)
-> Updated: 2026-10-08
+> Sources: OMP upstream source code; 本机目录与锁定文件实测, 2026-10-08; capture 管线源码取证, 2026-10-28
+> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md)
+> Updated: 2026-10-28
 
 ## 结论
 
@@ -48,6 +48,6 @@ Managed skills **没有自动清理**。
 
 - **系统提示注入**：Auto-Learn 段由 `Pio` 按工具可用性组装——manage_skill 可用时注入，learn 可用时追加一段；注入文本含 "Capture sparingly, specifically: skill requires reuse..."。
 - **工具 description**：learn 的 description 含 "Capture sparingly, specifically: one strong reusable lesson..."；manage_skill 的 description 是另一段（action 语义与 kebab-case 要求），不含 Capture sparingly。
-- **自动捕获回合提示**：`autolearn.autoContinue` 开启时在 agent 停止后自动跑一轮私有捕获（额外消耗 token）。
+- **自动捕获回合**：`autolearn.autoContinue` 开启时在 agent 停止后跑一轮私有捕获（额外消耗 token）。该回合由分离的 capture agent 执行，只带 `manage_skill` 与 `learn` 两个工具，不写会话 transcript；产物是 managed skill 或 `coding-agent-learn` 记忆行，也可能无产物。详见 [Auto-Learn capture 管线与可观测产物](autolearn-capture-pipeline.md)。
 
 引用 OMP 行为规范时须区分两类出处：bundle 内字符串（系统提示注入或工具 description）与磁盘规则文件（如 `~/.omp/agent/rules/*.md`）。

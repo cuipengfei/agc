@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
 > Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md)
-> Updated: 2026-10-27
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md)
+> Updated: 2026-10-28
 
 ## 这份手册讲什么
 
@@ -59,7 +59,7 @@
 | `task.batch: true` | task 接受批量 `{context,tasks[]}`，一次派发多个 subagent | task tool schema 解析时 | 单次调用批量派发；配合 `task.speculativeLaunch: true`（默认），流式输出完某一项就提前启动该 subagent；启动的 agent 在调用校验失败或被拦截时中止 |
 | `task.maxConcurrency: 32` | 限制同时运行的 child agent 数 | task spawn 信号量与 eval workpool 池调度时 | 32 个并发上限，超出排队；两处消费点都在每次调度时实时读取，中途调整立即生效；`0` 为不限制 |
 | `task.maxEffort: high` | 限制 task 调用显式传入的 effort hint | task spawn 带 `effort` 时 | 只约束显式 hint，不表示未传 hint 的 spawn 被强制降级 |
-| `autolearn.autoContinue: true` | 允许 autolearn 在回合结束后自动发起私有 capture 回合 | `agent_end` 时 | 达到 `autolearn.minToolCalls`（当前 `5`）只是必要条件之一；依次跳过：回合以 aborted 结束、`autolearn.enabled: false`、本回合工具调用数不足、plan 模式启用、回合开始或结束处于 goal 模式。全部通过才续轮；capture 在运行时新 stop 标 pending，不并发 |
+| `autolearn.autoContinue: true` | 允许 autolearn 在回合结束后自动发起私有 capture 回合 | `agent_end` 时 | 达到 `autolearn.minToolCalls`（当前 `5`）只是必要条件之一；依次跳过：回合以 aborted 结束、`autolearn.enabled: false`、本回合工具调用数不足、plan 模式启用、回合开始或结束处于 goal 模式。全部通过才续轮；capture 在运行时新 stop 标 pending，不并发。capture 由分离 agent 执行，产物看 `coding-agent-learn` 记忆行或 managed skill，详见 [Auto-Learn capture 管线与可观测产物](autolearn-capture-pipeline.md) |
 | `todo.reminders: true` | 存在未完成且未阻塞 todo、模型要提前结束回复时拦截提醒 | 回合结束时 | 最多拦截 `todo.remindersMax` 次 |
 | `todo.remindersMax: 2` | 限制每回合 todo 拦截提醒次数 | todo 拦截时 | 系统默认 `3` |
 | `todo.eager: preferred` | 在初始 system prompt 中注入软引导，鼓励先建 todo 列表 | system prompt 组装时 | 比 `default` 更积极建 todo；另有 `always` |

@@ -1610,3 +1610,9 @@
 - Raw: raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md
 - Updated: OMP 配置语义手册; workflowz 运行机制与生命周期
 - 要点：config-semantics 子 Agent 表更新为 2026-10-27 当前值（batch: true、maxConcurrency: 32、autoContinue: true、reminders: true、remindersMax: 2、eager: preferred），新增 subagent 并行度四道闸门节与 b750424/03d688c 历史记录；autolearn.autoContinue 补 6 个跳过条件；workflowz 专题补 maxInFlightRequests 与 async.maxJobs 交叉引用及 maxConcurrency 历史说明。
+
+## [2026-10-28] ingest | Auto-Learn capture 管线与可观测产物
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md
+- Updated: OMP Managed Skills 生命周期; OMP 配置语义手册
+- 要点：新建 capture 管线文章，记录分离 agent 构造与身份、提示词全文、触发六条件、产物三类（learn 记忆行、managed skill、无产物）；以 2026-10-27 本机一次运行的时间线作为正向证据；说明 `coding-agent-learn` 记录的查询方法与其内容未经复核的边界。
