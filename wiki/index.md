@@ -16,11 +16,12 @@ Agent harness 的 prompt、上下文架构与运行形态差异。
 
 ## github-repo-analysis
 
-GitHub 仓库分析：star 真实性、刷星检测与舆情评估。
+GitHub 仓库分析：star 真实性、刷星检测、舆情评估与 awesome 清单的覆盖/维护度量化对比。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [GitHub 刷星检测工具调研](github-repo-analysis/star-fraud-detection-tools.md) | 六工具（StarScout 系）信号分类法、分工、报告纪律与选型 | 2026-09-06 |
+| [awesome-harness-engineering 五个同名仓库对比](github-repo-analysis/awesome-harness-engineering-list-ranking.md) | 同名 5 仓库：stars 16–4988、pushed_at 2026-03-29 至 2026-10-28、README 去重仓库 61–752；三因子打分与归一化敏感性；自报 754 与实测 752 的重复构成；并集 1074、两两交集 3–66 | 2026-10-29 |
 
 ## agent-interaction
 Agent 与画布、结构化产物及可持续编辑界面的交互方式。

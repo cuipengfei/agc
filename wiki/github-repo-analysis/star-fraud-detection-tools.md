@@ -2,7 +2,7 @@
 
 > Sources: 六个工具仓库 README；GitHub GraphQL API；2026-09-06
 > Raw: [heathdutton-StarScout.md](../../raw/github-star-fraud-detection/heathdutton-StarScout.md)；[GeckCore-star-forensics.md](../../raw/github-star-fraud-detection/GeckCore-star-forensics.md)；[alexdrydew-realstars.md](../../raw/github-star-fraud-detection/alexdrydew-realstars.md)；[truststar-app-truststar.md](../../raw/github-star-fraud-detection/truststar-app-truststar.md)；[Dmitrze-repo-trust.md](../../raw/github-star-fraud-detection/Dmitrze-repo-trust.md)；[anwen-labs-orbit-check.md](../../raw/github-star-fraud-detection/anwen-labs-orbit-check.md)；[session-data-excerpts.md](../../raw/github-star-fraud-detection/session-data-excerpts.md)
-> Updated: 2026-09-06
+> Updated: 2026-10-29
 
 ## 结论
 
@@ -66,3 +66,7 @@ StarScout 论文（arXiv:2412.13459，ICSE 2026，作者含 Bogdan Vasilescu、C
 - 六工具全部 0-2 star（会话实查记录，2026-09-06）——工具成熟度本身未经社区检验，这是选型时必须计入的因子
 - 各工具信号清单、检测器数量、benchmark 数字均来自 README 自述，未独立验证
 - truststar 自报 benchmark（Trust Score 100%、Code Scan 94%）样本极小且为自评
+
+## See Also
+
+- [awesome-harness-engineering 五个同名仓库对比](awesome-harness-engineering-list-ranking.md)

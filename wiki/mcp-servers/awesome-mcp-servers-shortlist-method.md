@@ -2,7 +2,7 @@
 
 > Sources: punkpeye/awesome-mcp-servers README；GitHub GraphQL API；2026-09-06
 > Raw: [session-data-excerpts.md](../../raw/awesome-mcp-servers/session-data-excerpts.md)；[rubric.json](../../raw/awesome-mcp-servers/rubric.json)
-> Updated: 2026-09-06
+> Updated: 2026-10-29
 
 ## 结论
 
@@ -46,3 +46,4 @@
 ## See Also
 
 - [五工具对比待办清单](../../raw/awesome-mcp-servers/compare-vs-local-stack.md)
+- [awesome-harness-engineering 五个同名仓库对比](../github-repo-analysis/awesome-harness-engineering-list-ranking.md)

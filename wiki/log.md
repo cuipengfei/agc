@@ -1616,3 +1616,9 @@
 - Raw: raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md
 - Updated: OMP Managed Skills 生命周期; OMP 配置语义手册
 - 要点：新建 capture 管线文章，记录分离 agent 构造与身份、提示词全文、触发六条件、产物三类（learn 记忆行、managed skill、无产物）；以 2026-10-27 本机一次运行的时间线作为正向证据；说明 `coding-agent-learn` 记录的查询方法与其内容未经复核的边界。
+
+## [2026-10-29] ingest | awesome-harness-engineering 五个同名仓库对比
+- Disposition: New
+- Raw: raw/awesome-harness-engineering/2026-10-29-five-repos-coverage-audit.md
+- Updated: GitHub 刷星检测工具调研; awesome-mcp-servers 通用 MCP 筛选（3472→320）
+- 要点：仓库名完全等于 awesome-harness-engineering 的 5 个公开仓库，按星数（对数归一化）、维护（pushed_at 按天扣分）、覆盖（README 去重仓库数归一化）三项等权打分；记录自报 754 与实测 752 的跨分类重复构成、链接数与条目数两种覆盖口径差异、`^## ` 与 `^##+ ` 的标题计数差异。
