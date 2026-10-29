@@ -1643,3 +1643,15 @@
 - Disposition: New
 - Raw: raw/software-factory/2026-10-29-what-i-learned-building-an-ai-software-factory.md; raw/software-factory/2026-10-29-awesome-software-factories-local-options.md
 - 要点：Goossaert 七阶段与 gate 检查清单；变异分数下限是「项目要求值」，文章未给通用分档；max_retries=3 与 hermetic 3+1 为作者自述。
+
+## [2026-10-29] ingest | Tern 网页字体修改与版本迁移
+- Disposition: Update
+- Raw: raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md
+- Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册; Tern 时间 API 补丁与验收; Tern 网页 Markdown 中文触发无响应
+- 要点：0.9.7 原版仍为两份各 11217 个字符映射、CJK 为 0；`panicFunctions` 总数 31，时间函数 `30815`（18 处）与 `30816`（3 处）合计 21 处。仅字体槽位 `9108400`、`9108424`，字节数 `20564496`、`20517844`。WASM 与 glue 保持官方字节，正式升级后四个 pane 保留，Windows Chrome 收到 18 个 WebSocket frame、`pageErrors` 为空。
+
+## [2026-10-29] ingest | 浏览器复现判据修正
+- Disposition: New
+- Raw: raw/tern/2026-10-29-browser-reproduction-redraw-guard.md
+- Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
+- 要点：旧判据把 `driver command timed out: visible-interaction` 写成 `reproduced`；静态截图相同、DOM 选区相同、驱动超时都不构成冻结证据。改为 viewport 输入后检查 canvas 像素尺寸与 GPU 提交；真实 0.9.7 仅字体页由 `1280`×`720`／`328` 变为 `1360`×`760`／`334`。定向 22 项与全套 91 项测试通过。

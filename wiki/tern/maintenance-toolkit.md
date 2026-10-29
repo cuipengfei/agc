@@ -1,8 +1,8 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md)
-> Updated: 2026-10-21
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md)
+> Updated: 2026-10-29
 
 ## 用途
 
@@ -27,6 +27,20 @@
 写流取消修正后，0.9.4 与 0.9.5 又分别完成真实 `build` 和 `check-build`；删除私有初始输入与首份包后，全新 HOME 重建 0.9.5 同样通过，两个模块 SHA-256 保持不变，新包也成功生成七份实际网页资源。此次源码身份、命令结果与 receipt 见 [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md)。
 
 内存初始化会执行可信官方模块的 start function；遇到初始化 import 调用或不支持的 import 类型会停止。工具只接受可信官方模块，不提供执行不可信 WASM 所需的隔离环境。
+
+## 真实浏览器复现与机械检查（2026-10-29）
+
+`markdown-windows` 用指定 binary 与站点目录启动私有 daemon 和 loopback Web 服务，再由 Windows Node 驱动 Windows Chrome 访问。流程为：确认页面取得 WebGPU adapter 并完成 mount；打开 ASCII Markdown 并确认响应与画面变化；关闭该 pane；在同一路径追加 `中` 后重新打开；等待三秒，调整 viewport 宽度与高度分别增加 80 与 40，检查应用是否更新 canvas 像素尺寸并产生新的 GPU command submission。观测探针只安装在本次隔离浏览器页面，包装 `GPUQueue.prototype.submit` 计数，不修改服务资源或 WASM。
+
+结论分三类。`reproduced` 只表示有效 ASCII 基线之后中文页面状态查询无响应。`not_reproduced` 要求中文页面仍响应、首帧确实出现、viewport 输入后 canvas 尺寸与 GPU 提交同时增长。`not_run` 覆盖前置条件不足、驱动超时、截图失败与未观察到应用重绘，退出码 2，必须带理由。
+
+间隔数秒的两张截图相同、`document.getSelection()` 前后相同、驱动命令超时，都只说明观测通道的状态，不作为冻结证据。静态 Markdown 页不会自行改变画面；输入目标是 WebGPU 画布，DOM 选区不表示画布内光标位置。一次实测中，旧判据把 `driver command timed out: visible-interaction` 写成了 `reproduced`，当时页面已挂载、中文首帧已出现、daemon 正常。
+
+真实 0.9.7 仅字体页面的一次观测为：canvas 从 `1280`×`720` 变为 `1360`×`760`，GPU 提交从 `328` 增至 `334`，`wasmErrors` 为空，cleanup 成功。
+
+`bun run check` 在内存中解析工具模块、校验部署记录，并通过 `typecheck/` 中固定版本的 TypeScript、Node/Bun 类型声明与 WebGPU 类型声明执行 `checkJs`，入口为 `build.mjs`、`assets.mjs`、`windows-browser.mjs` 及其实际导入依赖。它检查第三方 API 成员，不对全部 JavaScript 值给出完整类型证明。复现报告另要求同一 `fixturePath` 与四个成功阶段：`ascii_markdown_pane`、`pane_closed`、`cjk_appended`、`cjk_markdown_pane`。
+
+2026-10-29 实测：定向 22 项与全套 91 项 Bun 测试通过；`bun run check` 输出 `32 modules parsed, 4 deployment records scanned, TypeScript passed`。
 
 ## 0.9.2 实际结果
 
@@ -54,7 +68,7 @@ FontTools 数据测试确认 lookup 名称转换后完整 cmap 保留。每份�
 
 ## 未完成与使用限制
 
-完整 GPU、Markdown 和笔记交互未由本工具验收。GitHub Actions 工作流运行 Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；它不下载真实 WASM、不启动桌面浏览器、不访问本机凭据，CI 结果以 Actions 运行记录为准。真实 native 后台烟雾检查只覆盖隔离 daemon、HTTP 和 pane 集合不变，不影响原有服务。
+本工具不覆盖笔记交互、完整字形外观与字符宽度。`markdown-windows` 覆盖页面响应、画面变化与应用重绘，中文内容语义仍需实际操作确认。GitHub Actions 工作流运行 `bun run check`、Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；它不下载真实 WASM、不启动桌面浏览器、不访问本机凭据，CI 结果以 Actions 运行记录为准。真实 native 后台烟雾检查只覆盖隔离 daemon、HTTP 和 pane 集合不变，不影响原有服务。Windows 页面验收依赖本机 Windows Node、Playwright 与 Chrome，该组合在 CI 中未运行。
 
 新 Tern 版本必须重新生成分析并人工审核。旧版本的 profile 只用于固定 SHA 的行为回归，不用于推导新版本的地址或函数编号。
 

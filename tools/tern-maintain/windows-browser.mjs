@@ -1,9 +1,8 @@
 // 在 WSL 宿主上用真实 Windows Chrome 复现“网页 Markdown 含中文后失去响应”：
 // 只从调用方给定的 binary/assets 启动完全隔离的 daemon + web（随机端口、私有 socket、
 // 仅本次运行使用的 token），浏览器驱动由临时 worker 经 Windows Node 执行，报告不带 token。
-// 结论只来自实测后置条件：mounted 后先取截图 digest 基线；打开 ASCII Markdown 必须
-// mounted/responsive 且画面变化；关闭后记录关闭帧；同一路径追加 U+4E2D 重开，CJK evaluate
-// 无响应或画面与关闭帧相同才是 reproduced。前置失败或帧不可比即 not_run。
+// 报告记录 mounted/responsive、同一路径 ASCII/CJK 画面、中文首帧后的延迟画面和鼠标输入。
+// 前置失败或驱动超时为 not_run；画面变化包含光标等因素，结果不用于判定时间补丁必要性。
 // cleanup 错误单独记录，绝不覆盖主结论。
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import crypto from 'node:crypto';
@@ -45,6 +44,7 @@ const SEQUENCE = [
   'cjk_appended',
   'cjk_markdown_pane',
   'cjk_responsive',
+  'cjk_progress',
 ];
 
 // 驱动源码只在此处以字符串生成后写入临时目录；不经过 shell。
@@ -99,6 +99,20 @@ const READ_STATE = marker => {
   return marker ? { marker, state } : state;
 };
 
+const READ_INTERACTION = marker => {
+  const state = (() => {
+    const verification = window.__ternVerification;
+    if (verification) return { structured: true, ready: verification.ready === true, mounted: verification.mounted === true, failed: verification.failed === true, error: verification.error || null, tokenPrompt: verification.tokenPrompt === true };
+    const status = document.getElementById('status');
+    const failed = !!(status && status.classList && status.classList.contains('error'));
+    return { structured: false, ready: !!window.tern || failed, mounted: !!window.tern, failed, error: failed ? String(status.textContent || '') : null, tokenPrompt: false };
+  })();
+  const canvas = document.getElementById('tern');
+  if (!(canvas instanceof HTMLCanvasElement)) return { state, accepted: false, reason: 'canvas missing' };
+  canvas.focus();
+  return { state, accepted: true, canvas: { width: canvas.width, height: canvas.height }, viewport: { width: innerWidth, height: innerHeight, scale: devicePixelRatio }, submissions: window.__ternRenderProbe?.submissions ?? null };
+};
+
 async function waitForMount(ms) {
   const end = Date.now() + ms;
   let state = null;
@@ -122,6 +136,16 @@ async function start(msg) {
     args: ['--no-sandbox', '--enable-unsafe-webgpu', '--ignore-gpu-blocklist'],
   });
   page = await browser.newPage();
+  await page.addInitScript(() => {
+    if (typeof GPUQueue === 'undefined') return;
+    const probe = window.__ternRenderProbe = { submissions: 0 };
+    const submit = GPUQueue.prototype.submit;
+    GPUQueue.prototype.submit = function (...args) {
+      const result = Reflect.apply(submit, this, args);
+      probe.submissions++;
+      return result;
+    };
+  });
   page.on('console', message => { if (messages.length < 100) messages.push({ type: message.type(), text: clean(message.text()) }); });
   page.on('pageerror', error => { if (errors.length < 20) errors.push(clean(error && error.message || error)); });
   if (msg.wasmPath) {
@@ -184,6 +208,22 @@ async function probe(ms) {
   return result;
 }
 
+async function visibleInteraction(ms) {
+  const before = await evaluate(READ_INTERACTION, ms, 'tern-visible-interaction');
+  if (!before.accepted || before.submissions === null) return { accepted: false, reason: 'canvas or GPU submission observation unavailable' };
+  const target = { width: before.viewport.width + 80, height: before.viewport.height + 40 };
+  await page.setViewportSize(target);
+  const end = Date.now() + ms;
+  let after;
+  while (Date.now() < end) {
+    after = await evaluate(READ_INTERACTION, Math.min(2000, ms), 'tern-visible-interaction-after');
+    const resized = after.canvas.width === Math.round(target.width * after.viewport.scale) && after.canvas.height === Math.round(target.height * after.viewport.scale);
+    if (resized && after.submissions > before.submissions) return { accepted: true, changed: true, state: after.state, before, after, reason: 'application resized its canvas and submitted GPU commands after viewport input' };
+    await sleep(100);
+  }
+  return { accepted: true, changed: false, state: after?.state, before, after, reason: 'viewport input produced no observed application redraw' };
+}
+
 async function screenshot(file, ms) {
   try {
     await Promise.race([
@@ -200,6 +240,7 @@ async function handle(msg) {
   if (msg.cmd === 'start') return start(msg);
   if (msg.cmd === 'probe') return probe(msg.timeoutMs);
   if (msg.cmd === 'screenshot') return screenshot(msg.path, msg.timeoutMs);
+  if (msg.cmd === 'visible-interaction') return visibleInteraction(msg.timeoutMs);
   if (msg.cmd === 'collect') return { messages, errors };
   if (msg.cmd === 'stop') {
     if (browser) await browser.close().catch(() => {});
@@ -638,6 +679,7 @@ export async function checkMarkdownWindows({
     sequence: [],
     mounted: { ascii: null, cjk: null },
     frames: { ascii: null, cjk: null },
+    cjkProgress: { delayedFrame: null, visibleInteraction: null },
     daemon: { status: 'not_run', panes: null },
     console: [],
     wasmErrors: [],
@@ -962,7 +1004,20 @@ export async function checkMarkdownWindows({
     } else {
       add('cjk_responsive', 'failed', `inconclusive: mounted=${report.mounted.cjk}, frameChanged=${report.frames.cjk}, frame=${cjkFrame}`);
     }
-
+    await sleep(Math.min(3000, budget('cjk_delay', 3000)));
+    const delayed = await probeStage('cjk_delayed_probe');
+    const delayedFrame = delayed.frameSha256 && cjk.frameSha256 ? delayed.frameSha256 !== cjk.frameSha256 : null;
+    let interaction;
+    const interactionMs = budget('cjk_interaction', 15000);
+    try { interaction = await driver.rpc({ cmd: 'visible-interaction', timeoutMs: interactionMs - 1000 }, interactionMs); }
+    catch (error) { interaction = { accepted: false, reason: message(error) }; }
+    const visibleInteraction = interaction.accepted === true ? interaction.changed === true : null;
+    report.cjkProgress = { delayedFrame, visibleInteraction, redraw: interaction.before && interaction.after ? { before: { canvas: interaction.before.canvas, submissions: interaction.before.submissions }, after: { canvas: interaction.after.canvas, submissions: interaction.after.submissions } } : null, interactionError: interaction.changed === true ? null : interaction.reason || null };
+    if (visibleInteraction === true) {
+      add('cjk_progress', 'passed', interaction.reason);
+    } else {
+      add('cjk_progress', 'not_run', interaction.reason || 'application redraw observation unavailable');
+    }
     // --- evidence ------------------------------------------------------------
     try {
       const collected = await driver.rpc({ cmd: 'collect' }, budget('collect', 5000));
@@ -989,18 +1044,15 @@ export async function checkMarkdownWindows({
     }
 
     const asciiValid = report.mounted.ascii === true && report.frames.ascii === true;
-    if (asciiValid && cjk.responsive !== true) {
+    if (asciiValid && cjk.responsive === false) {
       report.conclusion = 'reproduced';
-      report.reason = 'CJK page stopped responding after the same markdown path was reopened with U+4E2D';
-    } else if (asciiValid && report.mounted.cjk === true && report.frames.cjk === true) {
+      report.reason = 'CJK page state evaluation stopped responding after the successful ASCII baseline';
+    } else if (asciiValid && report.mounted.cjk === true && report.frames.cjk === true && report.cjkProgress.visibleInteraction === true) {
       report.conclusion = 'not_reproduced';
-      report.reason = 'CJK page stayed responsive and its frame changed after the same markdown path was reopened with U+4E2D';
-    } else if (asciiValid && report.frames.cjk === false) {
-      report.conclusion = 'reproduced';
-      report.reason = 'CJK page responded but its frame stayed identical to the closed ASCII frame';
+      report.reason = 'CJK page remained responsive and processed viewport input with resized canvas and new GPU submissions';
     } else {
       report.conclusion = 'not_run';
-      report.reason = 'inconclusive: CJK page did not provide a changed mounted frame';
+      report.reason = 'inconclusive: no confirmed application redraw after CJK viewport input';
     }
   } catch (error) {
     report.conclusion = 'not_run';

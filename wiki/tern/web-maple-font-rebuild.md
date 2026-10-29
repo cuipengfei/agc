@@ -1,8 +1,8 @@
 # Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
 
-> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21
-> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md)
-> Updated: 2026-10-21
+> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29
+> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md)
+> Updated: 2026-10-29
 
 ## 适用范围与完成标准
 
@@ -111,9 +111,22 @@ Regular、Bold 各保留 33091 个字符映射，其中 20976 个属于证据记
 
 正式入口曾在无 token 的 headless 环境完成初始化与注入，没有执行 mount/WebSocket。完整 GPU 和 native desktop UI 未验证，不能由 Web 模块初始化推断其他平台表现。
 
+## 0.9.7 历史结果
+
+0.9.7 原版两份 BerkeleyMono 仍是各 `11217` 个字符映射、CJK 为 0。`analyze` 的 `panics` 为 `31`，这是全部 `panicFunctions` 数量；按 `time not implemented on this platform` 筛选后为函数 `30815`（18 处调用）与 `30816`（3 处调用），合计 21 处。
+
+| 字体 | 槽位 | 原 pointer | 原 length | 保存的 Maple bytes | Maple SHA-256 |
+|---|---:|---:|---:|---:|---|
+| Regular | 9108400 | 4444898 | 2288420 | 20564496 | `fe14b378a0a0c299c186bdac3370c0a66c358f44d27283fa8ee004c8ad90a900` |
+| Bold，对应原 Medium | 9108424 | 6733318 | 2313308 | 20517844 | `a399807f27b9af23fdb62f878e8cd7eee3c0bdb915d8b2f4395ef3633e89a418` |
+
+两份 Maple 各有 `33091` 个字符映射，其中基本 CJK 字符 `20976`。WASM 保持官方字节，SHA-256 `fafe58c52cc837f81342139da7e147ec2bce25d750b65cdbe533cfd2fc3e65f1`；glue SHA-256 `b5ac5cfb0ad04cd8182f87f23089b02c11faf74fad901c69a28f758662f1d980`。页面在运行时写入字体并更新上述两个描述符。
+
+Windows Chrome 实际访问候选与正式入口：`mounted` 为 true，两份字体注入的槽位与字节数如上表，WebGPU adapter 可用，`framesReceived` `18`，`pageErrors` 为空。正式升级后四个 pane ID 保持不变，运行进程的 binary SHA-256 为 `c6cc3765acade43c12ca90a7f97c78f47d242231bb035f89ec6de689fc96e759`，与安装文件一致。该版本没有应用时间补丁。
+
 ## 确定性资产装配与页面验收（2026-10-21 工具状态）
 
-`assets` CLI 从已通过 `check-build` 的 bundle 与 `font_manifest.py` 输出装配站点目录：`fonts.json` 的 `wasmSha256` 必须等于已验证 bundle 的 candidate（绝不接受 test 模块）；字体恰为 Regular、Bold 两份，URL 固定为 `./pkg/MapleMono-NF-CN-<style>.ttf`；slot、expectedPointer、expectedLength、bytes 必须是正安全整数且槽位间隔至少 8；叶文件或父目录经 symlink 越界即拒绝。输出含 index.html、maple.js、fonts.json、pkg/client.wasm、pkg/client.js、两份字体和逐文件记录 SHA-256 的 deploy-manifest.json。
+`assets` CLI 支持两种输入。`--bundle` 从已通过 `check-build` 的构建包装配；`--official` 从 `prepare` 取得的官方原版目录装配，此时读取 `inputs.json` 的 version、WASM SHA-256 与 glue SHA-256，核对实际文件后逐字节复制，并在 `deploy-manifest.json` 记录 `mode` 为 `font-only`、`wasmUnmodified` 为 true。两种模式都要求 `fonts.json` 的 `wasmSha256` 与实际模块一致，字体恰为 Regular、Bold 两份，URL 固定为 `./pkg/MapleMono-NF-CN-<style>.ttf`；slot、expectedPointer、expectedLength、bytes 必须是正安全整数且槽位间隔至少 8；叶文件或父目录经 symlink 越界即拒绝。输出含 index.html、maple.js、fonts.json、pkg/client.wasm、pkg/client.js、两份字体和逐文件记录 SHA-256 的 deploy-manifest.json。
 
 `verify-page` 只访问无凭据、无 query 的 loopback 真实入口，页面内监测并拒绝 WebSocket 构造（构造时抛出错误）。检查序列为 page_served、headless_forced、page_ready、fonts_injected、candidate_hash、websocket_absent；wire_mount 与 gpu_interaction_full 恒 `not_run`。fonts_injected 要求页面自报的 family 为 `Maple Mono NF CN` 且恰有 Bold、Regular 两份；candidate_hash 要求页面自报的 candidate SHA-256 与本次导航实际服务的 `/pkg/client.wasm` 字节一致。字体或模块 hash 错误路径体现为 fonts_injected 或 candidate_hash `failed`。
 

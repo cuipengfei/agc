@@ -1,7 +1,7 @@
 # Tern 网页 Markdown 中文触发无响应
 
-> Sources: 用户对照试验，2026-10-13；Stencil Terms of Use 第 17.9 节；旧版浏览器诊断与 0.9.6 同路径对照，2026-10-29
-> Raw: [reproduction evidence](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md); [runtime and download access](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md)
+> Sources: 用户对照试验，2026-10-13；Stencil Terms of Use 第 17.9 节；旧版浏览器诊断与 0.9.6 同路径对照，2026-10-29；0.9.7 仅字体版重绘检查，2026-10-29
+> Raw: [reproduction evidence](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md); [runtime and download access](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md)
 > Updated: 2026-10-29
 
 ## 概述
@@ -19,14 +19,16 @@
 | 0.8.4（本地实际运行） | 浏览器客户端出现时间 panic `unsupported.rs:35:9`；原版 panic 后心跳仍返回，Maple 版 panic 后心跳超时 | 诊断输出 |
 | 0.9.6 原版 | 同一路径 ASCII → 关闭 → 追加 `中` → 重开：两次操作均响应约 `2 ms`，`freezeReproduced` 为 `false`，`timePanicEvidence` 为空 | 隔离检查 |
 | 0.9.6 原版 | 直接调用时间导出仍抛 `RuntimeError: Unreachable code should not be executed` | 隔离检查 |
+| 0.9.7 仅字体版 | 同一路径 ASCII → 关闭 → 追加 `中` → 重开：页面仍响应，首帧与延迟画面均变化；viewport 输入后 canvas 由 `1280`×`720` 变为 `1360`×`760`，GPU 提交由 `328` 增至 `334`，`wasmErrors` 为空 | 隔离检查 |
 
-这张表说明三件事：旧版冻结可复现且与字体修改无关；旧版同环境确实存在时间 panic；0.9.6 原版在同路径没有冻结，且 unsupported 时间分支仍在。因此 panic 分支存在不是冻结的充分条件，「时间 panic 导致中文 Markdown 冻结」不成立为已确认因果。
+这张表说明三件事：旧版冻结可复现且与字体修改无关；旧版同环境确实存在时间 panic；0.9.6 与 0.9.7 的检查都没有复现冻结，且 unsupported 时间分支仍在。因此 panic 分支存在与冻结之间没有已建立的因果链。
 
 ## 复现边界
 
 纯 ASCII 的 Markdown 测试文件可正常打开；在同一文件末尾追加仅含 `中` 的一行后，整个 web 界面冻结。同一环境下 JSON 和 Python 文件可正常打开。以上为用户报告的观察结果：内部原因（Markdown 解析器、字体库或浏览器文本排版 API）仍未确定，已确认的触发字符只有 U+4E2D（UTF-8 字节 `E4 B8 AD`）。
 
 旧的浏览器诊断只打开客户端根路径，记录了旧版时间 panic；Markdown 打开是否触发 panic 仍需定向实验。0.9.6 的同路径检查重放了「打开中文 Markdown」这一步。
+0.9.7 的检查使用 viewport 重绘判据：静态截图相同、DOM 选区相同、驱动超时都不构成冻结证据；证据不足记为 `not_run`。0.9.7 原版尚未用该判据复跑，表内 0.9.7 行对应仅字体版。
 
 最小复现文件内容与恢复过程记录在所链 raw 文件中。
 
@@ -53,6 +55,8 @@ Stencil Terms of Use 第 17.9 节给出的联系邮箱是 `help@stencil.so`。�
 - 具体 Markdown 触发链仍未隔离：未识别 Markdown 解析器、字体库或浏览器排版组件；已确认的触发字符只有 U+4E2D。
 - 0.9.6 只重放了一条同路径序列，没有在不同浏览器、GPU 或操作系统上重复；一次 Xvfb 尝试因无 GPU adapter 记为 `not_completed`，未形成冻结结论。
 - 0.9.6 正式服务只注入 Maple 字体，同版本原版在同路径同样未复现冻结；字体已确认的作用只是显示，冻结原因尚未隔离。
+- 0.9.7 只检查了一次仅字体版序列；0.9.7 原版按同一判据的对照仍未执行。
+- 中文内容语义、字形外观与完整 Markdown 渲染未由该检查覆盖；判据只确认页面响应与渲染继续工作。
 - 版本号 0.8.3 与 0.8.4 的标签差异尚未在原始报告中统一。
 
 ## See Also

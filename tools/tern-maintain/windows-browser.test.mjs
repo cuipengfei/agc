@@ -103,6 +103,12 @@ if (command === 'daemon') {
 const FAKE_PLAYWRIGHT = `
 class FakePage {
   constructor() { this.probes = 0; this.shots = 0; this.routes = []; }
+  async addInitScript() {}
+  async setViewportSize(size) {
+    if (process.env.FAKE_INPUT_ERROR === '1') throw new Error('viewport driver failed');
+    this.viewport = size;
+    this.interacted = process.env.FAKE_IGNORE_CJK_INTERACTION !== '1' && process.env.FAKE_STALE_CJK !== '1';
+  }
   on() {}
   async route(predicate, handler) { this.routes.push({ predicate, handler }); }
   async goto(url) {
@@ -119,6 +125,12 @@ class FakePage {
       const state = official
         ? { structured: false, ready: true, mounted: true, failed: false, error: null, tokenPrompt: false }
         : { structured: true, ready: true, mounted: process.env.FAKE_MOUNT !== '0', failed: false, error: null, tokenPrompt: false };
+      if (arg === 'tern-visible-interaction') {
+        return { marker: arg, state, accepted: true, canvas: { width: 1280, height: 720 }, viewport: { width: 1280, height: 720, scale: 1 }, submissions: 1 };
+      }
+      if (arg === 'tern-visible-interaction-after') {
+        return { marker: arg, state, accepted: true, canvas: this.interacted ? this.viewport : { width: 1280, height: 720 }, viewport: { ...this.viewport, scale: 1 }, submissions: this.interacted ? 2 : 1 };
+      }
       if (arg === 'tern-markdown-probe') {
         this.probes += 1;
         if (process.env.FAKE_FREEZE_CJK === '1' && this.probes >= 4) return new Promise(() => {});
@@ -132,7 +144,9 @@ class FakePage {
     this.shots += 1;
     if (process.env.FAKE_FREEZE_CJK === '1' && this.shots >= 4) return new Promise(() => {});
     let label = 'frame-' + this.shots;
-    if (process.env.FAKE_STALE_CJK === '1' && this.shots === 4) label = 'frame-3';
+    if (process.env.FAKE_STALE_AFTER_CJK === '1' && this.shots >= 5) label = 'frame-4';
+    if (process.env.FAKE_IGNORE_CJK_INTERACTION === '1' && this.shots >= 6) label = 'frame-5';
+    if (process.env.FAKE_STALE_CJK === '1' && this.shots >= 4) label = 'frame-3';
     const bytes = Buffer.from(label);
     if (options.path) { const fs = await import('node:fs'); fs.writeFileSync(options.path, bytes); }
     return bytes;
@@ -275,9 +289,9 @@ adapterTest('overall timeout still stops spawned daemon and removes its temporar
   expect(records.every(record => !fs.existsSync(record.config))).toBe(true);
 }, 30_000);
 
-adapterTest('responsive CJK page with an unchanged frame -> reproduced (heartbeat gap)', async () => {
+adapterTest('responsive CJK with no observed application redraw is inconclusive', async () => {
   const { report, pids } = await run({ env: { FAKE_STALE_CJK: '1' } });
-  expect(report.conclusion).toBe('reproduced');
+  expect(report.conclusion).toBe('not_run');
   expect(report.mounted).toEqual({ ascii: true, cjk: true });
   expect(report.frames).toEqual({ ascii: true, cjk: false });
   const cjk = report.sequence.find(entry => entry.name === 'cjk_responsive');
@@ -287,6 +301,33 @@ adapterTest('responsive CJK page with an unchanged frame -> reproduced (heartbea
   const records = readRecords(pids);
   expectSpawnedProcessesGone(records);
   expect(records.every(record => !fs.existsSync(record.config))).toBe(true);
+}, 60_000);
+
+adapterTest('static CJK frame with responsive resize remains healthy', async () => {
+  const { report, pids } = await run({ env: { FAKE_STALE_AFTER_CJK: '1' } });
+  expect(report.conclusion).toBe('not_reproduced');
+  expect(report.frames).toEqual({ ascii: true, cjk: true });
+  expect(report.cjkProgress.delayedFrame).toBe(false);
+  expect(report.cjkProgress.visibleInteraction).toBe(true);
+  expect(report.sequence.find(entry => entry.name === 'cjk_progress').status).toBe('passed');
+  expectSpawnedProcessesGone(readRecords(pids));
+}, 60_000);
+
+adapterTest('unobserved CJK resize is inconclusive, not a freeze', async () => {
+  const { report, pids } = await run({ env: { FAKE_IGNORE_CJK_INTERACTION: '1' } });
+  expect(report.conclusion).toBe('not_run');
+  expect(report.cjkProgress.delayedFrame).toBe(true);
+  expect(report.cjkProgress.visibleInteraction).toBe(false);
+  expect(report.sequence.find(entry => entry.name === 'cjk_progress').status).toBe('not_run');
+  expectSpawnedProcessesGone(readRecords(pids));
+}, 60_000);
+
+adapterTest('driver input failure is inconclusive, not a freeze', async () => {
+  const { report, pids } = await run({ env: { FAKE_INPUT_ERROR: '1' } });
+  expect(report.conclusion).toBe('not_run');
+  expect(report.cjkProgress.visibleInteraction).toBe(null);
+  expect(report.cleanup.ok).toBe(true);
+  expectSpawnedProcessesGone(readRecords(pids));
 }, 60_000);
 
 adapterTest('open id must currently identify the requested fixture path', async () => {

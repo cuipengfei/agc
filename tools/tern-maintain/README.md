@@ -133,9 +133,9 @@ bun cli.mjs markdown-windows --binary /path/to/tern \
 
 工具发现 Windows Node、Playwright 和 Chrome，调用方可以分别用 `--node`、`--playwright-module`（模块目录）和 `--chromium-executable` 覆盖。`--assets` 可以是 `assets` 生成的网页目录，也可以是 `prepare` 的原版输入目录；原版官方 HTML 保持原样，浏览器从已校验的本地文件获取 WASM。
 
-页面必须实际取得 WebGPU adapter 并完成 mount。工具先记录画面，打开 ASCII Markdown 并确认响应和画面变化，再关闭该 pane、在同一路径追加 `中`、重新打开。`frames` 比较前后截图的 SHA-256，`mounted` 单独记录页面状态。心跳可用不能替代画面变化检查。
+页面必须实际取得 WebGPU adapter 并完成 mount。工具先记录画面，打开 ASCII Markdown 并确认响应和画面变化，再关闭该 pane、在同一路径追加 `中`、重新打开。`frames` 比较前后截图的 SHA-256，`mounted` 单独记录页面状态。中文首帧之后等待三秒，再调整隔离浏览器的 viewport，确认应用更新了 canvas 尺寸且产生新的 GPU command submission。观测代码只安装在本次隔离浏览器页面，不修改服务资源或 WASM。`cjkProgress.redraw` 记录前后 canvas 尺寸与提交次数；延迟截图差异仅作附加观察。
 
-`not_run` 表示前置条件不足或结果无法区分，退出码为 2，必须带 reason；`reproduced` 表示 ASCII 基线有效后，中文阶段页面无响应或画面保持不变；`not_reproduced` 要求中文阶段页面仍响应且画面已变化。后两种结论表示复现流程完成，不表示补丁正确或故障已经修复。控制台、WASM 异常和 daemon 状态保存在报告中；`--out` 同时生成同名 PNG。认证值不写入报告。临时进程、服务目录、驱动目录和浏览器 profile 由本次运行清理，cleanup 结果独立记录，不覆盖复现结论。
+`not_run` 表示前置条件不足、驱动超时或未观察到应用重绘，退出码为 2，必须带 reason。静态画面保持不变、DOM 选区不变、截图失败和输入驱动失败均不作为冻结证据。`reproduced` 只记录有效 ASCII 基线后中文页面状态查询无响应；`not_reproduced` 要求中文页面仍响应、首帧确实出现，并在 viewport 输入后确认 canvas 尺寸更新及新的 GPU 提交。这项检查覆盖响应与重绘，不检查中文内容语义或其他应用操作，也不判定时间补丁必要性。控制台、WASM 异常和 daemon 状态保存在报告中；`--out` 同时生成同名 PNG。认证值不写入报告。临时进程、服务目录、驱动目录和浏览器 profile 由本次运行清理，cleanup 结果独立记录，不覆盖复现结论。
 
 ```bash
 bun cli.mjs verify --original /tmp/tern-candidate/pkg/original.wasm --candidate /tmp/candidate.wasm --out /tmp/tern-structure.json

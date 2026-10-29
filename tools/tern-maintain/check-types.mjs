@@ -47,6 +47,11 @@ const markdownSchema = {
       required: ['ascii', 'cjk'],
       properties: { ascii: boolOrNull, cjk: boolOrNull },
     },
+    cjkProgress: {
+      type: 'object',
+      required: ['delayedFrame', 'visibleInteraction'],
+      properties: { delayedFrame: boolOrNull, visibleInteraction: boolOrNull },
+    },
     daemon: { type: 'object', required: ['status', 'panes'], properties: { status: { type: 'string' }, panes: { type: ['integer', 'null'] } } },
     console: { type: 'array', items: { type: 'object', required: ['type', 'text'], properties: { type: { type: 'string' }, text: { type: 'string' } } } },
     wasmErrors: { type: 'array', items: { type: 'string' } },
@@ -74,10 +79,16 @@ export function validateMarkdownReproduction(report, label = 'markdownReproducti
       throw new Error(`Invalid ${label}: ${report.conclusion} requires successful same-path stages: ${stages.join(', ')}`);
     if (typeof report.mounted?.ascii !== 'boolean' || typeof report.mounted?.cjk !== 'boolean')
       throw new Error(`Invalid ${label}: ${report.conclusion} requires measured mounted.ascii and mounted.cjk`);
-    if (report.frames?.ascii !== true || typeof report.frames?.cjk !== 'boolean')
-      throw new Error(`Invalid ${label}: ${report.conclusion} requires measured frame evidence`);
-    if (report.conclusion === 'not_reproduced' && report.frames.cjk !== true)
-      throw new Error(`Invalid ${label}: not_reproduced requires changed CJK frame evidence`);
+    if (report.frames?.ascii !== true)
+      throw new Error(`Invalid ${label}: ${report.conclusion} requires measured ASCII frame evidence`);
+    if (report.conclusion === 'not_reproduced') {
+      if (report.mounted.cjk !== true || report.frames?.cjk !== true)
+        throw new Error(`Invalid ${label}: not_reproduced requires changed CJK frame evidence`);
+      if (report.cjkProgress?.visibleInteraction !== true)
+        throw new Error(`Invalid ${label}: not_reproduced requires post-open progress from application redraw`);
+    } else if (report.mounted.ascii !== true || report.mounted.cjk !== false) {
+      throw new Error(`Invalid ${label}: reproduced requires an ASCII baseline and observed CJK nonresponse`);
+    }
   }
   return report;
 }

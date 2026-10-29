@@ -15,6 +15,7 @@ const markdown = overrides => ({
   fixturePath: '/tmp/fixture.md',
   mounted: { ascii: true, cjk: false },
   frames: { ascii: true, cjk: false },
+  cjkProgress: { delayedFrame: false, visibleInteraction: false },
   cleanup: { ok: true, errors: [] },
   ...overrides,
 });
@@ -56,9 +57,20 @@ test('responsive CJK requires an observed frame change before reporting no freez
   expect(() => validateMarkdownReproduction(report)).toThrow(/frame evidence/);
 });
 
+test('a single changed CJK frame is insufficient without post-open progress', () => {
+  const report = markdown({ conclusion: 'not_reproduced', mounted: { ascii: true, cjk: true }, frames: { ascii: true, cjk: true } });
+  expect(() => validateMarkdownReproduction(report)).toThrow(/post-open progress/);
+});
+
 test('reproduction requires every successful stage using the recorded fixture path', () => {
   const incomplete = markdown({ sequence: samePathStages().filter(step => step.name !== 'cjk_appended') });
   expect(() => validateMarkdownReproduction(incomplete)).toThrow(/same-path stages/);
+});
+
+test('a static CJK frame does not establish a freeze', () => {
+  expect(() => validateMarkdownReproduction(markdown({ mounted: { ascii: true, cjk: true }, frames: { ascii: true, cjk: true } }))).toThrow(/observed CJK/);
+  const healthy = markdown({ conclusion: 'not_reproduced', mounted: { ascii: true, cjk: true }, frames: { ascii: true, cjk: true }, cjkProgress: { delayedFrame: false, visibleInteraction: true } });
+  expect(validateMarkdownReproduction(healthy).conclusion).toBe('not_reproduced');
 });
 
 test('checkJs rejects a missing Binaryen API member', async () => {
