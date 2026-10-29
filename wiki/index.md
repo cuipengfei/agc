@@ -367,6 +367,15 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 |---------|---------|---------|
 | [Keyboard-Driven Pointer Control](keyboard-input/keyboard-driven-pointer-control.md) | 三条机制路径区分、工具矩阵、Capslock 与 Windows 方案 | 2026-09-03 |
 
+## software-factory
+
+AI software factory 的概念判据、部署形态、真工厂短名单与机械关卡参照。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [AI Software Factory 概念与真工厂短名单](software-factory/ai-software-factory-landscape.md) | 判据五要素（输入标准化、工序固定、程序或人判定、失败可退回、可度量）；四类部署形态；三千星以上短名单 OpenHands 92184、Multica 54233、Superplane 8379、Mission Control 6410（2026-10-29 API）；关卡只到 guardrail/Aegis/review gate 一层 | 2026-10-29 |
+| [Factory Gate 参照标准](software-factory/factory-gate-reference.md) | Goossaert 七阶段（grill→apply-docs→plan→atdd→implement→review→review-correctness）与 gate 检查清单（red-confirmation、hermetic-verify、mutation 下限、forbidden-patterns、testing-the-judge）；max_retries=3 后 flag for a human | 2026-10-29 |
+
 ## software-testing
 
 软件测试中的 mutation testing、test oracle、invariant 与 mutant 分类。
@@ -517,7 +526,7 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26） | 2026-10-26 |
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26）；另登记四个非 ADE 的真工厂方案（2026-10-29） | 2026-10-29 |
 | [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项 | 2026-10-18 |
 | [ThinkRail 与 JetBrains 的 ADE 版图](agent-development-environments/thinkrail-and-jetbrains-air.md) | ThinkRail 深挖：worktree 工作区、自托管浏览器模式、update 无版本比较、遥测与回环边界、WSL 实测；Air 2026-03 预览接管 Fleet 平台；Gateway WSL2 原生客户端；Projector 独立版暂停；CodeCanvas 停止开发 | 2026-10-26 |
 

@@ -1632,3 +1632,14 @@
 ## [2026-10-29] lint | 7 issues found, 0 auto-fixed
 - Scope: wiki/tern/time-api-patch-and-verification.md; wiki/tern/web-markdown-cjk-freeze.md
 - Handling: 0 evidence error、0 unreferenced raw。7 条 fidelity suspect 已逐条对照 linked raw：时间断言数值与耗时来自原补丁和构建报告，邮件标题为原文摘录；均为校验器的小数提取或代码块排除造成的提示，未改动原始数值。
+
+## [2026-10-29] ingest | AI Software Factory 概念与真工厂短名单
+- Disposition: New
+- Raw: raw/software-factory/2026-10-29-what-i-learned-building-an-ai-software-factory.md; raw/software-factory/2026-10-29-awesome-software-factories-local-options.md
+- Updated: Factory Gate 参照标准; ADE 候选清单
+- 要点：判据五要素与四类部署形态；三千星以上短名单按「自带可重复端到端工序」口径判定；OpenHands 92184、Multica 54233、Superplane 8379、Mission Control 6410（2026-10-29 API）；三家 README 关卡只到 guardrail / Aegis / review gate 一层，红绿前置与变异下限未展开。
+
+## [2026-10-29] ingest | Factory Gate 参照标准
+- Disposition: New
+- Raw: raw/software-factory/2026-10-29-what-i-learned-building-an-ai-software-factory.md; raw/software-factory/2026-10-29-awesome-software-factories-local-options.md
+- 要点：Goossaert 七阶段与 gate 检查清单；变异分数下限是「项目要求值」，文章未给通用分档；max_retries=3 与 hermetic 3+1 为作者自述。
