@@ -23,13 +23,14 @@ const usage=`Tern maintenance (no GUI)
   bun cli.mjs build --original FILE --glue FILE --profile FILE --recipe FILE --wabt-dir DIR --out NEW_DIR
   bun cli.mjs rebuild --bundle DIR --wabt-dir DIR --out NEW_DIR
   bun cli.mjs check-build --bundle DIR
-  bun cli.mjs assets --bundle DIR --fonts DIR --out NEW_DIR
+  bun cli.mjs assets (--bundle DIR | --official DIR) --fonts DIR --out NEW_DIR
   bun cli.mjs verify-page --url URL --playwright-module FILE --chromium-executable FILE [--out REPORT]
+  bun cli.mjs markdown-windows --binary FILE --assets DIR --out REPORT [--node FILE] [--playwright-module DIR] [--chromium-executable FILE] [--socket-dir DIR]
 
 Font inventory: uv run --with-requirements requirements.txt python fonts.py MEMORY_FILE
 Reports never authorize deployment by themselves. Unknown versions stop for review.
 `;
-const args=parseArgs({args:process.argv.slice(2),allowPositionals:true,options:Object.fromEntries(['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle'].map(k=>[k,{type:'string'}]))});
+const args=parseArgs({args:process.argv.slice(2),allowPositionals:true,options:Object.fromEntries(['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir'].map(k=>[k,{type:'string'}]))});
 const [command,...extra]=args.positionals,v=args.values;
 const required=(...keys)=>{for(const key of keys)if(!v[key])throw Error(`Missing --${key}`);};
 async function main(){
@@ -76,13 +77,16 @@ else if(['build','rebuild','check-build'].includes(command)){
   else if(command==='rebuild'){required('bundle','wabt-dir','out');result=await rebuildPatch({bundle:resolve(v.bundle),wabtDir:resolve(v['wabt-dir']),out:resolve(v.out)});}
   else {required('bundle');result=await checkBundle({bundle:resolve(v.bundle)});}
 }
-else if(command==='assets'){required('bundle','fonts','out');const {assembleAssets}=await import('./assets.mjs');result=await assembleAssets({bundle:resolve(v.bundle),fonts:resolve(v.fonts),out:resolve(v.out)});}
+else if(command==='assets'){required('fonts','out');const {assembleAssets}=await import('./assets.mjs');result=await assembleAssets({bundle:v.bundle&&resolve(v.bundle),official:v.official&&resolve(v.official),fonts:resolve(v.fonts),out:resolve(v.out)});}
 else if(command==='verify-page'){required('url','playwright-module','chromium-executable');const {checkPage}=await import('./page-check.mjs');result=await checkPage({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable'])});}
+else if(command==='markdown-windows'){required('binary','assets','out');const {checkMarkdownWindows}=await import('./windows-browser.mjs');result=await checkMarkdownWindows({binary:resolve(v.binary),assets:resolve(v.assets),out:resolve(v.out),node:v.node&&resolve(v.node),playwrightModule:v['playwright-module']&&resolve(v['playwright-module']),chromium:v['chromium-executable']&&resolve(v['chromium-executable']),socketDir:v['socket-dir']&&resolve(v['socket-dir'])});}
 else throw Error(`Unknown command: ${command}`);
  if(['analyze','verify'].includes(command))validateReport(result);
+ if(result?.kind==='markdown-reproduction'){const {validateMarkdownReproduction}=await import('./check-types.mjs');validateMarkdownReproduction(result);}
 if(v.out&&['analyze','verify','browser','function','inspect-runtime','verify-service','upgrade','verify-page'].includes(command))await writeFile(v.out,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
  if(command==='analyze')console.log(JSON.stringify({schemaVersion:1,inputSha256:result.inputSha256,fonts:result.fonts.length,panics:result.panicFunctions.length,decision:result.decision}));
  else console.log(JSON.stringify(result));
  if(result.checks?.some(c=>c.status==='failed'))process.exitCode=1;
+ if(result?.conclusion==='not_run')process.exitCode=2;
 }
 await main().catch(error=>{console.error(String(error.message).replace(/([?&]token=)[^\s&"']+/g,'$1<REDACTED>'));process.exitCode=1;});

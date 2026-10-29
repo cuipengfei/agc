@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "lib": ["ES2022", "DOM"],
+    "types": ["node", "bun"],
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "files": ["./node_modules/@webgpu/types/dist/index.d.ts", "../build.mjs", "../assets.mjs", "../windows-browser.mjs"]
+}

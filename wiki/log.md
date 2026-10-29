@@ -1622,3 +1622,13 @@
 - Raw: raw/awesome-harness-engineering/2026-10-29-five-repos-coverage-audit.md
 - Updated: GitHub 刷星检测工具调研; awesome-mcp-servers 通用 MCP 筛选（3472→320）
 - 要点：仓库名完全等于 awesome-harness-engineering 的 5 个公开仓库，按星数（对数归一化）、维护（pushed_at 按天扣分）、覆盖（README 去重仓库数归一化）三项等权打分；记录自报 754 与实测 752 的跨分类重复构成、链接数与条目数两种覆盖口径差异、`^## ` 与 `^##+ ` 的标题计数差异。
+
+## [2026-10-29] ingest | Tern 时间 API 补丁与验收
+- Disposition: Update; Disputed
+- Raw: raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md
+- Updated: Tern 网页 Markdown 中文触发无响应
+- 要点：恢复 0.8.4 原版浏览器时间 panic 与 Maple 字体版响应超时记录；明确当时未打开 Markdown、心跳可用不等于渲染更新。0.9.6 原版同路径追加中文未复现冻结；正式部署只注入 Maple 字体，字体用于显示，不归因于冻结修复。
+
+## [2026-10-29] lint | 7 issues found, 0 auto-fixed
+- Scope: wiki/tern/time-api-patch-and-verification.md; wiki/tern/web-markdown-cjk-freeze.md
+- Handling: 0 evidence error、0 unreferenced raw。7 条 fidelity suspect 已逐条对照 linked raw：时间断言数值与耗时来自原补丁和构建报告，邮件标题为原文摘录；均为校验器的小数提取或代码块排除造成的提示，未改动原始数值。

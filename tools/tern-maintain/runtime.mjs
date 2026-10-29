@@ -240,6 +240,7 @@ function daemonAlive(binary, socket) {
  * Returns { daemon: {running, socket, error?}, httpStatus: number|null, panes: [...] }.
  * A daemon that answers with an unexpected JSON shape reports running: true with
  * an error note and an empty pane list, rather than swallowing the change.
+ * @param {{ binary?: string, socket?: string, port?: number, timeoutMs?: number }} [options]
  */
 export async function status({ binary = 'tern', socket, port, timeoutMs = 15_000 } = {}) {
   const ls = runTernLs(binary, socket, timeoutMs);
@@ -262,6 +263,7 @@ export async function status({ binary = 'tern', socket, port, timeoutMs = 15_000
  * Verifies CLI+HTTP afterwards and reports the pane diff; never closes panes.
  * On web failure only the just-created web process is killed; the daemon is
  * left untouched either way.
+ * @param {{ binary?: string, assets?: string, socket?: string, port?: number, stateDir?: string, timeoutMs?: number }} [options]
  */
 export async function start({ binary = 'tern', assets, socket, port, stateDir, timeoutMs = 20_000 } = {}) {
   if (!assets) throw new Error('start: assets is required');
@@ -355,6 +357,7 @@ export async function start({ binary = 'tern', assets, socket, port, stateDir, t
  * optional (offline font acceptance needs no auth); when given, the token
  * lives in RAM only and never appears in returned details.
  * Returns { schemaVersion: 1, checks: [{name, status: passed|failed|not_run, details}] }.
+ * @param {{ url?: string, playwrightModule?: string, chromiumExecutable?: string, tokenFile?: string, timeoutMs?: number }} [options]
  */
 export async function browserCheck({ url, playwrightModule, chromiumExecutable, tokenFile, timeoutMs = 60_000 } = {}) {
   const order = ['headless_forced', 'page_served', 'webgpu_available', 'client_init', 'wire_mount', 'token_redaction', 'gpu_interaction_full'];

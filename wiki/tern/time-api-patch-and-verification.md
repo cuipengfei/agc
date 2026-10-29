@@ -1,12 +1,30 @@
 # Tern 时间 API 补丁与验收
 
-> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21
-> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md)
-> Updated: 2026-10-21
+> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29
+> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md)
+> Updated: 2026-10-29
 
 ## 适用范围
 
 Tern Web 模块存在时间 API 的平台 unsupported 分支。静态定位这些分支与调用点，只能说明待分析位置；实际用户操作是否触发 panic，需要独立动态证据。0.9.5 的完整用户操作触发路径尚未动态复现。
+
+> **Status: Outdated** (2026-10-29)
+> 0.8.4 浏览器端已实际观察到时间 panic（`unsupported.rs:35:9`），现场出现在客户端挂载之后、诊断脚本轮询状态期间，没有对应的用户打开 Markdown 操作；0.9.6 原版按 Markdown 同路径未复现冻结，直接调用时间导出仍抛错。时间补丁的必要性不再由中文 Markdown 冻结推导。
+
+## 按版本的证据
+
+下表只陈述各版本已观察到的结果；不同行不能互相替代。
+
+| 版本 | 场景 | 已观察结果 |
+|---|---|---|
+| 0.8.4 原版 | 浏览器打开客户端根路径 | panic `time not implemented on this platform`；panic 后 `heartbeat 2` 到 `heartbeat 11` 仍返回状态对象 |
+| 0.8.4 Maple 字体版 | 同一诊断 | 相同 panic；`heartbeat 0 {"unresponsive":true}`，`Wall time: 3.51 seconds` |
+| 0.9.5 | 用户操作路径 | 未做动态复现；补丁验收只覆盖时间语义 |
+| 0.9.6 原版 | ASCII → 关闭 → 同一路径追加 `中` → 重开 | 未复现冻结，两次操作响应约 `2 ms`，`timePanicEvidence` 为空 |
+| 0.9.6 原版 | 直接调用时间导出 | `test_time_30092`、`test_time_30093` 抛 `RuntimeError: Unreachable code should not be executed` |
+| 0.9.6 仅注入字体（正式 8378） | 挂载与字体验收 | `mounted` true，Regular `20564496` bytes、Bold `20517844` bytes，`framesReceived` `18`，`pageErrors` `0`；随后用户中文 Markdown 正常 |
+
+旧版 panic 与用户报告的 Markdown 冻结同时出现在 0.8.4 环境，但「Markdown 打开 → panic → 冻结」没有任何一步被单独隔离；0.9.6 原版同路径未冻结，说明 unsupported 时间分支存在本身不是充分条件。
 
 时间补丁不修改 native desktop 的时间实现。Web 初始化、daemon/CLI 行为与 native UI 的覆盖范围分别记录。
 
@@ -60,6 +78,14 @@ Tern Web 模块存在时间 API 的平台 unsupported 分支。静态定位这�
 2026-10-21 已观察：WABT 1.0.42 安装脚本实测通过；FontTools 2 项与同步项目 19 项 unittest 通过；`bun audit` 退出码 0；最终本地全套 Bun 测试 61 pass / 0 fail（7 个测试文件，8.02s）；最终写流故障注入实测 ENOSPC 于 27ms 拒绝、失败目录保留；真实 `analyze` 链路输出 `panics33` 为静态候选计数，不等于时间故障数。真实 0.9.4 与 0.9.5 build + check-build 均实测通过（锁定 SHA 匹配）；删除私有初始输入与首包后 fresh HOME 重建，两 SHA 与原包一致（bg29，308.22s）；verify-page 正常与错误字体 hash 双路径按预期通过。未验证：完整 GPU、mount、native desktop UI、其他物理机器与操作系统。
 
 具体安装和执行入口见[跨机器补丁手册](portable-patching-runbook.md)。每次重建均应保留完整材料，并使用本次实际执行生成的时间报告。
+
+## 限制
+
+- 0.8.4 的 panic 是在客户端根路径的状态读取中复现的，诊断脚本没有打开 Markdown；Markdown 打开与 panic 的关联仍需定向实验。
+- 旧版本地运行为 `tern 0.8.4 (6b4535f)`，旧冻结报告写 0.8.3；两个标签分别保留，当前证据记录实际运行版本。
+- 0.9.6 只做了同路径一次序列与一次直接导出探针，没有在不同浏览器、GPU 或操作系统上重复；一次 `markdown-report-xvfb-vulkan.json` 因无 GPU adapter 记为 `not_completed`。
+- 心跳与 `tern ls` 在原版 panic 后仍正常，记录的是状态查询通道；该诊断未采集画面变化。
+- 正式 8378 的 0.9.6 只注入字体，同版本原版已未复现冻结；用户中文 Markdown 正常与字体显示改进分别记录，冻结原因尚未隔离。
 
 ## See Also
 

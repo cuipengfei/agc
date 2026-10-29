@@ -411,13 +411,13 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | [Tern Surface Protocol 官方规范要点](tern/tsp-official-spec.md) | TSP 核心实体、三种 mode、握手、流控、驱逐、blob、主题、安全边界与 SDK | 2026-10-20 |
 | [Tern 脚本与自动化面](tern/scripting-surface.md) | 控制端点、脚本三路径、命令域、状态导出与块类型脚本能力 | 2026-10-20 |
 | [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 原版字体验收、descriptor 注入、0.8.3/0.9.3/0.9.5 证据、确定性资产装配与 verify-page 检查、字体与时间补丁边界、跨机器执行入口 | 2026-10-21 |
-| [Tern 时间 API 补丁与验收](tern/time-api-patch-and-verification.md) | calendar、Instant、elapsed 语义与 ABI，候选/测试模块来源，六项行为验收，确定性重建与 check-build 通过要求及证据边界 | 2026-10-21 |
+| [Tern 时间 API 补丁与验收](tern/time-api-patch-and-verification.md) | calendar、Instant、elapsed 语义与 ABI；按版本动态证据；原版时间分支、Markdown 冻结及字体注入的独立验收边界 | 2026-10-29 |
 | [Tern 跨机器补丁手册](tern/portable-patching-runbook.md) | 本机原版获取、固定 recipe 重建、完整包迁移、字体与真实入口验收，以及未知版本和平台限制 | 2026-10-21 |
 | [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围 | 2026-10-20 |
 | [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算 | 2026-10-20 |
 | [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点 | 2026-10-20 |
 | [Tern Inbox 特征行为](tern/inbox-feature.md) | 四条 ctl/scenario 命令、默认键位、OSC 99 直写 pty 实测不进 inbox、Herdr 已排除、真实通道待查 | 2026-10-20 |
-| [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 原版 0.8.3 的单字符 `中` 复现；按真实 `file`/`id` 字段关闭目标 pane，保留 shell/Git | 2026-10-14 |
+| [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 旧版冻结报告与 0.8.4 浏览器 panic；0.9.6 原版同路径未复现；按 `file`/`id` 关闭目标 pane 的恢复步骤 | 2026-10-29 |
 
 ## proxy-ops
 

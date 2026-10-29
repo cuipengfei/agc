@@ -14,7 +14,7 @@ import { once } from 'node:events';
 import { mkdir, readFile, writeFile, lstat, rm, copyFile, realpath } from 'node:fs/promises';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import Ajv from 'ajv';
+import { Ajv } from 'ajv/dist/ajv.js';
 import { sha256 } from './analyze.mjs';
 import { verifyCandidate } from './resources.mjs';
 

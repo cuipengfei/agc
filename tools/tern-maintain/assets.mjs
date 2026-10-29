@@ -49,44 +49,69 @@ function validateFontsManifest(manifest, verified) {
 }
 
 /**
- * 从 bundle（经 checkBundle 验证）与 fonts（font_manifest.py 输出目录）构建全新的
- * 资源目录 out（必须尚不存在）。返回 deploy manifest 内容；同一文档写入
- * out/deploy-manifest.json，记录每个输出文件的实际 SHA-256 供复验。
+ * 构建全新的资源目录 out（必须尚不存在），二选一：
+ * - official：prepare 产物（pkg/original.wasm、pkg/client.js、inputs.json），原版
+ *   字节原样上线、只换字体（mode: font-only）；
+ * - bundle：经 checkBundle 验证的确定性构建（mode: patched）。
+ * 返回 deploy manifest 内容；同一文档写入 out/deploy-manifest.json，记录每个输出
+ * 文件的实际 SHA-256 供复验。
+ * @param {{ bundle?: string, official?: string, fonts?: string, out?: string }} [options]
  */
-export async function assembleAssets({ bundle, fonts, out } = {}) {
-  if (!bundle) throw new Error('assembleAssets: bundle is required');
+export async function assembleAssets({ bundle, official, fonts, out } = {}) {
   if (!fonts) throw new Error('assembleAssets: fonts is required');
   if (!out) throw new Error('assembleAssets: out is required');
-  const bundleDir = path.resolve(bundle);
+  if (!bundle === !official) throw new Error('assembleAssets: exactly one of bundle or official is required');
   const fontsDir = path.resolve(fonts);
   const outDir = path.resolve(out);
   if (fs.existsSync(outDir)) throw new Error(`assembleAssets: out directory already exists: ${outDir}`);
-  if (!fs.statSync(bundleDir).isDirectory()) throw new Error(`assembleAssets: bundle is not a directory: ${bundleDir}`);
   if (!fs.statSync(fontsDir).isDirectory()) throw new Error(`assembleAssets: fonts is not a directory: ${fontsDir}`);
 
-  const verified = await checkBundle({ bundle: bundleDir });
-  if (!verified.ok || !HEX64.test(verified.candidateSha256 ?? '')) throw new Error('assembleAssets: bundle verification did not return a candidate');
+  let mode, version, wasm, glue, wasmSha256, glueSha256;
+  if (official) {
+    const officialDir = path.resolve(official);
+    if (!fs.statSync(officialDir).isDirectory()) throw new Error(`assembleAssets: official is not a directory: ${officialDir}`);
+    const input = JSON.parse(fs.readFileSync(resolveInside(officialDir, 'inputs.json'), 'utf8'));
+    if (input.schemaVersion !== 1) throw new Error('official inputs.json: unsupported schemaVersion');
+    if (!HEX64.test(input.wasmSha256 ?? '')) throw new Error('official inputs.json: invalid wasmSha256');
+    if (!HEX64.test(input.glueSha256 ?? '')) throw new Error('official inputs.json: invalid glueSha256');
+    mode = 'font-only';
+    version = input.version;
+    // 源字节原样复制，但必须与 prepare 声明的身份逐字节一致。
+    wasm = fs.readFileSync(resolveInside(officialDir, 'pkg/original.wasm'));
+    glue = fs.readFileSync(resolveInside(officialDir, 'pkg/client.js'));
+    if (sha256(wasm) !== input.wasmSha256) throw new Error('assembleAssets: official original.wasm differs from inputs.json wasmSha256');
+    if (sha256(glue) !== input.glueSha256) throw new Error('assembleAssets: official client.js differs from inputs.json glueSha256');
+    wasmSha256 = input.wasmSha256;
+    glueSha256 = input.glueSha256;
+  } else {
+    const bundleDir = path.resolve(bundle);
+    if (!fs.statSync(bundleDir).isDirectory()) throw new Error(`assembleAssets: bundle is not a directory: ${bundleDir}`);
+    const verified = await checkBundle({ bundle: bundleDir });
+    if (!verified.ok || !HEX64.test(verified.candidateSha256 ?? '')) throw new Error('assembleAssets: bundle verification did not return a candidate');
+    mode = 'patched';
+    version = verified.version;
+    wasmSha256 = verified.candidateSha256;
+    glueSha256 = verified.glueSha256;
+    // 源字节在写入前逐一核对 hash；越界的 symlink 已在 resolveInside 拒绝。
+    wasm = fs.readFileSync(resolveInside(bundleDir, 'candidate.wasm'));
+    if (sha256(wasm) !== wasmSha256) throw new Error('assembleAssets: candidate.wasm differs from the verified bundle output');
+    glue = fs.readFileSync(resolveInside(bundleDir, 'glue.js'));
+    if (sha256(glue) !== glueSha256) throw new Error('assembleAssets: glue.js differs from the verified bundle output');
+  }
 
   // 版本号会被拼进手工编辑的模板，必须是纯文本安全字符。
-  if (!/^[\w][\w.-]*$/.test(verified.version)) throw new Error(`assembleAssets: unusable bundle version: ${verified.version}`);
+  if (!/^[\w][\w.-]*$/.test(version)) throw new Error(`assembleAssets: unusable bundle version: ${version}`);
 
   const manifestPath = resolveInside(fontsDir, 'fonts.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  const fontsValidated = validateFontsManifest(manifest, verified);
+  const fontsValidated = validateFontsManifest(manifest, { candidateSha256: wasmSha256 });
 
   const templatePath = fileURLToPath(new URL('./index.template.html', import.meta.url));
   const template = fs.readFileSync(templatePath, 'utf8');
   const marker = '<!--TERN:VERSION-->';
   if (!template.includes(marker)) throw new Error('assembleAssets: index template is missing the version marker');
-  const html = template.split(marker).join(verified.version);
+  const html = template.split(marker).join(version);
 
-  // 源字节在写入前逐一核对 hash；越界的 symlink 已在 resolveInside 拒绝。
-  const candidatePath = resolveInside(bundleDir, 'candidate.wasm');
-  const candidate = fs.readFileSync(candidatePath);
-  if (sha256(candidate) !== verified.candidateSha256) throw new Error('assembleAssets: candidate.wasm differs from the verified bundle output');
-  const gluePath = resolveInside(bundleDir, 'glue.js');
-  const glue = fs.readFileSync(gluePath);
-  if (sha256(glue) !== verified.glueSha256) throw new Error('assembleAssets: glue.js differs from the verified bundle output');
   const maple = fs.readFileSync(fileURLToPath(new URL('./maple.mjs', import.meta.url)));
   const fontSources = fontsValidated.map(font => {
     const bytes = fs.readFileSync(resolveInside(fontsDir, `pkg/MapleMono-NF-CN-${font.style}.ttf`));
@@ -105,11 +130,13 @@ export async function assembleAssets({ bundle, fonts, out } = {}) {
   put('index.html', Buffer.from(html, 'utf8'));
   put('maple.js', maple);
   put('fonts.json', fs.readFileSync(manifestPath));
-  put('pkg/client.wasm', candidate);
+  put('pkg/client.wasm', wasm);
   put('pkg/client.js', glue);
   for (const { font, bytes } of fontSources) put(`pkg/MapleMono-NF-CN-${font.style}.ttf`, bytes);
 
-  const deployManifest = { schemaVersion: 1, version: verified.version, candidateSha256: verified.candidateSha256, files };
+  const deployManifest = mode === 'font-only'
+    ? { schemaVersion: 1, mode, version, originalSha256: wasmSha256, glueSha256, wasmUnmodified: true, files }
+    : { schemaVersion: 1, mode, version, candidateSha256: wasmSha256, files };
   fs.writeFileSync(path.join(outDir, 'deploy-manifest.json'), JSON.stringify(deployManifest, null, 2) + '\n');
   return deployManifest;
 }

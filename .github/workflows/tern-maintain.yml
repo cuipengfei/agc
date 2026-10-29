@@ -16,10 +16,14 @@ jobs:
           bun-version: '1.4.3'
       - run: bun install --frozen-lockfile
         working-directory: tools/tern-maintain
+      - run: bun install --frozen-lockfile
+        working-directory: tools/tern-maintain/typecheck
       - name: Install WABT 1.0.42
         run: |
           WABT_BIN="$(bash tools/tern-maintain/ci/install-wabt.sh "$RUNNER_TEMP/wabt")"
           echo "WABT_DIR=$WABT_BIN" >> "$GITHUB_ENV"
+      - run: bun run check
+        working-directory: tools/tern-maintain
       - run: bun test
         working-directory: tools/tern-maintain
       - uses: astral-sh/setup-uv@v6

@@ -90,3 +90,15 @@ run('refuses to overwrite an existing output directory', async () => {
   fs.mkdirSync(out);
   await expect(assembleAssets({ bundle: fixtureBundle, fonts, out })).rejects.toThrow('already exists');
 });
+
+run('records the patched mode and candidate identity for a bundle assembly', async () => {
+  const fonts = makeFontsDir('fonts-patched');
+  const out = path.join(root, 'out-patched');
+  const manifest = await assembleAssets({ bundle: fixtureBundle, fonts, out });
+  expect(manifest).toMatchObject({ schemaVersion: 1, mode: 'patched', version: build.version });
+  expect(manifest.candidateSha256).toBe(build.outputs.candidateSha256);
+  expect(manifest.files['pkg/client.wasm']).toBe(build.outputs.candidateSha256);
+  expect(manifest.files['pkg/client.js']).toBe(build.inputs.glueSha256);
+  expect(read(out, 'pkg/client.wasm').equals(read(fixtureBundle, 'candidate.wasm'))).toBe(true);
+  expect(read(out, 'pkg/client.js').equals(read(fixtureBundle, 'glue.js'))).toBe(true);
+});

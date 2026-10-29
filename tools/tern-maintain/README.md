@@ -98,9 +98,18 @@ bun cli.mjs verify-page --url http://127.0.0.1:PORT \
 
 `assets` 将通过 `check-build` 的候选 WASM（绝不接受测试模块）、glue、字体清单、两份完整 Maple 字体、加载器和 `index.template.html` 生成的实际入口页面装配到新目录，写入 `deploy-manifest.json` 记录每个输出文件的实际 SHA-256；输出目录必须不存在。`verify-page` 强制 headless，访问 `assets` 生成的真实 `index.html` 入口，页面在浏览器内执行真实 WASM init 与字体注入；检查按页面自己发布的结构化状态核对初始化完成、两份字体真实注入、页面报告的 candidate SHA-256 与服务字节一致、全程零 WebSocket 构造；无 token 入口不执行 mount，完整 GPU 交互与 mount 始终记 `not_run`。真实页面 smoke（`workflow-eV2Po2`）对该入口通过：6 passed（含 page_ready、fonts_injected、candidate_hash）、2 `not_run`；把 `fonts.json` 中任一 font SHA-256 改写后 verify-page 退出 1，`page_ready`/`fonts_injected`/`candidate_hash` 失败并拒绝，其余检查不受影响（`artifacts/workflow-eV2Po2/real-page-smoke.json`、`real-page-valid.json`、`real-page-invalid-font-hash.json`）。
 
+仅替换字体时，`assets` 接受 `prepare` 的原版输入目录；`--bundle` 与 `--official` 必须且只能提供一个：
+
+```bash
+bun cli.mjs assets --official /path/to/original --fonts /path/to/font-assets \
+  --out /tmp/tern-font-only-site
+```
+
+此模式读取 `inputs.json` 的 version、WASM SHA-256 与 glue SHA-256，分别核对实际文件后逐字节复制原版模块和 glue。部署清单记录 `mode: "font-only"`、`originalSha256`、`glueSha256` 与 `wasmUnmodified: true`，不要求时间补丁构建包。字体描述符来自当前版本分析，WASM 内存中的字体在页面运行时替换，磁盘原版模块保持不变。`bundle` 模式记录 `mode: "patched"`，其余校验不变。
+
 ## 字体清单
 
-使用完成指令修改并编译后的 WASM、对应初始内存和完整 Maple Regular/Bold 原始文件：
+使用与资源模式对应的原版或 candidate WASM、对应初始内存和完整 Maple Regular/Bold 原始文件：
 
 ```bash
 uv run --with-requirements requirements.txt python font_manifest.py \
@@ -112,6 +121,21 @@ uv run --with-requirements requirements.txt python font_manifest.py \
 输出 `fonts.json` 和两份字体数据。工具核对初始内存 SHA-256，用 FontTools 从原始内嵌字体复制 lookup name records，保留 Maple 的完整 cmap、glyphs 和其他表，并检查中日韩及 Nerd Font 样例、转换前后的完整 cmap。两个字体都计算完整文件 SHA-256，descriptor 地址来自分析报告。新目录配合本目录 `maple.mjs` 使用，网页将其作为 `maple.js` 引入；manifest 指定的模块资源为 `pkg/client.wasm`。代码文件的安装由文件编辑工具处理，工具不自动改写现有网页。字体加载器在两个字体都完成校验后才修改 descriptor。
 
 ## 验证
+
+### Windows 真实页面复现
+
+在 WSL 中执行以下命令，用指定 binary 和 assets 启动独立 daemon 与 loopback Web 服务，并通过 Windows Node 驱动真实 Windows Chrome。命令只操作本次创建的临时会话，不连接正式 socket 或正式端口。
+
+```bash
+bun cli.mjs markdown-windows --binary /path/to/tern \
+  --assets /path/to/site --out /tmp/tern-markdown.json
+```
+
+工具发现 Windows Node、Playwright 和 Chrome，调用方可以分别用 `--node`、`--playwright-module`（模块目录）和 `--chromium-executable` 覆盖。`--assets` 可以是 `assets` 生成的网页目录，也可以是 `prepare` 的原版输入目录；原版官方 HTML 保持原样，浏览器从已校验的本地文件获取 WASM。
+
+页面必须实际取得 WebGPU adapter 并完成 mount。工具先记录画面，打开 ASCII Markdown 并确认响应和画面变化，再关闭该 pane、在同一路径追加 `中`、重新打开。`frames` 比较前后截图的 SHA-256，`mounted` 单独记录页面状态。心跳可用不能替代画面变化检查。
+
+`not_run` 表示前置条件不足或结果无法区分，退出码为 2，必须带 reason；`reproduced` 表示 ASCII 基线有效后，中文阶段页面无响应或画面保持不变；`not_reproduced` 要求中文阶段页面仍响应且画面已变化。后两种结论表示复现流程完成，不表示补丁正确或故障已经修复。控制台、WASM 异常和 daemon 状态保存在报告中；`--out` 同时生成同名 PNG。认证值不写入报告。临时进程、服务目录、驱动目录和浏览器 profile 由本次运行清理，cleanup 结果独立记录，不覆盖复现结论。
 
 ```bash
 bun cli.mjs verify --original /tmp/tern-candidate/pkg/original.wasm --candidate /tmp/candidate.wasm --out /tmp/tern-structure.json
@@ -133,6 +157,8 @@ bun verify-time.mjs --candidate /path/to/instant.wasm \
 验收会核对候选 SHA-256、五个实际函数的签名与函数体、imports、额外 exports 和初始内存，再执行日历时间转换、小数精度、输出边界、跨秒相减、饱和时长、真实 consumer 及一万次 externref 复用检查。profile 仅用于固定 SHA 的行为验收；升级分析不读取它。新版本需要经过人工审核的对应测试 profile。
 
 时间报告记录实际使用的 profile 与 glue 文件 SHA-256。生成验收记录时，这两个 hash 必须与提供的文件一致。
+
+`bun run check` 在内存中解析工具模块并校验部署报告，还通过 `typecheck/` 中固定版本的 TypeScript、Node/Bun 类型声明和 WebGPU 类型声明执行 `checkJs`。类型检查入口为 `build.mjs`、`assets.mjs`、`windows-browser.mjs` 及其实际导入依赖，可以检查第三方 API 成员；它不是对所有 JavaScript 值的完整类型证明。复现报告还必须有同一 `fixturePath` 和 `ascii_markdown_pane`、`pane_closed`、`cjk_appended`、`cjk_markdown_pane` 四个成功阶段。首次运行前执行 `bun install --cwd typecheck --frozen-lockfile`，CI 使用相同安装命令。
 
 `probe.mjs` 在随机 loopback 端口映射指定资源，使用新 `maple.mjs` 完成实际无界面加载，不连接 daemon：
 

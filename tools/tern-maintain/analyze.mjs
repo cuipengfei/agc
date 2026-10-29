@@ -55,7 +55,8 @@ export function analyze(bytes, fonts = []) {
         if(node.id===binaryen.ConstId&&typeof node.value==='number')item.values.push(node.value);
         if(node.id===binaryen.RefFuncId){const refs=functionReferences.get(node.func)??[];refs.push({caller:f.name});functionReferences.set(node.func,refs);}
         if (node.id === binaryen.CallId) {
-          const list=calls.get(node.target)??[];list.push({caller:f.name,ref});calls.set(node.target,list);
+          const target=/** @type {binaryen.ExpressionInfo & {target:string}} */(node).target;
+          const list=calls.get(target)??[];list.push({caller:f.name,ref});calls.set(target,list);
         }
         if (node.id === binaryen.ConstId && node.type === binaryen.i32 && typeof node.value === 'number') {
           const list=constants.get(node.value)??[];list.push({caller:f.name,expression:`i32.const ${node.value}`});constants.set(node.value,list);
@@ -104,12 +105,13 @@ export function analyze(bytes, fonts = []) {
         if(node.id!==binaryen.BlockId)return;
         for(const [index,ref] of node.children.entries()){
           const call=binaryen.getExpressionInfo(ref);
-          if(call.id!==binaryen.CallId||!timeTargets.has(call.target))continue;
+          const target=/** @type {binaryen.ExpressionInfo & {target:string}} */(call).target;
+          if(call.id!==binaryen.CallId||!timeTargets.has(target))continue;
           const following=node.children.slice(index+1,index+5);
           const loads=[];
           for(const expression of following)walk(expression,load=>{if(load.id===binaryen.LoadId)loads.push({bytes:load.bytes,offset:load.offset,ptr:binaryen.emitText(load.ptr)});});
-          const bases=[...new Set(loads.filter(a=>a.bytes===8&&loads.some(b=>b.bytes===4&&b.offset===a.offset+8&&b.ptr===a.ptr)).map(a=>JSON.stringify({ptr:a.ptr,offset:a.offset})))].map(JSON.parse);
-          manualEdits.push({caller:f.name,callerIndex:f.index,target:call.target,original:binaryen.emitText(ref),following:following.map(expression=>binaryen.emitText(expression)),timestampBufferCandidates:bases,decision:'manual_review_required'});
+          const bases=[...new Set(loads.filter(a=>a.bytes===8&&loads.some(b=>b.bytes===4&&b.offset===a.offset+8&&b.ptr===a.ptr)).map(a=>JSON.stringify({ptr:a.ptr,offset:a.offset})))].map(text=>JSON.parse(text));
+          manualEdits.push({caller:f.name,callerIndex:f.index,target,original:binaryen.emitText(ref),following:following.map(expression=>binaryen.emitText(expression)),timestampBufferCandidates:bases,decision:'manual_review_required'});
         }
       });
     }
