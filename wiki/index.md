@@ -72,10 +72,9 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测](ai-coding-agents/openai-decisions-api.md) | 2026-10-22 正式 GA（题目上限 400，新增九项能力）；Copilot `/v1/decisions` 在 10-15、10-18、10-25 三次特定测试条件下均返回 `model_not_supported`；模型上架不自动带来独立端点支持，最佳判断为需单独接入、优先级可能较低 | 2026-10-25 |
 | [Copilot 的决策路由端点与 Auto／HydraFusion 边界](ai-coding-agents/copilot-decision-routing.md) | 对外无 system-one 式决策 API；对内 `POST /auto`（每请求选模型，tier 四档）与 `POST /models/session/intent`（意图路由）题目固定；Auto 选模型 vs HydraFusion 选工作流并协调多模型；HydraFusion 独立上游地址未公开未确认，`hydra_scores` 归属 `/auto`/Auto V2 | 2026-10-25 |
 | [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；CodeMode 与 Codex Code Mode 同轴等价性未验证；native models.json 按 API 协议分别配置 provider（c8787/c8787-chat）、baseUrl 需带 /v1、8787 与 4140 同一网关；`mass ulw` 经源码核对为独立版专属 | 2026-10-27 |
-| [pstack 移植版生态全景](ai-coding-agents/pstack-ports-landscape.md) | 原版为 Lauren Tan cursor/plugins；20+ 移植按 star 排行（1103/944 两强断层）；backnotprop 内部结构已验证：50 skills（24 principle + 26 功能）、poteto-mode 路由 23 playbooks | 2026-10-05 |
-| [mattpocock/skills：两轴分类的工程 skill 集](ai-coding-agents/mattpocock-skills-system.md) | 27 skills 按 user-invoked/model-invoked 分层、ask-matt 可选路由、主线流程与三条 on-ramp、反流程拥有型哲学 | 2026-10-05 |
-| [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照 | 2026-10-05 |
-| [ai-memory：跨 agent 的长期记忆服务](ai-coding-agents/ai-memory-service.md) | 单二进制常驻、markdown 加 git 为权威源、hook 级捕获与零 LLM 默认、claim-once handoff、OMP 以 MCP 加扩展并行接入；与 mnemopi 的机制差异、选型条件与并存边界（未实测安装） | 2026-10-27 |
+| [pstack 移植版生态全景](ai-coding-agents/pstack-ports-landscape.md) | 原版为 Lauren Tan cursor/plugins；20+ 移植按 star 排行（1103/944 两强断层）；backnotprop 内部结构已验证：commit 25abb38 实测 61 个 SKILL.md（58 注册 = 24 principle + 34 功能 + 3 benny 自动化不进 slash）、60/61 设 disable-model-invocation、playbook 23 | 2026-10-29 |
+| [pstack 技能地图与行为](ai-coding-agents/pstack-skill-map-and-behaviors.md) | 判定标准（root=README get started 三者、模型自动=无 disable-model-invocation、paths 单列）；三层结构与 179 条执行边、13 类边、7 个无出边 playbook；可达 47+11 用户直呼+3 benny；安装核对 56 条全中、tdd/teach 同名遮蔽未装、benny 3 未装；61 技能行为面逐个重述 + 24 principle 触发表；README 自述互不调用与正文矛盾以正文为准；未做运行时探测 | 2026-10-29 |
+| [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照；2026-10-29 复核 pstack 58 注册 + 3 自动化、mattpocock 27 仍为 10-05 采集值 | 2026-10-29 |
 
 ## better-harness
 

@@ -1,21 +1,23 @@
 # skill 系统的两种组织轴：pstack 与 mattpocock/skills 对照
 
-> Sources: poteto-mode SKILL.md 原文, 2026-10-05; mattpocock/skills README 与 ask-matt, 2026-10-05
-> Raw: [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md)
-> Updated: 2026-10-05
+> Sources: poteto-mode SKILL.md 原文, 2026-10-05; mattpocock/skills README 与 ask-matt, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29
+> Raw: [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md)
+> Updated: 2026-10-29
 
 ## Overview
 
-pstack 与 mattpocock/skills 是同代工程 skill 集的两个代表，规模相近（50 vs 27 个 skill），但组织轴、路由强度、编排密度都不同。pstack 按任务类型组织、强制路由；mattpocock 按调用者组织、路由可选。两者的对照维度可以套用到其他 skill 系统的评估上。
+pstack 与 mattpocock/skills 是同代工程 skill 集的两个代表（pstack 2026-10-05 时点 50 个技能，mattpocock 27 个），但组织轴、路由强度、编排密度都不同。pstack 按任务类型组织、强制路由；mattpocock 按调用者组织、路由可选。两者的对照维度可以套用到其他 skill 系统的评估上。
+
+> **更新（2026-10-29）**：pstack 规模按 commit 25abb38 复核为 58 个注册技能（24 principle + 34 功能）+ 3 个 benny 自动化技能（不进 slash 菜单），共 61 个 SKILL.md；mattpocock/skills 侧未同日复核，27 仍为 2026-10-05 采集值。frontmatter 机制字段级核实：60/61 技能设 `disable-model-invocation: true`（唯一例外 setup-pstack）；typescript-best-practices 独有 `paths: ["**/*.ts", "**/*.tsx"]`。详见 [pstack 技能地图与行为](pstack-skill-map-and-behaviors.md)。
 
 ## 组织轴
 
-- **pstack（任务类型轴）**：50 个 skill = 24 个 `principle-*` 决策规则 + 26 个功能 skill，另配 23 份 playbook。每个任务先由 poteto-mode 分类到一份 playbook，playbook 再调用功能 skill，principle 在岔路口做决策。三层：路由 → 流程 → 工序/判例。
+- **pstack（任务类型轴）**：2026-10-05 快照 50 个 skill = 24 个 `principle-*` 决策规则 + 26 个功能 skill；2026-10-29 复核（commit 25abb38）为 58 注册 + 3 自动化，另配 23 份 playbook。每个任务先由 poteto-mode 分类到一份 playbook，playbook 再调用功能 skill，principle 在岔路口做决策。三层：路由 → 流程 → 工序/判例。
 - **mattpocock（调用者轴）**：27 个 skill 分 user-invoked（编排）与 model-invoked（纪律）两层，明文规定 user-invoked 不可平级互调。流程知识集中写在 ask-matt 的一张流程图里（主线 + 三条 on-ramp + vocabulary 层），skill 自身保持小颗粒。
 
 ## 路由强度
 
-- pstack 的 `poteto-mode` 标了 `disable-model-invocation: true`，只能显式调用，但一旦调用就是必经入口：匹配 playbook、复制其步骤为 todolist、逐条执行，无匹配时由 figure-it-out 设计定制流程。路由器是司机。
+- pstack 的 `poteto-mode` 标了 `disable-model-invocation: true`，只能显式调用，但一旦调用就是必经入口：匹配 playbook、复制其步骤为 todolist、逐条执行，无匹配时由 figure-it-out 设计定制流程。pstack 用这套字段把几乎所有技能都限制为显式调用或被其他技能调用（60/61 技能设此标志，唯一例外 setup-pstack，另有 typescript-best-practices 用 `paths` 字段在编辑 TS 文件时由宿主自动加载）。路由器是司机。
 - mattpocock 的 `ask-matt` 只回答「该用哪个」，用户平时直接叫具体 skill。README 明确批评流程拥有型框架（GSD、BMAD、Spec-Kit）夺走控制。路由器是地图。
 
 ## 编排密度

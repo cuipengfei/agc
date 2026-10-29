@@ -1,8 +1,8 @@
 # pstack 移植版生态全景
 
-> Sources: GitHub Search API / repo_view / Tavily, 2026-10-05; poteto-mode SKILL.md 原文, 2026-10-05
-> Raw: [github-pstack-ports-search](../../raw/ai-coding-agents/2026-10-05-github-pstack-ports-search.md); [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md)
-> Updated: 2026-10-05
+> Sources: GitHub Search API / repo_view / Tavily, 2026-10-05; poteto-mode SKILL.md 原文, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29
+> Raw: [github-pstack-ports-search](../../raw/ai-coding-agents/2026-10-05-github-pstack-ports-search.md); [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md)
+> Updated: 2026-10-29
 
 ## Overview
 
@@ -42,5 +42,7 @@ pstack 是 Lauren Tan 为 Cursor 编写的工程工作流 skill 插件，原版�
 
 经 GitHub API 目录枚举与 poteto-mode SKILL.md 原文核实：backnotprop/pstack 的 `skills/` 共 50 个子目录，其中 24 个 `principle-*` 决策规则（按 Core 10、Architecture 6、Verification 5、Delegation 2、Meta 1 分组）、26 个功能 skill。
 
-入口 skill `poteto-mode` 的机制：frontmatter 标 `disable-model-invocation: true`（只能用户显式调用）；收到任务后匹配 23 份 playbook 之一并逐条执行其步骤，无匹配时路由到 `figure-it-out` 设计定制流程，跨日常驻项目路由到 Orchestrate；执行中按 Non-negotiables 触发器调用功能 skill（并行扇出用 swarm、方案竞赛用 arena、争议设计用 interrogate 多模型对抗评审）。subagent 默认后台运行、按角色配模型（代码默认 `grok-4.7-xhigh-fast`、判断与文书默认 `claude-opus-5-5-max`），角色映射由 `setup-pstack` 配置。自主权规则为「Just do it / Always pause for irreversible writes」。Harness 节给出 Cursor 以外平台的映射（Claude Code、Codex、Pi、OpenCode 的 subagent 工具名、模型配置文件与 transcript 路径），这是各移植版得以成立的官方依据。
+> **Status: Outdated**（2026-10-29）
+> 随 commit 25abb38559ddbabec563646224d09eff9a250eca（2026-10-29）核实：`skills/` 58 个 + `automations/benny/skills/` 3 个自动化技能（setup-benny、triage-issue-reports、reproduce-and-fix-issues），共 61 个 SKILL.md；principle 数不变仍为 24，playbook 仍 23。frontmatter 机制字段级核实：60/61 设 `disable-model-invocation: true`（唯一例外 setup-pstack）；typescript-best-practices 独有 `paths: ["**/*.ts", "**/*.tsx"]`。结构地图与行为重述见 [pstack 技能地图与行为](pstack-skill-map-and-behaviors.md)。
 
+入口 skill `poteto-mode` 的机制：frontmatter 标 `disable-model-invocation: true`（只能用户显式调用）；收到任务后匹配 23 份 playbook 之一并逐条执行其步骤，无匹配时路由到 `figure-it-out` 设计定制流程，跨日常驻项目路由到 Orchestrate；执行中按 Non-negotiables 触发器调用功能 skill（并行扇出用 swarm、方案竞赛用 arena、争议设计用 interrogate 多模型对抗评审）。subagent 默认后台运行、按角色配模型（代码默认 `grok-4.7-xhigh-fast`、判断与文书默认 `claude-opus-5-5-xhigh`），角色映射由 `setup-pstack` 配置。自主权规则为「Just do it / Always pause for irreversible writes」。Harness 节给出 Cursor 以外平台的映射（Claude Code、Codex、Pi、OpenCode 的 subagent 工具名、模型配置文件与 transcript 路径），这是各移植版得以成立的官方依据。

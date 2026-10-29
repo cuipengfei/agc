@@ -1655,3 +1655,14 @@
 - Raw: raw/tern/2026-10-29-browser-reproduction-redraw-guard.md
 - Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
 - 要点：旧判据把 `driver command timed out: visible-interaction` 写成 `reproduced`；静态截图相同、DOM 选区相同、驱动超时都不构成冻结证据。改为 viewport 输入后检查 canvas 像素尺寸与 GPU 提交；真实 0.9.7 仅字体页由 `1280`×`720`／`328` 变为 `1360`×`760`／`334`。定向 22 项与全套 91 项测试通过。
+
+## [2026-10-29] ingest | pstack 技能地图与行为（backnotprop/pstack@25abb38）
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md; raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md
+- Updated: pstack 移植版生态全景; skill 系统的两种组织轴：pstack 与 mattpocock/skills 对照
+- 要点：commit 25abb38（2026-10-29 main）实测 61 个 SKILL.md（skills/ 58 = 24 principle + 34 功能；automations/benny/skills/ 3）；60/61 设 disable-model-invocation: true（唯一例外 setup-pstack），typescript-best-practices 独有 paths；root 取 README:114-123 的 /setup-pstack、/poteto-mode、/poteto-help；13 类 442 条边、执行边 179 条，从三 root 可达 47 个注册技能，11 个只能用户直接点名，poteto-help 79 条斜杠提及单列为推荐；README「互不调用」名单与正文执行边矛盾（why→how、architect→how、blast-radius→4、ketchup→bro、ketchup-video→ketchup），以正文为准；本机 lock 56 条全中，tdd/teach 同名目录被 mattpocock/skills 占用未装 pstack 版，benny 3 个按设计不装；未做运行时路由探测。
+
+## [2026-10-29] ingest | pstack 61 技能正文原文摘录
+- Disposition: New
+- Raw: raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md
+- 要点：61 个 SKILL.md 的逐字原文摘录（frontmatter、job 描述行、子代理角色与模型行、七问清单、输出合同、benny 硬规则），行为归纳编译进「pstack 技能地图与行为」，本 raw 仅存原文与行号。
