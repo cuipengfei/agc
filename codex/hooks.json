@@ -9,6 +9,15 @@
             "type": "command"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -24,6 +33,15 @@
       {
         "hooks": [],
         "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
       }
     ],
     "PreCompact": [
@@ -42,6 +60,15 @@
           }
         ],
         "matcher": "AskUserQuestion|question|ask_user_question"
+      },
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -50,6 +77,15 @@
           {
             "command": "bash '/home/cpf/.codex/herdr-agent-state.sh' session",
             "timeout": 10,
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 5,
             "type": "command"
           }
         ]
@@ -70,6 +106,48 @@
           {
             "command": "/home/cpf/.codex/hooks/win-ntf-notify.sh idle",
             "timeout": 10,
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Interrupt": [
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 2,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "tuios agent-hook codex --integration 1",
+            "timeout": 2,
             "type": "command"
           }
         ]
