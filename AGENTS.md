@@ -105,6 +105,7 @@ python3 -c "import json;e=json.load(open('manifest.json'))['entries'];print(len(
 - 同步运行时为 Python 3；入口脚本明确调用 `python3`。
 - 根目录没有 pyproject/setup/Makefile 构建系统；不要凭空添加依赖或命令。
 - `.github/workflows/tern-maintain.yml` 对 Tern 工具执行 `bun run check`、Bun 行为测试与 FontTools 字体数据测试，并运行同步项目的 Python unittest。
+- Tern 部署验收以 `verify-page`（无 token 初始化、字体注入、模块身份、WebSocket 缺席）和 `upgrade` 报告（进程身份、HTTP、pane 保留）为准；`markdown-windows` 复现结论单独记录，不作为部署条件。
 - `.opencode/` 与 `omp/plugins/` 的 package 文件只服务对应插件依赖；`tools/tern-maintain/` 有独立 Bun 依赖和测试，不把 Node/npm 流程当作同步项目默认流程。
 - 不主动创建 symlink；来源条目是 symlink 时，先评估目标副作用。
 

@@ -1,9 +1,9 @@
 name: Tern maintenance checks
 on:
   push:
-    paths: ['tools/tern-maintain/**', '.github/workflows/tern-maintain.yml']
+    paths: ['tools/tern-maintain/**', 'tools/wiki-check/**', 'wiki/**', 'raw/**', '.github/workflows/tern-maintain.yml']
   pull_request:
-    paths: ['tools/tern-maintain/**', '.github/workflows/tern-maintain.yml']
+    paths: ['tools/tern-maintain/**', 'tools/wiki-check/**', 'wiki/**', 'raw/**', '.github/workflows/tern-maintain.yml']
 permissions:
   contents: read
 jobs:
@@ -25,7 +25,21 @@ jobs:
       - run: bun run check
         working-directory: tools/tern-maintain
       - run: bun test
-        working-directory: tools/tern-maintain
+      - name: Wiki evidence check
+        run: |
+          output=$(python3 tools/wiki-check/check_evidence.py .)
+          echo "$output"
+          errors=$(echo "$output" | awk '/Evidence errors/{flag=1;next}/Unreferenced raw files/{flag=0}flag && NF && !/^\(none\)$/{count++}END{print count+0}')
+          unref=$(echo "$output" | awk '/Unreferenced raw files/{flag=1;next}/Summary/{flag=0}flag && NF && !/^\(none\)$/{count++}END{print count+0}')
+          if [ "$errors" -gt 0 ]; then
+            echo "Wiki evidence errors found: $errors"
+            exit 1
+          fi
+          if [ "$unref" -gt 0 ]; then
+            echo "Unreferenced raw files found: $unref"
+            exit 1
+          fi
+          echo "Wiki evidence check passed (suspects are informational)"
       - uses: astral-sh/setup-uv@v6
       - run: uv run --with-requirements requirements.txt python -m unittest discover -s python_tests -v
         working-directory: tools/tern-maintain

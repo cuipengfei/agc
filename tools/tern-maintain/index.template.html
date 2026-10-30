@@ -42,7 +42,7 @@
         const wire = new URL(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/wire`);
         wire.searchParams.set('token', token);
         const canvas = document.getElementById('tern');
-        window.tern = await mount(canvas, wire.href);
+        window.tern = await mount(canvas, [wire.href]);
         verification.mounted = true;
         status.remove();
         canvas.focus();

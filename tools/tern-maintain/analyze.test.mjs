@@ -12,11 +12,12 @@ test('nested LocalSet preserves panic-call and font-pointer references',()=>{
  const m=binaryen.parseText('(module (func $panic (result i32) (i32.const 42)) (func $consumer (local i32) (local.set 0 (i32.add (call $panic) (i32.const 9028220)))))');
  try{const info=binaryen.getFunctionInfo(m.getFunction('consumer'));const calls=[],values=[];walk(info.body,n=>{if(n.id===binaryen.CallId)calls.push(n.target);if(n.id===binaryen.ConstId)values.push(n.value);});expect(calls).toEqual(['panic']);expect(values).toContain(9028220);}finally{m.dispose();}
 });
-test('descriptor location is computed from memory and ambiguous aliases fail closed',()=>{
+test('descriptor location is computed from memory; same-font duplicates allowed, cross-font aliases rejected',()=>{
  const bytes=compile('(module (memory (export "memory") 1) (data (i32.const 100) "\\c8\\00\\00\\00\\20\\00\\00\\00"))');
  const result=analyze(bytes,[{family:'BerkeleyMono-Regular',pointer:200,length:32}]);expect(result.fonts[0].slot).toBe(100);
  const duplicate=compile('(module (memory (export "memory") 1) (data (i32.const 100) "\\c8\\00\\00\\00\\20\\00\\00\\00") (data (i32.const 120) "\\c8\\00\\00\\00\\20\\00\\00\\00"))');
- expect(()=>analyze(duplicate,[{family:'BerkeleyMono-Regular',pointer:200,length:32}])).toThrow('Ambiguous');
+ const multi=analyze(duplicate,[{family:'BerkeleyMono-Regular',pointer:200,length:32}]);expect(multi.fonts[0].slot).toEqual([100,120]);
+ expect(()=>analyze(duplicate,[{family:'BerkeleyMono-Regular',pointer:200,length:32},{family:'BerkeleyMono-Bold',pointer:200,length:32}])).toThrow('Ambiguous');
 });
 test('initialization does not fake an imported function succeeding',()=>{
  const bytes=compile('(module (import "env" "start" (func $start)) (memory (export "memory") 1) (start $start))');expect(()=>initialMemory(bytes)).toThrow('Unexpected initialization call');

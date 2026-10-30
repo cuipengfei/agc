@@ -19,8 +19,7 @@ const usage=`Tern maintenance (no GUI)
   bun cli.mjs verify-service --url http://127.0.0.1:PORT --assets DIR --token-file FILE --version VERSION [--out REPORT]
   bun cli.mjs upgrade --binary FILE --candidate-binary FILE --socket FILE --port NUMBER --assets DIR --state-dir DIR --token-file FILE --version VERSION [--out REPORT]
   bun cli.mjs evidence --version VERSION --original FILE --candidate FILE --glue FILE --profile FILE --structure-report FILE --time-report FILE --font-report FILE --headless-report FILE --runtime-report FILE --service-report FILE --skipped FILE --out REPORT
-  bun cli.mjs browser --url http://127.0.0.1:PORT --playwright-module FILE --chromium-executable FILE --out REPORT
-  bun cli.mjs build --original FILE --glue FILE --profile FILE --recipe FILE --wabt-dir DIR --out NEW_DIR
+  bun cli.mjs verify-mounted --url URL --playwright-module FILE --chromium-executable FILE --token-file FILE --out REPORT
   bun cli.mjs rebuild --bundle DIR --wabt-dir DIR --out NEW_DIR
   bun cli.mjs check-build --bundle DIR
   bun cli.mjs assets (--bundle DIR | --official DIR) --fonts DIR --out NEW_DIR
@@ -66,9 +65,10 @@ async function main(){
    const {collectEvidence}=await import('./evidence.mjs');
    result=await collectEvidence({version:v.version,original:v.original,candidate:v.candidate,glue:v.glue,profile:v.profile,structureReport:v['structure-report'],timeReport:v['time-report'],fontReport:v['font-report'],headlessReport:v['headless-report'],runtimeReport:v['runtime-report'],serviceReport:v['service-report'],skipped:JSON.parse(await readFile(v.skipped,'utf8')),out:v.out});
  }
-else if(['status','start','browser'].includes(command)){
+else if(['status','start','browser','verify-mounted'].includes(command)){
   const runtime=await import('./runtime.mjs');
   if(command==='browser'){required('url','playwright-module','chromium-executable','out');result=await runtime.browserCheck({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable'])});}
+  else if(command==='verify-mounted'){required('url','playwright-module','chromium-executable','token-file','out');result=await runtime.browserCheck({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable']),tokenFile:resolve(v['token-file']),mount:true});}
   else {required('binary','socket','port');if(!/^\d+$/.test(v.port)||Number(v.port)<1024||Number(v.port)>65535)throw Error('Port must be 1024..65535');if(command==='start')required('assets','state-dir');result=await runtime[command]({binary:resolve(v.binary),socket:resolve(v.socket),port:Number(v.port),assets:v.assets&&resolve(v.assets),stateDir:v['state-dir']&&resolve(v['state-dir'])});}
 }
 else if(['build','rebuild','check-build'].includes(command)){

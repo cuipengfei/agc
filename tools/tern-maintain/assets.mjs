@@ -31,12 +31,12 @@ function validateFontsManifest(manifest, verified) {
   if (!HEX64.test(manifest.wasmSha256 ?? '')) throw new Error('fonts.json: invalid wasmSha256');
   if (manifest.wasmUrl !== './pkg/client.wasm') throw new Error('fonts.json: unexpected wasmUrl');
   if (manifest.wasmSha256 !== verified.candidateSha256) throw new Error('fonts.json WASM identity does not match the verified bundle candidate');
-  if (!Array.isArray(manifest.fonts) || manifest.fonts.length !== 2) throw new Error('fonts.json: exactly two fonts are required');
+  if (!Array.isArray(manifest.fonts) || manifest.fonts.length < 2) throw new Error('fonts.json: at least two font descriptors are required');
   const slots = [];
-  for (const [index, font] of manifest.fonts.entries()) {
-    const style = ['Regular', 'Bold'][index];
-    if (font.style !== style) throw new Error(`fonts.json: font ${index} must be ${style}`);
-    if (font.url !== `./pkg/MapleMono-NF-CN-${style}.ttf`) throw new Error(`fonts.json: unexpected ${style} url`);
+  for (const font of manifest.fonts) {
+    const style = font.style;
+    if (style !== 'Regular' && style !== 'Bold') throw new Error(`fonts.json: unexpected style ${style}`);
+    if (!font.url.startsWith('./pkg/MapleMono-NF-CN-')) throw new Error(`fonts.json: unexpected ${style} url ${font.url}`);
     assertSafeRelative(font.url);
     if (!HEX64.test(font.sha256 ?? '')) throw new Error(`fonts.json: invalid ${style} sha256`);
     for (const key of ['slot', 'expectedPointer', 'expectedLength', 'bytes']) {
@@ -99,6 +99,43 @@ export async function assembleAssets({ bundle, official, fonts, out } = {}) {
     if (sha256(glue) !== glueSha256) throw new Error('assembleAssets: glue.js differs from the verified bundle output');
   }
 
+  // glue API 兼容性：mount 第二个参数类型由 JSDoc @param 声明，0.9.7 为 string，0.9.8+ 为 string[]。
+  const glueSrc = glue.toString();
+  const mountMatch = glueSrc.match(/export\s+(?:async\s+)?function\s+mount\s*\(\s*canvas\s*,\s*(\w+)\s*\)/);
+  if (mountMatch) {
+    const paramName = mountMatch[1];
+    const jsdocPattern = new RegExp(`@param\\s*\\{([^}]+)\\}\\s*${paramName}`);
+    const jsdocMatch = glueSrc.match(jsdocPattern);
+    if (jsdocMatch) {
+      const declaredType = jsdocMatch[1].trim();
+      const passFn = glueSrc.match(new RegExp(`passArrayJsValueToWasm0\\(\\s*${paramName}`)) ? 'array' : 'string';
+      if (declaredType === 'string[]' && passFn !== 'array') {
+        throw new Error('assembleAssets: glue mount() declares string[] but does not use passArrayJsValueToWasm0; inconsistent glue');
+      }
+      if (declaredType === 'string' && passFn !== 'string') {
+        throw new Error('assembleAssets: glue mount() declares string but does not use passStringToWasm0; inconsistent glue');
+      }
+    }
+  } else {
+    throw new Error('assembleAssets: could not identify mount() export in glue; unrecognized glue format');
+  }
+
+  // 模板与 glue 参数类型对照：模板必须按 glue 声明传递 string 或 string[]。
+  const templatePath = fileURLToPath(new URL('./index.template.html', import.meta.url));
+  let template = fs.readFileSync(templatePath, 'utf8');
+  const templateMountMatch = template.match(/mount\s*\(\s*canvas\s*,\s*(\[?)\s*wire\.href\s*(\]?)\s*\)/);
+  if (!templateMountMatch) throw new Error('assembleAssets: index template mount(canvas, ...) call not found');
+  const templateIsArray = templateMountMatch[1] === '[' && templateMountMatch[2] === ']';
+  const glueParamName = mountMatch[1];
+  const glueJsdoc = glueSrc.match(new RegExp(`@param\\s*\\{([^}]+)\\}\\s*${glueParamName}`));
+  const glueIsArray = glueJsdoc && glueJsdoc[1].trim() === 'string[]';
+  if (templateIsArray !== glueIsArray) {
+    // 模板与 glue 不匹配：按 glue 类型修正模板。
+    const corrected = glueIsArray
+      ? template.replace(/mount\s*\(\s*canvas\s*,\s*\[?\s*wire\.href\s*\]?\s*\)/, 'mount(canvas, [wire.href])')
+      : template.replace(/mount\s*\(\s*canvas\s*,\s*\[?\s*wire\.href\s*\]?\s*\)/, 'mount(canvas, wire.href)');
+    template = corrected;
+  }
   // 版本号会被拼进手工编辑的模板，必须是纯文本安全字符。
   if (!/^[\w][\w.-]*$/.test(version)) throw new Error(`assembleAssets: unusable bundle version: ${version}`);
 
@@ -106,15 +143,13 @@ export async function assembleAssets({ bundle, official, fonts, out } = {}) {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const fontsValidated = validateFontsManifest(manifest, { candidateSha256: wasmSha256 });
 
-  const templatePath = fileURLToPath(new URL('./index.template.html', import.meta.url));
-  const template = fs.readFileSync(templatePath, 'utf8');
   const marker = '<!--TERN:VERSION-->';
   if (!template.includes(marker)) throw new Error('assembleAssets: index template is missing the version marker');
   const html = template.split(marker).join(version);
 
   const maple = fs.readFileSync(fileURLToPath(new URL('./maple.mjs', import.meta.url)));
   const fontSources = fontsValidated.map(font => {
-    const bytes = fs.readFileSync(resolveInside(fontsDir, `pkg/MapleMono-NF-CN-${font.style}.ttf`));
+    const bytes = fs.readFileSync(resolveInside(fontsDir, font.url.replace('./', '')));
     if (sha256(bytes) !== font.sha256) throw new Error(`assembleAssets: ${font.style} font SHA-256 does not match fonts.json`);
     if (bytes.length !== font.bytes) throw new Error(`assembleAssets: ${font.style} font length does not match fonts.json`);
     return { font, bytes };
@@ -132,7 +167,7 @@ export async function assembleAssets({ bundle, official, fonts, out } = {}) {
   put('fonts.json', fs.readFileSync(manifestPath));
   put('pkg/client.wasm', wasm);
   put('pkg/client.js', glue);
-  for (const { font, bytes } of fontSources) put(`pkg/MapleMono-NF-CN-${font.style}.ttf`, bytes);
+  for (const { font, bytes } of fontSources) put(font.url.replace('./', ''), bytes);
 
   const deployManifest = mode === 'font-only'
     ? { schemaVersion: 1, mode, version, originalSha256: wasmSha256, glueSha256, wasmUnmodified: true, files }

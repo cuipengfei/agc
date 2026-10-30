@@ -357,9 +357,9 @@ export async function start({ binary = 'tern', assets, socket, port, stateDir, t
  * optional (offline font acceptance needs no auth); when given, the token
  * lives in RAM only and never appears in returned details.
  * Returns { schemaVersion: 1, checks: [{name, status: passed|failed|not_run, details}] }.
- * @param {{ url?: string, playwrightModule?: string, chromiumExecutable?: string, tokenFile?: string, timeoutMs?: number }} [options]
+ * @param {{ url?: string, playwrightModule?: string, chromiumExecutable?: string, tokenFile?: string, timeoutMs?: number, mount?: boolean }} [options]
  */
-export async function browserCheck({ url, playwrightModule, chromiumExecutable, tokenFile, timeoutMs = 60_000 } = {}) {
+export async function browserCheck({ url, playwrightModule, chromiumExecutable, tokenFile, timeoutMs = 60_000, mount = false } = {}) {
   const order = ['headless_forced', 'page_served', 'webgpu_available', 'client_init', 'wire_mount', 'token_redaction', 'gpu_interaction_full'];
   const checks = new Map(order.map(name => [name, { name, status: 'not_run', details: '' }]));
   const add = (name, status, details = '') => {
@@ -393,14 +393,16 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
     try {
       const page = await browser.newPage();
 
-      // Blank root document: the shipped index.html (mount + WebSocket) must not
-      // execute — this check connects to no pane. Static assets still reach the
-      // real server because only navigation requests are intercepted.
-      await page.route('**/*', route => {
-        const request = route.request();
-        if (request.isNavigationRequest() && new URL(request.url()).origin === origin) return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Tern headless verification</title>'});
-        return route.continue();
-      });
+      if (!mount) {
+        // Blank root document: the shipped index.html (mount + WebSocket) must not
+        // execute — this check connects to no pane. Static assets still reach the
+        // real server because only navigation requests are intercepted.
+        await page.route('**/*', route => {
+          const request = route.request();
+          if (request.isNavigationRequest() && new URL(request.url()).origin === origin) return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Tern headless verification</title>'});
+          return route.continue();
+        });
+      }
 
       // Genuine HTTP probe of the server (API requests bypass route interception).
       let probe = null;
@@ -453,8 +455,40 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
         add('client_init', 'failed', init.reason);
       }
 
-      // Deliberately out of scope this round: no mount, no WebSocket, no pane.
-      add('wire_mount', 'not_run', '本轮仅模块 init 与完整 Maple 注入，不执行 mount/WebSocket，避免连接或操作任何 pane');
+      if (mount) {
+        // Mount mode: allow the real page to load and execute mount.
+        // Wait for structured mount state or failure.
+        const mountTimeout = Math.min(timeoutMs, 30_000);
+        const mountResult = await page.evaluate(async (timeoutMs) => {
+          return new Promise(resolve => {
+            const timeout = setTimeout(() => resolve({ mounted: false, reason: 'mount timed out' }), timeoutMs);
+            const check = () => {
+              const v = /** @type {{mounted?:boolean,failed?:boolean,error?:string|null}|undefined} */ (/** @type {{__ternVerification?:{mounted?:boolean,failed?:boolean,error?:string|null}}} */ (window).__ternVerification);
+              if (v && (v.mounted || v.failed)) {
+                clearTimeout(timeout);
+                resolve({ mounted: v.mounted === true, failed: v.failed === true, error: v.error || null });
+              } else if (/** @type {{tern?:unknown}} */ (window).tern) {
+                clearTimeout(timeout);
+                resolve({ mounted: true, structured: false });
+              } else {
+                setTimeout(check, 250);
+              }
+            };
+            check();
+          });
+        }, mountTimeout);
+        if (mountResult.mounted) {
+          add('wire_mount', 'passed', mountResult.structured ? 'window.__ternVerification.mounted===true' : 'window.tern mounted without #status.error');
+          // Count WebSocket frames received after mount.
+          const framesReceived = await page.evaluate(() => /** @type {{__ternWsFramesReceived?:number}} */ (window).__ternWsFramesReceived || 0);
+          add('gpu_interaction_full', framesReceived > 0 ? 'passed' : 'not_run', `WebSocket frames received: ${framesReceived}`);
+        } else {
+          add('wire_mount', 'failed', mountResult.error || mountResult.reason || 'mount did not complete');
+        }
+      } else {
+        // Deliberately out of scope this round: no mount, no WebSocket, no pane.
+        add('wire_mount', 'not_run', '本轮仅模块 init 与完整 Maple 注入，不执行 mount/WebSocket，避免连接或操作任何 pane');
+      }
 
       const haystack = JSON.stringify([...checks.values()]);
       add('token_redaction', token ? (haystack.includes(token) ? 'failed' : 'passed') : 'passed', token ? 'token value absent from check details' : 'no token provided; nothing to redact');
@@ -464,7 +498,7 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
   } catch (error) {
     add('headless_forced', 'failed', (error && error.message) || String(error));
   } finally {
-    add('gpu_interaction_full', 'not_run', '本轮仅验证模块初始化与字体注入，未执行完整 GPU 交互');
+    if (!mount) add('gpu_interaction_full', 'not_run', '本轮仅验证模块初始化与字体注入，未执行完整 GPU 交互');
   }
 
   const result = order.map(name => checks.get(name));

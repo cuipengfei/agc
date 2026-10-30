@@ -2,6 +2,6 @@
   "name": "tern-maintain",
   "private": true,
   "type": "module",
-  "scripts": {"check": "bun check-types.mjs", "test": "bun test"},
+  "scripts": {"check": "bun check-types.mjs", "test": "bun test", "test:receipt": "set -o pipefail; bun test 2>&1 | tee artifacts/test-receipt.log; status=$?; bun -e \"const fs=require('fs');const log=fs.readFileSync('artifacts/test-receipt.log','utf8');const m=log.match(/(\\d+) pass\\s*(\\d+) fail[\\s\\S]*?Ran (\\d+) tests across (\\d+) files\\. \\[([\\d.]+)s\\]/);if(!m){console.error('test:receipt: could not parse test summary');process.exit(1)}fs.writeFileSync('artifacts/test-receipt.json',JSON.stringify({tests:+m[3],pass:+m[1],fail:+m[2],files:+m[4],durationMs:Math.round(+m[5]*1000),commit:process.env.GITHUB_SHA||require('child_process').execSync('git rev-parse HEAD').toString().trim()}))\"; rc=$?; if [ $rc -ne 0 ]; then exit $rc; fi; exit $status"},
   "dependencies": {"ajv": "8.20.0", "binaryen": "123.0.0", "linkedom": "0.18.12"}
 }

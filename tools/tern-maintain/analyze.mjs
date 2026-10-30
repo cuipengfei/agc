@@ -88,12 +88,14 @@ export function analyze(bytes, fonts = []) {
       const body=messages.length?binaryen.emitText(f.body):'';
       if(messages.length)panicFunctions.push({name:f.name,index:f.index,params:f.params,results:f.results,messages:[...new Set(messages)],callers:callers(f.name),tableReferences:tableReferences.get(f.name)??[],functionReferences:functionReferences.get(f.name)??[],body});
     }
-    const fontPlans=fonts.filter(f=>f.family?.startsWith('BerkeleyMono')).map(font=>{
+    const fontPlans=fonts.filter(f=>f.family?.startsWith('BerkeleyMono')||f.family?.startsWith('Ioskeley Mono Term')).map(font=>{
       const slots=[];
       for(let p=0;p<=memory.length-8;p++)if(view.getUint32(p,true)===font.pointer&&view.getUint32(p+4,true)===font.length)slots.push(p);
-      if(slots.length!==1)throw Error(`Ambiguous font descriptor: ${font.family} (${slots.length})`);
-      return {...font,slot:slots[0],pointerReferences:constants.get(font.pointer)??[],lengthReferences:constants.get(font.length)??[]};
+      if(slots.length===0)throw Error(`No font descriptor found: ${font.family}`);
+      return {...font,slot:slots.length===1?slots[0]:slots,pointerReferences:constants.get(font.pointer)??[],lengthReferences:constants.get(font.length)??[]};
     });
+    const slotOwners=new Map();
+    for(const font of fontPlans){const slots=Array.isArray(font.slot)?font.slot:[font.slot];for(const s of slots){if(slotOwners.has(s))throw Error(`Ambiguous font descriptor alias: slot ${s} claimed by ${slotOwners.get(s)} and ${font.family}`);slotOwners.set(s,font.family);}}
     const clocks=functions.filter(f=>f.base?.startsWith('__wbg_now')).map(f=>({name:f.name,index:f.index,import:f.base,callers:callers(f.name)}));
     const timeTargets=new Set(panicFunctions.filter(f=>f.messages.some(m=>m.includes('time not implemented'))).map(f=>f.name));
     const manualEdits=[];

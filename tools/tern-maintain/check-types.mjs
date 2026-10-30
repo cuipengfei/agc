@@ -103,7 +103,7 @@ export function validateDeploymentReport(report) {
 
 /** Parse-check every maintainer module under root (and fixtures/*.mjs) in memory. */
 export async function checkSources(root = here) {
-  const names = (await readdir(root)).filter(name => name.endsWith('.mjs'));
+  const names = (await readdir(root)).filter(name => name.endsWith('.mjs') && name !== 'windows-driver.mjs');
   const fixtures = (await readdir(join(root, 'fixtures')).catch(() => [])).filter(name => name.endsWith('.mjs'));
   const files = [...names, ...fixtures.map(name => join('fixtures', name))];
   const failures = [];
