@@ -222,9 +222,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "0c447e2bc5c9c8d885ecc7551906623e88a1ae5e",
+      "skillFolderHash": "d8115f8f5d1edf84c162af66506d292d62e43411",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-19T11:21:14.333Z"
+      "updatedAt": "2026-10-30T14:22:27.172Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -1243,9 +1243,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "f81205cdb9d7437b87abb5f2f8936504dfc10b78",
+      "skillFolderHash": "7006bf8d9e1f3d17171c7395d1ec214b9e8baef9",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-10-29T13:45:08.925Z"
+      "updatedAt": "2026-10-30T14:22:33.775Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1261,9 +1261,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "f35c4439651d42dc9d299a8056767b0dac4ad597",
+      "skillFolderHash": "d808e09ad4afa0dcf0ff107e8e6fdd54dec97859",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-10-29T13:45:36.847Z"
+      "updatedAt": "2026-10-30T14:24:15.420Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
