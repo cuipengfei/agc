@@ -1691,3 +1691,8 @@
 - Disposition: New; Update
 - Raw: raw/herdr-plannotator/2026-10-31-plannotator-inbox-omp-session-evidence.md; raw/herdr-plannotator/2026-10-31-plannotator-inbox-mcp-guide.md
 - Updated: Plannotator agent tool 注入与 Quick Labels 机制
+
+## [2026-11-01] ingest | ttyd 配色与 TUIOS Web 后续使用
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-01-ttyd-tokyo-night-storm-url.md; raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md; raw/terminal-multiplexers/2026-11-01-tuios-agent-naming-sidebar-and-paging.md; raw/terminal-multiplexers/2026-11-01-tuios-disable-mouse-focus.md
+- Updated: ttyd Tokyo Night Storm 配色链接; TUIOS Web 与安装升级; tuios workspace 与 session rail; TUIOS 配置与用户体验; TUIOS 配置项全表（0.12.0）; 终端图像协议支持矩阵; ttyd 前端编译模型与 xterm 版本锁定

@@ -1,8 +1,8 @@
 # 终端图像协议支持矩阵
 
-> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25
-> Raw: [ttyd 图像协议](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [Herdr 图像协议](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md)
-> Updated: 2026-10-25
+> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25; 后续会话核对, 2026-11-01
+> Raw: [ttyd 图像协议](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [Herdr 图像协议](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md)
+> Updated: 2026-11-01
 
 ## 概述
 
@@ -153,3 +153,9 @@ OMP 的终端能力解析器将 Herdr 标记为需要显式覆盖图像协议。
 - [Tern Surface Protocol](tern-surface-protocol.md) — Tern 的图表绘制路径与图像节点
 - [ttyd 前端编译模型与 xterm 版本锁定](../terminal-multiplexers/ttyd-frontend-compilation.md)
 - [Herdr + Plannotator 工具链全量 Reference](../herdr-plannotator/toolchain-reference.md)
+
+## 本次 TUIOS Web 图形链路
+
+本次 v0.12.1 使用 sip v0.10.0 的 WebTerm 浏览器端，支持 Kitty 图形，Web 侧配置 SIXEL 转 Kitty。浏览器连接 tuios-web；ttyd 在服务启动祖先链中，不表示其参与该页面图形渲染。
+
+OMP 的 PNG 演示为 640 × 200，已生成并作为图片输出。没有获得浏览器截图或用户对该图片的确认。源码能力、工具图片输出和页面目视结果分别记录。

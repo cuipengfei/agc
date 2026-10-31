@@ -389,12 +389,13 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；两个定制块的剪贴板方向语义（OSC52 服务复制方向，粘贴方向不经过） | 2026-10-17 |
-| [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | workspace、pane 与 session rail 的区别；Agent 展示与切换、自动折叠和进程识别的边界、主 Agent 与 subagent 行管理、侧栏菜单和 pane 右键分发 | 2026-10-31 |
-| [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | tuios-web 独立运行、sip/xterm.js 分工、gh 认证安装、更新职责、ttyd 端口冲突与远程安全；补充 0.12.0 Web 模式 ConfigReadOnly、不写盘落地途径与生效分层 | 2026-10-31 |
-| [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 配置机制、Web 持久化、生效时机；24 项交互调整的使用场景与取舍，23 项已入库，最新标题显示目录仅在来源 | 2026-10-31 |
-| [TUIOS 配置项全表（0.12.0）](terminal-multiplexers/tuios-config-reference.md) | 271 个路径的允许值、默认值及来源当前值；更新24项选择，准确说明点击输入、右键分发、折叠、子任务显示和 idle 提醒 | 2026-10-31 |
+| [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | 前端编译与版本锁定、剪贴板定制、图形协议；链接到用户认可的完整 Tokyo Night Storm 配色 URL | 2026-11-01 |
+| [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | 七种侧栏内容及 spacer；Agent 显示、命名报告 #1384/#1388、v0.12.1；普通输入与复制模式翻页、鼠标处理边界 | 2026-11-01 |
+| [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | Web 独立运行、安装与认证、持久化；本次 WebTerm 渲染、进程祖先与浏览器入口区分、Kitty 图片输出和 Maple 字体入口 | 2026-11-01 |
+| [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 配置机制与交互取舍；24 项调整后用户选择关闭鼠标跟随，仅来源更新；标题目录与其他既有配置保留 | 2026-11-01 |
+| [TUIOS 配置项全表（0.12.0）](terminal-multiplexers/tuios-config-reference.md) | 271 路径默认值、允许值及来源当前值；鼠标跟随关闭，暂停键移除；版本基线与当前选择分别记录 | 2026-11-01 |
 | [TUIOS Tape 自动化与项目 tape 信任边界](terminal-multiplexers/tuios-tapes.md) | 录制式与项目 tape 的区别、七个子命令、路径加 SHA-256 双要素信任、四个资格条件、三种 autorun 模式行为、auto_review 与 show_status、头部与正文指令、Scope 语义、安全属性 | 2026-10-31 |
+| [ttyd Tokyo Night Storm 配色链接](terminal-multiplexers/ttyd-tokyo-night-storm-theme.md) | 用户认可的完整可复制 URL，字号14、完整调色板、Maple 字体继承、默认色与 ANSI/RGB 分层 | 2026-11-01 |
 | [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
 
 ## terminal-graphics
@@ -403,7 +404,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd 1.7.7 支持 SIXEL+IIP 无 Kitty；Herdr 0.9.5 只支持 Kitty graphics SIXEL NOT_PLANNED，`experimental.kitty_graphics` 为弃用别名、`terminal.*` 优先；TUIOS 0.8.3 起 Kitty 完整渲染+SIXEL passthrough；OMP v18.11.2 三协议均支持 autoGraph 走同一图像路径 Tern 走独立 TSP；ttyd+Herdr 无协议重叠 | 2026-10-25 |
+| [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd、Herdr、TUIOS、OMP 协议能力与转换方向；新增 v0.12.1 WebTerm 链路和 PNG 演示，区分源码能力、工具输出与浏览器目视结果 | 2026-11-01 |
 | [Tern Surface Protocol](terminal-graphics/tern-surface-protocol.md) | Tern 的 TSP UI 树绘制路径与 image 节点；kitty graphics 支持来自第三方插件声明（非官方）；SIXEL/iTerm2 未找到证据 | 2026-10-17 |
 
 ## tern

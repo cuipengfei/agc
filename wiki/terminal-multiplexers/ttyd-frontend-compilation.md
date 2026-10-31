@@ -1,8 +1,8 @@
 # ttyd 前端编译模型与 xterm 版本锁定
 
-> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16; ttyd 官方依赖与 Client Options, 2026-10-17
+> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16; ttyd 官方依赖与 Client Options, 2026-10-17; 后续会话核对, 2026-11-01
 > Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md)
-> Updated: 2026-10-17
+> Updated: 2026-11-01
 
 ## Overview
 
@@ -65,3 +65,7 @@ ttyd、Wetty、GoTTY、sshwifty 等浏览器终端工具的前端都基于 xterm
 - [tuios workspace 与 session rail](tuios-workspace-and-sidebar.md)
 - [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)
 - [浏览器终端链路的剪贴板路径](browser-terminal-clipboard-paths.md)
+
+## 配色入口
+
+用户已认可的完整配色 URL 与调色板见[ttyd Tokyo Night Storm 配色链接](ttyd-tokyo-night-storm-theme.md)。长 URL 仅在该文维护。

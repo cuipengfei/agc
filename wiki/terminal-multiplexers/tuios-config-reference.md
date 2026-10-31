@@ -1,8 +1,8 @@
 # TUIOS 配置项全表（0.12.0）
 
-> Sources: 本机 tuios 0.12.0 `list-options` 与 `config.toml`, 2026-10-31; Gaurav-Gosain/tuios `docs/CONFIGURATION.md`
-> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [项目 tape 文档](../../raw/terminal-multiplexers/2026-10-31-tuios-project-tapes.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md)
-> Updated: 2026-10-31
+> Sources: 本机 tuios 0.12.0 `list-options` 与 `config.toml`, 2026-10-31; Gaurav-Gosain/tuios `docs/CONFIGURATION.md`; 后续会话核对, 2026-11-01
+> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [项目 tape 文档](../../raw/terminal-multiplexers/2026-10-31-tuios-project-tapes.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-disable-mouse-focus.md)
+> Updated: 2026-11-01
 
 可设置项共 271 个路径，本页按用户感知顺序分 20 章，每个路径只出现一次。默认值与允许值逐字取自 raw 中的完整 JSON；「当前值」来自本机 `config.toml`，标「默认」表示文件中未写、正在使用内置默认值。体验一栏依据 JSON 的 `description` 与源码语义撰写。
 
@@ -125,8 +125,8 @@
 |---|---|---|---|---|
 | `appearance.click_to_type` | single / double / off | `double` | `single` | 在窗口管理模式下，点击窗格内容的行为。single 单击即进入输入，double 需要双击，off 点击不改变模式。只影响鼠标点击 |
 | `appearance.auto_enter_terminal_on_focus` | off / targeted / all | `off` | `targeted` | 键盘焦点命令移到窗格时是否进入输入。off 不自动，targeted 在编号选择与方向切换时进入，all 连 Tab 也算。只影响键盘命令 |
-| `appearance.focus_follows_mouse` | true / false | `false` | `true` | 鼠标移到哪个窗格就聚焦哪个 |
-| `appearance.focus_follows_mouse_pause` | off / ctrl / alt | `off` | `ctrl` | 按住指定键时，鼠标移动不改变焦点，避免经过时误抢 |
+| `appearance.focus_follows_mouse` | true / false | `false` | `false` | 鼠标移到哪个窗格就聚焦哪个；用户实际使用后选择关闭 |
+| `appearance.focus_follows_mouse_pause` | off / ctrl / alt | `off` | 默认 | 指定按键暂停焦点跟随。来源已移除该项，跟随关闭时无需暂停键 |
 | `appearance.copy_on_select` | true / false | `true` | 默认 | 松开鼠标即把选中文字复制到剪贴板 |
 | `appearance.word_characters` | 字符集合 | `@-./_~?&=%+#` | 默认 | 双击选中单词时，哪些标点算作词的一部分 |
 | `appearance.right_click_opens_menu` | true / false | `false` | `true` | 终端模式无选区且程序未启用 mouse tracking 时，普通右键打开 pane menu。Paste 粘贴到当前 pane；有选区时打开 Selection 菜单，程序启用 tracking 时转发普通右键 |
@@ -417,7 +417,7 @@ tuios keybinds doctor                    # 检查快捷键冲突与废弃绑定
 ## 证据边界
 
 - 271 个路径、默认值、`accepted`、`min`/`max` 逐字来自 raw 中的完整 `list-options --json` 输出。
-- 当前值以交互配置 raw 的来源文件为准；标题格式仅在来源，其余 23 个调整键已在仓库副本。153 行是 prune 后历史快照。
+- 当前鼠标设置以关闭鼠标焦点 raw 的来源为准：跟随关闭，暂停键移除。标题格式仅在来源；仓库保留之前的鼠标跟随设置。153 行是 prune 后历史快照。
 - 体验一栏依据 `description` 原文与源码语义撰写，属推断；未逐项做视觉对照实验。
 - `screensaver.effect` 的 36 个具名效果未逐个观察画面。
 

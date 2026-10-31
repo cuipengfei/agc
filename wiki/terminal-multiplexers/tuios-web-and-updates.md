@@ -1,12 +1,12 @@
 # TUIOS Web 与安装升级
 
-> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31
-> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md)
-> Updated: 2026-10-31
+> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31; 后续会话核对, 2026-11-01
+> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md)
+> Updated: 2026-11-01
 
 ## Overview
 
-`tuios-web` 是 TUIOS 主仓库独立发布的浏览器终端服务器。它在真实 PTY 中运行 TUIOS，通过 WebTransport 或 WebSocket 连接浏览器，由 xterm.js 负责浏览器内的终端显示和输入。Web 二进制已经包含 TUIOS 核心逻辑，可以独立运行；同时安装 `tuios` 和 `tuios-web` 的价值在于分别服务本机终端与浏览器，并让同目录的 release 二进制共同维护版本。
+`tuios-web` 是独立发布的浏览器终端服务器。本文保留早期安装记录；本次 v0.12.1 核对使用 sip v0.10.0，浏览器由 WebTerm 绘制文字与图形。Web 二进制包含 TUIOS 核心逻辑。
 
 ## 使用体验与组成
 
@@ -19,7 +19,7 @@
 | `tuios-web` | 把 TUIOS 接入浏览器，管理 Web 启动参数 |
 | `sip` | 管理 PTY、会话、传输、TLS、认证和剪贴板 |
 | `webterm` | 提供 sip 内嵌的浏览器客户端 |
-| xterm.js | 在浏览器中解释终端输出并处理显示、输入、选择和 scrollback |
+| WebTerm | 本次版本在浏览器中处理文字、图形、输入、选择和 scrollback；早期 xterm.js 描述是旧版本记录 |
 
 `sip` 从 TUIOS 的 Web 终端功能提取而来。浏览器客户端和字体等资源被嵌入发布二进制，使用者不需要另外安装 Node 包或单独部署前端。
 
@@ -115,3 +115,19 @@ TUIOS 则直接提供浏览器页面。Herdr 的后台 server 负责保存 pane 
 - [tuios workspace 与 session rail](tuios-workspace-and-sidebar.md)
 - [ttyd 前端编译模型与 xterm 版本锁定](ttyd-frontend-compilation.md)
 - [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)
+
+## 本次连接与图形核对
+
+客户端连接记录指向 tuios-web(310412)，OMP 由 TUIOS daemon 的窗格 shell 启动。ttyd 是启动 Web 服务的 shell 的祖先，不等同当前页面渲染入口。PID 属于当次观察。
+
+服务器生成终端输出，sip 传给浏览器，WebTerm 绘制文字和 Kitty 图形；v0.12.1 Web 侧配置 SIXEL 转 Kitty。OMP 图片演示已生成并输出，但没有取得浏览器画面确认，不记录为目视通过。
+
+## Maple 字体设置
+
+本次版本没有 --font-family 参数。前端 API 支持当前页面调整：
+
+```javascript
+sipTerm.webterm.setOptions({fontFamily: "'Maple Mono NF CN', monospace"});
+```
+
+该示例未执行。字体应可供运行浏览器的系统使用，WSL 字体不自动提供给 Windows 浏览器。页面修改刷新后恢复，持久设置需要页面启动时应用或使用 sip 字体配置能力。

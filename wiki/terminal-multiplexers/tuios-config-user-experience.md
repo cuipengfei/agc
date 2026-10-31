@@ -1,8 +1,8 @@
 # TUIOS 配置与用户体验
 
-> Sources: 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31; AGC 同步与验收记录, 2026-10-31
-> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [本机配置快照（0.10.0）](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [AGC 配置纳管记录](../../raw/terminal-multiplexers/2026-10-17-agc-tuios-config-tracking.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md)
-> Updated: 2026-10-31
+> Sources: 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31; AGC 同步与验收记录, 2026-10-31; 后续会话核对, 2026-11-01
+> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [本机配置快照（0.10.0）](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [AGC 配置纳管记录](../../raw/terminal-multiplexers/2026-10-17-agc-tuios-config-tracking.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-disable-mouse-focus.md)
+> Updated: 2026-11-01
 
 ## Overview
 
@@ -81,7 +81,7 @@ terminal_paste_host = ['ctrl+shift+v', 'super+v', 'shift+super+v']
 ### 输入、焦点与项目辨认
 
 - 单击窗格内容进入输入，编号选择与方向切换也自动进入输入，减少切换后的额外按键。这两条分别管理鼠标点击和键盘焦点命令。
-- 鼠标移动改变焦点，按住 Ctrl 可暂停跟随；非焦点窗格压暗，便于辨认当前操作对象。代价是经过其他窗格时焦点会变化。
+- 用户实际使用后选择关闭鼠标焦点跟随，来源 focus_follows_mouse=false，关联 Ctrl 暂停配置已移除。鼠标移动不再切换 pane，单击输入、键盘目标切换和非焦点压暗保留。此调整只写来源，未同步仓库。
 - 标题显示原名称和工作目录，便于区分同一种 Agent 的不同项目窗口。长目录可能使标题截断。
 - 普通右键在终端模式无选区且程序没有启用 mouse tracking 时打开 pane menu，Paste 项粘贴到当前 pane。有选区时打开 Selection 菜单；程序启用 mouse tracking 时，普通右键转发给程序。
 
@@ -107,13 +107,13 @@ terminal_paste_host = ['ctrl+shift+v', 'super+v', 'shift+super+v']
 
 ## AGC 版本化备份
 
-AGC 的 `manifest.json` 已加入 `tuios-config`，把来源配置同步到 `tuios/config.toml`，并标记为 protected。单项策略检查显示 `tuios_redaction_slots=0`，仓库副本与来源 SHA-256 相同。
+AGC 的 manifest.json 管理 tuios-config 来源到仓库的同步，并标记 protected。纳管时记录的脱敏和 SHA-256 检查属于历史结果；最新标题格式及关闭鼠标跟随仅修改来源，没有执行同步。
 
-第一批 6 项已提交并推送为 `1495db0`；后续 12 项与五个获赞项目共 17 项已提交并推送为 `9b6025e`。当前仓库副本含这 23 个调整键，来源额外包含标题格式，尚未同步。记录使用的同步测试为 19 项通过，不将历史结果描述为本次重新运行。
+第一批 6 项提交为 1495db0；后续 12 项与五个获赞项目共 17 项提交为 9b6025e。之后来源新增标题格式、关闭鼠标跟随并移除暂停键，仓库仍保留此前快照。同步测试 19 项通过是历史记录，本次只验证文档。
 
 ## 证据边界
 
-- 当前值来自交互配置 raw 的来源摘录；153 行指 prune 后的历史快照。
+- 当前鼠标设置以关闭鼠标焦点 raw 的来源摘录为准；其他选择见交互配置 raw。153 行是 prune 后历史快照。
 - 合法范围与 schema 机制来自本机 `tuios list-options` 与上游源码（`internal/config/options.go`、`validation.go`、`userconfig.go`、`internal/app/client_kind.go`）。
 - 生效时机来自 `tuios config apply --help` 与上游测试（`set_config_write_test.go`、`config_watch_test.go`）。
 - 本文解释配置行为，没有逐项修改后做视觉对比实验。

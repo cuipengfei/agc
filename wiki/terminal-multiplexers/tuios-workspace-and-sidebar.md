@@ -1,12 +1,12 @@
 # tuios workspace 与 session rail
 
-> Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06; 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31
-> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [TUIOS agent 展示与集成](../../raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md)
-> Updated: 2026-10-31
+> Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06; 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31; 后续会话核对, 2026-11-01
+> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [TUIOS agent 展示与集成](../../raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-agent-naming-sidebar-and-paging.md)
+> Updated: 2026-11-01
 
 ## Overview
 
-tuios 的 workspace 是编号 1–9、无名字的分组，一等公民是 window（pane）；herdr 的 workspace 是带 worktree 和 agent 编排的一等实体。两者同名不同物。tuios 的侧栏叫 session rail，由 `appearance.sidebar.sections` 配置的 sessions/terminals/files/agents 四区块组成，是 herdr sidebar 的真正对应物。
+tuios 的 workspace 是窗格的编号分组，session rail 是侧栏。v0.12.1 有 sessions、terminals、files、agents、git、custom、pane 七种内容区块，另有空白布局项 spacer。
 
 ## workspace：编号分组，不是一等实体
 
@@ -43,14 +43,17 @@ tuios 的侧栏叫 session rail。2026-10-06 实测配置为：
 
 历史快照记录侧栏从右侧改为左侧。当前来源设置与详细允许值见[配置参考表](tuios-config-reference.md)，本节只描述侧栏行为。
 
-`sessions:25,terminals,files:25,agents:34` 表示四个区块自上而下、百分比是高度占比。一个名字从列表里去掉，对应区块就不画。四区块：
+sections 指定区块顺序和高度比例，未列出的区块不绘制。spacer 可以重复，用来留白或把后续区块推向底部。
 
-| 区块 | 对应 herdr sidebar 的 | 内容 |
-|---|---|---|
-| sessions | 机器列表 | 远端 SSH host 连接状态（`tuios hosts`） |
-| terminals | workspace 列表 | 本机所有终端窗口，按 workspace 分组 |
-| files | （herdr 无） | 当前目录文件树，可增删改 |
-| agents | agent 列表 | 每个窗口的 agent 及状态徽章 |
+| 区块 | 内容与使用场景 |
+|---|---|
+| sessions | 会话列表，用于切换项目会话 |
+| terminals | 按 workspace 分组的窗格，查找 shell 或程序 |
+| agents | Agent 状态、当前工作与子任务 |
+| files | 文件列表或树，用于打开、编辑及文件操作 |
+| git | 仓库、worktree 与 Git 状态 |
+| custom | 指定命令的输出，每行作为侧栏一行 |
+| pane | 可交互的终端区块，只显示文字，不绘制 Kitty 图片 |
 
 rail 的每个 agent row 显示：`now`（agent 正在做什么）、`ctx N%`（上下文 ≥80% 时）、`N subagents`、`N queued`。`model`、`cost`、`plan`、`prompt` 默认不显示，除非 `[appearance.sidebar.agent_row]` 表配置了。
 
@@ -99,7 +102,7 @@ herdr CLI 只回答 `pane`、`tab`、`workspace`、`agent`、`worktree`、`notif
 | 一等公民 | workspace（命名、带 worktree、可编排） | window（pane），workspace 只是编号分组 |
 | workspace 数量 | 用户创建，不限 | 固定编号 1–9 |
 | workspace 名字 | 有 | 无（NAME 列空） |
-| 侧栏区块 | workspace 树 + agent | sessions/terminals/files/agents 四区块 |
+| 侧栏区块 | workspace 树 + agent | 可配置七种内容区块及 spacer |
 | agent 启动 | `herdr agent start <name> --kind X` | 无对应；pane 里自己起 agent，用 `integration install` 接 hook |
 | 多 agent 编排 | 手动 split + start | `tuios fan N "<prompt>"` 一键开 N 个 worktree agent |
 
@@ -112,3 +115,17 @@ herdr 的 workspace 子命令完整表见 [Herdr + Plannotator 工具链全量 R
 - [四 Agent CLI 能力面对比](../ai-coding-agents/cli-capability-surface.md)
 - [TUIOS 配置与用户体验](tuios-config-user-experience.md)
 - [TUIOS Web 与安装升级](tuios-web-and-updates.md)
+
+## OMP 工作时名称变为 bun
+
+用户观察到空闲时显示 OMP，工作时显示 bun。状态读取仍为 agent=omp、state=working、身份来源 report。预期保持 OMP 名称，只改变状态标记。
+
+[Issue #1384](https://github.com/Gaurav-Gosain/tuios/issues/1384) 是已完成的 FEATURE；[PR #1388](https://github.com/Gaurav-Gosain/tuios/pull/1388) 已合并，v0.12.1 发布说明列出 Agent names in the rail。修复针对标题优先级和同步竞态，OMP/bun 具体现象没有单独列出。后来版本读取为 0.12.1，未完成忙闲对照确认。
+
+临时办法是 set-window 的固定名称，先确认目标 pane ID 后设置。此办法未执行，以后运行其他程序时固定名称仍保留。restart-server 会停止窗格内程序，不能当作无影响刷新。
+
+## Page Up 与 Page Down
+
+普通 PgUp/PgDn 交给 pane 应用。默认 Shift+PgUp/Shift+PgDn 滚动一页，但仅在普通输出主屏、程序没有启用鼠标模式时由 TUIOS 接管；alternate-screen 或鼠标模式下传给应用。
+
+查看 TUIOS 保存的输出可按 Ctrl+B 再按 [，进入复制模式，用 PgUp/PgDn 整页翻动，Esc 返回输入。它不读取应用内部未输出的历史。此次未修改快捷键。
