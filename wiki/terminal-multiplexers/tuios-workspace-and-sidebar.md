@@ -1,8 +1,8 @@
 # tuios workspace 与 session rail
 
-> Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06; 本机 TUIOS 0.10.0 配置与选项元数据, 2026-10-17
-> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md)
-> Updated: 2026-10-17
+> Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06; 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31
+> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [TUIOS agent 展示与集成](../../raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md)
+> Updated: 2026-10-31
 
 ## Overview
 
@@ -41,7 +41,7 @@ tuios 的侧栏叫 session rail。2026-10-06 实测配置为：
 - `appearance.sidebar.sections` = `sessions:25,terminals,files:25,agents:34`
 - `appearance.sidebar.show_counts` = `true`
 
-2026-10-17 的 TUIOS 0.10.0 本机配置中，启用状态与 sections 字符串保持上述值，`position` 已为 `left`，`width` 为 `24`。当前配置快照没有 `appearance.sidebar.show_counts` 行。
+2026-10-17 的 TUIOS 0.10.0 本机配置中，启用状态与 sections 字符串保持上述值，`position` 已为 `left`，`width` 为 `24`。当前配置（0.12.0）为 `position = 'left'`, `width = 28`。
 
 `sessions:25,terminals,files:25,agents:34` 表示四个区块自上而下、百分比是高度占比。一个名字从列表里去掉，对应区块就不画。四区块：
 
@@ -54,7 +54,29 @@ tuios 的侧栏叫 session rail。2026-10-06 实测配置为：
 
 rail 的每个 agent row 显示：`now`（agent 正在做什么）、`ctx N%`（上下文 ≥80% 时）、`N subagents`、`N queued`。`model`、`cost`、`plan`、`prompt` 默认不显示，除非 `[appearance.sidebar.agent_row]` 表配置了。
 
-## herdr 二进制内嵌为上报协议
+## Agents 区块详情（0.12.0）
+
+- **排序**：按 "you" 优先级分组，顺序为 Needs you（审批/提问/报错）→ Done unread → Working → At rest。
+- **双行显示**：第一行状态符号 + 窗口名 + 等待时长/队列数；第二行当前工具调用（如 `Bash: go test ./...`、`Edit: src/app.tsx`）、上下文告警 `ctx N%`、缩进的 subagent 列表。
+- **状态符号**：`▲` 需输入/审批，`■` 刚完成未读，`●` 运行中，`◊` 主任务空闲但后台 subagent 运行，`○` 空闲/已读，`×` 报错。
+- **自动去重**：侧栏宽度 ≤ 30 列时，agent 窗口仅出现在 `agents` 区块，不会在 `terminals` 区块重复。
+
+## Agents View 驾驶舱
+
+- 打开：`Ctrl+b i`
+- 左侧按状态分组列出所有 agent，右侧显示 Live 终端画面、Thread（工具调用卡片流）、Changes（diff），底部有审批按钮（`a` 批准、`r` 拒绝、直接打字回复）。
+
+## Agent 切换方式
+
+- 鼠标：左键单击侧栏 agent 行（包括缩进的 subagent 行）跳转到对应窗口
+- 键盘：`Ctrl+b o`（跳到 Needs you 最久）、`Ctrl+b O`（跳到最新 Done unread）、`Ctrl+b J` / `Ctrl+b K`（循环切换）
+- 侧栏聚焦（`s` 或 `Ctrl+b e`）：`j`/`k` 移动，`Enter` 切换，`v` 查看 diff，`r` 队列消息
+
+## Agent 状态上报集成
+
+- 安装：`tuios integration install <agent>`（如 `omp claude-code codex opencode`）。不装 hook 时依赖 `daemon.agent_autodetect = true` 兜底，装 hook 后状态更准确（done/now/subagents/recovery）。
+- 本机已安装：OMP（v1）、Claude Code（v3）、Codex（v1）、OpenCode（v5）均 `installed, current`（`tuios doctor agents`）。
+- 安装目标：OMP `~/.omp/agent/extensions/tuios-omp-agent-state.ts`、Claude Code `~/.claude/settings.json` + skill、Codex `~/.codex/hooks.json` + skill、OpenCode `~/.config/opencode/plugins/tuios-agent-state.js` 及相关文件。
 
 tuios 运行时目录里有自己的 herdr 二进制（`HERDR_BIN_PATH` 指向 `/run/user/1000/tuios/herdr/bin/herdr`）。herdr 在 tuios 里不是独立工具，而是 agent 状态上报的协议后端。pane 里的 agent 通过 `"$HERDR_BIN_PATH" pane report-agent` 上报状态，tuios 接收后更新 rail 的 row。
 

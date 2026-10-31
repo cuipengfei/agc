@@ -390,9 +390,9 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；两个定制块的剪贴板方向语义（OSC52 服务复制方向，粘贴方向不经过） | 2026-10-17 |
-| [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | tuios 的 workspace 是编号 1-9 无名字的分组，window 是一等实体；session rail 四区块 sessions/terminals/files/agents；补充 0.10.0 当前左侧栏实测 | 2026-10-17 |
-| [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | tuios-web 独立运行、sip/xterm.js 分工、gh 认证安装、更新职责、ttyd 端口冲突与远程安全 | 2026-10-17 |
-| [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 0.10.0 当前配置与合法范围，按启动、布局、外观、输入、侧栏、通知、多客户端和 AGC 版本化备份解释体验 | 2026-10-17 |
+| [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | tuios 的 workspace 是编号 1-9 无名字的分组，window 是一等实体；session rail 四区块 sessions/terminals/files/agents；0.12.0 增加 Agents 区块详情、Agents View（Ctrl+b i）、切换快捷键与 integration 安装 | 2026-10-31 |
+| [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | tuios-web 独立运行、sip/xterm.js 分工、gh 认证安装、更新职责、ttyd 端口冲突与远程安全；补充 0.12.0 Web 模式 ConfigReadOnly、不写盘落地途径与生效分层 | 2026-10-31 |
+| [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 0.12.0 配置（schema 三套机制、271 项、prune 精简）、侧栏左侧宽度 28、click_to_type single、daemon resume_agents auto/window_size latest、Web 模式持久化与权限生效时机、AGC 同步 | 2026-10-31 |
 | [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
 
 ## terminal-graphics

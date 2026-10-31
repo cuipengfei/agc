@@ -1,8 +1,8 @@
 # TUIOS Web 与安装升级
 
-> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-17; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-17
-> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md)
-> Updated: 2026-10-17
+> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31
+> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md)
+> Updated: 2026-10-31
 
 ## Overview
 
@@ -92,14 +92,23 @@ Herdr `0.9.5` 官方远程路径是 SSH 和终端客户端：远程 shell 中运
 
 TUIOS 则直接提供浏览器页面。Herdr 的后台 server 负责保存 pane 和 agent 状态，本身不提供 HTTP 页面。这一结论没有覆盖第三方插件可能提供的浏览器桥接。
 
+## Web 模式配置持久化（0.12.0）
+
+- `tuios-web` 与 `tuios` 共用 `config.LoadUserConfig()`，从 `$XDG_CONFIG_HOME/tuios/config.toml` 读取配置。
+- `internal/app/client_kind.go`：`ClientBrowser` 强制 `ConfigReadOnly = true`。仅浏览器连接时，设置面板（`Ctrl+b ,`）和 `tuios set-config` 不写盘。
+- 落盘方式：`tuios config edit`、`tuios keybinds preset/unbind/free`（直接 `config.SaveUserConfig()`）、或让 pane agent 编辑 `config.toml`。
+- `ClientBrowser` 仍启用 `startConfigWatch()` 热重载。
+- 生效分层：外观/侧栏/Dock/快捷键热重载；新窗口初值仅对新窗口生效；放宽权限类变更需在 TUIOS 外终端 `tuios config apply`（pane 内拒绝）或重启 daemon，收紧权限类变更即时生效；daemon 级需重启。
+- 浏览器端设置（传输、渲染器、字号等）保存在 `localStorage["sip-web-settings"]`，不写回宿主 `config.toml`。Auto-TLS 证书在 `~/.config/sip/sip.crt`/`.key`（可 `--cert-dir` 覆盖）。
 ## 证据边界
 
 - Web 功能、安装器、更新器和独立运行来自官方文档与源码。
+- 端口冲突、认证和 token 读取来自本机实测。
+- Web 模式配置持久化与生效时机来自源码（`internal/app/client_kind.go`、`internal/session/verb_options.go`、`internal/app/config_watch_test.go`）与 `tuios config apply --help`。
 - 安装成功、版本、端口和 token 设置前后的结果来自本机命令输出。
 - 联合升级只完成静态确认和已是最新检查，未做跨版本实测。
 - 未在移除 `tuios` 命令的环境中做 Web 独立运行实验。
 - 不同服务报告不同公网出口地址的具体网络分流原因未确认。
-
 ## See Also
 
 - [TUIOS 配置与用户体验](tuios-config-user-experience.md)

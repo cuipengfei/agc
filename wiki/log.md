@@ -1666,3 +1666,8 @@
 - Disposition: New
 - Raw: raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md
 - 要点：61 个 SKILL.md 的逐字原文摘录（frontmatter、job 描述行、子代理角色与模型行、七问清单、输出合同、benny 硬规则），行为归纳编译进「pstack 技能地图与行为」，本 raw 仅存原文与行号。
+
+## [2026-10-31] ingest | TUIOS 配置与用户体验
+- Disposition: Update
+- Raw: raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md; raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md; raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md
+- Updated: TUIOS 配置与用户体验; TUIOS Web 与安装升级; tuios workspace 与 session rail
