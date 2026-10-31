@@ -606,7 +606,7 @@ thinkingBudgets:
   xhigh: 32768
   max: 32768
 composer:
-  shape: box
+  shape: rule
   tokenRate: true
   predictions: false
 externalThinking: false
