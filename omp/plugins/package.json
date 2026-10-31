@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@dietrichgebert/ponytail": "https://github.com/DietrichGebert/ponytail",
-    "@plannotator/pi-extension": "^0.28.38",
+    "@plannotator/pi-extension": "^0.28.42",
     "ns-omp-provider-kiro": "0.5.3"
   }
 }
