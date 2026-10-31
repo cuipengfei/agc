@@ -123,6 +123,7 @@ session_border = true
 clock_format = '15:04:05'
 click_to_type = 'single'
 auto_enter_terminal_on_focus = 'targeted'
+window_title_format = '{title} · {cwd}'
 dim_unfocused = 20
 focus_follows_mouse = true
 focus_follows_mouse_pause = 'ctrl'
