@@ -1671,3 +1671,8 @@
 - Disposition: Update
 - Raw: raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md; raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md; raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md
 - Updated: TUIOS 配置与用户体验; TUIOS Web 与安装升级; tuios workspace 与 session rail
+
+## [2026-10-31] ingest | TUIOS 配置项全表（0.12.0）
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md; raw/terminal-multiplexers/2026-10-31-tuios-project-tapes.md
+- Updated: TUIOS 配置与用户体验

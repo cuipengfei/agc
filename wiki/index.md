@@ -392,7 +392,9 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | ttyd 把 xterm.js 前端编译进二进制、lockfile 锁版本、升级只能等 release 或 rebuild；1.7.7（2024-03-30）锁 xterm 5.4.0；两个定制块的剪贴板方向语义（OSC52 服务复制方向，粘贴方向不经过） | 2026-10-17 |
 | [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | tuios 的 workspace 是编号 1-9 无名字的分组，window 是一等实体；session rail 四区块 sessions/terminals/files/agents；0.12.0 增加 Agents 区块详情、Agents View（Ctrl+b i）、切换快捷键与 integration 安装 | 2026-10-31 |
 | [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | tuios-web 独立运行、sip/xterm.js 分工、gh 认证安装、更新职责、ttyd 端口冲突与远程安全；补充 0.12.0 Web 模式 ConfigReadOnly、不写盘落地途径与生效分层 | 2026-10-31 |
-| [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 0.12.0 配置（schema 三套机制、271 项、prune 精简）、侧栏左侧宽度 28、click_to_type single、daemon resume_agents auto/window_size latest、Web 模式持久化与权限生效时机、AGC 同步 | 2026-10-31 |
+| [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 配置目录与优先级、三套校验机制、Web 模式 ConfigReadOnly 与三条持久化途径、生效时机分层、prune 清理、快捷键结构、本机 6 项调整的理由与代价、AGC 同步；逐项取值见配置项全表 | 2026-10-31 |
+| [TUIOS 配置项全表（0.12.0）](terminal-multiplexers/tuios-config-reference.md) | 271 个路径按用户感知分 20 章，逐个给允许值、默认值、当前值与体验含义；含 10 个已废弃键的折叠去向、结构型配置、screensaver.effect 全部 37 个取值；整数项 0 采用内置默认值的约定 | 2026-10-31 |
+| [TUIOS Tape 自动化与项目 tape 信任边界](terminal-multiplexers/tuios-tapes.md) | 录制式与项目 tape 的区别、七个子命令、路径加 SHA-256 双要素信任、四个资格条件、三种 autorun 模式行为、auto_review 与 show_status、头部与正文指令、Scope 语义、安全属性 | 2026-10-31 |
 | [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
 
 ## terminal-graphics
