@@ -1,8 +1,8 @@
 # Plannotator agent tool 注入与 Quick Labels 机制
 
 > Sources: backnotprop/plannotator 官方源码，2026-10-11；本机 OMP pi-extension 0.28.12 实测，2026-10-11
-> Raw: [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md)
-> Updated: 2026-10-11
+> Raw: [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [本机接通 Inbox 的实测记录（OMP）](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-omp-session-evidence.md)
+> Updated: 2026-10-31
 
 ## Overview
 
@@ -18,7 +18,7 @@ PLANNOTATOR_AGENT_TOOL 环境变量 → config.agentTool → AGENT_TOOL_DEFAULTS
 
 默认值表（官方 `packages/shared/config.ts`）：claude-code 默认开；**Pi 和 OpenCode 2 默认关**。env 值 `1`/`true`/`on` 开，`0`/`false`/`off`/`disabled` 关，空值算未设。每次会话启动只读一次，改动对下个会话生效——工具列表是模型 prompt 的一部分，会话中途改变会破坏 prompt 缓存。
 
-Inbox 工具（`plannotator_inbox`）默认值与 agent tool 用同一张表（`INBOX_TOOL_DEFAULTS = AGENT_TOOL_DEFAULTS`），开关键 `inboxTool` 支持全主机共用布尔或按主机 `{"pi": true}`。
+Inbox 工具（`plannotator_inbox`）默认值与 agent tool 用同一张表（`INBOX_TOOL_DEFAULTS = AGENT_TOOL_DEFAULTS`），开关键 `inboxTool` 支持全主机共用布尔或按主机 `{"pi": true}`。本机已在 config.json 写入 `{ "pi": true }`、在 `~/.omp/agent/.env` 写入 `PLANNOTATOR_INBOX_TOOL=1`，`resolveInboxTool` 的环境变量分支与配置文件分支都返回 `true`；注册门与 stdio 通道见 [Plannotator Inbox 与 OMP 接通](plannotator-inbox-omp-connection.md)。
 
 ## OMP 的 .env 注入通道
 
@@ -53,5 +53,7 @@ Settings → Labels 编辑器支持：改 emoji（严格单 grapheme 校验，ZW
 ## See Also
 
 - [Plannotator OMP 插件运行机制](plannotator-omp-plugin-mechanism.md) — slash command 双通道与 HTTP 服务链路
+- [Plannotator Inbox 通知与标注面](plannotator-inbox-notifications-and-annotations.md) — 通知触发、铃声条件与可评论对象
+- [Plannotator Inbox 与 OMP 接通](plannotator-inbox-omp-connection.md) — 工具开关、注册门、stdio 通道与 Board 项目语义
 - [Herdr + Plannotator 工具链全量 Reference](toolchain-reference.md) — CLI flags 与插件生态基线
 - [Plannotator pi-extension 混版故障](pi-extension-mixed-tree-failure.md) — 安装故障取证

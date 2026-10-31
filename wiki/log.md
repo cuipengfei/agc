@@ -1681,3 +1681,13 @@
 - Disposition: Update
 - Raw: raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md
 - Updated: TUIOS 配置与用户体验; TUIOS 配置项全表（0.12.0）; tuios workspace 与 session rail
+
+## [2026-10-31] ingest | Plannotator Inbox 通知与标注面
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-10-31-plannotator-inbox-product-page.md; raw/herdr-plannotator/2026-10-31-plannotator-inbox-cli-help.md; raw/herdr-plannotator/2026-10-31-plannotator-inbox-notification-impl.md; raw/herdr-plannotator/2026-10-31-plannotator-inbox-messages-guide.md; raw/herdr-plannotator/2026-10-31-plannotator-inbox-files-guide.md
+- Updated: Plannotator agent tool 注入与 Quick Labels 机制
+
+## [2026-10-31] ingest | Plannotator Inbox 与 OMP 接通
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-10-31-plannotator-inbox-omp-session-evidence.md; raw/herdr-plannotator/2026-10-31-plannotator-inbox-mcp-guide.md
+- Updated: Plannotator agent tool 注入与 Quick Labels 机制
