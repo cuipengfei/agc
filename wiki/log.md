@@ -1696,3 +1696,8 @@
 - Disposition: New; Update
 - Raw: raw/terminal-multiplexers/2026-11-01-ttyd-tokyo-night-storm-url.md; raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md; raw/terminal-multiplexers/2026-11-01-tuios-agent-naming-sidebar-and-paging.md; raw/terminal-multiplexers/2026-11-01-tuios-disable-mouse-focus.md
 - Updated: ttyd Tokyo Night Storm 配色链接; TUIOS Web 与安装升级; tuios workspace 与 session rail; TUIOS 配置与用户体验; TUIOS 配置项全表（0.12.0）; 终端图像协议支持矩阵; ttyd 前端编译模型与 xterm 版本锁定
+
+## [2026-11-01] ingest | Copilot Gemini 缓存标记与 OMP 换窗/裁剪机制
+- Disposition: New; Update
+- Raw: raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md; raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md
+- Updated: Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈; OMP Compaction Methods & History URI Tool Support; OMP 配置语义手册

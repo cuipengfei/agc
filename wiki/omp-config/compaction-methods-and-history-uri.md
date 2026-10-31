@@ -1,8 +1,8 @@
 # OMP Compaction Methods & History URI Tool Support
 
-> Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09; installed `@oh-my-pi/pi-coding-agent` 18.8.7 source, 2026-10-10; OMP session JSONL `01a1163e` + log `omp.2026-10-10.41920.log`, 2026-10-10
-> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md); [OpenAI Responses API Compaction 官方指南、Codex 源码与社区取舍摘录](../../raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md)
-> Updated: 2026-10-24
+> Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09; installed `@oh-my-pi/pi-coding-agent` 18.8.7 source, 2026-10-10; OMP session JSONL `01a1163e` + log `omp.2026-10-10.41920.log`, 2026-10-10; 本机 oh-my-pi 源码直读（换窗门控、前瞻带宽、裁剪保护区）, 2026-11-01
+> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md); [OpenAI Responses API Compaction 官方指南、Codex 源码与社区取舍摘录](../../raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md)
+> Updated: 2026-11-01
 
 ## Overview
 
@@ -83,6 +83,14 @@ rollover 后模型有三样恢复机制：
 - `compaction.experimentalContextManagement: true`
 
 自动压缩在工具门满足时走实验性 rollover；实验开关关闭、运行时工具门不满足（如 Vibe mode）、或手动带 mode/focus 的 `/compact` 时，走 methodOrder 链。
+
+## 换窗与裁剪的保护区
+
+实验性 rollover 的判定来自 `#usesExperimentalContextManagement()`：`compaction.experimentalContextManagement: true`，且 `context_notes`、`new_context`、`read`、`grep` 四项工具同时在生效工具表面。这一判定只管自动压缩路径；`history://current/full` 的可用性另有条件（调用者为 owner 并绑定 live branch），两层要分开看。判定不成立时回落到 `methodOrder`，切换开关后要重启才刷新工具列表。
+
+压缩在阈值前有前瞻带宽：后台摘要器在 `clamp(12.5% × 阈值, 8,192, 32,000)` 的区间内启动，先算好摘要再等触发点。
+
+裁剪保护最近 16,000 tokens 的尾部（`shake`）与 8,000 tokens 的后缀（`pruning`）；整段刷写要等空闲超过 90 分钟，即超过 1 小时缓存 TTL。保护窗内的内容原样发出，命中机会不受影响；窗外的消息被裁剪或改写会改变前缀，使其后整段缓存失效。长会话里"前缀没动却掉缓存"因此不该先归因于本地裁剪。
 
 ## See Also
 

@@ -1,8 +1,8 @@
 # Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
 
-> Sources: Google 官方论坛, 2026-10-14; Google Cloud 官方文档, 2026-10-13; googleapis/python-genai issues, 2025-12 至 2026-09; OpenCode issues, 2026-08 至 2026-10
-> Raw: [Argon 社区报告与官方回应](../../raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md); [三种缓存模式官方文档](../../raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md)
-> Updated: 2026-10-20
+> Sources: Google 官方论坛, 2026-10-14; Google Cloud 官方文档, 2026-10-13; googleapis/python-genai issues, 2025-12 至 2026-09; OpenCode issues, 2026-08 至 2026-10; 本机 copilot-api 源码与真实请求实测, 2026-10-31
+> Raw: [Argon 社区报告与官方回应](../../raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md); [三种缓存模式官方文档](../../raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md); [Copilot Gemini 缓存标记注入与实测要点](../../raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md)
+> Updated: 2026-11-01
 
 ## Overview
 
@@ -44,6 +44,14 @@ Google 官方文档对 Gemini 上下文缓存三种模式的定义：
 - 社区报告的模型版本、输入规模与接入方式各不相同，Argon 个案与 3.x 个案不可互相外推。
 - 未用自有 GCP 账号直接测试 Google Cloud 上的 Argon 隐式缓存行为。
 - Google 未公布全局隐式缓存命中率统计，总体发生比例无法确认。
+
+## 本机代理链路的标记注入与实测
+
+`copilot-api` 在发往 Copilot `/chat/completions` 前，对被 `state.models` 判定为 Gemini family 的模型自动补消息级缓存标记：前 2 条非空 `system` 加最后 1 条非空非 `system`，已有标记不覆盖。Chat Completions、Messages 的 Chat fallback、Responses 的 Chat fallback 共用同一实现。
+
+同账户内的成对对照没有出现稳定方向的差异。跨账户发送相同正文时观察到缓存互相命中，两组因此不再是独立对照，看到的费用差异不能归因于标记。连续请求探针里，工具定义与顶层字段的哈希恒定，前缀改写不是这组请求的变量。
+
+结论：标记能否带来收益，需要账户内、前缀受控的对照才能判定；现有证据既不足以支持它提高命中，也不足以支持它在同账户内增加费用。
 
 ## See Also
 

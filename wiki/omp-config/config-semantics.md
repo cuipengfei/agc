@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md)
-> Updated: 2026-10-28
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md)
+> Updated: 2026-11-01
 
 ## 这份手册讲什么
 
@@ -17,6 +17,8 @@
 | `compaction.experimentalContextManagement: true` | 实验性 context 管理开关 | 开关开启 + 工具表面 + owner 绑定后生效 | 自动 compact 走 notes-backed rollover，不再调用 summarization model；显式 mode/focus 的 `/compact` 仍走旧管线 |
 | `providers.cacheRetention: long` | 要求长 prompt-cache retention | provider 支持时 | 支持的 provider 用 1 小时 TTL，并关闭 keep-alive refresh；连续长会话更容易复用缓存 |
 | `providers.cacheWarming: idle`（18.4.2 核验） | 缓存条目过期前用 1-token 输出预算重发上一个请求续期 | 提示词缓存条目即将过期时 | 判定式 `预期节省 = 续用概率 × (失效重付价 − 命中价) − 续期成本 ≥ $0.05`；idle 档续用概率固定 0.15（streaming 档在长工具执行期间按 1 计），idle 续期窗口 30 分钟、streaming 60 分钟。便宜模型与短前缀在 idle 档事实上不会触发 |
+| 实验性 rollover 的工具门（`context_notes` + `new_context` + `read` + `grep`） | 决定自动压缩走 notes-backed rollover 还是 `methodOrder` | 每次自动压缩前判定 | 四项工具任一不在生效工具表面（例如 Vibe mode 收缩）时立即回落；改开关后要重启会话，工具列表才刷新 |
+| `supersedeReads` / `dropUseless` 裁剪 | 丢弃被后续读取覆盖的结果与无用输出 | 上下文接近阈值、压缩触发时 | 保护最近 8,000 tokens 后缀与 16,000 tokens 尾部；窗外改写会使之后的前缀缓存失效，窗内内容不受影响 |
 
 ## 读文件、编辑、网页读取、Bash 输出
 

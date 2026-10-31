@@ -192,9 +192,9 @@ OMP 配置项的源码级行为边界。
 | [OMP Compaction Model 与 Thinking Level](omp-config/compaction-model.md) | compactionModel 只换压的人，thinking effort 继承自 session thinkingLevel | 2026-09-09 |
 | [OMP Compaction 阈值解析机制](omp-config/compaction-threshold.md) | 阈值基数只有 contextWindow（固定值/百分比/reserve 三模式，默认 -1 走 reserve = max(15%, 16384)）；maxTokens 不参与阈值，只做摘要输出预算 | 2026-10-01 |
 | [OMP Snapcompact 机制](omp-config/snapcompact-mechanics.md) | 无 LLM 位图帧归档：帧=PNG 物理形态、面积计费为何省 token、帧预算表（未知 provider 兜底 5）、methodOrder 偏好链语义、detail:"original" 链与我们 c8787 显式降级 | 2026-10-01 |
-| [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；邻近会话一次 Vibe 压缩走 soft、与当前实现相符，因果仍有证据边界 | 2026-10-24 |
+| [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；换窗前有 clamp(12.5% × 阈值, 8,192, 32,000) 的前瞻带宽，裁剪保护 16,000 tokens 尾部与 8,000 tokens 后缀、整段刷写等 90 分钟空闲 | 2026-11-01 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处；本机目录布局实测（无 ~/.omp/agent/skills，用户级 skills 在 ~/.agents/skills）；捕获回合由分离 agent 执行、产物三类（含无产物） | 2026-10-28 |
-| [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive；browser.enabled 与 computer.enabled 的 prelude 语义；subagent 并行度四道闸门（maxConcurrency、async.maxJobs、maxInFlightRequests、batch）与 autolearn 六跳过条件 | 2026-10-28 |
+| [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive；browser.enabled 与 computer.enabled 的 prelude 语义；subagent 并行度四道闸门（maxConcurrency、async.maxJobs、maxInFlightRequests、batch）与 autolearn 六跳过条件；实验性 rollover 的四工具门与裁剪保护区对前缀缓存的影响 | 2026-11-01 |
 | [Auto-Learn capture 管线与可观测产物](omp-config/autolearn-capture-pipeline.md) | capture 是分离 agent（无 SessionManager、独立 sessionId 不落盘、不写 model_usage）；触发六条件；产物三类（learn 记忆行、managed skill、无产物）；`coding-agent-learn` 记录查询方法与本次运行时间线；记录内容未经复核的边界 | 2026-10-28 |
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
@@ -356,7 +356,7 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 |---------|---------|---------|
 | [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界 | 2026-10-19 |
 | [Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复](prompt-caching/gemini-38-flash-copilot-cache-drop.md) | 暂停约五分钟后缓存归零、下一轮恢复的直连后端复现与逐跳排除；归因倾向 Google 缓存策略，接入路径未排除 | 2026-10-19 |
-| [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](prompt-caching/gemini-4-argon-copilot-cache-drop.md) | Argon 仅支持隐式缓存且不支持显式缓存；社区报告经 OpenCode Go、AI Studio、Vertex AI 直连均存在缓存命中不稳定与掉点；用户因额外费用投诉 | 2026-10-20 |
+| [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](prompt-caching/gemini-4-argon-copilot-cache-drop.md) | Argon 仅支持隐式缓存且不支持显式缓存；社区报告经 OpenCode Go、AI Studio、Vertex AI 直连均存在缓存命中不稳定与掉点；用户因额外费用投诉；本机 copilot-api 对 Gemini family 自动补消息级缓存标记（前 2 条 system + 最后 1 条非 system），同账户成对对照无稳定收益，跨账户同正文请求会互相命中 | 2026-11-01 |
 
 ## keyboard-input
 
