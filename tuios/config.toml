@@ -123,6 +123,10 @@ session_border = true
 clock_format = '15:04:05'
 click_to_type = 'single'
 auto_enter_terminal_on_focus = 'targeted'
+dim_unfocused = 20
+focus_follows_mouse = true
+focus_follows_mouse_pause = 'ctrl'
+right_click_opens_menu = true
 
 [appearance.selection]
 search_fg = '#F5E7C8'
@@ -132,9 +136,20 @@ cursor_fg = '#08222B'
 [appearance.sidebar]
 position = 'left'
 width = 28
+sections = 'sessions:20,terminals:25,files:10,agents:45'
+subagent_max_rows = 3
+agent_rest_fold = 'off'
+density = 'roomy'
+show_numbers = true
+subagent_hide_finished = '30s'
 
 [notifications.agent]
 notify = false
+sound = true
+sound_mode = 'bell'
+
+[notifications.agent.states]
+idle = true
 
 [keybindings]
 
@@ -151,3 +166,11 @@ window_size = 'latest'
 [startup]
 tiled = true
 daemon = true
+open_default_window = true
+start_in_terminal_mode = true
+
+[panes]
+navigator_search = true
+
+[workspaces]
+new_window_when_empty = true

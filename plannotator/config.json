@@ -16,9 +16,44 @@
   "conventionalComments": true,
   "favicon": "totman",
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "plannotator",
     "dark": "tokyo-night"
   },
-  "agentTool": true
+  "agentTool": true,
+  "inboxTool": {
+    "pi": true,
+    "opencode": true
+  },
+  "inboxSound": {
+    "dialogShownFor": "0.28.42"
+  },
+  "inboxListIntro": {
+    "dueAt": "2026-10-31T12:08:00.637Z"
+  },
+  "inboxNotifications": {
+    "allowedOrigin": "http://localhost:42583",
+    "enabled": true,
+    "dismissed": false
+  },
+  "inboxTour": {
+    "version": 2,
+    "seen_at": null,
+    "finished_at": null,
+    "skipped_at": "2026-10-31T12:16:06.691Z",
+    "notify_again": false
+  },
+  "inboxBoard": true,
+  "experimental": {
+    "decisionMode": true
+  },
+  "inboxBoardIntro": {
+    "shownAt": "2026-10-31T12:18:57.456Z"
+  },
+  "inboxAgentNotes": {
+    "offered": true,
+    "asked": [
+      "pi"
+    ]
+  }
 }

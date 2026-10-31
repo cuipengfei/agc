@@ -608,6 +608,6 @@ thinkingBudgets:
 composer:
   shape: box
   tokenRate: true
-  predictions: true
+  predictions: false
 externalThinking: false
 skillful: true
