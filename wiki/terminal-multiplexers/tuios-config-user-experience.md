@@ -1,12 +1,12 @@
 # TUIOS 配置与用户体验
 
 > Sources: 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31; AGC 同步与验收记录, 2026-10-31
-> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [本机配置快照（0.10.0）](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [AGC 配置纳管记录](../../raw/terminal-multiplexers/2026-10-17-agc-tuios-config-tracking.md)
+> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [本机配置快照（0.10.0）](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [AGC 配置纳管记录](../../raw/terminal-multiplexers/2026-10-17-agc-tuios-config-tracking.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md)
 > Updated: 2026-10-31
 
 ## Overview
 
-`tuios` 与 `tuios-web` 共用 `/home/cpf/.config/tuios/config.toml`。TUIOS 0.12.0 没有发布独立 `.schema.json`，配置约束由三套机制组成。当前配置已通过 `tuios config prune` 精简，文件从 644 行降至 153 行。
+`tuios` 与 `tuios-web` 共用 `/home/cpf/.config/tuios/config.toml`。配置约束由选项注册表、快捷键注册表与 TOML 加载诊断组成。prune 后的历史快照为 153 行，后续交互调整继续加入来源文件。
 
 逐项的路径、允许值、默认值与当前值见 [TUIOS 配置项全表（0.12.0）](tuios-config-reference.md)，本文只讲机制、生效时机与本机取舍，不再重复这些数字。
 
@@ -76,34 +76,44 @@ terminal_paste_host = ['ctrl+shift+v', 'super+v', 'shift+super+v']
 
 ## 本机当前配置的取舍
 
-2026-10-31 共有 6 项调整，每项都对应一个具体场景：
+本次累计调整 24 个键。前 23 个已进入仓库，标题格式最新一项仅在来源。逐项默认值、当前值与允许值见[配置参考表](tuios-config-reference.md)。用户用 👍 确认的项目表示批准应用；没有选择的建议保持原值。
 
-| 设置 | 改为 | 理由 | 代价 |
-|---|---|---|---|
-| `appearance.click_to_type` | `single` | 从侧栏点击窗格后直接打字，省掉双击 | 误点窗格会立刻进入输入模式 |
-| `appearance.auto_enter_terminal_on_focus` | `targeted` | 编号选择与方向键切换后自动进入输入 | 用 Tab 在控件间移动时不会自动进入；需要该行为可改为 `all` |
-| `appearance.sidebar.width` | `28` | 容纳 agent 工具名与路径 | 比默认多占 4 列；超过 30 列会让 agent 窗格在两个区块重复出现 |
-| `notifications.agent.notify` | `false` | 与 Herdr 的习惯一致，只用应用内提示；浏览器连接下也只能记录日志 | 窗口不在前台时可能错过 agent 完成 |
-| `daemon.resume_agents` | `auto` | daemon 重启后直接接回 agent 对话 | 重启后不再询问，恢复命令会直接执行 |
-| `daemon.window_size` | `latest` | 手机或浏览器短暂连入不会把桌面画面压小 | 切换操作设备会改变布局 |
+### 输入、焦点与项目辨认
 
-其余保留现状的取向：
+- 单击窗格内容进入输入，编号选择与方向切换也自动进入输入，减少切换后的额外按键。这两条分别管理鼠标点击和键盘焦点命令。
+- 鼠标移动改变焦点，按住 Ctrl 可暂停跟随；非焦点窗格压暗，便于辨认当前操作对象。代价是经过其他窗格时焦点会变化。
+- 标题显示原名称和工作目录，便于区分同一种 Agent 的不同项目窗口。长目录可能使标题截断。
+- 普通右键在终端模式无选区且程序没有启用 mouse tracking 时打开 pane menu，Paste 项粘贴到当前 pane。有选区时打开 Selection 菜单；程序启用 mouse tracking 时，普通右键转发给程序。
 
-- 左侧栏与顶部状态栏持续提供信息，也持续占用终端空间。
-- 新会话不自动创建终端，需要从空工作区手动开始。
-- 焦点终端可以直接写系统剪贴板，操作方便，同时要求信任正在运行的程序。
-- 界面动画全部开启，视觉反馈完整；追求立即变化时可改为 `basic` 或 `none`。
-- 主题为 `tokyonight_storm`，会话边框携带会话颜色，便于跨会话并排时分清归属。
+### 侧栏与 Agent
+
+- 加宽左侧栏，增加 agents 区块比例，减少 files 区块比例，便于查看多个 Agent；代价是终端内容区域和文件列表空间减少。
+- 区块之间增加空行，会话前显示编号，便于辨认区块和会话。编号表示会话编号，不直接等同 workspace 快捷键。
+- 关闭主 Agent 自动折叠，空闲行继续单独显示。此项只控制折叠，不保证按进程存活保留行。
+- 限制单个 Agent 的 subagent 行数，上限包含 `+N more` 行；结束后延迟隐藏 subagent。主 Agent 不折叠与已结束 subagent 隐藏可同时成立。完整子任务信息需要进入 Agents View 查看。
+
+### 提醒与恢复
+
+- 关闭桌面通知，保留内部提醒并使用终端铃；增加 idle 提醒，便于知道 Agent 已安静下来。idle 不等同需要输入，提醒仍受延迟、焦点抑制和声音冷却规则控制。
+- 自动恢复 Agent 对话，减少后台重启后的逐个确认；恢复命令会直接执行。
+- 多客户端画面跟随最近输入的一方，手机连接后回到桌面操作即可重新采用桌面尺寸；操作设备变化会改变布局。
+
+### 启动与导航
+
+- 空会话启动时自动开终端，已有窗格时直接进入输入模式，减少启动后的操作。
+- 切到空 workspace 自动开窗，并继承离开时所在窗格的目录；空工作区不再保持空白。
+- 打开窗格导航器直接进入搜索，多个窗格之间查找少一步。
+- 主题与会话边框颜色保留。动画保持 full；未应用 scrollbar.style=thin、states.working=true、tape.auto_review=true 或 prefix_repeat_time=1000。
 
 ## AGC 版本化备份
 
 AGC 的 `manifest.json` 已加入 `tuios-config`，把来源配置同步到 `tuios/config.toml`，并标记为 protected。单项策略检查显示 `tuios_redaction_slots=0`，仓库副本与来源 SHA-256 相同。
 
-完整同步测试共运行 `19` 项并全部通过。当前条目在 `./sync.py status` 中显示 unchanged。配置文件仍是普通文件，没有新增 symlink。2026-10-31 的配置精简与 6 项调整已提交并推送为 `1495db0`。
+第一批 6 项已提交并推送为 `1495db0`；后续 12 项与五个获赞项目共 17 项已提交并推送为 `9b6025e`。当前仓库副本含这 23 个调整键，来源额外包含标题格式，尚未同步。记录使用的同步测试为 19 项通过，不将历史结果描述为本次重新运行。
 
 ## 证据边界
 
-- 当前值来自本机 `0.12.0` 完整配置快照（153 行，含上游生成的注释头）。
+- 当前值来自交互配置 raw 的来源摘录；153 行指 prune 后的历史快照。
 - 合法范围与 schema 机制来自本机 `tuios list-options` 与上游源码（`internal/config/options.go`、`validation.go`、`userconfig.go`、`internal/app/client_kind.go`）。
 - 生效时机来自 `tuios config apply --help` 与上游测试（`set_config_write_test.go`、`config_watch_test.go`）。
 - 本文解释配置行为，没有逐项修改后做视觉对比实验。

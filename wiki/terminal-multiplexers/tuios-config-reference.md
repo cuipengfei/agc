@@ -1,7 +1,7 @@
 # TUIOS 配置项全表（0.12.0）
 
 > Sources: 本机 tuios 0.12.0 `list-options` 与 `config.toml`, 2026-10-31; Gaurav-Gosain/tuios `docs/CONFIGURATION.md`
-> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [项目 tape 文档](../../raw/terminal-multiplexers/2026-10-31-tuios-project-tapes.md)
+> Raw: [list-options 完整输出](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md); [配置 prune 与 0.12.0 快照](../../raw/terminal-multiplexers/2026-10-31-tuios-config-prune-and-0.12.0-snapshot.md); [项目 tape 文档](../../raw/terminal-multiplexers/2026-10-31-tuios-project-tapes.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md)
 > Updated: 2026-10-31
 
 可设置项共 271 个路径，本页按用户感知顺序分 20 章，每个路径只出现一次。默认值与允许值逐字取自 raw 中的完整 JSON；「当前值」来自本机 `config.toml`，标「默认」表示文件中未写、正在使用内置默认值。体验一栏依据 JSON 的 `description` 与源码语义撰写。
@@ -13,8 +13,8 @@
 | `startup.daemon` | true / false | `true` | `true` | 直接运行 tuios 时是否连到后台会话。关闭后每次启动独立进程，不共享窗格与会话。TUIOS_NO_DAEMON=1 或 --standalone 可临时覆盖。配置缺少 [startup] 表时按 false 处理 |
 | `startup.tiled` | true / false | `true` | `true` | 新会话采用平铺还是浮动窗口 |
 | `startup.layout` | bsp / master-stack / scrolling | `bsp` | 默认 | 新会话的初始布局。bsp 递归二分，master-stack 固定主窗格加堆叠，scrolling 横向长条可滚动。已存在的会话保留自己的布局 |
-| `startup.open_default_window` | true / false | `false` | 默认 | 会话为空时是否自动开一个终端，省去手动新建 |
-| `startup.start_in_terminal_mode` | true / false | `false` | 默认 | 启动时若已有窗口，是否直接进入终端输入模式 |
+| `startup.open_default_window` | true / false | `false` | `true` | 会话为空时是否自动开一个终端，省去手动新建 |
+| `startup.start_in_terminal_mode` | true / false | `false` | `true` | 启动时若已有窗口，是否直接进入终端输入模式 |
 | `startup.session` | 会话名 / 空 | `空` | 默认 | 直接运行 tuios 时连到哪个会话；不存在则创建。空值连到最近使用的会话 |
 | `startup.window` | 窗格名或 id / 空 | `空` | 默认 | 启动时聚焦哪个窗格。没有同名窗格时焦点不变 |
 
@@ -88,7 +88,7 @@
 | `appearance.window_title_position` | top / bottom / hidden | `top` | 默认 | 标题画在窗格上边、下边或隐藏 |
 | `appearance.window_title_style` | pill / tab / plain | `pill` | 默认 | 标题形状。pill 圆角胶囊，tab 直角色块，plain 直接写在边框上 |
 | `appearance.window_title_align` | auto / left / center / right | `auto` | 默认 | 标题水平位置。auto 自动避开窗口按钮 |
-| `appearance.window_title_format` | 模板 / 空 | `空` | 默认 | 标题模板，接受 {title}、{index}、{cwd}。可用来在标题上显示当前目录 |
+| `appearance.window_title_format` | 模板 / 空 | `空` | `{title} · {cwd}` | 标题显示原名称与工作目录，便于区分不同项目中的同类 Agent。长目录在窄窗格中可能截断 |
 | `appearance.zen_mode` | disabled / always / mouse | `disabled` | 默认 | 窗口边框何时隐藏：从不、始终，或鼠标静止时隐藏、移动后恢复 |
 | `appearance.glyphs` | 字符集名 | `default` | 默认 | 边框、控件、分隔线与侧栏标记使用的字符集 |
 
@@ -106,7 +106,7 @@
 | `appearance.window_chrome_background` | off / theme / 颜色 / 空 | `空` | 默认 | 边框、标题栏与共享边框之间线条下面的底色。空值跟随 appearance.background |
 | `appearance.image_symbols` | auto / octant / sextant / quadrant / half / off | `auto` | 默认 | 终端没有图形协议时，用块字符近似绘制图片。各取值指定块精度，off 不绘制 |
 | `appearance.kitty_placeholders` | auto / on / off | `auto` | 默认 | 是否绘制程序用 kitty Unicode 占位符定位的图片 |
-| `appearance.dim_unfocused` | 0–90（百分比） | `0` | 默认 | 非当前窗格淡出程度。0 不淡出，数值越大当前窗格越突出 |
+| `appearance.dim_unfocused` | 0–90（百分比） | `0` | `20` | 非当前窗格淡出程度。0 不淡出，数值越大当前窗格越突出 |
 | `appearance.dim_foreground` | true / false | `true` | 默认 | 淡出时连文字一起变淡，关闭则只压暗背景 |
 | `appearance.dim_multifocus` | true / false | `false` | 默认 | 多焦点集合之外的窗格是否也按非当前窗格淡出 |
 
@@ -125,11 +125,11 @@
 |---|---|---|---|---|
 | `appearance.click_to_type` | single / double / off | `double` | `single` | 在窗口管理模式下，点击窗格内容的行为。single 单击即进入输入，double 需要双击，off 点击不改变模式。只影响鼠标点击 |
 | `appearance.auto_enter_terminal_on_focus` | off / targeted / all | `off` | `targeted` | 键盘焦点命令移到窗格时是否进入输入。off 不自动，targeted 在编号选择与方向切换时进入，all 连 Tab 也算。只影响键盘命令 |
-| `appearance.focus_follows_mouse` | true / false | `false` | 默认 | 鼠标移到哪个窗格就聚焦哪个 |
-| `appearance.focus_follows_mouse_pause` | off / ctrl / alt | `off` | 默认 | 按住指定键时，鼠标移动不改变焦点，避免经过时误抢 |
+| `appearance.focus_follows_mouse` | true / false | `false` | `true` | 鼠标移到哪个窗格就聚焦哪个 |
+| `appearance.focus_follows_mouse_pause` | off / ctrl / alt | `off` | `ctrl` | 按住指定键时，鼠标移动不改变焦点，避免经过时误抢 |
 | `appearance.copy_on_select` | true / false | `true` | 默认 | 松开鼠标即把选中文字复制到剪贴板 |
 | `appearance.word_characters` | 字符集合 | `@-./_~?&=%+#` | 默认 | 双击选中单词时，哪些标点算作词的一部分 |
-| `appearance.right_click_opens_menu` | true / false | `false` | 默认 | 终端模式下普通右键打开窗格菜单，便于先粘贴再操作 |
+| `appearance.right_click_opens_menu` | true / false | `false` | `true` | 终端模式无选区且程序未启用 mouse tracking 时，普通右键打开 pane menu。Paste 粘贴到当前 pane；有选区时打开 Selection 菜单，程序启用 tracking 时转发普通右键 |
 | `appearance.links` | off / marked / all | `all` | 默认 | 指针能识别哪些链接。off 不识别，marked 只认带标记的，all 普通网址也认 |
 | `appearance.link_click` | both / ctrl / shift / off | `both` | 默认 | 用什么键配合点击打开链接。both 为 Ctrl 或 Shift 均可 |
 | `appearance.link_hover` | safe / always | `safe` | 默认 | 悬停高亮。safe 跳过自己处理鼠标的程序，避免干扰 vim、less 这类界面；always 在所有窗格绘制 |
@@ -153,8 +153,8 @@
 | `appearance.sidebar.enabled` | true / false | `true` | 默认 | 是否显示侧栏 |
 | `appearance.sidebar.position` | left / right / hidden | `right` | `left` | 侧栏停靠的一侧，或收起 |
 | `appearance.sidebar.width` | 列数 | `24` | `28` | 宽屏下侧栏的首选宽度。不超过 30 列时，运行 agent 的窗格只在 agents 区块出现一次 |
-| `appearance.sidebar.sections` | 逗号分隔的名称:百分比 | `sessions:25,terminals,files:25,agents:34` | 默认 | 侧栏区块的堆叠顺序与高度占比。写出的名称才绘制，spacer 表示空白块，可重复 |
-| `appearance.sidebar.density` | normal / roomy | `normal` | 默认 | 区块间距。roomy 在除第一个之外每个区块前留一行空白 |
+| `appearance.sidebar.sections` | 逗号分隔的名称:百分比 | `sessions:25,terminals,files:25,agents:34` | `sessions:20,terminals:25,files:10,agents:45` | 侧栏区块的堆叠顺序与高度占比。写出的名称才绘制，spacer 表示空白块，可重复 |
+| `appearance.sidebar.density` | normal / roomy | `normal` | `roomy` | 区块间距。roomy 在除第一个之外每个区块前留一行空白 |
 | `appearance.sidebar.header_case` | lowercase / uppercase | `lowercase` | 默认 | 区块标题大小写。lowercase 更低调，uppercase 更像标题 |
 | `appearance.sidebar.header_style` | auto / plain / rule / pill / icon | `auto` | 默认 | 区块标题的绘制方式，icon 用该区块图标 |
 | `appearance.sidebar.row_style` | bar / marker / underline / pill | `bar` | 默认 | 标记当前行的方式：左侧竖条、标记符号、下划线或高亮块 |
@@ -162,7 +162,7 @@
 | `appearance.sidebar.background` | off / theme / 颜色 / 空 | `空` | 默认 | 侧栏底色。空值跟随 appearance.background |
 | `appearance.sidebar.show_counts` | true / false | `true` | 默认 | 会话行显示窗格数量 |
 | `appearance.sidebar.show_glyphs` | true / false | `true` | 默认 | 每行显示 agent 状态符号 |
-| `appearance.sidebar.show_numbers` | true / false | `false` | 默认 | 会话名前显示切换编号 |
+| `appearance.sidebar.show_numbers` | true / false | `false` | `true` | 会话名前显示切换编号 |
 | `appearance.sidebar.show_windows` | true / false | `true` | 默认 | 是否绘制 terminals 区块 |
 | `appearance.sidebar.peek` | true / false | `true` | 默认 | 指针或侧栏光标停在某个会话行时，terminals 区块预览该会话的窗格 |
 | `appearance.sidebar.marquee` | true / false | `true` | 默认 | 悬停时滚动显示超出宽度的标题 |
@@ -176,11 +176,11 @@
 | `appearance.sidebar.folder_click` | navigate / cd / both | `navigate` | 默认 | 点击文件夹行的行为。navigate 只在侧栏展开，cd 让当前窗格切换目录，both 两者都做 |
 | `appearance.sidebar.editor` | 命令 / 空 | `空` | 默认 | 在侧栏打开文本文件使用的编辑器。空值依次使用 $EDITOR、$VISUAL、vi |
 | `appearance.sidebar.group_main` | true / false | `false` | 默认 | 把仓库主检出连同 worktree 收进仓库行下面，仓库标题改为打开主检出的会话 |
-| `appearance.sidebar.agent_rest_fold` | 时长，如 1h / off | `1h` | 默认 | agent 行静止多久后折叠成一行。静止指空闲、未知，或已完成且已查看 |
+| `appearance.sidebar.agent_rest_fold` | 时长，如 1h / off | `1h` | `off` | off 关闭主 Agent 自动折叠。折叠依据状态与静置时间，不负责判定进程存活或保留 Agent 身份 |
 | `appearance.sidebar.subagent_collapse` | off / expanded / collapsed | `off` | 默认 | agent 的 subagent 列表是否带标题行并支持开合，以及初始展开或收起 |
 | `appearance.sidebar.subagent_fields` | 逗号列表：mark, name, type, time, note | `mark,name,time,note` | 默认 | 每个 subagent 行显示的字段 |
-| `appearance.sidebar.subagent_hide_finished` | 时长，如 30s / off | `off` | 默认 | subagent 结束后其行保留多久。off 表示一直保留到 daemon 丢弃 |
-| `appearance.sidebar.subagent_max_rows` | 0–16（行） | `0` | 默认 | 单个 agent 的 subagent 最多占几行，含 +N more 行。0 不限 |
+| `appearance.sidebar.subagent_hide_finished` | 时长，如 30s / off | `off` | `30s` | subagent 结束后其行保留多久。off 表示一直保留到 daemon 丢弃 |
+| `appearance.sidebar.subagent_max_rows` | 0–16（行） | `0` | `3` | 单个 agent 的 subagent 最多占几行，含 +N more 行。0 不限 |
 | `appearance.sidebar.subagent_rows` | rows / tree / count | `rows` | 默认 | subagent 的呈现方式：各自一行、用树线连接，或只显示数量 |
 
 ## 10. 已废弃键（加载时折叠）（10 项）
@@ -268,7 +268,7 @@
 | `hints.open` | true / false | `true` | 默认 | Ctrl 加标签直接打开网址或路径。远程客户端上不生效 |
 | `panes.label_keys` | 字符序列 | `1234567890` | 默认 | 窗格标签使用的按键，第一个标签对应第一个窗格 |
 | `panes.navigator_layout` | tree / flat / cards | `tree` | 默认 | 窗格导航器打开时的列表形式 |
-| `panes.navigator_search` | true / false | `false` | 默认 | 打开窗格导航器时直接进入搜索输入 |
+| `panes.navigator_search` | true / false | `false` | `true` | 打开窗格导航器时直接进入搜索输入 |
 | `panes.drag_and_drop` | true / false | `false` | 默认 | 通过 kitty 拖放协议在窗格之间拖拽内容 |
 | `path_picker.show_hidden` | true / false | `false` | 默认 | 路径选择器是否列出隐藏文件。面板内 Alt+h 可临时切换 |
 | `appearance.whichkey_enabled` | true / false | `true` | 默认 | 按下前缀键后显示可用快捷键弹窗 |
@@ -289,8 +289,8 @@
 | `notifications.agent.enabled` | true / false | `true` | 默认 | agent 提醒总开关 |
 | `notifications.agent.notify` | true / false | `true` | `false` | 向已连接的终端发送系统桌面通知 |
 | `notifications.agent.dock` | true / false | `true` | 默认 | 在状态栏显示提醒，点击可跳到对应窗格 |
-| `notifications.agent.sound` | true / false | `false` | 默认 | 提醒是否发声 |
-| `notifications.agent.sound_mode` | audio / bell / both / 空 | `空` | 默认 | 发声方式：提示音、终端铃，或两者。空值按平台默认 |
+| `notifications.agent.sound` | true / false | `false` | `true` | 提醒是否发声 |
+| `notifications.agent.sound_mode` | audio / bell / both / 空 | `空` | `bell` | 发声方式：提示音、终端铃，或两者。空值按平台默认 |
 | `notifications.agent.sound_cooldown_seconds` | 0–3600（秒） | `3` | 默认 | 两次发声的最短间隔。0 采用 3 秒 |
 | `notifications.agent.command` | shell 命令 / 空 | `空` | 默认 | 提醒时执行的外部命令，可用来推送到手机。空值不执行 |
 | `notifications.agent.quiet_hours` | HH:MM-HH:MM / 空 | `空` | 默认 | 不发出任何提醒的时段 |
@@ -299,7 +299,7 @@
 | `notifications.agent.states.done` | true / false | `true` | 默认 | agent 报告完成时提醒 |
 | `notifications.agent.states.errored` | true / false | `true` | 默认 | agent 因错误停止时提醒 |
 | `notifications.agent.states.needs_input` | true / false | `true` | 默认 | agent 等待你输入时提醒 |
-| `notifications.agent.states.idle` | true / false | `false` | 默认 | agent 转为安静时提醒 |
+| `notifications.agent.states.idle` | true / false | `false` | `true` | Agent 转为安静时提醒，仍受 settle_seconds、suppress_focused 与声音冷却约束；idle 不等同等待输入 |
 | `notifications.agent.states.working` | true / false | `false` | 默认 | agent 开始工作时提醒 |
 | `notifications.mail.enabled` | true / false / 未设置 | `空` | 默认 | 邮件提醒开关。未设置时跟随 notifications.agent.enabled |
 | `notifications.mail.dock` | true / false / 未设置 | `空` | 默认 | 邮件提醒是否进入状态栏。未设置时跟随 notifications.agent.dock |
@@ -370,7 +370,7 @@
 
 | 键 | 允许值 | 默认 | 当前 | 体验 |
 |---|---|---|---|---|
-| `workspaces.new_window_when_empty` | true / false | `false` | 默认 | 切到没有窗格的工作区时自动开一个窗格，并从上一个窗格的目录开始 |
+| `workspaces.new_window_when_empty` | true / false | `false` | `true` | 切到没有窗格的工作区时自动开一个窗格，并从上一个窗格的目录开始 |
 | `workspaces.return_when_empty` | true / false | `true` | 默认 | 屏幕上工作区的最后一个窗格关闭时，回到上一个工作区。关闭后显示启动画面 |
 | `worktree.path` | 模板 / 空 | `空` | 默认 | 新 worktree 的存放位置，模板接受 {repo_path}、{repo}、{branch}，加竖线加 slug 可生成单层文件夹名。相对路径从 repo_path 起算。空值放在 $XDG_DATA_HOME/tuios/worktrees |
 | `launcher.gui_command` | 命令 / 空 | `空` | 默认 | 启动图形桌面项目时使用的命令，桌面项的 argv 会追加其后。应使用接受 argv 的命令，例如 tuios-wayland launch --；不要使用把参数拼成 shell 行的命令，例如 swaymsg exec -- |
@@ -406,7 +406,7 @@
 ```bash
 tuios list-options --section sidebar     # 按分组查看路径、类型、默认值
 tuios list-options --search scrollback   # 按关键词搜索
-tuios set-config appearance.gap 1        # 严格校验后写入 config.toml
+tuios set-config appearance.gap 1        # 严格校验后在会话内应用；是否写文件取决于客户端
 tuios config browse                      # 交互式浏览与修改
 tuios config prune --dry-run             # 预览可移除的默认值键
 tuios keybinds doctor                    # 检查快捷键冲突与废弃绑定
@@ -417,7 +417,7 @@ tuios keybinds doctor                    # 检查快捷键冲突与废弃绑定
 ## 证据边界
 
 - 271 个路径、默认值、`accepted`、`min`/`max` 逐字来自 raw 中的完整 `list-options --json` 输出。
-- 当前值来自本机 `config.toml`（153 行，含上游生成的注释头）。
+- 当前值以交互配置 raw 的来源文件为准；标题格式仅在来源，其余 23 个调整键已在仓库副本。153 行是 prune 后历史快照。
 - 体验一栏依据 `description` 原文与源码语义撰写，属推断；未逐项做视觉对照实验。
 - `screensaver.effect` 的 36 个具名效果未逐个观察画面。
 

@@ -1676,3 +1676,8 @@
 - Disposition: New; Update
 - Raw: raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-list-options-full-json.md; raw/terminal-multiplexers/2026-10-31-tuios-project-tapes.md
 - Updated: TUIOS 配置与用户体验
+
+## [2026-10-31] ingest | TUIOS 交互配置与标题目录显示
+- Disposition: Update
+- Raw: raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md
+- Updated: TUIOS 配置与用户体验; TUIOS 配置项全表（0.12.0）; tuios workspace 与 session rail

@@ -1,7 +1,7 @@
 # tuios workspace 与 session rail
 
 > Sources: tuios 0.8.5 `--skill` 官方文档; 本机实证, 2026-10-06; 本机 TUIOS 0.12.0 配置与选项元数据, 2026-10-31
-> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [TUIOS agent 展示与集成](../../raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md)
+> Raw: [tuios 0.8.5 workspace 与 session rail 机制摘录](../../raw/terminal-multiplexers/2026-10-06-tuios-0.8.5-workspace-sidebar.md); [TUIOS 本机配置快照](../../raw/terminal-multiplexers/2026-10-17-tuios-local-config-snapshot.md); [TUIOS 0.10.0 选项元数据](../../raw/terminal-multiplexers/2026-10-17-tuios-0.10.0-option-metadata.md); [TUIOS agent 展示与集成](../../raw/terminal-multiplexers/2026-10-31-tuios-agent-display-and-integration.md); [交互配置与标题目录显示](../../raw/terminal-multiplexers/2026-10-31-tuios-interaction-settings-and-title.md)
 > Updated: 2026-10-31
 
 ## Overview
@@ -41,7 +41,7 @@ tuios 的侧栏叫 session rail。2026-10-06 实测配置为：
 - `appearance.sidebar.sections` = `sessions:25,terminals,files:25,agents:34`
 - `appearance.sidebar.show_counts` = `true`
 
-2026-10-17 的 TUIOS 0.10.0 本机配置中，启用状态与 sections 字符串保持上述值，`position` 已为 `left`，`width` 为 `24`。当前配置（0.12.0）为 `position = 'left'`, `width = 28`。
+历史快照记录侧栏从右侧改为左侧。当前来源设置与详细允许值见[配置参考表](tuios-config-reference.md)，本节只描述侧栏行为。
 
 `sessions:25,terminals,files:25,agents:34` 表示四个区块自上而下、百分比是高度占比。一个名字从列表里去掉，对应区块就不画。四区块：
 
@@ -60,6 +60,16 @@ rail 的每个 agent row 显示：`now`（agent 正在做什么）、`ctx N%`（
 - **双行显示**：第一行状态符号 + 窗口名 + 等待时长/队列数；第二行当前工具调用（如 `Bash: go test ./...`、`Edit: src/app.tsx`）、上下文告警 `ctx N%`、缩进的 subagent 列表。
 - **状态符号**：`▲` 需输入/审批，`■` 刚完成未读，`●` 运行中，`◊` 主任务空闲但后台 subagent 运行，`○` 空闲/已读，`×` 报错。
 - **自动去重**：侧栏宽度 ≤ 30 列时，agent 窗口仅出现在 `agents` 区块，不会在 `terminals` 区块重复。
+
+### 自动折叠与进程识别
+
+`agent_rest_fold=off` 关闭主 Agent 行的自动折叠。自动折叠依据 idle、unknown、done-seen 和静置时间，不根据进程是否存活判断。行是否被识别为 Agent 由进程检测与状态上报决定。
+
+主 Agent 行和 subagent 行分别管理。关闭主 Agent 折叠，同时限制 subagent 列表并延迟隐藏已结束的子任务，可以保留主要会话而减少子任务占用。
+
+### 右键菜单
+
+侧栏菜单针对会话、文件或仓库等对象；pane menu 针对终端窗格，含 Paste 等操作。终端模式有选区时普通右键打开 Selection 菜单；没有选区且程序启用 mouse tracking 时右键转发给程序；其余情况由 right_click_opens_menu 决定是否打开 pane menu。Paste 项把剪贴板内容粘贴到当前 pane。
 
 ## Agents View 驾驶舱
 
