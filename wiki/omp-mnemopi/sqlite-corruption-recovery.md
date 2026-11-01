@@ -1,8 +1,8 @@
 # Mnemopi SQLite 损坏恢复
 
-> Sources: 本会话恢复实录, 2026-09-21; 本会话恢复实录, 2026-09-24; 本会话恢复实录, 2026-10-06; 本会话压测与排除实验, 2026-10-06; 本会话第四次损坏取证, 2026-10-09; 本会话根因复现与机制实验, 2026-10-11; 本会话缓解验证与应用, 2026-10-11; 本会话第五次损坏实况取证, 2026-10-11; 本会话恢复流程与陷阱, 2026-10-11; 本会话 embedding 重建排查, 2026-10-11
-> Raw: [2026-09-21-mnemopi-sqlite-recovery](../../raw/omp-mnemopi/2026-09-21-mnemopi-sqlite-recovery.md); [2026-09-24-agc-bank-second-corruption](../../raw/omp-mnemopi/2026-09-24-agc-bank-second-corruption.md); [2026-10-06-agc-bank-third-corruption](../../raw/omp-mnemopi/2026-10-06-agc-bank-third-corruption.md); [2026-10-06-write-contention-repro-attempt](../../raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt.md); [2026-10-09-agc-bank-fourth-corruption](../../raw/omp-mnemopi/2026-10-09-agc-bank-fourth-corruption.md); [2026-10-11-shm-lock-drop-root-cause](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-root-cause.md); [2026-10-11-shm-lock-drop-mitigations](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-mitigations.md); [2026-10-11-fifth-corruption-live-forensic](../../raw/omp-mnemopi/2026-10-11-fifth-corruption-live-forensic.md); [2026-10-11-recovery-procedure-and-pitfalls](../../raw/omp-mnemopi/2026-10-11-recovery-procedure-and-pitfalls.md); [2026-10-11-embedding-rebuild-after-recovery](../../raw/omp-mnemopi/2026-10-11-embedding-rebuild-after-recovery.md)
-> Updated: 2026-10-11
+> Sources: 本会话恢复实录, 2026-09-21; 本会话恢复实录, 2026-09-24; 本会话恢复实录, 2026-10-06; 本会话压测与排除实验, 2026-10-06; 本会话第四次损坏取证, 2026-10-09; 本会话根因复现与机制实验, 2026-10-11; 本会话缓解验证与应用, 2026-10-11; 本会话第五次损坏实况取证, 2026-10-11; 本会话恢复流程与陷阱, 2026-10-11; 本会话 embedding 重建排查, 2026-10-11; 本会话三库恢复与安装, 2026-11-01; 本会话防护扩展实现与验收, 2026-11-02
+> Raw: [2026-09-21-mnemopi-sqlite-recovery](../../raw/omp-mnemopi/2026-09-21-mnemopi-sqlite-recovery.md); [2026-09-24-agc-bank-second-corruption](../../raw/omp-mnemopi/2026-09-24-agc-bank-second-corruption.md); [2026-10-06-agc-bank-third-corruption](../../raw/omp-mnemopi/2026-10-06-agc-bank-third-corruption.md); [2026-10-06-write-contention-repro-attempt](../../raw/omp-mnemopi/2026-10-06-write-contention-repro-attempt.md); [2026-10-09-agc-bank-fourth-corruption](../../raw/omp-mnemopi/2026-10-09-agc-bank-fourth-corruption.md); [2026-10-11-shm-lock-drop-root-cause](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-root-cause.md); [2026-10-11-shm-lock-drop-mitigations](../../raw/omp-mnemopi/2026-10-11-shm-lock-drop-mitigations.md); [2026-10-11-fifth-corruption-live-forensic](../../raw/omp-mnemopi/2026-10-11-fifth-corruption-live-forensic.md); [2026-10-11-recovery-procedure-and-pitfalls](../../raw/omp-mnemopi/2026-10-11-recovery-procedure-and-pitfalls.md); [2026-10-11-embedding-rebuild-after-recovery](../../raw/omp-mnemopi/2026-10-11-embedding-rebuild-after-recovery.md); [2026-11-01-three-db-recovery-and-install](../../raw/omp-mnemopi/2026-11-01-three-db-recovery-and-install.md); [2026-11-02-grep-guard-extension](../../raw/omp-mnemopi/2026-11-02-grep-guard-extension.md)
+> Updated: 2026-11-02
 
 ## 恢复流程
 
@@ -150,6 +150,7 @@ bank `agc-djmfd5jv3zsd` 第四次物理损坏。最早 operation-error 事件 `2
 - **同一 repo 不并行跑两个 OMP 会话**：切断第二写入者。
 - **让 Grep/Read 待在项目目录、不指向 `~/.omp`**：历史触发向量就是 `grep path=~/.omp/agent`。
 - **兜底**：`sqlite3 <bank> ".backup <目标>"` 定期备份；替换 bank 文件后必须重启所有使用该 bank 的会话（旧句柄绑旧 inode 会一直报 malformed）。
+- **Grep 范围防护扩展（已应用 2026-11-01）**：`~/.omp/agent/extensions/deny-mnemopi-grep.ts` 在 `tool_call` 阶段拦截指向 Mnemopi 目录或 history.db 系列的 grep，仓库提交 `71d2304`。只覆盖 Grep，直接 Read 原始 db/WAL/SHM 仍可触发丢锁；已运行会话需重启后加载。机制见 [tool_call 范围防护扩展](../omp-extensibility/tool-call-range-guard-extension.md)。
 
 ## 恢复流程与陷阱（2026-10-11）
 
@@ -163,6 +164,16 @@ bank `agc-djmfd5jv3zsd` 第四次物理损坏。最早 operation-error 事件 `2
 
 恢复后 `memory_embeddings` 由约 900 掉到 257：模型变更触发的重建（`from:[""]`、`to:"text-embedding-3-small"`，count 885/629），非丢数据（`gists`≈900 可重算），但停滞在 257、无 error、语义召回暂降级，需 embedding 后端可达 + 会话活动驱动跑完。详见 [raw](../../raw/omp-mnemopi/2026-10-11-embedding-rebuild-after-recovery.md)。
 
+
+## 2026-11-01 三库恢复与安装
+
+本轮对 `history.db`、agc bank、default bank 三个库各自由恢复脚本产出候选，替换线上库并保留原始文件。`installation-status.json` 记录 `state: installed`、`at: 2026-11-01T10:18:10.512751+00:00`；装后检查在 `2026-11-01T10:21:38.043500+00:00` 记录 history、agc、default 三项均为 `integrity/FK/FTS ok`。消费者冒烟在隔离目录通过：history 写入可检索且重复提示去重（`useCount: 2`），agc 与 default 的 `diagnosticsFailed: 0`，写入、召回与 episodic 整合均通过。
+
+安装有持有者闸：脚本在检测到 `pid 451347`（`omp`）持有 `/home/cpf/.omp/agent/history.db` 时以 `RuntimeError` 中止，提示退出后从普通 shell 运行。
+
+数据边界按各库报告记录。default 隔离 `removed_row_count: 12` 行（`episodic_memory: 1`、`gists: 1`、`graph_edges: 9`、`memory_embeddings: 1`），其中一条 episodic 行的 `content` 被判定为已从磁盘消失，`metadata_json` 与 `temporal_tags` 无效；报告明确采集前已删除的行无法恢复。agc 隔离 4 行：3 行 `memoria_facts` 的 `message_idx` 存成字符串，1 行 `memory_embeddings` 的 `memory_id` 为空、向量 JSON 无效。history 隔离 0 行；合并 `merged_prompts: 7851`、`session_recaps: 444`（`duplicate_tuples_collapsed: 102`、`ids_reassigned: 3`），`originals_opened_by_sqlite` 为假，原件只做哈希、运行后未变。
+
+详见 [raw](../../raw/omp-mnemopi/2026-11-01-three-db-recovery-and-install.md)。
 
  ## 上游已知 issue 对照
 
@@ -199,3 +210,4 @@ bank `agc-djmfd5jv3zsd` 第四次物理损坏。最早 operation-error 事件 `2
 ## See Also
 
 - [Mnemopi 数据模型与 Recall/Reflect](data-model-and-retrieval.md)
+- [OMP tool_call 范围防护扩展](../omp-extensibility/tool-call-range-guard-extension.md)

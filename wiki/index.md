@@ -235,6 +235,7 @@ OMP Extension 与 Hook 的职责边界。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP Hooks vs Extensions](omp-extensibility/hooks-vs-extensions.md) | Extension 覆盖 HookAPI 全部用例并增加 tool/provider，Hook 是 legacy 兼容层 | 2026-09-09 |
+| [OMP tool_call 范围防护扩展：执行前阻断危险 Grep](omp-extensibility/tool-call-range-guard-extension.md) | `tool_call` 阶段返回 `block`/`reason` 的范围拦截；受保护集合、父目录候选枚举、排除项与 symlink 归一、未注册 URI 拒绝、失败关闭；23 项边界回归、6 项真实执行验收与 strace 证据；只覆盖 Grep | 2026-11-02 |
 
 ## omp-tips
 
@@ -275,7 +276,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 | [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径；外部叠加方案 ai-memory（非第五个后端、并存需先关 memory.backend） | 2026-10-27 |
 | [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响；一次性注入的三处标志位与 8/5000/3 取值 | 2026-10-27 |
 | [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表、facts 只读（memory_edit 不可改）；分层打分与默认权重 0.5/0.3/0.2 | 2026-10-27 |
-| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程、五次损坏实录（9-21/9-24/10-06/10-09/10-11）、索引同坏时穷举点查证伪法；根因类层面定位（多写入者 + `-shm` 协调失效，两条可达：grep/read 进程内夺锁、替换 bank 未重启致分裂 shm），逐次归因不可考，WAL-reset/FTS5 CVE 已排除；恢复流程与陷阱、embedding 重建停滞；缓解 `.ignore` 跳 sidecar（已应用）+ 同 repo 不并行 | 2026-10-11 |
+| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程、五次损坏实录（9-21/9-24/10-06/10-09/10-11）、索引同坏时穷举点查证伪法；根因类层面定位（多写入者 + `-shm` 协调失效，两条可达：grep/read 进程内夺锁、替换 bank 未重启致分裂 shm），逐次归因不可考，WAL-reset/FTS5 CVE 已排除；恢复流程与陷阱、embedding 重建停滞；缓解 `.ignore` 跳 sidecar（已应用）、同 repo 不并行；2026-11-01 三库恢复与安装（装后 `integrity/FK/FTS ok`、冒烟通过、各库隔离行数与数据边界）；Grep 范围防护扩展已应用（提交 `71d2304`，只覆盖 Grep） | 2026-11-02 |
 
 ## omp-modes
 
