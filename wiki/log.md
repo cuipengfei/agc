@@ -1701,3 +1701,7 @@
 - Disposition: New; Update
 - Raw: raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md; raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md
 - Updated: Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈; OMP Compaction Methods & History URI Tool Support; OMP 配置语义手册
+
+## [2026-11-02] ingest | OMP per-call model 与许可机制
+- Disposition: New
+- Raw: raw/omp-config/2026-11-01-per-call-model-official-definition.md; raw/omp-config/2026-11-01-per-call-model-local-grants-and-rejections.md; raw/omp-config/2026-11-01-agent-role-model-binding-example.md
