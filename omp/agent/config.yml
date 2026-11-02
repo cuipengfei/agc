@@ -4,7 +4,7 @@ power:
   sleepPrevention: idle
 advisor:
   enabled: true
-  syncBacklog: "5"
+  syncBacklog: "off"
   immuneTurns: 3
   maxNotesPerUpdate: 4
   evictStaleResults: true

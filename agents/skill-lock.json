@@ -1316,9 +1316,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "f5493be06ff82799d90c24fb803457086506e996",
+      "skillFolderHash": "833810d3866645f579085aa76803541892bde692",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-01T05:35:56.785Z"
+      "updatedAt": "2026-11-02T11:44:05.987Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
@@ -1418,6 +1418,15 @@
       "skillFolderHash": "cc2b5235344f14558b0da842510e87952cc9063b",
       "installedAt": "2026-10-27T14:31:04.079Z",
       "updatedAt": "2026-10-27T14:31:04.079Z"
+    },
+    "plannotator-visual-explainer": {
+      "source": "backnotprop/plannotator",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/backnotprop/plannotator.git",
+      "skillPath": "apps/skills/extra/plannotator-visual-explainer/SKILL.md",
+      "skillFolderHash": "48b1d39f317db181b75c8c4dafba6b78bb8f17a4",
+      "installedAt": "2026-11-02T11:55:27.589Z",
+      "updatedAt": "2026-11-02T11:55:27.589Z"
     }
   },
   "dismissed": {
