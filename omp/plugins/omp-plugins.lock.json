@@ -19,6 +19,10 @@
       "version": "0.5.3",
       "enabledFeatures": null,
       "enabled": true
+    },
+    "graphify-pi": {
+      "enabledFeatures": null,
+      "enabled": true
     }
   },
   "settings": {}
