@@ -28,7 +28,7 @@ export default function taskAgentReminder(pi: ExtensionAPI) {
     pi.sendMessage(
       {
         customType: "task-agent-reminder",
-        content: `tasks[] 中索引为 ${genericItems.join(", ")} 的 item 解析为 agent:"task"。调用前先读取 xd://task，仔细查看当前可用 agent 列表与各自描述，为这件工作选择最具体的那个；没有合适的专用 agent 时才保留 task。`,
+        content: `tasks[] 中索引为 ${genericItems.join(", ")} 的 item 解析为 agent:"task"。调用前仔细查看当前可用 agent 列表与各自描述，为这件工作选择最具体的那个；没有合适的专用 agent 时才保留 task。`,
         display: true,
         attribution: "agent",
       },

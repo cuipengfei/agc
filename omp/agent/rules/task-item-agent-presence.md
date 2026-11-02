@@ -8,7 +8,7 @@ scope: "tool:task"
 
 当前 `task` 调用的原始参数中，至少一个 `tasks[]` item 没有显式填写 `agent`，或被写成 `agent:"task"`。这会让 OMP 用默认的通用 task agent 跑这件工作，而通用 agent 往往既不是最便宜也不是最合适的那个。
 
-请停止这次调用，读取 `xd://task`，查看当前会话可用 agent 的完整列表与各自描述，按任务类型为每个 item 选择最具体的那个。没有合适的专用 agent 时才用 `task`。
+请停止这次调用，读取 `task` 工具的参数说明（或重新查看可用 agent 列表），为每个 item 选择最具体的那个。没有合适的专用 agent 时才用 `task`。
 
 `agent` 必须放在每个 item 内，不能放在 batch 顶层：
 
