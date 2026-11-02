@@ -12,14 +12,17 @@
 2. **MCP 工具名**：frontmatter `tools` 里写的是工具注册名，随各机器 MCP 服务配置变化。
 3. **同步归属**：`manifest.json` 原本没有 `omp/agent/agents` 条目，需要新增才能把 agent 定义纳入 AGC 版本化。
 
-## frontmatter 键名只认 camelCase
+## frontmatter 键名：连字符与 camelCase 等效
 
-`parseAgentFields()`（helpers.ts:368-379）逐字行为：
+`parseFrontmatter()` 默认 `rawKeys = false`（pi-utils/src/frontmatter.ts:142）；解析完成后 `finalizeKeys()` 走 `normalizeFrontmatterKeys()`，用 `kebabToCamel()` 递归把含连字符的键转成 camelCase，函数注释即写明 `"thinking-level" -> "thinkingLevel"`（frontmatter.ts:14-18、26-49、145）。
 
-- thinking 只读 `frontmatter.thinkingLevel`（字符串）；`thinkingLevel` 不是字符串时回退读字符串型 `frontmatter.thinking`；两者都不认时 `thinkingLevel` 为 undefined。
-- read 摘要只读 `parseBoolean(frontmatter.readSummarize)`。
-- 安装包 `src/` 全树搜索 `read-summarize` 与 `thinking-level`，命中的只有注释里的自然语言写法（如 `thinking-level resolution`），没有任何解析路径。连字符写法会被静默忽略，不报错。
-- 消费点：`executor.ts:4331` 逐字 `...(agent.readSummarize === false ? { "read.summarize.enabled": false } : undefined),`。
+agent 解析入口 `parseAgent()` 用默认选项调用 `parseFrontmatter`，未传 `rawKeys: true`（task/agents.ts:111-115），所以 agent 文件同样走归一化。`parseAgentFields()` 读的是归一化之后的 `thinkingLevel` 与 `readSummarize`（helpers.ts:368-379）。
+
+结论：`thinking-level` 与 `thinkingLevel`、`read-summarize` 与 `readSummarize` 都受支持，内部统一为 camelCase。官方 v18.14.2 文档本身就用连字符写法，并注明 `read-summarize: false`（normalized to `readSummarize`）。
+
+需要保留原样键名的是严格规范 loader：`rawKeys: true` 只出现在 skillshare/pack.ts:70 与 discovery/agent-plugins.ts:166 这类按规范校验 `allowed-tools` 的路径，避免与 camelCase 形式互相别名。
+
+消费点：executor.ts:4331 逐字 `...(agent.readSummarize === false ? { "read.summarize.enabled": false } : undefined),`。写 `"false"` 字符串经 `parseBoolean` 归一，最终仍严格比较 `=== false`。
 
 ## 本机四个 agent 的 frontmatter（逐字）
 

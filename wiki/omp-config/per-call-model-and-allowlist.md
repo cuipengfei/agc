@@ -86,7 +86,7 @@
 
 ## agent 与 role 的绑定
 
-用户级 agent 写在 `~/.omp/agent/agents/<name>.md`，项目级在 `<project>/.omp/agents/<name>.md`；frontmatter 写 `name`、`description`、`model`、`tools`、`spawns` 等，正文成为子代理 system prompt。要点：`main`/`sub` 是保留名；`spawns` 缺省但 tools 含 task 时按兼容规则视为 `*`；键名只认 camelCase，`readSummarize: false` 关闭其 read 结构化摘要（bundled scout 出厂即关），连字符写法会被静默忽略。
+用户级 agent 写在 `~/.omp/agent/agents/<name>.md`，项目级在 `<project>/.omp/agents/<name>.md`；frontmatter 写 `name`、`description`、`model`、`tools`、`spawns` 等，正文成为子代理 system prompt。要点：`main`/`sub` 是保留名；`spawns` 缺省但 tools 含 task 时按兼容规则视为 `*`；键名的连字符与 camelCase 写法等效，解析时统一归一为 camelCase，`read-summarize: false` 与 `readSummarize: false` 都能关闭其 read 结构化摘要（bundled scout 出厂即关）。
 
 官方绑定示例（docs，转写）：`~/.omp/agent/agents/reviewer.md` frontmatter 设 `model: "@review"`，`config.yml` 设 `modelRoles: { review: openai/gpt-5.4:high }`，正文为审查指令。绑定链按顺序：
 

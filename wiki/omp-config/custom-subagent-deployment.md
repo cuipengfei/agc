@@ -25,15 +25,15 @@
 
 四个文件合计 178 行；`frontend` 不写 `tools`，拿到内置默认工具集。
 
-## frontmatter 键名只认 camelCase
+## frontmatter 键名：连字符与 camelCase 等效
 
-`parseAgentFields()` 的逐字行为（helpers.ts:368-379）：
+`parseFrontmatter()` 默认 `rawKeys = false`，解析后用 `normalizeFrontmatterKeys()` 递归把含连字符的键转成 camelCase（`kebabToCamel()` 注释即 `"thinking-level" -> "thinkingLevel"`，pi-utils/src/frontmatter.ts:14-18、26-49、145）。agent 入口 `parseAgent()` 用默认选项调用，未传 `rawKeys: true`（task/agents.ts:111-115），所以 agent 文件同样走归一化。
 
-- thinking 读 `frontmatter.thinkingLevel`（字符串），不是字符串时回退读字符串型 `frontmatter.thinking`；
-- read 摘要只读 `parseBoolean(frontmatter.readSummarize)`；
-- 安装包全树没有 `thinking-level`、`read-summarize` 的解析路径，连字符写法被静默忽略，不报错也不生效。
+因此 `thinking-level` 与 `thinkingLevel`、`read-summarize` 与 `readSummarize` 都受支持；`parseAgentFields()` 读的是归一化后的 camelCase 字段（helpers.ts:368-379）。官方 v18.14.2 文档本身用连字符写法，并注明 `read-summarize: false` 会 normalized to `readSummarize`。
 
-消费点在 executor.ts:4331：`...(agent.readSummarize === false ? { "read.summarize.enabled": false } : undefined),`。只有严格等于 false 才注入关闭；写 `"false"` 字符串经 `parseBoolean` 归一，写连字符键则完全读不到。
+需要原样保留键名的是严格规范 loader：`rawKeys: true` 只出现在 skillshare/pack.ts:70 与 discovery/agent-plugins.ts:166 这类按规范校验 `allowed-tools` 的路径。
+
+消费点在 executor.ts:4331：`...(agent.readSummarize === false ? { "read.summarize.enabled": false } : undefined),`。字符串 `"false"` 经 `parseBoolean` 归一，最终仍严格比较。
 
 ## 跨机器复刻的三个替换点
 
