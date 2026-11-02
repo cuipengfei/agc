@@ -25,6 +25,7 @@ jobs:
       - run: bun run check
         working-directory: tools/tern-maintain
       - run: bun test
+        working-directory: tools/tern-maintain
       - name: Wiki evidence check
         run: |
           output=$(python3 tools/wiki-check/check_evidence.py .)
