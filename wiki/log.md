@@ -1716,3 +1716,9 @@
 - Disposition: New; Update
 - Raw: raw/omp-config/2026-11-02-custom-subagent-deployment.md; raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md
 - Updated: OMP per-call model 与许可机制
+
+## [2026-11-02] ingest | Tern 0.9.8 与 0.9.9 仅字体部署、描述符迁移与 CI 测试作用域
+- Disposition: Update
+- Raw: raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md
+- Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册; Tern 索引条目
+- 要点：0.9.8 起原版终端字体从 BerkeleyMono（11217 字符）换成 Ioskeley Mono Term（7564 字符，CJK 0），各 3 份副本共 6 个描述符；0.9.8 与 0.9.9 槽位地址完全不同，必须逐版本重测；`maple.mjs` 按 style 合并分配，6 条描述符只占两份内存。两版时间 `panicFunctions` 分别为 28 与 36，时间调用均为 22 处。CI 失败根因是 `bun test` 未限定 `working-directory`，从仓库根收集了 OMP 扩展测试；加限定后 run 41444309707 成功。重启后 `runtime.start` 因 PID 文件与 `web-token` 的 `wx` 创建而受阻，可用手工 daemon 加 `web serve --token` 启动。

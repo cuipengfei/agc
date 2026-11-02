@@ -1,8 +1,8 @@
 # Tern 跨机器补丁手册
 
-> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29
-> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md)
-> Updated: 2026-10-29
+> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02
+> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md)
+> Updated: 2026-11-02
 
 ## 使用对象与边界
 
@@ -131,6 +131,23 @@ bun cli.mjs markdown-windows --binary /absolute/path/to/tern \
 结论只按观测分类。`reproduced` 表示有效 ASCII 基线之后中文页面状态查询无响应。`not_reproduced` 要求中文页面仍响应、首帧出现、viewport 输入后 canvas 像素尺寸更新且 GPU 提交增加。`not_run` 表示前置条件不足、驱动超时或未观察到应用重绘，退出码 2。静态截图相同、DOM 选区相同、驱动超时都不作为冻结证据。0.9.7 仅字体版的一次实测：canvas `1280`×`720` 变为 `1360`×`760`，提交 `328` 变为 `334`，`wasmErrors` 为空，cleanup 成功。
 
 报告写入 `--out`，同名 PNG 保存最后画面，认证值不写入报告。临时进程、服务目录、驱动目录与浏览器 profile 由本次运行清理。
+
+## 重启后的启动
+
+机器重启后 `runtime-state` 保留 `tern-daemon.pid`、`tern-web.pid` 与 `web-token`，但进程已不存在。`runtime.start` 在三处都会受阻：PID 文件存在即拒绝启动；`pickTokenFile` 用 `flag: 'wx'` 创建 `web-token`，文件已存在会抛 `EEXIST`；`start` 没有 `tokenFile` 参数，无法指定外部认证文件。
+
+可用路径是保留 `~/.config/tern/web-token`，清掉三个过期状态文件后手工启动：
+
+```bash
+STATE=~/.local/share/tern-native-<version>/runtime-state
+rm -f "$STATE/tern-daemon.pid" "$STATE/tern-web.pid" "$STATE/web-token"
+tern daemon --socket /run/user/1000/tern/daemon.sock &
+tern web serve --listen 127.0.0.1:8378 \
+  --token ~/.config/tern/web-token \
+  --assets ~/.local/share/tern-web-<version> &
+```
+
+直接启动 `tern web serve` 会把带 token 的入口地址写到 stdout，凭据会进入终端记录；`runtime.start` 与 `lifecycle.upgrade` 通过 `spawnRedacted` 把输出先写入日志再脱敏。启动后核对 `tern --version`、HTTP 状态与 pane 列表；进程存活和根页面 HTTP 200 都不验证认证，认证状态需单独确认。
 
 ## 各层检查证明的内容
 

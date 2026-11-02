@@ -1,8 +1,8 @@
 # Tern 时间 API 补丁与验收
 
-> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29；Tern 0.9.7 静态分析与仅字体部署，2026-10-29
-> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md)
-> Updated: 2026-10-29
+> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29；Tern 0.9.7 静态分析与仅字体部署，2026-10-29；Tern 0.9.8 与 0.9.9 静态分析，2026-11-02
+> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md)
+> Updated: 2026-11-02
 
 ## 适用范围
 
@@ -25,8 +25,12 @@ Tern Web 模块存在时间 API 的平台 unsupported 分支。静态定位这�
 | 0.9.6 仅注入字体（正式 8378） | 挂载与字体验收 | `mounted` true，Regular `20564496` bytes、Bold `20517844` bytes，`framesReceived` `18`，`pageErrors` `0`；随后用户中文 Markdown 正常 |
 | 0.9.7 原版 | 静态分析 | `panicFunctions` 总数 `31`；按 `time not implemented on this platform` 筛选为 `30815`（18 处调用）与 `30816`（3 处调用），合计 21 处 |
 | 0.9.7 仅注入字体（隔离服务） | 同一路径重绘检查 | 页面仍响应，viewport 输入后 canvas 由 `1280`×`720` 变为 `1360`×`760`，GPU 提交由 `328` 增至 `334` |
+| 0.9.8 原版 | 静态分析 | `panicFunctions` 总数 `28`；时间函数 `31414`（19 处调用）与 `31415`（3 处调用），合计 22 处 |
+| 0.9.9 原版 | 静态分析 | `panicFunctions` 总数 `36`；时间函数 `31844`（19 处调用）与 `31845`（3 处调用），合计 22 处 |
 
 旧版 panic 与用户报告的 Markdown 冻结同时出现在 0.8.4 环境，但「Markdown 打开 → panic → 冻结」没有任何一步被单独隔离；0.9.6 原版同路径未冻结，说明 unsupported 时间分支存在本身不是充分条件。
+
+0.9.8 与 0.9.9 只做了静态分析，未做动态复现或时间补丁；两者的原版终端字体为 `Ioskeley Mono Term`，各 `7564` 个字符映射、CJK 为 0。
 
 时间补丁不修改 native desktop 的时间实现。Web 初始化、daemon/CLI 行为与 native UI 的覆盖范围分别记录。
 
@@ -89,7 +93,8 @@ Tern Web 模块存在时间 API 的平台 unsupported 分支。静态定位这�
 - 心跳与 `tern ls` 在原版 panic 后仍正常，记录的是状态查询通道；该诊断未采集画面变化。
 - 正式 8378 的 0.9.6 只注入字体，同版本原版已未复现冻结；用户中文 Markdown 正常与字体显示改进分别记录，冻结原因尚未隔离。
 - 0.9.7 只做了静态分析与仅字体版的页面检查；原版按同一重绘判据的对照仍未执行。
-- `panics` 字段记录全部 `panicFunctions`，时间分支数量需按消息筛选后单独统计；0.9.6 为总数 32、时间调用 25 处，0.9.7 为总数 31、时间调用 21 处。
+- `panics` 字段记录全部 `panicFunctions`，时间分支数量需按消息筛选后单独统计。三个版本的总数与时间调用数不同：0.9.7 为 31 与 21，0.9.8 为 28 与 22，0.9.9 为 36 与 22；0.9.6 记录为总数 32、时间调用 25 处。
+- 0.9.8 的部署记录 `~/.local/share/tern-web-0.9.8/PATCH.md:20` 曾写时间函数 `30295`（17 处）与 `30296`（3 处）合计 20 处，这是从 0.9.7 记录复制的旧值；同一 WASM 的 `plan.json` 实测为 `31414`（19 处）与 `31415`（3 处）。
 
 ## See Also
 
