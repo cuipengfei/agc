@@ -72,6 +72,7 @@ modelRoles:
   widget: sensenova/glm-5.2:max
   architect: c8787/gpt-6.1-sol:high
   designer: sensenova/glm-5.2:high
+  balanced: kimi-code/k3.1-pro
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
