@@ -1728,3 +1728,9 @@
 - Raw: raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md; raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md
 - Updated: OMP 自定义 sub-agent：定义、工具名适配与验证
 - 要点：中间档经三轮修正定稿为 balanced role（kimi-code/k3.1-pro）+ builder agent（thinkingLevel: medium）；`executor.ts:4646-4650` 的 selector `:level` 后缀优先于 thinkingLevel，故便宜 role 降 thinkingLevel 无效；`spawns: []` 仍会注入 task 工具，省略才真正没有；TTSR condition 扩展到回落到 `agent:"task"` 的 item 且不硬编码清单；OMO 5.1.57 核查后补齐 oracle（Metis/Momus/Oracle Triple）、librarian（年份门槛/permalink/恢复分支）、frontend（组件下限/设计系统/验收门）、qa（既有证据核查/产物引用）四份遗漏，builder 无遗漏；模型 fallback chain、双 reviewer 门、manualQa 矩阵与 tmux 通道因 OMP 无对应机制未照搬
+
+## [2026-11-02] ingest | graphifyy 工作机制
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-02-graphify-omp-integration-contracts.md; raw/agent-tooling/2026-11-02-graphify-extras-and-visual-outputs.md
+- Updated: graphify 的图谱产物形态与导出限制
+- 要点：0.9.100 的 `install --platform` 有 23 个目标、无 `omp`，OMP 走三层（skill 写入 `~/.agents/skills`、MCP 写入 `mcp.json`、guard 用 `omp plugin install` 建符号链接）；guard 拦 bash/grep/read/glob，预算两秒与 256/64 KiB，fail-open，strict 由 `GRAPHIFY_HOOK_STRICT` 开启（TTL 默认 1800 秒、提醒上限 5）；新鲜度分工具类型，搜索只查存在、读取比对 mtime；MCP 十工具六资源，全支持 `project_path` 与热重载；skill 靠 `.graphify_version` 在非信息命令时自动刷新；`hook install` 除四个钩子还写 `merge.graphify.*` 与 `.gitattributes`；`needs_update` 只有 watch 写，只装 hooks 时文档变更无提示；watch 是前台阻塞循环无守护；extras 共 30 个，本机 receipt 为 svg/leiden/mcp/sql/postgres/chinese；可视化四类仅 graph.html 自动刷新，9663 节点折叠为 937 社区视图，两个 HTML 依赖 CDN，`export svg` 因标签含 `$$` 触发 mathtext 崩溃、可用 `text.parse_math=False` 绕过，265 秒产出 26.0 MB 且中文缺字形

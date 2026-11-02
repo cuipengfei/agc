@@ -1,8 +1,8 @@
 # graphifyy 工作机制
 
-> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07; Graphify v8 README 与核心源码摘录, 2026-10-27
-> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md); [Graphify v8 README 与核心源码摘录](../../raw/agent-tooling/2026-10-27-graphify-v8-readme-and-source-excerpts.md)
-> Updated: 2026-10-27
+> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07; Graphify v8 README 与核心源码摘录, 2026-10-27; graphify 0.9.100 OMP 集成方式源码核对与实测, 2026-11-02; graphify 0.9.100 extras 与可视化产物实测, 2026-11-02
+> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md); [Graphify v8 README 与核心源码摘录](../../raw/agent-tooling/2026-10-27-graphify-v8-readme-and-source-excerpts.md); [graphify 0.9.100 与 OMP 集成方式](../../raw/agent-tooling/2026-11-02-graphify-omp-integration-contracts.md); [graphify 0.9.100 extras 清单与可视化产物实测](../../raw/agent-tooling/2026-11-02-graphify-extras-and-visual-outputs.md)
+> Updated: 2026-11-02
 
 ## Overview
 
@@ -101,9 +101,76 @@ python -m graphify.watch <root> --debounce 3
 
 ## install --platform
 
-`graphify install --platform <name>` 支持的宿主：claude / codex / opencode / agents / pi（**不含 omp**）。
+`graphify install --platform <name>` 在 0.9.100 覆盖 23 个宿主：claude、codex、opencode、kilo、aider、copilot、claw、droid、trae、trae-cn、hermes、kiro、pi、codebuddy、antigravity、antigravity-windows、windows、kimi、amp、agents、devin、gemini、cursor。名单中没有 `omp`。
 
-OMP 没有原生 install 目标，通过 `enableAgentsUser=true` 与 `enableAgentsProject=true`（默认值）自动扫描 `~/.agents/skills/` 和 `~/.pi/agent/skills/` 目录，发现 skill 后即注册。
+OMP 没有原生 install 目标。skill 通过 `--platform agents` 写入 `~/.agents/skills/graphify/`，OMP 的 `enableAgentsUser=true` 与 `enableAgentsProject=true`（默认值）扫描该目录；`--platform pi` 写 `~/.pi/agent/skills/graphify/` 同样被扫描。
+
+### extras
+
+包共 30 个 extras（含 `all`），按用途分五组：
+
+- 输出与集成：`mcp`（MCP 服务器）、`svg`（graph.svg）、`neo4j`、`falkordb`、`office`、`google`、`pdf`、`video`
+- 图谱算法：`leiden`（用 Leiden 替代 Louvain）、`chinese`（jieba 分词）
+- 数据源：`postgres`（活库 schema）、`watch`（watchdog 文件监视）
+- 语义后端：`gemini`、`openai`、`anthropic`、`kimi`、`ollama`、`bedrock`
+- 语言 grammar：`sql`、`pascal`、`dm`、`terraform`、`ocaml`、`commonlisp`、`robot`、`vbnet`、`r`、`erlang`、`solidity`
+
+核心包已内置 bash、C、C#、C++、Elixir、Fortran、Go、Groovy、Java、JavaScript、JSON、Julia、Kotlin、Lua、ObjC、PHP、PowerShell、Python、Ruby 等 grammar。
+
+extras 只能通过 `uv tool install` 的依赖声明安装；直接 `pip install` 进 uv 管理的 venv 会在下次升级重建环境时丢失。重装必须带全所需集合，`--force` 按命令行请求的 extras 重新解析依赖。
+
+## OMP 集成
+
+OMP 侧有三条独立通道，互不替代。
+
+| 通道 | 安装方式 | 作用 |
+|---|---|---|
+| skill | `graphify install --platform agents` | agent 获得 `/graphify` 工作流与 references |
+| MCP | 在 `~/.omp/agent/mcp.json` 的 `mcpServers` 加 `graphify` 条目 | 会话内十个结构化查询工具，不走 bash |
+| guard 插件 | `omp plugin install "$(graphify pi guard path)"` | 工具调用前的新鲜度提醒，OMP 专属 |
+
+skill 副本旁有 `.graphify_version`。CLI 在任何非纯信息命令启动时，把版本低于当前包的用户级 skill 副本重新拷贝；本地改过的 SKILL.md 存为 `SKILL.md.bak`。纯信息命令（`-v`、`--version`、`-h`、`--help`）与 `install`、`uninstall`、`hook-check`、`hook-guard` 跳过刷新。`GRAPHIFY_NO_AUTO_REFRESH=1` 关闭。因此升级包之后，跑一次真实命令（例如 `check-update`）就把已装 skill 同步到新版本。
+
+### guard 扩展
+
+`graphify/pi/index.ts` 声明为 Pi 与 OMP 双宿主扩展，只用 Node 内置模块。CLI help 的 `pi guard path` 说明写着 “print the guard package path (e.g. for `omp plugin install`)”。
+
+- 拦五类工具：`bash`、`grep`、`read`、`glob`（OMP 的 `glob` 其 `path` 即 pattern）；Pi 侧另有 `find`。OMP 自己的 `find` 不被拦截。项目未被信任时放行。
+- 预算两秒、入 256 KiB、出 64 KiB，全程 fail-open：异常、超时、输出畸形都让原调用照常执行。
+- OMP 把提醒经 `additionalContext` 以 passive developer 消息投递；Pi 没有这条通道，只能发 steering 消息。
+- `omp plugin install` 建的是符号链接，指向 uv venv 里的 `graphify/pi`；`omp-plugins.lock.json` 只记 enabled 标记，不记路径。venv 路径变化后需要重装。
+
+**新鲜度按工具类型分两种**：搜索类只查 `graph.json` 存在，图谱过期照样提醒；读取类比对目标文件 mtime 与图谱 mtime，过期降级为软提醒，不拦截；读取 `graphify-out/` 自身与项目外文件直接跳过。
+
+**strict 模式**默认关，`GRAPHIFY_HOOK_STRICT=1/true/yes/on` 可开启；`GRAPHIFY_HOOK_STRICT_TTL`（默认 1800 秒）控制每会话拦截窗口，`GRAPHIFY_HOOK_NUDGE_CAP` 控制提醒上限（默认 5）。即便开启，也只在 Read 工具、每会话首次、窗口内没跑过 query/explain/path、目标文件确实在图里时才拦截。
+
+### MCP 服务器
+
+`serve.py` 提供十个工具：`query_graph`、`get_node`、`get_neighbors`、`get_community`、`god_nodes`、`graph_stats`、`shortest_path`、`list_prs`、`get_pr_impact`、`triage_prs`；六个资源：`graphify://report`、`graphify://stats`、`graphify://god-nodes`、`graphify://surprises`、`graphify://audit`、`graphify://questions`。
+
+全部工具接受可选 `project_path`。不传参数时服务器服务启动 cwd 下的 `graphify-out/graph.json`；多项目模式按 `<project_path>/graphify-out/graph.json` 解析，用有界 LRU 缓存。图被 `update` 重建后处理器重新加载，无需重启服务器。缺 `mcp` 包时报错提示安装 `graphifyy[mcp]`。
+
+## 图谱保鲜
+
+三条路径覆盖不同内容类型：
+
+| 变更类型 | 自动机制 | 前提 |
+|---|---|---|
+| 代码文件 | `graphify update` 增量重建；git hooks 在 commit/checkout/merge/rewrite 后自动调用 | 装 `graphify hook install`，无 LLM |
+| 文档、论文、图片 | 只有 `graphify watch` 写 `needs_update` 旗标，`check-update` 才有提示 | 需要 watcher 常驻 |
+| 未提交改动 | guard 比较目标文件与 graph.json 的 mtime，发软提醒 | 仅代码后缀 |
+
+只装 git hooks 时，已提交的文档变更不会留下任何旗标，`check-update` 保持静默，图谱中的文档节点停留在旧内容。`hooks.py` 里没有 `needs_update` 相关代码。
+
+**`hook install` 的完整副作用**：四个钩子之外，还注册 graph.json 的 merge driver，写 `git config merge.graphify.name` 与 `merge.graphify.driver`，并在仓库根 `.gitattributes` 追加一行。driver 是纯并集合并，已知会复活被删侧的符号，靠 post-merge 重建缓解；只有 graph.json 被提交进仓库时才会触发。`hook uninstall` 五件一起撤。
+
+**watch 的进程模型**：`graphify watch <path>` 是前台阻塞循环，参数只有一个路径，没有 daemon、pid 文件或单实例检测；缺 watchdog 包时退出 1。一个进程只监视一个目录。要常驻必须由 systemd、tmux 或其他守护进程代为启动。
+
+`update` 在重建结果节点数明显减少时拒绝覆盖，除非 `--force` 或 `GRAPHIFY_FORCE=1`；大规模删文件后需要显式放行。
+
+## 全局图
+
+跨仓库图谱存放在 `~/.graphify/global-graph.json`，另有 `global-manifest.json`。`global add <graph.json> --as <tag>` 加入；`graphify extract <path> --global --as <tag>` 可在建图时顺带并入。manifest 按内容哈希去重，未变化时跳过。全局图适合“哪个仓库依赖我”这类跨仓库问题，不替代每仓库的独立图。
 
 ## skills.sh 兼容性
 
@@ -133,7 +200,7 @@ INFERRED 边 33 条分布：references 23 / uses 8 / indirect_call 2；来源 AG
 
 - **查询类全部可用**：path（有向；`--undirected` 可忽略方向）、explain（节点档案：来源行、社区、度数、逐条关系）、affected（反向影响，深度 2）、query（自然语言词面匹配定起点，BFS 扩两轮；问 "redaction" 命中脱敏主题带出 12 节点）、god-nodes list（Wiki Log 174 边居首）、tree emit（交互 HTML 树）。
 - **体检/度量**：diagnose multigraph 报无重复边、无悬空端点、3 条自指边；benchmark 估算查图谱相对读全文的 token 压缩比（仅沙箱 3 节点图测得 5.3 倍，不代表真实仓库）。
-- **合并与协作**：merge-graphs 把小图并大图成 4,623 节点跨仓库图，秒级；merge-driver 仅在相同输入上验证通过（退出码 0），不同分支合并行为未验证；clone 拉公开仓库进 ~/.graphify/repos。
+- **合并与协作**：merge-graphs 把小图并大图成跨仓库图，秒级；merge-driver 仅在相同输入上验证通过（退出码 0），不同分支合并行为未验证；clone 拉公开仓库进 ~/.graphify/repos。
 - **导出实测七种、全部离线可用**：svg、wiki（每社区一篇文章）、graphml、obsidian 画布、callflow-html、neo4j / falkordb（生成 cypher 脚本，无需真实连接）；export html 未单独运行（graph.html 由构建直接产出）。
 - **记忆与全局**：save-result 存问答结论（`--question` + `--answer` + `--outcome`，不带 save 子命令）、reflect 聚合成 LESSONS.md、global add/list/remove 管理跨项目全局图（按图文件加、按仓库名删；已复原为空）、provider 管理语义后端。
 - **平台安装**：aider install/uninstall 在沙箱成对验证（写/删 AGENTS.md 段）；pi、copilot install 在假 HOME 下静默无操作，成功路径未验证；hook status 在非 git 目录如实报错。通用 uninstall、hook install/uninstall、其余十余平台 install/uninstall 未试（写真实用户级配置）。
