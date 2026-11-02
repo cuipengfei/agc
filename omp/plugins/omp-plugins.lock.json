@@ -13,7 +13,7 @@
     "@qoder-ai/better-harness": {
       "version": "0.7.0-alpha2",
       "enabledFeatures": null,
-      "enabled": true
+      "enabled": false
     },
     "ns-omp-provider-kiro": {
       "version": "0.5.3",
