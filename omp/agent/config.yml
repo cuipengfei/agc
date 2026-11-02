@@ -70,6 +70,8 @@ modelRoles:
   memory: sensenova/glm-5.2:high
   judge: typesafe-zen/jev-1.13-free
   widget: sensenova/glm-5.2:max
+  architect: c8787/gpt-6.1-sol:high
+  designer: sensenova/glm-5.2:high
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
