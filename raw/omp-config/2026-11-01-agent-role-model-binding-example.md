@@ -7,8 +7,9 @@
 ## agent 文件位置与 frontmatter
 
 - OMP 从 `~/.omp/agent/agents/*.md` 发现用户级 agent，从项目 `.omp/agents/*.md` 发现项目级 agent。
-- frontmatter 字段（docs「Agent definition shape」转写）：必需 `name`、`description`、`systemPrompt`（正文）；可选 `tools`、`spawns`、`model`（单 selector、CSV 或数组，按序尝试、role 别名先展开）、`thinking-level`/`thinking`、`output`、`blocking`、`structured`、`autoloadSkills`、`read-summarize`、`prewalk`、`advisor`；`main` 与 `sub` 是保留名（trim + 小写后检查）；source 标注 `"bundled" | "user" | "project"`。
-- 关键字段语义：`tools` 接受 CSV 或数组，省略或 YAML null 选内置默认工具集，空的声明导致不选任何内置，结构化子代仍收必需的 `yield` 工具；`spawns` 接受 `*`、CSV、数组，缺省但 tools 含 task 时按兼容规则视为 `*`；`blocking: true` 让父级在异步执行开启时也等待该 agent；`structured: true` 在 `task.structured` 关闭时仍为该 agent 保留结构化结果与 yield；`read-summarize: false` 关闭该 agent read 工具的结构化摘要（scout 出厂即关）；`prewalk: true` 按已解析模型起步、首次 edit/write 交接给默认目标（smol 角色），字符串值（如 `prewalk: "@smol"`）自选目标，`task.agentPrewalk` 设置优先；`advisor: true` 配对 advisor 角色，字符串值给显式 advisor 模型 pattern，`task.agentAdvisor` 设置优先。
+- frontmatter 字段（docs「Agent definition shape」转写）：必需 `name`、`description`、`systemPrompt`（正文）；可选 `tools`、`spawns`、`model`（单 selector、CSV 或数组，按序尝试、role 别名先展开）、`thinkingLevel`/`thinking`、`output`、`blocking`、`structured`、`autoloadSkills`、`readSummarize`、`prewalk`、`advisor`；`main` 与 `sub` 是保留名（trim + 小写后检查）；source 标注 `"bundled" | "user" | "project"`。
+- 关键字段语义：`tools` 接受 CSV 或数组，省略或 YAML null 选内置默认工具集，空的声明导致不选任何内置，结构化子代仍收必需的 `yield` 工具；`spawns` 接受 `*`、CSV、数组，缺省但 tools 含 task 时按兼容规则视为 `*`；`blocking: true` 让父级在异步执行开启时也等待该 agent；`structured: true` 在 `task.structured` 关闭时仍为该 agent 保留结构化结果与 yield；`readSummarize: false` 关闭该 agent read 工具的结构化摘要（scout 出厂即关）；`prewalk: true` 按已解析模型起步、首次 edit/write 交接给默认目标（smol 角色），字符串值（如 `prewalk: "@smol"`）自选目标，`task.agentPrewalk` 设置优先；`advisor: true` 配对 advisor 角色，字符串值给显式 advisor 模型 pattern，`task.agentAdvisor` 设置优先。
+- 键名形态以安装版解析器为准：`parseAgentFields()` 只读 `frontmatter.thinkingLevel`，回退读字符串型 `frontmatter.thinking`，且只读 `frontmatter.readSummarize`（helpers.ts:368-379）；安装包全树没有 `thinking-level` 或 `read-summarize` 的解析路径，连字符写法会被静默忽略。
 
 ## 官方 reviewer 绑定示例（docs 示例，转写缩进为两空格）
 

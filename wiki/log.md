@@ -1711,3 +1711,8 @@
 - Raw: raw/omp-mnemopi/2026-11-01-three-db-recovery-and-install.md; raw/omp-mnemopi/2026-11-02-grep-guard-extension.md
 - Wiki: Created: wiki/omp-extensibility/tool-call-range-guard-extension.md; Updated: wiki/omp-mnemopi/sqlite-corruption-recovery.md; Updated: wiki/index.md
 - 要点：`tool_call` 事件在参数准备阶段触发并支持 `block`/`reason`，扩展据此对 grep 搜索根与实际候选做范围判定，未注册 URI 与解析失败一律拒绝；验收为 23 项边界回归、6 项真实 ExtensionRunner 加 GrepTool 检查与 strace 内容读取证据；三库恢复安装记录补入损坏恢复文章，装后三项 `integrity/FK/FTS ok`，default 隔离 12 行、agc 隔离 4 行、history 隔离 0 行
+
+## [2026-11-02] ingest | OMP 自定义 sub-agent：定义、工具名适配与验证
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-11-02-custom-subagent-deployment.md; raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md
+- Updated: OMP per-call model 与许可机制
