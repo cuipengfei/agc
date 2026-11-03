@@ -1,12 +1,12 @@
 # Copilot 网关 cache retention 字段实测与 warming 不触发根因
 
-> Sources: 本机 8787 API 实测, 2026-11-03; OMP 18.16.0 源码取证, 2026-11-03
-> Raw: [Responses cache retention 字段实测与 gpt-6-luna 命中探针](../../raw/copilot-gateway/2026-11-03-responses-cache-retention-field-probe.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md)
-> Updated: 2026-11-03
+> Sources: 本机 8787 API 实测, 2026-11-03; OMP 18.16.0 源码取证, 2026-11-03; OMP 会话后续核查与离线运行, 2026-11-04
+> Raw: [Responses cache retention 字段实测与 gpt-6-luna 命中探针](../../raw/copilot-gateway/2026-11-03-responses-cache-retention-field-probe.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md)
+> Updated: 2026-11-04
 
 ## Overview
 
-本机 8787 网关 Responses 通道的 7 个成功响应模型中，6 个 GPT 回显 `prompt_cache_retention: "24h"`，mai-code 回显 `"in_memory"`。gpt-6-luna 经 4856 token 双请求验证了缓存命中路径。OMP 的 `cacheWarming` 对这些模型当前不触发，根因是它们没有 `promptCache` 寿命声明，而 TTL 只来自该声明，不来自响应回显。
+本机 8787 网关 Responses 通道的 7 个成功响应模型中，6 个 GPT 在响应 body 返回 `prompt_cache_retention: "24h"`，mai-code 返回 `"in_memory"`。gpt-6-luna 经 4856 token 双请求取得了写入转命中的 usage 报告。OMP 的 `cacheWarming` 对这些模型当前不触发，根因是它们没有 `promptCache` 寿命声明，而 TTL 只来自该声明，不来自响应回显；实际 TTL 和账单折扣未验证。
 
 ## Responses 通道字段回显
 
@@ -38,11 +38,15 @@ OMP 的 cache warmer 只对声明了 `promptCache` 寿命的模型调度刷新�
 
 catalog 规则里目前只有 Anthropic、Factory Droid、Antigravity 声明了 `prompt-cache` 生命周期，OpenAI 类没有。8787 的三个 provider（`c8787`、`c8787-chat`、`openai-codex`）的模型均无 models.yml `promptCache` 字段。
 
-响应回显的 `prompt_cache_retention: "24h"` 是上游的档位回显，不回填 OMP 的 TTL 元数据。要让 8787 模型参与 warming，需在 models.yml 显式写 `promptCache`，但上游真实 TTL 未确认。
+响应 body 返回的 `prompt_cache_retention: "24h"` 是档位回显，不回填 OMP 的 TTL 元数据。要让 8787 模型参与 warming，需在 models.yml 显式写 `promptCache`，但固定 `long: 86400` 时 warmer 首次调度即触发一小时安全窗并停止，不能作为启用方法；上游真实 TTL 未确认。
 
 ## cacheRetention long 的 wire 行为
 
-`cacheRetention: long` 在 Responses 通道满足 `supportsLongPromptCacheRetention` + 有 promptCacheKey + 不支持 explicit breakpoints 时，OMP 显式发 `prompt_cache_retention: "24h"`。c8787 满足这三个条件（compat 设了 `supportsLongPromptCacheRetention: true`，`officialEndpoint: true` 覆盖后 promptCacheKey 由 sessionId 派生）。OMP 请求与上游能力一致，实测回显也是 `"24h"`。
+`cacheRetention: long` 在 Responses 通道满足 `supportsLongPromptCacheRetention` + 有 promptCacheKey + 不支持 explicit breakpoints 时，OMP 显式发 `prompt_cache_retention: "24h"`。c8787 满足这三个条件（compat 设了 `supportsLongPromptCacheRetention: true`；promptCacheKey 由 `promptCacheKey ?? sessionId` 派生）。离线构造结果有 `"24h"`，但 8787 是否转发该字段未验证；直接探针未携带 OMP `cacheRetention`，不能证明 OMP 设置产生了该回显。
+
+## 配置建议
+
+保留 `providers.cacheRetention: long` 与 `providers.cacheWarming: idle`。不为 8787 添加猜测的 `promptCache.long: 86400`。Gemini 继续使用 Chat Completions；两个 Gemini 在 Responses 通道的两次请求均返回 502，长期可用性未验证。
 
 ## See Also
 

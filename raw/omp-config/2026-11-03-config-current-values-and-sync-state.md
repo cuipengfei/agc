@@ -77,14 +77,14 @@ task.file: true                # 第 555 行，原 false，本会话改为 true
 
 `./sync.py status` 全量只读核对：models.yml 与 config.yml 已同步，其余条目 unchanged。
 
-## Git 与 symlink 状态
+## Git 与 symlink 状态（2026-11-03 同步时读取）
 
-`git status --short`：
+`git status --short` 当时输出：
 ```
  M omp/agent/config.yml
  M omp/agent/models.yml
 ```
-（config.yml 在 pull 前已有 staged 变更，状态为 MM；models.yml 为 M。）
+（config.yml 在 pull 前已有 staged 变更，当时状态为 MM；models.yml 为 M。该快照只对应当次读取时点，不代表后续提交状态。）
 
 symlink 检查（`find . -path './.git' -prune -o -type l -print`）：输出的链接全部是 node_modules/.bin 下的包管理器生成物和既有的 .codegraph，本次改动未创建新 symlink。
 
@@ -98,4 +98,4 @@ symlink 检查（`find . -path './.git' -prune -o -type l -print`）：输出的
 
 ## 凭据边界
 
-models.yml 同步经 policy.py 脱敏，protected_slots=7。config.yml 无敏感槽位（protected_slots=0）。来源文件 apiKey 字段值为 dummy（8787 网关不校验鉴权）。全程未读取或打印真实凭据。
+models.yml 同步经 policy.py 脱敏，protected_slots=7。config.yml 无敏感槽位（protected_slots=0）。来源文件 apiKey 字段值为 dummy；dummy bearer 在本次 Responses 探针的当次请求成功，不推广为整个网关不检查鉴权。全程未读取或打印真实凭据。

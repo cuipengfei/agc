@@ -1763,3 +1763,9 @@
 - Disposition: New
 - Raw: raw/copilot-gateway/2026-11-03-responses-cache-retention-field-probe.md; raw/omp-config/2026-11-03-provider-protocol-config-semantics.md
 - 要点：8787 Responses 通道 12 模型中 7 个返回 200（6 GPT 回显 "24h"、mai-code "in_memory"）、5 个错误（2 Gemini 502、3 embedding 400）；gpt-6-luna 4856 token 双请求验证命中路径（首次 cache_write 4853、二次 cached 4853），其余 GPT 仅验证字段回显；cacheWarming 对无 promptCache 声明的自定义模型不触发，TTL 只来自 model.promptCache 不来自响应回显
+
+## [2026-11-04] ingest | OMP 配置语义手册
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md
+- Updated: OMP 配置语义手册; Copilot 网关 cache retention 字段实测与 warming 不触发根因
+- 要点：六路只读核查后更新 provider 协议层配置文章与缓存实测文章；离线运行 `resolveModelPolicy`/`buildParams` 与 `CacheWarmer`，确认 `text.verbosity="medium"`、`store=false`、`prompt_cache_key` 独立于 `officialEndpoint`，并保存 warmer 调度矩阵（无 TTL 不调度、short 300 秒运行与空闲期可调度、long 3600 秒空闲停止、固定 86400 秒首次调度即触发一小时安全窗）；同步收紧 statefulResponses 与服务端存储/prompt cache 区别、图片预算与 verbosity 范围、文本工具方言不发送原生 tools、taskFile 审批与父历史边界、普通插话边界与 steering 拒绝语义；更正 response.steer 出处、Git 快照时点、dummy bearer 推广、8787 usage 与账单/TTL/字段来源边界；配置结论保持现值，不添加猜测 `promptCache.long: 86400`

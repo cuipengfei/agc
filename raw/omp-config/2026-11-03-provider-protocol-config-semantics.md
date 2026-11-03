@@ -34,7 +34,7 @@ prompt_cache_retention:
         ? "24h"
         : ...
 ```
-条件：long + 有 promptCacheKey（sessionId 派生）+ `supportsLongPromptCacheRetention` + 不支持 explicit breakpoints → 显式发 `prompt_cache_retention: "24h"`。GPT-5.6+ 若 `supportsPromptCacheBreakpoints` 为 true 则走 `prompt_cache_options.ttl="12h"` 分支。
+条件：long + 有 promptCacheKey + `supportsLongPromptCacheRetention` + 不支持 explicit breakpoints → 显式发 `prompt_cache_retention: "24h"`。`promptCacheKey` 取自请求提供的 `promptCacheKey` 或 `sessionId`，生成和是否写入由缓存保留设置决定，不由 `compat.officialEndpoint` 决定。GPT-5.6+ 若 `supportsPromptCacheBreakpoints` 为 true 则走 `prompt_cache_options.ttl="12h"` 分支。
 
 stream 选项来源（session/settings-stream-fn.ts:97-104）：
 ```
@@ -110,7 +110,7 @@ if (!decision.economicsAvailable && !refreshing) {
 }
 ```
 
-24h 寿命的算术：若 TTL 元数据声明为 86400 秒，刷新目标时刻 = 86400 × 0.9 = 77760 秒（约 21.6h）。OMP 安全窗为 streaming 60 分钟、idle 30 分钟。源码只给出 TTL 与安全窗的数值关系，不据此保证某时段内请求绝不发送。c8787 当前模型无 promptCache 声明，getPromptCacheTtlMs 返回 undefined，warmer 不调度。
+实际调度：`CacheWarmer.start()` 运行结果显示，固定 86400 秒寿命在首次调度阶段即因安全窗停止（`one-hour safety limit reached`）；3600 秒在运行期间调度，空闲后因 idle 窗口停止；300 秒在运行与空闲期间均可调度；无 TTL 则因 `cache lifetime unavailable` 不调度。刷新请求 `maxTokens: 1` 不保证模型恰好生成一个可见 token。c8787 当前模型无 promptCache 声明，`getPromptCacheTtlMs` 返回 undefined，warmer 不调度。
 
 events（agent-session.ts:2144-2145）：
 ```
@@ -146,7 +146,7 @@ revision ">=6" {
 ```
 GPT-6 家族（revision >=6）才有 steering 能力。GPT-5.6 没有。
 
-response.steer 发送（openai-codex/live-steering.ts:311）：
+response.steer 发送（openai-codex-responses.ts:4311）：
 ```
 const event = { type: "response.steer", previous_response_id: previousResponseId, input };
 ```
@@ -156,7 +156,7 @@ const event = { type: "response.steer", previous_response_id: previousResponseId
 if (parsed.type === "error" && parsed.code === AIError.CODEX_NATIVE_LANE_STEER_REJECTED_CODE) {
     this.#refuseSteerWaiters(parsed.code, ...);
 ```
-被拒绝的 lane 标记后不再 steer。
+一般 steering 失败可以只结束当前 response 的 steering；`CODEX_NATIVE_LANE_STEER_REJECTED_CODE` 等特定错误才会暂时标记相关 lane 不支持。
 
 ## textVerbosity
 
@@ -173,7 +173,7 @@ const textVerbosity =
             ? cfgTextVerbosity.get(settings)
             : undefined;
 ```
-只对 `openai-codex-responses`（需显式配置）和 `openai-responses`（始终读取）两个 api 传递。其他 api（completions、anthropic、google）不传。
+已核实的传递范围覆盖 `openai-codex-responses`（需显式配置）和 `openai-responses`（始终读取）；本次只验证这两个 Responses API 路径，没有穷举其他 API 和 provider 的 verbosity 处理路径。
 
 写入条件（openai-responses.ts:1650-1651）：
 ```
@@ -213,7 +213,7 @@ export function applyCompatOverrides(compat: object, overrides: object | undefin
 ```
 models.yml 的 `compat` 字段在主机判定之后应用，可覆盖 `officialEndpoint`。
 
-对 openai-responses 模型的完整消费点：
+对本次已核对的 openai-responses 模型相关消费点：
 
 1. text.verbosity 写入（openai-responses.ts:1650）：`options?.textVerbosity && model.compat.officialEndpoint`。
 2. 有状态串联默认（openai-responses.ts:522-527）：
@@ -222,14 +222,14 @@ if (options?.statefulResponses === false) return false;
 if (options?.statefulResponses === true) return true;
 return $flag("PI_OPENAI_STATEFUL", model.compat.statefulResponses ?? model.compat.officialEndpoint);
 ```
-优先级：请求选项 > `PI_OPENAI_STATEFUL` 环境变量 > `compat.statefulResponses` > `compat.officialEndpoint`。`officialEndpoint:true` 不配 `statefulResponses:false` 会默认开启有状态串联（`store:true` + `previous_response_id`）。`statefulResponses:false` 关闭它。`PI_OPENAI_STATEFUL` 环境变量可覆盖 compat 值。
+优先级：请求选项 > `PI_OPENAI_STATEFUL` 环境变量 > `compat.statefulResponses` > `compat.officialEndpoint`。`officialEndpoint:true` 不配 `statefulResponses:false` 会默认开启有状态串联（`store:true` + `previous_response_id`）。`statefulResponses:false` 关闭它。`PI_OPENAI_STATEFUL` 环境变量可覆盖 compat 值。`store: false` 只表示不使用有状态串联；服务端存储资格与服务端 prompt cache 有各自的前置检查，三者不互相等价。
 3. 泄漏思考修复（stream.ts:89-93）：
 ```
 function healLeakedThinking(model: Model<Api>, inner: AssistantMessageEventStream) {
     return reachesOfficialEndpoint(model) ? inner : wrapLeakedThinkingStream(inner);
 }
 ```
-官方端点不包装修复流；非官方端点包装。`officialEndpoint:true` 后不再做这层修复。若上游发生 reasoning 标记泄漏到正文，标记会原样显示。
+官方端点不包装修复流；非官方端点包装。`officialEndpoint:true` 后不再做这层修复。上游直接返回结构化 reasoning 时不属于该修复范围；若上游把 reasoning 标记混入正文，标记会原样显示。
 4. 主机请求预算门（anthropic-state.ts:50-54）：
 ```
 export function reachesBudgetedHost(model: Model<Api>): boolean {
@@ -239,7 +239,7 @@ export function reachesBudgetedHost(model: Model<Api>): boolean {
     return reachesOfficialEndpoint(model);
 }
 ```
-预算数值来自按 provider 编写的规则文件。c8787 没有对应规则块，预算轴未赋值，`resolveInlineImageByteBudget` / `resolveImageCountBudget` 返回 undefined，裁剪逻辑跳过。对 c8787 无实际影响。
+预算数值来自按 provider 编写的规则文件。c8787 没有对应规则块，预算轴未赋值，`resolveInlineImageByteBudget` / `resolveImageCountBudget` 返回 undefined。当前 c8787 GPT 模型为 text-only；部分图片流程仍有通用默认预算，本次只确认该门与 `officialEndpoint` 的关系，未穷举 OpenAI 之外所有 provider 的预算实现。
 
 ## inlineToolDescriptors
 
@@ -247,12 +247,14 @@ export function reachesBudgetedHost(model: Model<Api>): boolean {
 
 解析（config/inline-tool-descriptors-mode.ts:14-25）：auto 按模型 id 分类，含 `gemini` 内联，其他不内联。on 无条件内联。off 无条件不内联。
 
+文本方言（`sdk.ts` `resolveDialect`）：`tools.format: auto` 下模型未标 `supportsTools: false` 时返回 undefined，走原生调用；未知模型等情况才回退 GLM。文本方言路径不发送原生 `tools` 数组，工具说明、历史调用与结果编码为文本，再从模型返回文本中识别调用。正常 system prompt 的工具目录与文本方言额外目录可能同时存在。
+
 渲染分支（system-prompt.ts:919）：
 ```
 const toolListMode = !inlineToolDescriptors && nativeTools;
 ```
 - toolListMode=true（off 或 auto 非内联 + 原生工具）：prompt 只列工具名清单。
-- toolListMode=false（on 或 auto 内联，或文本方言）：prompt 渲染完整 `namespace functions` 目录。
+- toolListMode=false（on 或 auto 内联，或文本方言）：prompt 渲染完整 `namespace functions` 目录。调用者提供固定 `systemPrompt` 时可能跳过默认目录生成，但原生 schema 描述仍然清理。
 
 目录渲染（pi-ai/src/dialect/inventory.ts:7-29）：每个工具写成 `type 名称 = (_: 参数类型)`，描述变 `//` 注释，示例 `@example` 行。
 
@@ -280,7 +282,7 @@ function resolveDialect(format, model) {
     return format;
 }
 ```
-native 返回 undefined（原生 function calling）。auto 下模型 supportsTools 不为 false 返回 undefined（原生）；为 false 回退文本方言。其他值强制该方言。
+native 返回 undefined（原生 function calling）。auto 下模型 supportsTools 不为 false 返回 undefined（原生）；为 false 时按模型 id 选择偏好方言，无偏好或未知模型回退 GLM，并非所有文本回退都是 GLM。其他值强制该方言。
 
 ## task.file
 
@@ -315,7 +317,7 @@ MAX_TASK_FILE_BYTES = 4 * 1024 * 1024（task/types.ts:34）。
 ...
 const taskFileMetadata = params.taskFile !== undefined ? { taskFile: params.taskFile, taskFileSha256: params.taskFileSha256 } : {};
 ```
-记录到 spawn 的 AgentProgress 与工具结果 details。审批界面只显示 taskFile 路径，不展示文件内容或哈希。
+记录到 spawn 的 AgentProgress 与工具结果 details。审批界面只显示 taskFile 路径，没有固定文件内容；审批后文件变化时执行可能读取变化后的内容，SHA-256 对应实际读取的字节。父侧历史仍可能保存完整任务文本。
 
 provider 级 compat 合并（config/custom-models.ts:102）：
 ```
