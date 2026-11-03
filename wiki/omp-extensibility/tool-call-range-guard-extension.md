@@ -1,8 +1,8 @@
 # OMP tool_call 范围防护扩展：执行前阻断危险 Grep
 
 > Sources: 本会话实现与验收记录, 2026-11-02; OMP SDK 18.15.0 扩展类型声明, 2026-11-02
-> Raw: [2026-11-02-grep-guard-extension](../../raw/omp-mnemopi/2026-11-02-grep-guard-extension.md)
-> Updated: 2026-11-02
+> Raw: [2026-11-02-grep-guard-extension](../../raw/omp-mnemopi/2026-11-02-grep-guard-extension.md); [2026-11-03-history-and-agent-db-index-repair](../../raw/omp/2026-11-03-history-and-agent-db-index-repair.md)
+> Updated: 2026-11-03
 
 ## Overview
 
@@ -20,7 +20,7 @@ TTSR 的适用面是模型输出流与判定问题（分层见 [OMP Extension �
 
 | 判定层 | 规则 |
 |---|---|
-| 受保护集合 | `getMemoriesDir()/mnemopi` 整个目录；`getHistoryDbPath()` 的主文件、`-wal`、`-shm`、`-journal` 后缀与 `.corrupt-*` 前缀文件 |
+| 受保护集合 | `getMemoriesDir()/mnemopi` 整个目录；`getHistoryDbPath()` 的主文件、`-wal`、`-shm`、`-journal` 后缀与 `.corrupt-*` 前缀文件。集合只有这两类，`~/.omp/agent/agent.db` 及其 `-wal`、`-shm` 不在其中（2026-11-02 源码核对） |
 | 直接命中 | 搜索根经 `realpath` 归一后落在受保护集合内，阻断 |
 | 父目录根 | 根与受保护集合相交时，用与 Grep 相同的路径解析与原生 glob 枚举实际候选，候选含受保护文件且未被排除覆盖就阻断 |
 | 排除项 | `!` 开头且磁盘上不存在的路径按排除处理；同时存在的路径按普通搜索根处理 |
@@ -52,10 +52,11 @@ TTSR 的适用面是模型输出流与判定问题（分层见 [OMP Extension �
 
 ## 已知边界
 
-防护只覆盖 `grep`。直接 `Read` 原始 db/WAL/SHM 仍在覆盖范围之外，对应风险与缓解背景见 [Mnemopi SQLite 损坏恢复](../omp-mnemopi/sqlite-corruption-recovery.md)。已运行会话不加载新扩展，需要重启。
+防护只覆盖 `grep`。直接 `Read` 原始 db/WAL/SHM 仍在覆盖范围之外，对应风险与缓解背景见 [Mnemopi SQLite 损坏恢复](../omp-mnemopi/sqlite-corruption-recovery.md)。受保护集合只有 Mnemopi 目录与 history.db 系列，`~/.omp/agent/agent.db` 及其 sidecar 不在其中，见 [OMP agent.db 与 history.db](../omp/agent-storage-databases.md)。已运行会话不加载新扩展，需要重启。
 
 ## See Also
 
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md)
 - [Mnemopi SQLite 损坏恢复](../omp-mnemopi/sqlite-corruption-recovery.md)
+- [OMP agent.db 与 history.db：存储职责、表归属与索引级损坏修复](../omp/agent-storage-databases.md)
 - [OMP 内建工具与内部地址空间](../omp-tools/builtin-tools-and-internal-urls.md)

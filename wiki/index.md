@@ -278,7 +278,7 @@ OMP Mnemopi 的记忆 scoping、召回与 consolidation 生命周期。
 | [OMP 记忆后端对比：Mnemopi vs Hindsight vs Sharpshooter](omp-mnemopi/memory-backends-comparison.md) | 三后端定位、安装、LLM/embedding/reranker 配置、迁移路径；外部叠加方案 ai-memory（非第五个后端、并存需先关 memory.backend） | 2026-10-27 |
 | [OMP Mnemopi Auto-Recall 注入机制](omp-mnemopi/auto-recall-injection.md) | 注入时机/次数、query 构造、注入位置、facts 只读与 quit/resume cache 影响；一次性注入的三处标志位与 8/5000/3 取值 | 2026-10-27 |
 | [Mnemopi 数据模型与 Recall/Reflect](omp-mnemopi/data-model-and-retrieval.md) | 表职责、working→episodic→facts 关系、recall/reflect 查询路径、FTS 与 embedding 辅助表、facts 只读（memory_edit 不可改）；分层打分与默认权重 0.5/0.3/0.2 | 2026-10-27 |
-| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程、五次损坏实录（9-21/9-24/10-06/10-09/10-11）、索引同坏时穷举点查证伪法；根因类层面定位（多写入者 + `-shm` 协调失效，两条可达：grep/read 进程内夺锁、替换 bank 未重启致分裂 shm），逐次归因不可考，WAL-reset/FTS5 CVE 已排除；恢复流程与陷阱、embedding 重建停滞；缓解 `.ignore` 跳 sidecar（已应用）、同 repo 不并行；2026-11-01 三库恢复与安装（装后 `integrity/FK/FTS ok`、冒烟通过、各库隔离行数与数据边界）；Grep 范围防护扩展已应用（提交 `71d2304`，只覆盖 Grep） | 2026-11-02 |
+| [Mnemopi SQLite 损坏恢复](omp-mnemopi/sqlite-corruption-recovery.md) | 恢复流程、五次损坏实录（9-21/9-24/10-06/10-09/10-11）、索引同坏时穷举点查证伪法；根因类层面定位（多写入者 + `-shm` 协调失效，两条可达：grep/read 进程内夺锁、替换 bank 未重启致分裂 shm），逐次归因不可考，WAL-reset/FTS5 CVE 已排除；恢复流程与陷阱、embedding 重建停滞；缓解 `.ignore` 跳 sidecar（已应用）、同 repo 不并行；2026-11-01 三库恢复与安装；2026-11-02 history.db 复发（索引层，全文检索可用）与 agent.db 索引层 REINDEX 修复、安装约束；Grep 范围防护扩展已应用（提交 `71d2304`，只覆盖 Grep，不含 agent.db） | 2026-11-03 |
 
 ## omp-modes
 
@@ -467,7 +467,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 ## omp
 
-OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，`/model` 内置端侧模型目录，全量环境变量参考，以及从源码本地构建的依赖、步骤、产物与验证。
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，`/model` 内置端侧模型目录，全量环境变量参考，`agent.db`/`history.db` 两个长期存储库的表归属与索引级修复，以及从源码本地构建的依赖、步骤、产物与验证。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
@@ -483,6 +483,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP judgment 对 chat 类 judge 的无 schema 文本解析机制](omp/judgment-chat-llm-parsing.md) | 普通 chat 模型当 judge 时不发 response_format/json_schema/text.format；temperature 0 + disableReasoning + maxTokens 4096 首次裸文本，prompt 约定关键词回答，三组解析器（choice/noul/score）取最早合法关键词，解析失败重试才挂 submit_judgment tool；与 jev /v1/systemone 路由分界；本机 judge 实配 typesafe-zen/jev-1.13 | 2026-10-07 |
 | [OMP 本地构建：依赖、步骤、产物与验证](omp/local-build.md) | Ubuntu x86_64 的 v18.8.7 构建流程：系统依赖先安装、Bun 1.4.3/rustup 与当前 shell PATH、HTTPS 源码/tag 检查、nightly-2026-10-06、Cargo ci stripped addon 与 Bun compile；内部 worker（daemon broker/LSP mux/text predict）随同一入口打包，SmolLM 权重与 tiny-model 运行库按需下载非构建产物；全局安装保持不变，源码/绑定/资源对照与 GLIBC 2.43/2.17 边界；隔离 shell 和 --version/--help 已验证，另一台机器完整复现未验证 | 2026-10-11 |
 | [OMP /model 内置端侧模型目录（local-inference）](omp/bundled-local-models.md) | 14 个端侧模型清单（三标题/五记忆/五听写/一朗读）、local.kdl seed 条目（api/base/bundle 原文）与各 dtype 的实测下载量组件分解、local://inference 子进程传输、设备 14 值与 [请求设备, cpu] 回退、Qwen3 ONNX 拒绝与 sherpa/kokoro 无 CUDA 路径；WSL2 RTX 3050 实测：驱动可见、CUDA 13 运行时库缺失、条件式回退结论 | 2026-10-26 |
+| [OMP agent.db 与 history.db：存储职责、表归属与索引级损坏修复](omp/agent-storage-databases.md) | `agent.db` 22 张表按建表模块三分（凭据与缓存、会话统计、记忆流水线）、`cache` 表被凭据粘性/MCP 工具/扩展启动延迟三方共用与 30 天过期常量、`history.db` 表组成与提示历史消费方；警告链路（写失败只记日志并一次性通知监听器）；两轮 history.db 损坏分开记录（FTS5 层与索引层）、agent.db 索引层 REINDEX 修复与逐表摘要判据、安装时持有者闸与重新采集；REINDEX 只在 agent.db 验证、防护扩展不含 agent.db | 2026-11-03 |
 
 ## tokscale
 
