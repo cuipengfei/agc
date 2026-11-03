@@ -13,6 +13,7 @@ advisor:
   reviewInterval: 1
 prewalk:
   enabled: false
+  into: "@task"
 git:
   enabled: true
 extensions:
@@ -81,7 +82,7 @@ cycleOrder:
   - slow
 theme:
   dark: dark-tokyo-night
-  light: dark-tokyo-night
+  light: light-tokyo-night
 symbolPreset: nerd
 colorBlindMode: false
 statusLine:
@@ -117,6 +118,7 @@ tools:
 terminal:
   showImages: true
   showProgress: true
+  programStatus: true
 images:
   autoResize: true
   blockImages: false
@@ -126,9 +128,9 @@ tui:
   maxInlineImageColumns: 100
   maxInlineImageRows: 20
   maxInlineImages: 8
-  textSizing: false
+  textSizing: true
   renderMermaid: true
-  renderSvg: false
+  renderSvg: true
   codexResetFireworks: false
   titleState: true
   hyperlinks: auto
@@ -138,17 +140,20 @@ tui:
   resizeScrollback: rebuild
   reactions: true
   mouse: false
-  autoGraph: always
+  autoGraph: auto
+  titleSpinner: braille
+  completeScrollback: false
 display:
-  shimmer: kitt
+  shimmer: classic
   smoothStreaming: true
-  showTokenUsage: false
+  showTokenUsage: true
   cacheMissMarker: true
   collapseCompacted: false
   showTurnTime: true
   pinnedAgents: full
   hideToolActivity: false
   subagentLivePreview: true
+  advisorCollapsedLines: 0
 showHardwareCursor: true
 defaultThinkingLevel: high
 hideThinkingBlock: false
@@ -169,14 +174,14 @@ includeModelInPrompt: true
 includeWorkspaceTree: false
 workspace:
   additionalDirectories: []
-personality: pragmatic
+personality: friendly
 temperature: -1
 topP: -1
 topK: -1
 minP: -1
 presencePenalty: -1
 repetitionPenalty: -1
-textVerbosity: low
+textVerbosity: medium
 tier:
   openai: none
   anthropic: none
@@ -185,7 +190,7 @@ tier:
   advisor: auto
 retry:
   enabled: true
-  maxRetries: 3
+  maxRetries: 10
   baseDelayMs: 500
   maxDelayMs: 300000
   modelFallback: true
