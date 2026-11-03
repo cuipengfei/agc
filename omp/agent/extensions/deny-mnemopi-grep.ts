@@ -1,5 +1,5 @@
-// 新启动的 OMP 自动加载此扩展；在 grep 执行前检查范围，不读取或修改数据库内容。
-// 正常搜索可指定安全目录、文本 glob，或排除 Mnemopi 目录与 history.db 文件系列。
+// 新启动的 OMP 自动加载此扩展；在 grep 与 read 执行前检查范围，不读取或修改数据库内容。
+// 正常搜索可指定安全目录、文本 glob，或排除受保护目录与 SQLite 文件系列。
 import { existsSync } from "node:fs";
 import { realpath, stat } from "node:fs/promises";
 import * as path from "node:path";
@@ -14,9 +14,10 @@ import {
     resolveReadPath,
     resolveToCwd,
     splitPathAndSelPreferringLiteral,
+    splitDelimitedPathEntry,
 } from "@oh-my-pi/pi-coding-agent/tools/path-utils";
 import { FileType, glob } from "@oh-my-pi/pi-natives";
-import { getHistoryDbPath, getMemoriesDir } from "@oh-my-pi/pi-utils";
+import { getAgentDbPath, getHistoryDbPath, getMemoriesDir } from "@oh-my-pi/pi-utils";
 
 export interface ProtectedLocation {
     path: string;
@@ -46,6 +47,16 @@ function protectedFile(candidate: string, locations: readonly ProtectedLocation[
         return candidate === location.path ||
             ["-wal", "-shm", "-journal"].some(suffix => candidate === location.path + suffix) ||
             candidate.startsWith(location.path + ".corrupt-");
+    });
+}
+
+// read 的 SQLite 形态是 `路径:表名[:行范围]`；选择器不改变目标文件，判定要按冒号前缀算。
+function protectedWithSelector(candidate: string, locations: readonly ProtectedLocation[]): boolean {
+    if (protectedFile(candidate, locations)) return true;
+    return locations.some(location => {
+        if (location.kind !== "sqlite-family") return false;
+        const bases = [location.path, ...["-wal", "-shm", "-journal"].map(suffix => location.path + suffix)];
+        return bases.some(base => candidate.startsWith(base + ":"));
     });
 }
 
@@ -147,7 +158,7 @@ export function createGrepGuard(locations: readonly ProtectedLocation[]) {
                 const parsed = await parseSearchPathPreferringLiteral(clean, ctx.cwd);
                 const root = resolveReadPath(parsed.basePath, ctx.cwd);
                 const realRoot = await canonical(root);
-                if (protectedFile(realRoot, roots)) return blocked("已拒绝本次 grep：目标位于 Mnemopi 数据目录或提示历史 SQLite 文件系列，普通文件读取可能使 OMP 持有的 SQLite 锁失效。");
+                if (protectedFile(realRoot, roots)) return blocked("已拒绝本次 grep：目标位于 Mnemopi 数据目录、agent.db 或 history.db 系列，普通文件读取可能使 OMP 持有的 SQLite 锁失效。");
                 if (!overlaps(realRoot, roots)) continue;
                 if (!(await stat(root)).isDirectory()) continue;
                 const included = await glob({ path: root, pattern: parsed.glob ?? "**/*", recursive: false, hidden: true, gitignore: input.gitignore ?? true, followLinks: false });
@@ -158,7 +169,7 @@ export function createGrepGuard(locations: readonly ProtectedLocation[]) {
                 if (dangerous.some(match => {
                     const absolute = path.resolve(root, match.path);
                     return !omit.files.has(absolute) && !omit.directories.some(directory => inside(directory, absolute));
-                })) return blocked("已拒绝本次 grep：父目录搜索的实际候选包含 Mnemopi 数据或 history.db 系列文件；关闭忽略规则也不会绕过防护。");
+                })) return blocked("已拒绝本次 grep：父目录搜索的实际候选包含 Mnemopi 数据、agent.db 或 history.db 系列文件；关闭忽略规则也不会绕过防护。");
             }
         } catch {
             return blocked("无法安全确认本次 grep 的搜索范围，已拒绝执行。请改为明确的安全文本路径或目录。");
@@ -166,9 +177,50 @@ export function createGrepGuard(locations: readonly ProtectedLocation[]) {
     };
 }
 
+// read 只拦受保护的 SQLite 文件系列；内部 URL 与普通文本文件照常放行。
+export function createReadGuard(locations: readonly ProtectedLocation[]) {
+    return async (event: ToolCallEvent, ctx: ExtensionContext): Promise<ToolCallEventResult | void> => {
+        if (event.toolName !== "read") return;
+        const input = event.input as { path?: string };
+        if (!input?.path) return;
+        const entry = normalizePathLikeInput(input.path);
+        if (entry.length === 0) return;
+        let candidates: string[];
+        try {
+            // ReadTool 会把一个参数拆成多个路径逐个读取，这里用同一个拆函数，避免只看组合字符串。
+            candidates = (await splitDelimitedPathEntry(entry, ctx.cwd)) ?? [entry];
+        } catch {
+            return;
+        }
+        const roots: ProtectedLocation[] = [];
+        for (const location of locations) {
+            roots.push({ ...location, path: path.resolve(location.path) });
+            const resolved = await canonical(location.path);
+            if (resolved !== path.resolve(location.path)) roots.push({ ...location, path: resolved });
+        }
+        for (const candidate of candidates) {
+            const part = normalizePathLikeInput(candidate);
+            if (part.length === 0) continue;
+            if (/^[a-z][a-z0-9+.-]*:\/\//i.test(part) && !part.startsWith("file://")) continue;
+            const raw = part.startsWith("file://") ? fileURLToPath(part) : part;
+            let real: string;
+            try {
+                const clean = (await splitPathAndSelPreferringLiteral(raw, ctx.cwd)).path;
+                real = await canonical(resolveReadPath(clean, ctx.cwd));
+            } catch {
+                continue;
+            }
+            if (protectedWithSelector(real, roots)) return blocked(`已拒绝本次 read：路径「${part}」位于受保护的 SQLite 文件系列（Mnemopi 数据目录、agent.db 或 history.db）。普通文件读取可能使 OMP 持有的 SQLite 锁失效。`);
+        }
+    };
+}
+
 export default function denyMnemopiGrep(pi: ExtensionAPI) {
-    pi.on("tool_call", createGrepGuard([
+    const locations: ProtectedLocation[] = [
         { path: path.join(getMemoriesDir(), "mnemopi"), kind: "directory" },
         { path: getHistoryDbPath(), kind: "sqlite-family" },
-    ]));
+        { path: getAgentDbPath(), kind: "sqlite-family" },
+    ];
+    pi.on("tool_call", createGrepGuard(locations));
+    pi.on("tool_call", createReadGuard(locations));
 }
