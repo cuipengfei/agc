@@ -155,3 +155,7 @@
 8. **/collab relay**：默认官方托管 `wss://my.omp.sh`（pi-wire/src/index.ts:422）；可自建，`collab.relayUrl` 配置项（settings-schema.ts:2364-2372），另有 `collab.webUrl`。
 9. **/jobs 的 job 类型**：只有 `bash` / `task` / `eval` 三种（async/job-manager.ts:53-54）。
 10. **/review 的 reviewer 构成**：主 agent 用 task 工具以 `agent:"reviewer"` 派生的子 agent；模型走 reviewer role 路由，无硬编码。
+
+## See Also
+
+- [OMP 会话内导航：/branch 与 /tree](branch-vs-tree-navigation.md)

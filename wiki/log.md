@@ -1746,3 +1746,9 @@
 - Raw: raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md
 - Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 跨机器补丁手册; Tern 升级辅助工具与验收边界
 - 要点：0.9.10 描述符回到单副本（2 条），slot `14894592`/`14894616`，pointer `11830987`/`13332951`，length 与 0.9.8/0.9.9 相同；Ioskeley 仍为 `7564` 字符、CJK 0。WASM `e308b39e…`、glue `fb4e5b7d…`、binary `02491523…`（`2ad447b`）。时间静态总量 33（`32208` 18 处＋`32209` 3 处）。site 目录重建前与 `deploy-manifest.json` 核对，确认 `verification/` 为空目录、无记录损失。正式服务经手工命令启动，HTTP 200，四个原 pane ID 保留；用户要求跳过视觉检查。
+
+## [2026-11-03] ingest | OMP 会话内导航：/branch 与 /tree
+- Disposition: New
+- Raw: raw/omp-slash-commands/omp-tree-command-reference.md
+- Updated: OMP 内置 slash 命令全表（v18.1.10 快照 82 条；2026-10-10 当前 blob core registry 85 条）
+- 要点：两者都在当前会话文件内移动 leaf；`/branch` 取当前分支消息、打开覆盖最新约 600 条、`a` 展开全部、`f` 过滤、存在兄弟分支时左右键导航兄弟条、`navigateTree` 固定 `summarize:false`、用户请求草稿覆盖编辑器；`/tree` 用 `getTree`/`getLeafId` 打开五档过滤器，`default` 隐藏 `label`/`custom`/`model_change` 等簿记条目、`all` 才显示，仅含工具调用的 assistant 消息在所有档位隐藏，搜索按词元 AND 模糊匹配、预览 200 字符内；选中用户消息时 leaf 移到 `parentId`，草稿仅在编辑器为空时回填，`ask` 结果重开问题，当前 leaf 通常无操作；`branchSummary.enabled` 默认 `false`，`Shift+Enter` 直接摘要；`doubleEscapeAction` 取值 `rewind`/`tree`/`none`，默认 `rewind`，旧值 `branch` 迁移为 `rewind`；`/fork` 复制文件、`/resume` 换文件、`AgentSession.branch()` 新建分支会话
