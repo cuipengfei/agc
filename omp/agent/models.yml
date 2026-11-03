@@ -24,6 +24,8 @@ providers:
       supportsStrictMode: true
       supportsImageDetailOriginal: false
       supportsLongPromptCacheRetention: true
+      officialEndpoint: true
+      statefulResponses: false
     models:
       - id: gpt-5.3-codex
         compactionModel: c8787/gpt-6-luna
@@ -254,9 +256,9 @@ providers:
           output: 0
           cacheRead: 0
           cacheWrite: 0
-      - id: deepseek-v4-pro
+      - id: deepseek-v4.1-flash
         compactionModel: c8787/gpt-6-luna
-        name: DeepSeek V4 Pro
+        name: DeepSeek V4.1 Flash
         reasoning: true
         input:
           - text
@@ -294,6 +296,20 @@ providers:
           output: 0
           cacheRead: 0
           cacheWrite: 0
+      - id: sensenova-6.8-flash
+        compactionModel: c8787/gpt-6-luna
+        name: SenseNova 6.8 Flash
+        reasoning: true
+        input:
+          - text
+          - image
+        contextWindow: 262144
+        maxTokens: 65536
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
       - id: sensenova-6.8-flash-lite
         compactionModel: c8787/gpt-6-luna
         name: SenseNova 6.8 Flash Lite
@@ -301,6 +317,19 @@ providers:
         input:
           - text
           - image
+        contextWindow: 262144
+        maxTokens: 65536
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
+      - id: sensenova-u1.5-lite
+        compactionModel: c8787/gpt-6-luna
+        name: SenseNova U1.5 Lite
+        reasoning: true
+        input:
+          - text
         contextWindow: 262144
         maxTokens: 65536
         cost:

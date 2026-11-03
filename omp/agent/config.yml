@@ -51,7 +51,7 @@ providers:
   openaiWebsockets: auto
   streamFirstEventTimeoutSeconds: 150
   streamIdleTimeoutSeconds: 150
-  webSearchTimeoutSeconds: 90
+  webSearchTimeoutSeconds: 60
   openrouterVariant: default
   fetch: auto
   cacheRetention: long
@@ -113,8 +113,11 @@ tools:
   xdev: false
   speculativeExecution:
     enabled: true
+    maxInFlight: 2
   xdevDocs: inline
   xdevInlineDevices: []
+  artifactMaxBytes: 16
+  xdevNotices: true
 terminal:
   showImages: true
   showProgress: true
@@ -169,7 +172,7 @@ model:
     threshold: 5
     exemptTools:
       - hub
-inlineToolDescriptors: auto
+inlineToolDescriptors: "on"
 includeModelInPrompt: true
 includeWorkspaceTree: false
 workspace:
@@ -290,7 +293,7 @@ compaction:
   v2RetainedMessageBudget: 64000
   idleEnabled: false
   idleThresholdTokens: 200000
-  idleTimeoutSeconds: 900
+  idleTimeoutSeconds: 300
   supersedeReads: true
   dropUseless: true
   methodOrder:
@@ -303,7 +306,7 @@ snapcompact:
   toolResults: false
   shape: auto
 branchSummary:
-  enabled: true
+  enabled: false
   reserveTokens: 16384
 memories:
   maxRolloutsPerStartup: 64
@@ -374,7 +377,7 @@ ttsr:
   judge: "on"
   contextMode: discard
   interruptMode: always
-  repeatMode: once
+  repeatMode: after-gap
   repeatGap: 5
   builtinRules: true
   disabledRules: []
@@ -436,6 +439,8 @@ eval:
     enabled: true
   autoBackground:
     enabled: true
+  workpool:
+    freshAgents: false
 python:
   kernelMode: session
   interpreter: ""
@@ -446,13 +451,13 @@ julia:
 todo:
   enabled: true
   reminders: true
-  remindersMax: 2
+  remindersMax: 3
   eager: preferred
 glob:
   enabled: true
 grep:
   enabled: true
-  contextBefore: 3
+  contextBefore: 1
   contextAfter: 3
 find:
   enabled: "on"
@@ -502,6 +507,7 @@ async:
   maxJobs: 100
   pollWaitDuration: smart
   widgets: true
+  printWake: false
 irc:
   timeoutMs: 120000
 mcp:
@@ -521,6 +527,7 @@ title:
   refreshOnReplan: true
   generator: tiny
   icons: nf+emoji
+  refreshAfterPrompts: 5
 task:
   isolation:
     apply: true
@@ -534,7 +541,7 @@ task:
   maxConcurrency: 32
   enableLsp: true
   maxRecursionDepth: 1
-  maxRuntimeMs: 1800000
+  maxRuntimeMs: 3600000
   agentIdleTtlMs: 420000
   softRequestBudget: 200
   softRequestBudgetNotice: true
@@ -545,8 +552,9 @@ task:
   prewalk: false
   showResolvedModelBadge: true
   structured: true
+  file: true
 tasks:
-  todoClearDelay: 60
+  todoClearDelay: 300
 skills:
   enabled: true
   enableSkillCommands: true
@@ -620,3 +628,9 @@ composer:
   predictions: false
 externalThinking: false
 skillful: true
+out:
+  enabled: true
+extensionHandlers:
+  modeControl: true
+extensionRenderers:
+  assistantText: false
