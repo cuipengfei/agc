@@ -222,9 +222,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "d8115f8f5d1edf84c162af66506d292d62e43411",
+      "skillFolderHash": "b45901bb744cb48d9a792f9d46fa831996d11f41",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-10-30T14:22:27.172Z"
+      "updatedAt": "2026-11-03T11:51:19.696Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -719,9 +719,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "bcecaf90a9082b1820d32c9416665bec0d9d713e",
+      "skillFolderHash": "0d0f10932e394ea9cc8d0c9bbd0dd6d95d7de943",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-10-28T15:10:28.375Z"
+      "updatedAt": "2026-11-03T11:53:51.300Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1243,9 +1243,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "60e8a25c331eb67620c1d92341a82d4a34b81007",
+      "skillFolderHash": "25aafb9b197d1cf92abcc3b2e05800f4395035dd",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-02T13:49:59.760Z"
+      "updatedAt": "2026-11-03T11:53:55.043Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1261,9 +1261,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "8678467ae6fd4c3193117a8f9cd91edee38bcb7a",
+      "skillFolderHash": "8e4252ad8869047ea56037e8c0a2acb30a383343",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-02T13:50:18.012Z"
+      "updatedAt": "2026-11-03T11:55:02.596Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1316,9 +1316,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "833810d3866645f579085aa76803541892bde692",
+      "skillFolderHash": "ffc6618c3f12c3726d705340dc3acb852e37a4cb",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-02T11:44:05.987Z"
+      "updatedAt": "2026-11-03T11:55:06.049Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
@@ -1406,9 +1406,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/unclebob/ub-mode.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "57a8bdd28e45ed41900ace0bafa2ff76dd9ed70f",
+      "skillFolderHash": "3da62bf3fcfd2034de41f30d920d2739e566171f",
       "installedAt": "2026-10-27T14:26:16.135Z",
-      "updatedAt": "2026-10-27T14:26:16.135Z"
+      "updatedAt": "2026-11-03T11:55:09.757Z"
     },
     "data-visualization": {
       "source": "anthropics/knowledge-work-plugins",
