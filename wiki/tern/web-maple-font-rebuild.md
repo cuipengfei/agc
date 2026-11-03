@@ -1,8 +1,8 @@
 # Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
 
-> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29；Tern 0.9.8 与 0.9.9 仅字体部署与 CI 作用域，2026-11-02
-> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md)
-> Updated: 2026-11-02
+> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29；Tern 0.9.8 与 0.9.9 仅字体部署与 CI 作用域，2026-11-02；Tern 0.9.10 仅字体部署，2026-11-03
+> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md)
+> Updated: 2026-11-03
 
 ## 适用范围与完成标准
 
@@ -139,9 +139,17 @@ Windows Chrome 实际访问候选与正式入口：`mounted` 为 true，两份�
 
 0.9.9 的 WASM 为 `628f3299db8f904d64676aaeb043d93d62822ada8b6fe493aefdf1adbd155ff7`、glue 为 `cd89d8a856230cf278147e7340b377bcc61aaaf748d18239a9ae9d55b0c8c8f9`；0.9.8 分别为 `1e47421edc41c4776d63c61a39d628891223ed05f90236830ff91bdc983da3f7` 与 `17a9f0bbcd77587a3bb2db7c38d983c1518d59e14369d58c30132e1249435525`。两版装配后 WASM 与 glue 均与 `--official` 输入逐字节一致，未应用时间补丁。正式服务分别为 `tern 0.9.8 (f21d9a3)` 与 `tern 0.9.9 (9c1c09f)`，四个原 pane ID 均保留。两次部署均未执行浏览器视觉检查。
 
+## 0.9.10：描述符回到单副本
+
+0.9.10 的终端等宽字体结构与 0.9.7 相同（每种字体 1 份，共 2 条描述符），但换了字体族、地址与长度：`Ioskeley Mono Term` Regular 槽位 `14894592`、pointer `11830987`、length `1501964`；Bold 槽位 `14894616`、pointer `13332951`、length `1499864`。同一组内两者相差 24 字节。`fonts.py` 报告的字符数仍为 `7564`，CJK 计数为 0。
+
+原始 WASM 的 SHA-256 为 `e308b39e8f41d3406e4567289f3c34f02963bd24527c646d4240bf9dc5085c98`，glue 为 `fb4e5b7dc81769e2a5bbad1a6b4aecd70a0eecb36fc84898499916f215be52a5`；binary 为 `024915230b1446528b89bad16dedd4dca80a66297aee55fd7be81be8c91bc5f0`（版本串 `2ad447b`）。装配后 WASM 与 glue 与 `--official` 输入逐字节一致，未应用时间补丁。正式服务经手工 daemon 与 `web serve --token` 启动，HTTP 200，四个原 pane ID 保留：`326417514501`、`326417514503`、`347892350977`、`536870912003`。用户要求跳过浏览器视觉检查，本次未执行。
+
+替换 Maple 用的两份文件与 0.9.8/0.9.9 相同：Regular `20564520` bytes、SHA-256 `a575f533481139875243926514a5883dda4f5d24d6bf8c57586d6e146f0dfeec`，Bold `20517832` bytes、SHA-256 `1f6369330d1e00daa05981ab4832dae9d9c1897553e0e0112964b44d1f572acd`；各含 `33091` 个字符映射，其中基本 CJK 字符 `20976`。
+
 ## 确定性资产装配与页面验收（2026-10-21 工具状态）
 
-`assets` CLI 支持两种输入。`--bundle` 从已通过 `check-build` 的构建包装配；`--official` 从 `prepare` 取得的官方原版目录装配，此时读取 `inputs.json` 的 version、WASM SHA-256 与 glue SHA-256，核对实际文件后逐字节复制，并在 `deploy-manifest.json` 记录 `mode` 为 `font-only`、`wasmUnmodified` 为 true。两种模式都要求 `fonts.json` 的 `wasmSha256` 与实际模块一致；描述符至少两条（0.9.7 及更早为 Regular、Bold 两条，0.9.8 起为每种字体三副本共六条），每条的 style 必须是 `Regular` 或 `Bold`，URL 以 `./pkg/MapleMono-NF-CN-` 开头；slot、expectedPointer、expectedLength、bytes 必须是正安全整数，任意两条的槽位间隔至少 8；叶文件或父目录经 symlink 越界即拒绝。字体文件按每条描述符的 URL 从 `--fonts` 目录读取，因此多副本清单可以各自带 slot 后缀。输出含 index.html、maple.js、fonts.json、pkg/client.wasm、pkg/client.js、字体文件与逐文件记录 SHA-256 的 deploy-manifest.json。
+`assets` CLI 支持两种输入。`--bundle` 从已通过 `check-build` 的构建包装配；`--official` 从 `prepare` 取得的官方原版目录装配，此时读取 `inputs.json` 的 version、WASM SHA-256 与 glue SHA-256，核对实际文件后逐字节复制，并在 `deploy-manifest.json` 记录 `mode` 为 `font-only`、`wasmUnmodified` 为 true。两种模式都要求 `fonts.json` 的 `wasmSha256` 与实际模块一致；描述符至少两条（0.9.7 与 0.9.10 为每种字体 1 份共两条，0.9.8/0.9.9 为每种字体三副本共六条），每条的 style 必须是 `Regular` 或 `Bold`，URL 以 `./pkg/MapleMono-NF-CN-` 开头；slot、expectedPointer、expectedLength、bytes 必须是正安全整数，任意两条的槽位间隔至少 8；叶文件或父目录经 symlink 越界即拒绝。字体文件按每条描述符的 URL 从 `--fonts` 目录读取，因此多副本清单可以各自带 slot 后缀。输出含 index.html、maple.js、fonts.json、pkg/client.wasm、pkg/client.js、字体文件与逐文件记录 SHA-256 的 deploy-manifest.json。
 
 装配时还核对 glue 与模板的 `mount` 参数类型是否一致：从 `client.js` 的 JSDoc `@param` 读取声明类型，与 `index.template.html` 中 `mount(canvas, …)` 的实参形式对照。0.9.7 声明 `string`、模板传字符串；0.9.8 起声明 `string[]`、模板传数组。两者不一致时按 glue 声明改写模板后写入站点，glue 中识别不到 `mount` 导出时跳过对照（测试 fixture glue 不实现 mount）。
 

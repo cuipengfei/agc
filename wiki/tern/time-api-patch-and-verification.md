@@ -1,8 +1,8 @@
 # Tern 时间 API 补丁与验收
 
-> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29；Tern 0.9.7 静态分析与仅字体部署，2026-10-29；Tern 0.9.8 与 0.9.9 静态分析，2026-11-02
-> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md)
-> Updated: 2026-11-02
+> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29；Tern 0.9.7 静态分析与仅字体部署，2026-10-29；Tern 0.9.8 与 0.9.9 静态分析，2026-11-02；Tern 0.9.10 静态分析与部署，2026-11-03
+> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md)
+> Updated: 2026-11-03
 
 ## 适用范围
 
@@ -27,11 +27,11 @@ Tern Web 模块存在时间 API 的平台 unsupported 分支。静态定位这�
 | 0.9.7 仅注入字体（隔离服务） | 同一路径重绘检查 | 页面仍响应，viewport 输入后 canvas 由 `1280`×`720` 变为 `1360`×`760`，GPU 提交由 `328` 增至 `334` |
 | 0.9.8 原版 | 静态分析 | `panicFunctions` 总数 `28`；时间函数 `31414`（19 处调用）与 `31415`（3 处调用），合计 22 处 |
 | 0.9.9 原版 | 静态分析 | `panicFunctions` 总数 `36`；时间函数 `31844`（19 处调用）与 `31845`（3 处调用），合计 22 处 |
+| 0.9.10 原版 | 静态分析 | `panicFunctions` 总数 `33`；时间函数 `32208`（18 处调用）与 `32209`（3 处调用），合计 21 处 |
 
 旧版 panic 与用户报告的 Markdown 冻结同时出现在 0.8.4 环境，但「Markdown 打开 → panic → 冻结」没有任何一步被单独隔离；0.9.6 原版同路径未冻结，说明 unsupported 时间分支存在本身不是充分条件。
 
-0.9.8 与 0.9.9 只做了静态分析，未做动态复现或时间补丁；两者的原版终端字体为 `Ioskeley Mono Term`，各 `7564` 个字符映射、CJK 为 0。
-
+0.9.8、0.9.9 与 0.9.10 只做了静态分析，未做动态复现或时间补丁；三者的原版终端字体为 `Ioskeley Mono Term`，各 `7564` 个字符映射、CJK 为 0。
 时间补丁不修改 native desktop 的时间实现。Web 初始化、daemon/CLI 行为与 native UI 的覆盖范围分别记录。
 
 ## 三类时间语义

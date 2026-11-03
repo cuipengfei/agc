@@ -1,8 +1,8 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29; CI test scope and 0.9.8/0.9.9 deploy, 2026-11-02
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md)
-> Updated: 2026-11-02
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29; CI test scope and 0.9.8/0.9.9 deploy, 2026-11-02; 0.9.10 structure observation and deploy, 2026-11-03
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md)
+> Updated: 2026-11-03
 
 ## 用途
 
@@ -45,6 +45,8 @@
 2026-11-02 补充两条 CI 事实。`.github/workflows/tern-maintain.yml` 的 `bun test` 步骤必须带 `working-directory: tools/tern-maintain`；缺该限定时，workflow 会从仓库根收集仓库内其他包的测试，实测多收集 `omp/agent/extension-tests/deny-mnemopi-grep.test.ts`，该文件从 `$BUN_INSTALL/install/global` 解析 `@oh-my-pi/pi-coding-agent/extensibility/plugins/legacy-pi-compat`，在只安装 Tern 依赖的 Runner 上失败。一次实际失败结果为 `80 pass / 11 skip / 1 fail`（92 tests），加限定后运行成功，本地同一套件为 91 tests。
 
 `bun run test:receipt` 把测试输出写入 `artifacts/test-receipt.log`，解析出 `{tests, pass, fail, files, durationMs, commit}` 写入 `artifacts/test-receipt.json`；解析失败以非零退出，避免出现「测试通过但没有 receipt」。`tools/tern-maintain/.gitignore` 忽略 `artifacts/`，该文件不入库。引用测试数量时以该文件为准，不用前一次结果推算。
+
+0.9.10 补充一条结构观察：终端等宽字体的描述符数在不同版本间波动（0.9.7 为每种 1 份共 2 条，0.9.8/0.9.9 为 3 副本共 6 条，0.9.10 回到 2 条）。升级时按 `analyze` 的 `fonts` 字段实测，配置 `font_manifest.py` 输入就行；`maple.mjs` 的按 style 合并分配同时兼容两种结构。site 目录重建前先用 `deploy-manifest.json` 核对内容，避免丢失有效资产或验收记录。
 
 ## 0.9.2 实际结果
 

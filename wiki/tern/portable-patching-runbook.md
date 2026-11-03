@@ -1,8 +1,8 @@
 # Tern 跨机器补丁手册
 
-> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02
-> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md)
-> Updated: 2026-11-02
+> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03
+> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md)
+> Updated: 2026-11-03
 
 ## 使用对象与边界
 
@@ -139,15 +139,20 @@ bun cli.mjs markdown-windows --binary /absolute/path/to/tern \
 可用路径是保留 `~/.config/tern/web-token`，清掉三个过期状态文件后手工启动：
 
 ```bash
-STATE=~/.local/share/tern-native-<version>/runtime-state
+VERSION=0.9.10
+STATE="$HOME/.local/share/tern-native-$VERSION/runtime-state"
 rm -f "$STATE/tern-daemon.pid" "$STATE/tern-web.pid" "$STATE/web-token"
-tern daemon --socket /run/user/1000/tern/daemon.sock &
+tern daemon --socket "$XDG_RUNTIME_DIR/tern/daemon.sock" &
 tern web serve --listen 127.0.0.1:8378 \
-  --token ~/.config/tern/web-token \
-  --assets ~/.local/share/tern-web-<version> &
+  --token "$HOME/.config/tern/web-token" \
+  --assets "$HOME/.local/share/tern-web-$VERSION" &
 ```
 
+`$XDG_RUNTIME_DIR` 在本机（UID 1000）展开为 `/run/user/1000`，`tern` 子目录含 `daemon.sock`；该路径来自运行会话实测。环境变量为空或 `tern` 子目录不存在时，用 `--socket "$XDG_RUNTIME_DIR/tern/daemon.sock"` 前先确认目录；`XDG_RUNTIME_DIR` 未设置的系统按各自登录会话的运行时目录处理，不要把 `/run/user/1000` 当作通用值。
+
 直接启动 `tern web serve` 会把带 token 的入口地址写到 stdout，凭据会进入终端记录；`runtime.start` 与 `lifecycle.upgrade` 通过 `spawnRedacted` 把输出先写入日志再脱敏。启动后核对 `tern --version`、HTTP 状态与 pane 列表；进程存活和根页面 HTTP 200 都不验证认证，认证状态需单独确认。
+
+重建或删除 site 目录前，先用 `deploy-manifest.json` 逐文件核对内容是否有效：hash 与当前 `--official`/`--bundle` 输入一致时可直接复用目录；`verification/` 非空时先把验收记录移出。0.9.10 部署时该步骤在删除之前执行，核对结果记录在对应 raw；0.9.8 与 0.9.9 的 `verification/` 同为空目录。
 
 ## 各层检查证明的内容
 

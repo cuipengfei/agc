@@ -1740,3 +1740,9 @@
 - Raw: raw/omp/2026-11-03-agent-db-schema-and-cache-owners.md; raw/omp/2026-11-03-history-and-agent-db-index-repair.md
 - Updated: OMP agent.db 与 history.db：存储职责、表归属与索引级损坏修复; Mnemopi SQLite 损坏恢复; OMP tool_call 范围防护扩展：执行前阻断危险 Grep
 - 要点：`agent.db` 22 张表按建表模块三分（`sqlite-credential-store.ts` 凭据与缓存、`agent-storage.ts` 会话统计、`memories/storage.ts` 记忆流水线），`cache` 被 `session:sticky:`/`mcp_tools:`/`extension_startup:v1:` 三方共用且 TTL 均为 30 天，`usage_cost_history` 在已安装源码中无引用；`history.db` 含 `history`、`history_fts`、`session_titles`、`session_recaps`，`session-index.ts` 自述 per-session index tables in history.db；警告链为 `add()` 捕获后 `HistoryStorage add failed` 加一次性监听；两轮 history.db 损坏分开记录：第一轮 FTS5 blob 损坏（`history_fts` 29 条），第二轮为索引层（`idx_history_created_at` 条目数错误与 8 行缺项，`history` 7945 行、FTS 7946、`MATCH 'omp'` 返回 913，逐行扫描仅 113 缺失）；history.db 两轮均用恢复脚本（7946/208/453、隔离 0、`ids_reassigned` 0、装后 7949→7954）；agent.db 为索引层损坏（`cache` 784 行、键索引 786 条含 1300/1302/1303 重复与 3 条键错配、过期索引 787 条含 17 条陈旧），副本 `REINDEX` 加 22 表摘要比对后装、装后 548/548；REINDEX 只在 agent.db 验证，防护扩展受保护集合不含 agent.db 三件套；安装约束为持有者闸、安装前重新采集、源指纹比对、逐表摘要比对、原件 SHA-256 备份
+
+## [2026-11-03] ingest | Tern 0.9.10 仅字体部署与副本结构波动记录
+- Disposition: Update
+- Raw: raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md
+- Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 跨机器补丁手册; Tern 升级辅助工具与验收边界
+- 要点：0.9.10 描述符回到单副本（2 条），slot `14894592`/`14894616`，pointer `11830987`/`13332951`，length 与 0.9.8/0.9.9 相同；Ioskeley 仍为 `7564` 字符、CJK 0。WASM `e308b39e…`、glue `fb4e5b7d…`、binary `02491523…`（`2ad447b`）。时间静态总量 33（`32208` 18 处＋`32209` 3 处）。site 目录重建前与 `deploy-manifest.json` 核对，确认 `verification/` 为空目录、无记录损失。正式服务经手工命令启动，HTTP 200，四个原 pane ID 保留；用户要求跳过视觉检查。
