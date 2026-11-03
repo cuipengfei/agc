@@ -235,7 +235,7 @@ providers:
         reasoning: true
         input:
           - text
-        contextWindow: 1000000
+        contextWindow: 1048576
         maxTokens: 65536
         cost:
           input: 0
@@ -248,9 +248,8 @@ providers:
         reasoning: true
         input:
           - text
-          - image
-        contextWindow: 1000000
-        maxTokens: 393216
+        contextWindow: 1048576
+        maxTokens: 65536
         cost:
           input: 0
           output: 0
@@ -275,7 +274,7 @@ providers:
         reasoning: true
         input:
           - text
-        contextWindow: 1000000
+        contextWindow: 1048576
         maxTokens: 131072
         cost:
           input: 0
@@ -288,7 +287,6 @@ providers:
         reasoning: true
         input:
           - text
-          - image
         contextWindow: 1048576
         maxTokens: 65536
         cost:
