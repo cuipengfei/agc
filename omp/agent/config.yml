@@ -35,7 +35,11 @@ enabledModels:
   - typesafe-zen/*
   - nvidia/**
   - kiro/*
-disabledProviders: []
+disabledProviders:
+  - claude-plugins
+  - codex
+  - opencode
+  - claude
 providers:
   maxInFlightRequests: {}
   anthropic:
@@ -55,6 +59,7 @@ providers:
   openrouterVariant: default
   fetch: auto
   cacheRetention: long
+  cacheWarming: idle
 disabledExtensions: []
 modelRoleStorage: global
 modelRoles:
