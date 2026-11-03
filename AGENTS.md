@@ -129,7 +129,7 @@ find . -path './.git' -prune -o -type l -print
 
 **Wiki 证据边界：**
 
-- 提交 wiki 改动前运行 `karpathy-llm-wiki` skill 的证据校验器，命令与选项以 skill 为准。
+- 提交 wiki 改动前运行 `python3 tools/wiki-check/check_evidence.py .`；CI 跑的是仓库这份，与 skill 的 `scripts/check_evidence.py` 当前字节相同，升级 skill 后重新复制。
 - 已观察到的 fidelity suspect 假阳性形态：产品版本号、`See Also` 行、raw 侧写在 fenced code block 里的数字（如 JSON 字段值、代码片段中的常量）。
 
 ## 来源映射
