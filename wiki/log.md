@@ -1752,3 +1752,14 @@
 - Raw: raw/omp-slash-commands/omp-tree-command-reference.md
 - Updated: OMP 内置 slash 命令全表（v18.1.10 快照 82 条；2026-10-10 当前 blob core registry 85 条）
 - 要点：两者都在当前会话文件内移动 leaf；`/branch` 取当前分支消息、打开覆盖最新约 600 条、`a` 展开全部、`f` 过滤、存在兄弟分支时左右键导航兄弟条、`navigateTree` 固定 `summarize:false`、用户请求草稿覆盖编辑器；`/tree` 用 `getTree`/`getLeafId` 打开五档过滤器，`default` 隐藏 `label`/`custom`/`model_change` 等簿记条目、`all` 才显示，仅含工具调用的 assistant 消息在所有档位隐藏，搜索按词元 AND 模糊匹配、预览 200 字符内；选中用户消息时 leaf 移到 `parentId`，草稿仅在编辑器为空时回填，`ask` 结果重开问题，当前 leaf 通常无操作；`branchSummary.enabled` 默认 `false`，`Shift+Enter` 直接摘要；`doubleEscapeAction` 取值 `rewind`/`tree`/`none`，默认 `rewind`，旧值 `branch` 迁移为 `rewind`；`/fork` 复制文件、`/resume` 换文件、`AgentSession.branch()` 新建分支会话
+
+## [2026-11-03] ingest | OMP 配置语义手册
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-03-provider-protocol-config-semantics.md; raw/omp-config/2026-11-03-config-current-values-and-sync-state.md
+- Updated: OMP 配置语义手册
+- 要点：18.16.0 provider 协议层配置项源码取证：cacheRetention 四值与 wire 映射（long + supportsLongPromptCacheRetention + promptCacheKey + 不支持 explicit breakpoints → 显式发 prompt_cache_retention:"24h"）、cacheWarming 只对声明 promptCache 寿命模型触发（TTL 来自 model.promptCache，无声明不调度）、openaiLiveSteering 三条件（GPT-6 + Codex WebSocket + 服务端 steer）、textVerbosity 写入门（officialEndpoint）、officialEndpoint 四消费点（verbosity、stateful 默认、leakedThinking 修复、图片预算门）、tools.format 取值与 inlineToolDescriptors 三态、task.file 校验与哈希记录；配置改动（inlineToolDescriptors:"on"、task.file:true、c8787 compat officialEndpoint:true + statefulResponses:false）引擎验证与条目同步
+
+## [2026-11-03] ingest | Copilot 网关 cache retention 字段实测与 warming 不触发根因
+- Disposition: New
+- Raw: raw/copilot-gateway/2026-11-03-responses-cache-retention-field-probe.md; raw/omp-config/2026-11-03-provider-protocol-config-semantics.md
+- 要点：8787 Responses 通道 12 模型中 7 个返回 200（6 GPT 回显 "24h"、mai-code "in_memory"）、5 个错误（2 Gemini 502、3 embedding 400）；gpt-6-luna 4856 token 双请求验证命中路径（首次 cache_write 4853、二次 cached 4853），其余 GPT 仅验证字段回显；cacheWarming 对无 promptCache 声明的自定义模型不触发，TTL 只来自 model.promptCache 不来自响应回显

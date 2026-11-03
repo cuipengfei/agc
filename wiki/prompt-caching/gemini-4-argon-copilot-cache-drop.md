@@ -57,3 +57,4 @@ Google 官方文档对 Gemini 上下文缓存三种模式的定义：
 
 - [Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复](gemini-38-flash-copilot-cache-drop.md)
 - [Prompt Cache：前缀匹配与 cache key 的真实分工](cache-key-and-prefix-matching.md)
+- [Copilot 网关 cache retention 字段实测与 warming 不触发根因](copilot-gateway-cache-retention-forensics.md)

@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md)
-> Updated: 2026-11-01
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01；本机安装包 `@oh-my-pi/pi-coding-agent` v18.16.0 provider 协议层配置项源码取证, 2026-11-03
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP 配置当前值与同步状态取证](../../raw/omp-config/2026-11-03-config-current-values-and-sync-state.md)
+> Updated: 2026-11-03
 
 ## 这份手册讲什么
 
@@ -113,6 +113,36 @@ provider 级并发另有一条窄槽位路径（`provider-concurrency.ts`）：�
 | `features.unexpectedStopDetection: mechanical` | Agent 意外停住时自动恢复 | `stopReason === "stop"` 且无 tool call 时 | `mechanical`：仅 signed thinking-only stop 重试；`smart`：加可见文字分类；`none`：关闭此检测。最多重试 3 次 |
 | `providers.unexpectedStopModel` | Smart 模式下判断是否意外停住的小模型 | 仅在 `smart` 档位且可见文字需分类时 | 默认 online TINY/smol（通常更小，实际延迟/成本取决于模型与 provider）；可选本地 on-device 模型 |
 | `tui.reactions: true` | 邀请主 Agent 用 emoji 开头回复，提取为前一条用户气泡的 badge | system prompt 组装时（仅 main agent + TUI） | 开关控制的是 prompt 邀请，渲染器解析路径不受此开关门控；每条用户消息最多一个 badge |
+
+## Provider 协议层
+
+| 设置 | 做什么 | 何时触发 | 影响与取舍 |
+|---|---|---|---|
+| `providers.cacheRetention` | 请求的 prompt-cache 保留档（`auto`/`short`/`long`/`none`，默认 `auto`） | 每次请求传给 provider | `long` 在 Responses 通道满足 `supportsLongPromptCacheRetention` + 有 promptCacheKey + 不支持 explicit breakpoints 时显式发 `prompt_cache_retention: "24h"`；GPT-5.6+ 若支持 explicit breakpoints 则走 `prompt_cache_options.ttl="12h"`。`auto` 不覆盖，用 provider 默认 |
+| `providers.cacheWarming` | 到期前重发请求续期缓存（`off`/`streaming`/`idle`，默认 `idle`） | 条目寿命 90% 时（至少提前 10 秒），前提是该档位有 TTL 元数据 | 只对声明了 `promptCache` 寿命的模型触发；TTL 来自 `model.promptCache[tier]`，无声明则 `getPromptCacheTtlMs` 返回 undefined，warmer 不调度。`streaming` 安全窗 ≤60 分钟，`idle` 额外覆盖空闲期、安全窗 ≤30 分钟。预期节省需 ≥ $0.05。有 TTL 元数据时，`cacheRetention: long` 写下的是长条目，短档空闲刷新没有对应对象；若 TTL 声明为 86400 秒，刷新目标约为 21.6 小时，源码不给出该时段内是否发送的保证 |
+| `providers.openaiLiveSteering` | 把用户输入注入正在流式输出的响应（默认 `false`） | transport 为 Codex WebSocket + GPT-6 家族 + 服务端接受 steer | 只在 `openai-codex-responses` 通道实现。非 GPT-6 模型或非 WebSocket 传输不生效。服务端拒绝后该 lane 停止 steering |
+| `textVerbosity` | OpenAI Responses/Codex 回复长度提示（`low`/`medium`/`high`，默认 `medium`） | 写入请求体 `text.verbosity` | Responses 通道需 `compat.officialEndpoint` 为 true 才写入；Codex 通道需显式配置才转发。自定义 baseUrl 默认 `officialEndpoint` 为 false，字段被丢弃；models.yml `compat` 覆盖可打开 |
+| `tools.format` | 工具调用编码方式（`auto`/`native` + 11 个文本方言，默认 `auto`） | 每次请求构造工具定义与解析回复 | `auto` 下模型未标 `supportsTools: false` 走原生 function calling；`native` 强制原生；其他值强制文本方言（工具调用以文本形式写在消息里） |
+| `inlineToolDescriptors` | 工具描述放在 system prompt 还是 provider schema（`auto`/`on`/`off`，默认 `auto`） | system prompt 构建与工具 schema 序列化 | `on` 或 `auto` 命中 Gemini：prompt 渲染完整 `namespace functions` 目录，schema 的 `description` 被裁剪。`off` 或 `auto` 非命中（原生通道）：prompt 只列工具名，描述留在 schema |
+| `task.file` | task 工具是否接受 `taskFile` 文件路径作为指令来源（默认 `false`） | task 工具调用校验 | 开启后 `task` 与 `taskFile` 二选一；文件需绝对路径或 `local://`、常规文件、UTF-8、非空、≤4 MiB。OMP 读文件内容作为指令传给子代理，路径与 SHA-256 记入 spawn details。审批界面只显示路径 |
+
+### `officialEndpoint` 覆盖的完整影响
+
+models.yml 的 `compat.officialEndpoint: true` 是一个声明性标记，OMP 用它判定该端点是否按第一方官方 OpenAI 对待。对 `openai-responses` 通道有四个消费点：
+
+1. `text.verbosity` 写入（`openai-responses.ts:1650`）：`officialEndpoint` 为 true 才发该字段。
+2. 有状态串联默认（`openai-responses.ts:527`）：优先级为请求选项 > `PI_OPENAI_STATEFUL` 环境变量 > `compat.statefulResponses` > `compat.officialEndpoint`。`officialEndpoint: true` 不配 `statefulResponses: false` 会默认开启 `store: true` + `previous_response_id` 链式增量。`PI_OPENAI_STATEFUL` 可覆盖 compat 值。
+3. 泄漏思考修复（`stream.ts:92`）：非官方端点包装修复流，把上游漏进正文的 reasoning 标记还原成 thinking 块；官方端点不包装。覆盖为 true 后这层修复关闭。
+4. 主机请求预算门（`anthropic-state.ts:50-54`）：`reachesBudgetedHost` 用它决定图片字节/数量预算是否适用。只有对应 provider 的预算轴有值时才会产生裁剪；自定义 provider（如 c8787）没有对应规则，预算轴未赋值，裁剪逻辑跳过，无实际影响。
+
+### 8787 网关的当前适用情况
+
+8787 有两个 provider：`c8787`（`openai-responses`）和 `c8787-chat`（`openai-completions`），另有 `openai-codex` 指向 8787。实测结果：
+
+- `textVerbosity`：`c8787` 加了 `officialEndpoint: true` + `statefulResponses: false` 后，Responses 请求会带 `text.verbosity`。`c8787-chat` 走 Chat Completions，OMP 不发该字段。
+- `cacheWarming`：三个 provider 的模型都没有 `promptCache` 声明，`getPromptCacheTtlMs` 返回 undefined，warmer 不调度。上游回显 `prompt_cache_retention: "24h"` 不回填 OMP 的 TTL 元数据。
+- `openaiLiveSteering`：`openai-codex` 唯一模型 `gpt-5.6-luna` 不是 GPT-6 家族且标了 `preferWebsockets: false`，steering 不生效。
+- 8787 Responses 通道 7 个成功响应模型中，6 个 GPT 回显 `"24h"`，`mai-code-1.1-flash` 回显 `"in_memory"`；2 个 Gemini 返回 502，3 个 embedding 返回 400。gpt-6-luna 双请求验证了缓存命中路径（首次 cache_write 4853、二次 cached 4853），其余 GPT 仅验证字段回显。
 
 ## 关键边界
 
