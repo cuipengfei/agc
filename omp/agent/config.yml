@@ -333,7 +333,7 @@ memory:
   backend: mnemopi
 autolearn:
   enabled: true
-  autoContinue: true
+  autoContinue: false
   minToolCalls: 5
 mnemopi:
   scoping: per-project-tagged

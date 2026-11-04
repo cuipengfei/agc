@@ -637,9 +637,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/virgiliojr94/book-to-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "7540eefbe74933f5fc84c86becac52486b347778",
+      "skillFolderHash": "e7bb659d3261491c8b28793dcb9102fa64a46c22",
       "installedAt": "2026-08-17T13:12:19.212Z",
-      "updatedAt": "2026-10-28T15:10:07.123Z"
+      "updatedAt": "2026-11-04T12:15:41.723Z"
     },
     "humanizer": {
       "source": "blader/humanizer",
@@ -1234,36 +1234,36 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "4c91ae865ac0449dbc4264b857e34bb378156499",
+      "skillFolderHash": "2492b2c65f25c117c08fe4ccfe079118dc24aedf",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-02T13:49:56.530Z"
+      "updatedAt": "2026-11-04T12:15:42.714Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "25aafb9b197d1cf92abcc3b2e05800f4395035dd",
+      "skillFolderHash": "e500c5779c3881cb90dbdda408cdf4cbb97bda86",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-03T11:53:55.043Z"
+      "updatedAt": "2026-11-04T12:15:42.842Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "ab3da2b9e92cbdab9d591edca5c118a54b05d657",
+      "skillFolderHash": "e25973c80f0070d89436bc43b767b9f3986915fc",
       "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-10-29T13:45:11.906Z"
+      "updatedAt": "2026-11-04T12:15:42.977Z"
     },
     "media-use": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "8e4252ad8869047ea56037e8c0a2acb30a383343",
+      "skillFolderHash": "cf8296d1895a6ddf1c9323ed5931520aff8b9ed2",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-03T11:55:02.596Z"
+      "updatedAt": "2026-11-04T12:15:44.183Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1316,9 +1316,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "ffc6618c3f12c3726d705340dc3acb852e37a4cb",
+      "skillFolderHash": "a610dbdfb27366653798bcdd4cebe745c92e1ac5",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-03T11:55:06.049Z"
+      "updatedAt": "2026-11-04T12:15:44.302Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
