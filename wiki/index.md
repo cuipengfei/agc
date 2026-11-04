@@ -556,3 +556,11 @@ VS Code（含 serve-web）的设置分层、Web 客户端存储与 Remote 配置
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [VS Code serve-web 的设置分层：浏览器 User 与 WSL Remote](vscode/serve-web-settings-layers.md) | Web 客户端用户设置存于浏览器 IndexedDB（`vscode-web-db` / `vscode-userdata-store`）；serve-web 以请求 Host 作为 `remoteAuthority`，Remote 层读取服务端 `data/Machine/settings.json`；优先级 User < Remote < Workspace < Policy；`window.title` 默认 scope 为 WINDOW，Workspace 层接受、Folder 层不接受；Remote 层值为 `${rootName}`，最终生效值未验证 | 2026-10-21 |
+
+## horizon
+
+AI 驱动的新闻聚合器：多源抓取、profile 评分、双语简报与多渠道投递。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Horizon 架构与部署方式](horizon/horizon-architecture-and-deployment.md) | 四阶段流水线（抓取→AI 分析过滤→补充→生成投递）、10 种信息源、4 个内置 profile、11 种 AI provider、三种定时方式（GitHub Actions / 本地 cron / Docker+主机 cron）、四条投递渠道在 GitHub Actions 下的实际可用性边界（模板默认仅 Pages+webhook 飞书，邮件需额外配置且订阅者状态不持久化，微信需交互式登录且会话文件无法跨 run 保留）、Actions 免费额度与模型 API 费用区分、MCP Server 7 个工具 | 2026-11-04 |
