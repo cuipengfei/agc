@@ -22,8 +22,8 @@
   },
   "agentTool": true,
   "inboxTool": {
-    "pi": true,
-    "opencode": true
+    "pi": false,
+    "opencode": false
   },
   "inboxSound": {
     "dialogShownFor": "0.28.42"
