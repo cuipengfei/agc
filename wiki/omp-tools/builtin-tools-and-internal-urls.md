@@ -1,8 +1,8 @@
 # OMP 内建工具全集、会话暴露边界与内部地址空间
 
-> Sources: omp docs (Tools index), 2026-10-11; 本机 OMP 源码 + 本会话 harness 实测, 2026-10-11
-> Raw: [omp.sh/docs/tools](../../raw/omp-tools/2026-10-11-omp-sh-docs-tools.md); [源码与会话实测](../../raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md)
-> Updated: 2026-10-26
+> Sources: omp docs (Tools index), 2026-10-11; 本机 OMP 源码 + 本会话 harness 实测, 2026-10-11; pi-natives 第三方组件清单, 2026-11-04
+> Raw: [omp.sh/docs/tools](../../raw/omp-tools/2026-10-11-omp-sh-docs-tools.md); [源码与会话实测](../../raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md); [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md)
+> Updated: 2026-11-04
 
 ## Overview
 
@@ -12,7 +12,7 @@ OMP 的内建工具由两处权威定义：源码常量 `BUILTIN_TOOL_NAMES`（3
 
 - **源码核心常量**（`builtin-names.ts`）：`BUILTIN_TOOL_NAMES` 30 个 + `HIDDEN_TOOL_NAMES` 3 个（`yield`、`goal`、`think`）。另有 legacy 别名 `search → grep`。
 - **文档目录**（omp.sh/docs/tools）：按用途分节列能力，额外含 6 个不在核心常量里的能力型工具——`browser`、`computer`、`inspect_image`、`generate_image`、`tts`、`hub`。它们走 eval prelude / 能力工具注册，不在 `BUILTIN_TOOL_NAMES`。其中 `browser` 与 `computer` 在后端选择、连接协议与安全边界上差别很大，运行时分别见 [OMP browser prelude 与 relay 架构](browser-prelude-and-relay-architecture.md) 与 [OMP computer prelude 与桌面自动化](computer-prelude-desktop-automation.md)。
-- **本会话 harness 实测**：暴露 27 个内建函数 = 核心 30 − `ida` − `checkpoint` − `rewind`。`ast_grep`、`ast_edit` 均已暴露（本会话 `ast_grep` 可直接调用，尽管文档标 `astGrep.enabled` 默认关——印证"默认开关随环境变"）。
+- **本会话 harness 实测**：暴露 27 个内建函数 = 核心 30 − `ida` − `checkpoint` − `rewind`。`ast_grep`、`ast_edit` 均已暴露（本会话 `ast_grep` 可直接调用，尽管文档标 `astGrep.enabled` 默认关——印证"默认开关随环境变"）。两者的引擎随本地原生模块发布：`@oh-my-pi/pi-natives` 的第三方组件清单列有 `ast-grep-core 0.39.9`，不需要另装 CLI。
 
 `/tools` 是文档明确指定的权威实时视图：设置、已装程序、模型支持、任务深度、自定义工具、MCP 都会改变它。
 

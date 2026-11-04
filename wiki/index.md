@@ -52,6 +52,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [代码智能工具全景与选型](agent-tooling/code-intelligence-tool-landscape.md) | CodeGraph、Semble、Graphify 的机制核对、相似方案、概念分层与编码 agent 选型；含 OMP find 对比，该部分标注 2026-10-01 前源码快照 | 2026-10-27 |
 | [Anatomy skill：物理装置隐喻的交互式等距出图机制与自解释成品](agent-tooling/anatomy-skill-mechanics.md) | 概念→可交互物理装置的一对一映射；几何 audit + line check 双重门槛；Standalone HTML/静态 SVG/React/gallery 四交付；136 solids 自解释成品的 iframe srcdoc + Bun bundle 嵌入方式与后续改动走手动编辑的合规流程 | 2026-10-18 |
 | [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv 无全局清单、per-tool receipt 为唯一事实来源；receipt 字段与凭据省略；浅层 glob 同步方案与 94,152 文件递归风险 | 2026-10-05 |
+| [harness 接入工具的三条通道](agent-tooling/harness-integration-paths.md) | 内置工具、配置分发、外部任务系统三条通道的判据与缺口；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`）；APM 的 manifest、lock、SBOM 与 policy 及 9 个支持宿主（不含 OMP）；Beads 的 14 个 `bd setup` 配方（不含 pi/omp）与 `AGENTS.md`、`beads-mcp` 两条接入路 | 2026-11-04 |
 
 ## ai-coding-agents
 
@@ -196,7 +197,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Compaction Methods & History URI Tool Support](omp-config/compaction-methods-and-history-uri.md) | 五种压缩方法（remote/snapcompact/handoff/shake/soft）的 fallback chain、soft vs handoff 的 LLM 调用差异、实验性 rollover 机制、history://current/full 支持 read/grep/find（需 experimentalContextManagement=true）；实验 rollover 还要求四项工具都在生效工具表面，Vibe mode 收缩工具表面；换窗前有 clamp(12.5% × 阈值, 8,192, 32,000) 的前瞻带宽，裁剪保护 16,000 tokens 尾部与 8,000 tokens 后缀、整段刷写等 90 分钟空闲 | 2026-11-01 |
 | [OMP Managed Skills 生命周期](omp-config/managed-skills.md) | 写入路径、删除路径、没有自动清理；createIf 门槛（autolearn.enabled 默认 false）、参数校验、Auto-Learn 系统提示注入出处；本机目录布局实测（无 ~/.omp/agent/skills，用户级 skills 在 ~/.agents/skills）；捕获回合由分离 agent 执行、产物三类（含无产物） | 2026-10-28 |
 | [OMP 配置语义手册](omp-config/config-semantics.md) | 33 项设置的触发条件与行为影响；streamingAbort 中断/F5/自动 retry 边界；18.4.2 核验 cacheWarming 门槛、checkpoint 与双击 Escape 分工、sessionAccent 配色算法；tools.xdev 控制 discoverable 工具挂载与 prewalk false positive；browser.enabled 与 computer.enabled 的 prelude 语义；subagent 并行度四道闸门（maxConcurrency、async.maxJobs、maxInFlightRequests、batch）与 autolearn 六跳过条件；实验性 rollover 的四工具门与裁剪保护区对前缀缓存的影响；18.16.0 provider 协议层（cacheRetention 四值 wire 映射、cacheWarming TTL 触发条件、openaiLiveSteering 三条件、textVerbosity 写入门、officialEndpoint 已核对的四项 Responses 相关行为、tools.format 取值、inlineToolDescriptors 三态、task.file 校验与哈希记录）；2026-11-04 复核补入实际 warmer 调度矩阵、cache key 独立于 officialEndpoint、statefulResponses 与服务端存储/prompt cache 区别、文本工具方言不发送原生 tools、taskFile 审批与父历史边界、8787 verbosity 与 TTL 证据边界 | 2026-11-04 |
-| [Auto-Learn capture 管线与可观测产物](omp-config/autolearn-capture-pipeline.md) | capture 是分离 agent（无 SessionManager、独立 sessionId 不落盘、不写 model_usage）；触发六条件；产物三类（learn 记忆行、managed skill、无产物）；`coding-agent-learn` 记录查询方法与本次运行时间线；记录内容未经复核的边界 | 2026-10-28 |
+| [Auto-Learn capture 管线与可观测产物](omp-config/autolearn-capture-pipeline.md) | capture 是分离 agent（无 SessionManager、独立 sessionId 不落盘、不写 model_usage）；触发六条件；产物三类（learn 记忆行、managed skill、无产物）；`coding-agent-learn` 记录查询方法与本次运行时间线；记录内容未经复核的边界；配置变更与生效边界（同进程改值未触发、新 PID 才触发、`startWatching()` 对 autolearn 键未取证） | 2026-11-04 |
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
@@ -226,7 +227,7 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用 | 2026-10-26 |
+| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`） | 2026-11-04 |
 | [OMP browser prelude 与 relay 架构](omp-tools/browser-prelude-and-relay-architecture.md) | prelude 定位与启用条件；四后端八顺位路由表；relay 端点鉴权矩阵（token 只管 /ext，/cdp 无校验）与 loopback 边界；扩展来源与 Chrome 136 限制；标签页借用与冻结范围；跨系统上传回退与下载 perTab 分支；Kerberos 落在浏览器进程；WSL 双向回环实测与扩展握手待验证；API/CLI 与界面选型顺位 | 2026-10-26 |
 | [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批与接管语义；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-10-26 |
 
@@ -389,6 +390,14 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 |---------|---------|---------|
 | [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-19 |
 
+## technology-radar
+
+行业技术雷达的版本结构、环位口径与条目留存规则。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Technology Radar 的结构、留存规则与 Vol 33–35 Adopt 清单](technology-radar/radar-structure-and-adopt-lists.md) | 四象限四环口径（Vol 33 用 Hold）；Vol 35 共 117 条与各象限环位计数、四个主题；三版 Adopt 合计 12/17/11 与逐条清单；FAQ 的一期留存规则与归档不更新；content negotiation、象限 summary 页、PDF 环位目录块三种取数方式；同一 URL 的 Tavily 版本差异（原因未查证） | 2026-11-04 |
+
 ## terminal-multiplexers
 
 浏览器/终端复用器的前端编译模型、workspace 抽象与侧栏机制。
@@ -465,7 +474,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 | [Plannotator OMP 插件运行机制](herdr-plannotator/plannotator-omp-plugin-mechanism.md) | slash command 双通道归属（插件 `pi.registerCommand` 四命令 vs `~/.claude/skills` skill 调独立 CLI）、agent 工具通道（`pi.registerTool`，0.28.12 起）、进程内 HTTP 服务链路（createServer/listenOnPort、`/api/approve`+`/api/feedback`）、node-pty 缺 linux-x64 预编译产物的 node-gyp 编译门与常驻决策、health check 只验存在性 | 2026-10-11 |
 | [Plannotator agent tool 注入与 Quick Labels 机制](herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) | agent 工具开关链（env → config.agentTool → 主机默认，Pi 默认关）、OMP .env 注入通道、Quick Labels cookie 存储与 Settings 编辑能力（👍 硬编码例外）、config.json 38 键清单、脱敏实测 | 2026-10-11 |
 | [Plannotator Inbox 通知与标注面](herdr-plannotator/plannotator-inbox-notifications-and-annotations.md) | 通知只由打开的 Inbox 标签页发出：新线程必通知、线程内新问题通知（正看着的线程除外）、普通进展不通知；单条与合并文案、`FRONT_BURST_MS` 30 秒内合并、多标签页只弹一次；铃声仅对新问题、仅当无标签页在前台、30 秒一批、需一次点击或按键后才可播放；`notifyStatus` 五种状态文案与 `reachText` 五种“Notifications reach you”结果、静默失败五来源、权限按来源地址；标签页冻结与回收的提示条件（冻结超过 60 秒）；标注面（agent 消息正文可选中评论、工具栏只有 Comment 与 👍、问题卡片与行动事项卡片包在 `annotation-exclude` 内不可评论、Markdown/文本/Mermaid/Graphviz/HTML/图片/视频可评论、视频评论带时间点与暂停帧路径、评论存为待发送随一次 Send 发出）；回复组织顺序与 👍 确认 | 2026-10-31 |
-| [Plannotator Inbox 与 OMP 接通](herdr-plannotator/plannotator-inbox-omp-connection.md) | 开关链（`PLANNOTATOR_INBOX_TOOL` 环境变量 → config.json `inboxTool` → 主机默认，Pi/OMP 默认关）与注册门（`inbox/inbox.json` 存在才注册、会话启动时决定一次、`inboxReminder` 提示行）；本机启用现状（`{ "pi": true }` 与 `PLANNOTATOR_INBOX_TOOL=1`、两分支解析为 true、`.env` 权限 600、Inbox 首启 `http://localhost:42583/` pid 88355）；本会话先无工具后 `read_thread` 可用的时序记录；stdio 通道（`plannotator inbox mcp`、8 个工具、`agent_session` 填充规则、`idempotency_key`）；`wait_for_reply` 50 秒返回 waiting 与 cursor；各宿主唤醒差异表；Board 项目语义（`project: null` 表示该文件夹尚无记录、除 list 外报 `card_no_project`、首条消息建立项目、icebox 仅人能操作）与本机建卡移卡 | 2026-10-31 |
+| [Plannotator Inbox 与 OMP 接通](herdr-plannotator/plannotator-inbox-omp-connection.md) | 开关链（`PLANNOTATOR_INBOX_TOOL` 环境变量 → config.json `inboxTool` → 主机默认，Pi/OMP 默认关）与注册门（`inbox/inbox.json` 存在才注册、会话启动时决定一次、`inboxReminder` 提示行）；本机启用现状（`{ "pi": true }` 与 `PLANNOTATOR_INBOX_TOOL=1`、两分支解析为 true、`.env` 权限 600、Inbox 首启 `http://localhost:42583/` pid 88355），2026-11-04 起标为过时；本会话先无工具后 `read_thread` 可用的时序记录；stdio 通道（`plannotator inbox mcp`、8 个工具、`agent_session` 填充规则、`idempotency_key`）；`wait_for_reply` 50 秒返回 waiting 与 cursor；各宿主唤醒差异表；Board 项目语义与本机建卡移卡；2026-11-04 两处开关关闭（环境变量 `0` 压过配置） | 2026-11-04 |
 
 ## omp
 

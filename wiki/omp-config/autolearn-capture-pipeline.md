@@ -1,8 +1,8 @@
 # Auto-Learn capture 管线与可观测产物
 
-> Sources: oh-my-pi 官方源码 `5d72f5d3f4`，2026-10-28；本机 omp 18.13.1 运行观测，UTC 2026-10-27
-> Raw: [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [Managed Skills 创建门槛与 Auto-Learn 字符串出处取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md)
-> Updated: 2026-10-28
+> Sources: oh-my-pi 官方源码 `5d72f5d3f4`，2026-10-28；本机 omp 18.13.1 运行观测，UTC 2026-10-27；本机 config.yml 改动与仓库同步，2026-11-04
+> Raw: [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [Managed Skills 创建门槛与 Auto-Learn 字符串出处取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [autolearn 关闭自动继续的配置改动](../../raw/omp-config/2026-11-04-autolearn-autocontinue-disabled.md)
+> Updated: 2026-11-04
 
 ## Overview
 
@@ -77,6 +77,14 @@ WHERE source = 'coding-agent-learn'
 | 2026-10-27 16:13:39 | 新增 `coding-agent-learn` 记录 `e928a543333bdc2f` |
 
 正向证据只有这一条记忆：写入时间紧接回合结束，父会话 transcript 内 `learn` 与 `manage_skill` 调用各 0 次，`managed-skills/` 最新修改时间停在 2026-10-10。
+
+## 配置变更与生效边界
+
+2026-11-04 把 `autolearn.autoContinue` 从 `true` 改为 `false`，`enabled` 保持 `true`，`minToolCalls` 为 5；按上面的触发条件，自动 capture 不再运行。
+
+生效时机没有源码级结论。既有取证记录：同进程内把 `autoContinue` 改为 `true` 后，多个满足工具调用数的回合都没有触发 capture；换成新 PID 并恢复同一会话后，首个满足条件的回合立刻触发。同一份记录也标注 `main.ts` 里的 `startWatching()` 对 autolearn 键的作用未验证。
+
+能确定的是磁盘值生效；运行中的进程是否重读设置仍然未知。讨论配置改动何时生效时，不要给出「无需重启」这类断言。
 
 ## 核验清单
 

@@ -1769,3 +1769,9 @@
 - Raw: raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md
 - Updated: OMP 配置语义手册; Copilot 网关 cache retention 字段实测与 warming 不触发根因
 - 要点：六路只读核查后更新 provider 协议层配置文章与缓存实测文章；离线运行 `resolveModelPolicy`/`buildParams` 与 `CacheWarmer`，确认 `text.verbosity="medium"`、`store=false`、`prompt_cache_key` 独立于 `officialEndpoint`，并保存 warmer 调度矩阵（无 TTL 不调度、short 300 秒运行与空闲期可调度、long 3600 秒空闲停止、固定 86400 秒首次调度即触发一小时安全窗）；同步收紧 statefulResponses 与服务端存储/prompt cache 区别、图片预算与 verbosity 范围、文本工具方言不发送原生 tools、taskFile 审批与父历史边界、普通插话边界与 steering 拒绝语义；更正 response.steer 出处、Git 快照时点、dummy bearer 推广、8787 usage 与账单/TTL/字段来源边界；配置结论保持现值，不添加猜测 `promptCache.long: 86400`
+
+## [2026-11-04] ingest | Technology Radar 的结构、留存规则与 Vol 33–35 Adopt 清单
+- Disposition: New; Update
+- Raw: raw/technology-radar/2026-11-04-thoughtworks-radar-vol35-and-adopt-lists.md; raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md; raw/omp-config/2026-11-04-autolearn-autocontinue-disabled.md; raw/herdr-plannotator/2026-11-04-inbox-tool-disabled.md
+- Updated: harness 接入工具的三条通道; OMP 内建工具全集、会话暴露边界与内部地址空间; Auto-Learn capture 管线与可观测产物; Plannotator Inbox 与 OMP 接通
+- 要点：雷达 Vol 35 共 117 条（技巧 45、平台 22、工具 36、语言与框架 14），Adopt 11 条；三版 Adopt 合计 12/17/11，Vol 33 的 12 条里只有 Curated shared instructions 在 Vol 34 仍是 Adopt，Vol 34 的 17 条里只有 mise 留在 Vol 35；FAQ 默认规则是条目只出现一期、除非环位移动，TAB 可陈述理由保留，归档不更新；取数靠 content negotiation、象限 summary 页（含整象限）与 PDF 环位目录块，同一 URL 的 Tavily 返回 Vol 34 且无条目，原因未查证；工具侧记录 APM 的 9 个宿主（无 OMP）、ast-grep 引擎为 pi-natives 内的 ast-grep-core 0.39.9、Beads 的 14 个 bd setup 配方（无 pi/omp）与 AGENTS.md/MCP 两条接入路；配置侧记录 autolearn 关闭自动继续与生效边界（热重载未取证）、Inbox 两处开关关闭（环境变量 0 压过配置）

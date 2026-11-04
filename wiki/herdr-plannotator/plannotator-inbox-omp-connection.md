@@ -1,8 +1,8 @@
 # Plannotator Inbox 与 OMP 接通
 
-> Sources: backnotprop/plannotator 官方指南 `docs/agent-guides/inbox-notifications-and-agents.md`，2026-10-31；本机 `plannotator` 0.28.42 的 `inbox --help` 与 CLI 实测，2026-10-31
-> Raw: [本机接通 Inbox 的实测记录（OMP）](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-omp-session-evidence.md); [`plannotator inbox --help` 摘录](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-cli-help.md); [Inbox MCP 通道、唤醒与指令同步](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-mcp-guide.md); [Plannotator Inbox 产品页](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-product-page.md)
-> Updated: 2026-10-31
+> Sources: backnotprop/plannotator 官方指南 `docs/agent-guides/inbox-notifications-and-agents.md`，2026-10-31；本机 `plannotator` 0.28.42 的 `inbox --help` 与 CLI 实测，2026-10-31；本机开关改动与仓库同步，2026-11-04
+> Raw: [本机接通 Inbox 的实测记录（OMP）](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-omp-session-evidence.md); [`plannotator inbox --help` 摘录](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-cli-help.md); [Inbox MCP 通道、唤醒与指令同步](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-mcp-guide.md); [Plannotator Inbox 产品页](../../raw/herdr-plannotator/2026-10-31-plannotator-inbox-product-page.md); [Inbox 工具关闭的两处改动](../../raw/herdr-plannotator/2026-11-04-inbox-tool-disabled.md)
+> Updated: 2026-11-04
 
 ## Overview
 
@@ -36,12 +36,25 @@ Inbox 运行过之后，带工具的会话在启动时会额外收到一行提�
 
 ## 本机启用现状
 
+> **Status: Outdated** (2026-11-04)
+> 以下是 2026-10-31 的启用状态。2026-11-04 起环境变量与配置文件两处开关均已关闭，见下一节「显式关闭」。
+
 - `~/.plannotator/config.json` 写入 `"inboxTool": { "pi": true }`。
 - `~/.omp/agent/.env` 写入 `PLANNOTATOR_INBOX_TOOL=1`，文件权限 600；用 `dotenv` 16.6.1 解析复核，共 9 个键，该键为 `1`。
 - 用扩展自带的 `resolveInboxTool` 实测：环境变量分支与配置文件分支都返回 `true`。
 - Inbox 首次启动地址 `http://localhost:42583/`，pid 88355。
 
 `plannotator inbox --notes` 支持的宿主清单是 `claude-code`、`codex`、`gemini`、`qwen`、`pi`、`opencode`、`cursor`，不含 OMP；`pi` 写入 `~/.pi/agent/AGENTS.md`。
+
+## 显式关闭（2026-11-04）
+
+环境变量 `PLANNOTATOR_INBOX_TOOL` 设为 `0` 时，解析直接得到关闭，不再回落到配置文件分支；同一天 `config.json` 的 `inboxTool` 也改为 `{ "pi": false, "opencode": false }`，两条路径一致。
+
+- 磁盘值：环境变量 `0`，配置两项 `false`；`agentTool` 与其环境变量保持开启。
+- 已在运行的会话仍持有启动时注入的 `PLANNOTATOR_INBOX_TOOL=1`；新会话读取磁盘值后不再注册该工具。
+- 仓库同步：`omp-env` 与 `plannotator-config` 两个受保护条目均已更新，前者脱敏槽位 2 个。
+
+边界：没有重启会话观察工具从清单中消失，Inbox 服务进程也未停止。
 
 ## stdio 通道
 
