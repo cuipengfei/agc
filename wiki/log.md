@@ -1780,8 +1780,26 @@
 - Disposition: New
 - Raw: raw/horizon/horizon-readme-and-config-reference.md; raw/horizon/horizon-github-actions-template-and-default-config.md; raw/horizon/github-actions-billing-docs.md
 
+## [2026-11-05] ingest | 防御式免责表达的治理与规则强化
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：CLAUDE.md 事实与判断陈述协议重写为自然工程语言，有依据直接给判断，不反驳未提出的极端场景，证据不足只说证据能覆盖的范围，限制条件说一次不车轱辘话，禁止在判断后追加「不能证明」「不意味着」「不能得出」「并不能说明」「不足以说明」「不代表所有情况」等削弱句；WATCHDOG.md 同步约束 Advisor 自身严禁免责腔，并将主代理免责文风纳入日常巡查与正向改写示范。
+
+## [2026-11-05] ingest | 主代理与 Advisor 共用的反免责表达标准
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册; Watchdog Review Design
+- 要点：CLAUDE.md 与 WATCHDOG.md 改为共用 6 条正面清单（回答所问、结论旁写证据与运行条件且常规输出不写成「这证明了……」、保留影响结论的反面事实、信息不足仍给判断、限定只讲一次、验收如实交代），禁用短语统一为同一组 10 项；WATCHDOG 在 concern/nit 判级表补齐对应钩子；清掉会诱导免责文风的写法（CLAUDE.md 的 Mock「仅证明」、比较标签、未找到/未验证并列、默认暴露不确定性及结尾口号，WATCHDOG 的「不要猜」）；两篇相关 Wiki 与复刻指南同步。
+
 ## [2026-11-05] ingest | Beads 的安装与运行面
 - Disposition: New; Update
 - Raw: raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md
 - Updated: harness 接入工具的三条通道; Beads 1.3.4 的命令面与帮助树结构; 持久任务库与会话 todo 的分工
 - 要点：标准安装只取一个内含 Dolt 引擎的 bd 二进制，独立 Dolt 只在同步与 server 模式出现（2.6.0+）；安装脚本校验 checksums.txt，npm postinstall 不校验；beads-mcp 固定三个直接依赖，本机 CPython 3.14/Linux x86_64 闭包 69 个 wheel 约 17 MB；本机 bd 1.3.2 为手动 release 二进制，2026-11-05 升级到 1.3.4；buntoolbox Docker 固定 1.3.2 并安装，WSL 脚本只检查版本，uv-bun 不含 bd；1.3.4 递归帮助 299 页（120/172/7；一级含 bd 根）；任务系统按生命周期、共享范围、依赖与审计需求分工。
+
+## [2026-11-05] ingest | 反免责规则的推断判级与按任务验证复查
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册; Watchdog Review Design
+- 要点：复查两份规则后补四组执行条款——WATCHDOG 继续检查条件扩到推断写成已核实事实、编造执行结果、与现有证据冲突；CLAUDE.md 删除强制解释不适用准则，改为只列实际应用的准则与动作结果；完成报告与验证要求按当前任务分派，代码检查测试与运行行为，文档与 skill 文案检查内容、格式、引用和示例一致性，模型实验须授权；改写示范改为定位原句并给出只使用现有证据的替换文本。共用清单第 6 条与 concern/nit 钩子同步。
