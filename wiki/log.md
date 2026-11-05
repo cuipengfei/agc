@@ -1778,4 +1778,4 @@
 
 ## [2026-11-04] ingest | Horizon 架构与部署方式
 - Disposition: New
-- Raw: raw/horizon/2026-11-04-horizon-readme-and-config-reference.md; raw/horizon/2026-11-04-horizon-github-actions-template-and-default-config.md
+- Raw: raw/horizon/horizon-readme-and-config-reference.md; raw/horizon/horizon-github-actions-template-and-default-config.md; raw/horizon/github-actions-billing-docs.md

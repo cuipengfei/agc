@@ -1,7 +1,7 @@
 # Horizon 架构与部署方式
 
-> Sources: Thysrael/Horizon README.md, docs/configuration.md, .github/workflows/daily-summary.yml.disabled, data/config.github.json; 2026-11-04
-> Raw: [README and Configuration Reference](../../raw/horizon/2026-11-04-horizon-readme-and-config-reference.md); [GitHub Actions Template and Default Config](../../raw/horizon/2026-11-04-horizon-github-actions-template-and-default-config.md)
+> Sources: Thysrael/Horizon README.md, docs/configuration.md, .github/workflows/daily-summary.yml.disabled, data/config.github.json; GitHub Actions billing docs (docs.github.com); 2026-11-04
+> Raw: [README and Configuration Reference](../../raw/horizon/horizon-readme-and-config-reference.md); [GitHub Actions Template and Default Config](../../raw/horizon/horizon-github-actions-template-and-default-config.md); [GitHub Actions Billing Docs](../../raw/horizon/github-actions-billing-docs.md)
 > Updated: 2026-11-04
 
 ## Overview
@@ -96,7 +96,7 @@ workflow 执行步骤：checkout → setup Python 3.12 → install uv 0.11.26 �
 
 secrets 映射：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`LWN_KEY`、`DEEPSEEK_API_KEY`、`HORIZON_WEBHOOK_URL`。也支持 `workflow_dispatch` 手动触发。
 
-GitHub Actions 免费额度覆盖 runner 运行时间：公开仓库标准 runner 完全免费，私有仓库 Free 计划约 2000 分钟/月。Horizon 每天跑一次几分钟到十几分钟，远在免费额度内。模型 API 调用费用另算——默认配置用 DeepSeek `deepseek-v4-flash`，调用 DeepSeek API 的费用由用户的 DeepSeek 账户承担。
+GitHub Actions 标准 runner 在公开仓库中完全免费（不消耗 included compute usage）。私有仓库的 runner 用量按金额从账户每月 included compute usage 中扣除：GitHub Free 计划每月 $12 USD，Linux 2-core runner 每分钟 $0.006 USD。模型 API 调用费用另算——默认配置用 DeepSeek `deepseek-v4-flash`，调用 DeepSeek API 的费用由用户的 DeepSeek 账户承担，与 GitHub Actions 额度无关。
 
 ## 投递渠道
 
@@ -106,8 +106,8 @@ GitHub Actions 免费额度覆盖 runner 运行时间：公开仓库标准 runne
 |------|------|----------------------|------------------------|
 | GitHub Pages | 把 Markdown 复制到 `docs/`，Pages 自动发布静态网站 | ✅ 已配 | 无需额外操作 |
 | Webhook | HTTP POST 推送到飞书/Lark、钉钉、Slack、Discord 或自定义端点 | ✅ 已配（飞书） | 把 webhook URL 存到 `HORIZON_WEBHOOK_URL` secret |
-| 邮件 | SMTP 发送简报；IMAP 处理订阅/退订邮件 | ❌ 未配 | 在 config.json 里加 `email` 段、SMTP 凭据存 Secrets；订阅者列表 `data/subscribers.json` 每次 Actions run 从零开始，workflow 不保留这份状态；IMAP 收信窗口受 runner 运行时间限制 |
-| 微信 | 通过 iLink Bot 发送，需扫码登录并从微信发消息触发 | ❌ 未配 | 首次扫码是交互操作，`data/wechat_session.json` 在 Actions runner 上无法跨 run 保留；模板未直接支持微信连续投递，补上安全的会话恢复后再验证 |
+| 邮件 | SMTP 发送简报；IMAP 处理订阅/退订邮件 | ❌ 未配 | 在 config.json 里加 `email` 段、SMTP 凭据存 Secrets；订阅者列表 `data/subscribers.json` 默认 workflow 不持久化，每次 run 从空状态开始；IMAP 订阅/退订功能需要配置且状态文件不保留 |
+| 微信 | 通过 iLink Bot 发送，需扫码登录并从微信发消息触发 | ❌ 未配 | 首次扫码登录是交互操作；`data/wechat_session.json` 需要在定时运行之间保留，默认 workflow 未配置持久化此文件；模板未直接支持微信连续投递，补上安全的会话恢复后再验证 |
 
 模板默认配置（`data/config.github.json`）只启用了 webhook，platform 为 `feishu`，layout 为 `collapsible`，delivery 为 `summary_and_items`，languages 为 `["zh"]`。Pages 通过 workflow 的部署步骤自动完成。邮件和微信在模板中没有配置。
 
