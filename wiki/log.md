@@ -1803,3 +1803,9 @@
 - Raw: raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md
 - Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册; Watchdog Review Design
 - 要点：复查两份规则后补四组执行条款——WATCHDOG 继续检查条件扩到推断写成已核实事实、编造执行结果、与现有证据冲突；CLAUDE.md 删除强制解释不适用准则，改为只列实际应用的准则与动作结果；完成报告与验证要求按当前任务分派，代码检查测试与运行行为，文档与 skill 文案检查内容、格式、引用和示例一致性，模型实验须授权；改写示范改为定位原句并给出只使用现有证据的替换文本。共用清单第 6 条与 concern/nit 钩子同步。
+
+## [2026-11-05] ingest | Tern 0.9.12 仅字体部署与 Geist 字体观察
+- Disposition: Update
+- Raw: raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md
+- Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 跨机器补丁手册; Tern 升级辅助工具与验收边界
+- 要点：0.9.12 原版新增 Geist UI 字体（728 字符、CJK 0），四个字体全部无 CJK 覆盖；终端等宽描述符仍为单副本 2 条，slot `14896052`/`14896076`，pointer `11832447`/`13334411`，length 与 0.9.10 相同。WASM `4bf8955a…`、glue `02fc147f…`、binary `7983d66f…`（`e498b49`）。时间静态总量 31（`31889` 18 处＋`31890` 3 处），与 0.9.7 数值持平。`verify-service` 六项与 `verify-page` 六项 applicable 全过，进程 `matchesInstalled` true，四个原 pane ID 保留，HTTP 200。WSL 本机 headless Chromium 的 `requestAdapter()` 在三种 GPU 开关组合下均返回 null，真实 mount 记 `not_run`。0.9.11 未部署。

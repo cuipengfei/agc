@@ -1,8 +1,8 @@
 # Tern 跨机器补丁手册
 
-> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03
-> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md)
-> Updated: 2026-11-03
+> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03；Tern 0.9.12 部署与 GPU adapter 实测，2026-11-05
+> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md)
+> Updated: 2026-11-05
 
 ## 使用对象与边界
 
@@ -126,7 +126,7 @@ bun cli.mjs markdown-windows --binary /absolute/path/to/tern \
   --assets "$WORK/site" --out "$WORK/markdown.json"
 ```
 
-工具调用 Windows Node 驱动 Windows Chrome，依次完成 `windows_host`、`windows_node`、`windows_playwright`、`windows_chrome`、`isolated_daemon`、`isolated_web`、`driver_start`、`ascii_markdown_pane`、`pane_closed`、`cjk_appended`、`cjk_markdown_pane`、`cjk_progress` 各阶段。WSL 内 Chromium 缺少 GPU adapter 时该流程不适用；跨系统 CDP 与本机 WSL 浏览器在本机实测均未成功。
+工具调用 Windows Node 驱动 Windows Chrome，依次完成 `windows_host`、`windows_node`、`windows_playwright`、`windows_chrome`、`isolated_daemon`、`isolated_web`、`driver_start`、`ascii_markdown_pane`、`pane_closed`、`cjk_appended`、`cjk_markdown_pane`、`cjk_progress` 各阶段。WSL 内 Chromium 缺少 GPU adapter 时该流程不适用；跨系统 CDP 与本机 WSL 浏览器在本机实测均未成功。0.9.12 实测给出具体边界：loopback 安全上下文里 `navigator.gpu` 存在，`requestAdapter()` 在 baseline、`--enable-unsafe-webgpu --ignore-gpu-blocklist`、再加 `--use-angle=swiftshader` 三种组合下均返回 null，`verify-page` 的 `wire_mount` 与 `gpu_interaction_full` 继续记 `not_run`，完整 GPU 挂载证据需另用 Windows Chrome 路径。
 
 结论只按观测分类。`reproduced` 表示有效 ASCII 基线之后中文页面状态查询无响应。`not_reproduced` 要求中文页面仍响应、首帧出现、viewport 输入后 canvas 像素尺寸更新且 GPU 提交增加。`not_run` 表示前置条件不足、驱动超时或未观察到应用重绘，退出码 2。静态截图相同、DOM 选区相同、驱动超时都不作为冻结证据。0.9.7 仅字体版的一次实测：canvas `1280`×`720` 变为 `1360`×`760`，提交 `328` 变为 `334`，`wasmErrors` 为空，cleanup 成功。
 
@@ -153,6 +153,8 @@ tern web serve --listen 127.0.0.1:8378 \
 直接启动 `tern web serve` 会把带 token 的入口地址写到 stdout，凭据会进入终端记录；`runtime.start` 与 `lifecycle.upgrade` 通过 `spawnRedacted` 把输出先写入日志再脱敏。启动后核对 `tern --version`、HTTP 状态与 pane 列表；进程存活和根页面 HTTP 200 都不验证认证，认证状态需单独确认。
 
 重建或删除 site 目录前，先用 `deploy-manifest.json` 逐文件核对内容是否有效：hash 与当前 `--official`/`--bundle` 输入一致时可直接复用目录；`verification/` 非空时先把验收记录移出。0.9.10 部署时该步骤在删除之前执行，核对结果记录在对应 raw；0.9.8 与 0.9.9 的 `verification/` 同为空目录。
+
+0.9.12 部署的验收形态：`verify-service` 六项（`served_wasm`、`served_glue`、`versioned_page`、`missing_token_rejected`、`invalid_token_rejected`、`existing_token_accepted`）全过，`verify-page` 六项 applicable 全过，daemon 与 web 进程 `matchesInstalled` 为 true，四个原 pane ID 保留，根路径 HTTP 200。真实 mount 与 WebSocket frame 未采集，记 `not_run`；`verification/service-acceptance.json` 内嵌 service/page 报告并单列挂载观测。
 
 ## 各层检查证明的内容
 
