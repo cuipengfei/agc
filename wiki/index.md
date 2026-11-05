@@ -52,7 +52,10 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [代码智能工具全景与选型](agent-tooling/code-intelligence-tool-landscape.md) | CodeGraph、Semble、Graphify 的机制核对、相似方案、概念分层与编码 agent 选型；含 OMP find 对比，该部分标注 2026-10-01 前源码快照 | 2026-10-27 |
 | [Anatomy skill：物理装置隐喻的交互式等距出图机制与自解释成品](agent-tooling/anatomy-skill-mechanics.md) | 概念→可交互物理装置的一对一映射；几何 audit + line check 双重门槛；Standalone HTML/静态 SVG/React/gallery 四交付；136 solids 自解释成品的 iframe srcdoc + Bun bundle 嵌入方式与后续改动走手动编辑的合规流程 | 2026-10-18 |
 | [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv 无全局清单、per-tool receipt 为唯一事实来源；receipt 字段与凭据省略；浅层 glob 同步方案与 94,152 文件递归风险 | 2026-10-05 |
-| [harness 接入工具的三条通道](agent-tooling/harness-integration-paths.md) | 内置工具、配置分发、外部任务系统三条通道的判据与缺口；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`）；APM 的 manifest、lock、SBOM 与 policy 及 9 个支持宿主（不含 OMP）；Beads 的 14 个 `bd setup` 配方（不含 pi/omp）与 `AGENTS.md`、`beads-mcp` 两条接入路 | 2026-11-04 |
+| [harness 接入工具的三条通道](agent-tooling/harness-integration-paths.md) | 内置工具、配置分发、外部任务系统三条通道的判据与缺口；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`）；APM 的 manifest、lock、SBOM 与 policy 及 9 个支持宿主（不含 OMP）；Beads 的 14 个 `bd setup` 配方（不含 pi/omp）与 `AGENTS.md`、`beads-mcp` 两条接入路；本机 bd 1.3.4 已装，同步与 server 模式需要独立 Dolt 2.6.0+ | 2026-11-05 |
+| [Beads 的安装与运行面](agent-tooling/beads-install-and-runtime-surface.md) | 一个 bd 二进制内含 Dolt 引擎；安装脚本/npm/brew 的下载物与校验差异；独立 Dolt 只在同步与 server 模式需要（2.6.0+）；beads-mcp 三个直接 pin 与 69 个 wheel 闭包；本机手动安装证据与 1.3.4 升级；buntoolbox Docker 安装 vs WSL 只检查版本 | 2026-11-05 |
+| [Beads 1.3.4 的命令面与帮助树结构](agent-tooling/beads-command-surface.md) | 1.3.4 递归 --help 共 299 页（120 一级、172 二级、7 三级；一级含 bd 根）；任务循环、依赖、同步、维护、集成分组；帮助树解析的三个边界 | 2026-11-05 |
+| [持久任务库与会话 todo 的分工](agent-tooling/durable-backlog-vs-session-todo.md) | 会话 todo 记执行步骤，bd 记持久交付项；按生命周期、共享范围、依赖关系、审计需求判定；混合流程与 AGENTS.md 优先级规则 | 2026-11-05 |
 
 ## ai-coding-agents
 

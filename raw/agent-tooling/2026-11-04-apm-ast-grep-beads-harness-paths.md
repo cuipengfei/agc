@@ -51,5 +51,5 @@ README 与 `docs/getting-started/ide-setup.md` 的接入面：
 ## 边界
 
 - APM 未在本机安装，行为来自 README 与 Radar 描述，没有实测。
-- Beads 未在本机安装，配方清单来自官方 `ide-setup.md` 表格；`bd setup --list` 的实际输出未核对。
+- Beads CLI 已在本机（`~/.local/bin/bd`，2026-10-25 18:16:08 出现该文件；大小与 mtime 与 v1.3.2 包内 `bd` 一致，来源据此推断；2026-11-05 升级到 1.3.4），但 OMP 侧没有原生集成；配方清单来自官方 `ide-setup.md` 表格；1.3.4 的 `bd setup --list` 实际输出已核对为 14 个，与文档一致。
 - OMP 的 `ast_grep` 已在本会话工具表面存在，但未对 `ast-grep-core 0.39.9` 做行为测试。

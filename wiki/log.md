@@ -1779,3 +1779,9 @@
 ## [2026-11-04] ingest | Horizon 架构与部署方式
 - Disposition: New
 - Raw: raw/horizon/horizon-readme-and-config-reference.md; raw/horizon/horizon-github-actions-template-and-default-config.md; raw/horizon/github-actions-billing-docs.md
+
+## [2026-11-05] ingest | Beads 的安装与运行面
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md
+- Updated: harness 接入工具的三条通道; Beads 1.3.4 的命令面与帮助树结构; 持久任务库与会话 todo 的分工
+- 要点：标准安装只取一个内含 Dolt 引擎的 bd 二进制，独立 Dolt 只在同步与 server 模式出现（2.6.0+）；安装脚本校验 checksums.txt，npm postinstall 不校验；beads-mcp 固定三个直接依赖，本机 CPython 3.14/Linux x86_64 闭包 69 个 wheel 约 17 MB；本机 bd 1.3.2 为手动 release 二进制，2026-11-05 升级到 1.3.4；buntoolbox Docker 固定 1.3.2 并安装，WSL 脚本只检查版本，uv-bun 不含 bd；1.3.4 递归帮助 299 页（120/172/7；一级含 bd 根）；任务系统按生命周期、共享范围、依赖与审计需求分工。

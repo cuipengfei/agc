@@ -1,8 +1,8 @@
 # harness 接入工具的三条通道：内置工具、配置分发、外部任务系统
 
-> Sources: microsoft/apm README 与仓库元数据，2026-11-04；gastownhall/beads README 与 docs/getting-started/ide-setup.md，2026-11-04；本机 OMP 安装树，2026-11-04；Thoughtworks Technology Radar Vol 35，November 2026
-> Raw: [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md); [Radar Vol 35 与三版 Adopt 清单](../../raw/technology-radar/2026-11-04-thoughtworks-radar-vol35-and-adopt-lists.md)
-> Updated: 2026-11-04
+> Sources: microsoft/apm README 与仓库元数据，2026-11-04；gastownhall/beads README 与 docs（ide-setup、installation、architecture/dolt、sync-setup），2026-11-04 至 2026-11-05；本机 OMP 安装树与 bd CLI 实测，2026-11-04 至 2026-11-05；Thoughtworks Technology Radar Vol 35，November 2026；buntoolbox 仓库 docker/layers 与 scripts，2026-11-05
+> Raw: [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md); [Radar Vol 35 与三版 Adopt 清单](../../raw/technology-radar/2026-11-04-thoughtworks-radar-vol35-and-adopt-lists.md); [Beads 安装、运行面、命令面与任务系统分工](../../raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md)
+> Updated: 2026-11-05
 
 ## Overview
 
@@ -33,6 +33,8 @@ Beads 是 Git 支撑的任务图，供多个 agent 共享。它不改变 harness
 
 本机 OMP 侧没有任何 beads 集成：配置、扩展、插件与托管 skill 里都检索不到该名字，内置工具清单里也没有对应项。除了接入方式，Beads 还有两个使用条件：不同版本的客户端不能共用同一个库，共享的库要固定单一版本；它会往 `AGENTS.md` 写指令，写进去的内容需要审阅。
 
+本机事实：独立 bd CLI 已在 `~/.local/bin`（2026-10-25 18:16:08 出现该文件，大小与 mtime 与 v1.3.2 包内 `bd` 一致，来源据此推断；2026-11-05 升级到 1.3.4），但 OMP 侧仍无原生集成。1.3.4 的 `bd setup --list` 已核对为同一组 14 个配方。官方同步指南要求跨机器同步的每台机器安装 Dolt 2.6.0 或更新；嵌入式模式把引擎编译在 `bd` 内，不需要独立 Dolt。安装、依赖闭包与升级细节见 [Beads 的安装与运行面](beads-install-and-runtime-surface.md)。
+
 ## 三条通道的差别
 
 | 维度 | 内置工具 | 配置分发 | 外部任务系统 |
@@ -52,3 +54,6 @@ Beads 是 Git 支撑的任务图，供多个 agent 共享。它不改变 harness
 - [TTSR 与 OMFG 规则](../omp-ttsr/ttsr-and-omfg.md) — `astCondition` 的流式匹配机制
 - [Technology Radar 的结构、留存规则与 Vol 33–35 Adopt 清单](../technology-radar/radar-structure-and-adopt-lists.md) — 三个工具的 Radar 分级
 - [skill 系统的两种组织轴](../ai-coding-agents/skill-system-organization-axes.md) — skill 分发与组织方式的对照
+- [Beads 的安装与运行面](beads-install-and-runtime-surface.md) — 安装路径、Dolt 依赖与同步条件
+- [Beads 1.3.4 的命令面与帮助树结构](beads-command-surface.md) — 命令分组与 299 个帮助页
+- [持久任务库与会话 todo 的分工](durable-backlog-vs-session-todo.md) — 外部任务系统与内置清单的选择规则
