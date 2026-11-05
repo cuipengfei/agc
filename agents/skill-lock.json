@@ -213,9 +213,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/alchaincyf/elon-musk-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "45639f6ce0afb7ad4b28acca491a53af578874d5",
+      "skillFolderHash": "65af7c9a5395cc996d17f55b5bde37e6ed72cf4f",
       "installedAt": "2026-06-30T13:29:59.533Z",
-      "updatedAt": "2026-11-05T02:06:24.810Z"
+      "updatedAt": "2026-11-05T12:59:45.202Z"
     },
     "visual-explainer": {
       "source": "nicobailon/visual-explainer",
@@ -1234,36 +1234,36 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "2492b2c65f25c117c08fe4ccfe079118dc24aedf",
+      "skillFolderHash": "dde1f2ae6ee90ae398010f82c0e0823d8a049941",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-04T12:15:42.714Z"
+      "updatedAt": "2026-11-05T12:59:50.166Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "e500c5779c3881cb90dbdda408cdf4cbb97bda86",
+      "skillFolderHash": "4548fe2033d2317d294a31ca084a7c5b4dfa48d1",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-04T12:15:42.842Z"
+      "updatedAt": "2026-11-05T12:59:50.340Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "e25973c80f0070d89436bc43b767b9f3986915fc",
+      "skillFolderHash": "ca686aa889dbc82a3f8723df546a31f65ed2956c",
       "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-11-04T12:15:42.977Z"
+      "updatedAt": "2026-11-05T12:59:50.510Z"
     },
     "media-use": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "cf8296d1895a6ddf1c9323ed5931520aff8b9ed2",
+      "skillFolderHash": "7c1f1f94d097cd36175113e511f3a0742f35bc5c",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-04T12:15:44.183Z"
+      "updatedAt": "2026-11-05T12:59:51.760Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1316,9 +1316,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "a610dbdfb27366653798bcdd4cebe745c92e1ac5",
+      "skillFolderHash": "fd86652be0d5d3485c69e1529dfd1fa3c9a7a640",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-04T12:15:44.302Z"
+      "updatedAt": "2026-11-05T12:59:51.874Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
@@ -1397,9 +1397,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/statechart/SKILL.md",
-      "skillFolderHash": "a79a48c6970be3b63d6efefb0a306b7c87de88d0",
+      "skillFolderHash": "2b21751fa9316176619e6fc493ef80e8fdaa9f03",
       "installedAt": "2026-10-27T13:33:47.624Z",
-      "updatedAt": "2026-10-27T13:33:47.624Z"
+      "updatedAt": "2026-11-05T12:59:49.215Z"
     },
     "ub-mode": {
       "source": "unclebob/ub-mode",
