@@ -213,18 +213,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/alchaincyf/elon-musk-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "65af7c9a5395cc996d17f55b5bde37e6ed72cf4f",
+      "skillFolderHash": "45639f6ce0afb7ad4b28acca491a53af578874d5",
       "installedAt": "2026-06-30T13:29:59.533Z",
-      "updatedAt": "2026-10-13T12:32:17.074Z"
+      "updatedAt": "2026-11-05T02:06:24.810Z"
     },
     "visual-explainer": {
       "source": "nicobailon/visual-explainer",
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "b45901bb744cb48d9a792f9d46fa831996d11f41",
+      "skillFolderHash": "5ab3ea281cc21457e33d3ecd9341afdd6bf6ffba",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-11-03T11:51:19.696Z"
+      "updatedAt": "2026-11-05T02:06:25.508Z"
     },
     "code-review": {
       "source": "mattpocock/skills",
