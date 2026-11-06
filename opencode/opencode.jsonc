@@ -417,44 +417,6 @@
         },
       },
     },
-    "justwoker": {
-      "npm": "@ai-sdk/anthropic",
-      "name": "JustDoWork",
-      "options": {
-        "baseURL": "https://api.justwoker.icu/v1",
-        "apiKey": "<REDACTED>",
-      },
-      "models": {
-        "claude-opus-4-8": {
-          "name": "Claude Opus 4.8",
-          "limit": {
-            "context": 1000000,
-            "output": 32768,
-          },
-        },
-      },
-    },
-    "motomoto-chat": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "MotoMoto",
-      "options": {
-        "baseURL": "http://127.0.0.1:4150/v1",
-        "apiKey": "<REDACTED>",
-      },
-      "models": {
-        "gpt-6-astra": {
-          "name": "GPT-6 Astra",
-          "reasoning": true,
-          "modalities": {
-            "input": ["text", "image"],
-          },
-          "limit": {
-            "context": 1050000,
-            "output": 128000,
-          },
-        },
-      },
-    },
     "kimi-claw": {
       "npm": "@ai-sdk/anthropic",
       "name": "Kimi Claw",

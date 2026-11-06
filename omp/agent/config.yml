@@ -22,8 +22,6 @@ extensions:
 enabledModels:
   - c8787/*
   - c8787-chat/*
-  - justwoker/*
-  - motomoto-chat/*
   - opencode-zen/*
   - opencode-go/*
   - kimi-code/*
