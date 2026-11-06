@@ -57,3 +57,9 @@ graphify-out/
 
 # Local-only analysis materials (never committed)
 local/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+.beads-credential-key
+.beads/proxieddb/
+*.gate.lock*
