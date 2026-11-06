@@ -1,0 +1,33 @@
+{
+  "releases": [
+    { "owner": "earendil-works", "repo": "pi" },
+    { "owner": "can1357", "repo": "oh-my-pi" },
+    { "owner": "openai", "repo": "codex" },
+    { "owner": "Yeachan-Heo", "repo": "oh-my-codex" },
+    { "owner": "sst", "repo": "opencode" },
+    { "owner": "code-yeongyu", "repo": "oh-my-openagent" },
+    { "owner": "headroomlabs-ai", "repo": "headroom" },
+    { "owner": "PrimeIntellect-ai", "repo": "prime-agent" },
+    { "owner": "deepseek-ai", "repo": "deepseek-harness" },
+    { "owner": "anthropics", "repo": "claude-code" },
+    { "owner": "Yeachan-Heo", "repo": "oh-my-claudecode" },
+    { "owner": "backnotprop", "repo": "plannotator" }
+  ],
+  "github_copilot_pricing": [
+    {
+      "name": "data-tables-copilot-models-and-pricing.yml",
+      "url": "https://raw.githubusercontent.com/github/docs/main/data/tables/copilot/models-and-pricing.yml"
+    },
+    {
+      "name": "data-tables-copilot-model-supported-plans.yml",
+      "url": "https://raw.githubusercontent.com/github/docs/main/data/tables/copilot/model-supported-plans.yml"
+    },
+    {
+      "name": "content-copilot-models-and-pricing.md",
+      "url": "https://raw.githubusercontent.com/github/docs/main/content/copilot/reference/copilot-billing/models-and-pricing.md"
+    }
+  ],
+  "opencode_go_pricing": {
+    "url": "https://opencode.ai/go/"
+  }
+}

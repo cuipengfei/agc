@@ -27,6 +27,7 @@ logs/
 log/
 cache/
 caches/
+.agents/skills/info-tracker/state/
 run/
 sessions/
 terminal-sessions/
