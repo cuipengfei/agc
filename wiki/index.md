@@ -58,6 +58,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [Beads 1.3.4 的命令面与帮助树结构](agent-tooling/beads-command-surface.md) | 1.3.4 递归 --help 共 299 页（120 一级、172 二级、7 三级；一级含 bd 根）；任务循环、依赖、同步、维护、集成分组；帮助树解析的三个边界 | 2026-11-05 |
 | [持久任务库与会话 todo 的分工](agent-tooling/durable-backlog-vs-session-todo.md) | 会话 todo 记执行步骤，bd 记持久交付项；按生命周期、共享范围、依赖关系、审计需求判定；混合流程与 AGENTS.md 优先级规则 | 2026-11-05 |
 | [bd init auto-commit 陷阱](agent-tooling/bd-init-auto-commit-gotchas.md) | bd init 默认自动 git commit，无 --no-commit；#5654 staged 文件被卷入、#3495 reinit-local 无 opt-out、#1989 讨论默认开启；规避方式与建议 | 2026-11-06 |
+| [Reason Network：跨机器的 agent 团队目录与消息总线](agent-tooling/reason-network.md) | 团队目录加消息总线：push/turn/pull 三档投递、签名名册与邀请门禁、iroh 直连与中继、自建中继不接触 n0、消息 64 KB、离线最多一天、M0–M3 完成 M4 未开始 | 2026-11-06 |
 
 ## ai-coding-agents
 

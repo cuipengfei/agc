@@ -1826,3 +1826,8 @@
 - Disposition: New
 - Raw: raw/responses-api/2026-11-06-tool-search-defer-loading-probe.md
 - 要点：`tool_search` 与 `defer_loading` 必须成对（单独 400）；三道注入门（≥12 工具、客户端非 codex/opencode、模型 ≥5.4）；实测 4,949→3,601（27%）、极小工具集反亏 356；服务端执行搜索，单轮多 266 token；cached 读数随调用顺序变化；OMP 对搜索条目处理未验证。
+
+## [2026-11-06] ingest | Reason Network：跨机器的 agent 团队目录与消息总线
+- Disposition: New
+- Raw: raw/agent-tooling/2026-11-06-reason-network-team-agent-network.md
+- 要点：定位是跨人跨机的会话目录加消息总线，目录为核心；对象为 team/person/machine/session，person 不是消息地址；投递层级 push/turn/pull 按各 agent 的输入机制划分；成员靠签名名册与邀请，陌生机器看不到团队是否存在；默认用 n0 地址查询与 Reason 中继，自建中继后不接触 n0；限额 64 KB、10 个文件 256 KB 合计 512 KB、离线一天、回执七天、全连接约 50 台；M0–M3 完成，M4 未开始。
