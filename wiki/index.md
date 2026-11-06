@@ -44,7 +44,8 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言与简明语言选型；中文适配边界；本机 skill 文案案例：保留数值上限、区分证据/凭据/授权条件；免责句式禁令的落点 | 2026-10-25 |
 | [LLM 出图的作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版、visual-explainer 全手写 HTML+SVG 四轴作者模型；amwth 含 image 的组件清单（SKILL.md 自述 12 种）、diagram-design SKILL.md 自述 44 种 type（实测 39）、archify 5 类 schema、figure-led register；几何裸露面与选择；2026-10-10 补 amwth 与 visual-explainer | 2026-10-10 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
-| [Headroom 版本升级与兼容性（0.39 / 0.41）](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动；v0.41.0（2026-10-13）新功能与关键修复 | 2026-10-15 |
+| [Headroom 版本升级与兼容性（0.39 / 0.41）](agent-tooling/headroom-039-config-and-compat.md) | 0.38→0.39 无破坏升级、Timeouts 全清单、记忆超时跨 handler 范围、PROTECT_READS 命令白名单与 OMP 守卫交集、脚本唯一改动；v0.41.0（2026-10-13）新功能与关键修复；0.42 设置项另见专文 | 2026-11-06 |
+| [Headroom 0.42 设置项地图](agent-tooling/headroom-042-settings-map.md) | 63 字段 11 组；settings.json→环境变量→运行时三层合成、CLI 固定项无提示；五组无效配置（rpm、memory、Read maturation、预算、extensions）；`mcp__` 工具须通配符才被保护；schema 压缩记 tokens_saved、延迟加载记 tool_saved；/stats 与 savings 不计 WebSocket（3,930 请求、1.76%） | 2026-11-06 |
 | [graphifyy 工作机制](agent-tooling/graphify-mechanics.md) | 语料类型与两段式提取、code-only corpus、edge schema；0.9.79 全命令清单实测；2026-11-02 补 0.9.100：23 平台与 30 个 extras、OMP 三层集成（skill/MCP/guard）、guard 拦截面与 strict 条件、MCP 十工具与 project_path、skill 自动刷新、hooks 五件事与 merge driver、watch 进程模型、全局图 | 2026-11-02 |
 | [graphify 的图谱产物形态与导出限制](agent-tooling/graphify-output-surfaces.md) | 四类可视化产物的生成命令与自动刷新差别；5000 节点聚合阈值；HTML 的 CDN 依赖；export svg 的 mathtext 崩溃与 rcParam 绕过；spring_layout 在 9663 节点上选 energy 的耗时归因 | 2026-11-02 |
 | [Semgrep MCP：工具清单、传输条件与实测边界](agent-tooling/semgrep-mcp.md) | 主 CLI 子命令形态、9 注册 7 实见、daemon 与 token 两个前提；2026-10-07 复核 1.179.0：自定义规则须相对路径、p/default 拉取也超时、非安全规则（print）实测命中 | 2026-10-07 |
@@ -108,6 +109,7 @@ Responses API 兼容端点的服务端行为实测：web_search 服务端执行�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Responses API web_search usage 计量](responses-api/web-search-usage-forensics.md) | 服务端执行搜索、小 query 大 input 的成因、SSE 事件流结构、prompt cache 实测、tool_usage 跟踪 | 2026-09-19 |
+| [Responses API 工具 schema 延迟加载](responses-api/tool-search-defer-loading.md) | `tool_search` 与 `defer_loading` 必须成对（单独 400）；三道注入门（≥12 工具、客户端非 codex/opencode、模型≥5.4）与两个客户端被排除的成因；实测 4,949→3,601（27%）、极小工具集反亏 356；服务端执行搜索的往返；缓存读数随调用顺序变化；未验证客户端对搜索条目的处理 | 2026-11-06 |
 
 ## harness-engineering
 

@@ -1815,3 +1815,14 @@
 - Raw: raw/agent-tooling/2026-11-06-beads-init-auto-commit-and-prime-behavior.md
 - Updated: Beads 的安装与运行面
 - 要点：bd init 1.3.4 默认自动 git add + git commit，无 --no-commit；#5654 staged 文件被卷入、#3495 reinit-local 无 opt-out、#1989 讨论默认开启；bd prime 空库时输出 0 字节退出码 0。
+
+## [2026-11-06] ingest | Headroom 0.42 设置项地图
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-06-headroom-042-settings-survey.md
+- Updated: Headroom 版本升级与兼容性（0.39 / 0.41）
+- 要点：63 字段 11 组（basic 16 / advanced 47）；settings.json → 环境变量 → 运行时三层合成，CLI 固定项无提示；五组无效配置（rpm、memory、Read maturation、预算、extensions）；`mcp__` 别名需三段才展开，裸名 `codegraph_explore` 对 `mcp__codegraph_explore` 不命中；schema 压缩记 tokens_saved、延迟加载记 tool_saved；/stats 与 savings 只计 HTTP，日志实算 3,930 请求、1.76%。
+
+## [2026-11-06] ingest | Responses API 工具 schema 延迟加载
+- Disposition: New
+- Raw: raw/responses-api/2026-11-06-tool-search-defer-loading-probe.md
+- 要点：`tool_search` 与 `defer_loading` 必须成对（单独 400）；三道注入门（≥12 工具、客户端非 codex/opencode、模型 ≥5.4）；实测 4,949→3,601（27%）、极小工具集反亏 356；服务端执行搜索，单轮多 266 token；cached 读数随调用顺序变化；OMP 对搜索条目处理未验证。

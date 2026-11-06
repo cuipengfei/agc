@@ -2,11 +2,13 @@
 
 > Sources: 本机 headroom-ai 0.39.0 源码核验 + dist-info METADATA + Settings 页面, 2026-09-26; 本机 headroom-ai 0.39.1 源码直读 + OMP 会话实测, 2026-09-27; GitHub release v0.41.0 + CHANGELOG 0.41.0 区段, 2026-10-13
 > Raw: [2026-09-26-headroom-039-config-and-compat](../../raw/agent-tooling/2026-09-26-headroom-039-config-and-compat.md); [2026-09-27-headroom-read-command-whitelist](../../raw/agent-tooling/2026-09-27-headroom-read-command-whitelist.md); [2026-10-15-headroom-v041-release-notes](../../raw/agent-tooling/2026-10-15-headroom-v041-release-notes.md)
-> Updated: 2026-10-15
+> Updated: 2026-11-06
 
 ## Overview
 
 Headroom 0.38 → 0.39 对已装 `[proxy,mcp,code,html,relevance]` 部署是无破坏升级：CLI 参数、Kompress env var 全部未改名。0.39 官方新增 4 个 extras（langgraph、pytorch-mps、sandbox、vector），对本地 coding agent 代理链都不需要装。本文记录 0.39 的 Timeouts 全清单、记忆检索超时的跨 handler 范围、`HEADROOM_PROTECT_READS` 的保护边界，以及升级后唯一值得改的一处。
+
+0.42.0 的设置项与工具 schema 延迟加载另有专文：[Headroom 0.42 设置项地图](headroom-042-settings-map.md)。本文保留 0.39/0.41 的版本结论。
 
 ## v0.41.0 发布变更（2026-10-13）
 
@@ -130,4 +132,6 @@ OMP 在 tool 执行层拦 `less`/`more`（提示用 `read` 工具），放行 `c
 
 ## See Also
 
+- [Headroom 0.42 设置项地图](headroom-042-settings-map.md)
+- [Responses API 工具 schema 延迟加载](../responses-api/tool-search-defer-loading.md)
 - [Headroom Extras](headroom-extras.md)
