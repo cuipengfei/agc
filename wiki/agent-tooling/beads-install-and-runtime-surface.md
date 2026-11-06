@@ -1,8 +1,8 @@
 # Beads 的安装与运行面：嵌入式 Dolt、独立依赖与同步条件
 
-> Sources: gastownhall/beads README 与 docs（installation、architecture/dolt、sync-setup、cli-reference/dolt、ide-setup、quickstart），2026-11-04 至 2026-11-05；GitHub releases API，2026-11-05；npm registry，2026-11-05；PyPI，2026-11-05；Homebrew formula API，2026-11-05；本机 WSL 实测，2026-11-05；buntoolbox 仓库 docker/layers 与 scripts，2026-11-05
-> Raw: [Beads 安装、运行面、命令面与任务系统分工](../../raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md)
-> Updated: 2026-11-05
+> Sources: gastownhall/beads README 与 docs（installation、architecture/dolt、sync-setup、cli-reference/dolt、ide-setup、quickstart），2026-11-04 至 2026-11-05；GitHub releases API，2026-11-05；npm registry，2026-11-05；PyPI，2026-11-05；Homebrew formula API，2026-11-05；本机 WSL 实测，2026-11-05 至 2026-11-06；buntoolbox 仓库 docker/layers 与 scripts，2026-11-05；本会话 bd init / bd prime 实测，2026-11-06
+> Raw: [Beads 安装、运行面、命令面与任务系统分工](../../raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md); [Beads bd init auto-commit 与 bd prime 行为](../../raw/agent-tooling/2026-11-06-beads-init-auto-commit-and-prime-behavior.md)
+> Updated: 2026-11-06
 
 ## Overview
 
@@ -95,9 +95,20 @@ WSL 侧只有 `scripts/check-wsl-versions.sh`，读取本机版本并与仓库�
 
 `bd` 默认开启匿名遥测。每个命令生成一条 `cli_command` 事件，只带命令名、bd 版本与操作系统平台；设备标识是机器派生并经过 HMAC 保护的值。关闭命令为 `bd metrics off`。
 
+## bd init 的 auto-commit 行为
+
+1.3.4 上执行 `bd init --non-interactive` 会自动运行 `git add` + `git commit`，提交信息固定为 `bd init: initialize beads issue tracking`，包含全部生成的文件。`bd init --help` 没有 `--no-commit` 或 `--skip-commit` 标志，无法禁用。
+
+上游 issue 记录：#5654（open, priority/p1）报告 auto-commit 把预先 staged 的文件卷入提交并在 colocated Jujutsu 仓库中 fork 提交图；#3495（open, priority/p0）报告 `--reinit-local` 自动创建 AGENTS.md、CLAUDE.md、`.claude/settings.json` 并自动 git commit，没有 opt-out。详细记录见 [bd init auto-commit 陷阱](bd-init-auto-commit-gotchas.md)。
+
+## bd prime 的空库行为
+
+无 `.beads/` 数据库时执行 `bd prime` 输出空字符串、退出码 0；有数据库时输出 1-2k tokens 的 AI 工作流上下文。空库时不报错，静默返回。
+
 ## See Also
 
 - [harness 接入工具的三条通道](harness-integration-paths.md) — 指令文件与 MCP 两条接入路
 - [Beads 1.3.4 的命令面与帮助树结构](beads-command-surface.md) — 命令分组与递归帮助扫描
 - [持久任务库与会话 todo 的分工](durable-backlog-vs-session-todo.md) — bd 与会话清单的选择规则
 - [uv 工具发现机制与 uv-receipt.toml](uv-tool-discovery-and-receipts.md) — 包管理器是否拥有某个二进制的判定方式
+- [bd init auto-commit 陷阱](bd-init-auto-commit-gotchas.md) — 自动提交行为、上游 issue 与规避方式

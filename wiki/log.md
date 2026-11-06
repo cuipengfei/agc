@@ -1809,3 +1809,9 @@
 - Raw: raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md
 - Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 跨机器补丁手册; Tern 升级辅助工具与验收边界
 - 要点：0.9.12 原版新增 Geist UI 字体（728 字符、CJK 0），四个字体全部无 CJK 覆盖；终端等宽描述符仍为单副本 2 条，slot `14896052`/`14896076`，pointer `11832447`/`13334411`，length 与 0.9.10 相同。WASM `4bf8955a…`、glue `02fc147f…`、binary `7983d66f…`（`e498b49`）。时间静态总量 31（`31889` 18 处＋`31890` 3 处），与 0.9.7 数值持平。`verify-service` 六项与 `verify-page` 六项 applicable 全过，进程 `matchesInstalled` true，四个原 pane ID 保留，HTTP 200。WSL 本机 headless Chromium 的 `requestAdapter()` 在三种 GPU 开关组合下均返回 null，真实 mount 记 `not_run`。0.9.11 未部署。
+
+## [2026-11-06] ingest | bd init auto-commit 陷阱
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-06-beads-init-auto-commit-and-prime-behavior.md
+- Updated: Beads 的安装与运行面
+- 要点：bd init 1.3.4 默认自动 git add + git commit，无 --no-commit；#5654 staged 文件被卷入、#3495 reinit-local 无 opt-out、#1989 讨论默认开启；bd prime 空库时输出 0 字节退出码 0。
