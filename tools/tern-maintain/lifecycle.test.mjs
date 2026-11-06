@@ -99,7 +99,11 @@ function fakeProc(entries) {
 beforeAll(() => {
   fs.mkdirSync(build, { recursive: true });
   const compile = spawnSync('cc', ['-O2', `-DFIXTURE_JS=${JSON.stringify(path.join(here, 'fixtures', 'tern-lifecycle.mjs'))}`, '-o', path.join(build, 'tern'), fixtureSource], { encoding: 'utf8' });
-  if (compile.error || compile.status !== 0) throw new Error(`fixture build failed: ${compile.stderr || compile.error}`);
+  if (compile.error || compile.status !== 0) {
+    // bun kills the child when a hook exceeds its budget, leaving status null and stderr empty
+    const detail = compile.stderr || compile.error?.message || `status=${compile.status} signal=${compile.signal}`;
+    throw new Error(`fixture build failed: ${detail}`);
+  }
   tern = path.join(build, 'tern');
   fs.mkdirSync(path.join(installed), { recursive: true });
   fs.copyFileSync(tern, installedTern);
@@ -109,7 +113,7 @@ beforeAll(() => {
   fs.writeFileSync(path.join(assets, 'pkg', 'client.wasm'), Buffer.from('lifecycle-wasm-bytes'));
   fs.writeFileSync(path.join(assets, 'pkg', 'client.js'), Buffer.from('lifecycle-glue-js'));
   fs.writeFileSync(tokenFile, TOKEN + '\n', { mode: 0o600 });
-});
+}, 30000);
 
 afterAll(async () => {
   for (const pid of tracked) killPid(pid);
@@ -199,7 +203,7 @@ beforeAll(async () => {
   track(child.pid);
   await waitFor(async () => (await httpStatus(port)) === 200, 8000);
   service = { port, pid: child.pid };
-});
+}, 30000);
 afterAll(() => { if (service) killPid(service.pid, 'SIGKILL'); });
 
 test('verifyService passes all six checks and never leaks the token', async () => {
