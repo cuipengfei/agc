@@ -4,21 +4,22 @@
 
 AGC（AGent Configs）仓库有两个用途：
 
-1. **配置管理**：保存 Codex、OpenCode、OMO、OMP、Prime Agent 五套 Agent 工具的可审查配置、hook、plugin 与扩展副本。同步是单向的：来源 -> 仓库，由显式脚本完成；仓库不使用 symlink。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。
+1. **配置管理**：保存 Codex、OpenCode、OMO、OMP、Prime Agent 五套核心 Agent 工具的可审查配置、hook、plugin 与扩展副本。其他工具配置、技能锁与工具清单的实际同步范围以 `manifest.json` 为准。同步是单向的：来源 -> 仓库，由显式脚本完成；仓库不使用 symlink。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。
 2. **学习记录**：以 Karpathy LLM Wiki 模式存储 agent 配置的学习、实验与研究成果。`raw/` 放原始材料摘录（已核实错误可直接更正），`experiments/` 放结构化实验记录，`wiki/` 放可复用结论。
 
 ## 架构与数据流
 
 ### 配置同步
 
-`manifest.json` 是同步范围的唯一权威清单，声明每个条目的来源路径、仓库路径、是否受保护、是否为目录及排除项。条目总数、protected 与 directory 的实际数量以 `manifest.json` 为准，不在本文重复声明。
+`manifest.json` 是同步范围的唯一权威清单，声明每个条目的来源路径、仓库路径、是否受保护、是否为目录及 `include`/`exclude` 过滤规则。条目总数、protected 与 directory 的实际数量以 `manifest.json` 为准，不在本文重复声明。
 
 ```text
 pull.sh / sync.py pull
-  -> cli.main -> manifest.load_entries -> pull.run
+  -> cli.main -> pull.run
+  -> manifest.load_entries（未直接传入 entries）
   -> manifest.iter_pull_files（source→repo）
-  -> sync_plan.prepare_pull -> policy.redact（protected）
-  -> transfer.same_bytes -> transfer.write_atomic
+  -> sync_plan.prepare_pull -> policy.redact（仅 protected）
+  -> transfer.same_bytes -> transfer.write_atomic（非 dry-run）
 ```
 
 - 同步只有 pull 一个方向。仓库副本不会写回来源，因此仓库里不需要、也不应出现真实凭据。
@@ -54,11 +55,17 @@ pull.sh / sync.py pull
 | `omp/agent/`    | OMP 配置、模型、MCP、WATCHDOG、extensions、hooks |
 | `omp/plugins/`  | OMP 插件包与锁定文件                             |
 | `prime/`        | Prime Agent 配置（settings、models）             |
+| `herdr/`、`tuios/`、`dsh/`、`plannotator/`、`starship/` | 其他工具配置副本 |
+| `agents/`、`bun/`、`uv/` | 技能锁、Bun 全局包清单与指定的 `uv-receipt.toml` 文件 |
+| `tools/tern-maintain/` | 独立 Tern 维护工具与验收入口 |
+| `tools/wiki-check/` | Wiki 字面证据检查器 |
 | `raw/`          | 学习记录原始材料（repo-owned，不同步）           |
 | `experiments/`  | 结构化实验记录（repo-owned，不同步）             |
 | `wiki/`         | 编译后的知识文章（repo-owned，不同步）           |
 
 ## 开发命令
+
+同步命令从仓库根目录执行。
 
 ```bash
 ./pull.sh --dry-run       # 预览来源 -> 仓库（等价 ./sync.py pull --dry-run）
@@ -69,7 +76,7 @@ pull.sh / sync.py pull
 
 `--dry-run` 仅适用于 `pull`；用在 `status`/`diff` 会走 `parser.error` 并以 2 退出。`pull.sh` 只是 `exec python3 sync.py pull "$@"` 的薄包装。
 
-清点同步范围（不要在文档里写死数字）：
+清点同步范围（数量以 `manifest.json` 为准）：
 
 ```bash
 python3 -c "import json;e=json.load(open('manifest.json'))['entries'];print(len(e),sum(1 for x in e if x.get('protected')),sum(1 for x in e if x.get('directory')))"
@@ -77,11 +84,12 @@ python3 -c "import json;e=json.load(open('manifest.json'))['entries'];print(len(
 
 ## 代码约定与常见模式
 
-- Python 模块按职责拆分，优先通过 `manifest` 驱动，不在调用方硬编码同步范围。
-- `policy.py` 集中处理敏感槽位识别与脱敏；不要在其他模块重复实现凭据逻辑。三段结构：① `_slots_for_line`（`policy.py:66-76`）按优先级遍历四个正则取槽——`SENSITIVE_QUERY`、`CLI_SECRET`、`AUTH_VALUE`、`SENSITIVE_ASSIGNMENT`；② `_is_actual_secret` 过滤，`SAFE_VALUE` 白名单（`<REDACTED>`、`${ENV_VAR}`、`null` 等）、纯大写标识符（环境变量名如 `UMANS_API_KEY`）、布尔与数字都不脱敏，但命中 `SECRET_LITERAL` 时强制判为密钥（`policy.py:119`）；③ `redact` 尾部逐行做 literal 扫描（`policy.py:157-166`），把 `EXCLUDED_USER_PATH`（专指 `umans-status.ts` 路径）与 `SECRET_LITERAL`（`sk-`、`ghp_`、`xox*-`、`fc-` 等已知前缀）直接替换。注意 `SENSITIVE_KEY`（`policy.py:9`）当前无调用方，是死代码。改这里前先想清楚会不会把 env 变量名当密钥。
-- `manifest.py` 的 `iter_pull_files` 枚举来源到仓库的文件对。目录项递归时跳过 symlink，跳过 `IGNORED_NAMES`（`.git`、`__pycache__`、`node_modules`、`cache`、`caches`、`logs`、`log`、`run`、`sessions`、`terminal-sessions`、`profiles`、`puppeteer`）与 `IGNORED_SUFFIXES`（`.bak`、`.backup`、`.db`、`.sqlite`、`.db-shm`、`.db-wal`），并跳过条目自身 `exclude` 列出的相对路径；目录型条目的来源整体不存在时，产出该目录自身以便下游报 `missing`。
-- `transfer.py` 统一处理 UTF-8 读取、字节比较、symlink 目标解析和原子写入。
-- 失败通过 `RuntimeError` 等明确异常向 CLI 汇总；`cli.py` 的 `__main__` 只捕获 `OSError`、`UnicodeError`、`ValueError`、`RuntimeError` 并以 2 退出，其他异常直接冒泡。
+- Python 模块按职责划分，优先通过 `manifest` 驱动，不在调用方硬编码同步范围。内部 helper 使用 `_` 前缀。
+- `policy.py` 集中处理敏感槽位识别与脱敏；不要在其他模块重复实现凭据逻辑。`_slots_for_line` 收集 query、CLI 参数、Authorization 和敏感赋值四类候选，按位置、跨度与类别优先级仲裁重叠项；`_is_actual_secret` 保留安全占位符、环境变量名、布尔与数字，命中 `SECRET_LITERAL` 时仍判为密钥；`redact` 还逐行处理 `EXCLUDED_USER_PATH`、已知密钥或私钥字面量及 URL 内嵌凭据。修改这里时，必须检查环境变量名是否会被误脱敏。
+- `manifest.py` 的 `iter_pull_files` 枚举来源到仓库的文件对。目录条目的 `include` 非空时按 glob 直接枚举，否则递归枚举；两路都跳过 symlink、`IGNORED_NAMES`、`IGNORED_SUFFIXES` 和条目 `exclude`。单文件条目直接产生文件对，不经过目录遍历过滤。目录型条目的来源整体不存在时，产出该目录自身以便下游报 `missing`。
+- `transfer.py` 统一处理 UTF-8 读取、字节比较和原子写入。
+- `Entry` 与 `FilePair` 是 frozen dataclass；`pull.run`、`status`、`diff` 可接收显式 `entries` 供测试隔离。同步实现使用直接函数调用和局部状态，没有 async 或通用依赖注入框架。
+- 参数错误以 2 退出；根入口与 `cli.py` 模块入口把 `OSError`、`UnicodeError`、`ValueError`、`RuntimeError` 打印到 stderr 并以 2 退出，其他异常冒泡。`pull` 的 `missing` 只计入状态，返回码仍为 0。
 - 保持函数小而直接，修改前阅读调用方；新增行为应补行为测试。
 
 ## 重要文件
@@ -93,25 +101,30 @@ python3 -c "import json;e=json.load(open('manifest.json'))['entries'];print(len(
 | `src/agc_sync/policy.py`    | 凭据安全策略         |
 | `src/agc_sync/sync_plan.py` | pull 内容准备        |
 | `src/agc_sync/transfer.py`  | 比较与原子写入       |
-| `src/agc_sync/cli.py`       | 命令编排与错误出口   |
-| `sync.py`                   | 兼容 Python 入口     |
+| `src/agc_sync/cli.py`       | 命令编排与只读状态/差异 |
+| `sync.py`                   | 根 Python 入口与异常退出 |
+| `src/agc_sync/pull.py`      | pull 执行与状态统计     |
 | `pull.sh`                   | 用户入口脚本         |
 | `tests/test_sync.py`        | 同步行为回归测试     |
 | `wiki/index.md`             | 学习记录全局索引     |
 | `wiki/log.md`               | 学习记录操作日志     |
+| `tools/tern-maintain/README.md` | Tern 命令、依赖与验收手册 |
+| `tools/wiki-check/check_evidence.py` | Wiki 字面证据报告 |
+| `.github/workflows/tern-maintain.yml` | CI 触发范围与检查命令 |
 
-## 运行时与工具偏好
+## 运行时与工具规则
 
 - 同步运行时为 Python 3；入口脚本明确调用 `python3`。
 - 根目录没有 pyproject/setup/Makefile 构建系统；不要凭空添加依赖或命令。
-- `.github/workflows/tern-maintain.yml` 对 Tern 工具执行 `bun run check`、Bun 行为测试与 FontTools 字体数据测试，并运行同步项目的 Python unittest。
-- Tern 部署验收以 `verify-page`（无 token 初始化、字体注入、模块身份、WebSocket 缺席）和 `upgrade` 报告（进程身份、HTTP、pane 保留）为准；`markdown-windows` 复现结论单独记录，不作为部署条件。
-- `.opencode/` 与 `omp/plugins/` 的 package 文件只服务对应插件依赖；`tools/tern-maintain/` 有独立 Bun 依赖和测试，不把 Node/npm 流程当作同步项目默认流程。
+- `.github/workflows/tern-maintain.yml` 在 `paths` 命中时执行 Tern 的 `bun run check`、Bun 行为测试、uv/FontTools 测试，以及根目录的 Wiki 证据检查和同步 unittest。Tern 命令工作目录为 `tools/tern-maintain/`；是否触发由 workflow 的 `paths` 决定，修改同步代码后仍需在本地运行根目录 unittest。
+- Tern 分层验收：结构报告的 `deployable` 始终为 `false`；`verify-page` 检查无 token 页面初始化、字体注入、模块身份和 WebSocket 缺席，mount 与完整 GPU 交互仍记为 `not_run`；`inspect-runtime` 与 `verify-service` 检查实际进程、资源和认证行为。
+- `upgrade` 会停止、替换并重启指定服务，只有明确授权时才运行，并核对进程、HTTP、认证与 pane 保留。`markdown-windows` 是独立的 Windows Chrome 复现检查，不作为部署条件；CI 不执行真实页面或服务验收。
+- 各工具目录的 package/workspace 文件只服务对应工具，根目录不因此采用 Node/npm。`tools/tern-maintain/` 有独立 Bun 依赖、`typecheck/` 子包、uv 管理的 Python 依赖和固定 WABT 构建要求；完整命令以 `tools/tern-maintain/README.md` 为准。
 - 不主动创建 symlink；来源条目是 symlink 时，先评估目标副作用。
 
 ## 测试与 QA
 
-测试使用 Python 标准库 `unittest`，测试方法命名为 `test_<行为描述>`，临时文件使用 `tempfile.TemporaryDirectory()` 和 `pathlib.Path`，CLI 输出断言使用 `io.StringIO` + `redirect_stdout`。
+测试使用 Python 标准库 `unittest`，测试方法命名为 `test_<行为描述>`，临时文件使用 `tempfile.TemporaryDirectory()` 和 `pathlib.Path`，CLI 输出断言使用 `io.StringIO` + `redirect_stdout`。测试直接调用命令函数，不启动 CLI 子进程。
 
 ```bash
 python3 -m unittest discover -s tests -v
@@ -123,13 +136,24 @@ git diff --check
 find . -path './.git' -prune -o -type l -print
 ```
 
-测试共 1 个文件、1 个 `SyncTests` 类、15 个方法，无 setUp/tearDown、无共享 helper、无 skip；假条目由方法内联 `Entry(...)` 构造。覆盖：pull 脱敏（apiKey、Authorization、UMANS 排除路径、独立 token、Firecrawl 路径 token、敏感 key 下的 JSON 对象值不脱敏、不保留 repo 侧既有 secret）、原子写、pull run 文件同步、目录型条目来源缺失时报 `missing`、来源为空目录时不报 `missing`、`diff` 对缺失目录只报 `missing` 不读取内容、CLI status/diff 输出、sync_plan pull 准备、manifest pull FilePair。
+Tern 的 CI 对应检查从 `tools/tern-maintain/` 执行：
 
-未直接覆盖：真实 manifest 和全部异常分支。新增或修改同步行为时，至少补对应行为测试，并报告未执行的验证。
+```bash
+bun run check
+bun test
+uv run --with-requirements requirements.txt python -m unittest discover -s python_tests -v
+```
+
+构建 fixture 需要 WABT `1.0.42`；依赖安装与 `WABT_DIR` 设置见 `.github/workflows/tern-maintain.yml` 和 `tools/tern-maintain/README.md`。
+
+`tests/test_sync.py` 使用手工构造的 `Entry`，覆盖 protected 内容脱敏（含 URL 内嵌凭据、已知 token、环境变量名与安全对象值）、原子写入、pull/status/diff 基本行为、sync_plan、目录来源缺失或为空，以及 manifest 文件枚举和 include/exclude。
+
+未直接覆盖真实 manifest 全量加载、CLI 进程级参数解析、完整异常出口、symlink 语义和缺失单文件 diff。新增或修改同步行为时，至少补对应行为测试，并报告未执行的验证。
 
 **Wiki 证据边界：**
 
-- 提交 wiki 改动前运行 `python3 tools/wiki-check/check_evidence.py .`；CI 跑的是仓库这份，与 skill 的 `scripts/check_evidence.py` 当前字节相同，升级 skill 后重新复制。
+- 提交 wiki 改动前运行 `python3 tools/wiki-check/check_evidence.py .`；CI 使用仓库副本。升级 `karpathy-llm-wiki` skill 后，比较其 `scripts/check_evidence.py` 与仓库副本并按需同步。
+- 检查器正常扫描的退出码不表示通过，必须阅读报告。CI 对 evidence errors 和 unreferenced raw 设门禁；fidelity suspects 需要对照 raw 上下文人工判断。
 - 已观察到的 fidelity suspect 假阳性形态：产品版本号、`See Also` 行、raw 侧写在 fenced code block 里的数字（如 JSON 字段值、代码片段中的常量）。
 
 ## 来源映射
@@ -143,15 +167,21 @@ find . -path './.git' -prune -o -type l -print
 | `herdr/config.toml` | `~/.config/herdr/config.toml` |
 | `prime/`            | `~/.prime/agent/`             |
 | `plannotator/`      | `~/.plannotator/`             |
+| `tuios/config.toml` | `~/.config/tuios/config.toml` |
+| `dsh/`（仅清单声明的文件） | `~/.dsh/` |
+| `agents/skill-lock.json` | `~/.agents/.skill-lock.json` |
+| `bun/global-package.json` | `~/.bun/install/global/package.json` |
+| `uv/tools/` | `~/.local/share/uv/tools/`（仅 `*/uv-receipt.toml`） |
+| `starship/starship.toml` | `~/.config/starship.toml` |
 
 ## 同步边界
 
 - 不追踪明文形态的凭据与运行时产物：token、secret、password、cookie、credential、authorization、私钥、数据库、WAL、历史、日志、缓存、session、运行时状态、备份和生成文件。例外：manifest protected 条目以 `<REDACTED>` 脱敏值入库，例如 `omp/agent/.env`（manifest `omp-env` 条目，`protected: true`）——仓库内出现的是脱敏副本，不是真实凭据，且已跟踪文件不受 `.gitignore` 的 `.env*` 规则影响。
-- 明确排除的用户专属文件有两个不同层级：`omp/agent/extensions/umans-status.ts` 由 manifest 条目的 `exclude` 阻止 pull 刷新；`codex/umans.config.toml` 根本不在任何 manifest 条目覆盖范围内（`~/.codex/` 只同步 4 个具体文件与 `hooks/` 目录）。两者都存在于工作树、都被 `.gitignore:47-48` 排除，属历史残留，不纳入可提交内容。
+- 明确排除的用户专属文件有两个不同层级：`omp/agent/extensions/umans-status.ts` 由 manifest 条目的 `exclude` 阻止 pull 刷新；`codex/umans.config.toml` 根本不在任何 manifest 条目覆盖范围内（`~/.codex/` 只同步 manifest 列出的具体文件与 `hooks/` 目录）。两者都存在于工作树、都被 `.gitignore` 排除，属历史残留，不纳入可提交内容。
 - Prime Agent 侧排除 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）及 sessions/logs/venv 等运行时产物；只同步 `settings.json` 与 `models.json`，两者均 protected。
 - `pull`、`status`、`diff` 均通过 manifest 约束范围；不要执行广泛同步替代单文件需求。
 - `raw/`、`experiments/` 和 `wiki/` 是本仓库自产的学习/实验记录，不在 `manifest.json` 中，不参与 pull 同步。入库前必须脱敏，不存放 token、cookie、authorization header 等凭据内容。`experiments/` 只记录结构化实验过程；只有可复用结论才晋升到 `wiki/`。
-- `.gitignore` 是凭据边界的第二道闸：忽略 `.env*`、`*token*`、`*secret*`、`*credential*`、`*password*`、`*.pem`、`*.key` 等凭据形态，`.omc/`、`.omo/`、`logs/`、`sessions/`、`cache/`、`profiles/`、`*.db`、`*.sqlite`、`history*` 等运行时状态，`*.bak`/`*.backup` 备份与 `__pycache__/`。注意它按**通配符匹配任意层级**，不是只匹配根目录；但只忽略 `.pi/better-harness/`，`omp/.pi/extensions` 仍是 manifest 同步项（`manifest.json:107-111`）。往仓库加新目录前先确认它是否已被忽略。
+- `.gitignore` 是凭据边界的第二道闸，通配规则匹配任意层级。`profiles/` 对 `dsh/profiles/` 有反向例外；`.pi/better-harness/` 被忽略，`omp/.pi/extensions` 仍由 manifest 同步。`.gitignore` 只控制 Git 忽略，不过滤 pull，也不脱敏文件内容；同步范围看 manifest，敏感值由 protected 策略处理。往仓库加新目录前，同时检查 `.gitignore` 与 manifest。
 - 绝对路径基本不脱敏：`policy.py` 只在 `EXCLUDED_USER_PATH` 里特判 `umans-status.ts` 一条路径，其余配置里的 `/home/<user>/...`（hook 命令、MCP 启动路径、工具链布局）会原样入库。这是已知并接受的残留，不是待修问题。
 
 ## 修改规则
@@ -180,4 +210,4 @@ find . -path './.git' -prune -o -type l -print
 
 发出前自查：每个问题是不是都有直接答案、每件事是不是都有结果。我若还会追问“具体指啥、什么情况下适用、对现状有啥影响、该选哪个、到底做没做”，而这些查得到，就接着查、补进去。分段写，留出空隙，只放跟问题相关的内容。
 
-完成的标准：这一条我不回头翻旧消息也能读懂；我提的每个问题都有着落，每件让你做的事都有验证过的结果；重要结论有依据，不知道的地方标出来。
+完成的标准：这一条我不回头翻旧消息也能读懂；我提的每个问题都有答案，每件让你做的事都有验证过的结果；重要结论有依据，不知道的地方标出来。
