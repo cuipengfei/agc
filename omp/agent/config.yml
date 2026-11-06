@@ -1,4 +1,4 @@
-setupVersion: 2
+setupVersion: 3
 autoResume: false
 power:
   sleepPrevention: idle
@@ -638,3 +638,5 @@ extensionHandlers:
   modeControl: true
 extensionRenderers:
   assistantText: false
+update:
+  auto: false
