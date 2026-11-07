@@ -1844,3 +1844,10 @@
 - Raw: raw/omp-modes/2026-11-02-vibe-fast-good-model-mapping.md; raw/omp-modes/2026-11-02-mode-system-instructions.md
 - Updated: OMP 工作模式与 Magic Keywords
 - 要点：新增各模式系统指令对照段（plan/vibe/goal/orchestrate/workflowz/loop 六模式）；orchestrate 的 10 条规则、7 步 workflow、7 条 anti-patterns 逐条列出；Vibe fast/good 固定映射 fast→sonic、good→task；agentModelOverrides 按 agent 名生效，Vibe 与普通 task 共享，无法只改 Vibe
+
+## [2026-11-07] ingest | 同名 skill 的遮蔽与选型：tdd、teach
+- Disposition: New; Update; Disputed
+- Raw: raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md
+- Created: wiki/ai-coding-agents/same-name-skills-tdd-teach.md
+- Updated: skills CLI 性能模型; pstack 技能地图与行为; skill 系统的两种组织轴
+- 要点：pstack 与 mattpocock/skills 各有 `tdd` 与 `teach`（pstack 3143/5623 B，matt 3629/9733 B，HEAD f104aa8 与 4ae2317）；锁定文件一个名字只有一条、磁盘只有一个目录，只看本地无法发现重名；`teach` 已换为 pstack 源（lock source/skillPath 与字节 5623 均核对，目录只含 SKILL.md），`tdd` 保持 matt（含 tests.md 2214 B 与 mocking.md 1481 B）；安装模式三支判定与共享存储 `~/.agents/skills`；组织轴文章「skill 名几乎不重叠」标为 Disputed。

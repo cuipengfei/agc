@@ -1,8 +1,8 @@
 # skill 系统的两种组织轴：pstack 与 mattpocock/skills 对照
 
-> Sources: poteto-mode SKILL.md 原文, 2026-10-05; mattpocock/skills README 与 ask-matt, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29
-> Raw: [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md)
-> Updated: 2026-10-29
+> Sources: poteto-mode SKILL.md 原文, 2026-10-05; mattpocock/skills README 与 ask-matt, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29; 两仓同名 tdd 与 teach 对照（pstack@f104aa8、mattpocock/skills@4ae2317）, 2026-11-07
+> Raw: [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md)
+> Updated: 2026-11-07
 
 ## Overview
 
@@ -33,6 +33,9 @@ pstack 与 mattpocock/skills 是同代工程 skill 集的两个代表（pstack 2
 ## 适用判断（推断）
 
 以下为从机制声明推出的判断，未经两边实战对照：想让 agent 接管长流程、多 PR 程序，pstack 的编排密度匹配；想保住对每个动作的控制、把 skill 当可组合的纪律库，mattpocock 的结构匹配。两者都装了 mattpocock 自述会冲突的点不在此处——两者的 skill 名几乎不重叠，共存的主要成本是两套入口心智。
+
+> **Status: Disputed**（2026-11-07）
+> 上文「两者的 skill 名几乎不重叠」与实测不符。pstack 与 mattpocock/skills 各有 `tdd` 与 `teach`，pstack 的 `tdd` 依赖共享安装中 matt 的那份（`poteto-help`、`poteto-mode/playbooks/bug-fix.md`、`implement`、`implement-spec` 都调用 `/tdd`）。共存成本因此包含一处同名遮蔽：一个名字只能装一个来源。两版差别见 [同名 skill 的遮蔽与选型](same-name-skills-tdd-teach.md)。
 
 ## See Also
 

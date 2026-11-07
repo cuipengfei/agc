@@ -40,7 +40,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南；Rust 核心随 wheel 发布、独立 Rust 代理未发布 | 2026-10-15 |
-| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、symlink 与共享更新路径；lock 匹配和批量卸载；2026-10-24 全局核对：18 项有安装记录，8 项更新、10 项已最新，另 17 项未见全局记录 | 2026-10-25 |
+| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、symlink 与共享更新路径；lock 匹配和批量卸载；2026-10-24 全局核对：18 项有安装记录，8 项更新、10 项已最新，另 17 项未见全局记录；2026-11-07 增安装模式判定（`-y` 加单 agent 静默转复制）与共享存储 `~/.agents/skills` | 2026-11-07 |
 | [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言与简明语言选型；中文适配边界；本机 skill 文案案例：保留数值上限、区分证据/凭据/授权条件；免责句式禁令的落点 | 2026-10-25 |
 | [LLM 出图的作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版、visual-explainer 全手写 HTML+SVG 四轴作者模型；amwth 含 image 的组件清单（SKILL.md 自述 12 种）、diagram-design SKILL.md 自述 44 种 type（实测 39）、archify 5 类 schema、figure-led register；几何裸露面与选择；2026-10-10 补 amwth 与 visual-explainer | 2026-10-10 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
@@ -81,8 +81,9 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [Copilot 的决策路由端点与 Auto／HydraFusion 边界](ai-coding-agents/copilot-decision-routing.md) | 对外无 system-one 式决策 API；对内 `POST /auto`（每请求选模型，tier 四档）与 `POST /models/session/intent`（意图路由）题目固定；Auto 选模型 vs HydraFusion 选工作流并协调多模型；HydraFusion 独立上游地址未公开未确认，`hydra_scores` 归属 `/auto`/Auto V2 | 2026-10-25 |
 | [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；CodeMode 与 Codex Code Mode 同轴等价性未验证；native models.json 按 API 协议分别配置 provider（c8787/c8787-chat）、baseUrl 需带 /v1、8787 与 4140 同一网关；`mass ulw` 经源码核对为独立版专属 | 2026-10-27 |
 | [pstack 移植版生态全景](ai-coding-agents/pstack-ports-landscape.md) | 原版为 Lauren Tan cursor/plugins；20+ 移植按 star 排行（1103/944 两强断层）；backnotprop 内部结构已验证：commit 25abb38 实测 61 个 SKILL.md（58 注册 = 24 principle + 34 功能 + 3 benny 自动化不进 slash）、60/61 设 disable-model-invocation、playbook 23 | 2026-10-29 |
-| [pstack 技能地图与行为](ai-coding-agents/pstack-skill-map-and-behaviors.md) | 判定标准（root=README get started 三者、模型自动=无 disable-model-invocation、paths 单列）；三层结构与 179 条执行边、13 类边、7 个无出边 playbook；可达 47+11 用户直呼+3 benny；安装核对 56 条全中、tdd/teach 同名遮蔽未装、benny 3 未装；61 技能行为面逐个重述 + 24 principle 触发表；README 自述互不调用与正文矛盾以正文为准；未做运行时探测 | 2026-10-29 |
-| [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照；2026-10-29 复核 pstack 58 注册 + 3 自动化、mattpocock 27 仍为 10-05 采集值 | 2026-10-29 |
+| [pstack 技能地图与行为](ai-coding-agents/pstack-skill-map-and-behaviors.md) | 判定标准（root=README get started 三者、模型自动=无 disable-model-invocation、paths 单列）；三层结构与 179 条执行边、13 类边、7 个无出边 playbook；可达 47+11 用户直呼+3 benny；安装核对 56 条全中、tdd 同名遮蔽、teach 已于 2026-11-07 换 pstack 源、benny 3 未装；61 技能行为面逐个重述 + 24 principle 触发表；README 自述互不调用与正文矛盾以正文为准；未做运行时路由探测 | 2026-11-07 |
+| [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照；2026-10-29 复核 pstack 58 注册 + 3 自动化、mattpocock 27 仍为 10-05 采集值；2026-11-07 标记「skill 名几乎不重叠」为争议（tdd、teach 两仓同名） | 2026-11-07 |
+| [同名 skill 的遮蔽与选型](ai-coding-agents/same-name-skills-tdd-teach.md) | 一个名字一个来源，lock 只有一条、磁盘只有一个目录；pstack 与 mattpocock 各有 tdd、teach；两版定位、触发、流程与收尾对照；pstack tdd 依赖共享安装中 matt 那份；换源用 remove 加 add 两个 agent | 2026-11-07 |
 
 ## better-harness
 

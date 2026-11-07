@@ -1,12 +1,12 @@
 # pstack 技能地图与行为（backnotprop/pstack@25abb38）
 
-> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29
-> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md)
-> Updated: 2026-10-29
+> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07
+> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md)
+> Updated: 2026-11-07
 
 ## Overview
 
-backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit 25abb38（2026-10-29）共有 61 个 `SKILL.md`：`skills/` 下 58 个注册技能 + `automations/benny/skills/` 下 3 个 Slack 自动化专用技能（不进 slash 菜单）。注册技能 = 24 个 `principle-*` 判例 + 34 个功能技能。全部技能的 frontmatter 除 `setup-pstack` 外都设 `disable-model-invocation: true`——模型不能自由触发它们，只有用户显式调用或技能间按正文指令调用。执行路由分三层：入口（poteto-mode / poteto-help / setup-pstack）→ 流程（poteto-mode 的 23 份 playbook）→ 工序（功能技能）与判例（principle）。按 179 条执行边重算，三个入口可达 47 个注册技能，11 个功能技能只能由用户直接点名；本机 `.skill-lock.json` 记录的 56 条 pstack 条目全部已安装且与该 commit 逐字节一致，`tdd`、`teach` 两个技能因本机同名目录来自 mattpocock/skills 而未被 pstack 版占用装上。
+backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit 25abb38（2026-10-29）共有 61 个 `SKILL.md`：`skills/` 下 58 个注册技能 + `automations/benny/skills/` 下 3 个 Slack 自动化专用技能（不进 slash 菜单）。注册技能 = 24 个 `principle-*` 判例 + 34 个功能技能。全部技能的 frontmatter 除 `setup-pstack` 外都设 `disable-model-invocation: true`——模型不能自由触发它们，只有用户显式调用或技能间按正文指令调用。执行路由分三层：入口（poteto-mode / poteto-help / setup-pstack）→ 流程（poteto-mode 的 23 份 playbook）→ 工序（功能技能）与判例（principle）。按 179 条执行边重算，三个入口可达 47 个注册技能，11 个功能技能只能由用户直接点名；本机 `.skill-lock.json` 记录的 56 条 pstack 条目与该 commit 逐字节一致，`tdd` 因本机同名目录来自 mattpocock/skills 而未被 pstack 版占用装上；`teach` 已于 2026-11-07 换成 pstack 版。
 
 ## 判定标准
 
@@ -37,15 +37,19 @@ backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit
 
 ## 安装核对（本机，2026-10-29）
 
-`~/.agents/.skill-lock.json` 共 155 条 skills 条目；`source == backnotprop/pstack` 56 条。
+`~/.agents/.skill-lock.json` 共 155 条 skills 条目；`source == backnotprop/pstack` 56 条。2026-11-07 换源后为 156 条，其中 pstack 57 条。
 
 | 状态 | 名单 | 备注 |
 | --- | --- | --- |
 | 已装且一致 | 56/56 | 按 skillPath 末级目录匹配全部命中；SKILL.md 与 commit 25abb38 逐字节一致；56 条 key 与目录名一致 |
-| 未装（同名遮蔽） | tdd、teach | 本机这两个目录来自 mattpocock/skills（锁定条目 source: mattpocock/skills）；pstack 版 tdd 为「仅在明确要求或 bug 有廉价本地测试路径时使用」，mattpocock 版为通用 red-green-refactor，语义不同 |
+| 已换源 | teach | 2026-11-07 由 mattpocock/skills 改为 backnotprop/pstack（`skills/teach/SKILL.md` 5623 B）；`~/.agents/skills/teach/` 只有 `SKILL.md`，无 matt 版的四份 `*-FORMAT.md` |
+| 未装（同名遮蔽） | tdd | 本机该目录来自 mattpocock/skills（锁定条目 source: mattpocock/skills）；pstack 版 tdd 为「仅在明确要求或 bug 有廉价本地测试路径时使用」，mattpocock 版为通用 red-green-refactor，语义不同 |
 | 未装（设计如此） | setup-benny、triage-issue-reports、reproduce-and-fix-issues | benny 自动化，不发布为 slash 技能 |
 
 匹配口径说明：lock key 是显示名概念，目录名应按 skillPath 末级比对（本批 56 条两者恰一致，不构成差异风险）。
+
+> **Status: Outdated**（2026-11-07）
+> 上表原记「未装（同名遮蔽）」含 `teach` 一项。2026-11-07 用 `skills remove teach -g -y` 加 `skills add backnotprop/pstack -g -s teach -a claude-code codex -y` 换源后，`teach` 已是 pstack 版，锁文件 `source` 为 `backnotprop/pstack`、`skillPath` 为 `skills/teach/SKILL.md`；`tdd` 仍为 mattpocock 版。两版内容差别见 [同名 skill 的遮蔽与选型](same-name-skills-tdd-teach.md)。
 
 ## 行为面（61 个技能被叫到后做什么）
 
@@ -147,7 +151,7 @@ backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit
 
 - 层级是文档指令的重建模型，未做运行时路由探测；边的存在性有 `file:line` 原文依据，实际触发取决于宿主与任务。
 - 结论绑定 commit 25abb38（2026-10-29 main）；上游 cursor/plugins/pstack 与本镜像同节奏 sync（MIRROR.md 有流程），后续 commit 需重新核对。
-- 本机 `tdd`/`teach` 的同名遮蔽未在真实会话里验证路由到哪一版；两版 frontmatter 与语义均不同，实际影响取决于用户调用的是哪个接线。
+- 本机 `tdd`/`teach` 的同名遮蔽未在真实会话里验证路由到哪一版；两版 frontmatter 与语义均不同，实际影响取决于用户调用的是哪个接线。2026-11-07 按文件字节确认：`tdd` 为 matt 版，`teach` 为 pstack 版。
 - poteto-help 的 read/recommend 去重对数为 33（同技能多条边合并），与 79 条原始边为两种口径。
 
 ## See Also

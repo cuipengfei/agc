@@ -1,8 +1,8 @@
 # skills CLI 性能模型：目录发现比安装数量更关键
 
-> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08; 全局 skill 更新与 lock 核对, 2026-10-24
-> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md); [全局 skill 更新与 lock 核对](../../raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md)
-> Updated: 2026-10-25
+> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08; 全局 skill 更新与 lock 核对, 2026-10-24; 安装模式与同名换源实测, 2026-11-07
+> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md); [全局 skill 更新与 lock 核对](../../raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md)
+> Updated: 2026-11-07
 
 ## Overview
 
@@ -60,9 +60,23 @@ CLI 在源码中静态列出多个 agent skill 目录，例如 `.agents/skills`�
 
 全局检查曾报告 `restating-complete-answers` 的本地路径无法自动检查。按 CLI 输出手动安装后，八个本次更新项均有 GitHub 来源记录。该安装日志还报告 PromptScript 不支持全局安装，但 Claude Code 与共享目录的安装成功。对当次检查进程启用 TLS 证书验证后，`skills check -g` 输出 `All global skills are up to date`。
 
+## 安装模式与共享存储
+
+`skills add` 的安装形态由三个条件决定，源码在 `dist/cli.mjs`：
+
+1. 默认 `installMode = options.copy ? "copy" : "symlink"`，即默认符号链接，`--copy` 强制复制。
+2. 仅在 `!options.copy && !options.yes && uniqueDirs.size > 1` 时弹交互选择；带 `-y` 就不会走到这一步。
+3. `else if (uniqueDirs.size <= 1) installMode = "copy"`，目标目录只有一个时直接改成复制。
+
+第 3 条是容易踩的地方：`skills add <repo> -g -s <name> -a claude-code -y` 只指定一个 agent 时，skill 会落成 `~/.claude/skills/<name>` 真实目录，`~/.agents/skills/<name>` 不生成，与其他 skill 的共享结构不一致。要拿到符号链接，需要让目标 agent 覆盖两个不同目录，例如同时给 `claude-code` 与 `codex`。
+
+共享存储位置由 `getCanonicalSkillsDir(global)` 决定，等于 `join(homedir(), ".agents", "skills")`。`codex` 的 `globalSkillsDir` 就是 `~/.agents/skills`，`claude-code` 的是 `~/.claude/skills`。因此让 codex 参与安装时，它的目标目录本身即存储目录，claude 侧得到指向该目录的符号链接。
+
+换源（同名 skill 从另一个仓库重装）走两次调用：`skills remove <name> -g -y` 与 `skills add <repo> -g -s <name> -a claude-code codex -y`。核对口径是 lock 的 `source` 与 `skillPath` 两项，加上目录内文件与上游仓库树的字节比对。同名遮蔽与两版内容差别见 [同名 skill 的遮蔽与选型](../ai-coding-agents/same-name-skills-tdd-teach.md)。
+
 ## 锁定文件变更的粗粒度确认
 
-锁 mtime 与条目 `installedAt`/`updatedAt` 都不足以单独断言某条命令写了锁：`installedAt` 只记录条目何时加入，`updatedAt` 未必随每次写入刷新；区分「命令是否修改锁」应以命令前后的锁文件快照 diff 为准（会话内用备份文件对比）。
+锁 mtime 与条目 `installedAt`/`updatedAt` 都不足以单独断言某条命令写了锁：`installedAt` 只记录条目何时加入，`updatedAt` 未必随每次写入刷新；区分「命令是否修改锁」应以命令前后的锁文件快照 diff 为准（会话内用备份文件对比）。要判断装的是哪个来源的版本，锁字段只是第一层，更强的是把目录内文件与候选上游仓库树的字节逐个比对：本机因 `tdd` 目录含 `tests.md` 2214 与 `mocking.md` 1481、`teach` 目录只有 `SKILL.md` 5623，才确认前者是 mattpocock 版、后者是 pstack 版。
 
 ## 证据边界
 
