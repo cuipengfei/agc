@@ -1,8 +1,8 @@
 # OMP 工作模式与 Magic Keywords
 
 > Sources: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); OMP 源码 d49918fab2; oh-my-pi 官方文档与源码，2026-10-10; workflowz 运行时源码与实测，2026-10-27
-> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [OMP Magic Keywords 与 Vibe Mode 官方文档/源码摘录](../../raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md); [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md)
-> Updated: 2026-10-27
+> Raw: [OMP Vibe Mode 官方文档](../../raw/omp-modes/2026-08-26-omp-vibe-mode.md); [OMP Magic Keywords 官方文档](../../raw/omp-modes/2026-08-26-omp-magic-keywords.md); [OMP Vibe vs Task 对比分析](../../raw/omp-modes/2026-08-26-vibe-vs-task-comparison.md); [OMP 工作模式总览](../../raw/omp-modes/2026-08-26-omp-modes-overview.md); [OMP Workflowz DAG 修正](../../raw/omp-modes/2026-09-09-workflowz-dag-correction.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [OMP Magic Keywords 与 Vibe Mode 官方文档/源码摘录](../../raw/omp-modes/2026-10-10-magic-keywords-vibe-official-docs.md); [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md); [Vibe fast/good 模型映射](../../raw/omp-modes/2026-11-02-vibe-fast-good-model-mapping.md); [各模式系统指令对照](../../raw/omp-modes/2026-11-02-mode-system-instructions.md)
+> Updated: 2026-11-02
 
 ## 工作流模式
 
@@ -17,6 +17,46 @@
 | `/prewalk` | 强模型规划、便宜模型实现 | 第一次 `edit/write` 时一次性切换模型 |
 
 Plan、Goal、Vibe 互斥；官方明确 Vibe 与 active 及 paused 的 plan/goal 均互斥，进入 Vibe 前需先退出这些模式。
+
+## 各模式系统指令对照
+
+每种模式注入的系统指令决定了主代理的行为边界。以下按源码文件列出核心约束：
+
+| 模式 | 系统指令文件 | 核心约束 |
+|---|---|---|
+| `/plan` | `src/prompts/system/plan-mode-active.md` | 只读，写 `local://<slug>-plan.md`，用 `xd://propose` 审批 |
+| `/vibe` | `src/prompts/system/vibe-mode-active.md` | 只派活，工具面收窄到 `read` + `vibe_*` |
+| `/goal` | `src/prompts/goals/goal-mode-active.md` | 预算意识，完成前必须验证 |
+| `orchestrate` | `src/prompts/system/orchestrate-notice.md` | 分解、并行派发、验证、不提前结束 |
+| `workflowz` | `src/prompts/system/workflow-notice.md` | pool 优先，worker 保活 |
+| `/loop` | 无独立 .md | 自动重发同一 prompt |
+
+### Orchestrate 的 10 条规则
+
+`orchestrate-notice.md:9-18`：
+
+1. 绝不在完成前结束
+2. 派发前列出全部工作面
+3. 最大化并行
+4. 每个 task 自包含
+5. 下一阶段前验证当前阶段
+6. 只在被要求时提交
+7. 子代理错误时派修正子代理
+8. 不扩大或缩小范围
+9. 子代理绝不验证、lint 或格式化
+10. 合理分配工作量
+
+### Orchestrate 的 7 步 Workflow
+
+`orchestrate-notice.md:22-28`：Ingest → Plan → Dispatch → Verify → Commit → Advance → Final verification。
+
+### Orchestrate 的 7 条 Anti-patterns
+
+`orchestrate-notice.md:32-38`：自己做实质工作、琐碎编辑加 task 脚手架、阶段后问继续吗、串行派发、跳过阶段间验证、不经验证关闭 todo、聊天总结代替前进。
+
+### Vibe 的 fast/good 模型映射边界
+
+`src/vibe/runtime.ts:68-71` 固定映射 `fast`→`sonic`、`good`→`task`。`agentModelOverrides` 按 agent 名生效，Vibe 与普通 task 调用共享同一套 override。无法只改 Vibe 不改普通 task。当前 OMP 没有 Vibe 专用的模型覆盖机制。
 
 ## Vibe 的 fast/good 与 persistent
 

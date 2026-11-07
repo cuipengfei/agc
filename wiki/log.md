@@ -1838,3 +1838,9 @@
 - Updated: wiki/harness-engineering/dual-loop-steering-model.md
 - Created: wiki/omp/course-concepts-omp-mapping.md
 - 要点：补齐课程 22–30 讲与结束语（人的介入/自我改进/Loop Engineering/多 Agent/内部 Harness/Agent First Workspace/写课实例/遗留系统实战）；修正「自我纠正=ReAct」「按架构压缩归属」「23 讲只写 learn+omfg」「结束语三层闭环」等错配；新增全课概念五层结构与六类关系网络；新建 33 篇正文逐项 OMP 映射文章；七项候选缺口经源码反证定性为 6 项部分对应 + 1 项真缺口（通用执行期低置信度自动升级人工）；补录 RULES.md 管线差异、TTSR 三触发器、五种 memory backend、checkpoint/rewind 非 Git 边界、/ratchet 与 /autoresearch 等 OMP 一手证据。
+
+## [2026-11-02] ingest | OMP 模式系统指令与 Vibe fast/good 映射
+- Disposition: Update
+- Raw: raw/omp-modes/2026-11-02-vibe-fast-good-model-mapping.md; raw/omp-modes/2026-11-02-mode-system-instructions.md
+- Updated: OMP 工作模式与 Magic Keywords
+- 要点：新增各模式系统指令对照段（plan/vibe/goal/orchestrate/workflowz/loop 六模式）；orchestrate 的 10 条规则、7 步 workflow、7 条 anti-patterns 逐条列出；Vibe fast/good 固定映射 fast→sonic、good→task；agentModelOverrides 按 agent 名生效，Vibe 与普通 task 共享，无法只改 Vibe
