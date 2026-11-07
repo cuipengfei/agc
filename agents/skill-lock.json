@@ -1233,9 +1233,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "999df2a15fefd5b190e96238b62cecae5648228b",
+      "skillFolderHash": "78a51b038e1a8ec04cb6a2538095faf565164dd5",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-06T07:13:41.956Z"
+      "updatedAt": "2026-11-07T09:06:09.925Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
