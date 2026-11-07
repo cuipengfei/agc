@@ -1,8 +1,8 @@
 # ttyd 前端编译模型与 xterm 版本锁定
 
-> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16; ttyd 官方依赖与 Client Options, 2026-10-17; 后续会话核对, 2026-11-01
-> Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md)
-> Updated: 2026-11-01
+> Sources: tsl0922/ttyd 1.7.7 release, 2024-03-30; 本机实证, 2026-10-06; 本机实证, 2026-10-16; ttyd 官方依赖与 Client Options, 2026-10-17; 后续会话核对, 2026-11-01; 渲染色块证据补充, 2026-11-07
+> Raw: [ttyd 1.7.7 前端依赖锁定摘录](../../raw/terminal-multiplexers/2026-10-06-ttyd-1.7.7-frontend-lockfile.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [ttyd 渲染器与色块证据摘录](../../raw/terminal-multiplexers/2026-11-07-ttyd-xterm-renderer-corruption.md)
+> Updated: 2026-11-07
 
 ## Overview
 
@@ -36,7 +36,7 @@ xterm.js 不是运行时可换的外部依赖，而是 webpack 打进 ttyd 前�
 
 1. 等 ttyd 发新版（上游 bump lockfile 后用户重装）。
 2. 自己 rebuild ttyd 前端：改 `html/package.json` 提 xterm 版本，`yarn build`，再用 `-I` 指向新产物。
-3. 换渲染器类型（如 `rendererType=canvas`）绕过 WebGL atlas 的已知 bug，不升版本。
+3. 换渲染器类型（如 `rendererType=canvas`）绕过 WebGL atlas 的已知 bug，不升版本；具体机制与本机证据见 [ttyd xterm.js 渲染色块与渲染器选择](ttyd-xterm-renderer-corruption.md)。
 
 ## 本机定制前端 = 官方默认 + 两个 script 块
 
@@ -65,6 +65,7 @@ ttyd、Wetty、GoTTY、sshwifty 等浏览器终端工具的前端都基于 xterm
 - [tuios workspace 与 session rail](tuios-workspace-and-sidebar.md)
 - [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)
 - [浏览器终端链路的剪贴板路径](browser-terminal-clipboard-paths.md)
+- [ttyd xterm.js 渲染色块与渲染器选择](ttyd-xterm-renderer-corruption.md)
 
 ## 配色入口
 

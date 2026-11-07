@@ -1863,3 +1863,10 @@
 - Raw: raw/omp/2026-11-07-omp-symbol-presets-and-glyph-protocol-source.md
 - Created: wiki/omp/symbol-presets-and-glyph-protocol.md
 - 要点：`symbolPreset` 取值 unicode/nerd/ascii，默认 unicode，本机为 nerd；277 个符号键分 24 类；nerd 档只把图标类换成私有区码位，制表符与进度条仍用 Unicode；`glyph-bundle.json` 收 270 个轮廓，来源 JetBrainsMono NFM Regular 2.304（Nerd Fonts 3.5.1），upm 1000、aw 600、lh 1320；Glyph Protocol 用 APC `25a1` 四动词握手，只接受三段私有区，确认码位 0xf0d57（icon.omp）；`🔇` 是标准 emoji U+1F507，与 emoji 短码表 `mute` 同源但独立于图标预设。未验证：三档切换的界面效果、字形注册的实际握手、277 键逐键齐备。
+
+## [2026-11-07] ingest | ttyd xterm.js 渲染色块与渲染器选择
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-07-chromium-gpu-driver-bug-list.md; raw/terminal-multiplexers/2026-11-07-ttyd-xterm-renderer-corruption.md
+- Created: wiki/terminal-multiplexers/ttyd-xterm-renderer-corruption.md
+- Updated: ttyd-frontend-compilation
+- 要点：色块症状对应 WebGL 字形缓存损坏，resize 触发整屏重绘自愈；ttyd 1.7.7 `rendererType=webgl/canvas/dom` 与 Console 加载日志、URL 参数覆盖；本机切 canvas 成功且 Chrome `Canvas: Hardware accelerated`（Skia Graphite/Dawn/D3D11）；Chromium 台账 entry id 17（仅 os:win）与 id 165（仅 gl_vendor NVIDIA）均无 driver_version 区间，驱动升级不摘 workaround；驱动 580.88（2025-07-27）→ 官网最新 621.14 WHQL（2026-11-04）；待验证分支：canvas 复发时 `enableSixel=false` A/B、驱动升级后回验 webgl。未验证：色块根因在本机的最终定位、621.14 实测效果、sixel 嫌疑的 A/B 结果。

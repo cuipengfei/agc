@@ -413,6 +413,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 
 | Article | Summary | Updated |
 |---------|---------|---------|
+| [ttyd xterm.js 渲染色块与渲染器选择](terminal-multiplexers/ttyd-xterm-renderer-corruption.md) | 色块症状与 WebGL 字形缓存损坏机制、三渲染器选择对比（webgl/canvas/dom）、本机 RTX 3050 + Chrome 156 事实链、Chromium 两条 workaround 无 driver_version 区间的结论、驱动 580.88→621.14 升级路径、enableSixel 待验证分支 | 2026-11-07 |
 | [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | 前端编译与版本锁定、剪贴板定制、图形协议；链接到用户认可的完整 Tokyo Night Storm 配色 URL | 2026-11-01 |
 | [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | 七种侧栏内容及 spacer；Agent 显示、命名报告 #1384/#1388、v0.12.1；普通输入与复制模式翻页、鼠标处理边界 | 2026-11-01 |
 | [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | Web 独立运行、安装与认证、持久化；本次 WebTerm 渲染、进程祖先与浏览器入口区分、Kitty 图片输出和 Maple 字体入口 | 2026-11-01 |
