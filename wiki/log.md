@@ -1851,3 +1851,15 @@
 - Created: wiki/ai-coding-agents/same-name-skills-tdd-teach.md
 - Updated: skills CLI 性能模型; pstack 技能地图与行为; skill 系统的两种组织轴
 - 要点：pstack 与 mattpocock/skills 各有 `tdd` 与 `teach`（pstack 3143/5623 B，matt 3629/9733 B，HEAD f104aa8 与 4ae2317）；锁定文件一个名字只有一条、磁盘只有一个目录，只看本地无法发现重名；`teach` 已换为 pstack 源（lock source/skillPath 与字节 5623 均核对，目录只含 SKILL.md），`tdd` 保持 matt（含 tests.md 2214 B 与 mocking.md 1481 B）；安装模式三支判定与共享存储 `~/.agents/skills`；组织轴文章「skill 名几乎不重叠」标为 Disputed。
+
+## [2026-11-07] ingest | OMP bash 命令行折叠标记与 /dev/null 语义
+- Disposition: New
+- Raw: raw/omp-tools/2026-11-07-omp-bash-shell-viz-idioms-source.md
+- Created: wiki/omp-tools/bash-shell-visualization-idioms.md
+- 要点：`🔇 out`/`🔇 err`/`🔇 silent` 分别对应 `>/dev/null`、`2>/dev/null`、`&>/dev/null`，`+err` 对应 `2>&1`，分支在 `redirections` 里按 `/dev/null` 字面量与 fd 判定，`idioms` 层默认 true。渲染实测 20 余条命令，`rtk ps -p 2694951 >/dev/null 2>&1` 复现为 `rtk ps -p 2694951 🔇 out +err`。丢弃验证：`echo hidden-line >/dev/null` 不出现在工具结果。命令文本先经 `rtk.ts` 扩展 `rtk rewrite` 改写 `event.input.command`，6 次调用里 2 次带重定向均原样保留，未新增或删除重定向。源码在 `v18.18.0` tag 取证（本地 clone 为 18.14.1，工作树与历史均无此字面量）。未验证：终端字体、关闭 `display.shellVisualization` 后的界面、`↻`/`↳`/`┌` 的实测。
+
+## [2026-11-07] ingest | OMP 界面图标：三档 symbolPreset 与 Glyph Protocol
+- Disposition: New
+- Raw: raw/omp/2026-11-07-omp-symbol-presets-and-glyph-protocol-source.md
+- Created: wiki/omp/symbol-presets-and-glyph-protocol.md
+- 要点：`symbolPreset` 取值 unicode/nerd/ascii，默认 unicode，本机为 nerd；277 个符号键分 24 类；nerd 档只把图标类换成私有区码位，制表符与进度条仍用 Unicode；`glyph-bundle.json` 收 270 个轮廓，来源 JetBrainsMono NFM Regular 2.304（Nerd Fonts 3.5.1），upm 1000、aw 600、lh 1320；Glyph Protocol 用 APC `25a1` 四动词握手，只接受三段私有区，确认码位 0xf0d57（icon.omp）；`🔇` 是标准 emoji U+1F507，与 emoji 短码表 `mute` 同源但独立于图标预设。未验证：三档切换的界面效果、字形注册的实际握手、277 键逐键齐备。
