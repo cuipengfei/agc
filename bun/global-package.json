@@ -12,7 +12,7 @@
     "@openai/codex": "0.167.0",
     "@opencode/cli": "2.2.6",
     "@upstash/context7-mcp": "4.5.1",
-    "acpx": "0.21.1",
+    "acpx": "0.22.0",
     "backpass": "0.1.44",
     "bash-language-server": "^5.8.1",
     "ccstatusline": "2.2.34",
