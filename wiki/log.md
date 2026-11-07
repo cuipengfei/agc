@@ -1831,3 +1831,10 @@
 - Disposition: New
 - Raw: raw/agent-tooling/2026-11-06-reason-network-team-agent-network.md
 - 要点：定位是跨人跨机的会话目录加消息总线，目录为核心；对象为 team/person/machine/session，person 不是消息地址；投递层级 push/turn/pull 按各 agent 的输入机制划分；成员靠签名名册与邀请，陌生机器看不到团队是否存在；默认用 n0 地址查询与 Reason 中继，自建中继后不接触 n0；限额 64 KB、10 个文件 256 KB 合计 512 KB、离线一天、回执七天、全连接约 50 台；M0–M3 完成，M4 未开始。
+
+## [2026-11-07] ingest | 课程概念 ↔ OMP 机制映射
+- Disposition: New; Update
+- Raw: raw/geekbang-agent-harness/2026-11-07-lessons-22-30-and-closing.md; raw/omp/2026-11-07-omp-mechanisms-for-course-mapping.md; raw/omp/2026-11-07-dual-sided-review-and-gap-evidence.md
+- Updated: wiki/harness-engineering/dual-loop-steering-model.md
+- Created: wiki/omp/course-concepts-omp-mapping.md
+- 要点：补齐课程 22–30 讲与结束语（人的介入/自我改进/Loop Engineering/多 Agent/内部 Harness/Agent First Workspace/写课实例/遗留系统实战）；修正「自我纠正=ReAct」「按架构压缩归属」「23 讲只写 learn+omfg」「结束语三层闭环」等错配；新增全课概念五层结构与六类关系网络；新建 33 篇正文逐项 OMP 映射文章；七项候选缺口经源码反证定性为 6 项部分对应 + 1 项真缺口（通用执行期低置信度自动升级人工）；补录 RULES.md 管线差异、TTSR 三触发器、五种 memory backend、checkpoint/rewind 非 Git 边界、/ratchet 与 /autoresearch 等 OMP 一手证据。
