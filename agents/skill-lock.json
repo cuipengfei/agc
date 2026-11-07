@@ -274,16 +274,6 @@
       "installedAt": "2026-07-05T14:33:58.685Z",
       "updatedAt": "2026-10-27T13:34:53.017Z"
     },
-    "teach": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/mattpocock/skills.git",
-      "skillPath": "skills/productivity/teach/SKILL.md",
-      "skillFolderHash": "3fd617b610e59acbb99644de1ef37e394ff53cd1",
-      "pluginName": "mattpocock-skills",
-      "installedAt": "2026-07-05T14:33:58.686Z",
-      "updatedAt": "2026-10-27T13:34:53.019Z"
-    },
     "loop-me": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -1427,6 +1417,15 @@
       "skillFolderHash": "48b1d39f317db181b75c8c4dafba6b78bb8f17a4",
       "installedAt": "2026-11-02T11:55:27.589Z",
       "updatedAt": "2026-11-02T11:55:27.589Z"
+    },
+    "teach": {
+      "source": "backnotprop/pstack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/backnotprop/pstack.git",
+      "skillPath": "skills/teach/SKILL.md",
+      "skillFolderHash": "3ee517292dae0476dc516f9f3805c08fb943c6ff",
+      "installedAt": "2026-11-07T04:00:18.193Z",
+      "updatedAt": "2026-11-07T04:00:18.193Z"
     }
   },
   "dismissed": {

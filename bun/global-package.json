@@ -8,7 +8,7 @@
     "@fission-ai/openspec": "1.16.1",
     "@fresh-editor/fresh-editor": "0.5.8",
     "@ngosangns/ns-bridge": "0.1.27",
-    "@oh-my-pi/pi-coding-agent": "18.17.0",
+    "@oh-my-pi/pi-coding-agent": "18.18.0",
     "@openai/codex": "0.167.0",
     "@opencode/cli": "2.2.6",
     "@upstash/context7-mcp": "4.5.1",
