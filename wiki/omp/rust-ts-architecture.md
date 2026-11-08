@@ -1,8 +1,8 @@
 # OMP Rust/TS architecture and pi-natives
 
-> Sources: OMP source code and binary inspection, 2026-09-27
-> Raw: [OMP pi-natives Rust crate inventory and N-API binding evidence](../../raw/omp/2026-09-27-omp-pi-natives-crate-inventory.md); [OMP 18.3.3 predictive text engine changelog and settings source](../../raw/omp/2026-09-27-omp-18-3-3-predictive-text-engine.md)
-> Updated: 2026-09-27
+> Sources: OMP source code and binary inspection, 2026-09-27; OMP 子 agent 工作区隔离与 ovnfs 接入源码, 2026-11-08
+> Raw: [OMP pi-natives Rust crate inventory and N-API binding evidence](../../raw/omp/2026-09-27-omp-pi-natives-crate-inventory.md); [OMP 18.3.3 predictive text engine changelog and settings source](../../raw/omp/2026-09-27-omp-18-3-3-predictive-text-engine.md); [OMP 子 agent 工作区隔离与 ovnfs 接入源码摘录](../../raw/omp/ovnfs-integration-and-isolation-backends.md)
+> Updated: 2026-11-08
 
 ## Overview
 
@@ -50,7 +50,7 @@ TS 侧（`pi-coding-agent` 包）负责编排逻辑：CLI 入口、TUI 渲染、
 
 ### pi-iso
 
-文件：`diff.rs`、`lib.rs`、`zfs.rs`。（推断：任务隔离，含 ZFS 支持）
+按后端分模块：`apfs`、`btrfs`、`zfs`、`linux_reflink`、`overlayfs`、`windows_block_clone`、`projfs`、`rcopy`，另有 `lib.rs` 作为选择层。这是任务隔离的后端层（PAL）：`auto_order` 在 Linux 上依次为 btrfs、ZFS、linux-reflink、overlayfs、rcopy；`resolve` 优先采用可用后端，并给出候选链供逐级回退；`rcopy` 在 git 工作树里执行 `git worktree add --detach`，否则递归复制整棵树。
 
 ### pi-voice
 
@@ -85,3 +85,4 @@ TS 编排 + Rust 执行的分层让 OMP 能在工具层做控制：bash 工具�
 - [OMP predictive text engine](predictive-text-engine.md)
 - [Node-API and napi-rs in OMP](napi-node-api.md)
 - [OMP 本地构建：依赖、步骤、产物与验证](local-build.md)
+- [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](subagent-workspace-isolation.md)

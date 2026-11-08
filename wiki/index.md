@@ -60,6 +60,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [bd init auto-commit 陷阱](agent-tooling/bd-init-auto-commit-gotchas.md) | bd init 默认自动 git commit，无 --no-commit；#5654 staged 文件被卷入、#3495 reinit-local 无 opt-out、#1989 讨论默认开启；规避方式与建议 | 2026-11-06 |
 | [Reason Network：跨机器的 agent 团队目录与消息总线](agent-tooling/reason-network.md) | 团队目录加消息总线：push/turn/pull 三档投递、签名名册与邀请门禁、iroh 直连与中继、自建中继不接触 n0、消息 64 KB、离线最多一天、M0–M3 完成 M4 未开始 | 2026-11-06 |
 | [agent-browser 与 chrome-devtools MCP 对比](agent-tooling/agent-browser-vs-chrome-devtools-mcp.md) | 同 CDP 的双工具对照：agent-browser 按快照 ref 驱动、点击诚实失败（遮挡/隐藏/禁用即报错）、auth vault + 域名白名单 + 动作策略 + confirm/deny、stream/dashboard、pdf/record/diff、Lightpanda/Obscura/iOS Safari、五家云端 provider、skill 与 CLI 版本对齐；chrome-devtools-mcp 1.12.0 为 uid 快照、fill_form 多元素填写、性能 trace + CrUX、14 个堆快照工具（--memoryDebugging）、logpoints/CSS/Lighthouse、isolatedContext、WebAuthn/PWA/扩展/WebMCP 旗标与 service worker 求值；本机条目 enabled:false 指向 9333（2026-11-07 检查无监听）、agent-browser 未安装，含自动启动与外接两条启用路 | 2026-11-07 |
+| [ovnfs：面向 agent 的文件夹副本与跨机器交接](agent-tooling/ovnfs.md) | 写时复制 checkout、单挂载点呈现（FUSE/NFSv3/SMB）、四类路径与 apply 边界；49k 文件仓库打开约 1 秒、3,000 文件 create 约 15 ms；安装脚本的构建服务地址与校验步骤、`update` 三条路径、`restart` 会启动不存在的守护进程；远程 attach 与 `push` 的离线条件 | 2026-11-08 |
 
 ## ai-coding-agents
 
@@ -489,7 +490,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 
 ## omp
 
-OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，界面图标三档预设与字形注入，`/model` 内置端侧模型目录，全量环境变量参考，`agent.db`/`history.db` 两个长期存储库的表归属与索引级修复，以及从源码本地构建的依赖、步骤、产物与验证。
+OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预测引擎、Rust/TS 架构与 Node-API 绑定的行为边界，界面图标三档预设与字形注入，`/model` 内置端侧模型目录，全量环境变量参考，`agent.db`/`history.db` 两个长期存储库的表归属与索引级修复，从源码本地构建的依赖、步骤、产物与验证，以及子 agent 工作区隔离与 ovnfs 后端接入。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
@@ -500,7 +501,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数、观测面（18.2.8：auto-thinking 与 eval judge 记 usage；unexpected-stop 两个成功 nudge 样本无新增 usage，原因未知）、zen 已实测兼容与 OpenRouter 不兼容 | 2026-09-22 |
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |
 | [OMP predictive text engine](omp/predictive-text-engine.md) | 18.3.3 引入统一输入预测引擎：spelling.autocomplete 枚举（off/auto/ngram/smollm/apple）、Linux auto 走 ngram、幽灵文字 Tab/→ 接受；SmolLM2-135M 按需下载（145MB GGUF Q8_0、sha256）；预测 daemon 进程模型（broker spawn、detached:false、idle 15min 退出、从 history.db 与 Claude/Codex 历史学习）；autocompleteMaxVisible 是下拉列表非幽灵文字 | 2026-09-27 |
-| [OMP Rust/TS architecture and pi-natives](omp/rust-ts-architecture.md) | TS(Bun) 编排 + pi_natives 原生插件（Rust，cargo-about 证据）执行；12 个 crate 清单、pi-builtins 103 内建命令、pi-natives 28 模块、index.js 20 类导出；职责多为按名推断并标注 | 2026-09-27 |
+| [OMP Rust/TS architecture and pi-natives](omp/rust-ts-architecture.md) | TS(Bun) 编排 + pi_natives 原生插件（Rust，cargo-about 证据）执行；12 个 crate 清单、pi-builtins 103 内建命令、pi-natives 28 模块、index.js 20 类导出；职责多为按名推断并标注；pi-iso 为隔离后端选择层，Linux 候选顺序 btrfs、ZFS、linux-reflink、overlayfs、rcopy | 2026-11-08 |
 | [OMP find 工具的 cascade 架构：lexical 粗筛 + 三波 noul 判分](omp/find-tool-cascade.md) | jfind 固定四阶段（lexical + 文件名/草图/完整验证三波）、native grep + idf 加权粗筛（带超时、跳超大文件、不保证穷尽）、波间筛选常量（CANDIDATES=128/FILES=20/CUTOFF=0.45/THRESHOLD=0.2）、走注入的通用 judge 接口且请求无 wave 字段、实际后端未验证、find vs grep 适用性为机制推断；补与 jevgrep 入口机制对照 | 2026-10-01 |
 | [Node-API and napi-rs in OMP](omp/napi-node-api.md) | Node-API（原 N-API）稳定 ABI 逐字定义与边界（限 Node.js、不跨平台）；Bun 属 napi-rs best-effort（continue-on-error）非 Node-API 保证；napi-rs 构建链（Rust 1.88+、#[napi]、平台分包）；pi-natives 用 @napi-rs/cli 3.7.2、napi_register_module_v1 证据 | 2026-09-27 |
 | [OMP judgment 对 chat 类 judge 的无 schema 文本解析机制](omp/judgment-chat-llm-parsing.md) | 普通 chat 模型当 judge 时不发 response_format/json_schema/text.format；temperature 0 + disableReasoning + maxTokens 4096 首次裸文本，prompt 约定关键词回答，三组解析器（choice/noul/score）取最早合法关键词，解析失败重试才挂 submit_judgment tool；与 jev /v1/systemone 路由分界；本机 judge 实配 typesafe-zen/jev-1.13 | 2026-10-07 |
@@ -508,6 +509,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP /model 内置端侧模型目录（local-inference）](omp/bundled-local-models.md) | 14 个端侧模型清单（三标题/五记忆/五听写/一朗读）、local.kdl seed 条目（api/base/bundle 原文）与各 dtype 的实测下载量组件分解、local://inference 子进程传输、设备 14 值与 [请求设备, cpu] 回退、Qwen3 ONNX 拒绝与 sherpa/kokoro 无 CUDA 路径；WSL2 RTX 3050 实测：驱动可见、CUDA 13 运行时库缺失、条件式回退结论 | 2026-10-26 |
 | [OMP agent.db 与 history.db：存储职责、表归属与索引级损坏修复](omp/agent-storage-databases.md) | `agent.db` 22 张表按建表模块三分（凭据与缓存、会话统计、记忆流水线）、`cache` 表被凭据粘性/MCP 工具/扩展启动延迟三方共用与 30 天过期常量、`history.db` 表组成与提示历史消费方；警告链路（写失败只记日志并一次性通知监听器）；两轮 history.db 损坏分开记录（FTS5 层与索引层）、agent.db 索引层 REINDEX 修复与逐表摘要判据、安装时持有者闸与重新采集；REINDEX 只在 agent.db 验证、防护扩展不含 agent.db | 2026-11-03 |
 | [OMP 界面图标：三档 symbolPreset 与 Glyph Protocol](omp/symbol-presets-and-glyph-protocol.md) | `symbolPreset` 枚举 unicode/nerd/ascii（默认 unicode，本机 nerd）；277 个符号键分 24 类；nerd 档仅图标换私有区码位、制表符与进度条仍为 Unicode；自带 270 个轮廓（JetBrainsMono NFM 2.304 / Nerd Fonts 3.5.1，upm 1000、aw 600、lh 1320）；APC `25a1` 四动词握手、三段私有区、确认码位 0xf0d57（icon.omp）；与 emoji 短码表分界；未实跑切换效果 | 2026-11-07 |
+| [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](omp/subagent-workspace-isolation.md) | 三层开关与生效条件；Linux 后端顺序与本机 overlay 可用性；ovnfs 三个作用点、管理协议版本与无静默回退；运行期间写入工作区、结束时一次捕获，合并阶段根仓库一次、嵌套仓库分别应用；`detachGitDir` 使原生隔离拥有独立 git 元数据；`bash.gitGuard` 默认关闭；本机 18.18.1 两个开关均关 | 2026-11-08 |
 
 ## tokscale
 
