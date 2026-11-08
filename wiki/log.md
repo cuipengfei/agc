@@ -1870,3 +1870,21 @@
 - Created: wiki/terminal-multiplexers/ttyd-xterm-renderer-corruption.md
 - Updated: ttyd-frontend-compilation
 - 要点：色块症状对应 WebGL 字形缓存损坏，resize 触发整屏重绘自愈；ttyd 1.7.7 `rendererType=webgl/canvas/dom` 与 Console 加载日志、URL 参数覆盖；本机切 canvas 成功且 Chrome `Canvas: Hardware accelerated`（Skia Graphite/Dawn/D3D11）；Chromium 台账 entry id 17（仅 os:win）与 id 165（仅 gl_vendor NVIDIA）均无 driver_version 区间，驱动升级不摘 workaround；驱动 580.88（2025-07-27）→ 官网最新 621.14 WHQL（2026-11-04）；待验证分支：canvas 复发时 `enableSixel=false` A/B、驱动升级后回验 webgl。未验证：色块根因在本机的最终定位、621.14 实测效果、sixel 嫌疑的 A/B 结果。
+
+## [2026-11-07] ingest | agent-browser 与 chrome-devtools MCP：能力、生态位与接入边界
+- Disposition: New
+- Raw: raw/agent-tooling/agent-browser-and-chrome-devtools-mcp-sources.md; raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md
+- Created: wiki/agent-tooling/agent-browser-vs-chrome-devtools-mcp.md
+- 要点：两工具同为 CDP 与无障碍树文本快照循环（agent-browser 以 `@e1` ref 驱动，chrome-devtools-mcp 以 uid 驱动并写明快照优先于截图）；agent-browser 独有委托安全三层加人工审批、pdf/record/diff、stream/dashboard、独立 daemon 会话（默认一小时无命令退出，保存状态以配置 session persistence 为前提）、Lightpanda/Obscura/iOS Safari、五家云端 provider、Linux `--with-deps`、skill 与 CLI 版本对齐、点击被遮挡/隐藏/禁用时诚实失败；chrome-devtools-mcp 1.12.0 独有性能 trace + Insight + CrUX、14 个堆快照工具、logpoints 与 source-mapped console、CSS 级联检查、Lighthouse、fill_form、isolatedContext、精细 emulation、WebAuthn/PWA/扩展/WebMCP 旗标（PWA 仅 pipe 连接、WebMCP 需 Chrome 150+ 开旗标）、service worker 求值、usage statistics 与 CrUX 发送默认开；本机 chrome-devtools 条目 enabled:false 指向 9333（23:38 检查无监听）、agent-browser 未安装，启用两路（去 --browserUrl 走自动启动，或外接调试端口 Chrome）；WSL mirrored 与回环以新 raw 现录 wslinfo 输出加 wsl-windows 旧 raw 的 win-ok 实测双证。未验证：遮挡报错语义、auto-connect 跨 WSL 发现、agent-browser 实际安装与连接。
+
+## [2026-11-07] ingest | Webtop 移植到 WSL：组件、偏离与原因
+- Disposition: New
+- Raw: raw/webtop/2026-11-07-wsl-webtop-architecture-and-evidence.md
+- Created: wiki/webtop/webtop-on-wsl-architecture.md
+- 要点：固定上游为 Selkies 2.2.1（commit d6b9351、deb 2.2.1-1~ubuntu26.04、SHA-256 69e0f74）、Pixelflux 2.2.3、Pcmflux 2.2.1、Webtop 配置基准 f33b8d0、selkies-layers f573a4c；宿主为 Ubuntu 26.04 amd64、KWin 4:6.6.6-0ubuntu0.1、Qt 6.10.2+dfsg-7，补丁按宿主 ABI 构建（build_id cc7e51e、libkwin.so.6 SHA-256 d9a4a76）；WSL 侧差异是原生安装替代镜像、私有 D-Bus/XDG/音频、普通 kcminit、`--library-path` 显式 loader 加 KWIN_FORCE_OWN_QPA=1（上游 QPA 工厂在程序路径不含 kwin_wayland 且未设该变量时返回 nullptr）、`/tmp/.X11-unix` 只读 tmpfs 的会话 bind mount 与精确恢复、静态 systemd 单元按 cgroup 管理；验收读数为运行 11 项、访问 7 项、Python 167 项、Bun 24 项，2166 包与 11 服务/5 配置身份精确不变；CPU 编码依据与帧率未测量，21 项视觉待用户。
+
+## [2026-11-07] ingest | 免登录本机桌面入口：去掉认证与 TLS 之后剩下什么边界
+- Disposition: New
+- Raw: raw/webtop/2026-11-07-webtop-passwordless-http-cutover.md
+- Created: wiki/webtop/passwordless-loopback-desktop-access.md
+- 要点：入口成立三条件为 `bind=127.0.0.1` 加 `port=8080` 的单一 IPv4 回环监听、Selkies 显式 `--enable-https=false` 与 `--enable-basic-auth=false` 且不传证书参数、运行 profile 精确七字段且不含用户名与认证开关；剩余控制只有回环地址，本机可连该端口的进程即可驱动桌面并访问用户可见文件；维护侧仍有效的是普通用户权限、restore 在任何停止与写入前校验七字段 profile（旧记录 20261107T140937 被拒且服务状态、文件、记录目录 mtime 与 2166 包均未变）、远端来源继续 HTTPS 与 SHA-256/provenance 校验；停止后 systemd 不再提供 MemoryCurrent 与 CPUUsageNSec，报告两项为 null、`unit_resources=not_run`、整体 blocked，9 项必要清理单独 passed；验收要求正面成功（根 200、上传字节、下载 SHA-256、WS handshake 与 MODE），401 与 404 不算覆盖；Windows 侧匿名请求 200 且无 WWW-Authenticate，TLS 尝试返回 RECORD_LAYER_FAILURE，apply 记录 20261107T145751、当前配置恢复记录 20261107T150052。

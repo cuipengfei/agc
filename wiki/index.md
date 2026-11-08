@@ -59,6 +59,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [持久任务库与会话 todo 的分工](agent-tooling/durable-backlog-vs-session-todo.md) | 会话 todo 记执行步骤，bd 记持久交付项；按生命周期、共享范围、依赖关系、审计需求判定；混合流程与 AGENTS.md 优先级规则 | 2026-11-05 |
 | [bd init auto-commit 陷阱](agent-tooling/bd-init-auto-commit-gotchas.md) | bd init 默认自动 git commit，无 --no-commit；#5654 staged 文件被卷入、#3495 reinit-local 无 opt-out、#1989 讨论默认开启；规避方式与建议 | 2026-11-06 |
 | [Reason Network：跨机器的 agent 团队目录与消息总线](agent-tooling/reason-network.md) | 团队目录加消息总线：push/turn/pull 三档投递、签名名册与邀请门禁、iroh 直连与中继、自建中继不接触 n0、消息 64 KB、离线最多一天、M0–M3 完成 M4 未开始 | 2026-11-06 |
+| [agent-browser 与 chrome-devtools MCP 对比](agent-tooling/agent-browser-vs-chrome-devtools-mcp.md) | 同 CDP 的双工具对照：agent-browser 按快照 ref 驱动、点击诚实失败（遮挡/隐藏/禁用即报错）、auth vault + 域名白名单 + 动作策略 + confirm/deny、stream/dashboard、pdf/record/diff、Lightpanda/Obscura/iOS Safari、五家云端 provider、skill 与 CLI 版本对齐；chrome-devtools-mcp 1.12.0 为 uid 快照、fill_form 多元素填写、性能 trace + CrUX、14 个堆快照工具（--memoryDebugging）、logpoints/CSS/Lighthouse、isolatedContext、WebAuthn/PWA/扩展/WebMCP 旗标与 service worker 求值；本机条目 enabled:false 指向 9333（2026-11-07 检查无监听）、agent-browser 未安装，含自动启动与外接两条启用路 | 2026-11-07 |
 
 ## ai-coding-agents
 
@@ -576,3 +577,12 @@ AI 驱动的新闻聚合器：多源抓取、profile 评分、双语简报与多
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Horizon 架构与部署方式](horizon/horizon-architecture-and-deployment.md) | 四阶段流水线（抓取→AI 分析过滤→补充→生成投递）、10 种信息源、4 个内置 profile、11 种 AI provider、三种定时方式（GitHub Actions / 本地 cron / Docker+主机 cron）、四条投递渠道在 GitHub Actions 下的实际可用性边界（模板默认仅 Pages+webhook 飞书，邮件需额外配置且订阅者状态不持久化，微信需交互式登录且会话文件无法跨 run 保留）、Actions 免费额度与模型 API 费用区分、MCP Server 7 个工具 | 2026-11-04 |
+
+## webtop
+
+浏览器访问的 Linux 桌面在 WSL 上的组件构成、与 Webtop 的对应关系，以及免登录入口的剩余边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Webtop 移植到 WSL：组件、偏离与原因](webtop/webtop-on-wsl-architecture.md) | Selkies 2.2.1 + 嵌套 KWin 6.6.6 / Qt 6.10.2 + Plasma 的画面与输入链路；沿用 Webtop 提交 f33b8d0 的应用与模板、selkies-layers 补丁来源；WSL 侧重写为原生安装、私有 D-Bus/XDG/音频、普通 kcminit、QPA 显式 loader、X11 bind mount 与 systemd 静态单元；补丁按宿主 ABI 构建（build_id cc7e51e、libkwin.so.6 SHA-256 d9a4a76）；2166 包与 11 服务、5 配置身份精确不变；CPU 编码依据与帧率未测量，21 项视觉待用户 | 2026-11-07 |
+| [免登录本机桌面入口：去掉认证与 TLS 之后剩下什么边界](webtop/passwordless-loopback-desktop-access.md) | 成立三条件（`127.0.0.1` 监听、`--enable-https=false` 与 `--enable-basic-auth=false`、七字段 profile）；仍有效防护（普通用户权限、回环、restore 前置 profile 校验、来源 SHA-256 与 provenance）与已失去防护（网络认证、TLS、可区分主体）；停止后资源读数 `null`、`unit_resources=not_run`、整体 `blocked` 的报告语义；7 项访问检查与真实返回值；apply 记录 20261107T145751、恢复记录 20261107T150052、旧记录 20261107T140937 被拒且无副作用 | 2026-11-07 |
