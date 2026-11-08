@@ -552,6 +552,14 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 | [标准用户降低 Windows 物理内存占用的可达范围](wsl-windows/nonadmin-physical-memory-reduction.md) | 按进程清空工作集的调用条件（`PROCESS_SET_QUOTA` + `PROCESS_QUERY_INFORMATION`，本次脚本另按 SID 筛自有进程，API 无所有者条件）；RAMMap Empty 五项的作用范围与权限未核实；本机实测清空 146 个进程后 3 秒「使用中」降 1,362 MB、可用升 1,362 MB、工作集 3,726→556 MB，63 秒可用低于基线 657 MB，提交占用未测；适用场景与定期清理的收益边界 | 2026-10-25 |
 | [Docker Desktop 退出与 WSL2 发行版存活](wsl-windows/docker-desktop-quit-and-wsl2-lifecycle.md) | 后端日志证 Docker 退出只终止 docker-desktop 发行版、不执行 `wsl --shutdown`；用户发行版消失归因于空闲超时（instanceIdleTimeout 默认 15000ms、`-1` 禁用；vmIdleTimeout 默认 60000ms）为推断；给出验证方法 | 2026-10-10 |
 
+## ubuntu-packaging
+
+Ubuntu 的 apt 来源优先级、第三方 PPA 回归的定位与长期防护，以及 Ubuntu Pro ESM 的版本与启用取舍。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [apt 来源优先级与第三方 PPA 回归](ubuntu-packaging/apt-source-priority-and-ppa-regression.md) | 默认 500 下 apt 取版本号最大者，`4.3.5-3xtradeb1.2604.1` 因此顶掉官方 `4.3.5-3ubuntu1.1`；ttyd 关闭 HTTP 连接时 SIGSEGV（`__lws_close_free_wsi_final` 跳到 `0x61`），用同一二进制换 `LD_LIBRARY_PATH` 对照 3 次请求证实差异在库；三层防护为包级 pin `-1`、`-i 127.0.0.1`（`-i lo` 在本机解析成 `10.255.255.254`）、ESM `+esm1` 修复；ESM 510 高于 500，hold 会连安全更新一起拦住；`esm-apps`/`esm-infra` 启用、`landscape` 关闭 | 2026-11-08 |
+
 ## agent-development-environments
 
 多 Agent 工作台（ADE）候选发现、筛选与选型。
