@@ -29,7 +29,8 @@
     "dialogShownFor": "0.28.42"
   },
   "inboxListIntro": {
-    "dueAt": "2026-10-31T12:08:00.637Z"
+    "dueAt": "2026-10-31T12:08:00.637Z",
+    "shownAt": "2026-11-08T03:02:50.956Z"
   },
   "inboxNotifications": {
     "allowedOrigin": "http://localhost:42583",
