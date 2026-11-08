@@ -1888,3 +1888,34 @@
 - Raw: raw/webtop/2026-11-07-webtop-passwordless-http-cutover.md
 - Created: wiki/webtop/passwordless-loopback-desktop-access.md
 - 要点：入口成立三条件为 `bind=127.0.0.1` 加 `port=8080` 的单一 IPv4 回环监听、Selkies 显式 `--enable-https=false` 与 `--enable-basic-auth=false` 且不传证书参数、运行 profile 精确七字段且不含用户名与认证开关；剩余控制只有回环地址，本机可连该端口的进程即可驱动桌面并访问用户可见文件；维护侧仍有效的是普通用户权限、restore 在任何停止与写入前校验七字段 profile（旧记录 20261107T140937 被拒且服务状态、文件、记录目录 mtime 与 2166 包均未变）、远端来源继续 HTTPS 与 SHA-256/provenance 校验；停止后 systemd 不再提供 MemoryCurrent 与 CPUUsageNSec，报告两项为 null、`unit_resources=not_run`、整体 blocked，9 项必要清理单独 passed；验收要求正面成功（根 200、上传字节、下载 SHA-256、WS handshake 与 MODE），401 与 404 不算覆盖；Windows 侧匿名请求 200 且无 WWW-Authenticate，TLS 尝试返回 RECORD_LAYER_FAILURE，apply 记录 20261107T145751、当前配置恢复记录 20261107T150052。
+
+## [2026-11-08] ingest | Selkies 指针尺寸链路与浏览器时序（HiDPI 嵌套会话）
+- Disposition: New
+- Raw: raw/webtop/2026-11-08-selkies-cursor-scaling-chain-investigation.md
+- Created: wiki/webtop/selkies-cursor-scaling-chain.md
+- 要点：指针消息线格式 `cursor,<JSON>`（substring(7)、无 await）与 WebRTC `{type:'cursor',data:…}` 同构；字段语义 curdata/hotx/hoty/handle（0 隐藏），width/height 前端不读取；前端 canvas 分支 buffer 取 ImageBitmap 实际像素、CSS 尺寸与热点 ÷ density、移动只改 translate，CSS 分支（use_browser_cursors）image-set 按密度归一而 fallback 不归一；density 取「视频流像素 ÷ 页面 CSS 尺寸」最大值并退 `_streamDensity`/`useCssScaling?1:devicePixelRatio`，DPI 属桌面 theme 按 `devicePixelRatio×96` 向 25% 档位取近；服务端两条指针来源为 Pixelflux named default 24px（Cursor::load 默认 24、get_sprite 只按 size、不乘输出 scale）与嵌套 Sway surface 原始 buffer 像素（只按 cap 缩小），Smithay 在指针进出 client surface 时发 default、同 focus 内移动只有 motion，wlroots 在 attach/commit 后发 `wl_pointer.set_cursor`；已证实两处浏览器时序缺陷：旧解码迟到覆盖新图（期望宽 48 实际 24、CSS 12px）与 hide 被 pending 解码覆盖（期望 none 实际 block）；本机 scale 2、2744x1724、1372x862、Main/Sway/Selkies PID 3437236/3437320/3437254，viewer 被动采样 20 秒与 120 秒合计 1 条 48x48/hot6,2/handle 1779104401/前缀 b4f9b4f5b370c66b；根因 unconfirmed，Chrome 156.0.8078.80 无调试接口未取得浏览器 ground truth，写入阶段基于用户确认恢复收口。
+
+## [2026-11-08] ingest | i3 Sway 变体的配置错误横幅：重复键位与修复
+- Disposition: New
+- Raw: raw/webtop/2026-11-08-i3-banner-fix-and-acceptance.md
+- Created: wiki/webtop/i3-sway-config-error-banner.md
+- 要点：i3 Sway 变体（与 KDE 变体单端口 8080 互斥切换，bd wsl-webtop-us2）页面顶部红色 error in config file 横幅由 swaynag 呈现，触发为 `Mod4+Return` 重复产生的 binding overwrite；修复后唯一定义 `bindsym $mod+Return exec /usr/bin/st`（upstream.json 要求保留唯一快捷键、`$term` 变量与系统终端备选、完整默认键位、Mod4 修饰键、wmenu-run 启动器等），独立 headless `sway --validate --debug` 无 ERROR/Overwriting；native IPC 对同 PID reload 成功、swaynag 退出，Main PID 3437236 与 Sway PID 3437320 保持；42 相关测试、native 11 项与 HTTP 7 项通过，原包/baseline/用户环境保持；capture 收据 20261108T032036-fe44effc6f14（complete、schema_version 2、created_at 2026-11-08T03:20:36.432537+00:00、before/after 锚定 i3/sway/config）；用户确认横幅消失；未做视觉测试与重启，未涉及 commit/push 与 agc 仓库修改。同批 See Also：webtop-on-wsl-architecture.md 追加两条交叉引用并刷新 Updated 2026-11-08。
+
+## [2026-11-08] ingest | i3 Sway 变体的配置错误横幅：重复键位与修复（二）
+- Disposition: Update
+- Raw: raw/webtop/2026-11-08-i3-banner-fix-and-acceptance.md; raw/webtop/2026-11-08-i3-ctrl-alt-modifier-and-memory-investigation.md
+- Updated: wiki/webtop/i3-sway-config-error-banner.md; wiki/webtop/webtop-on-wsl-architecture.md
+- 要点：2026-11-08 追加窗口模式 modifier 调整：键盘前缀从 Mod4 改为 `Control+Mod1`、鼠标 `floating_modifier` 显式拆出为 `Mod1 normal`（避免 Win 键宿主冲突），capture 收据 20261108T100156-2cb8f075aceb；doctor ok、13 desktop tests、HTTP 200；未操作浏览器、未重启桌面、未 commit/push。Selkies 内存归因：RSS 1.204 GiB（Anon 602 MiB、SHM PSS 594 MiB）、49 个 wlroots 映射（33 个大池 590 MiB）、2-3 分钟自然采样 RSS 仅 +4 KiB 无持续增长，具体释放点 unknown，不能判为合理必需。
+
+## [2026-11-08] ingest | KDE Wayland 输入法启动器与 Fcitx 归属
+- Disposition: New
+- Raw: raw/webtop/2026-11-08-kde-wayland-input-method-launcher-fix.md
+- Created: wiki/webtop/kde-wayland-input-method-launcher.md
+- 要点：KDE 出现 Fcitx「should be launched by KWin」警告；根因为项目 `desktop-session.py` 直启 Fcitx 且 `session.py` 全局 `QT_IM_MODULE=fcitx`/`GTK_IM_MODULE=fcitx`，KWin `VirtualKeyboard.available=false`；按官方文档改 `kwinrc` `[Wayland] InputMethod=/usr/share/applications/fcitx5-wayland-launcher.desktop`（KWin 拥有 launcher 与 socket，launcher 经私有 D-Bus 激活唯一 Fcitx），取消全局 `QT/GTK/SDL_IM_MODULE`，保留 `XMODIFIERS=@im=fcitx`；备选「KWin 直启 fcitx5 + `-platformpluginpath` 隔离」被否（Qt 证实该参数只作用于 QPA loader path，不能补 `QT_PLUGIN_PATH` 遍历）；重启（会话授权）后实测 `available:false→true`、Wayland protocol 1、`frontend:wayland` 1 IC、`CanRestart=false`（私有 D-Bus 单实例），fcitx 环境无 `LD_LIBRARY_PATH`/`QT_PLUGIN_PATH`/IM 变量；进程树 KWin 3600723→launcher 3601773→fcitx 3601775；`[Wayland] InputMethod` 进 capture-config 白名单；`docs/desktop-parity.md` 与 `docs/maintenance.md` 同步。边界：拼音/组合输入未在应用实测（用户目视验收项），未 commit/push；套件 48 项通过（session 29、terminal_fonts 5、desktop 14），全量套件 180 s 超时未宣称通过。
+
+## [2026-11-08] ingest | 私有桌面的共享边界：字体、应用入口与命令路径
+- Disposition: New
+- Raw: raw/webtop/2026-11-08-terminal-font-starship-xdg-visibility-fix.md; raw/webtop/2026-11-08-private-desktop-discovery-and-command-resolution.md
+- Created: wiki/webtop/private-desktop-visibility.md
+- Updated: wiki/webtop/webtop-on-wsl-architecture.md
+- 要点：澄清同一 WSL 三层边界——系统程序/系统字体共用，搜索路径分层（配置走项目 `XDG_CONFIG_HOME`、数据走项目 `XDG_DATA_HOME`、D-Bus/音频私有会话）；字体修复为 `scripts/terminal-fonts.py` 在两个桌面私有 Fontconfig 导入 `~/.local/share/fonts` 且 `monospace`/`Liberation Mono` 别名选 `Maple Mono NF CN`，Konsole 派生 `wsl-webtop.profile` 只改 `Font` 键、沿用父 profile；Starship 8 个 codepoint（`E0B0 E0B4 E0B6 F418 F432 F43A F0079 F0548`）经 fontTools 实测在 Maple 全覆盖、DejaVu/Liberation 全缺，Qt 字形 smoke 修复前 family `DejaVu Sans` exit 2 → 修复后 Maple 8 非零 glyph exit 0，`strace` 实证两个私有根下真实 `st`/`konsole` 打开 Maple ttf；命令与应用修复为 `session.environment` 新增 `command_path`（仅接入实际存在的用户目录 tuple：`.local/opt/node-current/bin`、`.local/bin`、`bin`、`.bun/bin`、`.cargo/bin`、`.opencode/bin`、`.dotnet`、`.sdkman/candidates/gradle/current/bin`、`jdtls/bin`、`go/bin`、`.local/share/mise/shims`、`.asdf/shims`、`.npm-global/bin`，加 `/opt/maven/bin`、`/usr/local/go/bin`，保留 `/usr/local/bin:/usr/bin:/bin`）与 `XDG_DATA_DIRS`（用户 `~/.local/share` 首位、接既有 Flatpak 导出与 Snap 目录、项目数据目录保持优先）；新回归 `test_personal_commands_and_application_entries_are_discoverable` 先红后绿、30 项 session 测试通过；经授权重启 KDE 后以 `/proc/3627128/environ` 验证实际 Plasma `PATH` 与 `XDG_*`，Qt 可定位个人 `claude-code-url-handler.desktop` 与 Tern 入口（项目目录优先于用户目录）；全量 `iterdir` 枚举解析：`~/.bun/bin` 66 项全过、`~/.local/bin` 94 项除 `env.fish`/`pnpm`/`pnpx`（宿主侧同样不可用）/`uv-bun.test.js` 外全过、`../buntoolbox` `check-wsl-versions.sh` 31 工具全过；边界（advisor 已纳入正文）：命令 `PATH` 解析成功不等于 KDE 菜单逐项 `.desktop` 可见、不等于应用可完整运行；Konsole 字形渲染为用户目视验收项。
