@@ -709,9 +709,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "0d0f10932e394ea9cc8d0c9bbd0dd6d95d7de943",
+      "skillFolderHash": "fee48ebaab4e36b07a7b61aa2ab7c342dfbbc919",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-11-03T11:53:51.300Z"
+      "updatedAt": "2026-11-09T11:48:18.980Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1224,18 +1224,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "d869f5dea743dc10179528ecf7b1782d91e25287",
+      "skillFolderHash": "4f1ebf628ed85e21f8b05021854209dbe4e2cb1a",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-07T01:36:06.712Z"
+      "updatedAt": "2026-11-09T11:48:19.935Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "c60cf645c62c0871fa84ee7403f5dad177b37d2d",
+      "skillFolderHash": "3c762e70d5b8be1a2836f44e539f78f4263170a2",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-08T01:23:29.249Z"
+      "updatedAt": "2026-11-09T11:48:20.070Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1306,9 +1306,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "f38838aee0504fae07ef057667182a7c5af4ffe6",
+      "skillFolderHash": "d48bfca52a2424b7f17c0de1d718e0c3b9d8f223",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-07T01:36:08.097Z"
+      "updatedAt": "2026-11-09T11:48:20.193Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
