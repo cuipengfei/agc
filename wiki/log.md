@@ -1932,3 +1932,9 @@
 - Created: wiki/omp/subagent-workspace-isolation.md; wiki/agent-tooling/ovnfs.md
 - Updated: wiki/omp/rust-ts-architecture.md
 - 要点：OMP 的隔离由三层开关共同决定（`task.isolation.enabled` 默认 false、任务 `isolated: true`、`isolation.backend` 默认 auto）；Linux 自动顺序为 btrfs、ZFS、linux-reflink、overlayfs、rcopy，本机 `stat -f` 报 ext2/ext3、`/proc/filesystems` 含 overlay 且用户命名空间内挂载实测成功，btrfs/ZFS/reflink 探测未实际运行、最终后端选择为推断；`ensureIsolation` 调用 `detachGitDir`，原生隔离已有独立 HEAD/index/refs 并借用对象库，故私有 git 元数据不构成 ovnfs 优势；ovnfs 被找到后有三个作用点（系统提示词的 Separate checkouts、grep/glob 走守护进程、隔离子 agent 用 checkout），管理协议版本 5，找到即无静默回退；捕获在运行结束时一次、按仓库出补丁，根仓库补丁一次应用、嵌套仓库分别应用，成功才应用，kept-alive 在 release 时捕获且用指纹跳过未变提交；`bash.gitGuard` 默认 false，本机第 426 行关闭、第 538 行 isolation 关闭，安装 OMP 18.18.1 含 ovnfs 模块但二进制未安装；ovnfs 安装脚本从 build.stencil.so 取元数据再走预签名下载，默认装到 PATH 上的 `~/.local/bin` 会立即触发上述前两个作用点，升级用 `ovnfs update`，`restart` 会启动不存在的守护进程，远程离线前必须 `push`。
+
+## [2026-11-08] ingest | WSL 服务排障手法
+- Disposition: New
+- Raw: raw/wsl-windows/2026-11-08-wsl-service-debug-playbook.md
+- Created: wiki/wsl-windows/wsl-service-debug-playbook.md
+- 要点：四个反复使用的手法——`LD_LIBRARY_PATH` 隔离对照判定「库还是程序」（只解包不改环境变量时对照无效）、`ss -ltnp` 验证监听地址（`-i lo` 在 WSL 可能解析为 `10.255.255.254`）、`apt-cache policy` 与 `showhold` 看版本来源与锁定（只看版本号会漏掉 `-1` 或 `510`）、`journalctl` 与 `NRestarts` 确认崩溃循环（`Restart=always` 会掩盖崩溃）；每式含适用场景、命令模板、预期输出、误判陷阱。

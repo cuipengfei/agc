@@ -553,6 +553,7 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 | [Windows 内存回收工具与 WSL swap](wsl-windows/windows-memory-reclamation-and-wsl-swap.md) | 清理≠压缩（压缩是内核 Memory Compression，自 Windows 10 RTM 起内置）；RAMMap（分析，Empty 菜单五项 `-Ew`/`-Es`/`-Em`/`-Et`/`-E0`，作用范围与权限未核实）、Mem Reduct（清理）、Process Lasso（CPU 优化，内存清理未验证）；"正在使用腰斩"= WS 塌缩而 Private 不变、Commit 不降反升（vmmem WS 1768MB vs Private 12171MB）；页离开工作集后按修改位去 Modified 或 Standby，配合 2026-10-25 四时间点实测；pagefile 与 WSL swap 两层换页、单 NVMe 下 C:/D: 同盘；删 VHD 前 handle.exe、删除成功≠无占用 | 2026-10-25 |
 | [标准用户降低 Windows 物理内存占用的可达范围](wsl-windows/nonadmin-physical-memory-reduction.md) | 按进程清空工作集的调用条件（`PROCESS_SET_QUOTA` + `PROCESS_QUERY_INFORMATION`，本次脚本另按 SID 筛自有进程，API 无所有者条件）；RAMMap Empty 五项的作用范围与权限未核实；本机实测清空 146 个进程后 3 秒「使用中」降 1,362 MB、可用升 1,362 MB、工作集 3,726→556 MB，63 秒可用低于基线 657 MB，提交占用未测；适用场景与定期清理的收益边界 | 2026-10-25 |
 | [Docker Desktop 退出与 WSL2 发行版存活](wsl-windows/docker-desktop-quit-and-wsl2-lifecycle.md) | 后端日志证 Docker 退出只终止 docker-desktop 发行版、不执行 `wsl --shutdown`；用户发行版消失归因于空闲超时（instanceIdleTimeout 默认 15000ms、`-1` 禁用；vmIdleTimeout 默认 60000ms）为推断；给出验证方法 | 2026-10-10 |
+| [WSL 服务排障手法](wsl-windows/wsl-service-debug-playbook.md) | 四个反复使用的手法：`LD_LIBRARY_PATH` 隔离对照判定「库还是程序」、`ss -ltnp` 验证监听地址（`-i lo` 在 WSL 可能解析为 `10.255.255.254`）、`apt-cache policy` 与 `showhold` 看版本来源与锁定、`journalctl` 与 `NRestarts` 确认崩溃循环；每式含适用场景、命令模板、预期输出、误判陷阱 | 2026-11-08 |
 
 ## ubuntu-packaging
 
