@@ -1,8 +1,8 @@
 # Jev 在 OMP、Codex、OpenCode 的现成集成盘点
 
-> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01; OpenAI Decisions API beta 发布与字段级 schema 逐字核验, 2026-10-07; OpenAI Decisions API 当前状态与请求格式核验, 2026-10-15
+> Sources: 本会话只读调查（typesafe-ai 官方 org、GitHub code/issues/repos 搜索、registry 元数据、社区仓库）, 2026-09-19; 本会话只读直读（typesafe-ai/skills、antfu/skills-cli、官方文档页）, 2026-09-19; OpenAI DevDay 2026 recap 与 Decisions API 端点未公开核验, 2026-09-30; jevgrep README 与 docs/architecture.md 抓取（dzhng/jevgrep）, 2026-10-01; OpenAI Decisions API beta 发布与字段级 schema 逐字核验, 2026-10-07; OpenAI Decisions API 当前状态与请求格式核验, 2026-10-15; 本机 OMP judgment wire 源码直读, 2026-11-09
 > Raw: [jev-ready-made-integrations](../../raw/ai-coding-agents/2026-09-19-jev-ready-made-integrations.md); [jev-three-host-sidecar-integration](../../raw/ai-coding-agents/2026-09-19-jev-three-host-sidecar-integration.md); [jev-official-skill-host-support](../../raw/ai-coding-agents/2026-09-19-jev-official-skill-host-support.md); [jev-channel-pricing-verification](../../raw/ai-coding-agents/2026-09-19-jev-channel-pricing-verification.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [openai-decisions-api-announcement](../../raw/ai-coding-agents/2026-09-30-openai-decisions-api-announcement.md); [jevgrep-readme-and-architecture](../../raw/ai-coding-agents/2026-10-01-jevgrep-readme-and-architecture.md); [openai-decisions-api-beta-schema](../../raw/ai-coding-agents/2026-10-07-openai-decisions-api-beta-schema.md)
-> Updated: 2026-10-15
+> Updated: 2026-11-09
 
 ## Overview
 
@@ -22,6 +22,7 @@
 - `judgment` 子系统内建 `TypeSafeJudge`，随 v18.2.4（2026-09-17）发布；本机 18.2.5 安装包内已核实存在。ready-to-use：设置 `TYPESAFE_API_KEY` 或 `/login typesafe`。
 - 定位边界：这是把 Jev 用作 **OMP 内部 judgment 后端**（给 auto-thinking 分类、smart unexpected-stop、git TUI AI staging、eval `judge()` 供电），**不是把 Jev 暴露为 OMP 的聊天主模型**；auth 注册表注释亦写明 "TypeSafe (System One judgments) is not a chat-model provider"。
 - 机制细节（后端、三值、回退链、消费方）见 [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](../omp/judgment-provider-and-eval-judge.md)。
+- **Jev 不是 OMP 里唯一的判断后端**：`openai-decisions`、`openrouter-decisions`、`workers-ai-systemone` 三个 wire 与 `typesafe` 并列，`hasNativeJudge` 对四者同样返回真，`noul`/`choice`/`score` 四者都支持。差别在这两处：`box`（图片边界框坐标题）只有 `typesafe` 与 `openrouter-decisions` 支持，`openai-decisions` 直接抛 `ValidationError`，`workers-ai-systemone` 未声明该能力；图片限制各 wire 不同——`typesafe` 限 PNG/JPEG 且需 opt-in、不设张数上限，`openrouter-decisions` 不设限，`workers-ai-systemone` 上限 4 张，`openai-decisions` 上限 128 张。也就是说，除 `box` 之外的内置判断功能都能换成 OpenAI Decisions 后端。（[openai-decisions raw](../../raw/omp/2026-11-09-openai-decisions-judge-wire.md) §①）
 
 ## Codex：无原生；社区 MCP（README 层面，本轮未安装运行）
 

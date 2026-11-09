@@ -1,12 +1,12 @@
 # Copilot 的决策路由端点与 Auto／HydraFusion 边界
 
-> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25
-> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md)
-> Updated: 2026-10-25
+> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09
+> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md)
+> Updated: 2026-11-09
 
 ## Overview
 
-Copilot 的决策能力分两层。对外：没有向用户开放 system-one 类型的决策接口，公开的对外 API 是管理类接口。对内：上游存在 `/auto`（每请求选模型）与 `/models/session/intent`（意图路由）这类固定题目端点，均需 Copilot token、schema 固定。Auto 与 HydraFusion 是两件事——前者每请求选一个模型，后者选执行工作流并在一轮内协调多个模型。
+Copilot 的决策能力分两层。产品面对外：没有向用户开放 system-one 类型的决策接口，公开的对外 API 是管理类接口。上游对内：`/auto`（每请求选模型）、`/models/session/intent`（意图路由）这类固定题目端点需 Copilot token；2026-11-09 起，同一上游的 `/v1/decisions` 可用专用条目 `gpt-6-luna-decisions` 调用并返回结构化答案，该条目不进模型选择器，因此产品界面仍无入口。
 
 ## 两层结构
 
@@ -14,8 +14,11 @@ Copilot 的决策能力分两层。对外：没有向用户开放 system-one 类
 |---|---|---|
 | 对外 API | 未找到任何公开文档或 changelog 表明 Copilot 向用户提供 system-one 类型决策接口 | 文档与源码检索 |
 | 对内上游端点 | `POST /auto`、`POST /models/session/intent`，均需 Copilot token，题目固定 | 源码与包映射 |
+| 上游 API（2026-11-09 实测可用） | `POST /v1/decisions`，需 Copilot token 与专用模型 ID `gpt-6-luna-decisions`，题目由调用方提供 | 上游实测返回 200 |
 
 `/auto` 的形状是文本进、有界 typed 选择出：返回选中的模型 ID 与会话令牌。**它只能回答「用哪个模型」，不能提交自定义题目**，因此属单一固定题目的决策接口，不是通用决策服务。
+
+关于 `/v1/decisions`：它是上游模型目录里的一条专用条目，`model_picker_enabled` 为 `false`，与 `/auto`、`/models/session/intent` 同属需要 Copilot token 的上游能力，区别在于题目由调用方提供、答案带概率或置信度。**API 已实测可调用，产品界面仍无入口**，两者是两件事。详见 [同一模型名跨两个协议面时的模型 ID 分叉](copilot-decisions-model-identity.md) 与 [OpenAI Decisions API 的后端探测](openai-decisions-api.md)。
 
 ## `/auto` 端点
 
@@ -62,11 +65,13 @@ GitHub changelog（2026-09-30）原文：
 
 两者都服务 Copilot 自身的生成流程，用户只能把它选作模型，不能向它提交自定义问题或 schema。HydraFusion 的范围宽于 Auto 的单模型选择。
 
+**2026-11-09 修订**：上表「对外 API」一行仍成立（产品界面没有决策入口），但要补一句限定——上游 `/v1/decisions` 已可用，只是绑定在不对模型选择器开放的专用条目上。
+
 ## 两处常见误读
 
 **其一：`hydra_scores` 不等于 HydraFusion。** 该字段出现在探测脚本对 `POST /auto` 响应的读取逻辑里，而脚本把该路径标为 Auto V2。可以关联到 `/auto`／Auto V2，不能归给 HydraFusion，也不能据此推断 HydraFusion 在客户端侧运行。代理侧 `AutoSelectionResponse` 类型声明中本就不含该字段。
 
-**其二：HydraFusion 的上游地址未公开。** 代理源码全仓 grep `hydra|fusion` 无任何请求路径，`@vscode/copilot-api@0.5.2` 的请求映射中也无该条目，公开文档未给出地址。**未公开、未确认**——既不能给出地址，也不能断定它没有独立端点。
+**其二：HydraFusion 的上游地址仍未公开。** 代理源码全仓检索 `hydra|fusion` 无任何请求路径，`@vscode/copilot-api@0.5.2` 的请求映射中也无该条目，公开文档未给出地址。**未公开、未确认**——既不能给出地址，也不能断言它没有独立端点。
 
 ## 证据边界
 
