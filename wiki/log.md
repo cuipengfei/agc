@@ -1971,3 +1971,9 @@
 - Raw: raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md
 - Updated: pstack 技能地图与行为
 - 要点：本机 `source == backnotprop/pstack` 为 57 条（`tdd` 未装、`teach` 已换源）；按最短可达路径互斥分层 3 根 / 15 第 1 层 / 5 第 2 层 / 24 判例 / 10 用户直呼，合计 57；边表 170 条（`t` 80 = 触点 13 + 生成链 2 + playbook 65；`b` 23；`r` 67 = help 32 + 判例命名 24 + 判例直引 11），生成页 SVG 行数与边表相等；`in-your-own-words` 原记为只能直呼，实为 `poteto-mode/SKILL.md:25` → `interrogate/SKILL.md:13` 可达，直呼名单 11 改正为 10，可达数 47 改正为 48（58 技能口径）/ 47（本机 57 口径）；23 本 playbook 按调用强度分四档——16 本有执行调用指令、`orchestrate:3` 只做口径区分、`pause-safely:8` 只提 trail、5 本无技能名。
+
+## [2026-11-09] ingest | OMP Shake 机制：外科式上下文裁剪
+- Disposition: Update
+- Raw: raw/omp-slash-commands/2026-11-09-omp-shake-thinking-and-responses-replay.md
+- Updated: wiki/omp-slash-commands/shake-mechanics.md
+- 要点：`/shake thinking` 自 18.18.2 起只删除请求会从 `content` 重建的轮次，原生重放轮次计入 `thinkingBlocksKept` 并保持原样，汇总文案为 `N thinking blocks were kept because removing them would not change what the model receives`，删除数为 0 时只作状态行输出、不重建聊天记录；判定分三层（`openAIResponsesReplaysNativeHistory` 查会话冷暖、`replaysNativeResponsesHistory` 查 api/model/provider 与载荷、`replaysNativeResponsesTurn` 组合且冷会话要求无字符串 `id`、无字符串 `encrypted_content`、有明文 `reasoning_text`），该函数被请求构造、tokenizer 计数、上下文维护共用，`buildResponsesInput` 另有补建被截断工具调用与抑制空轮次两项未搬入；保留范围只有 `openai-responses`、`openai-codex-responses` 与默认转入 Responses 的 `openrouter`，Azure 虽设 `nativeHistory: { replay: true }` 但不写 `providerPayload`，故不触发；OpenAI 官方文档无 `thinking` 条目，Responses 返回 `type: "reasoning"` 条目内含 `summary`、可选 `reasoning_text` 与 `encrypted_content`（无状态回传时服务端内存解密后销毁），OMP 把摘要文本存进 `content` 的 thinking 块并把原生条目存进 `providerPayload` 与 `thinkingSignature`；copilot-api 侧面对同一上游 `401 input item does not belong to this connection`，首发原样转发，仅在 4xx 且 `error.message` 含 `belong` 且请求含带 `encrypted_content` 的 `reasoning` 条目时改写为只留 `id`、`type`、`summary` 并重试一次，学习缓存上限 1024 条，因此 OMP 保留本地 thinking 块不改变发往代理的请求，也不改变触发重试的条件。

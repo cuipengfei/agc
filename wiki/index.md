@@ -336,7 +336,7 @@ OMP 内置 slash 命令的全量枚举与逐命令机制。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 内置 slash 命令全表（v18.1.10 快照 82 条；当前 core registry 85 条）](omp-slash-commands/builtin-slash-commands.md) | 口径一 v18.1.10 快照 82 条（core 79 + bundled /green /review + SDK /autoresearch）；口径二 2026-10-10 当前 blob core registry 85 条七类：Mode 21 / Collab 11 / Session 19 / Lifecycle 25 / Marketplace 3 / Skills 1 / Control 5；2026-10-10 补 Mode 类 `/slow` `/ratchet` `/modelpreset` `/effort` | 2026-10-10 |
-| [OMP Shake 机制](omp-slash-commands/shake-mechanics.md) | 无 LLM 外科裁剪：tool result + 消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档、useless 豁免、toolCall 不碰、artifact 占位符可回收 | 2026-10-01 |
+| [OMP Shake 机制](omp-slash-commands/shake-mechanics.md) | 无 LLM 外科裁剪：tool result + 消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档、useless 豁免、toolCall 不碰、artifact 占位符可回收；`/shake thinking` 自 18.18.2 起保留原生重放轮次（`openai-responses`、`openai-codex-responses`、默认走 Responses 的 `openrouter`），冷会话按三条件回落，与 copilot-api 的 `belong` 剥除重试无因果 | 2026-11-09 |
 | [OMP 会话内导航：/branch 与 /tree](omp-slash-commands/branch-vs-tree-navigation.md) | 同一会话文件内的 leaf 移动：`/branch` 回放当前分支最新约 600 条、`a` 展开全部、`f` 过滤、有兄弟分支时左右键导航兄弟条、草稿覆盖编辑器、固定不摘要；`/tree` 五档过滤（`default` 隐藏 `model_change` 等簿记条目）、草稿仅在编辑器为空时回填、摘要受 `branchSummary.enabled` 控制默认关、`ask` 结果重答；双击 Esc 空编辑器按 `doubleEscapeAction` 默认 `rewind`；与 `/fork`、`/resume`、`AgentSession.branch()` 的边界 | 2026-11-03 |
 
 ## omp-ttsr
