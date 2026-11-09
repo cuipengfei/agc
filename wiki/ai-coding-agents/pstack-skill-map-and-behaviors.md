@@ -1,12 +1,12 @@
 # pstack 技能地图与行为（backnotprop/pstack@25abb38）
 
-> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07
-> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md)
-> Updated: 2026-11-07
+> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09
+> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md)
+> Updated: 2026-11-09
 
 ## Overview
 
-backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit 25abb38（2026-10-29）共有 61 个 `SKILL.md`：`skills/` 下 58 个注册技能 + `automations/benny/skills/` 下 3 个 Slack 自动化专用技能（不进 slash 菜单）。注册技能 = 24 个 `principle-*` 判例 + 34 个功能技能。全部技能的 frontmatter 除 `setup-pstack` 外都设 `disable-model-invocation: true`——模型不能自由触发它们，只有用户显式调用或技能间按正文指令调用。执行路由分三层：入口（poteto-mode / poteto-help / setup-pstack）→ 流程（poteto-mode 的 23 份 playbook）→ 工序（功能技能）与判例（principle）。按 179 条执行边重算，三个入口可达 47 个注册技能，11 个功能技能只能由用户直接点名；本机 `.skill-lock.json` 记录的 56 条 pstack 条目与该 commit 逐字节一致，`tdd` 因本机同名目录来自 mattpocock/skills 而未被 pstack 版占用装上；`teach` 已于 2026-11-07 换成 pstack 版。
+backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit 25abb38（2026-10-29）共有 61 个 `SKILL.md`：`skills/` 下 58 个注册技能 + `automations/benny/skills/` 下 3 个 Slack 自动化专用技能（不进 slash 菜单）。注册技能 = 24 个 `principle-*` 判例 + 34 个功能技能。全部技能的 frontmatter 除 `setup-pstack` 外都设 `disable-model-invocation: true`——模型不能自由触发它们，只有用户显式调用或技能间按正文指令调用。执行路由分三层：入口（poteto-mode / poteto-help / setup-pstack）→ 流程（poteto-mode 的 23 份 playbook）→ 工序（功能技能）与判例（principle）。按 2026-11-09 复核的边口径，三个入口可达 48 个注册技能，10 个功能技能只能由用户直接点名；本机 `.skill-lock.json` 记录的 pstack 条目为 57 个（`tdd` 因同名目录来自 mattpocock/skills 而未被占用装上，`teach` 已于 2026-11-07 换成 pstack 版）。
 
 ## 判定标准
 
@@ -30,10 +30,29 @@ backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit
 
 ### 可达性（执行边口径）
 
-- 三 root 经执行边可达 47 个注册技能（poteto-mode 44 + setup-pstack 生成链 create/maintain-verification-skill、create/maintain-formal-verification-skill、statechart + bro 经 ketchup，合并）。
+- 三 root 经执行边可达 48 个注册技能（58 技能口径；本机 57 技能口径为 47，差额是未安装的 `tdd`）。构成：poteto-mode 44 + setup-pstack 生成链 create/maintain-verification-skill、create/maintain-formal-verification-skill、statechart + bro 经 ketchup，合并。
 - poteto-help 执行出边 0：它的 79 条斜杠提及是「回答问题、给可发送的提示词、停」（poteto-help/SKILL.md:9、:64），单列为 help-recommendation。
-- 11 个只能用户直接点名：automate-me、blast-radius、correct、in-your-own-words、ketchup-video、make-bot-ui、recall、reflect、sharpen、teach、typescript-best-practices。
+- 10 个只能用户直接点名：automate-me、blast-radius、correct、ketchup-video、make-bot-ui、recall、reflect、sharpen、teach、typescript-best-practices。
 - benny 三个走 `automations/benny/FOR_AGENTS.md`（行 65/87 指示读 setup-benny、triage-issue-reports、reproduce-and-fix-issues），主图不可达。
+
+> **Status: Outdated** (2026-11-09)
+> 上面第 35 行原记「11 个只能用户直接点名」并含 `in-your-own-words`，该计数已被 2026-11-09 的复核取代。按正文，它的入口是 `poteto-mode/SKILL.md:25`（Contested design → the **interrogate** skill）接 `interrogate/SKILL.md:13`（State the intent with the **in-your-own-words** skill），属第二层可达技能。当前名单为 10 个，可达数为 48（58 技能口径；本机 57 技能口径 47）。旧计数来自 2026-10-29 的边抽取，那一版未把 `interrogate` 的这条正文指令收进执行边（[本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md)）。
+
+### 本机 57 个的分层与边表（2026-11-09）
+
+本机 `source == backnotprop/pstack` 的条目为 57 个（`tdd` 未装，`teach` 已换成 pstack 版）。按最短可达路径做互斥分层，合计 57：
+
+| 层 | 数量 | 成员 |
+| --- | --- | --- |
+| 根 | 3 | poteto-mode、poteto-help、setup-pstack |
+| 第 1 层 | 15 | 经 poteto-mode 13：how、why、architect、arena、swarm、interrogate、unslop、technical-writing、no-comments、benchmark-checklist、show-me-your-work、figure-it-out、ketchup；经 setup-pstack 2：create-verification-skill、create-formal-verification-skill |
+| 第 2 层 | 5 | bro（←ketchup）、statechart（←create-formal-verification-skill）、maintain-verification-skill（←create-verification-skill）、maintain-formal-verification-skill（←create-formal-verification-skill）、in-your-own-words（←interrogate） |
+| 判例叶 | 24 | 全部 `principle-*`，由 poteto-mode 的 Principles 清单命名规则引用 |
+| 用户直呼 | 10 | recall、reflect、correct、sharpen、automate-me、blast-radius、teach、typescript-best-practices、ketchup-video、make-bot-ui |
+
+同一技能可被多处调用，分层取最短路径；跨层调用在图里以连线重复出现，不改变归属。边表共 170 条：`t`（触发与路由）80 = poteto-mode 触发表 13 + setup-pstack 邀请 2 + playbook 下行 65；`b`（正文调用）23；`r`（引用、推荐、命名规则）67 = help 推荐 32 + 判例命名 24 + 判例被直接引用 11。
+
+playbook 覆盖按调用强度分四档：16 本有执行调用指令；`orchestrate` 只在 `playbooks/orchestrate.md:3` 做口径区分（「One ambitious run that needs a bespoke workflow is figure-it-out.」），2026-10-29 的抽取记为 playbook-instruction 0 条；`pause-safely` 只在 `playbooks/pause-safely.md:8` 提到 show-me-your-work 的 trail，未计边；`authoring-a-skill`、`autopilot-stack`、`babysit`、`runtime-forensics`、`visual-parity` 五本无任何技能名。
 
 ## 安装核对（本机，2026-10-29）
 

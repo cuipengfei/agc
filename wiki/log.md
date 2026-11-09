@@ -1965,3 +1965,9 @@
 - Raw: raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md
 - Updated: wiki/omp/judgment-provider-and-eval-judge.md; wiki/omp/judgment-systemone-protocol.md; wiki/ai-coding-agents/openai-decisions-api.md; wiki/omp/judgment-chat-llm-parsing.md
 - 要点：`modelRoles.judge` 由 `typesafe-zen/jev-1.13-free` 改为 `c8787/gpt-6-luna-decisions`，回退链为 `jev-1.13-free` → `@tiny` → `@smol` → `@default`；`textJudgeRoleChain` 从首个 `native` 候选起只保留 `native`（`judgment/index.ts:265-269`），因此实际候选只有两项，chat 类 judge 不再参与；四条入口实测通过——CLI `omp find`（`requests` 2、`inputTokens` 3287）、会话内 `find` 工具（4 次请求）、会话内 `await judge(...)`（三题 1.23 秒）、`createNativeJudge` 直调（`supportsImages` 为 true）；`8787/v1/decisions` 三题型请求返回 `http=200`，响应顶层只有 `model`（回显 `gpt-6-luna`）、`answers`、`usage`，`input_tokens` 407、`output_tokens` 0，`score` 概率元素多带 `label` 回显档位名；用量表 `token_usage_events` 的 `decisions` 行 `endpoint` 为 `decisions`、`user_agent` 为 `omp/18.18.3`、`total_nano_aiu` 与 `request_outcome` 均为 `None`，即无请求级计费与结果记录；`find` 工具的 token 计数在四次请求时与用量表相差（5.9K 对 3851），原因未追查；两套协议差异为 `state` 对 `input`、对象 map 对数组加 `name`、`noul` 对 `predicate`、概率对象对数组、`cost` 位置不同、`box` 仅 System One 侧可用。同日早先「整链未实跑」「`modelRoles.judge` 仍为 jev」两处陈述已标 Outdated。
+
+## [2026-11-09] ingest | pstack 本机 57 个技能的分层与边表
+- Disposition: Update; Disputed
+- Raw: raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md
+- Updated: pstack 技能地图与行为
+- 要点：本机 `source == backnotprop/pstack` 为 57 条（`tdd` 未装、`teach` 已换源）；按最短可达路径互斥分层 3 根 / 15 第 1 层 / 5 第 2 层 / 24 判例 / 10 用户直呼，合计 57；边表 170 条（`t` 80 = 触点 13 + 生成链 2 + playbook 65；`b` 23；`r` 67 = help 32 + 判例命名 24 + 判例直引 11），生成页 SVG 行数与边表相等；`in-your-own-words` 原记为只能直呼，实为 `poteto-mode/SKILL.md:25` → `interrogate/SKILL.md:13` 可达，直呼名单 11 改正为 10，可达数 47 改正为 48（58 技能口径）/ 47（本机 57 口径）；23 本 playbook 按调用强度分四档——16 本有执行调用指令、`orchestrate:3` 只做口径区分、`pause-safely:8` 只提 trail、5 本无技能名。
