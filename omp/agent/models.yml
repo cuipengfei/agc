@@ -99,6 +99,19 @@ providers:
           - text
         contextWindow: 400000
         maxTokens: 58000
+      - id: gpt-6-luna-decisions
+        name: GPT-6 Luna Decisions
+        api: openai-decisions
+        reasoning: false
+        input:
+          - text
+          - image
+        contextWindow: 1000000
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
   c8787-chat:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>

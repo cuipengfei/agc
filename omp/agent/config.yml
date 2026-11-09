@@ -228,6 +228,7 @@ retry:
       - web/synthetic
       - web/ollama
     judge:
+      - c8787/gpt-6-luna-decisions
       - typesafe-zen/jev-1.13
       - "@tiny"
       - "@smol"
