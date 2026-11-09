@@ -96,7 +96,7 @@ worktree 建在 `.sandcastle/worktrees/`，临时分支名带时间戳（`sandca
 | 你的进程 | 不能发信号；它启动的进程在关闭时全部结束 |
 | root | 没有，`sudo: true` 的 hook 会被拒绝 |
 
-推论落在使用方式上：原生围栏假定 agent 用不到你已有的登录状态，凭据必须写进 `.sandcastle/.env`。你的 git 身份会被复制进去，提交仍带你的名字。
+推论影响使用方式：原生围栏假定 agent 用不到你已有的登录状态，凭据必须写进 `.sandcastle/.env`。你的 git 身份会被复制进去，提交仍带你的名字。
 
 `seatbelt()` 在 macOS Keychain 上没有承诺隔离；它也没有 PID 命名空间，调用 `setsid` 或 `setpgid` 脱离进程组的进程会一直存在到你手动结束。
 
@@ -124,16 +124,17 @@ npx @ai-hero/sandcastle init
 
 注册表当前 `latest` 为 `0.14.0`，另有预发布标签 `v1-next`，最新构建 `1.0.0-v1-next.20261105145541`，共 64 个版本记录。`engines` 未声明。
 
-`init` 写五个文件，遇到已存在的 `.sandcastle/` 直接报错：
+`init` 生成的文件随提供方不同，遇到已存在的 `.sandcastle/` 直接报错：
 
-```
-.sandcastle/
-├── Dockerfile      # 仅 Docker/Podman
-├── main.mts        # ESM 包里改名为 main.ts
-├── prompt.md
-├── .env.example
-└── .gitignore      # 忽略 .env、logs/、worktrees/
-```
+| 提供方 | 镜像文件 | 生成文件数 |
+|---|---|---|
+| `bwrap()`、`seatbelt()` | 不生成 | 4 |
+| `docker()` | `Dockerfile` | 5 |
+| `podman()` | `Containerfile` | 5 |
+
+三种情况共有的四个：`main.mts`（`package.json` 带 `"type": "module"` 时改名为 `main.ts`）、`prompt.md`、`.env.example`、`.gitignore`（忽略 `.env`、`logs/`、`worktrees/`）。
+
+镜像构建是可选的：`--build-image` 决定当场构建与否，选原生提供方或 `--issue-tracker custom` 时该参数被忽略。Podman 用 `sandcastle podman build-image`。
 
 五个模板：`blank`、`simple-loop`、`sequential-reviewer`、`parallel-planner`、`parallel-planner-with-review`。任务来源三种：GitHub Issues、Beads、Custom。Docker 基础镜像 `node:22-bookworm`，另装 git、curl、jq、GitHub CLI、Claude Code CLI，并建一个非 root 的 `agent` 用户。
 
@@ -183,9 +184,17 @@ npx @ai-hero/sandcastle docker build-image
 |---|---|---|
 | [ovnfs](ovnfs.md) | 文件夹的副本 | 官方写明不是沙箱，绝对路径与符号链接可到宿主 |
 | [OMP 子 agent 隔离](../omp/subagent-workspace-isolation.md) | 子 agent 的工作目录 | 进程仍以你的身份运行，主目录与登录凭据不在管辖范围 |
-| sandcastle | agent 进程本身 | 不给同一份工作区做多份副本，也不做跨机器交接 |
+| sandcastle | agent 进程本身，外加 worktree | 不做文件夹的写时复制副本，也不做跨机器交接 |
 
-对应到具体机制：sandcastle 的 `head` 策略与“无隔离”等价，写入直接进宿主工作目录；`merge-to-head` 用的 worktree 与 OMP 的 `rcopy` 后端属于同一种做法，差别在于 sandcastle 在这一层之上又套了进程围栏。
+三种策略在工作区上不同，进程围栏与它们互不影响：
+
+| 策略 | 工作区 | 进程围栏 |
+|---|---|---|
+| `head` | 你的工作目录本身，没有 worktree，也没有分支中转 | 由提供方决定：`bwrap()` 下仍在围栏内，`noSandbox()` 下没有 |
+| `merge-to-head` | 临时分支上的 git worktree，结束时合并回当前分支 | 同上 |
+| `branch` | 你指定分支上的 git worktree，提交留在该分支 | 同上 |
+
+因此 `head` 的含义是写入直接进宿主工作目录，它不表示没有隔离。`merge-to-head` 与 `branch` 会另建一份检出，与 OMP 的 `rcopy` 后端属于同一种做法。sandcastle 不提供的是文件夹的写时复制视图与跨机器交接，这两项在 ovnfs 里。
 
 OMP 侧没有 sandcastle 的内置支持：仓库里搜索 `omp` 没有实质命中，内置的是 `pi()`，命令为 `pi -p --mode json --model <模型>`，`init` 在 Dockerfile 里装 `@earendil-works/pi-coding-agent`。要跑 OMP 需要自行实现 `AgentProvider`，`AgentProvider` 是公开导出的接口。
 
