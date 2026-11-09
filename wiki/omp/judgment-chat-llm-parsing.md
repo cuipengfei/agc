@@ -1,12 +1,15 @@
 # OMP judgment 对 chat 类 judge 的无 schema 文本解析机制
 
-> Sources: omp 18.8.0 pi-ai 缓存源码核验, 2026-10-07
-> Raw: [judgment-chat-llm-bridge](../../raw/omp/2026-10-07-judgment-chat-llm-bridge.md)
-> Updated: 2026-10-07
+> Sources: omp 18.8.0 pi-ai 缓存源码核验, 2026-10-07; 本会话源码直读与实测（judge 角色切至原生判断协议后的角色链）, 2026-11-09
+> Raw: [judgment-chat-llm-bridge](../../raw/omp/2026-10-07-judgment-chat-llm-bridge.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md)
+> Updated: 2026-11-09
 
 ## Overview
 
 OMP 的 judgment 子系统用普通 chat 模型充当 judge 时，刻意**不依赖任何厂商的结构化输出扩展**（`response_format` / `json_schema` / `text.format`）。首次调用是裸文本补全，靠一份强约束 prompt 让模型只吐受限关键词，再由三组确定性解析器从返回文本里抠答案；解析失败后的重试才挂一个 function-call 工具强制交答案。jev 走的是独立的 `/v1/systemone` 判断路由，与 chat 协议完全分离。本机当前 `judge` 实配 `typesafe-zen/jev-1.13`，chat 类 judge 是回退路径。
+
+> **Status: Outdated** (2026-11-09)
+> 上段「本机当前 `judge` 实配 `typesafe-zen/jev-1.13`」已不成立：2026-11-09 起 `modelRoles.judge` 为 `c8787/gpt-6-luna-decisions`（`api: openai-decisions`，原生判断协议），回退链为 `typesafe-zen/jev-1.13-free` → `@tiny` → `@smol` → `@default`。chat 类 judge 仍属 `online` 候选，而 `textJudgeRoleChain` 从链上第一个 `native` 候选起只保留 `native`，所以当前配置下 chat 类 judge 不参与文本判定。证据见 [luna-decisions 整链实测](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md) §①§②。
 
 ## 机制：prompt 约定 + 关键词启发式解析
 

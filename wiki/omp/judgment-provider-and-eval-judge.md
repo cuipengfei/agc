@@ -1,7 +1,7 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08; 本机 pi-ai 与 pi-coding-agent 源码直读（openai-decisions wire、JUDGMENT_WIRES、resolveJudge 调用点）, 2026-11-09
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [openai-decisions 协议与本地接入](../../raw/omp/2026-11-09-openai-decisions-judge-wire.md)
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08; 本机 pi-ai 与 pi-coding-agent 源码直读（openai-decisions wire、JUDGMENT_WIRES、resolveJudge 调用点）, 2026-11-09; 本会话实测（judge 角色切至 c8787/gpt-6-luna-decisions 后的四条入口与用量表对账）, 2026-11-09
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [openai-decisions 协议与本地接入](../../raw/omp/2026-11-09-openai-decisions-judge-wire.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md)
 > Updated: 2026-11-09
 
 ## Overview
@@ -91,7 +91,7 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 文件存在、JSON 解析、字段出现、Markdown 结构、Git 状态和测试退出码仍使用确定性检查。报告判定结果时同时保存 state、questions 和 output；仅展示 questions 不能称为完整输入。
 
 
-## openai-decisions 协议与自建 provider 接入（2026-11-09 源码核验）
+## openai-decisions 协议与自建 provider 接入（2026-11-09 源码核验与整链实测）
 
 `JUDGMENT_WIRES` 里除 `typesafe` 外还有三个原生 wire：`openrouter-decisions`、`workers-ai-systemone`、`openai-decisions`。四者都通过 `isJudgmentApi` 判定，因此都满足 `hasNativeJudge` 门控，`find` 的 `auto` 模式、`ttsr.judge: auto`、`auto-prewalk` 对它们一视同仁。
 
@@ -115,18 +115,56 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 
 OMP 的 10 个 `resolveJudge` 消费点（`judgment/standalone`、`tools/jfind`、`auto-thinking`、`auto-prewalk`、`session/agent-session` 三处、`unexpected-stop`、`/stats`、`eval/judgment-bridge`）都不使用 `box` 题型，因此 `openai-decisions` 能承担这些内置功能的判断；只有在 eval 里手写 `type: "box"` 时才需要 `typesafe` 或 `openrouter-decisions`。
 
+### 整链实测（2026-11-09）
+
+把 `modelRoles.judge` 设为 `c8787/gpt-6-luna-decisions` 后，四条入口全部打通，请求经 `http://localhost:8787/v1/decisions`（Headroom 0.42.0 兜底 passthrough）、`http://localhost:4140/v1/decisions`（sticky router）到本地 copilot-api 实例，最后到 Copilot 上游。
+
+| 入口 | 结果 | 用量表里的 `input_tokens` |
+|---|---|---|
+| CLI `omp find` | `stats` 为 `requests` 2、`failed` 0、`inputTokens` 3287 | 1471 + 1816 = 3287 |
+| 会话内 `find` 工具 | 4 次请求，工具报 `5.9K tokens` | 1471 + 1824 + 382 + 174 = 3851 |
+| 会话内 `await judge(...)` | 三题，1.23 秒 | 419 |
+| `createNativeJudge` 直调 | `label` 正确、`supportsImages` 为 true | 400 |
+
+用量取自 copilot-api 的 `token_usage_events` 表：`endpoint` 记为 `decisions`，`model` 记为请求体的 `gpt-6-luna-decisions`，`user_agent` 记为 `omp/18.18.3`，`output_tokens` 全为 0。同一张表里 `decisions` 行的 `total_nano_aiu`（AI 额度用量）与 `request_outcome` 都是 `None`，即该端点没有请求级计费与结果记录。
+
+`find` 工具的 token 计数与用量表在四次请求时不一致（5.9K 对 3851），两次请求时一致（3287）。差异来源未追查。
+
+### 角色链的实际长度
+
+`textJudgeRoleChain` 从链上第一个 `native` 候选起只保留 `native` 候选（`pi-coding-agent/src/judgment/index.ts:265-269`）。`c8787/gpt-6-luna-decisions` 的 `api` 是 `openai-decisions`，`kindOf` 判为 `native`；回退链里的 `@tiny`、`@smol`、`@default` 都是普通 chat 协议，判为 `online`。因此本机文本判断题的候选只有两项：`c8787/gpt-6-luna-decisions` → `typesafe-zen/jev-1.13-free`。图片判定另有一层过滤，先剔除不支持图片的候选再套用同一规则（同文件 `:271-275` 注释）。
+
+### Decisions 与 System One 的报文差异
+
+| 项 | OpenAI / Copilot `/decisions` | Jev System One |
+|---|---|---|
+| 证据字段 | `input`；非字符串先按 JSON 序列化 | `state`；保持原结构 |
+| 题目容器 | 数组，每题带 `name` | 对象 map，key 即题目 id |
+| yes/no | `predicate` → 答案字段 `probability` | `noul` → 答案字段 `noul` |
+| 选项 | `choices: [{ value, description }]` | `criteria` 对象，值是该选项的 rubric 或 null |
+| 档位 | `levels: [{ label }]` | `criteria` 字符串数组 |
+| 概率分布 | 数组 `[{ value, probability }]` | 对象，键为选项或 0 起序号 |
+| 答案容器 | 数组，靠 `name` 关联 | 对象 map |
+| 拒答 | 单题可返回 `type: "refusal"`，解码进 `refused` | 解码恒为空数组 |
+| `cost` | 无 | `usage` 内（OpenRouter）；zen 实测在响应顶层 |
+| `box` 题型 | 不支持 | 支持（Jev 1.14 以上） |
+
+Copilot 那侧的实测响应里，`score` 题的概率数组元素多带 `label` 字段回显档位名，`choice` 题的元素没有该字段；`probabilityMap` 只读 `value` 与 `probability`，忽略 `label`。OpenAI 与 Copilot 两处 `/v1/decisions` 共用同一份报文结构，差别只在请求体的 `model` 必须写专用 ID。
+
 ### 自建 provider 下的配置要点
 
 - 模型条目的 `api` 必须显式写 `openai-decisions`。自定义 provider 的默认协议是 `openai-responses`，自动发现不会推断出决策协议。
 - `request-model-id` 这类改写绑定在 provider 上。官方 `openai` provider 的 `gpt-6-luna-decisions` 会把请求体里的 `model` 改写成 `gpt-6-luna`；挂在自定义 provider 下时不做改写，`model` 原样发送。接入 Copilot 上游时后一种行为才是需要的。
-- 本机配置形态：`models.yml` 的 `c8787` provider 下加一条 `api: openai-decisions`、`input: [text, image]`、`contextWindow: 1000000` 的条目；`config.yml` 的 `fallbackChains.judge` 依次为 `typesafe-zen/jev-1.13-free` → `c8787/gpt-6-luna-decisions` → `@tiny` → `@smol` → `@default`，`modelRoles.judge` 仍为 `typesafe-zen/jev-1.13-free`。
+- 本机配置形态：`models.yml` 的 `c8787` provider 下加一条 `api: openai-decisions`、`input: [text, image]`、`contextWindow: 1000000` 的条目；`config.yml` 的 `modelRoles.judge` 设为 `c8787/gpt-6-luna-decisions`，`fallbackChains.judge` 依次为 `typesafe-zen/jev-1.13-free` → `@tiny` → `@smol` → `@default`。
 
-**推断**：中间层（Headroom）对 `/decisions` 走兜底 passthrough，不改写请求体；末端的 copilot-api 需要先重启才会在 `/v1/models` 里暴露该模型。整链未实跑。
+> **Status: Outdated** (2026-11-09)
+> 此处原记「末端的 copilot-api 需要先重启才会在 `/v1/models` 里暴露该模型」「整链未实跑」以及「`modelRoles.judge` 仍为 `typesafe-zen/jev-1.13-free`」，三条均已不成立。真实链路是 `OMP → http://localhost:8787/v1/decisions`（Headroom 0.42.0 兜底 passthrough）→ `http://localhost:4140/v1/decisions`（sticky router）→ 本地 copilot-api 实例 → `https://api[.<account-type>].githubcopilot.com/v1/decisions`；`modelRoles.judge` 已是 `c8787/gpt-6-luna-decisions`。`8787/v1/decisions` 用三题型（predicate + choice + score）直接请求返回 `http=200`，响应顶层只有 `model`（回显 `gpt-6-luna`）、`answers`、`usage`，`input_tokens` 为 407、`output_tokens` 为 0。证据见 [luna-decisions 整链实测](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md) §③。
 
 ## 证据边界
 
 - 本文事实来源：本机 18.2.5 安装包源码/schema/CHANGELOG 直读、GitHub commits/releases/compare API、2026-09-19 smoke 实测，以及 2026-09-20 双语言三题型与重复调用实测。
 - 2026-09-20 这组请求的 Jev 后端由用户通过 API 服务端日志确认；其他 `judge(...)` 调用的实际后端仍需单独取证。
+- 2026-11-09 的整链实测覆盖四条入口与用量表对账；其中 `find` 工具的 token 计数与用量表在四次请求时相差，原因未追查。
 - 未验证：TypeSafe 与 keyword judge 的整体判定质量差异、429/5xx 退避在真实故障下的行为。
 
 ## See Also

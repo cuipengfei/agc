@@ -1,8 +1,8 @@
 # OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
 
-> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（18.2.8 eval judge usage 记账、unexpected-stop nudge 无新增 usage）, 2026-09-22; 本会话源码直读（jfind cascade 四阶段消费方 + 通用 judge 接口）, 2026-09-28
-> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md)
-> Updated: 2026-09-28
+> Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（18.2.8 eval judge usage 记账、unexpected-stop nudge 无新增 usage）, 2026-09-22; 本会话源码直读（jfind cascade 四阶段消费方 + 通用 judge 接口）, 2026-09-28; 本会话源码直读与实测（openai-decisions wire 与 systemone 的字段对照）, 2026-11-09
+> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md)
+> Updated: 2026-11-09
 
 ## Overview
 
@@ -70,6 +70,12 @@ unexpected-stop 的 classifier 先于 todo 完成检查运行（`src/session/age
 | OpenCode Zen（`https://opencode.ai/zen`） | **已实测兼容** | 原生暴露 `/zen/v1/systemone`；重放响应头 `x-opencode-endpoint-id: typesafe`、`x-opencode-upstream-model-id: jev-1.13.0`——服务端自认经 typesafe 通道转发且把请求 model 解析到具体上游版本（2026-09-20 重放实测） |
 | OpenRouter | **不兼容** | jev 实际挂在 `/api/alpha/decisions`（真 key 实测 200）；OMP 形状 `/api/v1/systemone` 实测 404（Next.js 兜底路由）。路径后缀硬编码，任何 base URL 都桥接不了（2026-09-19 实测） |
 | TypeSafe 直连（`https://api.typesafe.ai`） | 原生匹配 | 默认 baseUrl（`typesafe.ts:29`），参考端点形态见官方 api.md |
+
+## 与 openai-decisions 协议的字段对照
+
+OMP 的 `JUDGMENT_WIRES` 同时容纳 System One 家族（`typesafe`、`openrouter-decisions`、`workers-ai-systemone`）与 OpenAI Decisions（`openai-decisions`）。两套报文不同：System One 用 `state` 加对象 map 的 `questions` / `answers`，OpenAI Decisions 用 `input` 加数组 `questions` / `answers` 并以 `name` 关联，yes/no 题型在后者叫 `predicate`、答案字段叫 `probability`。逐字段对照与源码行号见 [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](judgment-provider-and-eval-judge.md) 的「Decisions 与 System One 的报文差异」小节，原始实测见 [luna-decisions 整链实测](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md) §⑥。
+
+`cost` 的位置也分两种：`decodeSystemOne` 读 `usage.cost`（`systemone.ts:40`，适配 OpenRouter），而 zen 匿名免费调用实测把 `"cost": "0"` 放在响应顶层，因此该字段在 OMP 侧读不到。（[jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md) §③ A）
 
 ## See Also
 

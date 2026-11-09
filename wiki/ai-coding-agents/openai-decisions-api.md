@@ -1,7 +1,7 @@
 # OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测
 
-> Sources: OpenAI 官方文档, 2026-10-25; 对 GitHub Copilot 上游的实测, 2026-10-25 与 2026-11-09; 微软 VS Code 仓库源码与 npm 包核查, 2026-10-25; `github/gh-aw`、`github/gh-aw-firewall`、`microsoft/vscode` 公开提交记录, 2026-11-09
-> Raw: [openai-decisions-api-ga](../../raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md); [copilot-decisions-retest-and-payload-validation](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md); [copilot-decisions-follow-up-research](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md); [openai-decisions-api-status-check-1018](../../raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1018](../../raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md); [openai-decisions-api-status-check-1015](../../raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1015](../../raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-api-decisions-route](../../raw/ai-coding-agents/2026-11-09-copilot-api-decisions-route.md)
+> Sources: OpenAI 官方文档, 2026-10-25; 对 GitHub Copilot 上游的实测, 2026-10-25 与 2026-11-09; 微软 VS Code 仓库源码与 npm 包核查, 2026-10-25; `github/gh-aw`、`github/gh-aw-firewall`、`microsoft/vscode` 公开提交记录, 2026-11-09; 经本地代理链路的整链实测, 2026-11-09
+> Raw: [openai-decisions-api-ga](../../raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md); [copilot-decisions-retest-and-payload-validation](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md); [copilot-decisions-follow-up-research](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md); [openai-decisions-api-status-check-1018](../../raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1018](../../raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md); [openai-decisions-api-status-check-1015](../../raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1015](../../raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-api-decisions-route](../../raw/ai-coding-agents/2026-11-09-copilot-api-decisions-route.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md)
 > Updated: 2026-11-09
 
 ## Overview
@@ -78,6 +78,8 @@ guide "What's new" 节列出九项：prompt caching、题目级图片、`input_j
 
 `choice` 题型的报文格式有硬性要求：`choices` 每项必须是对象且含 `value`；传字符串数组得到 `Invalid type for 'questions[1].choices[0]': expected an object, but got a string instead.`，传 `{ name, description }` 得到 `Missing required parameter: 'questions[1].choices[0].value'.`。
 
+三题型同请求（predicate + choice + score）经本地代理链路（`8787` → `4140` → copilot-api）返回 200：`answers` 是数组，每题靠 `name` 关联；`score` 题的概率数组元素多带 `label` 字段回显档位名，`choice` 题的元素没有该字段；`input_tokens` 为 407，`output_tokens` 为 0，`total_tokens` 等于 `input_tokens`。（[raw](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md) §③）
+
 **归因修正**：此前三次的 `model_not_supported` 是模型与端点不匹配的字面意思，不是端点整体不可用。2026-10-15 至 10-25 期间 `/v1/decisions` 是否已服务无法回溯确认——当时目录中没有该专用条目。（[raw](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md) §⑧）
 
 ### 计费状态（2026-11-09）
@@ -133,7 +135,7 @@ VS Code Copilot 的公开模型端点类型列出 Chat Completions、Responses�
 - 所有 Copilot 探测结果仅代表本次测试条件；不推广为全部账号或全部主机。
 - `model_not_supported` 表示模型与端点不匹配，不能据此判断端点整体不存在；判定端点可用性要先读目录中该模型的 `supported_endpoints`。
 - 未向 Model Lab 主机发送请求；未测试其他账号。
-- 推理用量：10-15 两次（181 tokens 与 16 tokens 各一次）；10-18 三次成功；10-25 三次成功、五次 400、一次 404 虚构路径；11-09 两次成功（167 与 396 input tokens）与一次连接层 `ECONNRESET`。
+- 推理用量：10-15 两次（181 tokens 与 16 tokens 各一次）；10-18 三次成功；10-25 三次成功、五次 400、一次 404 虚构路径；11-09 两次成功（167 与 396 input tokens）与一次连接层 `ECONNRESET`，当日经本地代理链路的三题型请求再成功一次（407 input tokens，`output_tokens` 为 0）。
 - 11-09 的结果只覆盖本次认证与上游；其他账号类型的可用范围未核验。
 
 ## See Also
