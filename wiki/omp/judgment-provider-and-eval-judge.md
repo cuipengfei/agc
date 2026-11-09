@@ -1,8 +1,8 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md)
-> Updated: 2026-10-08
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08; 本机 pi-ai 与 pi-coding-agent 源码直读（openai-decisions wire、JUDGMENT_WIRES、resolveJudge 调用点）, 2026-11-09
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [openai-decisions 协议与本地接入](../../raw/omp/2026-11-09-openai-decisions-judge-wire.md)
+> Updated: 2026-11-09
 
 ## Overview
 
@@ -89,6 +89,39 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 54 个 state 同时用 judge() 循环和 judgeBatch 跑了一遍，dest 判定 53/54 一致。唯一差异块是人工已裁定的那块。
 
 文件存在、JSON 解析、字段出现、Markdown 结构、Git 状态和测试退出码仍使用确定性检查。报告判定结果时同时保存 state、questions 和 output；仅展示 questions 不能称为完整输入。
+
+
+## openai-decisions 协议与自建 provider 接入（2026-11-09 源码核验）
+
+`JUDGMENT_WIRES` 里除 `typesafe` 外还有三个原生 wire：`openrouter-decisions`、`workers-ai-systemone`、`openai-decisions`。四者都通过 `isJudgmentApi` 判定，因此都满足 `hasNativeJudge` 门控，`find` 的 `auto` 模式、`ttsr.judge: auto`、`auto-prewalk` 对它们一视同仁。
+
+四条 wire 的图片与 `box` 支持各不相同：
+
+| wire | `boxes` | 图片限制 |
+|---|---|---|
+| `typesafe` | 支持 | `mimeTypes` 限 `image/png`、`image/jpeg`，不设张数上限；需要图片 opt-in（`imagesRequireOptIn` 与 `TypeSafe-Danger-Zone-Images` 请求头），且忽略 `detail` |
+| `openrouter-decisions` | 支持 | `images: {}` 不设限；需要图片 opt-in |
+| `workers-ai-systemone` | 不支持 | 上限 4 张、单张 4 MiB、合计 8 MiB、像素上限 `16_000_000`；`mimeTypes` 含 `image/webp` |
+| `openai-decisions` | **不支持** | 上限 128 张，转成 `input_image` 的 data URL |
+
+`nativeJudgmentSupportsBoxes` 的判定是 `JUDGMENT_WIRES[api].boxes === true`，因此只有 `typesafe` 与 `openrouter-decisions` 返回真；`openai-decisions` 遇到 `type: "box"` 直接抛 `ValidationError: OpenAI Decisions has no box question type`。`typesafe` 的 `box` 还需 Jev 1.14 以上。
+
+`openai-decisions` 的其余形状：
+
+| 项 | 值 |
+|---|---|
+| 请求路径 | `{baseUrl}/decisions`（不带 `/v1`，由 baseUrl 决定） |
+| 题型映射 | `noul` → `predicate`；`choice` → `choice` + `{ value, description }[]`；`score` → `score` + `levels` |
+
+OMP 的 10 个 `resolveJudge` 消费点（`judgment/standalone`、`tools/jfind`、`auto-thinking`、`auto-prewalk`、`session/agent-session` 三处、`unexpected-stop`、`/stats`、`eval/judgment-bridge`）都不使用 `box` 题型，因此 `openai-decisions` 能承担这些内置功能的判断；只有在 eval 里手写 `type: "box"` 时才需要 `typesafe` 或 `openrouter-decisions`。
+
+### 自建 provider 下的配置要点
+
+- 模型条目的 `api` 必须显式写 `openai-decisions`。自定义 provider 的默认协议是 `openai-responses`，自动发现不会推断出决策协议。
+- `request-model-id` 这类改写绑定在 provider 上。官方 `openai` provider 的 `gpt-6-luna-decisions` 会把请求体里的 `model` 改写成 `gpt-6-luna`；挂在自定义 provider 下时不做改写，`model` 原样发送。接入 Copilot 上游时后一种行为才是需要的。
+- 本机配置形态：`models.yml` 的 `c8787` provider 下加一条 `api: openai-decisions`、`input: [text, image]`、`contextWindow: 1000000` 的条目；`config.yml` 的 `fallbackChains.judge` 依次为 `typesafe-zen/jev-1.13-free` → `c8787/gpt-6-luna-decisions` → `@tiny` → `@smol` → `@default`，`modelRoles.judge` 仍为 `typesafe-zen/jev-1.13-free`。
+
+**推断**：中间层（Headroom）对 `/decisions` 走兜底 passthrough，不改写请求体；末端的 copilot-api 需要先重启才会在 `/v1/models` 里暴露该模型。整链未实跑。
 
 ## 证据边界
 
