@@ -65,3 +65,4 @@ overlayfs 的探测条件是内核支持 overlay 或者系统里有 `fuse-overla
 - [ovnfs：面向 agent 的文件夹副本与跨机器交接](../agent-tooling/ovnfs.md)
 - [OMP Rust/TS architecture and pi-natives](rust-ts-architecture.md)
 - [4-agent-comparison](../ai-coding-agents/4-agent-comparison.md)
+- [sandcastle：把 agent 关进进程围栏的编排库](../agent-tooling/sandcastle.md) — 工作目录之外再加一层进程围栏

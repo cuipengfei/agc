@@ -61,6 +61,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [Reason Network：跨机器的 agent 团队目录与消息总线](agent-tooling/reason-network.md) | 团队目录加消息总线：push/turn/pull 三档投递、签名名册与邀请门禁、iroh 直连与中继、自建中继不接触 n0、消息 64 KB、离线最多一天、M0–M3 完成 M4 未开始 | 2026-11-06 |
 | [agent-browser 与 chrome-devtools MCP 对比](agent-tooling/agent-browser-vs-chrome-devtools-mcp.md) | 同 CDP 的双工具对照：agent-browser 按快照 ref 驱动、点击诚实失败（遮挡/隐藏/禁用即报错）、auth vault + 域名白名单 + 动作策略 + confirm/deny、stream/dashboard、pdf/record/diff、Lightpanda/Obscura/iOS Safari、五家云端 provider、skill 与 CLI 版本对齐；chrome-devtools-mcp 1.12.0 为 uid 快照、fill_form 多元素填写、性能 trace + CrUX、14 个堆快照工具（--memoryDebugging）、logpoints/CSS/Lighthouse、isolatedContext、WebAuthn/PWA/扩展/WebMCP 旗标与 service worker 求值；本机条目 enabled:false 指向 9333（2026-11-07 检查无监听）、agent-browser 未安装，含自动启动与外接两条启用路 | 2026-11-07 |
 | [ovnfs：面向 agent 的文件夹副本与跨机器交接](agent-tooling/ovnfs.md) | 写时复制 checkout、单挂载点呈现（FUSE/NFSv3/SMB）、四类路径与 apply 边界；49k 文件仓库打开约 1 秒、3,000 文件 create 约 15 ms；安装脚本的构建服务地址与校验步骤、`update` 三条路径、`restart` 会启动不存在的守护进程；远程 attach 与 `push` 的离线条件 | 2026-11-08 |
+| [sandcastle：把 agent 关进进程围栏的编排库](agent-tooling/sandcastle.md) | TypeScript 编排库：`run()` 建沙箱、起 agent、收提交；三种分支策略与合并时机、九种沙箱（导出十条，文档漏列 DayTona）、六个 agent 提供方；原生围栏隐藏主目录与登录凭据、网络全开、无 root，Linux 上强度约等于 runc；抛错不回退、提供方错误不重试；`init` 写五个文件、npm 包 0.14.0；`RunResult.branch` 为目标分支，`output` 需显式开启 | 2026-11-09 |
 
 ## ai-coding-agents
 

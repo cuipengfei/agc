@@ -51,3 +51,4 @@
 
 - [factory-gate-reference](factory-gate-reference.md) — 机械关卡参照标准（Goossaert 的七阶段 + gate 清单）
 - [ADE 候选清单](../agent-development-environments/ade-candidate-inventory.md) — 并发 agent 工作台视角的同类候选
+- [sandcastle：把 agent 关进进程围栏的编排库](../agent-tooling/sandcastle.md) — 库形态的编排层，自带分支策略与进程围栏，不提供固定工序与关卡

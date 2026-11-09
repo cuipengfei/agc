@@ -84,3 +84,4 @@ ovnfs restart   # 仅在 status 显示有守护进程运行时执行
 ## See Also
 
 - [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](../omp/subagent-workspace-isolation.md)
+- [sandcastle：把 agent 关进进程围栏的编排库](sandcastle.md) — 文件副本之外的进程层围栏

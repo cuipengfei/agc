@@ -1938,3 +1938,10 @@
 - Raw: raw/wsl-windows/2026-11-08-wsl-service-debug-playbook.md
 - Created: wiki/wsl-windows/wsl-service-debug-playbook.md
 - 要点：四个反复使用的手法——`LD_LIBRARY_PATH` 隔离对照判定「库还是程序」（只解包不改环境变量时对照无效）、`ss -ltnp` 验证监听地址（`-i lo` 在 WSL 可能解析为 `10.255.255.254`）、`apt-cache policy` 与 `showhold` 看版本来源与锁定（只看版本号会漏掉 `-1` 或 `510`）、`journalctl` 与 `NRestarts` 确认崩溃循环（`Restart=always` 会掩盖崩溃）；每式含适用场景、命令模板、预期输出、误判陷阱。
+
+## [2026-11-09] ingest | sandcastle：把 agent 关进进程围栏的编排库
+- Disposition: New
+- Raw: raw/agent-tooling/sandcastle-readme-and-orchestration-docs.md; raw/agent-tooling/sandcastle-sandbox-and-agent-providers.md
+- Created: wiki/agent-tooling/sandcastle.md
+- Updated: wiki/agent-tooling/ovnfs.md、wiki/omp/subagent-workspace-isolation.md、wiki/software-factory/ai-software-factory-landscape.md（仅 See Also 交叉引用，不改知识内容，不刷新 Updated）
+- 要点：`@ai-hero/sandcastle` 0.14.0 是 TypeScript 编排库，`run()` 一次调用创建沙箱、在沙箱内启动 agent、按分支策略合回提交；`RunResult.branch` 是目标分支而非 agent 工作分支，`output` 只在传入 `output` 选项且 `maxIterations === 1` 时存在；每轮提交数量两处文档表述不一致（`core-concepts.md` 复数、`glossary.md` 词条「最多一个」），原文并存；三种策略中 `head` 直接写宿主工作目录、`merge-to-head` 用临时分支加 worktree 并在结束时合并、`branch` 提交留在指定分支；文档表格列九种沙箱，`exports` 与 README 另有 DayTona，表格漏列一条；原生围栏只放开仓库、git 目录、私有临时目录与私有家目录，挡住主目录与 `~/.claude`、`~/.codex`、`~/.config/gh`，网络含宿主 localhost 全开，无 root 且无 `interactive()`，强度自述 Linux 约等于 runc、macOS 弱于 Docker Desktop，构造失败抛 `NativeSandboxUnavailableError` 且绝不无沙箱回退；官方不做八项含多仓库、请求式新增提供方、前缀可配置、错误重试；本机 bwrap 0.11.1、Docker 29.4.1 守护进程未运行、Node 24.22.2、git 2.53.0、`pi` 1.5.0、`omp` 18.18.3、无 AppArmor 用户命名空间限制、仓库在 ext4 家族；与 ovnfs（文件副本层）、OMP 隔离（工作目录层）构成三层，可叠加；未执行安装、`init` 与任何 `run()`。
