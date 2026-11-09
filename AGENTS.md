@@ -291,3 +291,7 @@ bd prime                # Refresh Beads context
 
 **Architecture in one line:** issues live in a local Dolt DB; sync uses `refs/dolt/data` on your git remote; `.beads/issues.jsonl` is a passive export. See https://github.com/gastownhall/beads/blob/main/docs/core-concepts/sync-concepts.md for details and anti-patterns.
 <!-- END BEADS CODEX SETUP -->
+
+## Reviewer Rules
+
+- 交付状态类结论前，必须重跑产生该状态的命令并核对输出；不得以前一轮陈述作为依据。例如确认 Ubuntu Pro 服务是否启用，必须重读 `pro status` 的输出，不能凭前轮回复延续。
