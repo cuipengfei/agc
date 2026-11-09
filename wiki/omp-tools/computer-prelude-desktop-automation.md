@@ -2,7 +2,7 @@
 
 > Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 与 `@oh-my-pi/pi-natives`, 2026-10-26; can1357/oh-my-pi 的 `crates/pi-natives/src/desktop/`, 2026-10-26; Chromium 与 Electron 无障碍文档, 2026-10-26; Microsoft Learn《UI Automation Support for Standard Controls》与 Oracle Java 无障碍文档, 2026-10-26; 本机 WSL 桌面能力实测, 2026-10-26
 > Raw: [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md)
-> Updated: 2026-10-26
+> Updated: 2026-11-09
 
 ## Overview
 
@@ -54,8 +54,9 @@ Linux 原生二进制里的符号可以佐证后端构成：`ATSPI`、`atspi-pro
 
 ## 审批、接管与中断
 
-- 只读类动作（`windows`、`screenshot`、`ax`、`find`、`clipboard.read`、`capabilities`）走 read 审批；输入与改动类走 exec 审批；`computer.run(..., { read_only: true })` 落在 read 级。
-- `computer.control.acquire({ reason })` 需要人工确认，拒绝原因分 `denied`、`no-ui`、`unanswered`，其中 `no-ui` 表示该会话根本没有人可以询问。
+- read 与 exec 是审批分类，是否真的询问由 `tools.approvalMode` 决定：默认 `yolo` 自动批准各级；`always-ask` 对写与 exec 询问，`write` 只对 exec 询问；逐工具策略的 `allow`、`prompt`、`deny` 在所有档位生效；没有会话设置上下文时按 `always-ask` 处理。
+- `computer.run(..., { read_only: true })` 落在 read 级，挡的是脚本里的改动类调用，脚本本身仍有完整宿主访问。
+- `computer.control.acquire({ reason })` 需要人工确认，且不受 `tools.approvalMode` 影响，默认 `yolo` 下也会询问；拒绝原因分 `denied`、`no-ui`、`unanswered`，其中 `no-ui` 表示该会话根本没有人可以询问。
 - 默认在后台投递输入，不动你的指针、不激活目标窗口；只有 `takeover: true` 才临时接管。
 - `computer.run` 在持久 JS 会话里执行，有完整 Bun/Node 与工具桥，不做沙箱隔离。
 - macOS 有物理 Escape 全局中断；Wayland 下 `globalEscape` 为 false，只能靠宿主中断。
@@ -111,3 +112,4 @@ const obs = await win.observe({ maxDepth: 8 });
 - [OMP 内建工具全集、会话暴露边界与内部地址空间](builtin-tools-and-internal-urls.md)
 - [OMP 配置语义手册](../omp-config/config-semantics.md)
 - [键盘驱动指针控制横评](../keyboard-input/keyboard-driven-pointer-control.md)
+- [OMP computer use 与 agent-desktop 对照](../agent-tooling/omp-computer-use-vs-agent-desktop.md)

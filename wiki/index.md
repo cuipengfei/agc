@@ -62,6 +62,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [agent-browser 与 chrome-devtools MCP 对比](agent-tooling/agent-browser-vs-chrome-devtools-mcp.md) | 同 CDP 的双工具对照：agent-browser 按快照 ref 驱动、点击诚实失败（遮挡/隐藏/禁用即报错）、auth vault + 域名白名单 + 动作策略 + confirm/deny、stream/dashboard、pdf/record/diff、Lightpanda/Obscura/iOS Safari、五家云端 provider、skill 与 CLI 版本对齐；chrome-devtools-mcp 1.12.0 为 uid 快照、fill_form 多元素填写、性能 trace + CrUX、14 个堆快照工具（--memoryDebugging）、logpoints/CSS/Lighthouse、isolatedContext、WebAuthn/PWA/扩展/WebMCP 旗标与 service worker 求值；本机条目 enabled:false 指向 9333（2026-11-07 检查无监听）、agent-browser 未安装，含自动启动与外接两条启用路 | 2026-11-07 |
 | [ovnfs：面向 agent 的文件夹副本与跨机器交接](agent-tooling/ovnfs.md) | 写时复制 checkout、单挂载点呈现（FUSE/NFSv3/SMB）、四类路径与 apply 边界；49k 文件仓库打开约 1 秒、3,000 文件 create 约 15 ms；安装脚本的构建服务地址与校验步骤、`update` 三条路径、`restart` 会启动不存在的守护进程；远程 attach 与 `push` 的离线条件 | 2026-11-08 |
 | [sandcastle：把 agent 关进进程围栏的编排库](agent-tooling/sandcastle.md) | TypeScript 编排库：`run()` 建沙箱、起 agent、收提交；三种分支策略的工作区差别（`head` 无 worktree、`merge-to-head` 结束时自动合并、`branch` 提交留在指定分支），进程围栏与三者互不影响；九种沙箱（导出十条，文档漏列 DayTona）、六个 agent 提供方；原生围栏隐藏主目录与登录凭据、网络全开、无 root，Linux 上强度约等于 runc；抛错不回退、提供方错误不重试；`init` 按提供方生成 4 或 5 个文件、npm 包 0.14.0；`RunResult.branch` 为目标分支，`output` 需显式开启 | 2026-11-09 |
+| [OMP computer use 与 agent-desktop 对照](agent-tooling/omp-computer-use-vs-agent-desktop.md) | 进程内 Eval 预置对象与独立二进制两类形态；投递三档对 headless/headed 两档（后台物理输入只在 OMP，坐标点击在 agent-desktop 需前台）；引用寿命：OMP 随工作进程清空，agent-desktop 在命名空间内写盘续用、换会话作废；审批分类不等于询问，默认 `yolo`；agent-desktop 60 个命令名 56 可用、按住类缺席；含未实测项 | 2026-11-09 |
 
 ## ai-coding-agents
 
@@ -240,7 +241,7 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 |---------|---------|---------|
 | [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`） | 2026-11-04 |
 | [OMP browser prelude 与 relay 架构](omp-tools/browser-prelude-and-relay-architecture.md) | prelude 定位与启用条件；四后端八顺位路由表；relay 端点鉴权矩阵（token 只管 /ext，/cdp 无校验）与 loopback 边界；扩展来源与 Chrome 136 限制；标签页借用与冻结范围；跨系统上传回退与下载 perTab 分支；Kerberos 落在浏览器进程；WSL 双向回环实测与扩展握手待验证；API/CLI 与界面选型顺位 | 2026-10-26 |
-| [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批与接管语义；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-10-26 |
+| [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批分类与接管语义；2026-11-09 补档位解析：是否询问取决于 `tools.approvalMode`，默认 `yolo`，前台控制另走确认；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-11-09 |
 | [OMP bash 命令行折叠标记与 /dev/null 语义](omp-tools/bash-shell-visualization-idioms.md) | `🔇 out`/`🔇 err`/`🔇 silent` 与 `+err` 的四类重定向映射（idioms 层默认开）；命令文本来源链（模型 → rtk 扩展改写 `event.input.command`，6 次 rewrite 实测中 2 次带重定向均原样保留）；丢弃验证 `echo hidden-line >/dev/null` 不进工具结果；同区域 `⇡ first N`/`⇣ last N`/`⟵ ↓`/`⟦..↓⟧`/`⏱`/`# stop on first error` 等词汇表；`display.shellVisualization` 默认开；v18.18.0 tag 取证与未验证项 | 2026-11-07 |
 
 ## omp-extensibility
