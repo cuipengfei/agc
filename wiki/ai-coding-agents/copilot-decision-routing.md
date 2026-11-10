@@ -1,8 +1,8 @@
 # Copilot 的决策路由端点与 Auto／HydraFusion 边界
 
-> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09
-> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md)
-> Updated: 2026-11-09
+> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09; GitHub Docs《About GitHub Copilot Fusion》与 2026-10-28 changelog, 2026-11-10
+> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md)
+> Updated: 2026-11-10
 
 ## Overview
 
@@ -65,6 +65,9 @@ GitHub changelog（2026-09-30）原文：
 
 两者都服务 Copilot 自身的生成流程，用户只能把它选作模型，不能向它提交自定义问题或 schema。HydraFusion 的范围宽于 Auto 的单模型选择。
 
+> **Status: Outdated** (2026-11-10)
+> 上表「用户可见形式」与「状态」两行已被 2026-10-28 的正式可用取代：HydraFusion 以 research preview 形式出现在模型选择器的阶段结束，现在的产品面名称是 Copilot Fusion，且 Fusion 合并了 Project HydraFusion 的多模型编排与 Auto 的模型选择。决策单位与执行模式的划分仍然成立。详见 [Copilot Fusion：effort 档位、按计划可用性与计费](copilot-fusion.md)。
+
 **2026-11-09 修订**：上表「对外 API」一行仍成立（产品界面没有决策入口），但要补一句限定——上游 `/v1/decisions` 已可用，只是绑定在不对模型选择器开放的专用条目上。
 
 ## 两处常见误读
@@ -72,6 +75,8 @@ GitHub changelog（2026-09-30）原文：
 **其一：`hydra_scores` 不等于 HydraFusion。** 该字段出现在探测脚本对 `POST /auto` 响应的读取逻辑里，而脚本把该路径标为 Auto V2。可以关联到 `/auto`／Auto V2，不能归给 HydraFusion，也不能据此推断 HydraFusion 在客户端侧运行。代理侧 `AutoSelectionResponse` 类型声明中本就不含该字段。
 
 **其二：HydraFusion 的上游地址仍未公开。** 代理源码全仓检索 `hydra|fusion` 无任何请求路径，`@vscode/copilot-api@0.5.2` 的请求映射中也无该条目，公开文档未给出地址。**未公开、未确认**——既不能给出地址，也不能断言它没有独立端点。
+
+产品面对外更名后，该结论的适用范围是「Fusion 的上游调用路径仍未公开」：GA 文档只写了路由与编排行为，没有给出端点地址。
 
 ## 证据边界
 
@@ -84,3 +89,4 @@ GitHub changelog（2026-09-30）原文：
 
 - [OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测](openai-decisions-api.md)
 - [Jev 七渠道定价与 OMP systemone 兼容性判定](jev-omp-systemone-channel-compatibility.md)
+- [Copilot Fusion：effort 档位、按计划可用性与计费](copilot-fusion.md)

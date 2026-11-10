@@ -1983,3 +1983,15 @@
 - Raw: raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md
 - Updated: pstack 技能地图与行为
 - 要点：57 个 skill、143 个 markdown 文件的传递闭包在四种口径下给出四个可达数——严格执行派发（`t`/`b`）36、加 poteto-mode 对 24 条判例的条件派发 48、任何提及但排除 poteto-help 49、含 poteto-help 57；`poteto-help` 是三个根之一，`SKILL.md:66-101` 的路由表把 10 个直呼技能全部指名，`:64` 说明那是替用户指路，因此把它算作边就没有不可达项；`reflect` 被 `poteto-mode/SKILL.md:94` 与 how/why/interrogate/swarm 并列为 Routed workflow skills 但无运行指令，`typescript-best-practices` 经 `principle-type-system-discipline/SKILL.md:9` 指针可达且 frontmatter 带 `paths`；24 条判例在 `poteto-mode/SKILL.md` 第 41–81 行逐条带触发条件；三次结果按时点并列——2026-10-29 抽取 58 技能口径 47/11（`in-your-own-words` 记为直呼）、2026-11-09 复核同范围 48/10 与本机 57 技能口径 47/10、2026-11-10 本机 48/9，最后这次与 2026-11-09 本机结果相比只差 `typescript-best-practices`；`make-bot-ui` 补入行为面。
+
+## [2026-11-10] ingest | Copilot Fusion 的 effort 档位、可用性与 30% 折扣
+- Disposition: New; Update; Disputed
+- Raw: raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md
+- Updated: Copilot 的决策路由端点与 Auto／HydraFusion 边界
+- 要点：2026-10-28 GA 把 Project HydraFusion 的多模型编排与 Auto 的模型选择合并成 Copilot Fusion，旧「模型选择器里的 HydraFusion 条目 / research preview」两行标 Outdated，决策单位与执行模式的划分保留；三种执行模式 Single/Cascade/Critique；四档 effort 中 Standard/High/Max 用户可选，Fast 只在 VS Code inline chat 使用；可用性矩阵七列（Free/Student/Pro/Pro+/Max/Business/Enterprise），High 与 Max 在 Pro 及以下的计划不可用；Fusion 无独立费用、按每个被调用模型的标准价计费，2026-11-30 前付费计划 30% 折扣，High 与 Max 的单任务 credits 可能高于 Standard；选择器整体缺 Fusion 的成因是所需模型全部不可用，只缺 Fusion Max 的成因是所需模型中有一个被禁用；本地模型（MAI Code 1.1 Flash、qwen3.8-flash-next-local）只在 Standard 档位可能被选中且需开启 experimental；限制为不与 subagent 联动、被丢弃草稿的文件修改不自动撤销；changelog 自报 Fusion Max 在 Artificial Analysis Coding Agent Index 得 60，与 Claude Code with Opus 5.5 Max 相差两点以内；文档表格的含/不含取自内联 SVG 的 `octicon-check`/`octicon-x`，单元格文本被截断时会读错，需逐格解析图标并单独核对表头列序。
+
+## [2026-11-10] ingest | Copilot Fusion 计费结构与 /auto 响应实测
+- Disposition: Update; New
+- Raw: raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md
+- Updated: Copilot Fusion：effort 档位、按计划可用性与计费
+- 要点：计费口径为「billed for each model it uses, at that model's standard rate」，被丢弃草稿不豁免；Cascade 通过路径 draft→judge 两次模型调用，升级路径 draft→judge→repair 三次（judge 与 repair 是否不同模型文档未写）；Critique 为 draft、N 路并行评审、revision 三段，revision 是否单独计费按「each model it uses」字面推断应计入；30% 折扣写在内嵌 `expires 2026-11-30` 注释的 note 里，实际扣费是标准价的 70%；Fusion 实际请求路径与编排执行的一侧未公开，本机实测上游 `/auto` 返回单个模型与 multi_turn 策略参数，客户端据此发起模型调用，Fusion 是否走同一路径没有公开证据；上游 `/models` 目录 28 条不含 fusion 字样，Auto 同样不在目录里但出现在选择器，目录条目与选择器条目是两套数据；本机 `/auto` 响应含 `hydra_scores`、`multi_turn`、`multi_turn_mode: "model_cards"`、`selection_reason`、`discounted_costs`，值均来自实际返回。
