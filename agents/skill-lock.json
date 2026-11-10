@@ -306,9 +306,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/tt-a1i/archify.git",
       "skillPath": "archify/SKILL.md",
-      "skillFolderHash": "d5fc699feb186e8be4e2d9e86f850a8ea1b6959e",
+      "skillFolderHash": "03645a096811664da641153a4a42e862c4a6bc62",
       "installedAt": "2026-07-11T15:33:28.854Z",
-      "updatedAt": "2026-10-25T07:45:57.499Z"
+      "updatedAt": "2026-11-10T11:30:52.009Z"
     },
     "i-have-adhd": {
       "source": "ayghri/i-have-adhd",
@@ -636,10 +636,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "0ef9fe5bc3572734fd3ae6c448fe00a30cd5dcf0",
+      "skillFolderHash": "b48c832f0f809c1b5658edbb838c2521b72f2413",
       "pluginName": "humanizer",
       "installedAt": "2026-09-02T12:55:58.315Z",
-      "updatedAt": "2026-10-28T15:10:10.578Z"
+      "updatedAt": "2026-11-10T11:30:52.182Z"
     },
     "codebase-onboarding": {
       "source": "affaan-m/ecc",
@@ -709,9 +709,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "fee48ebaab4e36b07a7b61aa2ab7c342dfbbc919",
+      "skillFolderHash": "7c64ced4ca34f0e77fd4f3c5f77421cf59de3762",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-11-09T11:48:18.980Z"
+      "updatedAt": "2026-11-10T11:30:54.670Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1224,9 +1224,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "4f1ebf628ed85e21f8b05021854209dbe4e2cb1a",
+      "skillFolderHash": "97eae761baf0816467e50cebea9397aeba2c89f3",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-09T11:48:19.935Z"
+      "updatedAt": "2026-11-10T11:30:55.560Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
@@ -1251,9 +1251,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "aa891315b40d6893884100a3563473c997c42ddd",
+      "skillFolderHash": "93e7b58932b69370a29a15f2043eda4ac52375cf",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-08T01:23:30.578Z"
+      "updatedAt": "2026-11-10T11:30:56.729Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
