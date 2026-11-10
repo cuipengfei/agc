@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01；本机安装包 `@oh-my-pi/pi-coding-agent` v18.16.0 provider 协议层配置项源码取证, 2026-11-03；本机 OMP 会话后续核查与离线运行, 2026-11-04
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP 配置当前值与同步状态取证](../../raw/omp-config/2026-11-03-config-current-values-and-sync-state.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md)
-> Updated: 2026-11-04
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01；本机安装包 `@oh-my-pi/pi-coding-agent` v18.16.0 provider 协议层配置项源码取证, 2026-11-03；本机 OMP 会话后续核查与离线运行, 2026-11-04；已安装 `@oh-my-pi/pi-ai` 的 `compat.extraBody` 合并顺序与 `gemini-4-argon` 配置取证, 2026-11-11
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP 配置当前值与同步状态取证](../../raw/omp-config/2026-11-03-config-current-values-and-sync-state.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md); [Copilot Chat 生成失败传递与 validated 取值取证](../../raw/model-gateway-mismatch/2026-11-11-copilot-chat-generation-failure-and-validated-probe.md)
+> Updated: 2026-11-11
 
 ## 这份手册讲什么
 
@@ -144,6 +144,19 @@ models.yml 的 `compat.officialEndpoint: true` 是一个声明性标记，OMP �
 - `cacheWarming`：三个 provider 的模型都没有 `promptCache` 声明，warmer 返回 `cache lifetime unavailable` 不调度。响应回显 `"24h"` 不回填 OMP 的 TTL 元数据。固定 `promptCache.long: 86400` 会在首次调度时因一小时安全窗停止，不能作为启用 8787 warming 的方法。
 - `openaiLiveSteering`：`openai-codex` 唯一模型 `gpt-5.6-luna` 不是 GPT-6 家族且标了 `preferWebsockets: false`，steering 不生效。普通插话队列仍在响应结束等边界被处理。
 - Responses 探针中 7 个成功响应模型里 6 个 GPT 回显 `"24h"`，`mai-code-1.1-flash` 回显 `"in_memory"`；2 个 Gemini 返回 502，3 个 embedding 返回 400。gpt-6-luna 双请求 usage 从写入转为命中，但 TTL、账单折扣和字段来源未验证；直接探针未携带 OMP `cacheRetention`。
+
+### 模型级 `compat.extraBody` 的合并时机
+
+`compat.extraBody` 是一段静态请求体片段，在 `providers/openai-completions.ts` 第 2276 行由 `providers/openai-shared.ts` 的 `applyOpenAIExtraBody` 用 `Object.assign` 合并进最终 `params`。该调用点晚于第 2204 行「工具列表为空时删除 `tool_choice`」的判断，因此有三条确定后果：
+
+- 覆盖单轮传入的 `tool_choice`，包括 `"none"`。
+- 工具列表为空的临时回合仍会被合并回该字段。注释记录 `/btw` 与 IRC 后台回复走 `AgentSession.runEphemeralTurn`，该方法设置 `context.tools = []` 与 `toolChoice: "none"`。
+- 该合并绕过 `initialCompat.supportsToolChoice` 判断。
+
+本机在 `c8787-chat` 的 `gemini-4-argon` 条目写了 `compat.extraBody.tool_choice: validated`。离线捕获请求体确认最终发送值为 `"validated"`。因此主模型为该模型时，`/btw` 与 IRC 后台回复这类走 `runEphemeralTurn` 的回合也会携带该字段；该条目的 `compactionModel` 指向 `c8787/gpt-6-luna`，摘要回合使用另一个模型。没有 `tools` 时上游如何返回未验证。
+
+`validated` 是 Gemini 原生 API 的函数调用模式之一，Google 文档将其描述为模型在函数调用与普通文字之间自行选择并保证符合提供的 schema。Copilot 客户端只在带工具且 `family` 包含 `gemini-3` 时按 Gemini 专用配置改写该字段。`gemini-4-argon` 直连实测接受 `auto` 与 `validated` 两个取值，结果相同；是否映射到同一模式未确认。
+
 ## 关键边界
 
 - `secrets.enabled` 只保护走 provider-context 链路的对话内容，不等于本地 session/file/log 或第三方 extension 都自动被清理。
@@ -166,3 +179,4 @@ models.yml 的 `compat.officialEndpoint: true` 是一个声明性标记，OMP �
 - [workflowz 运行机制与生命周期](../omp-modes/workflowz-runtime-and-lifecycle.md) — workflowz 池、批次、notice 生命周期与相关配置项
 - [OMP 实验性上下文管理与 OpenCode DCP 对比](experimental-context-vs-dcp.md) — rollover/notes 机制与 DCP outbound transform 的对比
 - [OMP 运行时控制](runtime-controls.md) — steering / follow-up / interrupt 与 parse regression tooling
+- [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](../model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) — `finish_reason: "error"` 的三入口收尾、用量顺序约束与可重试文案

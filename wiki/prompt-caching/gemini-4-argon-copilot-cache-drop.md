@@ -58,3 +58,4 @@ Google 官方文档对 Gemini 上下文缓存三种模式的定义：
 - [Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复](gemini-38-flash-copilot-cache-drop.md)
 - [Prompt Cache：前缀匹配与 cache key 的真实分工](cache-key-and-prefix-matching.md)
 - [Copilot 网关 cache retention 字段实测与 warming 不触发根因](copilot-gateway-cache-retention-forensics.md)
+- [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](../model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) — 同一模型的流内 `finish_reason: "error"` 与网关侧的失败传递
