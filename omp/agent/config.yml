@@ -68,7 +68,7 @@ modelRoles:
   task: opencode-go/deepseek-v4.1-flash:max
   vision: sensenova/glm-5.2:high
   tiny: sensenova/glm-5.3:max
-  advisor: sensenova/glm-5.3:max
+  advisor: opencode-go/deepseek-v4.1-flash:max
   default: opencode-go/deepseek-v4.1-flash:max
   web: web/firecrawl
   memory: sensenova/glm-5.3:max

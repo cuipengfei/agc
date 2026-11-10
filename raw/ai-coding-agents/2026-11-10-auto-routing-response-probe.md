@@ -28,8 +28,8 @@
 
 ## 三、`GET /models` 实测（business 账号）
 
-- 条目数 28（本轮重测一次，结果为 29；两次之间目录有增，属动态目录，未列入正文断言）。
-- 本轮 29 条的 ID 集合含 `gemini-3.8-flash`、`gemini-4-argon`、`gpt-3.5-turbo`、`gpt-3.5-turbo-0613`、`gpt-4` 等。
+- 当前抓取返回 28 条；另一次抓取返回 29 条，未保存条目 ID，新增项未知。
+- 两次抓取的完整 ID 集合未分别保存，无法做集合差。
 - 整个 JSON 里 `fusion` 字样出现 0 次。
 - 换四组 `Editor-Plugin-Version` / `Copilot-Integration-Id` 请求头，条目数与结果不变。
 - 早前另一次实测同主机返回 28 条，结果一致地不含 `fusion` 字样。
