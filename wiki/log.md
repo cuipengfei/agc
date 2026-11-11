@@ -1,5 +1,11 @@
 # Wiki Log
 
+## [2026-11-11] ingest | Copilot Fusion 折扣真实入账：本机网关四分项核验
+- Disposition: Update（copilot-fusion.md 主更新 + copilot-decision-routing.md 级联）
+- Raw: raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md
+- Updated: Copilot Fusion：effort 档位、按计划可用性与计费；Copilot 的决策路由端点与 Auto／HydraFusion 边界
+- 要点：DISCOUNT-01 网关降级链（Fusion 30% → Auto 10% → 原价）上线后，用 4143 实例 SQLite 只读核验真实扣费：938 条计费记录四分项（input/output/cache read/cache write）实际单价全部落入目录价 70%（Fusion）/90%（Auto）/100% 三档，分项之和与上游 `total_nano_aiu` 逐条一致，`long_context` 档同折；10% 与 30% 记录按时间单向演化零交错，新代码生效后 10% 记录为 0；链外 gemini-4-argon 全天原价；`/auto` 的 `discounted_costs: {"gpt-6-luna": 0.1}` 与 10% 实际入账一致，Fusion 响应无该字段、30% 证据链为官方条款加四分项 0.7 实测。方法：`/proc/<pid>/fd` 定位实例实际打开的 SQLite、只读查询、四分项 × 目录价重算对账；`tmux capture-pane -e` 对比 ANSI 转义码诊断日志颜色丢失。决策路由文章「未实发 /auto 请求」的过时证据边界一并修正。
+
 ## [2026-10-23] ingest | Kiro OMP 目录刷新与模型菜单可见性
 - Disposition: New + Update
 - Raw: raw/omp-tips/2026-10-23-kiro-omp-model-visibility-fix.md

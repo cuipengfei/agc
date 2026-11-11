@@ -1,7 +1,7 @@
 # Copilot Fusion：effort 档位、按计划可用性与计费
-> Sources: GitHub Docs《About GitHub Copilot Fusion》, 2026-11-10 抓取; GitHub Changelog《Route and orchestrate models with GitHub Copilot Fusion》, 2026-10-28; 本机 `/auto` 与 `/models` 实测, 2026-11-10
-> Raw: [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [auto-routing-response-probe](../../raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md)
-> Updated: 2026-11-10
+> Sources: GitHub Docs《About GitHub Copilot Fusion》, 2026-11-10 抓取; GitHub Changelog《Route and orchestrate models with GitHub Copilot Fusion》, 2026-10-28; 本机 `/auto` 与 `/models` 实测, 2026-11-10; 本机网关扣费核验, 2026-11-11
+> Raw: [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [auto-routing-response-probe](../../raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md); [copilot-fusion-discount-live-verification](../../raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md)
+> Updated: 2026-11-11
 
 ## Overview
 
@@ -63,10 +63,19 @@ Fusion 已正式可用的客户端：Visual Studio Code、Copilot CLI、GitHub C
 
 ## 计费与 30% 折扣
 
-- Fusion 没有独立费用，按它每一步实际调用的模型的标准价计费。
 - 2026-11-30 之前，付费计划用户在使用 Fusion 时享受模型费用 30% 折扣。文档把这条写在内嵌 `<!-- expires 2026-11-30 -->` 注释里，说明是限时条款。
+- 2026-11-11 本机实测折扣真实入账：经 copilot-api 网关附 Fusion session token 的请求，`gpt-6.1-sol` 与 `gpt-6-luna` 的 input、output、cache read、cache write 四分项单价均为目录价的 70%，`long_context` 档同折；分项之和与上游 `total_nano_aiu` 逐条一致。见下节。
+- 对照链：`/auto` 响应的 `discounted_costs: {"gpt-6-luna": 0.1}` 与 Auto 10% 实际入账（目录价 90%）一致；Fusion 选择响应没有 `discounted_costs` 字段，30% 的证据链是官方条款加四分项 0.7 比例实测。
 - Fusion High 与 Fusion Max 可能为一个任务调用多个模型，credits 消耗高于 Standard。
 - Fusion 尽量让主对话停留在同一个模型上，以继续命中缓存；承担评审等辅助角色的模型只拿到它需要的那部分上下文。
+
+## 本机网关的折扣实测（2026-11-11）
+
+第三方网关 copilot-api 实现了 Fusion 30% → Auto 10% → 原价的降级链后，用实例 SQLite 用量库逐分项核验了真实扣费：
+
+- 重启进新代码后的 13 分钟窗口内，`gpt-6.1-sol` 7 条、`gpt-6-luna` 6 条计费记录实际费用均为目录价 70%（如 Sol input 200→140、Luna input 10→7 AIU/百万 token），`gemini-4-argon` 10 条原价。
+- 全天 938 条计费记录中：10% 与 30% 按时间单向演化、零交错——两模型的 10% 记录全部在 30% 记录之前，Fusion 缓存取得后无回退，新代码生效后 10% 记录为 0。
+- 不在折扣链内的 `gemini-4-argon` 全天原价，说明折扣只作用于链内来源。
 
 ## 选择器里没有 Fusion 或没有 Fusion Max 的原因
 
@@ -89,7 +98,7 @@ Fusion 只从你的计划允许、且未被管理员策略排除的模型里挑�
 ## 证据边界
 
 - 厂商自报指标：在 Artificial Analysis Coding Agent Index 中 Fusion Max 得 60，与 Claude Code with Opus 5.5 Max 相差两点以内，平均每任务 API 成本约为其一半，token 用量约为一半，耗时少约 40%。这些数字来自 GitHub changelog，未附逐任务明细。
-- 未在 VS Code 里实测 Fusion 的实际计费与折扣后扣费。
+- Fusion 折扣后扣费已经第三方网关实测入账（2026-11-11，含四分项与长上下文档）；VS Code 客户端内侧的实际计费仍未验证。
 - Fusion 的 effort 档位与既有上游 `/auto` 的 tier 取值（efficiency、balance、intelligence、fast）是否同一套编码，官方未说明，未验证。
 - Auto 是否仍与 Fusion 并列存在于模型选择器，未确认。
 

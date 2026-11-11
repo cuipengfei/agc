@@ -1,8 +1,8 @@
 # Copilot 的决策路由端点与 Auto／HydraFusion 边界
 
-> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09; GitHub Docs《About GitHub Copilot Fusion》与 2026-10-28 changelog, 2026-11-10
-> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md)
-> Updated: 2026-11-10
+> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09; GitHub Docs《About GitHub Copilot Fusion》与 2026-10-28 changelog, 2026-11-10; 本机网关扣费核验, 2026-11-11
+> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [copilot-fusion-discount-live-verification](../../raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md)
+> Updated: 2026-11-11
 
 ## Overview
 
@@ -80,7 +80,7 @@ GitHub changelog（2026-09-30）原文：
 
 ## 证据边界
 
-- 未实发 `/auto` 请求；`hydra_scores`、`discounted_costs`、`multi_turn_mode` 的实际返回未验证。
+- `hydra_scores`、`multi_turn_mode`、`discounted_costs` 的实际返回已对上游实测（raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md）；`discounted_costs` 的 10% 折扣另经 2026-11-11 扣费核验一致。
 - 未实测 `/models/session/intent`。
 - `tier` 与响应字段属未公开行为，可能变动。
 - HydraFusion 的内部实现与上游调用方式未公开。
