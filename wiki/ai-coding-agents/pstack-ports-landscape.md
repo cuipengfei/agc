@@ -1,8 +1,8 @@
 # pstack 移植版生态全景
 
-> Sources: GitHub Search API / repo_view / Tavily, 2026-10-05; poteto-mode SKILL.md 原文, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29
-> Raw: [github-pstack-ports-search](../../raw/ai-coding-agents/2026-10-05-github-pstack-ports-search.md); [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md)
-> Updated: 2026-10-29
+> Sources: GitHub Search API / repo_view / Tavily, 2026-10-05; poteto-mode SKILL.md 原文, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29; ub-mode 与 pstack 官方归属资料, 2026-11-12
+> Raw: [github-pstack-ports-search](../../raw/ai-coding-agents/2026-10-05-github-pstack-ports-search.md); [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [ub-mode 来源、署名与提交记录](../../raw/ai-coding-agents/2026-11-12-ub-mode-origin-and-attribution.md); [pstack 作者、上游与镜像归属](../../raw/ai-coding-agents/2026-11-12-pstack-attribution-and-mirror.md)
+> Updated: 2026-11-12
 
 ## Overview
 
@@ -11,6 +11,10 @@ pstack 是 Lauren Tan 为 Cursor 编写的工程工作流 skill 插件，原版�
 ## 原版
 
 原版为 Lauren Tan 的 pstack，位于 `cursor/plugins` 仓库（https://github.com/cursor/plugins/tree/main/pstack），`poteto-mode` 是其主 skill，负责为工程任务选择并运行工作流。
+
+## 明确衍生：ub-mode
+
+`unclebob/ub-mode` 官方 README 明确声明它取材自 @poteto 的 `poteto-mode/pstack`，经过精简并加入 Crapper、Dryer、Mutator 等质量检查工具。其初始提交作者记录与 LICENSE 署名均为 Robert C. Martin。作者归属、提交历史和原则思想来源见 [pstack 与 ub-mode 的作者归属及原则来源](pstack-ub-mode-authorship-and-principle-origins.md)。
 
 ## 移植版排行（2026-10-05 采集）
 

@@ -2015,3 +2015,10 @@
 - Created: wiki/harness-engineering/harness2-recursive-harnessing.md
 - Updated: wiki/harness-engineering/harness-formats-and-context-carriers.md（仅 See Also 交叉引用，不改知识内容，不刷新 Updated）
 - 要点：Harness² 在模型权重固定下自动修改 harness，8 组件按 context construction / tool interface / delegation / middleware 分组；两级递归中任务级用 Propose–Probe–Compose，无 ground-truth 反馈，改进级把采纳 harness 与经验写入按域隔离的 library；两种模式都以 k 次基础 harness 参考执行开始，parallel 探测 k 通用 + k 领域候选并产出 k 份组合，sequential 串行 k 步；判分与报告须与改进使用相同 benchmark、executor、subset、k、mode、seed。模型调用全在外部 CLI 子进程：solver 为 OpenCode（固定 commit 23fb5e05 v1.14.18 经 Bun 跑源码）或 Codex 0.144.6，改进器默认 opencode 通道、可选 claude_cli（`CHANNELS = ("claude_cli", "opencode")`），judge 走各基准上游脚本；核心包 `dependencies = []`，SCRUB_ENV 清除宿主 token。自报单步增益 WorkBuddy +11.5 / JobBench +4.5 / LAB partial pass +11.8，网站 WorkBuddy 表 base 72.4 → k=1 77.5 → k=5 80.8（Gemini 3.5 Flash / OpenCode，三次均值）；JobBench 案例 43.1 → 77.8。边界：执行器网络不受限且 Codex 关 sandbox，官方验证中 Codex 曾自行下载 JobBench 评分标准；LAB 全量 1,143 任务；JobBench 数据集下载时解析未固定 commit；WorkBuddy 腾讯自定义许可含地域限制。
+
+## [2026-11-12] ingest | pstack 与 ub-mode 的作者归属及原则来源
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-12-ub-mode-origin-and-attribution.md; raw/ai-coding-agents/2026-11-12-pstack-attribution-and-mirror.md; raw/ai-coding-agents/2026-11-12-attack-the-premise-provenance.md; raw/ai-coding-agents/2026-11-12-type-system-discipline-parse-dont-validate.md
+- Created: wiki/ai-coding-agents/pstack-ub-mode-authorship-and-principle-origins.md
+- Updated: wiki/ai-coding-agents/pstack-ports-landscape.md
+- 要点：ub-mode 官方声明取材自 pstack；pstack 上游及作者、ub-mode 初始提交作者、Attack the Premise 两次 PR 历史、Type System Discipline 的早期概念先例与直接引用未知边界。
