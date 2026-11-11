@@ -98,3 +98,4 @@ Prime Agent 的 RLM（持久 Python kernel）是另一种 harness 创新：让�
 - [Better Harness](../better-harness/better-harness.md) — 从会话和配置反查 harness 工作流缺口
 - [Hermes vs OpenClaw 架构差异](../agent-harness/hermes-vs-openclaw-architecture.md) — 相同模型受上下文架构影响的具体案例
 - [文档、测验与 AI 代码库的认知债务](documentation-and-cognitive-debt.md) — 持久上下文之外的人类理解闭环
+- [Harness² 递归 agent harness 框架](harness2-recursive-harnessing.md) — 自动修改 harness 的两级递归框架，OpenCode/Codex 执行器
