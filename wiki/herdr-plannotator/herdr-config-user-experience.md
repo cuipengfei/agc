@@ -1,12 +1,12 @@
 # Herdr 配置项与用户体验
 
-> Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25
-> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md)
-> Updated: 2026-10-25
+> Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12
+> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md)
+> Updated: 2026-11-12
 
 ## Overview
 
-`~/.config/herdr/config.toml` 是 Linux 与 macOS 上 Herdr 默认读取的主配置；Windows 默认在 `%APPDATA%\herdr\config.toml`。`HERDR_CONFIG_PATH` 指定其他文件。文件中没有写出的项目使用默认值。
+`~/.config/herdr/config.toml` 是 Linux 与 macOS 上 Herdr TUI 默认读取的主配置；Windows 默认在 `%APPDATA%\herdr\config.toml`。`HERDR_CONFIG_PATH` 指定其他文件。文件中没有写出的项目使用默认值。Herdr App 与 herdr-core 的产品关系见 [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)。
 Herdr 没有提供用于 `config.toml` 编辑器补全的标准 JSON Schema 文件（本轮在 v0.9.5 官方 docs 与仓库中未找到；`herdr api schema` 输出的是 Socket API schema，不校验 `config.toml`）。查阅与校验的入口是：
 
 | 入口 | 能做什么 |
@@ -152,5 +152,6 @@ Popup 可设宽高（字符格数或 `"80%"`）；打开期间接收全部终端
 ## See Also
 
 - [Herdr + Plannotator 工具链全量 Reference](toolchain-reference.md)
+- [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)
 - [TUIOS 配置与用户体验](../terminal-multiplexers/tuios-config-user-experience.md)
 - [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)

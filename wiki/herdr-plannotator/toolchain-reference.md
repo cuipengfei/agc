@@ -1,10 +1,14 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17; Herdr v0.9.5 config-reference.json 与 configuration.mdx, 2026-10-25
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md)
-> Updated: 2026-10-25
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17; Herdr v0.9.5 config-reference.json 与 configuration.mdx, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12; 用户提供的本机 `herdr --help` 输出, 2026-11-12
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md)
+> Updated: 2026-11-12
 
 ---
+本文的 Herdr 命令、`config.toml` 和插件部分涉及 Herdr TUI。Herdr App、herdr-core 与手机的关系见 [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)。
+
+手机中的电脑终端也可以手动启动 Herdr TUI：`herdr` 接入默认会话，`herdr session attach <NAME>` 接入指定会话。用户 2026-11-12 提供的本机 `herdr --help` 确认这两个入口，没有列出 `herdr attach` 子命令。手机 App 的 core 自动列表仍不显示 Herdr TUI 的 agent，详见 [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)。
+
 
 ## 1. Herdr CLI 完整命令表
 
@@ -1010,6 +1014,7 @@ OMP 插件 `@plannotator/pi-extension` 经 `@plannotator/webtui@0.1.0` 依赖 `n
 0.9.2 删除了私有 pane graphics API（§1.14），应用直接写标准 Kitty graphics，herdr 原生渲染。0.9.5 当前 `terminal.kitty_graphics` 配置项只启用 Kitty graphics protocol；SIXEL 渲染或传递不受支持，两个相关 issue（#3030、#4330）均关闭为 NOT_PLANNED。维护者说明 Herdr 解析 pane 输出并重新绘制，外部终端的 SIXEL 能力不会透传；增加 SIXEL 属于新增协议支持。这意味着 SIXEL-only 外部终端（如 ttyd 1.7.7 前端）与 Herdr 组合时，pane 内图像无法显示。详见 [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)。
 
 ## See Also
+- [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)
 
 - [浏览器终端链路的剪贴板路径](../terminal-multiplexers/browser-terminal-clipboard-paths.md)
 - [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)

@@ -2016,9 +2016,28 @@
 - Updated: wiki/harness-engineering/harness-formats-and-context-carriers.md（仅 See Also 交叉引用，不改知识内容，不刷新 Updated）
 - 要点：Harness² 在模型权重固定下自动修改 harness，8 组件按 context construction / tool interface / delegation / middleware 分组；两级递归中任务级用 Propose–Probe–Compose，无 ground-truth 反馈，改进级把采纳 harness 与经验写入按域隔离的 library；两种模式都以 k 次基础 harness 参考执行开始，parallel 探测 k 通用 + k 领域候选并产出 k 份组合，sequential 串行 k 步；判分与报告须与改进使用相同 benchmark、executor、subset、k、mode、seed。模型调用全在外部 CLI 子进程：solver 为 OpenCode（固定 commit 23fb5e05 v1.14.18 经 Bun 跑源码）或 Codex 0.144.6，改进器默认 opencode 通道、可选 claude_cli（`CHANNELS = ("claude_cli", "opencode")`），judge 走各基准上游脚本；核心包 `dependencies = []`，SCRUB_ENV 清除宿主 token。自报单步增益 WorkBuddy +11.5 / JobBench +4.5 / LAB partial pass +11.8，网站 WorkBuddy 表 base 72.4 → k=1 77.5 → k=5 80.8（Gemini 3.5 Flash / OpenCode，三次均值）；JobBench 案例 43.1 → 77.8。边界：执行器网络不受限且 Codex 关 sandbox，官方验证中 Codex 曾自行下载 JobBench 评分标准；LAB 全量 1,143 任务；JobBench 数据集下载时解析未固定 commit；WorkBuddy 腾讯自定义许可含地域限制。
 
+## [2026-11-12] ingest | Herdr App、herdr-core 与手机：产品关系和终端访问
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md
+- Created: wiki/herdr-plannotator/herdr-app-core-mobile.md
+- Updated: wiki/herdr-plannotator/toolchain-reference.md; wiki/herdr-plannotator/herdr-config-user-experience.md
+- 要点：官方明确区分桌面 App、herdr-core 与 Herdr TUI；手机连接 core 而不连接 Herdr TUI；core 支持命令行、选择菜单和 attach，程序在电脑运行，手机显示真实终端并发送输入；接口顺序为 plain JSON-RPC → hello framed → terminal.attach。手机官方说明确认 SSH；Android 内部具体调用、任意界面定制、GMS 依赖与华为兼容性未确认。两篇现有文章增加 TUI 范围说明与交叉引用，保留原有 CLI、配置和版本验证内容。
+
+## [2026-11-12] lint | Herdr App、core 与手机 0 issues found, 0 auto-fixed
+- 全库检查：433 fidelity suspect(s)、0 evidence error(s)、0 unreferenced raw file(s)。新文章不在 suspect 列表；其他文章的 suspect 保留人工复核，不自动修改。本次三篇文章的本地 Markdown 链接全部存在，Herdr 分区七个索引条目路径有效，新增和更新文章日期均为 2026-11-12。日志前 2017 行与 HEAD 一致，本次 ingest 追加 7 行。
+
 ## [2026-11-12] ingest | pstack 与 ub-mode 的作者归属及原则来源
 - Disposition: New; Update
 - Raw: raw/ai-coding-agents/2026-11-12-ub-mode-origin-and-attribution.md; raw/ai-coding-agents/2026-11-12-pstack-attribution-and-mirror.md; raw/ai-coding-agents/2026-11-12-attack-the-premise-provenance.md; raw/ai-coding-agents/2026-11-12-type-system-discipline-parse-dont-validate.md
 - Created: wiki/ai-coding-agents/pstack-ub-mode-authorship-and-principle-origins.md
 - Updated: wiki/ai-coding-agents/pstack-ports-landscape.md
 - 要点：ub-mode 官方声明取材自 pstack；pstack 上游及作者、ub-mode 初始提交作者、Attack the Premise 两次 PR 历史、Type System Discipline 的早期概念先例与直接引用未知边界。
+
+## [2026-11-12] ingest | Herdr App、herdr-core 与手机：产品关系和终端访问
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md
+- Updated: wiki/herdr-plannotator/herdr-app-core-mobile.md; wiki/herdr-plannotator/toolchain-reference.md
+- 要点：手机 App 的 core 自动列表不显示 Herdr TUI agent；用户可在手机显示的电脑 shell 中运行 `herdr` 接入默认会话，或运行 `herdr session attach <name>` 接入指定会话。用户提供的本机 `herdr --help` 确认这两个入口，未列出 `herdr attach` 子命令。此时手机显示 core 终端中的 Herdr TUI，程序和会话仍在电脑，自动列表范围不变；未进行手机实测。索引同步更新。
+
+## [2026-11-12] lint | 手机手动接入 Herdr TUI 0 issues found, 0 auto-fixed
+- 全库检查：433 fidelity suspect(s)、0 evidence error(s)、0 unreferenced raw file(s)。产品关系文章无 fidelity suspect；工具参考中本次增加的日期在关联 raw 正文可查。两篇修改文章的本地链接与索引中的手动接入命令均已检查。未进行手机连接实测。

@@ -126,8 +126,10 @@ This principle is distinct from [Redesign from First Principles](../principle-re
 3. `Are answers that attack the premise or conclusion always` — https://forum.powerscore.com/viewtopic.php?t=15229
 4. `How to Weaken LSAT Arguments` — https://7sage.com/blog/weaken-lsat-arguments
 5. `Effective Arguing; Beware of Logical Red-Herrings` — https://opexsociety.org/founders-desk/effective-arguing-beware-of-logical-red-herrings/
-6. `If someone doesn't agree with the premise of your question ...` — https://www.google.com/goto?url=CAESpQIBxCJF12LHw2ZDBHvetnaKp1e4_AFLpCWs5c2aERWebzA_yLyvg8bU1n12scHVQyWMWtHWh4yMrd3cUCrhxL9_E1CA8I-_vH0YH6P9j-tTy_4TXqYdoNuyoWJMkd_9XXZvJaQTqsI4462LyE5XTtrwESmH5ZuVNtsjfVzSotop7IwytFJRqHh-mUja8yVvV7SY-BsHDnD10942Z6oJOnl5X7TPhCIzIZO17oBWnB67yzXau8uIOzggqlqXC1pCspTqb7OxqW7PxPPQVHndZ4L6g-W7qXkirTmMYYZ3ZW8qscnLoW3foI5j4MmS8zP58Fbo6XyGKJ4PkZZyqft8HVoWjjSUsaWFT69YGt3r1b-9bHMKnopE36aOYjGgsHEGCXMKC8EBBg&gsessionid=CMJQ7F69g1QWMifgGQqWniPyi2E0SYbOzYmh7PM32tt-2V2BjRThaQ
-7. `LSAT LR Flashcards` — https://www.google.com/goto?url=CAESbwHEIkXXBIQtt14eHG_BrXGvMQVMhzPmcSE2SNyurO8arqFQITlM0bxHEJSjFJ7tBBwdAKLZDpj7JdUoogxEMSMRmovfdohzr_lYwQrdkzrTtTF5FC5zGL8H7-YFdVII-7e2cTqkfUVCnoQMbZ-kkw&gsessionid=CMJQ7F69g1QWMifgGQqWniPyi2E0SYbOzYmh7PM32tt-2V2BjRThaQ
+6. `If someone doesn't agree with the premise of your question ...` — https://www.quora.com/If-someone-doesnt-agree-with-the-premise-of-your-question-then-why-dont-they-ignore-or-assume-the-premise-to-be-true-instead-of-attacking-the-premise-and-answering-a-different-question-that-wasnt-what-you-were
+7. `LSAT LR Flashcards` — 搜索结果只返回搜索跳转地址，未取得可长期引用的目标网址
 8. `Debate tips: Focus on the premise, not the person` — https://www.facebook.com/mediummarkanthony/posts/debate-should-be-business-and-not-become-personal-soattack-the-premisenot-the-pe/10212640524562226/
-9. `Are We There Yet? Timing and Floating-Point Attacks on ...` — https://www.google.com/goto?url=CAEScwHEIkXXBZ4Z21Ybo8EDMhbc4Kl7u-YsMLS333cNjhieq7RvLhFwCJ-21g3Dk-_amvQT16n9Jsk7qAytNK20XIq1N2v4ZZvZmxomh0ybwNgyDOQpzQaZ1S3JYEJr3aq2r8qYHQjSMeOa7DwWoxQSi6M8zM0&gsessionid=CMJQ7F69g1QWMifgGQqWniPyi2E0SYbOzYmh7PM32tt-2V2BjRThaQ
-10. `Fox's Andy McCarthy: “We really have to attack the premise ...` — https://www.google.com/goto?url=CAESxgEBxCJF14QLlZn5FffED-uTq-QRaT6FKrwoKbDxRRTdt5DbWCSSySCRtSv9LPWzQ45792UjwO-WBtaO94el_W9gUjhewKTrAqyMXFDz-V2QoJxDG1x01XCa7f0z5C_kNBDVGLal4oRkDh6vp638rgn93jLQlP8Ha78LfglmfqRiUyY32QQLKZ06-hYSwUZoccpbV0agNQNygcW_KKl6iIVdYjJ-ZAhLNYjC0HoDfOWPn75zPAtuzQsgC828AFkCApwEYjLtL6A&gsessionid=CMJQ7F69g1QWMifgGQqWniPyi2E0SYbOzYmh7PM32tt-2V2BjRThaQ
+9. `Are We There Yet? Timing and Floating-Point Attacks on ...` — 搜索结果只返回搜索跳转地址，未取得可长期引用的目标网址
+10. `Fox's Andy McCarthy: “We really have to attack the premise ...` — 搜索结果只返回搜索跳转地址，未取得可长期引用的目标网址
+
+该次查询的原始结果对第 7、9、10 条给出带搜索会话标识的跳转地址，已移除；这些目标网址的当前页面分别返回 HTTP 403、HTTP 418 与 HTTP 404，无法核实，因此不记录 URL。
