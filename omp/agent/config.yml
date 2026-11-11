@@ -65,7 +65,7 @@ modelRoles:
   slow: c8787/gpt-6.1-sol:high
   commit: c8787/gpt-6-luna:high
   smol: c8787/gpt-6-luna:high
-  task: opencode-go/deepseek-v4.1-flash:max
+  task: sensenova/glm-5.3:max
   vision: sensenova/glm-5.2:high
   tiny: sensenova/glm-5.3:max
   advisor: opencode-go/deepseek-v4.1-flash:max
@@ -76,7 +76,7 @@ modelRoles:
   widget: sensenova/glm-5.3:max
   architect: c8787/gpt-6.1-sol:high
   designer: sensenova/kimi-k3:max
-  balanced: sensenova/kimi-k3:max
+  balanced: opencode-go/deepseek-v4.1-flash:max
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
@@ -589,10 +589,11 @@ speech:
 features:
   unexpectedStopDetection: smart
 codexResets:
-  autoRedeem: "no"
   minBlockedMinutes: 60
   keepCredits: 0
   salvageHorizonHours: 12
+  autoRedeem5h: "no"
+  autoRedeemWeekly: "no"
 provider:
   appendOnlyContext: "on"
 exa:
