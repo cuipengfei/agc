@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import copilot_pricing
+import github_copilot_changelog
 import opencode_pricing
 import release
 
@@ -28,8 +29,14 @@ def main(root: Path = SKILL_ROOT) -> int:
             "opencode-go-pricing-monitor",
             opencode_pricing.collect,
         ),
+        (
+            "github_copilot_changelog",
+            "github-copilot-changelog",
+            github_copilot_changelog.collect,
+        ),
     ):
-        sources[name] = collector(root / "state" / state_name, config[name])
+        if name in config:
+            sources[name] = collector(root / "state" / state_name, config[name])
 
     payload = {
         "run_at": run_at.isoformat(),

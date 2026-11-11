@@ -98,9 +98,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
       "skillPath": "skills/help-me-read/SKILL.md",
-      "skillFolderHash": "1ee039a4a8e2f55c11a3cbb3bc4d2a40493837c1",
+      "skillFolderHash": "a4fe2be92196142d65ca3231ee52371cbef066f7",
       "installedAt": "2026-05-04T12:48:23.091Z",
-      "updatedAt": "2026-10-25T10:38:59.336Z"
+      "updatedAt": "2026-11-11T14:15:18.337Z"
     },
     "jichang": {
       "source": "cuipengfei/prompts",

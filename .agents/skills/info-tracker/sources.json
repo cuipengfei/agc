@@ -29,5 +29,11 @@
   ],
   "opencode_go_pricing": {
     "url": "https://opencode.ai/go/"
+  },
+  "github_copilot_changelog": {
+    "url": "https://github.blog/changelog/?label=copilot&opened-months=11",
+    "api_url": "https://github.blog/wp-json/wp/v2/changelogs",
+    "label": "copilot",
+    "backfill_days": 28
   }
 }
