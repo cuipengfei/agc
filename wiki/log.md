@@ -2066,3 +2066,10 @@
 - Raw: raw/tern/2026-11-12-bun-hook-timeout.md
 - Updated: Tern 升级辅助工具与验收边界
 - 要点：Bun 的 beforeAll/beforeEach/afterAll/afterEach 默认预算 5 秒，超时报错文本一律 a beforeEach/afterEach hook timed out、不区分钩子类型，区分依据是失败条目是否标记 unnamed。钩子里 spawnSync 走耗时动作时超时后子进程被杀，spawnSync 返回 status null、stderr 空、error undefined，按 stderr || error 拼接的模板打印字面量 undefined；给钩子显式传预算并在报错里补 status/signal 才能看出原因。lifecycle.test.mjs 编译替身钩子在慢 runner 越过 5 秒（run 42189362972 失败 fixture build failed: undefined / unnamed 5005.75ms，上次成功约 3.9 秒贴线），两个 beforeAll 加 30000 预算后 run 42216007618 通过、准备阶段实测 5.30 秒；第二个钩子内部 waitFor 8000 本身已超默认预算，一并加预算。五组 /tmp 最小用例复核：beforeAll 异步等 6 秒无预算即失败、带 30000 通过；spawnSync 阻塞 6 秒无预算逐字复现 undefined。索引 CI 事实段与 maintenance-toolkit 同步更新。
+
+## [2026-11-12] ingest | ub-mode 配套工具：安装、升级与项目运行方式
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-12-ub-mode-companion-tools.md; raw/agent-tooling/2026-11-12-uv-git-tools-install-and-upgrade.md; raw/agent-tooling/2026-11-12-edn-specification-and-authorship.md
+- Created: wiki/agent-tooling/ub-mode-companion-tools.md
+- Updated: wiki/agent-tooling/uv-tool-discovery-and-receipts.md
+- 要点：三个 Python CLI 与可选 Clojure viewer 的职责、语言支持和前置环境；uv Git 安装与 mutator 隔离环境的 --with crapper；Updated 与 Nothing to upgrade 分属不同阶段；mutator 使用项目已有测试而无需专用 API，记录 worker 与覆盖率生成的运行影响；EDN 公开规范初始提交作者 Rich Hickey。用户安装和帮助日志、临时导入实测与未执行的项目分析分别记载。

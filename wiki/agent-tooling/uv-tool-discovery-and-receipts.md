@@ -1,8 +1,8 @@
 # uv 工具发现机制与 uv-receipt.toml
 
-> Sources: DeepWiki（astral-sh/uv 源码索引）, 2026-10-05; 本机实测, 2026-10-05
-> Raw: [uv-tool-receipts-deepwiki](../../raw/agent-tooling/2026-10-05-uv-tool-receipts-deepwiki.md)
-> Updated: 2026-10-05
+> Sources: DeepWiki（astral-sh/uv 源码索引）, 2026-10-05; 本机实测, 2026-10-05; uv 官方文档、源码 `6ff87607937b55055ed4c75d3e965aad61bcbc91` 与本次会话安装升级日志, 2026-11-12
+> Raw: [uv-tool-receipts-deepwiki](../../raw/agent-tooling/2026-10-05-uv-tool-receipts-deepwiki.md); [uv Git 安装与升级证据](../../raw/agent-tooling/2026-11-12-uv-git-tools-install-and-upgrade.md)
+> Updated: 2026-11-12
 
 ## Overview
 
@@ -21,6 +21,38 @@ uv 没有 bun 那样的全局 package.json 清单。已安装工具的唯一事�
 - **entrypoints**：可执行名与安装路径（`ToolEntrypoint` 列表）；
 - **tool options**：安装时的配置，如 `resolution` 策略、`exclude-newer`、`index-url`；DeepWiki 指出 index URL 的凭据在写入 receipt 时会被省略；
 - **build constraint dependencies**：构建期依赖及其 hash。
+
+## Git 来源工具的安装与升级
+
+uv 支持从 Git 安装 Python CLI。每个 tool 使用独立环境，另一个全局工具环境里的 Python 包不会自动成为当前工具的导入依赖。mutator 的实测案例是：单独安装后导入 crapper 失败，通过 `--with` 把 crapper 加进 mutator 环境后，同一个检查输出 `crapper import: OK`。
+
+```bash
+uv tool install git+https://github.com/unclebob/mutator.git \
+  --with git+https://github.com/unclebob/crapper.git
+```
+
+`--with` 是附加包需求，属于上文 receipt 的 requirements；它与包自身声明的 extra 分开。官方文档说明升级会保留安装设置，无需手工向 tool 环境执行 pip 安装。三个工具的完整安装命令见 [ub-mode 配套工具](ub-mode-companion-tools.md#uv-git-安装)。
+
+```bash
+uv tool list
+uv tool upgrade crapper dryer mutator
+uv tool upgrade --all
+```
+
+会话环境 uv 0.13.7 的 `uv tool list --all` 返回参数错误；列工具使用 `uv tool list`。`uv tool upgrade --all` 会检查全部已安装工具及其环境依赖。上述 Git 安装地址未指定 ref；日志中的 commit 是解析结果，不能仅凭它判定安装需求固定了 commit。若在安装 URL 中明确写入固定 commit，则后续升级仍受该来源约束。
+
+### Updated 与 Nothing to upgrade
+
+用户的升级日志同时出现同一 Git hash 的 `Updated` 和最终的 `Nothing to upgrade`。两者分别报告不同步骤：
+
+| 输出 | 对应步骤 |
+|---|---|
+| `Updated <URL> (<hash>)` | Git checkout 完成，显示本次解析到的 revision |
+| `Nothing to upgrade` | 最终没有需要升级的工具；待处理工具列表为空也会出现这条消息 |
+
+当前源码 `on_checkout_complete` 直接格式化 `Updated`，该输出路径没有比较新旧 hash。因此，同一 hash 配合最终无升级结果属于正常的来源刷新。本次读取的源码是 `6ff87607937b55055ed4c75d3e965aad61bcbc91`，环境日志来自 uv 0.13.7，两者没有做发布版本对应核验。
+
+实际验证覆盖临时 Git 安装、依赖导入和无更新场景的 `upgrade --all`，用户也提供了全局安装升级日志。没有模拟远端新增 commit 后的升级；相关命令的预期用途依据 uv 文档记录。
 
 ## 对配置同步实践的启示
 
