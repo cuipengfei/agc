@@ -72,9 +72,9 @@ modelRoles:
 
 `tools/index.ts:663-853` 的 `resolveBuiltinToolPlan` 是唯一计算入口，`createTools` 与运行期设置同步共用它。`tools` 缺失时 `requestedTools` 为 `undefined`，生效集合取 `BUILTIN_TOOLS` 中全部通过门禁的项；写了列表则只保留列表内名称，且不在 `BUILTIN_TOOLS` 与 `HIDDEN_TOOLS` 中的名称被直接丢弃。
 
-显式列表会触发六类自动补齐：`grep` 补 `ast_grep`、`edit` 补 `ast_edit`、`task` 或 `bash` 补 `wait`、同时有 `read` 与 `grep` 且开启实验性上下文管理时补 `context_notes` 与 `new_context`、`memory.backend` 为 hindsight 或 mnemopi 时补 `recall`/`retain`/`reflect`、`memory.backend` 为 mnemopi 时补 `memory_edit`。`manage_skill` 与 `learn` 的自动补齐限 `taskDepth` 为 0，子代理不触发。
+显式列表会触发五类自动补齐：`grep` 补 `ast_grep`、`edit` 补 `ast_edit`、同时有 `read` 与 `grep` 且开启实验性上下文管理时补 `context_notes` 与 `new_context`、`memory.backend` 为 hindsight 或 mnemopi 时补 `recall`/`retain`/`reflect`、`memory.backend` 为 mnemopi 时补 `memory_edit`。`manage_skill` 与 `learn` 的自动补齐限 `taskDepth` 为 0，子代理不触发。`wait` 不属于这一组，由执行器在工具表含 `task` 或 `bash` 时追加。
 
-顶层权限由 `sdk.ts:4528-4541` 的 `alwaysInclude` 决定：`restrictToolNames` 为假时，SDK 自定义工具（含 MCP 代理）、扩展注册工具与设置门控自定义工具无条件进入激活集合。`executor.ts:4624` 让普通子代理的 `restrictToolNames` 为假，只有 `preparedSession`（seance）为真。因此 frontmatter `tools` 限制的是内置工具，MCP 与扩展工具不受其约束；`librarian` 声明的 8 个 `mcp__*` 名称既不参与过滤，也不决定可用性。
+顶层权限由 `sdk.ts:4528-4541` 的 `alwaysInclude` 决定：`restrictToolNames` 为假时，SDK 自定义工具（含 MCP 代理）、扩展注册工具与设置门控自定义工具无条件进入激活集合。`structured-subagent.ts:790` 计算该标志，三个来源是 `preparedSession`（seance）、`policy.planMode` 与父会话的 `restrictToolNames`，任一为真即受限；受限会话在 `structured-subagent.ts:791` 与 `executor.ts:4986` 关闭 MCP，扩展与自定义工具的预加载路径也置空。因此 frontmatter `tools` 限制的是内置工具，MCP 与扩展工具不受其约束；`librarian` 声明的 8 个 `mcp__*` 名称既不参与过滤，也不决定可用性。
 
 `edit` 还影响 `read` 的输出形态：`sdk.ts:2619-2623` 的 `hasEditTool` 只检查工具列表是否含 `edit`，该标志控制 hashline 行锚点。
 
@@ -82,7 +82,7 @@ modelRoles:
 
 `read-only-policy.ts:1-28` 用 16 个名称构成 `READ_ONLY_TOOL_NAMES`：`read`、`wait`、`grep`、`glob`、`find`、`web_search`、`ast_grep`、`yield`、`ask`、`todo`、`recall`、`reflect`、`retain`、`memory_edit`、`checkpoint`、`rewind`。`isReadOnlyAgent` 要求声明的工具非空且全部落在集合内，任一未知名称即判为非只读。
 
-`lsp`、`bash`、`eval`、`write`、`edit`、`task` 都不在集合内。含 `lsp` 的 `oracle`、含 `bash` 的 `qa` 都会被判为非只读，判定结果写入会话契约的 `readOnly` 字段（`executor.ts:5299`）。这条判定的语义是「有没有写入类工具」，不区分工具的实际使用方式。
+`lsp`、`bash`、`eval`、`write`、`edit`、`task` 都不在集合内。含 `lsp` 的 `oracle`、含 `bash` 的 `qa` 都会被判为非只读，判定结果写入会话契约的 `readOnly` 字段（`executor.ts:5299`）。判定规则是声明的工具必须全部位于白名单内，否则判为非只读；白名单含 `ask`、`todo`、`wait` 这类不产生副作用但不在「读文件」语义内的工具，因此该字段表达的是白名单成员关系，与工具的实际使用方式无关。
 
 ## 提示词分层与冲突面
 
@@ -162,7 +162,7 @@ modelRoles:
 - 新增 agent 在已开启的会话里，工具描述可能仍是启动时的快照；preflight 每次重载设置，但描述广播不刷新。完整生效以下一个会话为准。
 - OMO 原型定义的读取基于安装包 5.1.57 的 dist 与 packages 目录；OMO 上游更新后行号与常量名可能变化。
 - `builder` 的 18.2s 与其余四条同为单次样本，不能用来比较模型速度。
-- 工具面数据由 `resolveBuiltinToolPlan` 静态计算得出，`taskDepth` 取 1。真实 spawn 后的工具面还会叠加 `wait`、`yield` 与设置门控工具的运行期同步，未逐项实测。
+- 工具面数据由 `resolveBuiltinToolPlan` 静态计算得出，`taskDepth` 取 1，计数已含 `wait`、`yield` 与设置门控工具的静态计划结果；不计入计数的是运行期注入的 MCP 与扩展工具，它们的实际数量未统计。
 - 提示词分层的冲突结论基于 `system-prompt.md` 与 `subagent-system-prompt.md` 的模板文本，未做改前的真实子代理行为对照。
 
 ## 凭据边界

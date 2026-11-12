@@ -117,10 +117,23 @@ export async function resolveBuiltinToolPlan(session: ToolSession, toolNames?: s
 
 `hasEditTool` 只取决于工具列表是否含 `edit`；该标志控制 `read` 输出的 hashline 行锚点。
 
-## 源码摘录：`src/task/executor.ts:4624, 4627-4636, 4652-4659`（toolNames 组装）
+## 源码摘录：`src/task/structured-subagent.ts:790-791`（restrictToolNames 的三个来源）
+
+```
+	const restrictToolNames = preparedSession !== undefined || policy.planMode || session.restrictToolNames === true;
+	const enableMCP = !restrictToolNames && (session.enableMCP ?? true);
+```
+
+该值在 `structured-subagent.ts:843` 作为 `restrictToolNames` 传入 `runSubprocess`，同文件 875 行与 877 行在它为真时把 `preloadedExtensionPaths` 与 `preloadedCustomToolPaths` 置空。
+
+## 源码摘录：`src/task/executor.ts:4624, 4627-4636, 4652-4659, 4986`（toolNames 组装与 MCP 关闭）
 
 ```
 	const restrictToolNames = options.restrictToolNames === true || preparedSession !== undefined;
+```
+
+```
+			const enableMCP = !restrictToolNames && (options.enableMCP ?? true);
 ```
 
 ```
@@ -145,7 +158,7 @@ export async function resolveBuiltinToolPlan(session: ToolSession, toolNames?: s
 	}
 ```
 
-普通子代理 `restrictToolNames` 为假；`preparedSession`（seance）为真。`wait` 由 `task` 或 `bash` 触发补齐。
+普通子代理 `restrictToolNames` 有三个来源：`preparedSession`（seance）、`policy.planMode`、父会话 `restrictToolNames`，任一为真即受限。受限会话在 `structured-subagent.ts:791` 与 `executor.ts:4986` 关闭 MCP；`structured-subagent.ts:875` 与 877 行把 `preloadedExtensionPaths`、`preloadedCustomToolPaths` 置空。`wait` 不来自 `resolveBuiltinToolPlan`，由 `executor.ts:4652-4659` 在工具表含 `task` 或 `bash` 时追加。
 
 ## 源码摘录：`src/task/read-only-policy.ts:1-28`
 
