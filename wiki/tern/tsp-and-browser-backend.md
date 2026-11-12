@@ -1,8 +1,8 @@
 # Tern：TSP 与 browser 后端
 
-> Sources: oh-my-pi 官方文档与源码，2026-10-10; Tern 0.8.3 网页客户端实测，2026-10-13；资料复核，2026-10-14; Tern 0.9.2 CLI 帮助实测，2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20
-> Raw: [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md); [Tern 网页 Maple 字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [Tern 网页 Markdown 中文复现](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md); [Tern CLI 帮助行为](../../raw/tern/2026-10-17-cli-help-behavior.md); [Tern 官方文档：Surface Protocol 章节摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-protocol-chapter.md)
-> Updated: 2026-10-20
+> Sources: oh-my-pi 官方文档与源码，2026-10-10; Tern 0.8.3 网页客户端实测，2026-10-13；资料复核，2026-10-14; Tern 0.9.2 CLI 帮助实测，2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20; ABKit README 与 docs，2026-11-12
+> Raw: [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md); [Tern 网页 Maple 字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [Tern 网页 Markdown 中文复现](../../raw/omp-tips/2026-10-13-tern-web-markdown-cjk-freeze.md); [Tern CLI 帮助行为](../../raw/tern/2026-10-17-cli-help-behavior.md); [Tern 官方文档：Surface Protocol 章节摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-protocol-chapter.md); [ABKit README、docs 与构建 API](../../raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md)
+> Updated: 2026-11-12
 
 tern 在 oh-my-pi 中有两个身份：**Tern Surface Protocol（TSP，TUI 原生渲染协议）**与 **browser 工具后端**。本文按行为层整理：用户感知什么、什么时候发生、有哪些开关。identifier 逐字保留源码/文档原样。
 
@@ -52,6 +52,9 @@ Eval `browser` facade 负责 opens, reuses, scripts, and closes named Chromium, 
 - `headed: false` 或 `app.tern: false` opts out；`app.tern: true` requires Tern。
 - Automatic Tern selection falls back to Chromium with an explanatory result when Tern cannot host the page。
 - `headed` 选项语义：Override `browser.headless` for this open；`headed: false` also opts out of automatic Tern selection。
+
+> **Status: Outdated** (2026-11-12)
+> ABKit README 记载 Tern 的网页视图由 ABKit 提供：macOS 上作为 `ABHost` 子进程的 block 经 Mach 呈现（`STENCIL_WEBKIT=agent`，安装后为默认），其他平台在进程内加载引擎库。见 [ABKit：面向 agent 的 WebKit 浏览器引擎](../agent-tooling/abkit-agent-browser-engine.md)。
 
 **能力边界（原生 webview 后端，别当 Chromium 用）**：
 
@@ -106,3 +109,4 @@ Tern 0.9.2 中，18 个已验证命令可通过 `--help` 得到完整说明：in
 - [Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移](web-maple-font-rebuild.md) — 升级后重新定位字体、加载引用与校验信息
 - [Tern 网页 Markdown 中文触发无响应](web-markdown-cjk-freeze.md) — 原版对照、复现材料与恢复方法
 - [Tern Surface Protocol 官方规范要点](tsp-official-spec.md) — 官方协议章的逐主题整理
+- [ABKit：面向 agent 的 WebKit 浏览器引擎](../agent-tooling/abkit-agent-browser-engine.md) — 引擎层：ABHost 协议、页面身份、平台边界与安装

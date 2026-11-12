@@ -1,8 +1,8 @@
 # OMP browser prelude 与 relay 架构
 
-> Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 源码, 2026-10-26; omp.sh/docs/web 与 browser-relay README, 2026-10-26; Chromium《UI Automation》与 Chrome for Developers 安全变更说明, 2026-10-26; 本机 WSL 与 Windows 回环实测, 2026-10-26
-> Raw: [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md)
-> Updated: 2026-10-26
+> Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 源码, 2026-10-26; omp.sh/docs/web 与 browser-relay README, 2026-10-26; Chromium《UI Automation》与 Chrome for Developers 安全变更说明, 2026-10-26; 本机 WSL 与 Windows 回环实测, 2026-10-26; omp 18.19.0 发行说明与 ABKit README、docs, 2026-11-12
+> Raw: [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md); [ABKit README、docs 与构建 API](../../raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md)
+> Updated: 2026-11-12
 
 ## Overview
 
@@ -28,6 +28,19 @@ prelude 是 OMP 在启动 `eval` 内核时预先注入全局作用域的预置�
 | 8 | 以上都不命中 | Managed Chromium | CDP 子进程 | `~/.omp/puppeteer` 缓存优先 |
 
 默认新装状态落在第 8 条，即受管 Chromium，同样是 CDP。想要复用日常浏览器的登录态，才需要启用第 3 或第 4 条。
+
+> **Status: Outdated** (2026-11-12)
+> 这一段描述 18.12.6 的默认路由。omp 18.19.0 起浏览器会话优先使用随包的 ABKit WebKit 引擎，未安装时自动安装并校验 SHA-256；Chromium 保留为回退。见下节与 [ABKit：面向 agent 的 WebKit 浏览器引擎](../agent-tooling/abkit-agent-browser-engine.md)。
+
+## 2026-11-12 更新：ABKit/WebKit 后端
+
+omp 18.19.0 的发行说明给出当前行为：
+
+- 浏览器会话优先使用随包的 ABKit WebKit 引擎，未安装时自动安装并校验 SHA-256。
+- WebKit 提供 headed、用户可见的标签页；Chromium 为回退，可用 `app: "chromium"` 显式选择，`app: "webkit"` 要求 WebKit。
+- 配置项为 `browser.webkit` 与 `browser.webkitPath`，对应环境变量为 `PI_BROWSER_WEBKIT` 与 `PI_BROWSER_WEBKIT_PATH`；`PI_BROWSER_WEBKIT=0` 关闭后端。
+- WebKit 标签窗口的显示与隐藏立即生效；headed 的 WebKit 标签页可以直接交互，Chromium 标签页保留原有的模式切换行为。
+- 引擎安装在 `~/.o2/lib/abkit`，`ABHost` 以无窗口方式运行；macOS 通过 `ABView` 显示窗口。
 
 ## relay 的端点与真实安全边界
 
@@ -124,3 +137,4 @@ Windows 上 Chrome 为 156.0.8078.47、Edge 为 156.0.4314.42；注册表里未�
 - [OMP computer prelude 与桌面自动化](computer-prelude-desktop-automation.md)
 - [OMP 内建工具全集、会话暴露边界与内部地址空间](builtin-tools-and-internal-urls.md)
 - [OMP 配置语义手册](../omp-config/config-semantics.md)
+- [ABKit：面向 agent 的 WebKit 浏览器引擎](../agent-tooling/abkit-agent-browser-engine.md) — 引擎层：ABHost 协议、页面身份、平台边界与安装

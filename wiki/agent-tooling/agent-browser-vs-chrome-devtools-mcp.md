@@ -2,7 +2,7 @@
 
 > Sources: agent-browser README（vercel-labs，Unknown）；agent-browser CDP Mode（agent-browser.dev，Unknown）；chrome-devtools-mcp README 与 tool reference（ChromeDevTools，Unknown）；本机实测（2026-11-07）
 > Raw: [agent-browser 与 chrome-devtools MCP 源材料](../../raw/agent-tooling/agent-browser-and-chrome-devtools-mcp-sources.md)；[WSL mirrored 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md)
-> Updated: 2026-11-07
+> Updated: 2026-11-12
 
 ## Overview
 
@@ -88,3 +88,4 @@ WSL 连接 Windows 侧 Chrome 的可行性有两次实测支持：`wslinfo --net
 ## See Also
 
 - [OMP browser prelude 与 relay 架构](../omp-tools/browser-prelude-and-relay-architecture.md)：OMP 自带浏览器通道的架构，Chrome 136 限制与扩展来源的上下文证据同在此文。
+- [ABKit：面向 agent 的 WebKit 浏览器引擎](abkit-agent-browser-engine.md) — 同一问题在引擎层的解法：自有 WebKit 与 ABHost 协议

@@ -2041,3 +2041,10 @@
 
 ## [2026-11-12] lint | 手机手动接入 Herdr TUI 0 issues found, 0 auto-fixed
 - 全库检查：433 fidelity suspect(s)、0 evidence error(s)、0 unreferenced raw file(s)。产品关系文章无 fidelity suspect；工具参考中本次增加的日期在关联 raw 正文可查。两篇修改文章的本地链接与索引中的手动接入命令均已检查。未进行手机连接实测。
+
+## [2026-11-12] ingest | ABKit：面向 agent 的 WebKit 浏览器引擎
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md
+- Created: wiki/agent-tooling/abkit-agent-browser-engine.md
+- Updated: wiki/omp-tools/browser-prelude-and-relay-architecture.md; wiki/tern/tsp-and-browser-backend.md; wiki/agent-tooling/agent-browser-vs-chrome-devtools-mcp.md
+- 要点：ABKit 是 WebKit WPE 派生的浏览器引擎，附无窗口宿主 ABHost；帧为 u32 LE 加 JSON，与 Tern 脚本协议同形。页面身份在全部平台包括可见聚焦与受信任输入；Safari 的 UA、字体与表单控件只在 macOS，Linux 保留 Safari 的 TLS、HTTP/2 与请求头顺序。跨进程呈现与 ABView 只在 macOS，Linux 与 Windows 的 ABHost 只有 capture。构建目标八个，Linux glibc 2.35+、musl 1.2.5+；安装目录 ~/.o2/lib/abkit。omp 18.19.0 优先后端，Tern 网页视图改用 ABKit。两篇既有文章加状态块记录被取代的默认路由与 WKWebView 描述。

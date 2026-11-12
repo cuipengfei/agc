@@ -59,10 +59,11 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [持久任务库与会话 todo 的分工](agent-tooling/durable-backlog-vs-session-todo.md) | 会话 todo 记执行步骤，bd 记持久交付项；按生命周期、共享范围、依赖关系、审计需求判定；混合流程与 AGENTS.md 优先级规则 | 2026-11-05 |
 | [bd init auto-commit 陷阱](agent-tooling/bd-init-auto-commit-gotchas.md) | bd init 默认自动 git commit，无 --no-commit；#5654 staged 文件被卷入、#3495 reinit-local 无 opt-out、#1989 讨论默认开启；规避方式与建议 | 2026-11-06 |
 | [Reason Network：跨机器的 agent 团队目录与消息总线](agent-tooling/reason-network.md) | 团队目录加消息总线：push/turn/pull 三档投递、签名名册与邀请门禁、iroh 直连与中继、自建中继不接触 n0、消息 64 KB、离线最多一天、M0–M3 完成 M4 未开始 | 2026-11-06 |
-| [agent-browser 与 chrome-devtools MCP 对比](agent-tooling/agent-browser-vs-chrome-devtools-mcp.md) | 同 CDP 的双工具对照：agent-browser 按快照 ref 驱动、点击诚实失败（遮挡/隐藏/禁用即报错）、auth vault + 域名白名单 + 动作策略 + confirm/deny、stream/dashboard、pdf/record/diff、Lightpanda/Obscura/iOS Safari、五家云端 provider、skill 与 CLI 版本对齐；chrome-devtools-mcp 1.12.0 为 uid 快照、fill_form 多元素填写、性能 trace + CrUX、14 个堆快照工具（--memoryDebugging）、logpoints/CSS/Lighthouse、isolatedContext、WebAuthn/PWA/扩展/WebMCP 旗标与 service worker 求值；本机条目 enabled:false 指向 9333（2026-11-07 检查无监听）、agent-browser 未安装，含自动启动与外接两条启用路 | 2026-11-07 |
+| [agent-browser 与 chrome-devtools MCP 对比](agent-tooling/agent-browser-vs-chrome-devtools-mcp.md) | 同 CDP 的双工具对照：agent-browser 按快照 ref 驱动、点击诚实失败（遮挡/隐藏/禁用即报错）、auth vault + 域名白名单 + 动作策略 + confirm/deny、stream/dashboard、pdf/record/diff、Lightpanda/Obscura/iOS Safari、五家云端 provider、skill 与 CLI 版本对齐；chrome-devtools-mcp 1.12.0 为 uid 快照、fill_form 多元素填写、性能 trace + CrUX、14 个堆快照工具（--memoryDebugging）、logpoints/CSS/Lighthouse、isolatedContext、WebAuthn/PWA/扩展/WebMCP 旗标与 service worker 求值；本机条目 enabled:false 指向 9333（2026-11-07 检查无监听）、agent-browser 未安装，含自动启动与外接两条启用路；2026-11-12 加引擎层交叉引用 | 2026-11-12 |
 | [ovnfs：面向 agent 的文件夹副本与跨机器交接](agent-tooling/ovnfs.md) | 写时复制 checkout、单挂载点呈现（FUSE/NFSv3/SMB）、四类路径与 apply 边界；49k 文件仓库打开约 1 秒、3,000 文件 create 约 15 ms；安装脚本的构建服务地址与校验步骤、`update` 三条路径、`restart` 会启动不存在的守护进程；远程 attach 与 `push` 的离线条件 | 2026-11-08 |
 | [sandcastle：把 agent 关进进程围栏的编排库](agent-tooling/sandcastle.md) | TypeScript 编排库：`run()` 建沙箱、起 agent、收提交；三种分支策略的工作区差别（`head` 无 worktree、`merge-to-head` 结束时自动合并、`branch` 提交留在指定分支），进程围栏与三者互不影响；九种沙箱（导出十条，文档漏列 DayTona）、六个 agent 提供方；原生围栏隐藏主目录与登录凭据、网络全开、无 root，Linux 上强度约等于 runc；抛错不回退、提供方错误不重试；`init` 按提供方生成 4 或 5 个文件、npm 包 0.14.0；`RunResult.branch` 为目标分支，`output` 需显式开启 | 2026-11-09 |
 | [OMP computer use 与 agent-desktop 对照](agent-tooling/omp-computer-use-vs-agent-desktop.md) | 进程内 Eval 预置对象与独立二进制两类形态；投递三档对 headless/headed 两档（后台物理输入只在 OMP，坐标点击在 agent-desktop 需前台）；引用寿命：OMP 随工作进程清空，agent-desktop 在命名空间内写盘续用、换会话作废；审批分类不等于询问，默认 `yolo`；agent-desktop 60 个命令名 56 可用、按住类缺席；含未实测项 | 2026-11-09 |
+| [ABKit：面向 agent 的 WebKit 浏览器引擎](agent-tooling/abkit-agent-browser-engine.md) | WebKit WPE 派生引擎与 ABHost：`u32` LE 加 JSON 帧、block 操作表、页面身份与 `identity`、macOS `present` 与 `ABView`、Linux/Windows 仅 `capture` 或进程内加载；八目标构建、glibc 2.35 与 musl 1.2.5、`~/.o2/lib/abkit` 安装；omp 18.19.0 优先后端与 Tern 引擎；build.stencil.so 发行 API；omp docs 最轻路径与浏览器自动化边界 | 2026-11-12 |
 
 ## ai-coding-agents
 
@@ -245,7 +246,7 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`） | 2026-11-04 |
-| [OMP browser prelude 与 relay 架构](omp-tools/browser-prelude-and-relay-architecture.md) | prelude 定位与启用条件；四后端八顺位路由表；relay 端点鉴权矩阵（token 只管 /ext，/cdp 无校验）与 loopback 边界；扩展来源与 Chrome 136 限制；标签页借用与冻结范围；跨系统上传回退与下载 perTab 分支；Kerberos 落在浏览器进程；WSL 双向回环实测与扩展握手待验证；API/CLI 与界面选型顺位 | 2026-10-26 |
+| [OMP browser prelude 与 relay 架构](omp-tools/browser-prelude-and-relay-architecture.md) | prelude 定位与启用条件；四后端八顺位路由表；relay 端点鉴权矩阵（token 只管 /ext，/cdp 无校验）与 loopback 边界；扩展来源与 Chrome 136 限制；标签页借用与冻结范围；跨系统上传回退与下载 perTab 分支；Kerberos 落在浏览器进程；WSL 双向回环实测与扩展握手待验证；API/CLI 与界面选型顺位；2026-11-12 补 ABKit/WebKit 后端：18.19.0 优先随包引擎、SHA-256 自动安装与 Chromium 回退 | 2026-11-12 |
 | [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批分类与接管语义；2026-11-09 补档位解析：是否询问取决于 `tools.approvalMode`，默认 `yolo`，前台控制另走确认；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-11-09 |
 | [OMP bash 命令行折叠标记与 /dev/null 语义](omp-tools/bash-shell-visualization-idioms.md) | `🔇 out`/`🔇 err`/`🔇 silent` 与 `+err` 的四类重定向映射（idioms 层默认开）；命令文本来源链（模型 → rtk 扩展改写 `event.input.command`，6 次 rewrite 实测中 2 次带重定向均原样保留）；丢弃验证 `echo hidden-line >/dev/null` 不进工具结果；同区域 `⇡ first N`/`⇣ last N`/`⟵ ↓`/`⟦..↓⟧`/`⏱`/`# stop on first error` 等词汇表；`display.shellVisualization` 默认开；v18.18.0 tag 取证与未验证项 | 2026-11-07 |
 
@@ -459,7 +460,7 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | [Tern 跨机器补丁手册](tern/portable-patching-runbook.md) | 本机原版获取、固定 recipe 重建、完整包迁移、仅字体装配、真实页面检查、重启后的启动路径、site 目录核对、0.9.12 验收形态与 GPU adapter 实测，以及未知版本和平台限制 | 2026-11-05 |
 | [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围 | 2026-10-20 |
 | [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算 | 2026-10-20 |
-| [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点 | 2026-10-20 |
+| [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点；2026-11-12 补 ABKit 引擎与 Tern 网页视图 | 2026-11-12 |
 | [Tern Inbox 特征行为](tern/inbox-feature.md) | 四条 ctl/scenario 命令、默认键位、OSC 99 直写 pty 实测不进 inbox、Herdr 已排除、真实通道待查 | 2026-10-20 |
 | [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 旧版冻结报告与 0.8.4 浏览器 panic；0.9.6 原版与 0.9.7 仅字体版均未复现；viewport 重绘判据与 `not_run` 边界；按 `file`/`id` 关闭目标 pane 的恢复步骤 | 2026-10-29 |
 
