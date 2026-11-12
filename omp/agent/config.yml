@@ -531,6 +531,8 @@ title:
   icons: nf+emoji
   refreshAfterPrompts: 5
 task:
+  autoParallel: suggest
+  steps: true
   isolation:
     apply: true
     merge: patch
