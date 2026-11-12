@@ -709,9 +709,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "7c64ced4ca34f0e77fd4f3c5f77421cf59de3762",
+      "skillFolderHash": "ab5d016d884dd989161ccb5d229b0a6dabb490fd",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-11-10T11:30:54.670Z"
+      "updatedAt": "2026-11-12T15:12:58.039Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
