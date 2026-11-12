@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "crapper", git = "https://github.com/unclebob/crapper.git" }]
+entrypoints = [
+    { name = "crapper", install-path = "/home/cpf/.local/bin/crapper", from = "crapper" },
+]

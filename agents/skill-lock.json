@@ -1288,9 +1288,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cuipengfei/prompts.git",
       "skillPath": "skills/note/SKILL.md",
-      "skillFolderHash": "a8fca2e341ef0201ddfc52e581b55fe4eb3880a0",
+      "skillFolderHash": "bcc42b592730035b71f389f1ab2889c123ea298f",
       "installedAt": "2026-10-13T15:14:23.157Z",
-      "updatedAt": "2026-10-24T16:05:57.189Z"
+      "updatedAt": "2026-11-12T13:45:59.494Z"
     },
     "anatomy": {
       "source": "wheresryan22/anatomy",

@@ -1,0 +1,8 @@
+[tool]
+requirements = [
+    { name = "mutator", git = "https://github.com/unclebob/mutator.git" },
+    { name = "crapper", git = "https://github.com/unclebob/crapper.git" },
+]
+entrypoints = [
+    { name = "mutator", install-path = "/home/cpf/.local/bin/mutator", from = "mutator" },
+]

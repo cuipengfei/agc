@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "dryer", git = "https://github.com/unclebob/dryer.git" }]
+entrypoints = [
+    { name = "dryer", install-path = "/home/cpf/.local/bin/dryer", from = "dryer" },
+]
