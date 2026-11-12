@@ -2048,3 +2048,9 @@
 - Created: wiki/agent-tooling/abkit-agent-browser-engine.md
 - Updated: wiki/omp-tools/browser-prelude-and-relay-architecture.md; wiki/tern/tsp-and-browser-backend.md; wiki/agent-tooling/agent-browser-vs-chrome-devtools-mcp.md
 - 要点：ABKit 是 WebKit WPE 派生的浏览器引擎，附无窗口宿主 ABHost；帧为 u32 LE 加 JSON，与 Tern 脚本协议同形。页面身份在全部平台包括可见聚焦与受信任输入；Safari 的 UA、字体与表单控件只在 macOS，Linux 保留 Safari 的 TLS、HTTP/2 与请求头顺序。跨进程呈现与 ABView 只在 macOS，Linux 与 Windows 的 ABHost 只有 capture。构建目标八个，Linux glibc 2.35+、musl 1.2.5+；安装目录 ~/.o2/lib/abkit。omp 18.19.0 优先后端，Tern 网页视图改用 ABKit。两篇既有文章加状态块记录被取代的默认路由与 WKWebView 描述。
+
+## [2026-11-12] ingest | task.steps 有序阶段执行与 task.autoParallel
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-12-task-steps-and-autoparallel.md
+- Updated: wiki/omp-config/config-semantics.md
+- 要点：`task.steps: true` 使 task 的 `tasks[]` 项改用必填 `steps: string[]`；阶段消息按 `promptSizes` 分组（最多 `MAX_STEPS = 4` 条、尽量均分、靠前多带一步：5 步 → 2-1-1-1，9 步 → 3-2-2-2），子代理 `yield` 后 OMP 在同一会话发下一条，最后一条结果为整个任务结果；`task.autoParallel` 为 off/suggest/on 三值（默认 off），判定依赖 judge 角色与 task 工具，suggest 只报告、on 注入并行委派提示，判定对象是顶层 user prompt。v18.19.0 源码取证 + 两步/五步冒烟实测。
