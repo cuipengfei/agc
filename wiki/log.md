@@ -2073,3 +2073,9 @@
 - Created: wiki/agent-tooling/ub-mode-companion-tools.md
 - Updated: wiki/agent-tooling/uv-tool-discovery-and-receipts.md
 - 要点：三个 Python CLI 与可选 Clojure viewer 的职责、语言支持和前置环境；uv Git 安装与 mutator 隔离环境的 --with crapper；Updated 与 Nothing to upgrade 分属不同阶段；mutator 使用项目已有测试而无需专用 API，记录 worker 与覆盖率生成的运行影响；EDN 公开规范初始提交作者 Rich Hickey。用户安装和帮助日志、临时导入实测与未执行的项目分析分别记载。
+
+## [2026-11-12] ingest | OMP 自定义 sub-agent：定义、工具名适配与验证
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md
+- Updated: wiki/omp-config/custom-subagent-deployment.md
+- 要点：`resolveBuiltinToolPlan` 是生效内置工具的唯一计算入口，`tools` 缺失取全部允许项、写列表则丢弃非内置名；六类自动补齐（`grep`→`ast_grep`、`edit`→`ast_edit`、`task`/`bash`→`wait`、`read`+`grep`→`context_notes`/`new_context`、记忆后端→`recall`/`retain`/`reflect`、mnemopi→`memory_edit`）；`alwaysInclude` 让 MCP 与扩展工具不受 frontmatter 约束，`restrictToolNames` 仅 seance 为真；`READ_ONLY_TOOL_NAMES` 16 名，含 `lsp` 或 `bash` 即判非只读；`hasEditTool` 只检查 `edit` 是否在列并控制 `read` 的 hashline 锚点。提示词分三段拼接，基础段 `# 2. Hand-off` 禁止子代理在任务未要求时运行构建与测试，自定义正文出现派发者说明、主代理界面条款、强制跑测试三类冲突形态。五 agent 实测内置工具数 24/20/19/14/13，`builder` 省略 `tools` 加 `spawns: "*"` 与内置 `task` 逐项相同。同步经 `./pull.sh`，五条 `unchanged`。
