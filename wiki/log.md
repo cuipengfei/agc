@@ -2054,3 +2054,15 @@
 - Raw: raw/omp-config/2026-11-12-task-steps-and-autoparallel.md
 - Updated: wiki/omp-config/config-semantics.md
 - 要点：`task.steps: true` 使 task 的 `tasks[]` 项改用必填 `steps: string[]`；阶段消息按 `promptSizes` 分组（最多 `MAX_STEPS = 4` 条、尽量均分、靠前多带一步：5 步 → 2-1-1-1，9 步 → 3-2-2-2），子代理 `yield` 后 OMP 在同一会话发下一条，最后一条结果为整个任务结果；`task.autoParallel` 为 off/suggest/on 三值（默认 off），判定依赖 judge 角色与 task 工具，suggest 只报告、on 注入并行委派提示，判定对象是顶层 user prompt。v18.19.0 源码取证 + 两步/五步冒烟实测。
+
+## [2026-11-12] ingest | Tern 0.9.18 仅字体部署与 pane 观察边界
+- Disposition: Update
+- Raw: raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md
+- Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 跨机器补丁手册; Tern 升级辅助工具与验收边界
+- 要点：0.9.18 原版四个字体全部无 CJK 覆盖（Symbols 10624、Geist 728、Ioskeley 7564，length 2538772/169055/1501964/1499864，`中文你好日本語` 无映射），按既有流程仅替换字体。终端等宽描述符延续单副本 2 条：Regular slot 14850460/pointer 11786855/length 1501964，Bold slot 14850484/pointer 13288819/length 1499864，间隔 24 字节；length 与 0.9.12 相同、slot 与 pointer 为新值。WASM d6440f0c…、glue 8c16d32d…、binary 490727d9…（6f1fa0f），cmp 逐字节一致、wasmUnmodified true，未应用时间补丁。时间静态 panicFunctions 总数 37，时间函数 35484（19 处）与 35485（3 处）合计 22 处（0.9.12 为 31/21），analyze 的 manual_review_required 是既有判定。verify-service 六项与 verify-page 六项 applicable 全过、进程 matchesInstalled true、HTTP 200，wire_mount 与 gpu_interaction_full 记 not_run。pane 只陈述观测：部署开始时服务未运行、运行时目录不存在，替换未接触运行中的 pane；0.9.12 记录的 326417514501 不在当前集合，丢失原因未观测到，另有新建 tab 1035087118338。索引与四篇文章同步更新。
+
+## [2026-11-12] ingest | Bun 钩子默认 5 秒预算与超时报错诊断
+- Disposition: Update
+- Raw: raw/tern/2026-11-12-bun-hook-timeout.md
+- Updated: Tern 升级辅助工具与验收边界
+- 要点：Bun 的 beforeAll/beforeEach/afterAll/afterEach 默认预算 5 秒，超时报错文本一律 a beforeEach/afterEach hook timed out、不区分钩子类型，区分依据是失败条目是否标记 unnamed。钩子里 spawnSync 走耗时动作时超时后子进程被杀，spawnSync 返回 status null、stderr 空、error undefined，按 stderr || error 拼接的模板打印字面量 undefined；给钩子显式传预算并在报错里补 status/signal 才能看出原因。lifecycle.test.mjs 编译替身钩子在慢 runner 越过 5 秒（run 42189362972 失败 fixture build failed: undefined / unnamed 5005.75ms，上次成功约 3.9 秒贴线），两个 beforeAll 加 30000 预算后 run 42216007618 通过、准备阶段实测 5.30 秒；第二个钩子内部 waitFor 8000 本身已超默认预算，一并加预算。五组 /tmp 最小用例复核：beforeAll 异步等 6 秒无预算即失败、带 30000 通过；spawnSync 阻塞 6 秒无预算逐字复现 undefined。索引 CI 事实段与 maintenance-toolkit 同步更新。

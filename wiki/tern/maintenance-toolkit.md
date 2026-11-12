@@ -1,8 +1,8 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29; CI test scope and 0.9.8/0.9.9 deploy, 2026-11-02; 0.9.10 structure observation and deploy, 2026-11-03; 0.9.12 Geist font observation and GPU adapter probe, 2026-11-05
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md)
-> Updated: 2026-11-05
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29; CI test scope and 0.9.8/0.9.9 deploy, 2026-11-02; 0.9.10 structure observation and deploy, 2026-11-03; 0.9.12 Geist font observation and GPU adapter probe, 2026-11-05; bun hook budget and 0.9.18 deploy, 2026-11-12
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [bun 钩子超时](../../raw/tern/2026-11-12-bun-hook-timeout.md)
+> Updated: 2026-11-12
 
 ## 用途
 
@@ -46,9 +46,16 @@
 
 `bun run test:receipt` 把测试输出写入 `artifacts/test-receipt.log`，解析出 `{tests, pass, fail, files, durationMs, commit}` 写入 `artifacts/test-receipt.json`；解析失败以非零退出，避免出现「测试通过但没有 receipt」。`tools/tern-maintain/.gitignore` 忽略 `artifacts/`，该文件不入库。引用测试数量时以该文件为准，不用前一次结果推算。
 
+2026-11-12 补充 CI 钩子预算的边界。Bun 的 `beforeAll`／`beforeEach`／`afterAll`／`afterEach` 默认预算是 5 秒，超时报错文本一律是 `a beforeEach/afterEach hook timed out`，不区分钩子类型；区分依据是失败条目是否标记 `(unnamed)`——用例名尚未注册时属 `beforeAll`／`afterAll`，显示名字的属 `beforeEach`／`afterEach`。钩子里用 `spawnSync` 走耗时动作时，超时后 Bun 杀掉子进程，`spawnSync` 返回 `status` 为 `null`、`stderr` 为空、`error` 为 `undefined`，按 `stderr || error` 拼接的报错模板会打印字面量 `undefined`，掩盖真实原因。给钩子显式传预算、并在报错里补 `status=${status} signal=${signal}` 才能看出原因。
+
+实例是 `lifecycle.test.mjs` 的编译替身钩子：`spawnSync('cc', [...])` 把 `fixtures/tern-lifecycle.c` 编译成替身 tern 可执行文件。慢 runner 上实测越过 5 秒（run `42189362972` 失败，报错 `fixture build failed: undefined`、`(fail) (unnamed) [5005.75ms]`；上次成功运行编译约 3.9 秒已贴线），加 30 秒预算后 run `42216007618` 通过、准备阶段实测 5.30 秒。同一文件第二个 `beforeAll` 内部 `waitFor(..., 8000)` 等服务响应，本身已超默认预算，属同类潜伏失败点，一并加预算。预算取值依据是实测最慢一次约 4 秒的约 7 倍余量。用 `/tmp` 最小用例复核过：`beforeAll` 异步等 6 秒无预算即失败、带 `30000` 通过；`spawnSync` 阻塞 6 秒无预算逐字复现 `fixture build failed: undefined`。
+
+
 0.9.10 补充一条结构观察：终端等宽字体的描述符数在不同版本间波动（0.9.7 为每种 1 份共 2 条，0.9.8/0.9.9 为 3 副本共 6 条，0.9.10 回到 2 条）。升级时按 `analyze` 的 `fonts` 字段实测，配置 `font_manifest.py` 输入就行；`maple.mjs` 的按 style 合并分配同时兼容两种结构。site 目录重建前先用 `deploy-manifest.json` 核对内容，避免丢失有效资产或验收记录。
 
 0.9.12 补充两条观察。终端等宽描述符延续单副本（2 条），原版字体清单新增 `Geist` 作为 UI 字体（728 字符、CJK 0），终端等宽字体仍为 `Ioskeley Mono Term`，CJK 缺口与历版一致。WSL 本机 headless Chromium 的 GPU adapter 边界在本次实测：loopback 安全上下文里 `navigator.gpu` 存在，`requestAdapter()` 在 baseline、`--enable-unsafe-webgpu --ignore-gpu-blocklist`、再加 `--use-angle=swiftshader` 三种组合下均返回 null；`verify-page` 的 `wire_mount` 与 `gpu_interaction_full` 继续记 `not_run`。完整 GPU 挂载证据需另用 Windows Chrome 路径，这是 WSL 本机 headless 环境的观测。
+
+0.9.18 延续单副本（2 条），字体表与 0.9.12 一致（Geist `728`、Ioskeley `7564`，CJK 全 0），终端等宽 length 与 0.9.12 相同，slot 与 pointer 为本版本新值。时间静态量随版本波动：0.9.18 的 `panicFunctions` 总数 `37`、时间函数 `35484`（19 处）与 `35485`（3 处）合计 22 处，0.9.12 为 `31` 与 21 处。`analyze` 的 `decision` 为 `manual_review_required`、`instructions.typedBuffers` 要求人工复核，是该工具对每个版本的既有判定。
 
 ## 0.9.2 实际结果
 
