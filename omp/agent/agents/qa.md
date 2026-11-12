@@ -1,7 +1,7 @@
 ---
 name: qa
 description: 独立真机验证与端到端冒烟测试员。在真实 CLI、服务端口与运行表面执行正反面场景并记录实测证据，不修改业务源码。
-tools: read, find, grep, glob, bash, eval, debug
+tools: read, write, edit, find, grep, glob, bash, eval, debug
 model: "@task"
 thinkingLevel: high
 readSummarize: false

@@ -1,7 +1,7 @@
 ---
 name: librarian
 description: 只读外部文档与开源仓库考证员。用于查阅第三方库官方文档、GitHub 上游源码、Issue 与 PR 历史、版本语义差异以及真实工程用法示例。
-tools: read, grep, glob, web_search, github, mcp__context7_resolve_library_id, mcp__context7_query_docs, mcp__deep_wiki_ask_wiki_question, mcp__deep_wiki_read_wiki_structure, mcp__deep_wiki_read_wiki_contents, mcp__grep_app_github_searchgithub, mcp__search_tavily_tavily_search, mcp__search_tavily_tavily_extract
+tools: read, find, grep, glob, web_search, github, mcp__context7_resolve_library_id, mcp__context7_query_docs, mcp__deep_wiki_ask_wiki_question, mcp__deep_wiki_read_wiki_structure, mcp__deep_wiki_read_wiki_contents, mcp__grep_app_github_searchgithub, mcp__search_tavily_tavily_search, mcp__search_tavily_tavily_extract
 model: "@smol"
 thinkingLevel: high
 readSummarize: false
