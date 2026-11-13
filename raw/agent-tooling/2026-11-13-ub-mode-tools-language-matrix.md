@@ -143,7 +143,20 @@ EXTENSIONS = {
         return True
 ```
 
-`_walk` 开头原文，显式传入单个文件时直接返回该文件，不经过语言与测试文件过滤：
+`src/dryer/cli.py` 的显式文件选择原文，只有 `language_of` 认得文件才保留：
+
+```python
+def _explicit_files(existing: list[Path]) -> list[Path]:
+    files: list[Path] = []
+    for path in existing:
+        if path.is_dir():
+            files.extend(iter_source_files([path]))
+        elif language_of(path) is not None:
+            files.append(path)
+    return files
+```
+
+`src/dryer/discover.py` 的 `_walk` 对单个文件直接返回，但 CLI 的单文件路径先经过上面的 `_explicit_files`：
 
 ```python
 def _walk(root: Path) -> list[Path]:
@@ -151,6 +164,14 @@ def _walk(root: Path) -> list[Path]:
         return []
     if root.is_file():
         return [root]
+```
+
+`src/dryer/scan.py` 的 `scan_files` 再次按 `language_of` 跳过：
+
+```python
+        language = language_of(path)
+        if language is None:
+            continue
 ```
 
 ## dryer：语法选择

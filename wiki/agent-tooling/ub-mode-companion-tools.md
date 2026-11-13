@@ -45,7 +45,7 @@ dryer 的缺口分两层，缺任意一层都拿不到可靠的 JavaScript 结�
 
 `discover.py` 的模块说明声称扩展名与跳过目录跟 crapper、mutator 一致，实际 `EXTENSIONS` 没有 `.js`、`.jsx`、`.mjs`、`.cjs`，`is_test_file` 也只列到 `.test.cts` 与 `.spec.cts`。
 
-显式传入单个文件会绕过语言与测试文件过滤，因此 `.jsx` 文件能被读入，但仍按 TypeScript grammar 解析；含 JSX 的文件在结构比较中不可靠。
+修复前，JavaScript 文件在目录遍历与显式文件两条路径上都会被 `language_of` 过滤：`cli.py::_explicit_files` 只保留 `language_of` 认得的文件，`scan.py::scan_files` 再次跳过未知语言。因此 dryer 无法分析这类文件；JSX 按 TypeScript grammar 解析的问题要等文件发现补上后才会显现。
 
 上游状态：PR #16 补文件发现与八个测试后缀，issue #17 提出同一诉求，PR #19 补语法选择并加四项行为回归，采集时三者都是 open。两个 PR 合入前，dryer 的 JavaScript 结果需要按上述两层分别确认。
 
@@ -116,7 +116,7 @@ CRAP 把圈复杂度与覆盖率合成一个数：
 
 $$\text{CRAP} = \text{CC}^2 \times (1 - \text{Cov})^3 + \text{CC}$$
 
-覆盖率为 0 时退化为 `CC² + CC`。同一个函数在补测试前后可以是 3660 与 4 的差别，差别来自覆盖率，与代码有没有变简单无关。`crapper --no-coverage` 把覆盖率与 CRAP 都写成 N/A，读数前先确认用的是哪种模式。
+覆盖率为 0 时退化为 `CC² + CC`。修复同时把 CC 从 60 降到 4、把覆盖率补到 100.0，CRAP 才从 3660 落到 4.0；只补测试而结构不变时，下降幅度由覆盖率一项决定。`crapper --no-coverage` 把覆盖率与 CRAP 都写成 N/A，读数前先确认用的是哪种模式。
 
 mutator 回答另一个问题：这条分支有没有断言真正验证。位置被执行到也可能存活；存活变异体表示测试跑过且没失败。
 
