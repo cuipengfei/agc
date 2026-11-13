@@ -1,0 +1,21 @@
+# agc repo: extend gitleaks default rules with project-specific network identifiers.
+[extend]
+useDefault = true
+
+[[rules]]
+id = "tailscale-login-url"
+description = "Tailscale one-time login URL (auth token in path)"
+regex = '''login\.tailscale\.com/a/[0-9a-z]{10,}'''
+keywords = ["login.tailscale.com"]
+
+[[rules]]
+id = "tailscale-virtual-ip"
+description = "Tailscale virtual IP in CGNAT range (per-device network identifier)"
+regex = '''\b100\.(6[4-9]|7[0-9]|8[0-9]|9[0-9]|1[0-1][0-9]|12[0-7])\.\d{1,3}\.\d{1,3}\b'''
+keywords = ["100."]
+
+# Placeholders and redaction markers must pass: allowlist suppresses them.
+[[allowlists]]
+description = "redaction placeholders are not leaks"
+regexTarget = "match"
+regexes = ['''<TAILSCALE_IP>''', '''<HOSTNAME>''', '''<USER>''', '''<REDACTED>''']

@@ -183,6 +183,9 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 - `raw/`、`experiments/` 和 `wiki/` 是本仓库自产的学习/实验记录，不在 `manifest.json` 中，不参与 pull 同步。入库前必须脱敏，不存放 token、cookie、authorization header 等凭据内容。`experiments/` 只记录结构化实验过程；只有可复用结论才晋升到 `wiki/`。
 - `.gitignore` 是凭据边界的第二道闸，通配规则匹配任意层级。`profiles/` 对 `dsh/profiles/` 有反向例外；`.pi/better-harness/` 被忽略，`omp/.pi/extensions` 仍由 manifest 同步。`.gitignore` 只控制 Git 忽略，不过滤 pull，也不脱敏文件内容；同步范围看 manifest，敏感值由 protected 策略处理。往仓库加新目录前，同时检查 `.gitignore` 与 manifest。
 - 绝对路径基本不脱敏：`policy.py` 只在 `EXCLUDED_USER_PATH` 里特判 `umans-status.ts` 一条路径，其余配置里的 `/home/<user>/...`（hook 命令、MCP 启动路径、工具链布局）会原样入库。这是已知并接受的残留，不是待修问题。
+- 运行标识同样属敏感：Tailscale 虚拟 IP（CGNAT 段，如 `100.64.x.x`）、tailnet 设备名、一次性登录 URL（含 token 的链接）、SSH 用户与主机映射。入库前必须替换为占位符（如 `<TAILSCALE_IP>`、`<HOSTNAME>`、`<USER>`），不得以「配置事实」名义原样写入 raw/ 或 wiki/。
+- pre-commit 框架用于 raw/wiki 的敏感内容扫描：`.pre-commit-config.yaml` 调用 gitleaks，`.gitleaks.toml` 扩展默认规则。clone 后首次使用前安装并启用：`uv tool install pre-commit`，然后在本仓库目录运行 `pre-commit install`；pre-commit 会自动下载 hook 依赖。更换平台时无需改动仓库内容。
+
 
 ## 修改规则
 
@@ -193,6 +196,7 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 - `AGENTS.md` 只放仓库规则，不作为工作日志。
 
 报告完成前确认测试结果、跳过项、凭据边界、symlink 状态和 Git 状态。
+- 凭据类报告区分覆盖方式：模式扫描（正则/gitleaks）与逐行阅读是两种覆盖，凭据结论必须写明用了哪种、覆盖哪些模式，未逐行阅读时不得写「全部内容已扫过」。
 
 ## Wiki 先查
 

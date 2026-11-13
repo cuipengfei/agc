@@ -2111,3 +2111,9 @@
 - Raw: raw/software-factory/2026-11-13-roboomp-self-hosted-factory.md
 - Updated: wiki/software-factory/roboomp-github-maintenance-factory.md
 - 要点：记录按仓库与 Issue 或 PR 条目编号串行处理任务，以及复现、分支、测试、审查和部署入口的源码依据。
+
+## [2026-11-14] ingest | sticky-router 模型目录与重启状态
+- Disposition: New
+- Raw: raw/copilot-gateway/sticky-router-model-discovery-and-restart.md
+- Created: wiki/copilot-gateway/sticky-router-model-discovery-and-restart.md
+- 要点：启动时发现实例模型并建立映射；模型目录汇总包含已停用实例；Dashboard 停用状态保存在进程内，重启前后需要检查流量和实例状态。

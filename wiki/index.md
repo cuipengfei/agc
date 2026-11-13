@@ -105,13 +105,14 @@ Better Harness 的工作流审计模型与适用边界。
 
 ## copilot-gateway
 
-本机 8787 GitHub Copilot 网关的模型目录实测规格。
+本机 8787 GitHub Copilot 网关的模型目录、路由状态与使用记录。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [GPT-5.6 Luna 真实规格](copilot-gateway/gpt-5.6-luna-specs.md) | 窗口 1050000（922000 prompt + 128000 output）、o200k_base、仅 /responses 端点、一个窗口两个计费档；OMP contextWindow 配总窗口的教训 | 2026-09-06 |
 | [GPT-6 Luna 与 Sol 三宿主接入记录](copilot-gateway/gpt-6-luna-sol-config.md) | 8787/4140 模型目录一致；Codex/OpenCode/OMP 数值、Responses-only、模板与解析校验、两模型冒烟 200；OpenCode provider 名 4140 实指 8787；OMO native 作为第四宿主；2026-10-01 复测 limits 嵌套形态与 c8787 家族 8 模型 maxTokens 等比提升（contextWindow 不动的用户决策） | 2026-10-01 |
 | [Copilot 延迟调查：社区报告、本机用量与 OMP 计时](copilot-gateway/copilot-latency-evidence-boundaries.md) | 区分社区延迟报告、copilot-api 用量事件与 OMP c8787 客户端计时；9 月和 10 月 TPS／TTFT 对比及归因限制 | 2026-10-17 |
+| [sticky-router 模型目录与重启状态](copilot-gateway/sticky-router-model-discovery-and-restart.md) | 模型目录的启动发现与过期、实例停用状态的重启影响、维护时的流量和状态检查 | 2026-11-14 |
 
 
 ## responses-api
