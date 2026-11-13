@@ -59,6 +59,10 @@ graphify-out/
 # Local-only analysis materials (never committed)
 local/
 
+# Local code quality reports and test/build artifacts
+.metrics/
+target/
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 .beads-credential-key
