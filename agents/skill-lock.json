@@ -709,9 +709,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "ab5d016d884dd989161ccb5d229b0a6dabb490fd",
+      "skillFolderHash": "cde001a0341ed67e818207c4e3f06d4727a42cde",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-11-12T15:12:58.039Z"
+      "updatedAt": "2026-11-13T12:22:55.497Z"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1306,9 +1306,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "a4905d922500dd7530ca8a0eb9e4940494255709",
+      "skillFolderHash": "d5caf54905eac776e9bb3a247be84153701ff4f8",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-11T12:27:46.253Z"
+      "updatedAt": "2026-11-13T12:22:55.652Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
