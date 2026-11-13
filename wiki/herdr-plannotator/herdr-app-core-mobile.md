@@ -1,8 +1,8 @@
 # Herdr App、herdr-core 与手机：产品关系和终端访问
 
-> Sources: Herdr 官方网站与 herdrdev/herdr-core 文档，本次采集 2026-11-12；Herdr, Inc. 的 Google Play 应用说明，本次采集 2026-11-12；用户提供的本机 `herdr --help` 输出，2026-11-12
-> Raw: [Herdr 产品关系、core 接口与手机官方摘录](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 默认会话与指定会话的接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md)
-> Updated: 2026-11-12
+> Sources: Herdr 官方网站与 herdrdev/herdr-core 文档，本次采集 2026-11-12；Herdr, Inc. 的 Google Play 应用说明，本次采集 2026-11-12；用户提供的本机 `herdr --help` 输出，2026-11-12；herdr-core 安装脚本与 WSL2/Tailscale 部署实测，2026-11-13
+> Raw: [Herdr 产品关系、core 接口与手机官方摘录](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 默认会话与指定会话的接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md); [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md)
+> Updated: 2026-11-13
 
 ## 产品名称与各自负责的事情
 
@@ -50,6 +50,8 @@ core 可以运行 shell、脚本、编辑器、开发服务器和 coding agent�
 
 电脑仅运行 core 时，手机能够看到终端和 agent；电脑也运行 Herdr App 时，手机官方说明还支持显示其 spaces 和 tabs。使用手机不要求桌面窗口保持打开。
 
+**WSL 场景下 Tailscale 必须装在 WSL 发行版内**：手机要登录的是 WSL 里的 SSH 入口，只装 Windows 宿主侧的 Tailscale 时手机只能到达 Windows。装好后 tailscaled 由 systemd 管理并设为自启，Windows 重启后只要 WSL 启动，Tailscale 即上线，登录状态保留。首次 `tailscale up --ssh` 需要浏览器完成一次登录。另一种拓扑是把 core 装在 Windows 侧，手机经 Windows 的 SSH 连接其 core，再由它经 `wsl.exe` 接入 WSL（官方 machines 文档给出 `hc machine add --via 'wsl.exe -d Ubuntu -e sh -c' --name wsl`），不需要 WSL 内的 sshd。本机 WSL2 部署记录见 [herdr-core 安装配置与 WSL2/Tailscale 手机接入](herdr-core-install-config-wsl2-tailscale.md)。
+
 ## SSH 和 core 通信协议分别负责什么
 
 SSH 负责登录、主机身份确认、加密和传输。core 通过这条连接提供自己的操作接口。
@@ -74,6 +76,8 @@ core 的公开接口文档说明了以下顺序：
 ### 在手机中手动打开 Herdr TUI
 
 手机 App 的自动 agent 列表与“在终端中启动什么程序”是两件事。用户可以在手机显示的电脑 shell 中运行 `herdr`，由 Herdr TUI 连接电脑的默认持久会话；指定会话时使用 `herdr session attach <name>`。
+WSL 部署与本机自测记录见 [herdr-core 安装配置与 WSL2/Tailscale 手机接入](herdr-core-install-config-wsl2-tailscale.md)。
+
 
 用户提供的本机 `herdr --help` 输出确认上述两个命令；其中没有 `herdr attach` 子命令。
 

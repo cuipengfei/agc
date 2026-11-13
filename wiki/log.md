@@ -2091,3 +2091,10 @@
 - Created: wiki/ai-coding-agents/gemini-decisions-api.md
 - Updated: wiki/ai-coding-agents/openai-decisions-api.md; wiki/ai-coding-agents/jev-host-integrations.md; wiki/omp/judgment-provider-and-eval-judge.md; wiki/omp/judgment-systemone-protocol.md; wiki/omp-config/advisor-context-markers.md
 - 要点：Gemini Decisions API 是 Google 2026-11-11 发布的原生端点（`POST /v1beta/decisions`、`gemini-decision-1`、`x-goog-api-key`、`questions` 为对象 map、题型 `noul`/`choice`/`score`、262,144 input tokens 与 0 output tokens、1,000 题上限），与 OpenAI Decisions 是并行协议而非同一实现。生态按落地状态分两组：已实现十余项分布在三条路由（Google 直连、OpenRouter、OpenCode 自有 System One 网关），提案或 issue 阶段含 LangChain4j、Arize Phoenix、Kestra、Strands Agents，`davila7/claude-code-templates` 的 PR #1530 仍为 OPEN 待合并；无任何项目——已实现或提案——把该模型指向 Copilot 后端。Copilot 上游 2026-11-13 四组实测全部被拒（`/v1beta/decisions` 404、`/v1/decisions` 对 `gemini-decision-1` 与两个 Gemini chat 模型均 400 `model_not_supported`），对照组 `gpt-6-luna-decisions` 200 且 `answers` 正常；目录中 decisions 类型条目仍只有一个。OMP PR #19060 新增第五条原生 wire `google-decisions`，按评审要求只做 opt-in 不进默认 judge 链；`jev-host-integrations` 与 `judgment-provider-and-eval-judge` 的 wire 计数同步为五条。另记 OMP advisor 的技能调用截断：技能消息是单条 `role: "custom"`，advisor 渲染走 `customOneLiner` 的 120 字符预览，位于模板尾部的 `User: {{userArgs}}` 被截掉，主代理不受影响；绕过是把任务文本单独发普通用户消息，已提交 can1357/oh-my-pi#19164。方法教训：`github` MCP 工具的 `repo` 默认取当前检出仓库，全局检索必须用 `gh search code`／`gh search issues`；判断后端是否支持某 API 须先取官方文档的真实模型 ID 与端点路径。
+
+## [2026-11-13] ingest | herdr-core 安装配置与 WSL2/Tailscale 手机接入
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md
+- Created: wiki/herdr-plannotator/herdr-core-install-config-wsl2-tailscale.md
+- Updated: wiki/herdr-plannotator/herdr-app-core-mobile.md
+- 要点：core 安装脚本行为与升级、config.toml 11 项源码定义、WSL2 内 Tailscale 部署与自启、/usr/local/bin/hc 链接的理由、本机 tailscale ssh 自测 refused 的机制解释与 issue #11097、uv-bun --up 集成。手机端连接仍未实测。产品关系文章补 WSL 场景说明并链接新文章。
