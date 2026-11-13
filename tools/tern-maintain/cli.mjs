@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
 import { readFile, writeFile, lstat } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { acquire, verifyCandidate } from './resources.mjs';
 import { analyze, initialMemory, sha256 } from './analyze.mjs';
 import { validateReport } from './report.mjs';
@@ -29,64 +30,162 @@ const usage=`Tern maintenance (no GUI)
 Font inventory: uv run --with-requirements requirements.txt python fonts.py MEMORY_FILE
 Reports never authorize deployment by themselves. Unknown versions stop for review.
 `;
-const args=parseArgs({args:process.argv.slice(2),allowPositionals:true,options:Object.fromEntries(['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir'].map(k=>[k,{type:'string'}]))});
-const [command,...extra]=args.positionals,v=args.values;
-const required=(...keys)=>{for(const key of keys)if(!v[key])throw Error(`Missing --${key}`);};
-async function main(){
- if(!command||command==='help'){console.log(usage);return;}
- if(extra.length)throw Error('Unexpected positional arguments');
- if(command==='upgrade'&&v.out){
-   const exists=await lstat(v.out).then(()=>true,error=>{if(error.code==='ENOENT')return false;throw error;});
-   if(exists)throw Error('Upgrade report already exists');
- }
- let result;
- if(command==='fetch'){required('url','out');result=await acquire(v);}
- else if(command==='memory'){required('wasm','out');const bytes=new Uint8Array(await readFile(v.wasm));await writeFile(v.out,initialMemory(bytes),{flag:'wx'});result={schemaVersion:1,inputSha256:sha256(bytes)};}
- else if(command==='analyze'){required('wasm','out');result=analyze(new Uint8Array(await readFile(v.wasm)),v.fonts?JSON.parse(await readFile(v.fonts,'utf8')):[]);}
- else if(command==='function'){required('wasm','index','out');result=inspectFunction(new Uint8Array(await readFile(v.wasm)),Number(v.index));}
- else if(command==='verify'){required('original','candidate','out');result=await verifyCandidate(v);}
- else if(['prepare','inspect-runtime','verify-service','upgrade'].includes(command)){
-   const lifecycle=await import('./lifecycle.mjs');
-   if(command==='prepare'){required('binary','out');result=await lifecycle.prepare({binary:resolve(v.binary),out:resolve(v.out)});}
-   else if(command==='verify-service'){required('url','assets','token-file','version');result=await lifecycle.verifyService({url:v.url,assets:resolve(v.assets),tokenFile:resolve(v['token-file']),version:v.version});}
-   else {
-     required('binary','socket','port');
-     if(!/^\d+$/.test(v.port)||Number(v.port)<1024||Number(v.port)>65535)throw Error('Port must be 1024..65535');
-     const options={binary:resolve(v.binary),socket:resolve(v.socket),port:Number(v.port)};
-     if(command==='inspect-runtime')result=await lifecycle.inspectRuntime(options);
-     else {
-       required('candidate-binary','assets','state-dir','token-file','version');
-       result=await lifecycle.upgrade({...options,candidateBinary:resolve(v['candidate-binary']),assets:resolve(v.assets),stateDir:resolve(v['state-dir']),tokenFile:resolve(v['token-file']),version:v.version});
-     }
-   }
- }
- else if(command==='evidence'){
-   required('version','original','candidate','glue','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','out');
-   const {collectEvidence}=await import('./evidence.mjs');
-   result=await collectEvidence({version:v.version,original:v.original,candidate:v.candidate,glue:v.glue,profile:v.profile,structureReport:v['structure-report'],timeReport:v['time-report'],fontReport:v['font-report'],headlessReport:v['headless-report'],runtimeReport:v['runtime-report'],serviceReport:v['service-report'],skipped:JSON.parse(await readFile(v.skipped,'utf8')),out:v.out});
- }
-else if(['status','start','browser','verify-mounted'].includes(command)){
-  const runtime=await import('./runtime.mjs');
-  if(command==='browser'){required('url','playwright-module','chromium-executable','out');result=await runtime.browserCheck({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable'])});}
-  else if(command==='verify-mounted'){required('url','playwright-module','chromium-executable','token-file','out');result=await runtime.browserCheck({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable']),tokenFile:resolve(v['token-file']),mount:true});}
-  else {required('binary','socket','port');if(!/^\d+$/.test(v.port)||Number(v.port)<1024||Number(v.port)>65535)throw Error('Port must be 1024..65535');if(command==='start')required('assets','state-dir');result=await runtime[command]({binary:resolve(v.binary),socket:resolve(v.socket),port:Number(v.port),assets:v.assets&&resolve(v.assets),stateDir:v['state-dir']&&resolve(v['state-dir'])});}
+
+const OPTION_NAMES=['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir'];
+const REPORT_COMMANDS=new Set(['analyze','verify']);
+const WRITTEN_COMMANDS=new Set(['analyze','verify','browser','function','inspect-runtime','verify-service','upgrade','verify-page']);
+
+function required(values,...keys){for(const key of keys)if(!values[key])throw Error(`Missing --${key}`);}
+function portValue(values){
+  if(!/^\d+$/.test(values.port)||Number(values.port)<1024||Number(values.port)>65535)throw Error('Port must be 1024..65535');
+  return Number(values.port);
 }
-else if(['build','rebuild','check-build'].includes(command)){
-  const {buildPatch,rebuildPatch,checkBundle}=await import('./build.mjs');
-  if(command==='build'){required('original','glue','profile','recipe','wabt-dir','out');result=await buildPatch({original:resolve(v.original),glue:resolve(v.glue),profile:resolve(v.profile),recipe:resolve(v.recipe),wabtDir:resolve(v['wabt-dir']),out:resolve(v.out)});}
-  else if(command==='rebuild'){required('bundle','wabt-dir','out');result=await rebuildPatch({bundle:resolve(v.bundle),wabtDir:resolve(v['wabt-dir']),out:resolve(v.out)});}
-  else {required('bundle');result=await checkBundle({bundle:resolve(v.bundle)});}
+// 运行时与生命周期命令共享同一组 --binary/--socket/--port。
+function endpoint(values){required(values,'binary','socket','port');return {binary:resolve(values.binary),socket:resolve(values.socket),port:portValue(values)};}
+function readBytes(path){return readFile(path).then(bytes=>new Uint8Array(bytes));}
+
+async function browser(values,mount){
+  required(values,'url','playwright-module','chromium-executable');
+  if(mount)required(values,'token-file');
+  required(values,'out');
+  const {browserCheck}=await import('./runtime.mjs');
+  const options={url:values.url,playwrightModule:resolve(values['playwright-module']),chromiumExecutable:resolve(values['chromium-executable'])};
+  return mount?browserCheck({...options,tokenFile:resolve(values['token-file']),mount:true}):browserCheck(options);
 }
-else if(command==='assets'){required('fonts','out');const {assembleAssets}=await import('./assets.mjs');result=await assembleAssets({bundle:v.bundle&&resolve(v.bundle),official:v.official&&resolve(v.official),fonts:resolve(v.fonts),out:resolve(v.out)});}
-else if(command==='verify-page'){required('url','playwright-module','chromium-executable');const {checkPage}=await import('./page-check.mjs');result=await checkPage({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable'])});}
-else if(command==='markdown-windows'){required('binary','assets','out');const {checkMarkdownWindows}=await import('./windows-browser.mjs');result=await checkMarkdownWindows({binary:resolve(v.binary),assets:resolve(v.assets),out:resolve(v.out),node:v.node&&resolve(v.node),playwrightModule:v['playwright-module']&&resolve(v['playwright-module']),chromium:v['chromium-executable']&&resolve(v['chromium-executable']),socketDir:v['socket-dir']&&resolve(v['socket-dir'])});}
-else throw Error(`Unknown command: ${command}`);
- if(['analyze','verify'].includes(command))validateReport(result);
- if(result?.kind==='markdown-reproduction'){const {validateMarkdownReproduction}=await import('./check-types.mjs');validateMarkdownReproduction(result);}
-if(v.out&&['analyze','verify','browser','function','inspect-runtime','verify-service','upgrade','verify-page'].includes(command))await writeFile(v.out,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
- if(command==='analyze')console.log(JSON.stringify({schemaVersion:1,inputSha256:result.inputSha256,fonts:result.fonts.length,panics:result.panicFunctions.length,decision:result.decision}));
- else console.log(JSON.stringify(result));
- if(result.checks?.some(c=>c.status==='failed'))process.exitCode=1;
- if(result?.conclusion==='not_run')process.exitCode=2;
+
+// 每个命令只负责参数校验、选项转换与执行；报告校验、写文件、打印与退出码统一由 emitReport 处理。
+const COMMANDS={
+  fetch:async v=>{required(v,'url','out');return acquire({url:v.url,out:v.out});},
+  prepare:async v=>{
+    required(v,'binary','out');
+    const {prepare}=await import('./lifecycle.mjs');
+    return prepare({binary:resolve(v.binary),out:resolve(v.out)});
+  },
+  memory:async v=>{
+    required(v,'wasm','out');
+    const bytes=await readBytes(v.wasm);
+    await writeFile(v.out,initialMemory(bytes),{flag:'wx'});
+    return {schemaVersion:1,inputSha256:sha256(bytes)};
+  },
+  analyze:async v=>{
+    required(v,'wasm','out');
+    const fonts=v.fonts?JSON.parse(await readFile(v.fonts,'utf8')):[];
+    return analyze(await readBytes(v.wasm),fonts);
+  },
+  function:async v=>{
+    required(v,'wasm','index','out');
+    return inspectFunction(await readBytes(v.wasm),Number(v.index));
+  },
+  verify:async v=>{
+    required(v,'original','candidate','out');
+    return verifyCandidate({original:v.original,candidate:v.candidate});
+  },
+  status:async v=>{
+    const options=endpoint(v);
+    const {status}=await import('./runtime.mjs');
+    return status(options);
+  },
+  start:async v=>{
+    const options=endpoint(v);
+    required(v,'assets','state-dir');
+    const {start}=await import('./runtime.mjs');
+    return start({...options,assets:resolve(v.assets),stateDir:resolve(v['state-dir'])});
+  },
+  'inspect-runtime':async v=>{
+    const options=endpoint(v);
+    const {inspectRuntime}=await import('./lifecycle.mjs');
+    return inspectRuntime(options);
+  },
+  'verify-service':async v=>{
+    required(v,'url','assets','token-file','version');
+    const {verifyService}=await import('./lifecycle.mjs');
+    return verifyService({url:v.url,assets:resolve(v.assets),tokenFile:resolve(v['token-file']),version:v.version});
+  },
+  upgrade:async v=>{
+    const options=endpoint(v);
+    required(v,'candidate-binary','assets','state-dir','token-file','version');
+    const {upgrade}=await import('./lifecycle.mjs');
+    return upgrade({...options,candidateBinary:resolve(v['candidate-binary']),assets:resolve(v.assets),stateDir:resolve(v['state-dir']),tokenFile:resolve(v['token-file']),version:v.version});
+  },
+  evidence:async v=>{
+    required(v,'version','original','candidate','glue','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','out');
+    const skipped=JSON.parse(await readFile(v.skipped,'utf8'));
+    const {collectEvidence}=await import('./evidence.mjs');
+    return collectEvidence({version:v.version,original:v.original,candidate:v.candidate,glue:v.glue,profile:v.profile,structureReport:v['structure-report'],timeReport:v['time-report'],fontReport:v['font-report'],headlessReport:v['headless-report'],runtimeReport:v['runtime-report'],serviceReport:v['service-report'],skipped,out:v.out});
+  },
+  browser:async v=>browser(v,false),
+  'verify-mounted':async v=>browser(v,true),
+  build:async v=>{
+    required(v,'original','glue','profile','recipe','wabt-dir','out');
+    const {buildPatch}=await import('./build.mjs');
+    return buildPatch({original:resolve(v.original),glue:resolve(v.glue),profile:resolve(v.profile),recipe:resolve(v.recipe),wabtDir:resolve(v['wabt-dir']),out:resolve(v.out)});
+  },
+  rebuild:async v=>{
+    required(v,'bundle','wabt-dir','out');
+    const {rebuildPatch}=await import('./build.mjs');
+    return rebuildPatch({bundle:resolve(v.bundle),wabtDir:resolve(v['wabt-dir']),out:resolve(v.out)});
+  },
+  'check-build':async v=>{
+    required(v,'bundle');
+    const {checkBundle}=await import('./build.mjs');
+    return checkBundle({bundle:resolve(v.bundle)});
+  },
+  assets:async v=>{
+    required(v,'fonts','out');
+    const {assembleAssets}=await import('./assets.mjs');
+    return assembleAssets({bundle:v.bundle&&resolve(v.bundle),official:v.official&&resolve(v.official),fonts:resolve(v.fonts),out:resolve(v.out)});
+  },
+  'verify-page':async v=>{
+    required(v,'url','playwright-module','chromium-executable');
+    const {checkPage}=await import('./page-check.mjs');
+    return checkPage({url:v.url,playwrightModule:resolve(v['playwright-module']),chromiumExecutable:resolve(v['chromium-executable'])});
+  },
+  'markdown-windows':async v=>{
+    required(v,'binary','assets','out');
+    const {checkMarkdownWindows}=await import('./windows-browser.mjs');
+    return checkMarkdownWindows({binary:resolve(v.binary),assets:resolve(v.assets),out:resolve(v.out),node:v.node&&resolve(v.node),playwrightModule:v['playwright-module']&&resolve(v['playwright-module']),chromium:v['chromium-executable']&&resolve(v['chromium-executable']),socketDir:v['socket-dir']&&resolve(v['socket-dir'])});
+  },
+};
+
+function parseCommand(argv){
+  const {positionals,values}=parseArgs({args:argv,allowPositionals:true,options:Object.fromEntries(OPTION_NAMES.map(key=>[key,{type:'string'}]))});
+  const [command,...extra]=positionals;
+  return {command,extra,values};
 }
-await main().catch(error=>{console.error(String(error.message).replace(/([?&]token=)[^\s&"']+/g,'$1<REDACTED>'));process.exitCode=1;});
+
+async function rejectExistingUpgradeReport(out){
+  const exists=await lstat(out).then(()=>true,error=>{if(error.code==='ENOENT')return false;throw error;});
+  if(exists)throw Error('Upgrade report already exists');
+}
+
+function printResult(command,result){
+  if(command==='analyze')console.log(JSON.stringify({schemaVersion:1,inputSha256:result.inputSha256,fonts:result.fonts.length,panics:result.panicFunctions.length,decision:result.decision}));
+  else console.log(JSON.stringify(result));
+}
+
+function applyExitCode(result){
+  if(result.checks?.some(check=>check.status==='failed'))process.exitCode=1;
+  if(result?.conclusion==='not_run')process.exitCode=2;
+}
+
+async function emitReport(command,values,result){
+  if(REPORT_COMMANDS.has(command))validateReport(result);
+  if(result?.kind==='markdown-reproduction'){const {validateMarkdownReproduction}=await import('./check-types.mjs');validateMarkdownReproduction(result);}
+  if(values.out&&WRITTEN_COMMANDS.has(command))await writeFile(values.out,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+  printResult(command,result);
+  applyExitCode(result);
+}
+
+export async function main(argv=process.argv.slice(2)){
+  const {command,extra,values}=parseCommand(argv);
+  if(!command||command==='help'){console.log(usage);return;}
+  if(extra.length)throw Error('Unexpected positional arguments');
+  if(!Object.hasOwn(COMMANDS,command))throw Error(`Unknown command: ${command}`);
+  const handler=COMMANDS[command];
+  if(command==='upgrade'&&values.out)await rejectExistingUpgradeReport(values.out);
+  await emitReport(command,values,await handler(values));
+}
+
+// Bun 提供 import.meta.main；Node 下回退到 argv[1] 比较，导入模块时不执行，独立运行时进入口。
+const entryPoint=import.meta.main??(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url));
+if(entryPoint)await main().catch(error=>{console.error(String(error.message).replace(/([?&]token=)[^\s&"']+/g,'$1<REDACTED>'));process.exitCode=1;});

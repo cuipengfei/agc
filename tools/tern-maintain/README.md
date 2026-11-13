@@ -27,6 +27,8 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 
 进程身份测试需要 Linux `/proc`、`cc` 和 Python 3；HTTP 与 WebSocket 夹具使用 Bun 的标准接口。
 
+测试通过公开命令和验收接口检查参数、退出码、报告校验、输出文件保护与浏览器清理。页面用例隔离 Playwright 外部依赖；真实浏览器、GPU 与正式服务的验收使用下文对应命令。
+
 字体工具使用 FontTools 和 JSON Schema；通过 `uv run --with-requirements requirements.txt python ...` 运行，无需改变同步项目的 Python 环境。
 
 ## 获取与定位

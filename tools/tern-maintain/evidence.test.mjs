@@ -209,3 +209,26 @@ test('duplicate checks cannot conceal a failed result', async () => {
     await expect(collectEvidence(opts)).rejects.toThrow(/duplicate/);
   });
 });
+
+test('missing, non-numeric or unsupported report schemaVersion is rejected and writes no evidence', async () => {
+  await withFixture(async (opts, dir) => {
+    const entries = [['profile', 'profile'], ['structureReport', 'structure'], ['timeReport', 'time'], ['fontReport', 'font'], ['headlessReport', 'headless']];
+    const mutations = [
+      () => null,
+      r => { delete r.schemaVersion; return r; },
+      r => { r.schemaVersion = '1'; return r; },
+      r => { r.schemaVersion = 2; return r; },
+    ];
+    for (const [source, label] of entries) {
+      for (const mutate of mutations) {
+        const changed = mutate(JSON.parse(await readFile(opts[source], 'utf8')));
+        await writeFile(opts[source], JSON.stringify(changed));
+        await expect(collectEvidence(opts)).rejects.toThrow(new RegExp(`Invalid ${label} report`));
+        await expect(readFile(opts.out, 'utf8')).rejects.toThrow(/ENOENT/);
+        await materialize(dir, fixture()).then(o => Object.assign(opts, o));
+      }
+    }
+    const report = await collectEvidence(opts);
+    expect(report.schemaVersion).toBe(2);
+  });
+});

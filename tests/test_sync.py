@@ -1,6 +1,7 @@
 import io
-import tempfile
+import os
 import unittest
+import tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
 
@@ -244,6 +245,119 @@ class SyncTests(unittest.TestCase):
             kept.write_text("[tool]\n", encoding="utf-8")
             dropped.write_text("[tool]\n", encoding="utf-8")
             entry = Entry("test", source, root / "repo", False, True, frozenset({"ddgs/uv-receipt.toml"}), ("*/uv-receipt.toml",))
+
+            pairs = list(iter_pull_files(entry))
+
+            self.assertEqual([pair.source for pair in pairs], [kept])
+
+
+    def test_pull_run_leaves_unchanged_destination_untouched(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.txt"
+            repository = root / "repo.txt"
+            source.write_text("value = 1\n", encoding="utf-8")
+            repository.write_text("value = 1\n", encoding="utf-8")
+            fixed_ns = 1_000_000_000_000_000_000
+            os.utime(repository, ns=(fixed_ns, fixed_ns))
+            entry = Entry("test", source, repository, False, False, frozenset())
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(pull.run([entry]), 0)
+
+            self.assertIn("unchanged=1", output.getvalue())
+            self.assertIn("updated=0", output.getvalue())
+            self.assertEqual(repository.stat().st_mtime_ns, fixed_ns)
+            self.assertEqual(repository.read_bytes(), b"value = 1\n")
+
+    def test_pull_run_rewrites_differing_destination(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.txt"
+            repository = root / "repo.txt"
+            source.write_text("source\n", encoding="utf-8")
+            repository.write_text("repo\n", encoding="utf-8")
+            entry = Entry("test", source, repository, False, False, frozenset())
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(pull.run([entry]), 0)
+
+            self.assertIn("updated=1", output.getvalue())
+            self.assertEqual(repository.read_text(encoding="utf-8"), "source\n")
+
+    def test_status_reports_unchanged_when_content_matches(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.txt"
+            repository = root / "repo.txt"
+            source.write_text("value = 1\n", encoding="utf-8")
+            repository.write_text("value = 1\n", encoding="utf-8")
+            entry = Entry("test", source, repository, False, False, frozenset())
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(cli.status([entry]), 0)
+
+            self.assertEqual(
+                output.getvalue(), f"pull: unchanged: test: {repository}\n"
+            )
+
+    def test_status_reports_would_update_without_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.txt"
+            repository = root / "repo.txt"
+            source.write_text("source\n", encoding="utf-8")
+            repository.write_text("repo\n", encoding="utf-8")
+            entry = Entry("test", source, repository, False, False, frozenset())
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                self.assertEqual(cli.status([entry]), 0)
+
+            self.assertEqual(
+                output.getvalue(), f"pull: would-update: test: {repository}\n"
+            )
+            self.assertEqual(repository.read_bytes(), b"repo\n")
+
+    def test_manifest_skips_ignored_names_and_suffixes(self):
+        from src.agc_sync.manifest import iter_pull_files
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "tree"
+            kept = source / "data" / "ok.txt"
+            ignored_dir = source / "logs" / "app.txt"
+            ignored_nested = source / "data" / "node_modules" / "pkg.js"
+            ignored_suffix = source / "data" / "state.db"
+            for path in (kept, ignored_dir, ignored_nested, ignored_suffix):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("x\n", encoding="utf-8")
+            (source / "data" / "link.txt").symlink_to(kept)
+            entry = Entry("test", source, root / "repo", False, True, frozenset())
+
+            pairs = list(iter_pull_files(entry))
+
+            self.assertEqual([pair.source for pair in pairs], [kept])
+            self.assertEqual(pairs[0].destination, root / "repo" / "data" / "ok.txt")
+
+    def test_manifest_include_skips_ignored_names_and_suffixes(self):
+        from src.agc_sync.manifest import iter_pull_files
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "tools"
+            kept = source / "semgrep" / "ok.txt"
+            ignored_dir = source / "logs" / "ok.txt"
+            ignored_suffix = source / "semgrep" / "state.db"
+            for path in (kept, ignored_dir, ignored_suffix):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("x\n", encoding="utf-8")
+            entry = Entry(
+                "test", source, root / "repo", False, True, frozenset(), ("*/*",)
+            )
 
             pairs = list(iter_pull_files(entry))
 

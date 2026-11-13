@@ -349,6 +349,174 @@ export async function start({ binary = 'tern', assets, socket, port, stateDir, t
   };
 }
 
+// --- browser acceptance helpers -------------------------------------------------
+
+/** 读取并校验可选 token 文件；token 只留在内存，格式不对立即拒绝。 */
+function readToken(tokenFile) {
+  if (!tokenFile) return null;
+  const token = fs.readFileSync(tokenFile, 'utf8').trim();
+  if (!/^[A-Za-z0-9_-]+$/.test(token)) throw new Error('browserCheck: token file has an unexpected format');
+  return token;
+}
+
+/** 去掉入站 URL 自带的 token 值，再拼上内存中的 token；details 里只可能出现 origin。 */
+function buildTarget(url, token) {
+  const clean = url.replace(/([?&])token=[^&]+&?/g, '$1').replace(/[?&]$/, '');
+  const origin = new URL(clean).origin;
+  const target = token ? `${clean}${clean.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}` : clean;
+  return { origin, target };
+}
+
+/** 只把同源导航请求换成空白根文档；静态资源继续走真实服务器。 */
+async function useOfflineDocument(page, origin) {
+  await page.route('**/*', route => {
+    const request = route.request();
+    if (request.isNavigationRequest() && new URL(request.url()).origin === origin) return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Tern headless verification</title>'});
+    return route.continue();
+  });
+}
+
+/** 直接走 HTTP 探测 /maple.js（request 不受 route 拦截）；无响应如实记失败。 */
+async function recordPageServed(page, add, origin) {
+  let probe = null;
+  try {
+    probe = await page.request.get(`${origin}/maple.js`, { timeout: 10_000 });
+  } catch {}
+  add('page_served', probe && probe.ok() ? 'passed' : 'failed', `GET /maple.js -> ${probe ? probe.status() : 'no response'}`);
+}
+
+/** user agent 证明强制无头；navigator.gpu 只做信息记录，缺 GPU 不算失败。 */
+async function recordEnvironment(page, add) {
+  const userAgent = await page.evaluate(() => navigator.userAgent);
+  add('headless_forced', /headless/i.test(userAgent) ? 'passed' : 'failed', userAgent);
+  // Informational only: module init and font injection do not require GPU.
+  const gpu = await page.evaluate(() => !!navigator.gpu);
+  add('webgpu_available', gpu ? 'passed' : 'not_run', gpu ? 'navigator.gpu present' : 'navigator.gpu absent; GPU behavior is not checked');
+}
+
+/** 页面内真实初始化 pkg/client.js 与 maple.js，并核对字体描述符指回注入的 WASM 分配。
+ * 回调必须自包含：浏览器里不存在模块侧闭包。只回传原始数据，格式归一化留给 Node 侧。 */
+function initPageModules(page) {
+  return page.evaluate(async () => {
+    try {
+      const client = await import(new URL('/pkg/client.js', location.href).href);
+      const maple = await import(new URL('/maple.js', location.href).href);
+      const bytes = await maple.loadClient();
+      // The shipped client exposes init as the DEFAULT export
+      // (`import init, { mount } from './pkg/client.js'`).
+      const init = client.default;
+      if (typeof init !== 'function') throw new Error('pkg/client.js has no default init export');
+      const wasm = await init({ module_or_path: bytes });
+      const injected = await maple.injectMaple(wasm);
+      if (!Array.isArray(injected.fonts) || injected.fonts.length !== 2) throw new Error('Expected two injected fonts');
+      const view = new DataView(wasm.memory.buffer);
+      const mismatched = injected.fonts.some(font => view.getUint32(font.slot, true) !== font.pointer || view.getUint32(font.slot + 4, true) !== font.bytes);
+      if (mismatched) throw new Error('Font descriptor does not contain injected allocation');
+      const digest = await crypto.subtle.digest('SHA-256', bytes);
+      return { ok: true, sha256: Array.from(new Uint8Array(digest), value => value.toString(16).padStart(2, '0')).join(''), injected };
+    } catch (error) {
+      return { ok: false, reason: String((error && error.message) || error) };
+    }
+  });
+}
+
+/** 判定初始化结果并返回 candidate SHA-256；失败时保留页面给出的原因。
+ * 字体数组的个数与描述符已在页面内核对，这里只按已验证的原始数据汇报。 */
+function recordClientInit(add, init) {
+  if (!init.ok) {
+    add('client_init', 'failed', init.reason);
+    return null;
+  }
+  const { family = null, version = null, fonts } = init.injected;
+  const versionNote = version ? `, maple ${version}` : '';
+  add('client_init', 'passed', `pkg/client.js init + loadClient + injectMaple OK (${family}${versionNote}, ${fonts.length} fonts)`);
+  return init.sha256;
+}
+
+/** 等待页面写出结构化 mount 状态或失败，超时即返回 mount timed out。 */
+function awaitMount(page, timeoutMs) {
+  return page.evaluate(async timeoutMs => {
+    return new Promise(resolve => {
+      const timeout = setTimeout(() => resolve({ mounted: false, reason: 'mount timed out' }), timeoutMs);
+      const check = () => {
+        const v = /** @type {{mounted?:boolean,failed?:boolean,error?:string|null}|undefined} */ (/** @type {{__ternVerification?:{mounted?:boolean,failed?:boolean,error?:string|null}}} */ (window).__ternVerification);
+        if (v && (v.mounted || v.failed)) {
+          clearTimeout(timeout);
+          resolve({ mounted: v.mounted === true, failed: v.failed === true, error: v.error || null });
+        } else if (/** @type {{tern?:unknown}} */ (window).tern) {
+          clearTimeout(timeout);
+          resolve({ mounted: true, structured: false });
+        } else {
+          setTimeout(check, 250);
+        }
+      };
+      check();
+    });
+  }, Math.min(timeoutMs, 30_000));
+}
+
+/** mount 成功才统计 WebSocket 帧；未 mount 时只记失败，不触碰帧数或 GPU 判定。 */
+async function recordMount(page, add, mountResult) {
+  if (!mountResult.mounted) {
+    add('wire_mount', 'failed', mountResult.error || mountResult.reason || 'mount did not complete');
+    return;
+  }
+  add('wire_mount', 'passed', mountResult.structured ? 'window.__ternVerification.mounted===true' : 'window.tern mounted without #status.error');
+  // Count WebSocket frames received after mount.
+  const framesReceived = await page.evaluate(() => /** @type {{__ternWsFramesReceived?:number}} */ (window).__ternWsFramesReceived || 0);
+  add('gpu_interaction_full', framesReceived > 0 ? 'passed' : 'not_run', `WebSocket frames received: ${framesReceived}`);
+}
+
+/** token 只允许作为文件路径和一次性 URL 参数存在；details 里出现即判失败。 */
+function recordTokenRedaction(add, checks, token) {
+  if (!token) {
+    add('token_redaction', 'passed', 'no token provided; nothing to redact');
+    return;
+  }
+  const haystack = JSON.stringify([...checks.values()]);
+  add('token_redaction', haystack.includes(token) ? 'failed' : 'passed', 'token value absent from check details');
+}
+
+/** 启动强制无头浏览器；executablePath 为空时用 Playwright 自带的 Chromium。 */
+async function openBrowser(playwrightModule, chromiumExecutable) {
+  const pw = await loadPlaywright(playwrightModule);
+  return pw.chromium.launch({
+    executablePath: chromiumExecutable || undefined,
+    headless: true, // forced: never honour a headed request
+    args: ['--no-sandbox'],
+  });
+}
+
+/** 顺序执行单个页面上的全部检查并返回 candidate SHA-256；mount 决定导航拦截与挂载判定。 */
+async function checkPage(page, add, { origin, target, mount, timeoutMs }) {
+  // Blank root document: the shipped index.html (mount + WebSocket) must not
+  // execute — this check connects to no pane. Static assets still reach the
+  // real server because only navigation requests are intercepted.
+  if (!mount) await useOfflineDocument(page, origin);
+
+  // Genuine HTTP probe of the server (API requests bypass route interception).
+  await recordPageServed(page, add, origin);
+
+  await page.goto(target, { timeout: timeoutMs, waitUntil: 'domcontentloaded' });
+
+  await recordEnvironment(page, add);
+  const candidateSha256 = recordClientInit(add, await initPageModules(page));
+
+  if (mount) {
+    // Mount mode: allow the real page to load and execute mount.
+    // Wait for structured mount state or failure.
+    await recordMount(page, add, await awaitMount(page, timeoutMs));
+  } else {
+    // Deliberately out of scope this round: no mount, no WebSocket, no pane.
+    add('wire_mount', 'not_run', '本轮仅模块 init 与完整 Maple 注入，不执行 mount/WebSocket，避免连接或操作任何 pane');
+  }
+  return candidateSha256;
+}
+
+function describeError(error) {
+  return (error && error.message) || String(error);
+}
+
 /**
  * Headless offline acceptance against a running tern web server: forces
  * headless:true, serves a blank root document so the shipped app never runs,
@@ -374,129 +542,19 @@ export async function browserCheck({ url, playwrightModule, chromiumExecutable, 
     if (!url) throw new Error('browserCheck: url is required');
     if (!playwrightModule) throw new Error('browserCheck: playwrightModule is required');
 
-    if (tokenFile) {
-      // Token lives in RAM only from here on; it is never logged or returned.
-      token = fs.readFileSync(tokenFile, 'utf8').trim();
-      if (!/^[A-Za-z0-9_-]+$/.test(token)) throw new Error('browserCheck: token file has an unexpected format');
-    }
+    // Token lives in RAM only from here on; it is never logged or returned.
+    token = readToken(tokenFile);
 
-    const pw = await loadPlaywright(playwrightModule);
-    const clean = url.replace(/([?&])token=[^&]+&?/g, '$1').replace(/[?&]$/, '');
-    const origin = new URL(clean).origin;
-    const target = token ? `${clean}${clean.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}` : clean;
-
-    const browser = await pw.chromium.launch({
-      executablePath: chromiumExecutable || undefined,
-      headless: true, // forced: never honour a headed request
-      args: ['--no-sandbox'],
-    });
+    const { origin, target } = buildTarget(url, token);
+    const browser = await openBrowser(playwrightModule, chromiumExecutable);
     try {
-      const page = await browser.newPage();
-
-      if (!mount) {
-        // Blank root document: the shipped index.html (mount + WebSocket) must not
-        // execute — this check connects to no pane. Static assets still reach the
-        // real server because only navigation requests are intercepted.
-        await page.route('**/*', route => {
-          const request = route.request();
-          if (request.isNavigationRequest() && new URL(request.url()).origin === origin) return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Tern headless verification</title>'});
-          return route.continue();
-        });
-      }
-
-      // Genuine HTTP probe of the server (API requests bypass route interception).
-      let probe = null;
-      try {
-        probe = await page.request.get(`${origin}/maple.js`, { timeout: 10_000 });
-      } catch {}
-      add('page_served', probe && probe.ok() ? 'passed' : 'failed', `GET /maple.js -> ${probe ? probe.status() : 'no response'}`);
-
-      await page.goto(target, { timeout: timeoutMs, waitUntil: 'domcontentloaded' });
-
-      const userAgent = await page.evaluate(() => navigator.userAgent);
-      add('headless_forced', /headless/i.test(userAgent) ? 'passed' : 'failed', userAgent);
-
-      // Informational only: module init and font injection do not require GPU.
-      const gpu = await page.evaluate(() => !!navigator.gpu);
-      add('webgpu_available', gpu ? 'passed' : 'not_run', gpu ? 'navigator.gpu present' : 'navigator.gpu absent; GPU behavior is not checked');
-
-      const init = await page.evaluate(async () => {
-        try {
-          const client = await import(new URL('/pkg/client.js', location.href).href);
-          const maple = await import(new URL('/maple.js', location.href).href);
-          const bytes = await maple.loadClient();
-          // The shipped client exposes init as the DEFAULT export
-          // (`import init, { mount } from './pkg/client.js'`).
-          const init = client.default;
-          if (typeof init !== 'function') throw new Error('pkg/client.js has no default init export');
-          const wasm = await init({ module_or_path: bytes });
-          const injected = await maple.injectMaple(wasm);
-          if (!Array.isArray(injected.fonts) || injected.fonts.length !== 2) throw new Error('Expected two injected fonts');
-          const view = new DataView(wasm.memory.buffer);
-          for (const font of injected.fonts) {
-            if (view.getUint32(font.slot,true) !== font.pointer || view.getUint32(font.slot+4,true) !== font.bytes) throw new Error('Font descriptor does not contain injected allocation');
-          }
-          return {
-            ok: true,
-            candidateSha256: Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), value => value.toString(16).padStart(2, '0')).join(''),
-            family: injected.family ?? null,
-            version: injected.version ?? null,
-            fonts: Array.isArray(injected.fonts) ? injected.fonts.length : null,
-          };
-        } catch (error) {
-          return { ok: false, reason: String((error && error.message) || error) };
-        }
-      });
-      if (init.ok) {
-        candidateSha256 = init.candidateSha256;
-        const version = init.version ? `, maple ${init.version}` : '';
-        add('client_init', 'passed', `pkg/client.js init + loadClient + injectMaple OK (${init.family}${version}, ${init.fonts} fonts)`);
-      } else {
-        add('client_init', 'failed', init.reason);
-      }
-
-      if (mount) {
-        // Mount mode: allow the real page to load and execute mount.
-        // Wait for structured mount state or failure.
-        const mountTimeout = Math.min(timeoutMs, 30_000);
-        const mountResult = await page.evaluate(async (timeoutMs) => {
-          return new Promise(resolve => {
-            const timeout = setTimeout(() => resolve({ mounted: false, reason: 'mount timed out' }), timeoutMs);
-            const check = () => {
-              const v = /** @type {{mounted?:boolean,failed?:boolean,error?:string|null}|undefined} */ (/** @type {{__ternVerification?:{mounted?:boolean,failed?:boolean,error?:string|null}}} */ (window).__ternVerification);
-              if (v && (v.mounted || v.failed)) {
-                clearTimeout(timeout);
-                resolve({ mounted: v.mounted === true, failed: v.failed === true, error: v.error || null });
-              } else if (/** @type {{tern?:unknown}} */ (window).tern) {
-                clearTimeout(timeout);
-                resolve({ mounted: true, structured: false });
-              } else {
-                setTimeout(check, 250);
-              }
-            };
-            check();
-          });
-        }, mountTimeout);
-        if (mountResult.mounted) {
-          add('wire_mount', 'passed', mountResult.structured ? 'window.__ternVerification.mounted===true' : 'window.tern mounted without #status.error');
-          // Count WebSocket frames received after mount.
-          const framesReceived = await page.evaluate(() => /** @type {{__ternWsFramesReceived?:number}} */ (window).__ternWsFramesReceived || 0);
-          add('gpu_interaction_full', framesReceived > 0 ? 'passed' : 'not_run', `WebSocket frames received: ${framesReceived}`);
-        } else {
-          add('wire_mount', 'failed', mountResult.error || mountResult.reason || 'mount did not complete');
-        }
-      } else {
-        // Deliberately out of scope this round: no mount, no WebSocket, no pane.
-        add('wire_mount', 'not_run', '本轮仅模块 init 与完整 Maple 注入，不执行 mount/WebSocket，避免连接或操作任何 pane');
-      }
-
-      const haystack = JSON.stringify([...checks.values()]);
-      add('token_redaction', token ? (haystack.includes(token) ? 'failed' : 'passed') : 'passed', token ? 'token value absent from check details' : 'no token provided; nothing to redact');
+      candidateSha256 = await checkPage(await browser.newPage(), add, { origin, target, mount, timeoutMs });
     } finally {
       await browser.close().catch(() => {});
     }
+    recordTokenRedaction(add, checks, token);
   } catch (error) {
-    add('headless_forced', 'failed', (error && error.message) || String(error));
+    add('headless_forced', 'failed', describeError(error));
   } finally {
     if (!mount) add('gpu_interaction_full', 'not_run', '本轮仅验证模块初始化与字体注入，未执行完整 GPU 交互');
   }
