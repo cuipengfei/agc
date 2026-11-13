@@ -1,5 +1,10 @@
 # Wiki Log
 
+## [2026-11-13] ingest | ub-mode 配套工具：安装、升级与项目运行方式
+- Disposition: Update
+- Raw: raw/agent-tooling/2026-11-13-ub-mode-tools-language-matrix.md; raw/agent-tooling/2026-11-13-ub-mode-tools-self-run-evidence.md; raw/agent-tooling/2026-11-13-ub-mode-metrics-before-after.md
+- 要点：三个工具的语言注册按源码核对：crapper 与 mutator 认 `.js/.jsx/.mjs/.cjs` 并选 `javascript` grammar，dryer 的 `EXTENSIONS` 与 `_grammar` 两层都缺，纯 JavaScript 目录输出 `No source files to analyze.` 且退出 0；上游 PR #16 补文件发现、PR #19 补语法选择，均为 open。指标读法补三种信号的分工：CRAP 在覆盖率为 0 时退化为 `CC² + CC`，mutator 检验断言是否真能失败，dryer 只比较同语言结构；agc 三个入口由 60/53/52 降到 4/7/6 且覆盖率 100.0，6 个目标变异全部 KILLED；序列化浏览器回调的 LCOV 归属失真标为推断。作者仓库自用证据：crapper 与 mutator 的提交说明点名三个工具，dryer 未点名；三个默认分支无 CI，`.metrics/` 被忽略。
+
 ## [2026-11-11] ingest | Copilot Fusion 折扣真实入账：本机网关四分项核验
 - Disposition: Update（copilot-fusion.md 主更新 + copilot-decision-routing.md 级联）
 - Raw: raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md
