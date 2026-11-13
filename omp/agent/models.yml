@@ -91,6 +91,14 @@ providers:
           - text
         contextWindow: 400000
         maxTokens: 55000
+      - id: gpt-6.1-terra
+        compactionModel: c8787/gpt-6-luna
+        name: GPT-6.1 Terra
+        reasoning: true
+        input:
+          - text
+        contextWindow: 400000
+        maxTokens: 55000
       - id: gpt-6-astra
         compactionModel: c8787/gpt-6-luna
         name: GPT-6 Astra

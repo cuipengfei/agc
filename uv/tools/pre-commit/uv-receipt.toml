@@ -1,0 +1,5 @@
+[tool]
+requirements = [{ name = "pre-commit" }]
+entrypoints = [
+    { name = "pre-commit", install-path = "/home/cpf/.local/bin/pre-commit", from = "pre-commit" },
+]
