@@ -2098,3 +2098,16 @@
 - Created: wiki/herdr-plannotator/herdr-core-install-config-wsl2-tailscale.md
 - Updated: wiki/herdr-plannotator/herdr-app-core-mobile.md
 - 要点：core 安装脚本行为与升级、config.toml 11 项源码定义、WSL2 内 Tailscale 部署与自启、/usr/local/bin/hc 链接的理由、本机 tailscale ssh 自测 refused 的机制解释与 issue #11097、uv-bun --up 集成。手机端连接仍未实测。产品关系文章补 WSL 场景说明并链接新文章。
+
+## [2026-11-13] ingest | roboomp 自托管 GitHub 维护流程
+- Disposition: New; Update
+- Raw: raw/software-factory/2026-11-13-roboomp-self-hosted-factory.md
+- Created: wiki/software-factory/roboomp-github-maintenance-factory.md
+- Updated: wiki/software-factory/ai-software-factory-landscape.md; wiki/omp-config/advisor-context-markers.md
+- 要点：记录事件队列、OMP worktree、GitHub 代理、Issue 分流与外部 PR 审查；区分 Bun 检查的程序执行和 `skip_checks` 的提示词使用条件；保存 #19164 的机器人报告及当时 GitHub 状态、源码安装入口、PyPI 查询和 Webhook 响应的证据边界。
+
+## [2026-11-14] ingest | roboomp 任务串行与源码摘录
+- Disposition: Update
+- Raw: raw/software-factory/2026-11-13-roboomp-self-hosted-factory.md
+- Updated: wiki/software-factory/roboomp-github-maintenance-factory.md
+- 要点：记录按仓库与 Issue 或 PR 条目编号串行处理任务，以及复现、分支、测试、审查和部署入口的源码依据。

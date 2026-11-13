@@ -1,7 +1,7 @@
 # advisor-context-markers
 
 > Sources: raw/omp-config/2026-09-20-advisor-context-markers.md, 2026-09-20; 本机 OMP 18.3.2 源码直读, 2026-09-26; advisor 第一手确认, 2026-09-26; 本会话实测, 2026-10-05; 本机 oh-my-pi 源码直读（session-history-format、skills、skill-command、advisor/runtime）, 2026-11-13; can1357/oh-my-pi issue #19164, 2026-11-13
-> Raw: [顾问上下文标记摘录](../../raw/omp-config/2026-09-20-advisor-context-markers.md); [advisor.evictStaleResults 与渲染预算](../../raw/omp-config/2026-09-26-advisor-evict-stale-results.md); [Advisor 直接回答的投递缺口](../../raw/harness-engineering/2026-10-05-advisor-direct-answer-delivery-gap.md); [advisor 技能调用文本截断](../../raw/omp-config/2026-11-13-advisor-skill-invocation-text-truncation.md)
+> Raw: [顾问上下文标记摘录](../../raw/omp-config/2026-09-20-advisor-context-markers.md); [advisor.evictStaleResults 与渲染预算](../../raw/omp-config/2026-09-26-advisor-evict-stale-results.md); [Advisor 直接回答的投递缺口](../../raw/harness-engineering/2026-10-05-advisor-direct-answer-delivery-gap.md); [advisor 技能调用文本截断](../../raw/omp-config/2026-11-13-advisor-skill-invocation-text-truncation.md); [roboomp 源码与会话证据](../../raw/software-factory/2026-11-13-roboomp-self-hosted-factory.md)
 > Updated: 2026-11-13
 
 Advisor 通过会话更新中的角色标记区分用户输入与自身思考，从而在自审时避免混淆。
@@ -91,7 +91,9 @@ advisor 会基于不完整上下文给建议，包括断言「用户从未提出
 
 ### 上游状态
 
-已提交 can1357/oh-my-pi#19164（state OPEN，labels 含 `bug`、`prio:p2`、`agent`、`prompting`）。检索未发现完全匹配的既有报告；#7602 是最接近的技能消息形状 issue，但属 TUI 展示且明确记录主模型收到完整参数；#5266 / PR #10367 是同类「advisor 视角信息丢失导致误判」的已修先例。
+2026-11-13 的公开快照中，can1357/oh-my-pi#19164 的状态为 OPEN，labels 含 `bug`、`prio:p2`、`agent`、`prompting`。检索未发现完全匹配的既有报告；#7602 是最接近的技能消息形状 issue，但属 TUI 展示且明确记录主模型收到完整参数；#5266 / PR #10367 是同类「advisor 视角信息丢失导致误判」的已修先例。
+
+同日，`roboomp` 报告已复现并推送修复提交 [`82a48562`](https://github.com/can1357/oh-my-pi/commit/82a48562)。机器人报告定向测试与 `bun check` 通过，完整测试失败；由于无法核验默认分支存在相同故障，创建 PR 的检查当时未获豁免，也没有创建 PR。机器人随后评论 “Issue closed”，同一次抓取的 GitHub 状态为 OPEN。上述测试结果来自机器人报告，后续合并状态未核查。处理流程见 [roboomp：自托管 GitHub 维护流程](../software-factory/roboomp-github-maintenance-factory.md)。
 
 ## 另见
 

@@ -2,7 +2,7 @@
 
 > Sources: Emmanuel Goossaert, codecapsule.com, 2026-10-04; varun1505/awesome-software-factories README, 2026-10-29; GitHub API, 2026-10-29; 各项目官方 README, 2026-10-29
 > Raw: [what-i-learned-building-an-ai-software-factory](../../raw/software-factory/2026-10-29-what-i-learned-building-an-ai-software-factory.md); [awesome-software-factories-local-options](../../raw/software-factory/2026-10-29-awesome-software-factories-local-options.md)
-> Updated: 2026-10-29
+> Updated: 2026-11-13
 
 ## Overview
 
@@ -50,5 +50,6 @@
 ## See Also
 
 - [factory-gate-reference](factory-gate-reference.md) — 机械关卡参照标准（Goossaert 的七阶段 + gate 清单）
+- [roboomp：自托管 GitHub 维护流程](roboomp-github-maintenance-factory.md) — Issue 分拣、PR 审查与项目检查
 - [ADE 候选清单](../agent-development-environments/ade-candidate-inventory.md) — 并发 agent 工作台视角的同类候选
 - [sandcastle：把 agent 关进进程围栏的编排库](../agent-tooling/sandcastle.md) — 库形态的编排层，自带分支策略与进程围栏，不提供固定工序与关卡

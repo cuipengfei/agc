@@ -227,7 +227,7 @@ OMP 配置项的源码级行为边界。
 | [OMP /model 模型浏览器：角色解析与 kind 过滤](omp-config/model-browser-role-resolution.md) | 已配置角色按 enabledModels 受限集合解析、范围外即 `—` 且无兜底；15 内置角色 + 10 kind 清单 | 2026-09-23 |
 | [OMP per-call model 与许可机制](omp-config/per-call-model-and-allowlist.md) | task.perCallModel off/eval/on 三态（本机已 on）与 project 只降不升；按次 model 须单一精确 provider/model-id[@upstream][:level]，role 别名/数组/glob 拒绝；许可来自 operator chat 角色、bundled/user agent frontmatter、父会话单一选择器路由、^标记 m<N>；perCallModelAllow 双层收窄；agentModelOverrides 并用冲突、seance 不受理、无 retry fallback/prewalk、task.maxEffort 档位上限；本机 broadcast 6 个许可选择器与两次拒绝实测；v18.5.0 旧设计（role 别名+候选数组）已撤回 | 2026-11-02 |
 | [OMP 自定义 sub-agent：定义、工具名适配与验证](omp-config/custom-subagent-deployment.md) | 用户级 agents/*.md 的 frontmatter 连字符与 camelCase 等效（`rawKeys=false` 归一，官方文档写 read-summarize/thinking-level）；跨机复刻三处替换（模型 provider、MCP 注册名、manifest 归属）；本机 5 agent + architect/designer/balanced 三 role（16 键，per-call 许可 7 个 selector）；selector 的 `:level` 后缀优先于 thinkingLevel，中间档须用无后缀 role；`spawns: []` 仍注入 task 工具，省略才真正没有；验证两段（loadReadOnly+discoverAgents 断言、五条冒烟自报模型 ID）；TTSR+扩展双层 task agent 选择引导（不硬编码清单）；OMO 5.1.57 原型吸收与四份补齐（Metis/Momus/Oracle Triple、年份门槛/permalink/恢复分支、组件下限/设计系统/验收门、既有证据核查/产物引用）；18.19.0 工具面解析（五类自动补齐，`wait` 由执行器追加；`alwaysInclude` 使 MCP 与扩展工具不受 frontmatter 约束；`restrictToolNames` 三来源为 seance、plan mode、受限父会话，任一命中即关闭 MCP；只读判定为 16 名白名单成员关系）与提示词分层冲突（`# 2. Hand-off` 禁子代理自行跑构建测试）；五 agent 实测内置工具数 24/20/19/14/13，builder 省略 tools 加 spawns:* 与 task 逐项相同 | 2026-11-12 |
-| [OMP Advisor 上下文标记](omp-config/advisor-context-markers.md) | `**user**:`/`**agent**:` 角色标记、会话更新状态头、工具结果渲染预算、evictStaleResults 清理、Advisor 直接回答的投递缺口（纯文本不渲染，只有 advise() 渲染）与 WATCHDOG.md L22 规则；2026-11-13 补技能调用消息的渲染截断：技能消息是单条 custom 消息，走 `customOneLiner` 的 120 字符预览，`User:` 尾部被截掉，主代理不受影响，绕过是把任务文本单独发普通消息，已提交 #19164 | 2026-11-13 |
+| [OMP Advisor 上下文标记](omp-config/advisor-context-markers.md) | `**user**:`/`**agent**:` 角色标记、会话更新状态头、工具结果渲染预算、evictStaleResults 清理、Advisor 直接回答的投递缺口；技能调用消息走 `customOneLiner` 的 120 字符预览，`User:` 尾部被截掉；#19164 的机器人修复分支与当时受阻的 PR 检查 | 2026-11-13 |
 | [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区；18.4.2 达 515 键 | 2026-09-28 |
 | [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
 | [OMP cfg:// 配置解析：合并视图与 source 归属](omp-config/cfg-url-resolution.md) | cfg:// 三层下钻键发现、合并视图 vs yaml、default/global config/项目/会话四层 source 归属、写入 session-only + save 持久化 | 2026-10-11 |
@@ -400,8 +400,9 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [AI Software Factory 概念与真工厂短名单](software-factory/ai-software-factory-landscape.md) | 判据五要素（输入标准化、工序固定、程序或人判定、失败可退回、可度量）；四类部署形态；三千星以上短名单 OpenHands 92184、Multica 54233、Superplane 8379、Mission Control 6410（2026-10-29 API）；关卡只到 guardrail/Aegis/review gate 一层 | 2026-10-29 |
+| [AI Software Factory 概念与真工厂短名单](software-factory/ai-software-factory-landscape.md) | 判据五要素（输入标准化、工序固定、程序或人判定、失败可退回、可度量）；四类部署形态；三千星以上短名单 OpenHands 92184、Multica 54233、Superplane 8379、Mission Control 6410（2026-10-29 API）；关卡只到 guardrail/Aegis/review gate 一层；关联 roboomp 工作流专文 | 2026-11-13 |
 | [Factory Gate 参照标准](software-factory/factory-gate-reference.md) | Goossaert 七阶段（grill→apply-docs→plan→atdd→implement→review→review-correctness）与 gate 检查清单（red-confirmation、hermetic-verify、mutation 下限、forbidden-patterns、testing-the-judge）；max_retries=3 后 flag for a human | 2026-10-29 |
+| [roboomp：自托管 GitHub 维护流程](software-factory/roboomp-github-maintenance-factory.md) | GitHub 事件、OMP 会话、Issue 与外部 PR 工作流、Bun 检查及跳过条件、#19164 历史处理、源码部署与网络查询边界 | 2026-11-14 |
 
 ## software-testing
 
