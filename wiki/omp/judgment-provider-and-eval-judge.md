@@ -1,8 +1,8 @@
 # OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界
 
-> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08; 本机 pi-ai 与 pi-coding-agent 源码直读（openai-decisions wire、JUDGMENT_WIRES、resolveJudge 调用点）, 2026-11-09; 本会话实测（judge 角色切至 c8787/gpt-6-luna-decisions 后的四条入口与用量表对账）, 2026-11-09
-> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [openai-decisions 协议与本地接入](../../raw/omp/2026-11-09-openai-decisions-judge-wire.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md)
-> Updated: 2026-11-09
+> Sources: 本会话取证（本机 @oh-my-pi/pi-coding-agent 18.2.5 安装源码直读）, 2026-09-19; 本会话取证（GitHub commits/releases/compare API）, 2026-09-19; 本会话实测（eval judge() smoke）, 2026-09-19; 本会话实测（eval judge() 双语言、三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（jevify 22 文件分类，实际模型 kimi-claw/k2d8-preview）, 2026-09-21; 本会话实测（18.2.8 modelRoles.judge + fallbackChains 路由层）, 2026-09-22; 本会话实测（judgeBatch await 用法，eval JS kernel gen 3 Bun 1.4.2）, 2026-09-26; 本机 fork 736ce1d99a TTSR judge 消费方源码直读, 2026-10-08; 本机 pi-ai 与 pi-coding-agent 源码直读（openai-decisions wire、JUDGMENT_WIRES、resolveJudge 调用点）, 2026-11-09; 本会话实测（judge 角色切至 c8787/gpt-6-luna-decisions 后的四条入口与用量表对账）, 2026-11-09; can1357/oh-my-pi PR #19060 merge commit cc5b308, 2026-11-12
+> Raw: [judgment-provider-values](../../raw/omp/2026-09-19-judgment-provider-values.md); [judgment-typesafe-history](../../raw/omp/2026-09-19-judgment-typesafe-history.md); [llm-judgment-callflows](../../raw/omp/2026-09-19-llm-judgment-callflows.md); [judge-smoke-test](../../raw/omp/2026-09-19-judge-smoke-test.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [Magic Keywords jevify](../../raw/omp-modes/2026-09-21-magic-keywords-jevify.md); [jev-latest-400 根因](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [judgeBatch await 用法](../../raw/omp-mnemopi/2026-09-26-judgebatch-await-usage.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [openai-decisions 协议与本地接入](../../raw/omp/2026-11-09-openai-decisions-judge-wire.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md); [gemini-decisions-api-and-copilot-support](../../raw/ai-coding-agents/2026-11-13-gemini-decisions-api-and-copilot-support.md)
+> Updated: 2026-11-13
 
 ## Overview
 
@@ -93,9 +93,9 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 
 ## openai-decisions 协议与自建 provider 接入（2026-11-09 源码核验与整链实测）
 
-`JUDGMENT_WIRES` 里除 `typesafe` 外还有三个原生 wire：`openrouter-decisions`、`workers-ai-systemone`、`openai-decisions`。四者都通过 `isJudgmentApi` 判定，因此都满足 `hasNativeJudge` 门控，`find` 的 `auto` 模式、`ttsr.judge: auto`、`auto-prewalk` 对它们一视同仁。
+`JUDGMENT_WIRES` 里除 `typesafe` 外还有四个原生 wire：`openrouter-decisions`、`workers-ai-systemone`、`openai-decisions`、`google-decisions`。五者都通过 `isJudgmentApi` 判定，因此都满足 `hasNativeJudge` 门控，`find` 的 `auto` 模式、`ttsr.judge: auto`、`auto-prewalk` 对它们一视同仁。
 
-四条 wire 的图片与 `box` 支持各不相同：
+五条 wire 的图片与 `box` 支持各不相同：
 
 | wire | `boxes` | 图片限制 |
 |---|---|---|
@@ -103,6 +103,7 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 | `openrouter-decisions` | 支持 | `images: {}` 不设限；需要图片 opt-in |
 | `workers-ai-systemone` | 不支持 | 上限 4 张、单张 4 MiB、合计 8 MiB、像素上限 `16_000_000`；`mimeTypes` 含 `image/webp` |
 | `openai-decisions` | **不支持** | 上限 128 张，转成 `input_image` 的 data URL |
+| `google-decisions` | 不支持 | 图片作为 base64 `image` 块放在 state 文本之后，上限按解码字节 75,000,000 |
 
 `nativeJudgmentSupportsBoxes` 的判定是 `JUDGMENT_WIRES[api].boxes === true`，因此只有 `typesafe` 与 `openrouter-decisions` 返回真；`openai-decisions` 遇到 `type: "box"` 直接抛 `ValidationError: OpenAI Decisions has no box question type`。`typesafe` 的 `box` 还需 Jev 1.14 以上。
 
@@ -114,6 +115,21 @@ jevify 22 文件分类实际模型 `kimi-claw/k2d8-preview` 与 zen 日志中的
 | 题型映射 | `noul` → `predicate`；`choice` → `choice` + `{ value, description }[]`；`score` → `score` + `levels` |
 
 OMP 的 10 个 `resolveJudge` 消费点（`judgment/standalone`、`tools/jfind`、`auto-thinking`、`auto-prewalk`、`session/agent-session` 三处、`unexpected-stop`、`/stats`、`eval/judgment-bridge`）都不使用 `box` 题型，因此 `openai-decisions` 能承担这些内置功能的判断；只有在 eval 里手写 `type: "box"` 时才需要 `typesafe` 或 `openrouter-decisions`。
+
+### `google-decisions` 的 wire 差异（2026-11-12 合并）
+
+PR #19060 引入第五条原生 wire，形状与其余四条都不同：
+
+| 项 | 值 |
+|---|---|
+| 请求路径 | `{baseUrl}/decisions` |
+| 认证头 | `x-goog-api-key`，不是 `Authorization`；`JudgmentTarget` 因此新增可选 `tokenHeader` |
+| 问题键 | 限制为 64 字符 `[A-Za-z0-9_-]`；OMP 的问题 id 不满足，外发用 `q0`、`q1`…… 并按位置读回答案，`JudgmentWire.decode` 因此也接收 request |
+| `noul` criteria | `{ true_description, false_description }` |
+| `choice` 无 rubric | 发送空字符串 |
+| 模型行 | `google/gemini-decision-1`，使用 `GEMINI_API_KEY`；`models.yml` 接受 `api: google-decisions` |
+
+该 wire 按评审要求**只做 opt-in**，没有进入默认 judge 链。理由是 `textJudgeRoleChain()` 一旦遇到 native 候选就丢弃其后全部非 native 候选，放进默认链会让只有 `GEMINI_API_KEY` 的用户失去回退。PR 自述没有 Gemini API key，请求与响应形状只对照 Google 公开示例检查。
 
 ### 整链实测（2026-11-09）
 
@@ -173,4 +189,5 @@ Copilot 那侧的实测响应里，`score` 题的概率数组元素多带 `label
 - [Jev 语义回归检查方法](../harness-engineering/jev-semantic-regression-testing.md)
 - [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md)
 - [OMP 配置语义手册](../omp-config/config-semantics.md)
+- [Gemini Decisions API：身份、与 OpenAI Decisions 的报文差异、生态接入与 Copilot 支持状态](../ai-coding-agents/gemini-decisions-api.md)
 - [OMP TTSR 判定机制与 question 规则](../omp-ttsr/ttsr-and-judge.md) — 第 4 个自动消费方的完整机制、claim() 语义、可加 question 的评估方法

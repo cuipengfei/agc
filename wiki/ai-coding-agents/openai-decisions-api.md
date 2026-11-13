@@ -1,12 +1,12 @@
 # OpenAI Decisions API：GA 状态、请求格式与 GitHub Copilot 后端探测
 
-> Sources: OpenAI 官方文档, 2026-10-25; 对 GitHub Copilot 上游的实测, 2026-10-25 与 2026-11-09; 微软 VS Code 仓库源码与 npm 包核查, 2026-10-25; `github/gh-aw`、`github/gh-aw-firewall`、`microsoft/vscode` 公开提交记录, 2026-11-09; 经本地代理链路的整链实测, 2026-11-09
-> Raw: [openai-decisions-api-ga](../../raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md); [copilot-decisions-retest-and-payload-validation](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md); [copilot-decisions-follow-up-research](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md); [openai-decisions-api-status-check-1018](../../raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1018](../../raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md); [openai-decisions-api-status-check-1015](../../raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1015](../../raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-api-decisions-route](../../raw/ai-coding-agents/2026-11-09-copilot-api-decisions-route.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md)
-> Updated: 2026-11-09
+> Sources: OpenAI 官方文档, 2026-10-25; 对 GitHub Copilot 上游的实测, 2026-10-25 与 2026-11-09; Copilot 上游 Gemini 与 decisions 条目实测, 2026-11-13; 微软 VS Code 仓库源码与 npm 包核查, 2026-10-25; `github/gh-aw`、`github/gh-aw-firewall`、`microsoft/vscode` 公开提交记录, 2026-11-09; 经本地代理链路的整链实测, 2026-11-09
+> Raw: [openai-decisions-api-ga](../../raw/ai-coding-agents/2026-10-25-openai-decisions-api-ga.md); [copilot-decisions-retest-and-payload-validation](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md); [copilot-decisions-follow-up-research](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-follow-up-research.md); [openai-decisions-api-status-check-1018](../../raw/ai-coding-agents/2026-10-18-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1018](../../raw/ai-coding-agents/2026-10-18-copilot-decisions-endpoint-probing.md); [openai-decisions-api-status-check-1015](../../raw/ai-coding-agents/2026-10-15-openai-decisions-api-status-check.md); [copilot-decisions-endpoint-probing-1015](../../raw/ai-coding-agents/2026-10-15-copilot-decisions-endpoint-probing.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-api-decisions-route](../../raw/ai-coding-agents/2026-11-09-copilot-api-decisions-route.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md); [gemini-decisions-api-and-copilot-support](../../raw/ai-coding-agents/2026-11-13-gemini-decisions-api-and-copilot-support.md)
+> Updated: 2026-11-13
 
 ## Overview
 
-OpenAI Decisions API 于 2026-10-22 正式 GA，端点 `POST /v1/decisions`，请求体含 `model`/`input`/`questions`（predicate/choice/score 三题型）。Copilot 上游在 2026-10-15、10-18、10-25 三次测试中用常规 `gpt-6-luna` 请求该端点，均返回 `model_not_supported`。2026-11-09 同一上游的目录中出现专用条目 `gpt-6-luna-decisions`：`capabilities.type` 为 `decisions`，`supported_endpoints` 只有 `/v1/decisions`，`model_picker_enabled` 为 `false`。改用该 ID 请求得到 HTTP 200 与结构化 `answers`，同一条件下带图请求也通过。
+OpenAI Decisions API 于 2026-10-22 正式 GA，端点 `POST /v1/decisions`，请求体含 `model`/`input`/`questions`（predicate/choice/score 三题型）。Copilot 上游在 2026-10-15、10-18、10-25 三次测试中用常规 `gpt-6-luna` 请求该端点，均返回 `model_not_supported`。2026-11-09 同一上游的目录中出现专用条目 `gpt-6-luna-decisions`：`capabilities.type` 为 `decisions`，`supported_endpoints` 只有 `/v1/decisions`，`model_picker_enabled` 为 `false`。改用该 ID 请求得到 HTTP 200 与结构化 `answers`，同一条件下带图请求也通过。Google 于 2026-11-11 发布的 Gemini Decisions API 是并行协议，认证头与 `questions` 形态都不同，见 [Gemini Decisions API](gemini-decisions-api.md)。
 
 ## 官方状态（2026-10-25 核验）
 
@@ -65,6 +65,8 @@ guide "What's new" 节列出九项：prompt caching、题目级图片、`input_j
 | **常规 `gpt-6-luna` 重测（11-09）** | **400 `model_not_supported`，与前三次逐字一致** |
 | **目录端点集合（11-09）** | **四项：`/chat/completions`、`/responses`、`/v1/decisions`、`ws:/responses`** |
 | **专用 ID `gpt-6-luna-decisions`（11-09）** | **200，`answers` 含 `probability: 1`，`output_tokens` 为 0** |
+| **Gemini chat 模型与 `gemini-decision-1`（11-13）** | **全部 400 `model_not_supported`；`/v1beta/decisions` 路径 404** |
+| **专用条目仍是唯一 decisions 条目（11-13）** | **`gpt-6-luna-decisions`，其余条目均不声明决策端点** |
 
 **GA 未改变 Copilot 侧行为**：OpenAI 于 10-22 GA 之后，10-25 复测的拒绝报文与前两次完全相同。这组证据只覆盖本次认证与上游，不能证明其他账号或其他调用条件也不支持。（[raw 10-25](../../raw/ai-coding-agents/2026-10-25-copilot-decisions-retest-and-payload-validation.md) §②）
 
@@ -140,6 +142,7 @@ VS Code Copilot 的公开模型端点类型列出 Chat Completions、Responses�
 
 ## See Also
 
+- [Gemini Decisions API：身份、与 OpenAI Decisions 的报文差异、生态接入与 Copilot 支持状态](gemini-decisions-api.md)
 - [Copilot 的决策路由端点与 Auto／HydraFusion 边界](copilot-decision-routing.md)
 - [Jev 在 OMP、Codex、OpenCode 的现成集成盘点](jev-host-integrations.md)
 - [同一模型名跨两个协议面时的模型 ID 分叉](copilot-decisions-model-identity.md)
