@@ -2142,3 +2142,9 @@
 - Created: wiki/herdr-plannotator/herdr-core-hc-cli-command-surface.md
 - Updated: wiki/herdr-plannotator/herdr-core-install-config-wsl2-tailscale.md
 - 要点：以本机 `hc` 0.1.21 逐命令帮助为唯一来源，按「终端地址 / 建终端与查看 / 与程序交互 / 不建终端 / 其他机器 / core 与工具」六组整理 23 条顶层命令，另有 `file`、`server`、`machine` 共 13 个子命令；记录 `hc wait` 与 `run --timeout` 默认 180 秒、`exec` 默认 60 秒且上限 600 秒、`interrupt` 观察 10 秒、`file read` 上限 8 MB、`--json` 对 `run` 与 `read` 的例外；`keep` 只换 shell 不重跑原命令，`machine rm` 不结束远端终端；帮助入口 `hc <分组> help <子命令>` 可用而 `hc file help --help` 报 usage 错误。只读帮助，未执行产生状态的操作，跨机器与保留终端行为取自帮助描述。安装配置文章补 See Also（仅交叉引用，不刷新日期）；索引同步。
+
+## [2026-11-14] ingest | Copilot Auto/Fusion 端点行为与折扣验证
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-11-14-copilot-auto-fusion-behavior.md
+- Updated: Copilot Fusion：effort 档位、按计划可用性与计费; Copilot 的决策路由端点与 Auto／HydraFusion 边界
+- 要点：`POST /model/fusion` 请求体为 `{prompt, plan_version}`，`"1"` 返回多步 cascade（`steps[{model_id, role}]`），`"2"` 返回单步 solo；同一题面在两个版本、两个端点上的候选池不一致，cascade 可覆盖 solo 刷不出的模型，登记时需逐 step 读取。两个端点返回的 `session_token` 是折扣凭证，带 `expires_at`，经 `/responses` 的 `Copilot-Session-Token` 头生效；过期后重发原题取得新 token。请求体没有可指定模型的字段，选模由服务端决定且随日期变化。长上下文起点由模型目录 `billing.token_prices.default.context_max` 按模型取值，观察到 128,000、200,000、224,000、272,000 四档，部分模型没有该档；档内输入与缓存基础价 2 倍、输出 1.5 倍，30% 折扣在同档原价上表现为普通档输入 1.4 倍、输出 1.05 倍。折扣核对需同模型同输入、携带与不携带 token 各一次，按 `copilot_usage.token_details` 各 token_type 的 `cost_per_batch / batch_size` 比较，不能用 `total_nano_aiu` 相除。另将「Fusion 上游调用路径未公开」标为 Outdated。

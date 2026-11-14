@@ -1,7 +1,7 @@
 # Copilot Fusion：effort 档位、按计划可用性与计费
-> Sources: GitHub Docs《About GitHub Copilot Fusion》, 2026-11-10 抓取; GitHub Changelog《Route and orchestrate models with GitHub Copilot Fusion》, 2026-10-28; 本机 `/auto` 与 `/models` 实测, 2026-11-10; 本机网关扣费核验, 2026-11-11
-> Raw: [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [auto-routing-response-probe](../../raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md); [copilot-fusion-discount-live-verification](../../raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md)
-> Updated: 2026-11-11
+> Sources: GitHub Docs《About GitHub Copilot Fusion》, 2026-11-10 抓取; GitHub Changelog《Route and orchestrate models with GitHub Copilot Fusion》, 2026-10-28; 本机 `/auto` 与 `/models` 实测, 2026-11-10; 本机网关扣费核验, 2026-11-11; 上游 `/auto` 与 `/model/fusion` 端点实测, 2026-11-14
+> Raw: [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [auto-routing-response-probe](../../raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md); [copilot-fusion-discount-live-verification](../../raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md); [copilot-auto-fusion-behavior](../../raw/ai-coding-agents/2026-11-14-copilot-auto-fusion-behavior.md)
+> Updated: 2026-11-14
 
 ## Overview
 
@@ -24,6 +24,14 @@ Fusion 没有自己的上下文窗口，每一步都在实际执行模型的上�
 | Critique | 一个模型起草，多个模型并行独立评审，汇总反馈后由原模型修订 | 含多路评审调用，耗时更长 |
 
 官方明确 Fusion 只在任务值得时增加模型调用，简单任务不会为一次不需要的评审等待或消耗 AI credits。中间草稿可能被修改或丢弃，最终只呈现结果。
+
+## 上游 plan_version 与多步计划
+
+`POST /model/fusion` 的请求体是 `{ prompt, plan_version }`，不是 `tier`。`plan_version "1"` 返回多步 cascade，`steps` 数组每项带 `model_id` 与 `role`，例如先 draft 再 escalation。`plan_version "2"` 返回单步 solo。
+
+两个版本的候选能力不同。实测中某个模型在 `"2"` solo 里从未出现，只在 `"1"` cascade 的某个 step 里稳定出现。要覆盖尽可能多的模型，两个版本都要请求，并逐个登记 `steps` 里的每个模型，而不是只看 `steps[0]`。
+
+请求体没有可以指定具体模型的字段，选哪个模型由服务端决定。同一个题面在不同日期可能返回不同模型；`/auto` 与 `/model/fusion` 的候选池也不一致，某模型可能在其中一个端点长期缺席、在另一个端点稳定出现。
 
 ## 四个 effort 档位
 
@@ -68,6 +76,24 @@ Fusion 已正式可用的客户端：Visual Studio Code、Copilot CLI、GitHub C
 - 对照链：`/auto` 响应的 `discounted_costs: {"gpt-6-luna": 0.1}` 与 Auto 10% 实际入账（目录价 90%）一致；Fusion 选择响应没有 `discounted_costs` 字段，30% 的证据链是官方条款加四分项 0.7 比例实测。
 - Fusion High 与 Fusion Max 可能为一个任务调用多个模型，credits 消耗高于 Standard。
 - Fusion 尽量让主对话停留在同一个模型上，以继续命中缓存；承担评审等辅助角色的模型只拿到它需要的那部分上下文。
+
+### 长上下文价格档
+
+长上下文档的起点由模型目录条目的 `billing.token_prices.default.context_max` 决定，按模型取值，不是统一的固定数字。已观察到的起点有四档：128,000（`mai-code-1.1-flash`）、200,000（`gemini-3.7-flash`、`gpt-5.6-luna`）、224,000（`kimi-k2.7-code`）、272,000（`gpt-5.4`、`gpt-5.5`、`gpt-5.6-sol`、`gpt-5.6-terra`）。部分条目没有 `long_context` 档，超过各自起点后仍按普通价计费。
+
+存在长上下文档的模型，其输入、缓存读取、缓存写入基础价是普通档的 2 倍，输出基础价是 1.5 倍。
+
+折扣按同一价格档的原价计算。30% 折扣叠加在长上下文档上，相对普通档原价表现为输入与缓存 1.4 倍、输出 1.05 倍。只看「是否为普通目录价的 0.7」会把长上下文请求误判成折扣没有生效；正确顺序是先算该模型的价格档起点，再按档内原价算比例。
+
+### 如何验证折扣确实入账
+
+同模型、同输入，分别携带与不携带 `Copilot-Session-Token` 各发一次 `/responses` 请求。
+
+比较两次响应 `copilot_usage.token_details` 中每种 token 类型的 `cost_per_batch / batch_size`。只有全部 token 类型都呈现一致比例时，才能确认整体折扣率。
+
+不能用 `total_nano_aiu` 直接相除。两次请求的 token 数量与缓存命中情况不同，总量比值会把 token 数差异混进折扣计算。
+
+`session_token` 带 `expires_at`。过期后重新发送原来的完整题面即可取得新 token，因此题面文本需要保存下来以便日后重放。
 
 ## 本机网关的折扣实测（2026-11-11）
 

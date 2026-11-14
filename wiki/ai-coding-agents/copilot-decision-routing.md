@@ -1,8 +1,8 @@
 # Copilot 的决策路由端点与 Auto／HydraFusion 边界
 
-> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09; GitHub Docs《About GitHub Copilot Fusion》与 2026-10-28 changelog, 2026-11-10; 本机网关扣费核验, 2026-11-11
-> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [copilot-fusion-discount-live-verification](../../raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md)
-> Updated: 2026-11-11
+> Sources: 本会话源码核查（copilot-api 代理、microsoft/vscode、@vscode/copilot-api@0.5.2）, 2026-10-25; Copilot 上游目录与 `/v1/decisions` 实测, 2026-11-09; GitHub Docs《About GitHub Copilot Fusion》与 2026-10-28 changelog, 2026-11-10; 本机网关扣费核验, 2026-11-11; 上游 `/auto` 与 `/model/fusion` 端点实测, 2026-11-14
+> Raw: [copilot-decision-routing-endpoints](../../raw/ai-coding-agents/2026-10-25-copilot-decision-routing-endpoints.md); [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [copilot-fusion-ga-effort-levels](../../raw/ai-coding-agents/2026-10-28-copilot-fusion-ga-effort-levels.md); [copilot-fusion-discount-live-verification](../../raw/ai-coding-agents/2026-11-11-copilot-fusion-discount-live-verification.md); [copilot-auto-fusion-behavior](../../raw/ai-coding-agents/2026-11-14-copilot-auto-fusion-behavior.md)
+> Updated: 2026-11-14
 
 ## Overview
 
@@ -44,6 +44,24 @@ Copilot 的决策能力分两层。产品面对外：没有向用户开放 syste
 
 `hydra_scores` 同样只出现在探测脚本对响应的读取逻辑里，代理侧的 `AutoSelectionResponse` 类型声明中并无该字段，不能当作源码定义的响应保证。
 
+### `session_token` 是折扣凭证
+
+`/auto` 与 `/model/fusion` 返回的 `session_token` 是折扣凭证，带 `expires_at`。把它放进后续 `/responses` 请求的 `Copilot-Session-Token` 头里，该请求按对应折扣计费。`/auto` 对应 10%，`/model/fusion` 对应 30%。
+
+token 过期后重新发送原来的完整题面即可取得新 token。题面文本需要保存下来以便日后重放，历史记录本身不构成有效凭证。
+
+请求体没有可以指定具体模型的字段。同一个题面在不同日期可能返回不同模型，两个端点的候选池也可能不一致。
+
+### 折扣是否真正入账的核对方法
+
+同模型、同输入，分别携带与不携带 `Copilot-Session-Token` 各发一次 `/responses` 请求。
+
+比较两次响应 `copilot_usage.token_details` 中每种 token 类型的 `cost_per_batch / batch_size`。只有全部 token 类型都呈现一致比例时才能确认整体折扣率。
+
+不能用 `total_nano_aiu` 直接相除。两次请求的 token 数量与缓存命中情况不同，总量比值会把 token 数差异混进折扣计算。
+
+长上下文档的起点由模型目录条目的 `billing.token_prices.default.context_max` 决定，按模型取值。已观察到 128,000、200,000、224,000、272,000 四档，部分模型没有 `long_context` 档。存在该档时输入与缓存基础价 2 倍、输出基础价 1.5 倍。折扣按同档原价计算，所以核对前要先算该模型的价格档起点，30% 折扣在长上下文档上表现为普通档原价的输入 1.4 倍、输出 1.05 倍。
+
 ## 另一个路由端点
 
 `@vscode/copilot-api@0.5.2` 的 `RequestType` 含 `ModelRouter`，URL 映射为 `/models/session/intent`；请求为 prompt 加候选模型与上下文信号，响应含 `predicted_label`、`candidate_models`、`scores`。
@@ -78,12 +96,15 @@ GitHub changelog（2026-09-30）原文：
 
 产品面对外更名后，该结论的适用范围是「Fusion 的上游调用路径仍未公开」：GA 文档只写了路由与编排行为，没有给出端点地址。
 
+> **Status: Outdated** (2026-11-14)
+> 「Fusion 的上游调用路径仍未公开」已被实测取代：`POST /model/fusion` 可用，请求体为 `{prompt, plan_version}`，`"1"` 返回带 `model_id` 与 `role` 的有序 `steps`，`"2"` 返回单步 solo，响应含 `session_token` 与 `expires_at`。旧结论的依据是当时检索的代理源码与 npm 包映射未含该路径，属检索范围不足。内部编排实现仍未公开。
+
 ## 证据边界
 
 - `hydra_scores`、`multi_turn_mode`、`discounted_costs` 的实际返回已对上游实测（raw/ai-coding-agents/2026-11-10-auto-routing-response-probe.md）；`discounted_costs` 的 10% 折扣另经 2026-11-11 扣费核验一致。
 - 未实测 `/models/session/intent`。
 - `tier` 与响应字段属未公开行为，可能变动。
-- HydraFusion 的内部实现与上游调用方式未公开。
+- HydraFusion 的内部编排实现仍未公开；`POST /model/fusion` 端点本身已实测（2026-11-14）。
 
 ## See Also
 
