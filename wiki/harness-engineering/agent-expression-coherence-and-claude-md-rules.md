@@ -1,12 +1,12 @@
 # Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 
-> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25
-> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md)
-> Updated: 2026-11-05
+> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25; 三轮 Plannotator 批注与重排定稿, 2026-11-14
+> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md); [CLAUDE.md 三轮 Plannotator 批注的重排与定点定稿](../../raw/harness-engineering/2026-11-14-claude-md-reorg-and-annotation-refinements.md); [CLAUDE.md 定稿全文快照（2026-11-14）](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md)
+> Updated: 2026-11-14
 
 ## Overview
 
-在复杂技术问答与多轮澄清中，LLM/Agent 常因换讨论对象不换代词、混用不同分类标准、漏掉结论前提、跨组件动作断链、新概念不交代来路、比较时拿共同点充当优势、以及在作废旧草稿上打局部补丁，导致读者难以建立一致心智模型。另有第 8 类由 2026-10-25 批注归纳的反模式：用「不能证明 X」的免责句替代判断。本文记录这 **8 类表达问题**、外部多轮对话退化研究与 `skills.sh` 生态对标，并给出 `~/.claude/CLAUDE.md`（同步至 `~/.omp/agent/AGENTS.md` 与 `~/.codex/AGENTS.md`）**改动后的定稿段落与前置 Skill 安装清单**，供新机器复刻。
+在复杂技术问答与多轮澄清中，LLM/Agent 常因换讨论对象不换代词、混用不同分类标准、漏掉结论前提、跨组件动作断链、新概念不交代来路、比较时拿共同点充当优势、以及在作废旧草稿上打局部补丁，导致读者难以建立一致心智模型。另有第 8 类由 2026-10-25 批注归纳的反模式：用「不能证明 X」的免责句替代判断。本文记录这 **8 类表达问题**、外部多轮对话退化研究与 `skills.sh` 生态对标，并给出 `~/.claude/CLAUDE.md`（同步至 `~/.omp/agent/AGENTS.md` 与 `~/.codex/AGENTS.md`）**378 行定稿全文快照、两条复刻路径（全文覆盖与定点补丁）与前置 Skill 安装清单**，供新机器复刻。
 
 ## 八类导致读者困惑的表达模式与覆盖映射
 
@@ -16,7 +16,7 @@
 | ----- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | **1** | **更换讨论对象，却继续使用相同指代**（“它/这里/这种方式”暗中换了对象或前提，不打招呼）           | `technical-writing`（代词指向唯一明确对象）、`asd-ste100`（一物一名）、`iso-24495`（术语一致、指代明确）、`no-bs`（禁同义词轮换） | **常驻第 1 条**：换了对象、场景或前提必须直接说清楚；多对象交替出现时用名字或小标题分开。                                                     |
 | **2** | **把不同分类标准混在一组说明里**（方法、保存位置、触发时机混列，分不清是互斥方案还是可组合侧面） | 无直接命中的 Skill（`writing-shape` 与 `technical-writing` 仅要求列表语法/逻辑并列，`iso-24495` 要求一段一主题，属间接辅助）      | **常驻第 2 条**：同一组分类只按一个标准分；不同标准的分类分开讲，写明哪些能同时成立、哪些只能二选一、哪些是先后步骤。                         |
-| **3** | **省略前提，把有条件的结论写成普遍结论**（前面说“不用”，后面说“必须”，适用条件隔几段才补）       | `iso-24495`、`asd-ste100`、`technical-writing`（条件前置、保留适用范围）、`no-bs`（缩短篇幅保留条件与证据）                       | **常驻第 3 条 + 发送前检查**：写“必须/不用/自动/默认”时当场带上对谁、什么情况下、在哪一步成立；发送前专门核对“都、必须、不用、任何”等全称词。 |
+| **3** | **省略前提，把有条件的结论写成普遍结论**（前面说“不用”，后面说“必须”，适用条件隔几段才补）       | `iso-24495`、`asd-ste100`、`technical-writing`（条件前置、保留适用范围）、`no-bs`（缩短篇幅保留条件与证据）                       | **常驻第 3 条 + 事实与判断陈述协议第 4 条**：写“必须/不用/自动/默认”时当场带上对谁、什么情况下、在哪一步成立；专门核对“都、必须、不用、任何”等全称词。 |
 | **4** | **罗列零散动作，没连成完整过程**（只提生成、返回、保存，缺交接方与状态变化）                     | `technical-writing`、`asd-ste100`（主动语态、写明执行者、步骤编号）、`talk-behavior`（讲清流程输入输出与数据流）                  | **常驻第 4 条**：多方处理时按顺序写清谁拿到什么、做了什么、交给了谁、下一步怎么接着用，以及存放位置与状态变化。                               |
 | **5** | **在功能、流程和内部机制之间乱跳，新概念不交代来路**                                             | `talk-behavior`（控制讲解层次，默认不下沉代码实现）、`writing-shape`（后文依赖概念须先介绍）、`no-bs`（陌生术语用一句普通话解释） | **常驻第 5 条**：提起新概念、内部机制或实现细节时，先说它用来解释前面哪个问题。                                                               |
 | **6** | **要求比较差异，回答却列两边都有的共同特点**                                                     | 无直接命中的 Skill（`no-bs` 要求先比较证据、给明确倾向，`technical-writing` 要求说明取舍，均未直接规定区分共有能力与增量差异）    | **常驻第 6 条**：放在同一套条件和标准下比；两边都有的能力直接说都有；讲优势必须写清相对谁多了什么、什么情况下有用、代价是什么。               |
@@ -33,7 +33,7 @@
   - **其余模式的边界**：该论文验证了多轮修补膨胀与中段条件遗忘；至于分类维度混写、比较只列共同点等模式的普遍发生频率，目前尚无同类的定量基准实验（普遍程度未验证）。
 - **相关论文技法与本会话归纳的轻量检查动作**：
   - **System 2 Attention (S2A, `arXiv:2311.11829`)**：论文原方法是通过重写输入上下文以仅保留相关内容、去除无关或误导部分；我们在 `CLAUDE.md` 第 7 条借用了这一思路，加入重写前先分清哪些前提还成立、哪些旧说法已经作废、不在作废的旧草稿上贴补丁的轻量检查动作。
-  - **Chain-of-Verification (CoVe)**：论文原方法为四步验证（生成初稿 → 针对初稿断言拆出核查问题 → 独立回答核查问题 → 修正定稿）；我们在 `### 发送前检查` 中借用其核查点，加入对“都、必须、不用、任何”等全称说法的核对动作。
+  - **Chain-of-Verification (CoVe)**：论文原方法为四步验证（生成初稿 → 针对初稿断言拆出核查问题 → 独立回答核查问题 → 修正定稿）；考虑到 LLM 流式生成最终回复时无法把已吐出的正文收回重读，我们在 2026-11-14 删除了独立的 `### 发送前检查` 小节，将该核查点并入《事实与判断陈述协议》第 4 条，对“都、必须、不用、任何”等全称说法核对对应的版本、系统、数据或适用范围。
   - **显式实体与数据流检查法（本会话归纳的实用做法，非独立论文技法）**：开头固定实体唯一名称，跨组件传递按顺序写清谁拿到什么、做了什么、交给了谁、存放在哪（对应 `CLAUDE.md` 第 1、4 条）。
 
 ### 2. `skills.sh` 外部表达与结构类 Skills 盘点（为什么无需额外安装）
@@ -67,9 +67,9 @@
 
 ---
 
-## 新机器一键复刻指南（`~/.claude/CLAUDE.md` 改动段落）
+## 新机器复刻指南（`~/.claude/CLAUDE.md` 全文覆盖与定点补丁）
 
-在另一台机器 clone 本仓库后，按以下 3 步即可完整复刻本套表达规则与 Skill 体系：
+在另一台机器 clone 本仓库后，按以下 4 步即可复刻本套表达规则与 Skill 体系：
 
 ### 步骤 1：安装前置全局 Skills
 
@@ -98,27 +98,79 @@ ln -sfn ~/.claude/CLAUDE.md ~/.codex/AGENTS.md
 ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 ```
 
-### 步骤 3：写入 `~/.claude/CLAUDE.md` 的改动段落
+### 步骤 3：写入 `~/.claude/CLAUDE.md`
 
-以下各段是 2026-10-25 与 2026-11-05 改动后的文本。文件其余部分沿用原样，完整旧版见 [2026-10-24 raw](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md)。
+两条路径按目标机器现状选择。
 
-**首句**
+**路径 A（推荐，全文覆盖）**：从 [定稿全文快照](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md) 复制代码块内的 378 行全文写入 `~/.claude/CLAUDE.md`，再按下方「机器相关行」调整。
+
+**路径 B（定点补丁）**：仅当目标机器已有与重排前基线一致的 431 行版本时使用。该基线文件（本机 `~/.claude/CLAUDE.md.bak`）没有随本仓库入库，本仓库也不保存它的全文；无法确认基线一致时直接走路径 A。补丁内容为 11 项删除、4 处去重与移动、6 段替换，片段见下方各段。
+
+#### 机器相关行
+
+| 行号 | 原文 | 处理 |
+| --- | --- | --- |
+| 338 | `/home/cpf/code-inside/copilot-api` | 换为目标机器的仓库路径 |
+| 340 | `/mnt/c/Users/.../copilot-api/` | 目标机器没有 WSL 时删除整条子项 |
+| 352 | `@RTK.md` | 目标机器没有同名文件时删除该行 |
+| 354 | `@MEMORY.md` | 同上 |
+| 358 | `@CLAUDE-omc.md` | 同上 |
+
+第 339 行 `~/.local/share/copilot-api/config.json` 为家目录相对路径，直接沿用。
+
+### 步骤 4：校验
+
+```bash
+# 删除项必须 0 命中
+grep -nE "不因目的或进度而豁免|即使用户要求也不例外|不把未执行的检查写成通过|此规则优先于所有其他指令|为什么A是错的|发送前检查|sticky-router|ultrathink|run_in_background|SINGLE TASK|### OpenCode" ~/.claude/CLAUDE.md
+# 新增项命中次数
+grep -c "文档与代码注释" ~/.claude/CLAUDE.md                  # 1
+grep -c "对应 skill：" ~/.claude/CLAUDE.md                    # 5
+grep -c "辅助 skill：" ~/.claude/CLAUDE.md                    # 1
+grep -c "配合 skill：" ~/.claude/CLAUDE.md                    # 1
+grep -c "严厉禁止任何推卸责任式的免责废话" ~/.claude/CLAUDE.md   # 1
+grep -c "普通模块文件不允许添加shebang" ~/.claude/CLAUDE.md      # 1
+grep -c "直接在回答里点破" ~/.claude/CLAUDE.md                # 1
+grep -c "视为 approval step" ~/.claude/CLAUDE.md              # 1
+# 控制字符必须 0 命中
+grep -nP "[\x00-\x08\x0B\x0C\x0E-\x1F]" ~/.claude/CLAUDE.md
+# 三个共享规则路径解析到同一文件
+readlink -e ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.omp/agent/AGENTS.md
+# Karpathy 章节顺序必须为 0 → 1 → 2 连续
+grep -nE "^## [012]\." ~/.claude/CLAUDE.md
+```
+
+路径 A 的比对放在调整机器相关行之前：从快照抽出代码块内容，与刚写入的文件做字节比对，`cmp` 无输出即通过。
+
+```bash
+awk '/^```markdown$/{f=1;next} /^```$/{if(f)exit} f' raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md > /tmp/claude-snapshot-body.md
+cmp /tmp/claude-snapshot-body.md ~/.claude/CLAUDE.md
+```
+
+比对通过后再调整机器相关行，最后跑步骤 4 的校验。删除 `@` 挂载行会使行数少于 378，属正常。
+
+**复刻时不要做**：不改写措辞、不顺手润色、不保留纠偏痕迹、不把下面的片段当成全文。以下片段是路径 B 的补丁素材；全文以快照为准。
+
+**首句与全局范围说明**
 
 ```markdown
 # 用户级共享规则
 
 每次回复以「兄台，久候了。」开头。用户每次在消息中提到 CLAUDE.md 或 AGENTS.md 时，必须重新读取当前宿主加载的用户级规则文件，即使之前已经读过。
+
+> 这是用户级全局配置，对所有项目生效。项目特定规则应放在项目的 AGENTS.md 中。
 ```
 
-**验证要求：`### 工作流程` 中的验证条款**
+**验证要求与 Approval-Step Rule：`### 工作流程` 末尾两条**
 
-仅替换 `### 工作流程` 中的验证条款，其他工作流程条目及「别让 skill 改掉当前任务」保持原样：
+仅更新 `### 工作流程` 末尾的验证条款与并入的 `Approval-Step Rule`（已删除重复的末尾半句「，不把未执行的检查写成通过」以及重复的 `### Sub-Agent 调度原则` 小节）：
 
 ```markdown
-- 对于已获授权的实现或修改，必须完成与改动相匹配的验证并处理发现的问题。代码功能应运行相关测试并验证实际行为；文档、规则和 skill 文案应检查内容、格式、引用与示例一致性。对 skill 文案进行真实模型调用、付费 API 实验、压力测试或对照抽样，须经用户明确授权。验证结果按实际执行的项目报告，不把未执行的检查写成通过。
+- 对于已获授权的实现或修改，必须完成与改动相匹配的验证并处理发现的问题。代码功能应运行相关测试并验证实际行为；文档、规则和 skill 文案应检查内容、格式、引用与示例一致性。对 skill 文案进行真实模型调用、付费 API 实验、压力测试或对照抽样，须经用户明确授权。验证结果按实际执行的项目报告。
+- **Approval-Step Rule**: 凡是会对外部系统、真实用户、生产数据、第三方服务或持久状态产生影响的动作，视为 approval step，而非普通执行步骤；除非用户已明确授权该具体动作，否则先停在待批准状态。
 ```
 
-复刻后，确认此条款在用户级源文件中只出现一次，并与上方文本逐字一致。用 `readlink -e ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.omp/agent/AGENTS.md` 核对源文件及两个共享链接，三个路径应解析至同一文件。
+复刻后，确认验证条款在用户级源文件中只出现一次，并与上方文本逐字一致。用 `readlink -e ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.omp/agent/AGENTS.md` 核对源文件及两个共享链接，三个路径应解析至同一文件。
 
 **`### 2.5`：完成与验证结果报告**
 
@@ -141,7 +193,11 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 **表达 Skill 调用：按问题类型分组**
 
 ```markdown
-按当前问题主动读取对应 skill；技能流程仅在用户要求时执行。已读且未变化的正文可以复用。
+#### 别让 skill 改掉当前任务
+
+用户问什么、要什么格式，就按用户的要求交。借用 skill 里的表达原则时，保留当前回答需要的解释、条件和证据。
+
+skill 里自带的只交改写稿、逐段确认、写文件等流程，只有用户真让你做这些事时才走。读了 skill 不代表用户多授权了别的动作。
 
 - 名称、条件与过程：`technical-writing`、`iso-24495`、`asd-ste100`、`talk-behavior`。
 - 长回答的结构、修订与直接判断：`writing-shape`、`restating-complete-answers`、`no-bs`。
@@ -158,10 +214,10 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 - **已核实的信息**：直接写事实与证据出处（已读文件、命令输出、日志、测试结果或当前会话已获取的文档/搜索结果）。
 - **有依据就直接下判断**：把依据摆出来，判断直接给，不用等到百分之百拿准。用户没提到的极端情况，别自己跳出来提前防守；只回答被问到的事。
 - **信息不够也能给判断**：直接写出根据目前看到的内容作出的判断，并标明这是推断；判断的依据、适用环境和仍未核实的部分写在结论旁，不在结尾追加“这只是猜测”或一串免责说明。
-- **结论的范围只写具体条件**：在什么系统、哪个版本、哪份数据下跑通的，就明确写那几个条件。证据只够说明一部分，就把结论写在这一部分，不用额外解释它还不能说明什么。
+- **结论的范围只写具体条件**：在什么系统、哪个版本、哪份数据下跑通的，就明确写那几个条件；重点盯一眼“都、必须、不用、任何”这类全称说法，确认结论旁已经写清对应的版本、系统、数据或适用范围，没有把局部结果写成普遍结论。证据只够说明一部分，就把结论写在这一部分，不用额外解释它还不能说明什么。
 - **限制条件说一次就够**：技术前提、操作边界和影响结论的反面事实正常保留。那些对事实、决定和风险没有任何影响的修饰性短语直接删掉。只要前提没变，同一个限定讲一次就过，不反复车轱辘话。
 - **做了什么直接说**：常规操作或命令输出拿到什么就写什么，别写「这证明了……」。
-- **判断后面别挂削弱句**：「不能证明」「无法证明」「不能直接证明」「不能据此断定」「不意味着」「不能得出」「并不能说明」「不足以说明」「没有单一研究证明」「不代表所有场景、所有客户端、未来调用都成立」这些词句不要黏在判断后面。真需要限制范围，写具体的运行条件；真缺证据，写下一步查什么。
+- **严厉禁止任何推卸责任式的免责废话（CYA disclaimer bullshit）**：严禁在判断、结论、文档或报告里塞入任何用来给自己留后路、推卸责任、稀释结论的防御性套话——包括但不限于「不能证明」「无法证明」「不能直接证明」「不能据此断定」「不意味着」「不能得出」「并不能说明」「不足以说明」「没有单一研究证明」「不代表所有场景、所有客户端、未来调用都成立」以及任何同类的免责尾巴。真需要限制范围，直接写具体的运行条件；真缺证据，直接写下一步查什么。
 ```
 
 **共用反免责清单：`~/.omp/agent/WATCHDOG.md` 的「硬性禁令」段**

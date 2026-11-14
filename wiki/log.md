@@ -2155,3 +2155,15 @@
 - Created: wiki/ai-coding-agents/google-antigravity-plans-and-regions.md; wiki/omp-auth/google-antigravity-auth-and-api.md
 - Updated: wiki/omp/env-variables-reference.md
 - 要点：记录官方模型与地区名单、套餐额度机制和按日期归属的社区报告；Google FAQ 说明第三方客户端访问 Antigravity 的账号风险；OMP 18.18.4 暂停认证、18.18.7 恢复并显示登录风险提示，本机 18.20.0 源码保留提示；社区 API 文档的端点说法存在内部差异。环境变量参考补充 2.26.0 离线默认版本与宿主平台字段。未安装应用，未发起真实登录或模型请求。
+
+## [2026-11-14] ingest | CLAUDE.md 三轮 Plannotator 批注的重排与定点定稿
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-14-claude-md-reorg-and-annotation-refinements.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：遵循 `reorg, reorder, not rewrite` 原则保留原话语气与例子；将 Karpathy 第 2 节上移使 `0→1→2` 连续排列，清理重复的 Sub-Agent Prompt 语言条款与表达 Skill 调用末尾复读句，将 `Approval-Step Rule` 并入 `### 工作流程`、不留错误痕迹条款移到东坡肉段下方；按批注删去 sticky-router、ultrathink、语音例子、run_in_background、SINGLE TASK、OpenCode 参考、进度豁免、即使用户要求也不例外、未执行检查写成通过、优先于所有其他指令等 10 处冗余；定稿文档与注释按读者决定语言、疑问句错误前提或踩坑点破例外、7 条表达规则标明对应 skill、删除独立「发送前检查」并将全称词核对并入事实与判断陈述协议第 4 条、反 CYA 免责硬性禁令、普通 Python 模块与 CLI 入口脚本的 shebang 区分。
+
+## [2026-11-14] ingest | CLAUDE.md 定稿全文快照与两条复刻路径
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：新增 378 行定稿全文快照，与本机文件字节一致；复刻指南由 3 步改为 4 步，拆为全文覆盖（路径 A，推荐）与定点补丁（路径 B，需 431 行基线，该基线未随仓库入库）；新增 5 处机器相关行调整表与 1 条家目录相对路径说明，以及删除项 0 命中、新增项命中数、控制字符、symlink、Karpathy 章节顺序的校验命令；删除指向 2026-10-24 raw 的「完整旧版」说法，改为要求目标机器基线与备份一致。
