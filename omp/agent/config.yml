@@ -76,7 +76,7 @@ modelRoles:
   widget: sensenova/glm-5.3:max
   architect: c8787/gpt-6.1-sol:high
   designer: sensenova/kimi-k3:max
-  balanced: opencode-go/deepseek-v4.1-flash:max
+  balanced: kimi-code/kimi-for-coding:max
 modelTags: {}
 modelProviderOrder: []
 cycleOrder:
