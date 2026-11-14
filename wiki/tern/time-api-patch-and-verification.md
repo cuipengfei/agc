@@ -1,8 +1,8 @@
 # Tern 时间 API 补丁与验收
 
-> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29；Tern 0.9.7 静态分析与仅字体部署，2026-10-29；Tern 0.9.8 与 0.9.9 静态分析，2026-11-02；Tern 0.9.10 静态分析与部署，2026-11-03；Tern 0.9.12 静态分析，2026-11-05；Tern 0.9.18 静态分析，2026-11-12
-> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md)
-> Updated: 2026-11-12
+> Sources: Tern 0.9.5 补丁归档与 verify-time 实际断言，2026-10-20；会话补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.8.4 浏览器 panic 与 0.9.6 同路径对照，2026-10-29；Tern 0.9.7 静态分析与仅字体部署，2026-10-29；Tern 0.9.8 与 0.9.9 静态分析，2026-11-02；Tern 0.9.10 静态分析与部署，2026-11-03；Tern 0.9.12 静态分析，2026-11-05；Tern 0.9.18 静态分析，2026-11-12；Tern 0.9.21 静态分析，2026-11-14
+> Raw: [0.9.5 升级证据与时间断言](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.8.4 浏览器 panic 与 0.9.6 仅字体对照](../../raw/tern/2026-10-29-084-browser-panic-and-font-only-comparison.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md)
+> Updated: 2026-11-14
 
 ## 适用范围
 
@@ -30,10 +30,11 @@ Tern Web 模块存在时间 API 的平台 unsupported 分支。静态定位这�
 | 0.9.10 原版 | 静态分析 | `panicFunctions` 总数 `33`；时间函数 `32208`（18 处调用）与 `32209`（3 处调用），合计 21 处 |
 | 0.9.12 原版 | 静态分析 | `panicFunctions` 总数 `31`；时间函数 `31889`（18 处调用）与 `31890`（3 处调用），合计 21 处 |
 | 0.9.18 原版 | 静态分析 | `panicFunctions` 总数 `37`；时间函数 `35484`（19 处调用）与 `35485`（3 处调用），合计 22 处 |
+| 0.9.21 原版 | 静态分析 | `panicFunctions` 总数 `34`；时间函数 `36415`（19 处调用）与 `36416`（3 处调用），合计 22 处 |
 
 旧版 panic 与用户报告的 Markdown 冻结同时出现在 0.8.4 环境，但「Markdown 打开 → panic → 冻结」没有任何一步被单独隔离；0.9.6 原版同路径未冻结，说明 unsupported 时间分支存在本身不是充分条件。
 
-0.9.8、0.9.9、0.9.10、0.9.12 与 0.9.18 只做了静态分析，未做动态复现或时间补丁；五者的原版终端字体为 `Ioskeley Mono Term`，各 `7564` 个字符映射、CJK 为 0。时间相关量随版本波动：`panicFunctions` 总数在 `28` 到 `37` 之间，时间调用数在 21 到 22 处之间，无单调趋势。
+0.9.8、0.9.9、0.9.10、0.9.12、0.9.18 与 0.9.21 只做了静态分析，未做动态复现或时间补丁；六者的原版终端字体为 `Ioskeley Mono Term`，各 `7564` 个字符映射、CJK 为 0。时间相关量随版本波动：`panicFunctions` 总数在 `28` 到 `37` 之间，时间调用数在 21 到 22 处之间，无单调趋势。
 时间补丁不修改 native desktop 的时间实现。Web 初始化、daemon/CLI 行为与 native UI 的覆盖范围分别记录。
 
 ## 三类时间语义

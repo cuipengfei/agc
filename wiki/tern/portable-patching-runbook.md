@@ -1,8 +1,8 @@
 # Tern 跨机器补丁手册
 
-> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03；Tern 0.9.12 部署与 GPU adapter 实测，2026-11-05；Tern 0.9.18 部署与 pane 观察边界，2026-11-12
-> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md)
-> Updated: 2026-11-12
+> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03；Tern 0.9.12 部署与 GPU adapter 实测，2026-11-05；Tern 0.9.18 部署与 pane 观察边界，2026-11-12；Tern 0.9.21 部署与独立进程托管，2026-11-14
+> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [服务托管生命周期](../../raw/tern/2026-11-14-agent-hosted-service-lifetime.md)
+> Updated: 2026-11-14
 
 ## 使用对象与边界
 
@@ -159,6 +159,12 @@ tern web serve --listen 127.0.0.1:8378 \
 0.9.18 部署的验收形态与 0.9.12 相同：`verify-service` 六项全过，`verify-page` 六项 applicable 全过，进程 `matchesInstalled` 为 true，根路径 HTTP 200，`wire_mount` 与完整 GPU 交互记 `not_run`。
 
 跨版本核对 pane 时只陈述观测：部署开始时服务是否在运行、`$XDG_RUNTIME_DIR/tern` 是否存在、部署后的 pane 集合，以及某个历史 pane 是否不在当前集合。0.9.18 部署开始时服务未运行、运行时目录不存在，替换未接触运行中的 pane；0.9.12 记录的 `326417514501` 不在部署后的集合，但它是在 WSL 重启时丢失还是此前已被关闭，没有观测到——机器重启会清掉运行时目录，同时 daemon 只保留会话状态、不保留已退出的 shell，两种情况都不该据此断定。
+
+0.9.21 部署的验收形态与 0.9.18 相同：`verify-service` 六项全过，`verify-page` 六项 applicable 全过，进程 `matchesInstalled` 为 true，根路径 HTTP 200，`wire_mount` 与完整 GPU 交互记 `not_run`。Windows Chrome 另行跑出 WebGPU adapter 与 `mounted` true，基准截图超时，Markdown 交互记 `not_run`。
+
+报告服务可用之前先核对进程与端口仍在。以会话托管方式启动的 daemon 与 web 在会话结束后不再可用，用户浏览器得到 `ERR_CONNECTION_REFUSED`；改用 `runtime.mjs` 的 `__redact` 包装入口 detached 启动后，两个进程各自成为会话首进程（PPID 为 systemd 用户实例 `273`），服务与认证检查全部通过。
+
+0.9.21 部署前的检查没有发现 `tern` 进程，8378 没有监听；daemon 启动后 pane 集合为 `326417514503`、`347892350977`、`536870912003`、`1035087118337`，服务转为独立托管后再次读取仍是这四个。
 
 ## 各层检查证明的内容
 

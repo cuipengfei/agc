@@ -2123,3 +2123,15 @@
 - Raw: raw/copilot-gateway/sticky-router-model-discovery-and-restart.md
 - Created: wiki/copilot-gateway/sticky-router-model-discovery-and-restart.md
 - 要点：启动时发现实例模型并建立映射；模型目录汇总包含已停用实例；Dashboard 停用状态保存在进程内，重启前后需要检查流量和实例状态。
+
+## [2026-11-14] ingest | Tern 0.9.21 仅字体部署与内嵌八字体
+- Disposition: Update
+- Raw: raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md
+- Updated: Tern 网页字体修改与版本迁移; Tern 时间 API 补丁与验收; Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
+- 要点：0.9.21 版本串 `bde0861`、binary `7cf300c0…`。内嵌字体从 0.9.18 的四个增加到八个，新增 Excalifont `212`、Inter Variable `1543`、DejaVu Sans `1579`、Latin Modern Math `2045`，八个字体 CJK 全为 0。终端等宽描述符仍是 2 条单副本，length 与 0.9.12、0.9.18 相同，slot 与 pointer 为本版本新值（`14731532`／`11667927`、`14731556`／`13169891`）。`panicFunctions` 总数 `34`，时间函数 `36415`（19 处）与 `36416`（3 处）合计 22 处，索引与 0.9.18 不同。装配后 WASM `c1f7c575…` 与 glue `8f07dcc7…` 同官方逐字节一致，未应用时间补丁。`verify-service` 六项与 `verify-page` 六项 applicable 全过，HTTP 200，进程 `matchesInstalled` 为 true。Windows Chrome 取得 WebGPU adapter 且 `mounted` 为 true，基准截图超时后 Markdown 交互记 `not_run`。四篇与索引同步。
+
+## [2026-11-14] ingest | agent 托管服务在会话结束后不可用
+- Disposition: Update
+- Raw: raw/tern/2026-11-14-agent-hosted-service-lifetime.md
+- Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
+- 要点：以会话托管的后台作业启动的 daemon 与 web 在会话结束后都不存在，用户浏览器得到 `ERR_CONNECTION_REFUSED`；记录中 daemon `999638`、web `1001295` 的 `managerPid` 同为 `996720`，该进程现已不存在，退出先后未观测，触发环节按推断记录。`runtime.mjs` 的 `__redact` 包装入口用 `detached: true`、`stdio: 'ignore'` 加 `unref()` 启动目标命令，逐行脱敏写日志并把子进程 pid 写入 pid 文件；用后两个进程各自成为会话首进程（SID 等于自身 pid），PPID 为 `273`，即 systemd 用户实例。服务、认证、进程身份与 Windows 侧 HTTP 200 全部通过。`prepareSocketDir` 在 socket 目录 `mode & 0o077` 非零时拒绝，`/run/user/1000/tern` 为 `775`，因此本轮未用 `bun cli.mjs start`；这一条按源码与目录权限推断，未运行 `start` 验证。
