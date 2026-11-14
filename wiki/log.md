@@ -1,5 +1,11 @@
 # Wiki Log
 
+## [2026-11-14] ingest | EGM（Elephant-Goldfish）：设计评审插件的机制与覆盖对照
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-14-elephant-goldfish-model.md; raw/ai-coding-agents/2026-11-14-local-skill-stack-overlap.md
+- Created: wiki/ai-coding-agents/egm-design-review-plugin.md
+- Updated: wiki/ai-coding-agents/skill-system-organization-axes.md
+- 要点：EGM 为 Google 发布的 agent 插件，7 个 skill、五阶段评审（Zoom Out→Comprehension→Critique→Intermediate Zoom Out→Implementation Readiness）、父轮次与宿主指令文件两层隔离分开验证（#237 记录 Codex/Antigravity 的 host-instruction leak）；一份技能文本通过多宿主清单分发，omp v18.12.6 社区验证 7 技能可发现可解析、9 人格注册为原生 task agents、端到端未自动化（#186）；Scorecard 6.7（2026-11-13 快照）Code-Review/CI-Tests/Token-Permissions 等 9 项 10、Pinned-Dependencies 5（0/7 pipCommand 钉住）、Packaging -1、Branch-Protection 6、Maintained（不足 90 天）/Signed-Releases/SAST/Fuzzing/CII-Best-Practices 0；v0.1.1（2026-11-06）无签名无 provenance，#423 open、#426 merged 未发布；单维护者 n3wth 123 次贡献；AI_POLICY 人负责规则与 dogfooding 阈值。覆盖对照：设计草图（pstack architect/arena）、对抗评审（interrogate，每条发现须真实运行证明）、规格产出与评审（mattpocock grill-with-docs/to-spec/code-review）本机已有；唯一缺口是独立上下文强制评审门、五阶段设计评审协议与产物链，最小补法为 design-reviewer agent 加一条项目规则；采纳判断（推断）为不装，理由为机制无新增、差别只在强制门与协议与产物链、供应链与入口心智成本。边界：未安装未运行、未验证 omp 执行两项限制、23 份 playbook 只按文件名判断、star 曲线未核实。
 ## [2026-11-13] ingest | ub-mode 配套工具：安装、升级与项目运行方式
 - Disposition: Update
 - Raw: raw/agent-tooling/2026-11-13-ub-mode-tools-language-matrix.md; raw/agent-tooling/2026-11-13-ub-mode-tools-self-run-evidence.md; raw/agent-tooling/2026-11-13-ub-mode-metrics-before-after.md
