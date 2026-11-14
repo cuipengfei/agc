@@ -6,7 +6,7 @@
 
 ## 终端地址与省略规则
 
-每台终端有一个地址：`t7` 这类短号、用户给的名字，或其他机器上的 `machine/t7`。`run`、`ls`、`get`、`attach`、`read`、`kill`、`rm`、`label`、`keep`、`send`、`keys`、`interrupt`、`wait`、`put`、`events` 都接受这些形式。
+每台终端有一个地址：`t7` 这类短号、用户给的名字，或其他机器上的 `machine/t7`。取终端参数的命令是 `get`、`attach`、`read`、`kill`、`rm`、`label`、`keep`、`send`、`keys`、`interrupt`、`wait`、`put`。`events` 用 `--terminal` 指定单个终端，`run` 用 `--parent` 指定父终端，两者都不接位置参数形式的终端地址。
 
 在终端内执行时，`attach`、`read`、`get`、`kill`、`rm`、`wait`、`interrupt` 可以省略终端参数，此时 `hc` 自己挑一个。直接运行不带参数的 `hc` 会打开终端选择菜单，新建项排在最上面。
 
@@ -85,7 +85,7 @@
 | `hc machine rename` | 改本地名字，旧名字组成的终端地址随即失效 |
 | `hc machine rm` | 忘记一台机器；**不结束**它上面的终端 |
 
-`add` 的补充选项：`--name` 命名、`--session` 指定远端 session、`--install` 在远端缺 `hc` 或版本过旧时静默安装、`--temp` 标记为短期机器（仅影响客户端展示，仍需 `rm` 删除）。`--via` 允许用其他命令替代 ssh 承担连接，要求双向原样传字节且不向用户提问；WSL 场景的写法是 `--via 'wsl.exe -d Ubuntu -e sh -c' --name wsl`。
+`add` 的补充选项：`--name` 命名、`--session` 指定远端 session、`--install` 在远端缺 `hc` 或版本过旧时直接安装而不询问（用于脚本；在终端里会先问）、`--temp` 标记为短期机器（仅影响客户端展示，仍需 `rm` 删除）。`--via` 允许用其他命令替代 ssh 承担连接，要求双向原样传字节且不向用户提问；WSL 场景的写法是 `--via 'wsl.exe -d Ubuntu -e sh -c' --name wsl`。
 
 ## core 与工具
 
