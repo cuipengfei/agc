@@ -72,6 +72,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
+| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14 官方模型与地区名单快照；美国区历史月费来源、设备试用条件、5 小时与周额度、近期社区报告及地区资格边界 | 2026-11-14 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
 | [跨 Harness 编排：workflowz 与 orchestrate 的对应物](ai-coding-agents/cross-harness-orchestration.md) | Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO `task`/`mass ulw` 与 OMP 两个关键词的映射；`mass ulw` 为独立版专属 | 2026-10-27 |
 | [Kiro 后端 API 给任意 agent 用](ai-coding-agents/kiro-backend-api-for-agents.md) | 20 仓库筛选 + 4 强排名（ns-bridge/kirocc/kiro.rs/kiro-lb）；pi-provider-kiro 与 OMP 钩子断层 PR #170 未合并；ksk_ 资格与 Billing FAQ SoT 边界 | 2026-10-22 |
@@ -194,6 +195,7 @@ OMP 认证、MCP OAuth、凭据管理，以及 Auth Broker/Gateway 的代理访�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
+| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策；OMP 18.18.4 暂停、18.18.7 恢复并提示风险；社区接口文档与地址差异，未实测登录或请求 | 2026-11-14 |
 | [OMP Auth Broker 与 Gateway](omp-auth/auth-broker-gateway.md) | 凭据集中、access token 服务端解析、客户端不保存 provider key | 2026-09-09 |
 | [SOFA 官方 MCP：OMP 接入、维护与验证](omp-auth/sofa-mcp-maintenance.md) | 连接配置与凭据归属、Clash 规则查找、回调机制、工具验证及私有草稿发布边界 | 2026-10-17 |
 
@@ -512,7 +514,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 |---------|---------|---------|
 | [OMP judgmentProvider、TypeSafe Judgment 与 eval judge() 的行为边界](omp/judgment-provider-and-eval-judge.md) | 18.2.4 起内建 TypeSafe judgment：三值 provider、回退链、4 自动+1 手动消费方（后续加 TTSR judge），judge() 双语言三题型与重复调用实测；jevify magic keyword 与 judge() 路由分离；18.2.8 起 modelRoles.judge + fallbackChains 路由层；judgeBatch 批量用法与常见误诊；2026-11-09 补四条原生 wire 的 `box` 与图片限制对照、`openai-decisions` 题型映射、10 个 `resolveJudge` 消费点、自定义 provider 下 `request-model-id` 不改写；2026-11-13 补第五条 wire `google-decisions`（PR #19060，`x-goog-api-key`、位置化问题键、`noul` criteria 形态、图片按解码字节 75,000,000、opt-in 不进默认链） | 2026-11-13 |
 | [课程概念 ↔ OMP 机制映射](omp/course-concepts-omp-mapping.md) | 徐昊全课 33 篇正文逐项映射到 OMP 机制：四骨干/四子系统/双层循环/计算推断分离/Advisor 三级反馈/TTSR/工具网关/Eval 闭环等直接对应；七项候选缺口经源码反证定为 6 项部分对应（09 外部文档同步、11 指令腐化审计、18 init.sh、19 存量违规基线、29 跨服务拓扑、30 探针回写）+ 1 项真缺口（通用执行期低置信度自动升级人工）；含概念分层关系网络、OMP 独有机制与证据边界 | 2026-11-07 |
-| [OMP 环境变量全量参考](omp/env-variables-reference.md) | 官方 runtime reference（691 行 11 组）+ 源码扫描补遗 Mnemopi/Stencil/TUI 调试与构建期；`.env` 五层加载链与 `OMP_*`→`PI_*` 镜像；UA 伪装只限 gemini-cli/google-antigravity 两 provider；三处文档-源码校正（websocket 8 参数、concurrent summaries、antigravity 2.19.1）、126 名未收录变量判定名册；WebSocket 变量补条件说明 | 2026-10-24 |
+| [OMP 环境变量全量参考](omp/env-variables-reference.md) | 官方 runtime reference（691 行 11 组）与源码扫描补遗；`.env` 五层加载链、`OMP_*`→`PI_*` 镜像、Google provider 的 UA 变量；18.20.0 的 Antigravity 离线默认版本为 2.26.0，平台字段按宿主系统选择，旧版本行为保留为历史记录；WebSocket 变量补条件说明 | 2026-11-14 |
 | [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](omp/judgment-typesafe-env-config.md) | 三变量边界（key 四途径、BASE_URL/DEFAULT_MODEL env-only）、4 个 .env 加载点与只补不盖优先级、/zen 不带 /v1 拼接坑实测裁定、unexpectedStopDetection smart 一行修改；DEFAULT_MODEL 已切 jev-1.13 付费通道；18.2.8 解除 api: typesafe 版本限制 | 2026-09-22 |
 | [OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点](omp/judgment-systemone-protocol.md) | 三题型官方逐字 schema 与 pi-ai 类型同构、eval bool 是 noul 呈现层、传输参数、观测面、zen 已实测兼容与 OpenRouter 不兼容；2026-11-09 补与 `openai-decisions` 的字段对照（`state` 对 `input`、对象 map 对数组加 `name`、`noul` 对 `predicate`）与 `cost` 位置差异；2026-11-13 补 Google Decisions 为第三套报文（对象 map、键名关联、`noul` 同名但认证头不同） | 2026-11-13 |
 | [OMP judge 角色链解析与 jev-latest 400 根因](omp/judge-role-chain-and-jev-latest-400.md) | modelRoles.judge + retry.fallbackChains 角色链解析（显式链整体替换 priority.json 默认段）、内置 typesafe catalog provider 被 TYPESAFE_BASE_URL 劫持生成 jev-latest 400、ChainJudge 失败语义（timeout 不继续 fallback）、显式链修复模式 | 2026-09-22 |

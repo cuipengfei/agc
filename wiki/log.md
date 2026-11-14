@@ -2148,3 +2148,10 @@
 - Raw: raw/ai-coding-agents/2026-11-14-copilot-auto-fusion-behavior.md
 - Updated: Copilot Fusion：effort 档位、按计划可用性与计费; Copilot 的决策路由端点与 Auto／HydraFusion 边界
 - 要点：`POST /model/fusion` 请求体为 `{prompt, plan_version}`，`"1"` 返回多步 cascade（`steps[{model_id, role}]`），`"2"` 返回单步 solo；同一题面在两个版本、两个端点上的候选池不一致，cascade 可覆盖 solo 刷不出的模型，登记时需逐 step 读取。两个端点返回的 `session_token` 是折扣凭证，带 `expires_at`，经 `/responses` 的 `Copilot-Session-Token` 头生效；过期后重发原题取得新 token。请求体没有可指定模型的字段，选模由服务端决定且随日期变化。长上下文起点由模型目录 `billing.token_prices.default.context_max` 按模型取值，观察到 128,000、200,000、224,000、272,000 四档，部分模型没有该档；档内输入与缓存基础价 2 倍、输出 1.5 倍，30% 折扣在同档原价上表现为普通档输入 1.4 倍、输出 1.05 倍。折扣核对需同模型同输入、携带与不携带 token 各一次，按 `copilot_usage.token_details` 各 token_type 的 `cost_per_batch / batch_size` 比较，不能用 `total_nano_aiu` 相除。另将「Fusion 上游调用路径未公开」标为 Outdated。
+
+## [2026-11-14] ingest | Google Antigravity 套餐、地区与 OMP 认证
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md; raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md; raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md; raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md
+- Created: wiki/ai-coding-agents/google-antigravity-plans-and-regions.md; wiki/omp-auth/google-antigravity-auth-and-api.md
+- Updated: wiki/omp/env-variables-reference.md
+- 要点：记录官方模型与地区名单、套餐额度机制和按日期归属的社区报告；Google FAQ 说明第三方客户端访问 Antigravity 的账号风险；OMP 18.18.4 暂停认证、18.18.7 恢复并显示登录风险提示，本机 18.20.0 源码保留提示；社区 API 文档的端点说法存在内部差异。环境变量参考补充 2.26.0 离线默认版本与宿主平台字段。未安装应用，未发起真实登录或模型请求。

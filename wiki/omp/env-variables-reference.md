@@ -1,9 +1,11 @@
 # OMP 环境变量全量参考
-> Sources: omp.sh docs, 2026-10-19; oh-my-pi repo docs/environment-variables.md, 2026-10-17
-> Raw: [../../raw/omp/2026-10-19-omp-environment-variables-reference.md](../../raw/omp/2026-10-19-omp-environment-variables-reference.md); [../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md](../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md)
-> Updated: 2026-10-24
+> Sources: omp.sh docs, 2026-10-19; oh-my-pi repo docs/environment-variables.md, 2026-10-17; 本机 `pi-catalog` 18.20.0, 2026-11-14
+> Raw: [../../raw/omp/2026-10-19-omp-environment-variables-reference.md](../../raw/omp/2026-10-19-omp-environment-variables-reference.md); [../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md](../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md); [Antigravity 认证与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md)
+> Updated: 2026-11-14
 
 OMP（`@oh-my-pi/pi-coding-agent`，源码版本 oh-my-pi `5d72f5d3f4`，2026-10-19 更新）的全量环境变量参考。官方已维护两份载体：仓库内 `docs/environment-variables.md`（自称 Current Runtime Reference，691 行 11 组，从 `packages/coding-agent`、`packages/ai`、`packages/utils`、`packages/tui` 当前代码路径推导，只记录活跃行为）与官网渲染页 `https://omp.sh/docs/env`（注意路径是 `/docs/env`；`/docs/environment-variables` 实测 404）。本文在其 11 组之上补第 12 组「源码扫描补遗」，并收录三处文档-源码校正。
+
+Antigravity 请求头部分另按本机 `pi-catalog` 18.20.0 更新；其余变量以文中注明的原始源码版本为准。
 
 ## 0. 解析模型与优先级
 
@@ -172,7 +174,7 @@ OMP（`@oh-my-pi/pi-coding-agent`，源码版本 oh-my-pi `5d72f5d3f4`，2026-10
 | `PI_OPENROUTER_RESPONSES` | 设 `0` 让 OpenRouter 走 Completions |
 | `UMANS_WEBSEARCH_PROVIDER` | Umans Anthropic 搜索默认 provider |
 | `PI_AI_GEMINI_CLI_VERSION` | `gemini-cli` provider 的 UA 版本覆盖（默认 `0.46.0`），详见第 14 节 |
-| `PI_AI_ANTIGRAVITY_VERSION` / `_CL` / `_OS` / `_ARCH` | `google-antigravity` provider 的 UA 覆盖；版本解析 env → 更新 manifest 自动发现 → 钉住 `2.19.1`（官方文档写 `2.8.0`，见第 13 节） |
+| `PI_AI_ANTIGRAVITY_VERSION` / `_CL` / `_OS` / `_ARCH` | `google-antigravity` provider 的 UA 覆盖；18.20.0 按 env → 更新 manifest 自动发现 → `2.26.0` 离线默认值解析版本，见第 13 节 |
 
 ### 2g. GitLab Duo
 
@@ -471,14 +473,17 @@ websocket 参数共 8 个（早期会话版本曾把这两张小表合计说成�
 
 1. **Codex websocket 参数计数**：8 个（2h 小表逐项可见）。
 2. **`PI_CODEX_CONCURRENT_SUMMARIES` 出处**：`request-transformer.ts` 上游注释（`sequential_cutoff`、12 轮测量数字见 raw 3.2 逐字摘录）；codex-rs 同样默认关（`Stage::UnderDevelopment`, `default_enabled: false`）。
-3. **`PI_AI_ANTIGRAVITY_VERSION` 默认值**：官方文档写 `2.8.0`，源码 `DEFAULT_ANTIGRAVITY_VERSION = "2.19.1"`（测试同值）；`os_type`/`arch` 是UA 组成部分，钉住 `darwin`/`arm64`，无论本机平台；设置 env 版本会跳过更新 manifest 的联网探测（raw 3.1 逐字摘录）。
+3. **`PI_AI_ANTIGRAVITY_VERSION` 默认值**：2026-10-19 的源码 `DEFAULT_ANTIGRAVITY_VERSION = "2.19.1"`，`os_type`/`arch` 使用 `darwin`/`arm64`；当时官方文档写 `2.8.0`。
+
+   > **Status: Outdated** (2026-10-26)
+   > `pi-catalog` 18.13.0 将 manifest 不可用时的默认版本更新为 `2.26.0`，并按宿主系统选择 Antigravity build：Linux 为 `linux`/`amd64`，Windows 为 `windows`/`amd64`，macOS 为 `darwin`/`arm64`。本机 18.20.0 源码保留这些规则；环境变量可以覆盖版本与平台字段。
 
 ## 14. UA 伪装的适用对象
 
 两组 UA 变量只作用于 Google Cloud Code Assist 后端（`packages/catalog/src/wire/gemini-headers.ts`）：
 
 - `PI_AI_GEMINI_CLI_VERSION` → `gemini-cli` provider：UA 形如 `GeminiCLI/<版本>/<model> (<platform>; <arch>; terminal)`，默认 `0.46.0`。
-- `PI_AI_ANTIGRAVITY_*` → `google-antigravity` provider：UA 形如 `antigravity/hub/<版本> (aidev_client; os_type=<os>; arch=<arch>; cl=<cl>)`；版本门控控制模型可见性（例如 `gemini-3.7-flash` 被旧版本 UA 挡住）。
+- `PI_AI_ANTIGRAVITY_*` → `google-antigravity` provider：UA 形如 `antigravity/hub/<版本> (aidev_client; os_type=<os>; arch=<arch>; cl=<cl>)`。18.20.0 的离线默认版本为 `2.26.0`，平台字段按宿主系统选择；源码注释指出客户端版本会影响部分模型的可见性。
 
 ## 15. 扫描与排除边界
 
@@ -490,3 +495,4 @@ websocket 参数共 8 个（早期会话版本曾把这两张小表合计说成�
 
 - [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md) —— `TYPESAFE_*` 三变量与 `.env` 加载链的判定级细节
 - [Plannotator agent tool 与 quick labels](../herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) —— OMP `.env` 注入通道的应用侧实例
+- [OMP Antigravity 认证与社区 API](../omp-auth/google-antigravity-auth-and-api.md) —— 认证风险、版本变化及接口来源边界
