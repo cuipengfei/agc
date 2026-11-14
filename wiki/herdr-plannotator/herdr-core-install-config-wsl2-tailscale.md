@@ -66,3 +66,4 @@ core 用 `hc update` 自升级；Tailscale 走 apt 仓库（`pkgs.tailscale.com/
 
 - [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)
 - [Herdr 配置项与用户体验](herdr-config-user-experience.md)（Herdr TUI 的 config.toml，与本文件的 herdr-core config.toml 是两个不同文件）
+- [herdr-core 的 hc 命令面](herdr-core-hc-cli-command-surface.md)

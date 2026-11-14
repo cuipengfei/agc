@@ -2135,3 +2135,10 @@
 - Raw: raw/tern/2026-11-14-agent-hosted-service-lifetime.md
 - Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
 - 要点：以会话托管的后台作业启动的 daemon 与 web 在会话结束后都不存在，用户浏览器得到 `ERR_CONNECTION_REFUSED`；记录中 daemon `999638`、web `1001295` 的 `managerPid` 同为 `996720`，该进程现已不存在，退出先后未观测，触发环节按推断记录。`runtime.mjs` 的 `__redact` 包装入口用 `detached: true`、`stdio: 'ignore'` 加 `unref()` 启动目标命令，逐行脱敏写日志并把子进程 pid 写入 pid 文件；用后两个进程各自成为会话首进程（SID 等于自身 pid），PPID 为 `273`，即 systemd 用户实例。服务、认证、进程身份与 Windows 侧 HTTP 200 全部通过。`prepareSocketDir` 在 socket 目录 `mode & 0o077` 非零时拒绝，`/run/user/1000/tern` 为 `775`，因此本轮未用 `bun cli.mjs start`；这一条按源码与目录权限推断，未运行 `start` 验证。
+
+## [2026-11-14] ingest | herdr-core 的 hc 命令面
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-11-14-herdr-core-hc-cli-command-surface.md
+- Created: wiki/herdr-plannotator/herdr-core-hc-cli-command-surface.md
+- Updated: wiki/herdr-plannotator/herdr-core-install-config-wsl2-tailscale.md
+- 要点：以本机 `hc` 0.1.21 逐命令帮助为唯一来源，按「终端地址 / 建终端与查看 / 与程序交互 / 不建终端 / 其他机器 / core 与工具」六组整理 24 个叶子命令的参数与默认值；记录 `hc wait` 与 `run --timeout` 默认 180 秒、`exec` 默认 60 秒且上限 600 秒、`interrupt` 观察 10 秒、`file read` 上限 8 MB、`--json` 对 `run` 与 `read` 的例外；`keep` 只换 shell 不重跑原命令，`machine rm` 不结束远端终端；帮助入口 `hc <分组> help <子命令>` 可用而 `hc file help --help` 报 usage 错误。只读帮助，未执行产生状态的操作，跨机器与保留终端行为取自帮助描述。安装配置文章补 See Also 并刷新日期；索引同步。 |
