@@ -68,7 +68,7 @@ modelRoles:
   task: kimi-code/k3.1-pro:max
   vision: opencode-go/deepseek-v4.1-flash:max
   tiny: sensenova/glm-5.3:max
-  advisor: c8787/gpt-6.1-terra:max
+  advisor: opencode-go/deepseek-v4.1-flash:max
   default: opencode-go/deepseek-v4.1-flash:max
   web: web/firecrawl
   memory: sensenova/glm-5.3:max
