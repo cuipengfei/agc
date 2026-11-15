@@ -40,7 +40,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Headroom Extras](agent-tooling/headroom-extras.md) | 本地 coding agent 的最小 extras 安装与取舍指南；Rust 核心随 wheel 发布、独立 Rust 代理未发布 | 2026-10-15 |
-| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、symlink 与共享更新路径；lock 匹配和批量卸载；2026-10-24 全局核对：18 项有安装记录，8 项更新、10 项已最新，另 17 项未见全局记录；2026-11-07 增安装模式判定（`-y` 加单 agent 静默转复制）与共享存储 `~/.agents/skills` | 2026-11-07 |
+| [skills CLI 性能模型](agent-tooling/skills-cli-performance-model.md) | agent skill 目录发现、symlink 与共享更新路径；lock 匹配和批量卸载；安装模式及同名换源；2026-11-15 补 skills CLI 的 Pi 目标、OMP agents provider 与 Skillshare 关键词搜索边界 | 2026-11-15 |
 | [Plain Language 技能：ASD-STE100 与 ISO 24495-1](agent-tooling/plain-language-skills-asd-ste100-iso24495.md) | 受控语言与简明语言选型；中文适配边界；本机 skill 文案案例：保留数值上限、区分证据/凭据/授权条件；免责句式禁令的落点 | 2026-10-25 |
 | [LLM 出图的作者模型](agent-tooling/llm-diagram-authoring-models.md) | diagram-design 手写 SVG、archify 类型化 JSON、amwth Markdown→CLI 排版、visual-explainer 全手写 HTML+SVG 四轴作者模型；amwth 含 image 的组件清单（SKILL.md 自述 12 种）、diagram-design SKILL.md 自述 44 种 type（实测 39）、archify 5 类 schema、figure-led register；几何裸露面与选择；2026-10-10 补 amwth 与 visual-explainer | 2026-10-10 |
 | [Reverify：确定性验证的适用边界与 rollover 实际价值](agent-tooling/reverify.md) | Verifier 以二进制 bytes 初始化、SUPPORTED 含 functions_equiv/exebench claim；窄契约 34 组整数输入；rollover 形状校验/receipt 消费/宿主差异；issue #22 未修复 | 2026-09-19 |
@@ -92,10 +92,11 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [OMO 5.0：独立版与插件版](ai-coding-agents/omo-native-vs-plugin.md) | 5.0 把 omo 从 OpenCode 插件升级为自带 senpi 引擎的独立包 omo-ai；同版本号不对等、插件版 degraded support；metis/momus 别名取消、deep-low 默认换 gpt-5.6-sol-fast；CodeMode 与 Codex Code Mode 同轴等价性未验证；native models.json 按 API 协议分别配置 provider（c8787/c8787-chat）、baseUrl 需带 /v1、8787 与 4140 同一网关；`mass ulw` 经源码核对为独立版专属 | 2026-10-27 |
 | [pstack 移植版生态全景](ai-coding-agents/pstack-ports-landscape.md) | 原版为 Lauren Tan cursor/plugins；20+ 移植按 star 排行（1103/944 两强断层）；backnotprop 内部结构已验证：commit 25abb38 实测 61 个 SKILL.md（58 注册 = 24 principle + 34 功能 + 3 benny 自动化不进 slash）、60/61 设 disable-model-invocation、playbook 23；补 ub-mode 官方声明的 pstack 精简衍生关系 | 2026-11-12 |
 | [pstack 与 ub-mode 的作者归属及原则来源](ai-coding-agents/pstack-ub-mode-authorship-and-principle-origins.md) | pstack 上游、作者与镜像归属；ub-mode 的 Robert C. Martin 初始提交和 LICENSE 署名及官方派生声明；Attack the Premise 的 PR #329/#633 文本历史；Type System Discipline 与 Alexis King 2019 年文章的概念先例；直接引用与全部原则思想史未确认 | 2026-11-12 |
-| [pstack 技能地图与行为](ai-coding-agents/pstack-skill-map-and-behaviors.md) | 判定标准（root=README get started 三者、模型自动=无 disable-model-invocation、paths 单列）；三层结构与 179 条执行边、13 类边、7 个无出边 playbook；安装核对 56 条全中、tdd 同名遮蔽、teach 已于 2026-11-07 换 pstack 源、benny 3 未装；61 技能行为面逐个重述 + 24 principle 触发表；README 自述互不调用与正文矛盾以正文为准；2026-11-09 复核本机 57 个分五层（3 根 / 15 一层 / 5 二层 / 24 判例 / 10 直呼）、边表 170 条（t80/b23/r67）、23 本 playbook 按调用强度分四档；2026-11-10 四档可达性口径（严格 t/b 36 / 加判例条件派发 48 / 排除 help 的任何提及 49 / 含 help 的任何提及 57）、24 条判例逐条带触发条件、reflect 只被提及无运行指令、typescript-best-practices 经判例指针可达；未做运行时路由探测 | 2026-11-10 |
+| [pstack 技能地图与行为](ai-coding-agents/pstack-skill-map-and-behaviors.md) | root、模型触发、paths 判据；技能行为和执行边；2026-11-15 核对本机 57 个目录与上游一致，skills/ 下 pstack 版 tdd 未装，benny 自动化另列 | 2026-11-15 |
 | [skill 系统的两种组织轴](ai-coding-agents/skill-system-organization-axes.md) | pstack 任务类型轴强制路由 vs mattpocock 调用者轴可选导航；编排密度与自主验证对照；2026-10-29 复核 pstack 58 注册 + 3 自动化、mattpocock 27 仍为 10-05 采集值；2026-11-07 标记「skill 名几乎不重叠」为争议（tdd、teach 两仓同名）；2026-11-14 补 EGM 工作阶段轴作为第三种案例 | 2026-11-14 |
 | [EGM 设计评审插件：机制与既有技能集的覆盖对照](ai-coding-agents/egm-design-review-plugin.md) | 七技能五阶段评审、父轮次与宿主指令文件两层隔离、一份技能文本多宿主清单、omp v18.12.6 验证到可发现可解析且 9 人格注册为 task agents 但端到端未自动化、Scorecard 6.7 明细（Pinned-Dependencies 5、Packaging -1、Maintained/Signed-Releases/SAST/Fuzzing/CII 0）与未签名发布、单维护者集中度；主线评审对象是软件设计规格，另有 review-loop、bootstrap、drift-report 三条旁路；与 pstack/mattpocock/ub-mode/OMP 子代理的覆盖对照，唯一缺口是独立上下文强制评审门、五阶段设计评审协议与产物链 | 2026-11-14 |
 | [同名 skill 的遮蔽与选型](ai-coding-agents/same-name-skills-tdd-teach.md) | 一个名字一个来源，lock 只有一条、磁盘只有一个目录；pstack 与 mattpocock 各有 tdd、teach；两版定位、触发、流程与收尾对照；pstack tdd 依赖共享安装中 matt 那份；换源用 remove 加 add 两个 agent | 2026-11-07 |
+| [mattpocock/skills：两轴分类的工程 skill 集](ai-coding-agents/mattpocock-skills-system.md) | 工程与生产力技能的调用方式、安装入口；2026-11-15 的四类目录清点、未安装项与本机来源比较 | 2026-11-15 |
 
 ## better-harness
 

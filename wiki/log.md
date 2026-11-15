@@ -2174,3 +2174,9 @@
 - Created: wiki/herdr-plannotator/alma-desktop-and-herdr-integration.md
 - Updated: wiki/herdr-plannotator/herdr-app-core-mobile.md（交叉引用）
 - 要点：记录 Alma 独立 Agent 功能和桌面平台、Herdr 图形客户端流程、手机配对与中继；区分 Herdr TUI 产品归属的推断与官方声明，并保留最低 Herdr 版本、OMP 结构化对话视图和 Windows 版 Alma 连接 WSL 内 Herdr 的未知项。未安装或运行软件。
+
+## [2026-11-15] ingest | 三组 skill 的安装、清点与 OMP 发现
+- Disposition: Update
+- Raw: raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md; raw/agent-tooling/omp-agent-skills-discovery-evidence.md
+- Updated: wiki/ai-coding-agents/mattpocock-skills-system.md; wiki/ai-coding-agents/pstack-skill-map-and-behaviors.md; wiki/agent-tooling/skills-cli-performance-model.md
+- 要点：记录三仓安装入口及本机与上游目录比较；matt 四类目录共 39 个，本机记录 30 个，单列未安装项；pstack 的 skills/ 与 benny 自动化分开清点；记录 OMP agents provider、skills CLI Pi 条目和四次 Skillshare 关键词查询的证据边界。

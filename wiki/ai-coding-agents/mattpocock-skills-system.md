@@ -1,8 +1,8 @@
 # mattpocock/skills：两轴分类的工程 skill 集
 
-> Sources: mattpocock/skills README 与 repo_view, 2026-10-05; ask-matt SKILL.md（本地安装副本）, 2026-10-05
-> Raw: [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md)
-> Updated: 2026-10-05
+> Sources: mattpocock/skills README 与 repo_view, 2026-10-05; ask-matt SKILL.md（本地安装副本）, 2026-10-05; mattpocock/skills README 与本机目录清点，2026-11-15
+> Raw: [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md); [三仓安装与本机清点](../../raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md)
+> Updated: 2026-11-15
 
 ## Overview
 
@@ -10,7 +10,22 @@ mattpocock/skills（275,890 stars，2026-10-05）是 Matt Pocock 自用的 27 �
 
 ## 规模与分布
 
-27 个 skill 分两组四类：Engineering user-invoked 11 个、Engineering model-invoked 9 个、Productivity user-invoked 5 个、Productivity model-invoked 2 个。安装有两条互斥路径：Claude Code 官方 marketplace 插件（只读、自动更新），或 `npx skills@latest add` 复制可编辑文件；README 警告两种都装会让每个 skill 出现两份。装完每仓库跑一次 `/setup-matt-pocock-skills` 配置 issue tracker、triage 标签与文档目录。
+2026-10-05 的 27 个 skill 分两组四类：Engineering user-invoked 11 个、Engineering model-invoked 9 个、Productivity user-invoked 5 个、Productivity model-invoked 2 个。装完每仓库跑一次 `/setup-matt-pocock-skills` 配置 issue tracker、triage 标签与文档目录。
+
+## 安装与本机清点（2026-11-15）
+
+README 提供 Claude Code、Codex、GitHub Copilot 插件，VS Code 的 `Chat: Install Plugin From Source`，Gemini CLI，以及 `skills` CLI。插件与 skills CLI 面向同一 agent 同时安装时，README 提醒每个 skill 会出现两份。Gemini 示例分别安装 `skills/engineering` 和 `skills/productivity`；skills CLI 的示例为 `npx skills@latest add mattpocock/skills -a <agent>`，省略 `-a` 可在交互界面选择。
+
+对照上游 commit `5863806dd4e15c63174bee4e7515a4256792ecfa`，四类目录中含 `SKILL.md` 的直接子目录分别为 engineering 20、productivity 7、misc 4、in-progress 8，共 39 个。本机 lock 记录该来源 30 项，逐目录比较与对应上游文件一致。
+
+未安装的 matt 版是 `teach`，本机同名技能使用 pstack 版本。另有八个技能没有该来源的 lock 记录：
+
+| 目录 | 技能 |
+|---|---|
+| misc | `migrate-to-shoehorn`、`scaffold-exercises`、`setup-pre-commit`、`git-guardrails-claude-code` |
+| in-progress | `setup-ts-deep-modules`、`software-factory`、`chief-of-staff`、`claude-handoff` |
+
+本机技能目录的名称搜索未发现对这八项的引用；其他形式的依赖未做完整审计。同名 `teach` 的课程工作区和 HTML 产物见 [同名 skill 的遮蔽与选型](same-name-skills-tdd-teach.md)。
 
 ## 主线流程（idea → ship）
 

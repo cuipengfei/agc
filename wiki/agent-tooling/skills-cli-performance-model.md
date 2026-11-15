@@ -1,8 +1,8 @@
 # skills CLI 性能模型：目录发现比安装数量更关键
 
-> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08; 全局 skill 更新与 lock 核对, 2026-10-24; 安装模式与同名换源实测, 2026-11-07
-> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md); [全局 skill 更新与 lock 核对](../../raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md)
-> Updated: 2026-11-07
+> Sources: 本机 `skills` CLI 源码检查与命令实测, 2026-09-03; 批量卸载与锁定文件匹配实测, 2026-10-08; 全局 skill 更新与 lock 核对, 2026-10-24; 安装模式与同名换源实测, 2026-11-07; OMP skills 文档、skills CLI agent 定义与本机会话观察，2026-11-15
+> Raw: [skills CLI 性能模型调查](../../raw/agent-tooling/2026-09-03-skills-cli-performance-model.md); [skill 清理与锁定匹配实录](../../raw/skills-cli/2026-10-08-skill-cleanup-and-lock-matching.md); [空格名锁条目清理实录](../../raw/skills-cli/2026-10-08-lock-space-name-cleanup.md); [全局 skill 更新与 lock 核对](../../raw/skills-cli/2026-10-25-global-skill-update-and-lock-audit.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [OMP 共享 skill 目录发现证据](../../raw/agent-tooling/omp-agent-skills-discovery-evidence.md)
+> Updated: 2026-11-15
 
 ## Overview
 
@@ -73,6 +73,12 @@ CLI 在源码中静态列出多个 agent skill 目录，例如 `.agents/skills`�
 共享存储位置由 `getCanonicalSkillsDir(global)` 决定，等于 `join(homedir(), ".agents", "skills")`。`codex` 的 `globalSkillsDir` 就是 `~/.agents/skills`，`claude-code` 的是 `~/.claude/skills`。因此让 codex 参与安装时，它的目标目录本身即存储目录，claude 侧得到指向该目录的符号链接。
 
 换源（同名 skill 从另一个仓库重装）走两次调用：`skills remove <name> -g -y` 与 `skills add <repo> -g -s <name> -a claude-code codex -y`。核对口径是 lock 的 `source` 与 `skillPath` 两项，加上目录内文件与上游仓库树的字节比对。同名遮蔽与两版内容差别见 [同名 skill 的遮蔽与选型](../ai-coding-agents/same-name-skills-tdd-teach.md)。
+
+## Pi 安装目标与 OMP 发现路径
+
+2026-11-15 查看 `vercel-labs/skills` 的 agent 定义时，`pi` 条目引用 badlogic/pi-mono 文档，项目目录为 `.agents/skills`，用户目录为 `~/.agents/skills`。OMP 文档将 `.agent[s]/skills` 列为独立的 `agents` provider，并提供 `enableAgentsUser` 与 `enableAgentsProject` 两个开关。目录能否被 OMP 扫描取决于 provider 与相关开关；CLI 条目引用的项目和 OMP 的发现能力需分别核对。
+
+本机会话的技能清单包含 pstack、mattpocock 与 ub-mode 的部分 skill；未逐项核实其最终 provider 或运行技能。`omp skill search` 对 `pstack`、`mattpocock`、`ub-mode`、`poteto` 四个关键词各返回零条结果，这是当次查询的范围。已有 [graphify 集成记录](graphify-mechanics.md) 还描述了 OMP 对 Pi skill 目录的扫描。
 
 ## 锁定文件变更的粗粒度确认
 

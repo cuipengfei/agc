@@ -1,12 +1,14 @@
 # pstack 技能地图与行为（backnotprop/pstack@25abb38）
 
-> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09；四种口径的可达性闭包（57 个目录、143 个 markdown 文件全量扫描），2026-11-10
-> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md); [可达性的四种口径](../../raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md)
-> Updated: 2026-11-10
+> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09；四种口径的可达性闭包（57 个目录、143 个 markdown 文件全量扫描），2026-11-10；上游与本机目录比较，2026-11-15
+> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md); [可达性的四种口径](../../raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md); [三仓安装与本机清点](../../raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md)
+> Updated: 2026-11-15
 
 ## Overview
 
 backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit 25abb38（2026-10-29）共有 61 个 `SKILL.md`：`skills/` 下 58 个注册技能 + `automations/benny/skills/` 下 3 个 Slack 自动化专用技能（不进 slash 菜单）。注册技能 = 24 个 `principle-*` 判例 + 34 个功能技能。全部技能的 frontmatter 除 `setup-pstack` 外都设 `disable-model-invocation: true`——模型不能自由触发它们，只有用户显式调用或技能间按正文指令调用。执行路由分三层：入口（poteto-mode / poteto-help / setup-pstack）→ 流程（poteto-mode 的 23 份 playbook）→ 工序（功能技能）与判例（principle）。按「加判例条件派发」口径（判例按条件被点名），三个入口可达 48 个，9 个功能技能只能由用户直接点名；只算 `t` 与 `b` 两类边则为 36 个。四种口径并列见「可达性」小节。本机 `.skill-lock.json` 记录的 pstack 条目为 57 个（`tdd` 因同名目录来自 mattpocock/skills 而未被占用装上，`teach` 已于 2026-11-07 换成 pstack 版）。
+
+2026-11-15 对照上游 commit `f905b88ebdd877e6b36fcc791970d47f44d15a15`：本机 lock 中 pstack 来源的 57 个技能目录与上游对应目录逐目录比较一致。上游 `skills/` 下唯一未安装的 pstack 版本是 `tdd`，本机同名技能来自 mattpocock。此清点范围为 `skills/`，不包括下文单列的 `automations/benny/skills/`。
 
 ## 判定标准
 
