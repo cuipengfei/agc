@@ -213,9 +213,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/alchaincyf/elon-musk-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "65af7c9a5395cc996d17f55b5bde37e6ed72cf4f",
+      "skillFolderHash": "44bb5ec2c6d10377174b6763153b188d05f1d04f",
       "installedAt": "2026-06-30T13:29:59.533Z",
-      "updatedAt": "2026-11-05T12:59:45.202Z"
+      "updatedAt": "2026-11-15T09:09:00.126Z"
     },
     "visual-explainer": {
       "source": "nicobailon/visual-explainer",
@@ -1233,9 +1233,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "e6fae2a8db0fcb4dad60a481c11210ecc326f61c",
+      "skillFolderHash": "7dd3888f9ce8aea813fb585a780f28ac4742847f",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-11T12:27:44.876Z"
+      "updatedAt": "2026-11-15T09:09:00.588Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1251,9 +1251,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "77efda0cdaeb866997574283109c3e945eb5a2be",
+      "skillFolderHash": "a2cd70936769bc0851b4a759337a9b26d8373519",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-12T12:19:30.512Z"
+      "updatedAt": "2026-11-15T09:09:01.872Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
