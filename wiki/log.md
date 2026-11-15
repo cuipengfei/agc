@@ -2167,3 +2167,10 @@
 - Raw: raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md
 - Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 - 要点：新增 378 行定稿全文快照，与本机文件字节一致；复刻指南由 3 步改为 4 步，拆为全文覆盖（路径 A，推荐）与定点补丁（路径 B，需 431 行基线，该基线未随仓库入库）；新增 5 处机器相关行调整表与 1 条家目录相对路径说明，以及删除项 0 命中、新增项命中数、控制字符、symlink、Karpathy 章节顺序的校验命令；删除指向 2026-10-24 raw 的「完整旧版」说法，改为要求目标机器基线与备份一致。
+
+## [2026-11-15] ingest | Alma 桌面应用与 Herdr 集成
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/alma-product-and-features.md; raw/herdr-plannotator/alma-herdr-integration.md; raw/herdr-plannotator/alma-relay-remote-access.md
+- Created: wiki/herdr-plannotator/alma-desktop-and-herdr-integration.md
+- Updated: wiki/herdr-plannotator/herdr-app-core-mobile.md（交叉引用）
+- 要点：记录 Alma 独立 Agent 功能和桌面平台、Herdr 图形客户端流程、手机配对与中继；区分 Herdr TUI 产品归属的推断与官方声明，并保留最低 Herdr 版本、OMP 结构化对话视图和 Windows 版 Alma 连接 WSL 内 Herdr 的未知项。未安装或运行软件。

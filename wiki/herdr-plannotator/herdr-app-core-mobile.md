@@ -111,3 +111,4 @@ Google 语音识别是可选方式，手机也支持本地语音模型。这个�
 
 - [Herdr + Plannotator 工具链全量 Reference](toolchain-reference.md)
 - [Herdr 配置项与用户体验](herdr-config-user-experience.md)
+- [Alma 桌面应用与 Herdr 集成](alma-desktop-and-herdr-integration.md)
