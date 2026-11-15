@@ -108,3 +108,4 @@ OMP 创始人 Can Bölük 在 Stencil.so 发布的自测数据（作者自测，
 
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — Prewalk 在 OMP 工作模式中的定位及组合建议。
 - [Harness 格式与上下文载体](../harness-engineering/harness-formats-and-context-carriers.md) — 模型切换时机的 harness 优化与编辑格式对比
+- [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](../omp-tools/xd-protocol-and-selective-commit-journal.md) — `xd://` 三类入口全集、顶层保留集合与 `tools.xdev` 挂载边界

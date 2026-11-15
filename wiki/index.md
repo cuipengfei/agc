@@ -252,10 +252,11 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`） | 2026-11-04 |
+| [OMP 内建工具全集、会话暴露边界与内部地址空间](omp-tools/builtin-tools-and-internal-urls.md) | 30+3 核心常量 vs 文档 6 能力型 vs 会话 27 暴露；分组作用对象/可用性/审批类别表；github gh 登录态、security_scan 受限子代理、report_issue 本地+qa.omp.sh 三机制核验；内部地址 scheme 动作矩阵（2026-11-15 补齐 `xd://<tool>/<topic>`、`xd://propose`、`xd://<tool>` 三类入口）；Unix/一切皆文件设计观察；browser 与 computer 的运行时交叉引用；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`） | 2026-11-15 |
 | [OMP browser prelude 与 relay 架构](omp-tools/browser-prelude-and-relay-architecture.md) | prelude 定位与启用条件；四后端八顺位路由表；relay 端点鉴权矩阵（token 只管 /ext，/cdp 无校验）与 loopback 边界；扩展来源与 Chrome 136 限制；标签页借用与冻结范围；跨系统上传回退与下载 perTab 分支；Kerberos 落在浏览器进程；WSL 双向回环实测与扩展握手待验证；API/CLI 与界面选型顺位；2026-11-12 补 ABKit/WebKit 后端：18.19.0 优先随包引擎、SHA-256 自动安装与 Chromium 回退 | 2026-11-12 |
 | [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批分类与接管语义；2026-11-09 补档位解析：是否询问取决于 `tools.approvalMode`，默认 `yolo`，前台控制另走确认；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-11-09 |
 | [OMP bash 命令行折叠标记与 /dev/null 语义](omp-tools/bash-shell-visualization-idioms.md) | `🔇 out`/`🔇 err`/`🔇 silent` 与 `+err` 的四类重定向映射（idioms 层默认开）；命令文本来源链（模型 → rtk 扩展改写 `event.input.command`，6 次 rewrite 实测中 2 次带重定向均原样保留）；丢弃验证 `echo hidden-line >/dev/null` 不进工具结果；同区域 `⇡ first N`/`⇣ last N`/`⟵ ↓`/`⟦..↓⟧`/`⏱`/`# stop on first error` 等词汇表；`display.shellVisualization` 默认开；v18.18.0 tag 取证与未验证项 | 2026-11-07 |
+| [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](omp-tools/xd-protocol-and-selective-commit-journal.md) | `xd://` 三类入口全表：10 个 `xd://<tool>/<topic>` 按需文档主题（`read`/`eval`）、4 个常驻动作设备（`resolve`/`reject`/`propose`/`report_issue`）、`tools.xdev` 动态工具抽屉（本机 `config.yml:116` 为 `false`）；`commit.draft()` 背后的会话级 `changes.jsonl`（`change`/`call`/`commit` 三类记录）与 `blobs/<size>-<hash>` gzip 快照（≤8 MiB，父子代理共享 artifacts 目录） | 2026-11-15 |
 
 ## omp-extensibility
 

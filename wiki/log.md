@@ -2207,3 +2207,10 @@
 - Raw: raw/omp/2026-11-15-markdown-heading-rendering-source.md
 - Created: wiki/omp/markdown-heading-rendering.md
 - 要点：本机安装包源码直读定位彩色 ### 来源：#styleHeading 对 depth>=3 固定拼回 "#".repeat(depth)（markdown.ts:4852-4856）；colorfulMarkdown 默认开启、heading 按级 magenta/yellow/blue（tui-adapters.ts:203, 281, 288-290, 319-323）；depth 1 支持 textSizing 时先尝试 2 倍字号（markdown.ts:4216-4228）；消除靠 extensionRenderers.assistantText（本机 false）扩展显示层改写或用户级规则限 ##。扩展改写效果未实测。
+
+## [2026-11-15] ingest | OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal
+- Disposition: New; Update
+- Raw: raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md
+- Created: wiki/omp-tools/xd-protocol-and-selective-commit-journal.md
+- Updated: wiki/omp-tools/builtin-tools-and-internal-urls.md; wiki/omp-prewalk/prewalk.md（See Also 交叉引用）
+- 要点：源码直读与本会话 artifacts 目录实测核实 `xd://` 三类入口全集（`read`/`eval` 共 10 个按需文档主题、`resolve`/`reject`/`propose`/`report_issue` 4 个常驻动作开关、`tools.xdev` 控制的 discoverable 动态工具设备及 `XDEV_KEEP_TOP_LEVEL`/`XDEV_TRANSPORT_TOOLS` 排除集合，本机 `config.yml:116` 为 `xdev: false`）；`commit.draft()` 依赖根会话 artifacts 目录下的 `changes.jsonl`（`change`/`call`/`commit` 三种记录）与 `blobs/<size_base36>-<hash_base36>` gzip 压缩快照（单文件上限 8 MiB，子代理复用父会话目录）。未展开 `attribution.ts` 内部逐行 diff 归属细节。
