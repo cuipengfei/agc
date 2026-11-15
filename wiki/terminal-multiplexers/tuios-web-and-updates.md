@@ -115,6 +115,8 @@ TUIOS 则直接提供浏览器页面。Herdr 的后台 server 负责保存 pane 
 - [tuios workspace 与 session rail](tuios-workspace-and-sidebar.md)
 - [ttyd 前端编译模型与 xterm 版本锁定](ttyd-frontend-compilation.md)
 - [终端图像协议支持矩阵](../terminal-graphics/terminal-image-protocol-matrix.md)
+- [sip v0.10.0 使用参考](sip-v0.10.0-usage-reference.md)
+- [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md)
 
 ## 本次连接与图形核对
 

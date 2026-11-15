@@ -2246,3 +2246,35 @@
 - Created: wiki/terminal-graphics/browser-kitty-terminals.md
 - Updated: wiki/terminal-graphics/terminal-image-protocol-matrix.md（See Also 交叉引用）
 - 要点：`@xterm/addon-image@0.9.0` 发布包只有四个产物文件，检索 `kitty` 与 `10EEEE` 命中数为 0；`ttyd` 上游 `html/package.json` 锁 `^0.8.0`、本机 1.7.7 锁 `^0.7.0`；四条浏览器端路线（`webterm`/`sip`、`restty`/`ntwebterm`、`tuios-web`、`xpra`/Webtop+Selkies）；`terminal-browser` 的 `useSharedTexture`/`useSharedMemory`/`PIXEL_DISABLE_GPU` 平台分支与 `t=d`/`t=s` 双路径、`Presenter::Full`；安装脚本 v0.15.3 四平台 URL 与 SHA-256。未安装或运行任何项目。
+
+## [2026-11-15] ingest | 浏览器端 Kitty 图形终端第二轮盘点：Vercel Labs 与 Coder 组织
+- Disposition: Update
+- Raw: raw/terminal-graphics/2026-11-15-browser-terminal-org-scan.md
+- Updated: wiki/terminal-graphics/browser-kitty-terminals.md（新增 Vercel Labs 与 Coder 组织、其它补齐候选、18 行候选总表，选型对照与证据边界同步）
+- Updated: wiki/terminal-graphics/terminal-image-protocol-matrix.md（各组件支持情况后新增「浏览器端组件（2026-11-15 补查）」协议覆盖表）
+- 要点：`vercel-labs/wterm` 3683 star，内置 Zig 核心无 Kitty 图形，`@wterm/ghostty` 核心（ghostty v1.3.1 编译、~580 KB WASM、自维护补丁）支持 direct Kitty PNG/RGB/RGBA canvas 覆盖层，sixel/iTerm2/动画/file 媒体不支持，`kitten icat --detect-support` 可用，示例后端 node-pty；`coder/ghostty-web` 3062 star，渲染 API 只有 cell、patch 无图像表面、Kitty 图形为 open issue #197；`coder/code-server` 79869 star，文件树 `kitty`/`sixel` 零命中；`devswha/ovis` 2065 star，xterm 之上 libghostty-vt DOM 覆盖层绘制 Kitty 图片，`kitty-on-wasm.patch` 在 wasm32-freestanding 打开上游默认关闭的 Kitty 图形；`wiedymi/restty` 420 star，kitty.ts/kitty-render-runtime 的 WebGPU/WebGL2 纹理路径；`sshx` 7717、`tabby-web` 1532、`textual-web` 1479（终端仅 macOS/Linux）、`dinotty` 739 无 Kitty 支持证据或未确认。全部未安装运行。
+
+## [2026-11-15] ingest | Go 与 sip 安装升级
+- Disposition: New
+- Raw: raw/terminal-multiplexers/2026-11-15-go-1.27.4-upgrade-and-sip-install.md; raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md
+- Created: wiki/terminal-multiplexers/go-and-sip-install-upgrade.md
+- 要点：`dpkg -S` 证实 Go 不归 apt 管；官方 tarball 升级 go1.27.4（SHA-256 校验通过、旧目录已删）；`GOTOOLCHAIN=go1.27.4+auto` 后续更新机制；`go install github.com/Gaurav-Gosain/sip/cmd/sip@latest` 装到 `/home/cpf/go/bin/sip` v0.10.0（go1.27.4 编译）；`uv-bun --check` 读 Go 构建元数据（`GOTOOLCHAIN=local`）查代理、`--up` 安装后核验 PATH 版本；隔离 9 项行为测试全过。
+
+## [2026-11-15] ingest | sip v0.10.0 使用参考
+- Disposition: New
+- Raw: raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md; raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md
+- Created: wiki/terminal-multiplexers/sip-v0.10.0-usage-reference.md
+- 要点：`sip --help` 与 `sip cert --help` 六组参数全集；三处入口优先级 URL > localStorage > CLI；设置面板六项控件与默认值；`Apply & Reconnect` 改 Renderer 整页刷新、不改 Renderer 也重连且旧 shell 被结束；URL 三组参数；字体 `--font-family` 与 `--font` 的区别；OSC 52 写入开启读取忽略；Kitty/Sixel 默认开启；Transport 与 Renderer 选型建议。
+
+## [2026-11-15] ingest | ttyd 与 sip 并存部署
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md
+- Created: wiki/terminal-multiplexers/ttyd-and-sip-side-by-side.md
+- Updated: wiki/terminal-multiplexers/tuios-web-and-updates.md（See Also 交叉引用）; wiki/terminal-graphics/browser-kitty-terminals.md（See Also 交叉引用）
+- 要点：ttyd 7681 root 级系统服务（PID 1）与 sip 7682 用户级服务（PID 273）并存事实；常驻 sip.service MainPID 1820561 父进程 273；`Linger=yes` 开机自启；环境变量无 `HERDR_*` 泄漏；`systemctl --user is-enabled` = `enabled`、`curl /health` = `OK`、注入配置无 `renderer` 字段；切换入口与何时用哪个。
+
+## [2026-11-15] ingest | Herdr Annotate 快捷键清单
+- Disposition: New
+- Raw: raw/herdr-plannotator/2026-11-15-herdr-annotate-shortcut-inventory.md
+- Created: wiki/herdr-plannotator/herdr-annotate-shortcuts.md
+- 要点：终端批注六键（capture/copy-context/copy-archive/paste-archive/send-archive/manage）、审阅两键（open/last）、未绑定 action（last-newest/terminal）、TUI overlay 按键（a/c/d/q）；全部来自本机 `config.toml` 与 `herdr-plugin.toml` 实测；版本 0.9.10。

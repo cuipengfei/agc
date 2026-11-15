@@ -443,6 +443,9 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | [TUIOS Tape 自动化与项目 tape 信任边界](terminal-multiplexers/tuios-tapes.md) | 录制式与项目 tape 的区别、七个子命令、路径加 SHA-256 双要素信任、四个资格条件、三种 autorun 模式行为、auto_review 与 show_status、头部与正文指令、Scope 语义、安全属性 | 2026-10-31 |
 | [ttyd Tokyo Night Storm 配色链接](terminal-multiplexers/ttyd-tokyo-night-storm-theme.md) | 用户认可的完整可复制 URL，字号14、完整调色板、Maple 字体继承、默认色与 ANSI/RGB 分层 | 2026-11-01 |
 | [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
+| [Go 与 sip 安装升级](terminal-multiplexers/go-and-sip-install-upgrade.md) | Go 不归 apt 管与官方 tarball 升级路径、GOTOOLCHAIN 后续更新机制、go install 安装 sip 到 ~/go/bin 的行为、uv-bun 集成 sip 检查与升级的行为规则 | 2026-11-15 |
+| [sip v0.10.0 使用参考](terminal-multiplexers/sip-v0.10.0-usage-reference.md) | 三处入口优先级（URL > localStorage > CLI）、CLI 六组参数、URL 三组、设置面板逐项行为与 Apply 重连结束旧 shell 的数据丢失风险、字体与 OSC52 行为、Transport 与 Renderer 选型建议 | 2026-11-15 |
+| [ttyd 与 sip 并存部署](terminal-multiplexers/ttyd-and-sip-side-by-side.md) | 7681/7682 双服务进程树归属差异（PID 1 vs PID 273）、herdr 嵌套问题与环境变量隔离、切换入口、何时用哪个 | 2026-11-15 |
 
 ## terminal-graphics
 
@@ -452,7 +455,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 |---------|---------|---------|
 | [终端图像协议支持矩阵](terminal-graphics/terminal-image-protocol-matrix.md) | ttyd、Herdr、TUIOS、OMP 协议能力与转换方向；新增 v0.12.1 WebTerm 链路和 PNG 演示，区分源码能力、工具输出与浏览器目视结果 | 2026-11-01 |
 | [Tern Surface Protocol](terminal-graphics/tern-surface-protocol.md) | Tern 的 TSP UI 树绘制路径与 image 节点；kitty graphics 支持来自第三方插件声明（非官方）；SIXEL/iTerm2 未找到证据 | 2026-10-17 |
-| [浏览器端 Kitty 图形终端](terminal-graphics/browser-kitty-terminals.md) | `ttyd` 锁 `@xterm/addon-image` `^0.8.0`（本机 1.7.7 为 `^0.7.0`）、0.9.0 发布包不含 Kitty 代码；四条浏览器端实现路线（xterm.js 叠加 kitty 图层的 `webterm`/`sip`、WASM 引擎的 `restty`/`ntwebterm`、多路复用器 Web 端 `tuios-web`、原生窗口投射的 `xpra`/Webtop+Selkies）；`terminal-browser` 的平台取帧分支、`t=d`/`t=s` 双路径与 `Presenter::Full`；全部未安装运行 | 2026-11-15 |
+| [浏览器端 Kitty 图形终端](terminal-graphics/browser-kitty-terminals.md) | `ttyd` 锁 `@xterm/addon-image` `^0.8.0`（本机 1.7.7 为 `^0.7.0`）、0.9.0 发布包不含 Kitty 代码；四条浏览器端实现路线（xterm.js 叠加 kitty 图层的 `webterm`/`sip`、WASM 引擎的 `restty`/`ntwebterm`、多路复用器 Web 端 `tuios-web`、原生窗口投射的 `xpra`/Webtop+Selkies）；`terminal-browser` 的平台取帧分支、`t=d`/`t=s` 双路径与 `Presenter::Full`；2026-11-15 补查 Vercel Labs 与 Coder 组织：`wterm` 的 `@wterm/ghostty` 核心支持 direct Kitty PNG/RGB/RGBA、`ghostty-web` 的 Kitty 图形仍是开放 issue #197、`code-server` 集成终端无 Kitty；补齐 `ovis`（ghostty-vt 覆盖层 + `kitty-on-wasm.patch`）、`restty`（WebGPU 纹理）、`sshx`/`tabby-web`（无）、`textual-web`/`dinotty`（未确认）；附 18 行候选总表；全部未安装运行 | 2026-11-15 |
 
 ## tern
 
@@ -513,6 +516,7 @@ Herdr 终端 workspace 管理器与 Plannotator 可视审查/标注工具链的 
 | [Plannotator agent tool 注入与 Quick Labels 机制](herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) | agent 工具开关链（env → config.agentTool → 主机默认，Pi 默认关）、OMP .env 注入通道、Quick Labels cookie 存储与 Settings 编辑能力（👍 硬编码例外）、config.json 38 键清单、脱敏实测 | 2026-10-11 |
 | [Plannotator Inbox 通知与标注面](herdr-plannotator/plannotator-inbox-notifications-and-annotations.md) | 通知只由打开的 Inbox 标签页发出：新线程必通知、线程内新问题通知（正看着的线程除外）、普通进展不通知；单条与合并文案、`FRONT_BURST_MS` 30 秒内合并、多标签页只弹一次；铃声仅对新问题、仅当无标签页在前台、30 秒一批、需一次点击或按键后才可播放；`notifyStatus` 五种状态文案与 `reachText` 五种“Notifications reach you”结果、静默失败五来源、权限按来源地址；标签页冻结与回收的提示条件（冻结超过 60 秒）；标注面（agent 消息正文可选中评论、工具栏只有 Comment 与 👍、问题卡片与行动事项卡片包在 `annotation-exclude` 内不可评论、Markdown/文本/Mermaid/Graphviz/HTML/图片/视频可评论、视频评论带时间点与暂停帧路径、评论存为待发送随一次 Send 发出）；回复组织顺序与 👍 确认 | 2026-10-31 |
 | [Plannotator Inbox 与 OMP 接通](herdr-plannotator/plannotator-inbox-omp-connection.md) | 开关链（`PLANNOTATOR_INBOX_TOOL` 环境变量 → config.json `inboxTool` → 主机默认，Pi/OMP 默认关）与注册门（`inbox/inbox.json` 存在才注册、会话启动时决定一次、`inboxReminder` 提示行）；本机启用现状（`{ "pi": true }` 与 `PLANNOTATOR_INBOX_TOOL=1`、两分支解析为 true、`.env` 权限 600、Inbox 首启 `http://localhost:42583/` pid 88355），2026-11-04 起标为过时；本会话先无工具后 `read_thread` 可用的时序记录；stdio 通道（`plannotator inbox mcp`、8 个工具、`agent_session` 填充规则、`idempotency_key`）；`wait_for_reply` 50 秒返回 waiting 与 cursor；各宿主唤醒差异表；Board 项目语义与本机建卡移卡；2026-11-04 两处开关关闭（环境变量 `0` 压过配置） | 2026-11-04 |
+| [Herdr Annotate 快捷键清单](herdr-plannotator/herdr-annotate-shortcuts.md) | 终端批注六键、审阅两键、未绑定 action 与 TUI overlay 按键（a/c/d/q）；全部来自本机 config.toml 与 herdr-plugin.toml 实测 | 2026-11-15 |
 
 ## omp
 

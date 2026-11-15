@@ -1,7 +1,7 @@
 # 终端图像协议支持矩阵
 
-> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25; 后续会话核对, 2026-11-01
-> Raw: [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [terminal-browser 架构与浏览器端 Kitty 图形终端盘点](../../raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md)
+> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25; 后续会话核对, 2026-11-01; vercel-labs/coder/devswha 等八个仓库的 README、文件树、patch 与源码, 2026-11-15
+> Raw: [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [terminal-browser 架构与浏览器端 Kitty 图形终端盘点](../../raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md); [Vercel Labs 与 Coder 组织扫描及补齐](../../raw/terminal-graphics/2026-11-15-browser-terminal-org-scan.md)
 > Updated: 2026-11-15
 
 ## 概述
@@ -114,6 +114,21 @@ export enum ImageProtocol {
 4. Warp 在 macOS/Linux 上使用 Kitty graphics，在 Windows/WSL 上返回 `null`（不选图像协议）
 
 `autoGraph` 图表输出走与一般图像相同的终端图像路径：图表先生成 SVG，`TableChartFigure` 以光栅化的终端图像显示（docstring：`as a terminal image rasterized in omp's theme`）。Tern 终端走独立的 TSP（Tern Surface Protocol）：`chartFence` 把 SVG 作为 SVG 代码围栏交给终端的 `md` 节点，由终端自己绘制，不经过图像协议路径。图表模式由 `TableChartMode` 定义（`table-chart.ts`）：`smart` 在语义决定处由模型修正本地推断，`always` 对每个判为数值的表格绘出本地最优推断，`off` 时表格保持为表格。
+
+### 浏览器端组件（2026-11-15 补查）
+
+| 组件 | Kitty | SIXEL | iTerm IIP |
+|---|---|---|---|
+| wterm `@wterm/ghostty` 核心 | direct PNG/RGB/RGBA（canvas 覆盖层） | 不支持 | 不支持 |
+| wterm 内置 Zig 核心 | 无 | 无 | 无 |
+| coder/ghostty-web | 尚未支持（issue #197 open） | 无证据 | 无证据 |
+| devswha/ovis | 支持（ghostty-vt 覆盖层） | 支持（xterm addon） | 支持（xterm addon） |
+| wiedymi/restty | 支持（WebGPU/WebGL2 纹理） | 未确认 | 未确认 |
+| coder/code-server | 无证据 | 无证据 | 无证据 |
+| ekzhang/sshx、Eugeny/tabby-web | 无证据 | 无证据 | 无证据 |
+| Textualize/textual-web、xichan96/dinotty | 未确认 | 未确认 | 未确认 |
+
+证据为各仓库 README、文件树与源码的一手直读（2026-11-15），未安装运行任何项目。「无证据」指仓库文件树全量检索无对应协议实现文件。
 
 ## 链路兼容性
 
