@@ -407,6 +407,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 |---------|---------|---------|
 | [AI Software Factory 概念与真工厂短名单](software-factory/ai-software-factory-landscape.md) | 判据五要素（输入标准化、工序固定、程序或人判定、失败可退回、可度量）；四类部署形态；三千星以上短名单 OpenHands 92184、Multica 54233、Superplane 8379、Mission Control 6410（2026-10-29 API）；关卡只到 guardrail/Aegis/review gate 一层；关联 roboomp 工作流专文 | 2026-11-13 |
 | [Factory Gate 参照标准](software-factory/factory-gate-reference.md) | Goossaert 七阶段（grill→apply-docs→plan→atdd→implement→review→review-correctness）与 gate 检查清单（red-confirmation、hermetic-verify、mutation 下限、forbidden-patterns、testing-the-judge）；max_retries=3 后 flag for a human | 2026-10-29 |
+| [Verification Engineering：六级完成度与 maker/checker 工作流](software-factory/verification-engineering-levels-of-done.md) | distort 六级完成度（level 4 附证据才能停止阅读）、maker/checker 分工与 3 轮上限、CHECKS.md 七项检查实例、六症状/七错误/五步；809→10,926 的 PR 说法与 Lauren Tan 本人 1,000–2,500 口径冲突（Status: Disputed） | 2026-11-15 |
 | [roboomp：自托管 GitHub 维护流程](software-factory/roboomp-github-maintenance-factory.md) | GitHub 事件、OMP 会话、Issue 与外部 PR 工作流、Bun 检查及跳过条件、#19164 历史处理、源码部署与网络查询边界 | 2026-11-14 |
 
 ## software-testing
@@ -530,6 +531,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP agent.db 与 history.db：存储职责、表归属与索引级损坏修复](omp/agent-storage-databases.md) | `agent.db` 22 张表按建表模块三分（凭据与缓存、会话统计、记忆流水线）、`cache` 表被凭据粘性/MCP 工具/扩展启动延迟三方共用与 30 天过期常量、`history.db` 表组成与提示历史消费方；警告链路（写失败只记日志并一次性通知监听器）；两轮 history.db 损坏分开记录（FTS5 层与索引层）、agent.db 索引层 REINDEX 修复与逐表摘要判据、安装时持有者闸与重新采集；REINDEX 只在 agent.db 验证、防护扩展不含 agent.db | 2026-11-03 |
 | [OMP 界面图标：三档 symbolPreset 与 Glyph Protocol](omp/symbol-presets-and-glyph-protocol.md) | `symbolPreset` 枚举 unicode/nerd/ascii（默认 unicode，本机 nerd）；277 个符号键分 24 类；nerd 档仅图标换私有区码位、制表符与进度条仍为 Unicode；自带 270 个轮廓（JetBrainsMono NFM 2.304 / Nerd Fonts 3.5.1，upm 1000、aw 600、lh 1320）；APC `25a1` 四动词握手、三段私有区、确认码位 0xf0d57（icon.omp）；与 emoji 短码表分界；未实跑切换效果 | 2026-11-07 |
 | [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](omp/subagent-workspace-isolation.md) | 三层开关与生效条件；Linux 后端顺序与本机 overlay 可用性；ovnfs 三个作用点、管理协议版本与无静默回退；运行期间写入工作区、结束时一次捕获，合并阶段根仓库一次、嵌套仓库分别应用；`detachGitDir` 使原生隔离拥有独立 git 元数据；`bash.gitGuard` 默认关闭；本机 18.18.1 两个开关均关 | 2026-11-08 |
+| [Markdown 标题的 TUI 渲染：彩色 ### 的来源与两种消除方式](omp/markdown-heading-rendering.md) | depth 1/2 去 # 着色、depth>=3 固定拼回 `"#".repeat(depth)`（markdown.ts:4852-4856）；colorfulMarkdown 默认开、heading 按级 magenta/yellow/blue；消除靠 extensionRenderers.assistantText 扩展改写或用户级规则限 ## | 2026-11-15 |
 
 ## tokscale
 

@@ -2194,3 +2194,16 @@
 - Created: wiki/ag-ui/ag-ui-protocol-and-ecosystem.md
 - Updated: wiki/index.md（新增 ag-ui 主题小节）
 - 要点：1.0 行为规范（事件模型 31 事件 8 族、生命周期、工具调用、状态、中断恢复、处理模型、版本兼容、HTTP SSE 绑定）与 spec/README.md 的 Known divergences 全量入库；客户端生态按 1st Party/Community 区分（Svelte/Solid 无客户端，npm 404 核实）；Vercel AI SDK UI message stream、LangGraph stream modes + interrupts 作基线；Dojo 特征与周流水线、LangGraph Python 适配器 4,881 行。会话内先经四轮外部审校更正（规范路径、Channels SDK/OpenBot 归属、Intelligence 托管范围、Svelte/Solid）。未安装、未运行；Dojo 演示未抓包。
+
+## [2026-11-15] ingest | Verification Engineering：六级完成度与 maker/checker 工作流
+- Disposition: New
+- Raw: raw/software-factory/2026-11-12-verification-engineering-distort.md; raw/software-factory/2026-11-15-lauren-tan-monthly-pr-counts.md
+- Created: wiki/software-factory/verification-engineering-levels-of-done.md
+- Updated: wiki/software-factory/factory-gate-reference.md（See Also 交叉引用）
+- 要点：distort 文章全文入库（六级完成度、可靠检查五要素、maker/checker 分工与 3 轮上限、CHECKS.md 七项实例、六症状/七错误/五步）；Lauren Tan PR 数量多源核对：distort 写 809→10,926/月，她本人公开说法为 1,000（7 月）→2,000（8 月 talk 时）→2,500（帖子里，mvanhorn 引）、The New Stack 2,000/月、The Neuron 8 月 2,462、Pocock 访谈 "2,000 or however many"，tenten 注明无人核对，文章以 Status: Disputed 记录；Boris Cherny 2-3x 与 40→4 分钟个案未找到原始出处。未运行 CHECKS.md 工作流。
+
+## [2026-11-15] ingest | Markdown 标题的 TUI 渲染：彩色 ### 的来源与两种消除方式
+- Disposition: New
+- Raw: raw/omp/2026-11-15-markdown-heading-rendering-source.md
+- Created: wiki/omp/markdown-heading-rendering.md
+- 要点：本机安装包源码直读定位彩色 ### 来源：#styleHeading 对 depth>=3 固定拼回 "#".repeat(depth)（markdown.ts:4852-4856）；colorfulMarkdown 默认开启、heading 按级 magenta/yellow/blue（tui-adapters.ts:203, 281, 288-290, 319-323）；depth 1 支持 textSizing 时先尝试 2 倍字号（markdown.ts:4216-4228）；消除靠 extensionRenderers.assistantText（本机 false）扩展显示层改写或用户级规则限 ##。扩展改写效果未实测。

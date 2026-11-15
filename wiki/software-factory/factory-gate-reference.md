@@ -49,3 +49,7 @@ grill → apply-docs → plan → atdd → implement → review → review-corre
 - 变异分数下限是「项目要求值」，文章未给通用分档数字；`max_retries=3` 与 hermetic 3+1 次数是作者自述，没有第三方复现。
 - red-confirmation 的规则来自文章正文与 backlog-loop README 的 gate 配置说明；逐行代码实现未核对。
 - testing-the-judge 的 unittest suite 在仓库里可查，本文未展开核对代码目录。
+
+## See Also
+
+- [Verification Engineering：六级完成度与 maker/checker 工作流](verification-engineering-levels-of-done.md) — distort 的 CHECKS.md 体系，与七阶段机械 gate 的互补对照
