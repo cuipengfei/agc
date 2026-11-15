@@ -275,6 +275,12 @@
       "repo": "omp/agent/agents",
       "protected": false,
       "directory": true
+    },
+    {
+      "name": "omp-managed-skill-rtfm",
+      "source": "~/.omp/agent/managed-skills/rtfm/SKILL.md",
+      "repo": "omp/agent/managed-skills/rtfm/SKILL.md",
+      "protected": false
     }
   ]
 }
