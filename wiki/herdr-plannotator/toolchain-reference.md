@@ -1,8 +1,8 @@
 # Herdr + Plannotator 工具链全量 Reference
 
-> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17; Herdr v0.9.5 config-reference.json 与 configuration.mdx, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12; 用户提供的本机 `herdr --help` 输出, 2026-11-12
-> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md)
-> Updated: 2026-11-12
+> Sources: herdr 0.9.1（基线）+ 0.9.2（2026-09-29 增量实测）, plannotator 0.27.15, GitHub; 本机实证 plannotator CLI 0.27.21 + pi-extension 0.27.21, 2026-09-27; pi-extension 0.28.12 实测, 2026-10-11; 本机实证, 2026-10-16; Herdr 官方 docs 与 issue #3030/#4330, 2026-10-17; Herdr v0.9.5 config-reference.json 与 configuration.mdx, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12; 用户提供的本机 `herdr --help` 输出, 2026-11-12; herdr-annotate 0.9.10 清单与本机升级实测, 2026-11-15; GitHub API star 快照, 2026-11-15
+> Raw: [Herdr + Plannotator 调研摘录](../../raw/herdr-plannotator/2026-09-17-herdr-plannotator-investigation.md); [node-pty 故障与修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [slash command 归属与服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Herdr 0.9.2 release notes 摘录](../../raw/herdr-plannotator/2026-09-29-herdr-0-9-2-release-notes.md); [placement/popup 实测](../../raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md); [pi-extension 混版事故取证](../../raw/herdr-plannotator/2026-10-01-pi-extension-mixed-tree-incident.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [浏览器终端链路剪贴板排障](../../raw/terminal-multiplexers/browser-terminal-clipboard-paste-paths.md); [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md); [Herdr Annotate 0.9.10 升级实测与配置边界](../../raw/herdr-plannotator/2026-11-15-herdr-annotate-0-9-10-upgrade.md); [Herdr 与 Plannotator 生态盘点](../../raw/herdr-plannotator/2026-11-15-herdr-plannotator-ecosystem-stars.md); [uv-bun 的 Herdr 插件步骤](../../raw/agent-tooling/2026-11-15-uv-bun-herdr-plugin-step.md)
+> Updated: 2026-11-15
 
 ---
 本文的 Herdr 命令、`config.toml` 和插件部分涉及 Herdr TUI。Herdr App、herdr-core 与手机的关系见 [Herdr App、herdr-core 与手机](herdr-app-core-mobile.md)。
@@ -663,6 +663,13 @@ platforms = ["linux", "macos", "windows"]
 
 
 
+
+### 4.4 版本核对与批量更新 [实测 2026-11-15]
+
+`herdr plugin update -y` 升级全部 GitHub 来源插件，`herdr plugin update <插件 ID> -y` 只升级指定插件（例如 `annotate`）。更新前打印 preview，含 `version`、`source`、`commit`、`actions`、`panes`、`build commands` 与 `replaces` 行；更新后打印 `Updated <插件 ID> from <owner>/<repo>.` 与 `Config: <配置目录>`。
+
+`herdr plugin list --json` 返回 `result.plugins[]`，单条记录的 `plugin_id`、`version`、`source.kind`、`source.owner`、`source.repo`、`source.resolved_commit` 可供外部脚本做版本核对。本机 `/home/cpf/.local/bin/uv-bun` 的第 10 步以此实现 `--check` 与 `--up` 两分支，前后对比版本与 commit 并打印差异；实现与实测输出见该 raw。
+
 ## 5. `plannotator/herdr-annotate` 仓库
 
 ### 5.1 基本信息 [实测]
@@ -670,10 +677,10 @@ platforms = ["linux", "macos", "windows"]
 | 属性              | 值                                                              |
 | ----------------- | --------------------------------------------------------------- |
 | 仓库              | `plannotator/herdr-annotate`                                    |
-| Stars             | ~500                                                            |
+| Stars             | 760（2026-11-15 快照）                                          |
 | Forks             | 17                                                              |
-| 最新 commit       | `7c8f5a177b8285dc56efc471ef04f7ab44a2b4b6`                      |
-| 版本              | 0.4.0 (herdr-annotate.version), 0.8.0 (plannotator-tui.version) |
+| 最新 commit       | `29643fb42fcd6fb504a5512115be1dbf1ab338f8`                      |
+| 版本              | 0.9.10 (herdr-plugin.toml), 0.2.4 (herdr-annotate.version), 0.9.11 (plannotator-tui.version) |
 | min_herdr_version | 0.8.0                                                           |
 | 平台              | linux, macos, windows                                           |
 | License           | MIT                                                             |
@@ -682,6 +689,21 @@ platforms = ["linux", "macos", "windows"]
 
 **Full**: `herdr plugin install plannotator/herdr-annotate`
 **Lite**: `herdr plugin install plannotator/herdr-annotate/lite`
+
+**升级**（0.4.0 → 0.9.10 本机实测，2026-11-15）：`herdr plugin update annotate -y`；不带插件 ID 时 `herdr plugin update -y` 升级全部 GitHub 来源插件。输出会打印 `replaces: annotate from github:plannotator/herdr-annotate@7c8f5a177b8285dc56efc471ef04f7ab44a2b4b6`，随后 `Updated annotate from plannotator/herdr-annotate.`。
+
+**安装位置**：新版本落在版本化目录 `~/.config/herdr/plugins/github-installations/annotate-9c299759567c/<序号>/checkout`，旧路径 `~/.config/herdr/plugins/github/annotate-9c299759567c` 不再生效。
+
+**产物来源**：三个 build 步骤里两条负责下载预编译二进制，不做本地编译。
+
+- `scripts/fetch-herdr-annotate.sh` 从 `https://github.com/plannotator/herdr-annotate/releases/download/rust-lite-v0.2.4/herdr-annotate-x86_64-unknown-linux-gnu` 下载，取 `SHA256SUMS` 里同名条目的哈希比对，通过后写成 `bin/herdr-annotate.exe`。平台映射为 Darwin/arm64 → `aarch64-apple-darwin`、Darwin/x86_64 → `x86_64-apple-darwin`、Linux/x86_64 → `x86_64-unknown-linux-gnu`、Linux/aarch64 与 Linux/arm64 → `aarch64-unknown-linux-gnu`。可用 `HERDR_ANNOTATE_BIN` 指向本地构建。
+- `scripts/fetch-plannotator-tui.sh` 从 `https://github.com/plannotator/plannotator-tui/releases/download/v0.9.11/plannotator-tui-<target>` 下载并比对 `SHA256SUMS`。Linux/x86_64 在存在 `/lib/ld-musl-x86_64.so.1` 时选 `x86_64-unknown-linux-musl`，否则 `x86_64-unknown-linux-gnu`。可用 `PLANNOTATOR_TUI_BIN` 指向本地二进制。
+- 两个脚本都会先实际执行一次已安装二进制来判断 stamp 是否可信；脚本注释写明「插件目录从别的机器同步时会带着那台机器的二进制与 stamp」。
+- `plannotator-tui` 下载失败不阻断插件安装：脚本原文说明 `A failed download never fails the plugin install: the TypeScript tools keep working and the review actions explain what to do.`
+
+**0.9.10 清单规模**：11 个 action、3 个 pane（`editor` popup 88×24、`manager` popup 100×30、`doc` overlay）、3 条 build。
+
+
 
 ### 5.3 必需键绑定 [文档]
 
@@ -729,6 +751,19 @@ command = "annotate.last"
 | 审查文档            | `prefix+o`       | plannotator-tui 打开     |
 | 审查 agent 最后回复 | `prefix+shift+o` | 提取最后消息             |
 
+0.9.10 相比 0.4.0 新增四个 action，均无默认键位：
+
+| action | 作用 | 上下文 |
+| --- | --- | --- |
+| `annotate.last-newest` | 审阅 agent 最新消息，跳过候选选择 | pane |
+| `annotate.terminal` | 审阅聚焦 pane 最近终端输出（最后 200 行） | pane |
+| `annotate.paste-archive` | 把全部批注粘贴进 agent 输入框但不发送，随后归档 | pane |
+| `annotate.send-archive` | 把全部批注作为 agent 下一条消息发送，随后归档 | pane |
+
+`annotate.open`、`gate`、`last`、`last-newest`、`terminal` 的 `platforms` 限定为 `["macos", "linux"]`。
+
+**Ctrl-click Markdown 链接是可选附加插件**。主插件清单注释写明 `Ctrl-click on a file:// Markdown link is not captured here; the opt-in links/ add-on declares that handler`。安装方式为 `herdr plugin install plannotator/herdr-annotate/links`，卸载为 `herdr plugin uninstall annotate-links`；该附加插件没有 build 步骤，也可用 `herdr plugin link "$PWD/links"` 链接。
+
 ### 5.5 技术架构 [源码]
 
 - **语言**: Rust (edition 2024, rust-version 1.96)
@@ -737,6 +772,8 @@ command = "annotate.last"
 - **存储**: JSONL (`annotations.jsonl`, `archives.jsonl`) 在 `HERDR_PLUGIN_STATE_DIR`
 - **OSC 52**: Herdr 0.9.0+ 转发 pane 输出的 OSC 52 序列
 - **Handoff**: `$XDG_RUNTIME_DIR/herdr-annotate-<uid>/selection`，15 秒过期
+
+**配置边界**：`herdr plugin update` 结尾打印的 `Config: ~/.config/herdr/plugins/config/annotate` 是 Herdr 为每个插件预创建的目录。`rust/src/paths.rs` 只读 `HERDR_PLUGIN_STATE_DIR` 与 `HERDR_PLUGIN_ROOT`，不读该目录；批注数据存在 `HERDR_PLUGIN_STATE_DIR` 下的 `annotations.jsonl` 与 `archives.jsonl`。审阅界面的打开方式由清单注释指明归属：`Where it opens (overlay | split | popup) remains the user's choice in plannotator-tui's config file.`
 
 ### 5.6 文件结构 [源码]
 
@@ -825,7 +862,7 @@ struct InvocationContext {
 | 属性              | 值                                         |
 | ----------------- | ------------------------------------------ |
 | 仓库              | `plannotator/herdr-plannotator`            |
-| Stars             | ~25                                        |
+| Stars             | 27（2026-11-15 快照）                      |
 | Forks             | 1                                          |
 | 最新 commit       | `e10b969ea1655dbfce25d1464eef6f27c790bb79` |
 | 插件 ID           | `official.plannotator`                     |
@@ -837,16 +874,17 @@ struct InvocationContext {
 
 - Herdr 0.7.5+
 - Plannotator（支持外部 presenter）
-- `ogulcancelik/herdr-browser`（插件 ID `official.browser`）
+- `ogulcancelik/herdr-browser`（插件 ID `official.browser`）；该仓库 README 已声明停止维护并推荐改用 `zenbu-labs/terminal-browser`，本插件的 Requirements 仍要求安装并启用 Herdr Browser
 - Bun
 - Google Chrome / Chromium
+- Herdr 的实验性 Kitty graphics（`[experimental] kitty_graphics = true`）
 
 
 ### 6.3 安装 [README]
 
 ```bash
 herdr plugin install ogulcancelik/herdr-browser --yes
-# config.toml: [terminal] kitty_graphics = true
+# config.toml: [experimental] kitty_graphics = true
 herdr server reload-config
 
 herdr plugin install plannotator/herdr-plannotator --yes

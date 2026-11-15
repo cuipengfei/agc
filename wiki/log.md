@@ -2214,3 +2214,35 @@
 - Created: wiki/omp-tools/xd-protocol-and-selective-commit-journal.md
 - Updated: wiki/omp-tools/builtin-tools-and-internal-urls.md; wiki/omp-prewalk/prewalk.md（See Also 交叉引用）
 - 要点：源码直读与本会话 artifacts 目录实测核实 `xd://` 三类入口全集（`read`/`eval` 共 10 个按需文档主题、`resolve`/`reject`/`propose`/`report_issue` 4 个常驻动作开关、`tools.xdev` 控制的 discoverable 动态工具设备及 `XDEV_KEEP_TOP_LEVEL`/`XDEV_TRANSPORT_TOOLS` 排除集合，本机 `config.yml:116` 为 `xdev: false`）；`commit.draft()` 依赖根会话 artifacts 目录下的 `changes.jsonl`（`change`/`call`/`commit` 三种记录）与 `blobs/<size_base36>-<hash_base36>` gzip 压缩快照（单文件上限 8 MiB，子代理复用父会话目录）。未展开 `attribution.ts` 内部逐行 diff 归属细节。
+
+## [2026-11-15] ingest | OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider
+- Disposition: New
+- Raw: raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md
+- Created: wiki/omp-auth/antigravity-cli-acp-provider.md
+- 要点：`docs/providers.md` 的 Antigravity CLI 段落逐条摘录（登录三步、SHA-512 校验、`~/.omp/antigravity-cli/bin`、`PI_AGY_PATH`、`nc` 前置、指令与工具归属、三分钟 MCP 超时、ACP 不停用 temperature/stop/输出上限）；专用 agent `bridge.md` 的 `excludeDefaultComponents: true`；`host.ts` 常量 `60_000`/`2_000`/`165_000`/`5_000` 与 `180_000` 截止报错；启动参数 `agy acp --agent bridge --gemini-dir … --ide-mcp-port … --dangerously-skip-permissions`；七个模型与思考等级；未登录、未下载 `agy`、未发模型请求，Google 后端实际 prompt 未实测。
+
+## [2026-11-15] ingest | Herdr Annotate 0.9.10 升级实测与配置边界
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-15-herdr-annotate-0-9-10-upgrade.md; raw/agent-tooling/2026-11-15-uv-bun-herdr-plugin-step.md
+- Updated: wiki/herdr-plannotator/toolchain-reference.md（第 4.4 节新增版本核对与批量更新、第 5.1 节版本与 Stars、第 5.2 节升级路径与产物来源、第 5.4 节新增四个 action 与 Links 拆分、第 5.5 节配置边界、第 6.1 节 Stars、第 6.2 节依赖、第 6.3 节 `[experimental]` 段名）
+- 要点：`herdr plugin update annotate -y` 从 commit `7c8f5a17…` 升到 `29643fb4…`，版本 0.4.0 → 0.9.10；落盘到 `~/.config/herdr/plugins/github-installations/annotate-9c299759567c/<序号>/checkout`；`fetch-herdr-annotate.sh` 取 `rust-lite-v0.2.4`、`fetch-plannotator-tui.sh` 取 `v0.9.11`，均比对 `SHA256SUMS`、未本地编译；清单 11 action / 3 pane / 3 build；`config/annotate` 为空且不被 `paths.rs` 读取；Stars 由 `~500`/`~25` 更新为 760/27；本机 `uv-bun` 第 10 步以 `herdr plugin list --json` 做前后版本对比，`--check` 只读、`--up` 执行升级。
+
+## [2026-11-15] ingest | Herdr 与 Plannotator 生态地图
+- Disposition: New
+- Raw: raw/herdr-plannotator/2026-11-15-herdr-plannotator-ecosystem-stars.md
+- Created: wiki/herdr-plannotator/herdr-plannotator-ecosystem-map.md
+- 要点：GitHub API 2026-11-15 06:44–06:50 UTC star 快照；`herdrdev` 5 仓库（herdr 51031、app 2932、core 702、nix 21、layout-examples 19）；topic `herdr-plugin` 计数 2129 与官网 2081 差异未确认；`plannotator` 组织 24 仓库、主仓库 11352；两条集成路线与依赖方向；`ogulcancelik/herdr-browser` README 已声明停止维护并推荐 `zenbu-labs/terminal-browser`，而 `herdr-plannotator` 的 Requirements 仍要求前者提供的 `official.browser` pane。未安装运行任何插件。
+
+## [2026-11-15] ingest | Plannotator 能标注哪些面
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-11-15-herdr-annotate-0-9-10-upgrade.md; raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md
+- Created: wiki/herdr-plannotator/plannotator-annotatable-surfaces.md
+- Updated: wiki/herdr-plannotator/plannotator-omp-plugin-mechanism.md（补候选列表时效与内容边界，See Also 交叉引用）
+- 要点：`getRecentAssistantMessages(ctx, 25)` 的候选在命令执行时生成、只含 assistant 文本消息、打开后新消息不进入；Herdr Annotate 0.9.10 的六个标注入口（`capture`/`open`/`gate`/`last`/`last-newest`/`terminal`）与其余五个 action（`copy-context`/`copy-archive`/`paste-archive`/`send-archive`/`manage`）；结论是本机没有持续更新的完整对话页面，三个入口都按次打开；与 Inbox（agent 找人）分工不同。
+
+## [2026-11-15] ingest | 浏览器端 Kitty 图形终端
+- Disposition: New; Update
+- Raw: raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md
+- Created: wiki/terminal-graphics/browser-kitty-terminals.md
+- Updated: wiki/terminal-graphics/terminal-image-protocol-matrix.md（See Also 交叉引用）
+- 要点：`@xterm/addon-image@0.9.0` 发布包只有四个产物文件，检索 `kitty` 与 `10EEEE` 命中数为 0；`ttyd` 上游 `html/package.json` 锁 `^0.8.0`、本机 1.7.7 锁 `^0.7.0`；四条浏览器端路线（`webterm`/`sip`、`restty`/`ntwebterm`、`tuios-web`、`xpra`/Webtop+Selkies）；`terminal-browser` 的 `useSharedTexture`/`useSharedMemory`/`PIXEL_DISABLE_GPU` 平台分支与 `t=d`/`t=s` 双路径、`Presenter::Full`；安装脚本 v0.15.3 四平台 URL 与 SHA-256。未安装或运行任何项目。

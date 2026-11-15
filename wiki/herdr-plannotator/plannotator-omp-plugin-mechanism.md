@@ -2,7 +2,7 @@
 
 > Sources: 本机诊断与源码阅读，2026-09-27；本机 OMP pi-extension 0.28.12 实测，2026-10-11
 > Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md)
-> Updated: 2026-10-11
+> Updated: 2026-11-15
 
 ## Overview
 
@@ -30,6 +30,9 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 6. `session.waitForDecision()` 挂起等待；用户批注完成后把反馈经 `sendUserMessageWithCurrentSessionFallback` 以 `followUp` 发回 OMP 会话
 
 命令处理链（取消息到回传）不调用 `plannotator` CLI，数据直接来自活会话的 ctx。边界说明：插件其他模块确实使用 `child_process`——`server/network.ts:322` spawn 浏览器启动器 glimpseCli、`:406` spawn 浏览器命令——但那不属于命令处理链，也不提供标注内容。
+
+**候选列表的边界**：`getRecentAssistantMessages(ctx, 25)` 的结果在命令执行时生成，打开页面之后产生的新消息不会进入该页面。列表只含 assistant 的文本消息；用户消息、工具调用与工具结果不在其中。一次打开可以在候选之间切换并按同一批次提交反馈。因此「一次打开标注多条近期回复」成立，而「一次打开覆盖整个会话并自动追加后续消息」不成立；各标注入口的完整对照见 [Plannotator 能标注哪些面](plannotator-annotatable-surfaces.md)。
+
 
 ## 浏览器服务链路
 
@@ -66,4 +69,5 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 ## See Also
 
 - [Herdr + Plannotator 工具链全量 Reference](toolchain-reference.md)
+- [Plannotator 能标注哪些面](plannotator-annotatable-surfaces.md)
 - [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)
