@@ -1306,9 +1306,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "d5caf54905eac776e9bb3a247be84153701ff4f8",
+      "skillFolderHash": "9c351694439ea1171f36c65b91ba661e7a0499c8",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-13T12:22:55.652Z"
+      "updatedAt": "2026-11-15T03:43:58.542Z"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
