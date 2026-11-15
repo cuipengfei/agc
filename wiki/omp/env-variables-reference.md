@@ -372,6 +372,7 @@ websocket 参数共 8 个（早期会话版本曾把这两张小表合计说成�
 | `PI_TUI_NATIVE_STATS` | `1` 记录原生帧统计 |
 | `PI_DEBUG_REDRAW` | `1` 开 redraw 调试日志 |
 | `PI_KITTY_PLACEHOLDERS` / `PI_NO_KITTY_PLACEHOLDERS` | Kitty 占位符强制开关 / 硬关（后者优先） |
+| `PI_FORCE_IMAGE_PROTOCOL` | 强制图像协议；在 Herdr 这类 `imagesRequireOverride` 多路复用器内是 OMP 自动图像的必需项（`kitty` 配合 Herdr `terminal.kitty_graphics`） |
 | `PI_TUI_RESIZE_IN_PLACE` | `1` 强制原地 resize；`0` 强制 alt-screen 快路径 |
 | `PUPPETEER_PROXY` / `PUPPETEER_PROXY_BYPASS_LOOPBACK` / `PUPPETEER_PROXY_IGNORE_CERT_ERRORS` | Chromium 代理与证书行为 |
 | `CMUX_WORKSPACE_ID` / `CMUX_SURFACE_ID` / `CMUX_RELAY_ID` / `CMUX_RELAY_TOKEN` | cmux 分屏与 relay 身份 |

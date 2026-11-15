@@ -279,7 +279,7 @@ onboarding = false
 | `terminal.default_shell`                           | `""`                                                     | string     | 新 pane shell；空=$SHELL→/bin/sh | 实测 |
 | `terminal.shell_mode`                              | `"auto"`                                                 | enum       | auto/login/non_login             | 实测 |
 | `terminal.new_cwd`                                 | `"follow"`                                               | enum       | follow/home/current/fixed path   | 实测 |
-| `terminal.kitty_graphics`                          | `true`                                                   | bool       | Kitty graphics 兼容              | 实测 0.9.1 |
+| `terminal.kitty_graphics`                          | `true`                                                   | bool       | Kitty graphics 兼容；本机 2026-11-15 已设 `true`（实测） | 实测 0.9.1 |
 | `update.channel`                                   | `"stable"`                                               | enum       | stable/preview                   | 实测 |
 | `update.version_check`                             | `true`                                                   | bool       | 后台检查更新                     | 实测 |
 | `update.manifest_check`                            | `true`                                                   | bool       | 后台检查 manifest                | 实测 |
@@ -380,7 +380,7 @@ onboarding = false
 | `remote.manage_ssh_config`                         | `true`                                                   | bool       | 管理 SSH keepalive               | 实测 |
 | `experimental.allow_nested`                        | `false`                                                  | bool       | 允许嵌套启动                     | 实测 |
 | `experimental.pane_history`                        | `false`                                                  | bool       | 保存 pane 历史                   | 实测 |
-| `experimental.kitty_graphics`                      | unset                                                    | bool       | 已废弃别名，`terminal.kitty_graphics` 优先（双设时） | 实测 0.9.5 |
+| `experimental.kitty_graphics`                      | unset                                                    | bool       | 已废弃别名，`terminal.kitty_graphics` 优先（双设时）；本机 2026-11-15 已删除 | 实测 0.9.5 |
 | `experimental.switch_ascii_input_source_in_prefix` | `false`                                                  | bool       | IME ASCII 切换                   | 实测 |
 | `experimental.reveal_hidden_cursor_for_cjk_ime`    | `false`                                                  | bool       | CJK IME 光标                     | 实测 |
 | `experimental.cjk_ime_agents`                      | `[]`                                                     | list       | 限定 agent                       | 实测 |

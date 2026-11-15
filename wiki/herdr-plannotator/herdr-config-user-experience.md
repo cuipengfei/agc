@@ -1,8 +1,8 @@
 # Herdr 配置项与用户体验
 
-> Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12
-> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md)
-> Updated: 2026-11-12
+> Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12; kitty_graphics 改动实测, 2026-11-15
+> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [OMP 在 Herdr 多路复用器下的 Kitty 能力与开关](../../raw/terminal-graphics/2026-11-15-omp-kitty-capabilities-under-herdr.md)
+> Updated: 2026-11-15
 
 ## Overview
 
@@ -126,7 +126,7 @@ Popup 可设宽高（字符格数或 `"80%"`）；打开期间接收全部终端
 
 `ui.host_cursor` 选 `auto`/`native`/`drawn`：WSL、Windows 下 auto 用 drawn。`experimental.reveal_hidden_cursor_for_cjk_ime`（macOS）为隐藏光标的 TUI 暴露输入法候选窗定位锚点，可经 `cjk_ime_agents` 限制适用 agent 与光标形状。`experimental.switch_ascii_input_source_in_prefix`（macOS/Windows）在使用 prefix 命令时临时切到 ASCII 输入源，返回输入区后恢复；**Windows 当前仅 Korean IME**。
 
-本机：`kitty_graphics=false`（旧别名，仍被接受；要显示图像需改成 `terminal.kitty_graphics=true` 并重启 server，且外层终端要兼容 Kitty graphics）。
+本机（2026-11-15 改）：`terminal.kitty_graphics=true`；旧别名 `[experimental] kitty_graphics=false` 已删除。改动后 `herdr config check` 输出 `config: ok`；按官方要求重启受影响 server（本机采用停止 session 后重启）后，OMP 配合 `PI_FORCE_IMAGE_PROTOCOL=kitty` 显示 Kitty 图像。
 
 ## 远程、更新与启动行为
 
@@ -138,9 +138,9 @@ Popup 可设宽高（字符格数或 `"80%"`）；打开期间接收全部终端
 
 ## 当前配置的主要体验取舍
 
-本机选择：tokyo-night 主题、dots 状态、Herdr 内通知且声音关、`kitty_graphics` 关、`pane_history` 关、恢复默认开。新增：OMP 侧栏标题行、tab 栏时钟+zoom、外层窗口标题、临时 shell popup、btop 临时 pane。
+本机选择：tokyo-night 主题、dots 状态、Herdr 内通知且声音关、`terminal.kitty_graphics` 开、`pane_history` 关、恢复默认开。新增：OMP 侧栏标题行、tab 栏时钟+zoom、外层窗口标题、临时 shell popup、btop 临时 pane。
 
-这意味着：界面安静（无声音、无系统通知弹窗，只在 Herdr 内 toast，且 active tab 抑制）；侧栏对 OMP 显示任务标题；tab 栏显示时间与 zoom 状态；外层终端标题随聚焦 pane 变化；`prefix+t` 临时查文件、`prefix+alt+b` 看系统资源。代价：图像在 Herdr pane 内不显示（即使 OMP 强制 Kitty 协议，本机配置仍关）；重启后 pane 屏幕历史不保留（但 agent 对话按 integration 恢复）。
+这意味着：界面安静（无系统通知弹窗，只在 Herdr 内 toast，按事件类型发声：等输入或出错用请求音、完成用完成音、其余静默）；侧栏对 OMP 显示任务标题；tab 栏显示时间与 zoom 状态；外层终端标题随聚焦 pane 变化；`prefix+t` 临时查文件、`prefix+alt+b` 看系统资源。OMP 配合 `.env` 的 `PI_FORCE_IMAGE_PROTOCOL=kitty` 后，图像在 Herdr pane 内按 Kitty 图形显示；重启后 pane 屏幕历史不保留（agent 对话按 integration 恢复）。
 
 ## 证据边界
 

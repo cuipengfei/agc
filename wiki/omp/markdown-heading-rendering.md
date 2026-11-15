@@ -52,4 +52,5 @@ LLM 输出的始终是带 `#` 的原始 Markdown。OMP TUI 收到文本后解析
 
 ## See Also
 
+- [OMP 在 Herdr 多路复用器下的 Kitty 能力与开关](kitty-capabilities-and-gates.md) — OSC 66 文字缩放的判定链与当前链路为何不发送
 - [OMP 界面图标：三档 symbolPreset 与 Glyph Protocol](symbol-presets-and-glyph-protocol.md) — 另一组 TUI 表面主题（图标字形）的机制

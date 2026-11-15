@@ -2284,3 +2284,10 @@
 - Raw: raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md
 - Updated: wiki/terminal-multiplexers/sip-v0.10.0-usage-reference.md; wiki/terminal-multiplexers/ttyd-and-sip-side-by-side.md; wiki/terminal-multiplexers/tuios-web-and-updates.md
 - 要点：sip v0.10.0 内置字体的注册名称取自配置中的首个字体名；Windows Chrome 隔离测试测得 JetBrains 和 Maple 字形切换，Canvas 与 WebGL 观察到重绘；记录当前标签页的 Console 操作、刷新及内部接口边界。
+
+## [2026-11-15] ingest | OMP 在 Herdr 多路复用器下的 Kitty 能力与开关
+- Disposition: New; Update
+- Raw: raw/terminal-graphics/2026-11-15-omp-kitty-capabilities-under-herdr.md
+- Created: wiki/omp/kitty-capabilities-and-gates.md
+- Updated: wiki/terminal-graphics/terminal-image-protocol-matrix.md（Herdr 段补 OMP 侧判定与链接）; wiki/herdr-plannotator/herdr-config-user-experience.md（本机 kitty_graphics 改动与通知发声映射）; wiki/herdr-plannotator/toolchain-reference.md（配置表本机取值）; wiki/omp/env-variables-reference.md（PI_FORCE_IMAGE_PROTOCOL 补多路复用器说明）; wiki/omp/markdown-heading-rendering.md（See Also）
+- 要点：Herdr 被标 `imagesRequireOverride`，自动图像协议在 pane 内返回 null，`PI_FORCE_IMAGE_PROTOCOL=kitty` 是唯一自动开启途径；OSC 66 由 `supportsTextSizing`（仅 kitty 条目 true）与 `tui.textSizing` 双门禁，trueColor 身份下不发送；DECCARA 与带样式下划线在多路复用器内硬性关闭；通知改走 `herdr notification show`，面板 `Notify: BEL` 是回退字段；伪造 KITTY_WINDOW_ID 的后果只写到「OMP 会发送」一层。

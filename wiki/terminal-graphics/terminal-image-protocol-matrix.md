@@ -1,7 +1,7 @@
 # 终端图像协议支持矩阵
 
-> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25; 后续会话核对, 2026-11-01; vercel-labs/coder/devswha 等八个仓库的 README、文件树、patch 与源码, 2026-11-15
-> Raw: [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [terminal-browser 架构与浏览器端 Kitty 图形终端盘点](../../raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md); [Vercel Labs 与 Coder 组织扫描及补齐](../../raw/terminal-graphics/2026-11-15-browser-terminal-org-scan.md)
+> Sources: tsl0922 (ttyd), 2024-03-30; xtermjs (xterm.js), 2024-02-26; herdrdev (Herdr), 2026-08-20; Gaurav-Gosain (TUIOS), 2026; can1357 (OMP), 2026; 会话问答（协议全景/测试方法/Tern TSP）, 2026-10-17; Herdr v0.9.5 configuration.mdx, 2026-10-25; 后续会话核对, 2026-11-01; vercel-labs/coder/devswha 等八个仓库的 README、文件树、patch 与源码, 2026-11-15; OMP 在 Herdr 多路复用器下的能力实测, 2026-11-15
+> Raw: [Herdr 图像协议调查](../../raw/terminal-graphics/2026-10-17-herdr-graphics-protocol.md); [ttyd 图像协议支持](../../raw/terminal-graphics/2026-10-17-ttyd-image-protocol-support.md); [TUIOS SIXEL 支持](../../raw/terminal-graphics/2026-10-17-tuios-sixel-support.md); [OMP 图像协议](../../raw/terminal-graphics/2026-10-17-omp-image-protocols.md); [协议全景](../../raw/terminal-graphics/2026-10-17-terminal-graphics-protocols-landscape.md); [Tern TSP 与探测修正](../../raw/terminal-graphics/2026-10-17-tern-tsp-and-probe-commands.md); [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [terminal-browser 架构与浏览器端 Kitty 图形终端盘点](../../raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md); [Vercel Labs 与 Coder 组织扫描及补齐](../../raw/terminal-graphics/2026-11-15-browser-terminal-org-scan.md); [OMP 在 Herdr 多路复用器下的 Kitty 能力与开关](../../raw/terminal-graphics/2026-11-15-omp-kitty-capabilities-under-herdr.md)
 > Updated: 2026-11-15
 
 ## 概述
@@ -61,9 +61,11 @@ Herdr 的图像显示路径只实现 Kitty graphics protocol，配置项为 `ter
 
 #4330（Herdr 0.9.1，foot 终端）进一步确认：`terminal.kitty_graphics` 启用的是 Kitty graphics，不是 Sixel 渲染或传递，因此只支持 Sixel 的外部终端无法通过该路径显示 pane 图像。
 
-两个 issue 均关闭为 NOT_PLANNED。维护者指出，Herdr 解析 pane 输出并重新绘制，外部终端的 SIXEL 能力不会透传；增加 SIXEL 属于新增协议支持，不是修复已有行为。
+OMP 侧的自动协议判定在 Herdr pane 内返回 `null`（多路复用器标记 `imagesRequireOverride`），`PI_FORCE_IMAGE_PROTOCOL=kitty` 是该场景下 OMP 的唯一自动开启途径；逐项能力开关见 [OMP 在 Herdr 多路复用器下的 Kitty 能力与开关](../omp/kitty-capabilities-and-gates.md)。
 
 Reporter 在 #4330 中的分析指出实现层面的限制：Herdr VT（`libghostty-vt`）只实现了 Kitty passthrough（`src/kitty_graphics.rs`），没有 SIXEL 路径。
+
+两个 issue 均关闭为 NOT_PLANNED。维护者指出，Herdr 解析 pane 输出并重新绘制，外部终端的 SIXEL 能力不会透传；增加 SIXEL 属于新增协议支持，不是修复已有行为。
 
 ### TUIOS：Kitty graphics 完整渲染 + SIXEL passthrough
 
