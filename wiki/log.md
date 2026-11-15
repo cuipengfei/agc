@@ -2180,3 +2180,10 @@
 - Raw: raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md; raw/agent-tooling/omp-agent-skills-discovery-evidence.md
 - Updated: wiki/ai-coding-agents/mattpocock-skills-system.md; wiki/ai-coding-agents/pstack-skill-map-and-behaviors.md; wiki/agent-tooling/skills-cli-performance-model.md
 - 要点：记录三仓安装入口及本机与上游目录比较；matt 四类目录共 39 个，本机记录 30 个，单列未安装项；pstack 的 skills/ 与 benny 自动化分开清点；记录 OMP agents provider、skills CLI Pi 条目和四次 Skillshare 关键词查询的证据边界。
+
+## [2026-11-15] ingest | T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界
+- Disposition: New; Update
+- Raw: raw/agent-development-environments/2026-11-15-t3code-surfaces-and-acp.md; raw/agent-development-environments/2026-11-15-orca-run-modes-and-remote-servers.md; raw/agent-development-environments/2026-11-15-herdr-tui-agent-and-session-docs.md; raw/agent-development-environments/2026-11-15-ttyd-herdr-local-browser-observation.md
+- Created: wiki/agent-development-environments/t3code-orca-herdr-run-surfaces.md
+- Updated: wiki/agent-development-environments/ade-candidate-inventory.md（Orca 行加 Status: Outdated，Updated 改 2026-11-15）; wiki/agent-development-environments/ade-selection-method.md（Orca 排除段加 Status: Outdated，Updated 改 2026-11-15）; wiki/herdr-plannotator/herdr-app-core-mobile.md（See Also 交叉引用）
+- 要点：按程序本体、控制面、agent 进程、状态四层区分三家运行形态；T3 有本机网页（`t3` 打开 localhost:3000）与托管网页 app.t3.codes，Orca 有 orca serve 且 web client 由 runtime 自身提供（`vite.web.config.ts` 构建 out/web，issue #10687 引用 `orca serve --help` 原文并写明 web client 只由 runtime 提供），Herdr TUI 无网页与手机；三家都可全本地，Herdr 无云端产品；T3 内置 provider 无 OMP（仓库搜索 "oh-my-pi" 0 结果），接入走本地 ACP 命令（`omp acp`），ACP 不支持 agent 对话回滚、无 subagent 谱系；Herdr agents 支持表含 OMP（status 需集成，resume 用 `omp --resume`）；ttyd 组合以 root 运行 `login -f <USER>`，回环端口无鉴权，浏览器为 xterm.js 终端画面，T3 本机网页为专用前端。Herdr app/core 线判为 No material（已有 herdr-app-core-mobile.md 覆盖）。未安装、未运行；App Store 页面返回 HTTP 429。

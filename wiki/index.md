@@ -589,9 +589,10 @@ Ubuntu 的 apt 来源优先级、第三方 PPA 回归的定位与长期防护，
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26）；另登记四个非 ADE 的真工厂方案（2026-10-29） | 2026-10-29 |
-| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项 | 2026-10-18 |
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26）；另登记四个非 ADE 的真工厂方案（2026-10-29）；Orca 行 2026-11-15 标注 Outdated（orca serve/浏览器客户端已有文档） | 2026-11-15 |
+| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项；Orca 排除段 2026-11-15 标注 Outdated | 2026-11-15 |
 | [ThinkRail 与 JetBrains 的 ADE 版图](agent-development-environments/thinkrail-and-jetbrains-air.md) | ThinkRail 深挖：worktree 工作区、自托管浏览器模式、update 无版本比较、遥测与回环边界、WSL 实测；Air 2026-03 预览接管 Fleet 平台；Gateway WSL2 原生客户端；Projector 独立版暂停；CodeCanvas 停止开发 | 2026-10-26 |
+| [T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界](agent-development-environments/t3code-orca-herdr-run-surfaces.md) | 四层运行拓扑（界面/控制面/agent 进程/状态）、客户端形态（桌面、本机网页、托管网页、手机、TUI；Orca web client 由 runtime 提供）、全本地与账号依赖、OMP 经 ACP 接入 T3 与 Herdr 原生支持、ttyd+Herdr 与 T3 本机网页的取舍；官方文档、源码与 issue 2026-11-15 | 2026-11-15 |
 
 ## vscode
 
