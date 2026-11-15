@@ -66,9 +66,9 @@ modelRoles:
   commit: c8787/gpt-6-luna:high
   smol: c8787/gpt-6-luna:high
   task: kimi-code/k3.1-pro:max
-  vision: sensenova/glm-5.2:high
+  vision: opencode-go/deepseek-v4.1-flash:max
   tiny: sensenova/glm-5.3:max
-  advisor: opencode-go/deepseek-v4.1-flash:max
+  advisor: c8787/gpt-6.1-terra:max
   default: opencode-go/deepseek-v4.1-flash:max
   web: web/firecrawl
   memory: sensenova/glm-5.3:max
