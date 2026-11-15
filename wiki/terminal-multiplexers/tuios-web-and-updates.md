@@ -1,8 +1,8 @@
 # TUIOS Web 与安装升级
 
-> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31; 后续会话核对, 2026-11-01
-> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md)
-> Updated: 2026-11-01
+> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31; 后续会话核对, 2026-11-01; sip v0.10.0 字体隔离测试, 2026-11-15
+> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md)
+> Updated: 2026-11-15
 
 ## Overview
 
@@ -126,10 +126,6 @@ TUIOS 则直接提供浏览器页面。Herdr 的后台 server 负责保存 pane 
 
 ## Maple 字体设置
 
-本次版本没有 --font-family 参数。前端 API 支持当前页面调整：
+该版本 `tuios-web` 没有 `--font-family` 参数。sip 前端的 `setOptions` 可以调整当前页面的字体名称；TUIOS Web 中的实际字形尚未测量。字体需供运行浏览器的系统使用，WSL 安装字体不会自动提供给 Windows 浏览器。
 
-```javascript
-sipTerm.webterm.setOptions({fontFamily: "'Maple Mono NF CN', monospace"});
-```
-
-该示例未执行。字体应可供运行浏览器的系统使用，WSL 字体不自动提供给 Windows 浏览器。页面修改刷新后恢复，持久设置需要页面启动时应用或使用 sip 字体配置能力。
+独立 sip v0.10.0 的字体名称与实际字形可能不同，原因及 Chrome Console 临时操作见 [sip v0.10.0 使用参考](sip-v0.10.0-usage-reference.md#字体与渲染)。

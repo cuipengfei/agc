@@ -1,7 +1,7 @@
 # sip v0.10.0 使用参考
 
-> Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与本机源码，2026-11-15；本机 systemd 与浏览器端实测，2026-11-15
-> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md)
+> Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与官方源码，2026-11-15；Gaurav-Gosain/webterm 字体加载源码；本机 systemd 与隔离浏览器端实测，2026-11-15
+> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md)
 > Updated: 2026-11-15
 
 ## Overview
@@ -58,11 +58,31 @@ URL 参数刷新后仍在；设置面板重启浏览器后仍在；CLI 参数重
 
 | 参数 | 默认值 | 行为 |
 |---|---|---|
-| `--font-family` | `JetBrainsMono Nerd Font Mono` | CSS 字体名，只发名字给浏览器 |
-| `--font` | 空 | 把 WSL 磁盘上的字体文件发给浏览器下载 |
+| `--font-family` | `JetBrainsMono Nerd Font Mono` | 设置浏览器使用的 CSS 字体名称列表 |
+| `--font` | 空 | 将服务器上的字体文件提供给浏览器下载 |
 | `--renderer` | 空（自动 WebGL） | 初始默认渲染器 |
 
-`--font-family` 只写名字，浏览器在打开网页的那台设备上找字体；WSL 里有没有该字体文件不影响。`--font` 才把字体文件打包发过去，适合手机等未装字体的设备。
+`--font-family` 设置字体名称；`--font` 提供服务器上的字体文件。浏览器还会加载 sip 内置的 JetBrains 字体：v0.10.0 没有为这组字体单独指定名称，webterm 会把它们注册为配置列表里的第一个名称。
+
+本机配置 `--font-family "Maple Mono NF CN, monospace"`，Windows Chrome 已安装 Maple，但隔离测试的英文和数字实际使用 `JetBrainsMonoNFM-Regular`。单独提供 Maple 文件并设置相同字体名称时，测试文字仍使用 JetBrains。
+
+#### Chrome Console 临时操作
+
+适用于上述 sip v0.10.0 配置，且运行 Chrome 的电脑已安装 `Maple Mono NF CN`。在 sip 标签页按 F12，打开 Console，执行：
+
+```js
+[...document.fonts]
+  .filter(face => face.family.replace(/^['"]|['"]$/g, '') === 'Maple Mono NF CN')
+  .forEach(face => document.fonts.delete(face));
+
+window.sipTerm.webterm.setOptions({
+  fontFamily: "'Maple Mono NF CN', monospace"
+});
+```
+
+这会从当前页面的字体集合移除以该名称注册的网页字体，并重新应用终端字体；电脑上安装的字体文件不受影响。隔离 Chrome 的 DOM 终端测试中，英文和数字切换到 `MapleMono-NF-CN-Regular`，终端对象保持不变。Canvas 和 WebGL 测试观察到画布重绘，未直接测量画布字形的字体。
+
+操作只影响当前页面，刷新后可再次执行。操作本身不会主动刷新或重连，字体更换可能触发终端尺寸调整；刷新会断开 sip 连接并结束 sip 直接运行的 shell，Herdr 后台会话可重新连接。`window.sipTerm` 是 sip 的内部接口，升级后可能变化；本机现有标签页未参与隔离测试。
 
 ### 键盘与图形
 

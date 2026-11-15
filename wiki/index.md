@@ -437,15 +437,15 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | [ttyd xterm.js 渲染色块与渲染器选择](terminal-multiplexers/ttyd-xterm-renderer-corruption.md) | 色块症状与 WebGL 字形缓存损坏机制、三渲染器选择对比（webgl/canvas/dom）、本机 RTX 3050 + Chrome 156 事实链、Chromium 两条 workaround 无 driver_version 区间的结论、驱动 580.88→621.14 升级路径、enableSixel 待验证分支 | 2026-11-07 |
 | [ttyd 前端编译模型与 xterm 版本锁定](terminal-multiplexers/ttyd-frontend-compilation.md) | 前端编译与版本锁定、剪贴板定制、图形协议；链接到用户认可的完整 Tokyo Night Storm 配色 URL | 2026-11-01 |
 | [tuios workspace 与 session rail](terminal-multiplexers/tuios-workspace-and-sidebar.md) | 七种侧栏内容及 spacer；Agent 显示、命名报告 #1384/#1388、v0.12.1；普通输入与复制模式翻页、鼠标处理边界 | 2026-11-01 |
-| [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | Web 独立运行、安装与认证、持久化；本次 WebTerm 渲染、进程祖先与浏览器入口区分、Kitty 图片输出和 Maple 字体入口 | 2026-11-01 |
+| [TUIOS Web 与安装升级](terminal-multiplexers/tuios-web-and-updates.md) | Web 独立运行、安装与认证、持久化；WebTerm 渲染、进程祖先与浏览器入口区分、Kitty 图片输出；TUIOS Web 字体实际匹配未测 | 2026-11-15 |
 | [TUIOS 配置与用户体验](terminal-multiplexers/tuios-config-user-experience.md) | 配置机制与交互取舍；24 项调整后用户选择关闭鼠标跟随，仅来源更新；标题目录与其他既有配置保留 | 2026-11-01 |
 | [TUIOS 配置项全表（0.12.0）](terminal-multiplexers/tuios-config-reference.md) | 271 路径默认值、允许值及来源当前值；鼠标跟随关闭，暂停键移除；版本基线与当前选择分别记录 | 2026-11-01 |
 | [TUIOS Tape 自动化与项目 tape 信任边界](terminal-multiplexers/tuios-tapes.md) | 录制式与项目 tape 的区别、七个子命令、路径加 SHA-256 双要素信任、四个资格条件、三种 autorun 模式行为、auto_review 与 show_status、头部与正文指令、Scope 语义、安全属性 | 2026-10-31 |
 | [ttyd Tokyo Night Storm 配色链接](terminal-multiplexers/ttyd-tokyo-night-storm-theme.md) | 用户认可的完整可复制 URL，字号14、完整调色板、Maple 字体继承、默认色与 ANSI/RGB 分层 | 2026-11-01 |
 | [浏览器终端链路的剪贴板路径](terminal-multiplexers/browser-terminal-clipboard-paths.md) | copy/paste 两条不对称路径（前端 paste 事件 vs 应用自读）；omp 剪贴板三条环境门控读取路线；WSL 会话环境缺口与 WAYLAND_DISPLAY 修复；herdr 一会话一 server | 2026-10-16 |
 | [Go 与 sip 安装升级](terminal-multiplexers/go-and-sip-install-upgrade.md) | Go 不归 apt 管与官方 tarball 升级路径、GOTOOLCHAIN 后续更新机制、go install 安装 sip 到 ~/go/bin 的行为、uv-bun 集成 sip 检查与升级的行为规则 | 2026-11-15 |
-| [sip v0.10.0 使用参考](terminal-multiplexers/sip-v0.10.0-usage-reference.md) | 三处入口优先级（URL > localStorage > CLI）、CLI 六组参数、URL 三组、设置面板逐项行为与 Apply 重连结束旧 shell 的数据丢失风险、字体与 OSC52 行为、Transport 与 Renderer 选型建议 | 2026-11-15 |
-| [ttyd 与 sip 并存部署](terminal-multiplexers/ttyd-and-sip-side-by-side.md) | 7681/7682 双服务进程树归属差异（PID 1 vs PID 273）、herdr 嵌套问题与环境变量隔离、切换入口、何时用哪个 | 2026-11-15 |
+| [sip v0.10.0 使用参考](terminal-multiplexers/sip-v0.10.0-usage-reference.md) | 三处入口优先级、CLI 与设置面板、Apply 重连结束旧 shell、字体名称与实际字形差异、Chrome Console 临时使用 Maple、OSC52 与渲染器 | 2026-11-15 |
+| [ttyd 与 sip 并存部署](terminal-multiplexers/ttyd-and-sip-side-by-side.md) | 7681/7682 双服务进程树归属、herdr 环境变量隔离、入口切换；sip 字体配置与实际字形 | 2026-11-15 |
 
 ## terminal-graphics
 

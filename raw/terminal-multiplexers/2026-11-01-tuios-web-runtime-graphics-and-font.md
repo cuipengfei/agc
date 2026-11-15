@@ -42,7 +42,7 @@ sipTerm.webterm.setOptions({
 });
 ```
 
-此示例未在用户浏览器执行。字体应安装在运行浏览器的系统，WSL 安装本身不让 Windows 浏览器取得字体。页面修改不是持久服务端设置；刷新后恢复。持久方式需要页面启动时应用或使用 sip 的字体配置能力，当前 TUIOS Web 未开放对应 CLI 参数。
+此示例未在用户浏览器执行，实际字形没有在 TUIOS Web 中测量。字体应可供运行浏览器的系统使用，WSL 安装本身不让 Windows 浏览器取得字体。页面修改刷新后恢复。独立 sip v0.10.0 的实际字体匹配见 [字体匹配与 Console 验证](2026-11-15-sip-maple-font-resolution-and-console.md)。
 
 ## 前端字体源码行（非连续原文摘录）
 

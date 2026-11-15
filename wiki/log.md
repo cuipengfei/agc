@@ -2278,3 +2278,9 @@
 - Raw: raw/herdr-plannotator/2026-11-15-herdr-annotate-shortcut-inventory.md
 - Created: wiki/herdr-plannotator/herdr-annotate-shortcuts.md
 - 要点：终端批注六键（capture/copy-context/copy-archive/paste-archive/send-archive/manage）、审阅两键（open/last）、未绑定 action（last-newest/terminal）、TUI overlay 按键（a/c/d/q）；全部来自本机 `config.toml` 与 `herdr-plugin.toml` 实测；版本 0.9.10。
+
+## [2026-11-15] ingest | sip 字体匹配与 Chrome Console 操作
+- Disposition: Update
+- Raw: raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md
+- Updated: wiki/terminal-multiplexers/sip-v0.10.0-usage-reference.md; wiki/terminal-multiplexers/ttyd-and-sip-side-by-side.md; wiki/terminal-multiplexers/tuios-web-and-updates.md
+- 要点：sip v0.10.0 内置字体的注册名称取自配置中的首个字体名；Windows Chrome 隔离测试测得 JetBrains 和 Maple 字形切换，Canvas 与 WebGL 观察到重绘；记录当前标签页的 Console 操作、刷新及内部接口边界。

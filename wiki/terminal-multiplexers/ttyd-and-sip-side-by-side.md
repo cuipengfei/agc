@@ -1,7 +1,7 @@
 # ttyd 与 sip 并存部署
 
-> Sources: 本机 systemd 配置与实测，2026-11-15
-> Raw: [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md)
+> Sources: 本机 systemd 配置与实测，2026-11-15；sip v0.10.0 官方源码与隔离浏览器实测，2026-11-15
+> Raw: [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md)
 > Updated: 2026-11-15
 
 ## Overview
@@ -31,6 +31,8 @@ WantedBy=default.target
 未传 `--renderer` 参数，渲染器默认值由浏览器右上角设置面板或 URL 参数控制。
 
 启动后验证：`systemctl --user is-enabled sip.service` 返回 `enabled`；`curl http://localhost:7682/health` 返回 `OK`；首页注入 `window.__sipConfig={"fontFamily":"Maple Mono NF CN, monospace"};`（不含 `renderer` 字段）。
+
+字体名称已传给页面；Windows Chrome 隔离测试中的英文和数字实际使用内置 JetBrains。原因和当前页面临时设置步骤见 [sip v0.10.0 使用参考](sip-v0.10.0-usage-reference.md#字体与渲染)。
 
 ## 进程树与 herdr 嵌套问题
 
