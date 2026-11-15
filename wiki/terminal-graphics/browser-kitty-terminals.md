@@ -1,8 +1,8 @@
 # 浏览器端 Kitty 图形终端：能力矩阵与可选方案
 
-> Sources: `tsl0922/ttyd` `html/package.json`，2026-11-15 读取；npm registry `@xterm/addon-image@0.9.0` 包内容检查，2026-11-15；`zenbu-labs/terminal-browser` 源码与 README，2026-11-15；`Gaurav-Gosain/sip`、`Gaurav-Gosain/webterm`、`wiedymi/restty`、`NimbleTerminal/ntwebterm`、`Xpra-org/xpra`、`linuxserver/docker-webtop` 仓库描述，2026-11-15；`vercel-labs/wterm`、`coder/ghostty-web`、`coder/code-server`、`devswha/ovis`、`Textualize/textual-web`、`xichan96/dinotty`、`ekzhang/sshx`、`Eugeny/tabby-web` 的 README、文件树、patch 与源码，2026-11-15
-> Raw: [terminal-browser 架构与浏览器端 Kitty 图形终端盘点](../../raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md); [Vercel Labs 与 Coder 组织扫描及补齐](../../raw/terminal-graphics/2026-11-15-browser-terminal-org-scan.md)
-> Updated: 2026-11-15
+> Sources: `tsl0922/ttyd` `html/package.json`，2026-11-15 读取；npm registry `@xterm/addon-image@0.9.0` 包内容检查，2026-11-15；`zenbu-labs/terminal-browser` 源码与 README，2026-11-15；`Gaurav-Gosain/sip`、`Gaurav-Gosain/webterm`、`wiedymi/restty`、`NimbleTerminal/ntwebterm`、`Xpra-org/xpra`、`linuxserver/docker-webtop` 仓库描述，2026-11-15；`vercel-labs/wterm`、`coder/ghostty-web`、`coder/code-server`、`devswha/ovis`、`Textualize/textual-web`、`xichan96/dinotty`、`ekzhang/sshx`、`Eugeny/tabby-web` 的 README、文件树、patch 与源码，2026-11-15；本机 go version -m 实测，2026-11-16
+> Raw: [terminal-browser 架构与浏览器端 Kitty 图形终端盘点](../../raw/terminal-graphics/2026-11-15-terminal-browser-and-browser-kitty-terminals.md); [Vercel Labs 与 Coder 组织扫描及补齐](../../raw/terminal-graphics/2026-11-15-browser-terminal-org-scan.md); [tuios 0.13.1 升级语义、sip 依赖与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-16-tuios-0-13-1-sip-dependency-and-uv-bun.md)
+> Updated: 2026-11-16
 
 ## 判断门槛
 
@@ -32,7 +32,7 @@
 
 ### 路线三：终端多路复用器自带 Web 端
 
-`Gaurav-Gosain/tuios`（6532 star）的 TUIOS Web（`tuios-web`）把完整终端多路复用器放进浏览器，底层使用 `sip` 与 `webterm` 的组件。
+`Gaurav-Gosain/tuios`（6532 star）的 TUIOS Web（`tuios-web`）把完整终端多路复用器放进浏览器，前端使用 `webterm` 的组件，服务端经 `go.mod` 依赖 `sip`；`tuios` 本体的模块依赖表中没有 sip（2026-11-16 本机 `go version -m` 实测 `tuios-web` 固定 `github.com/Gaurav-Gosain/sip v0.10.0`）。
 
 ### 路线四：把原生终端窗口投射到浏览器
 

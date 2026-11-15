@@ -1,8 +1,8 @@
 # Beads 的安装与运行面：嵌入式 Dolt、独立依赖与同步条件
 
-> Sources: gastownhall/beads README 与 docs（installation、architecture/dolt、sync-setup、cli-reference/dolt、ide-setup、quickstart），2026-11-04 至 2026-11-05；GitHub releases API，2026-11-05；npm registry，2026-11-05；PyPI，2026-11-05；Homebrew formula API，2026-11-05；本机 WSL 实测，2026-11-05 至 2026-11-06；buntoolbox 仓库 docker/layers 与 scripts，2026-11-05；本会话 bd init / bd prime 实测，2026-11-06
-> Raw: [Beads 安装、运行面、命令面与任务系统分工](../../raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md); [Beads bd init auto-commit 与 bd prime 行为](../../raw/agent-tooling/2026-11-06-beads-init-auto-commit-and-prime-behavior.md)
-> Updated: 2026-11-06
+> Sources: gastownhall/beads README 与 docs（installation、architecture/dolt、sync-setup、cli-reference/dolt、ide-setup、quickstart），2026-11-04 至 2026-11-05；GitHub releases API，2026-11-05；npm registry，2026-11-05；PyPI，2026-11-05；Homebrew formula API，2026-11-05；本机 WSL 实测，2026-11-05 至 2026-11-06；buntoolbox 仓库 docker/layers 与 scripts，2026-11-05；本会话 bd init / bd prime 实测，2026-11-06；本机 uv-bun 段标题清单实测，2026-11-16
+> Raw: [Beads 安装、运行面、命令面与任务系统分工](../../raw/agent-tooling/2026-11-05-beads-install-runtime-command-surface.md); [Beads bd init auto-commit 与 bd prime 行为](../../raw/agent-tooling/2026-11-06-beads-init-auto-commit-and-prime-behavior.md); [tuios 0.13.1 升级语义、sip 依赖与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-16-tuios-0-13-1-sip-dependency-and-uv-bun.md)
+> Updated: 2026-11-16
 
 ## Overview
 
@@ -89,7 +89,7 @@ buntoolbox 的 Docker 镜像完整覆盖安装：`docker/layers/10-beads.env` �
 
 WSL 侧只有 `scripts/check-wsl-versions.sh`，读取本机版本并与仓库目标比较，没有安装或升级分支。脚本优先使用 `docker/layers/*.env` 中的版本；当前目标是 1.3.2，所以即使上游是 1.3.4，检查结果仍是 up-to-date。仓库的 AGENTS.md 工作流要求先在 WSL 手工安装并验证，再写进 Docker layer。
 
-`uv-bun` 的九个段落（全局 npm 包、uv 与 uv tools、self-update、apt、opencode 项目、tokscale、skills、Codex 插件、OMP 插件）没有 bd。当前 bd 也不是全局 bun 包，因此 `uv-bun` 不覆盖它的升级。
+`uv-bun` 的十个段落（global packages、uv (self + tools)、self-update、apt (system packages)、projects、tokscale、skills、Codex plugins、OMP plugins、Herdr plugins）没有 bd。当前 bd 也不是全局 bun 包，因此 `uv-bun` 不覆盖它的升级。
 
 ## 遥测
 

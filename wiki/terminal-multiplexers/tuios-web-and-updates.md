@@ -1,8 +1,8 @@
 # TUIOS Web 与安装升级
 
-> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31; 后续会话核对, 2026-11-01; sip v0.10.0 字体隔离测试, 2026-11-15
-> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md)
-> Updated: 2026-11-15
+> Sources: Gaurav-Gosain TUIOS 官方 Web 文档与源码, 2026-10-31; Gaurav-Gosain sip README, 2026-10-17; Herdr 官方远程访问文档, 2026-10-17; 本机安装与端口实测, 2026-10-31; 后续会话核对, 2026-11-01; sip v0.10.0 字体隔离测试, 2026-11-15; tuios v0.13.1 与 sip v0.10.0 release notes、本机 go version -m 与 uv-bun 实测, 2026-11-16
+> Raw: [Web 官方文档、安装器与更新器](../../raw/terminal-multiplexers/2026-10-17-tuios-web-official-docs-and-installer.md); [本机安装、认证与更新](../../raw/terminal-multiplexers/2026-10-17-tuios-web-local-install-and-auth.md); [独立运行与 sip](../../raw/terminal-multiplexers/2026-10-17-tuios-web-standalone-and-sip.md); [Herdr 远程访问与端口](../../raw/terminal-multiplexers/2026-10-17-tuios-herdr-web-access-and-ports.md); [TUIOS 0.12.0 配置 schema 与持久化](../../raw/terminal-multiplexers/2026-10-31-tuios-0.12.0-config-schema-and-persistence.md); [后续来源记录](../../raw/terminal-multiplexers/2026-11-01-tuios-web-runtime-graphics-and-font.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [tuios 0.13.1 升级语义、sip 依赖与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-16-tuios-0-13-1-sip-dependency-and-uv-bun.md)
+> Updated: 2026-11-16
 
 ## Overview
 
@@ -52,6 +52,9 @@ tuios-web version 0.10.0
 ## 更新职责与 token
 
 当前 `uv-bun` 没有直接更新 release-archive 安装的 TUIOS。这个结论只针对脚本当前显式更新逻辑；通用系统包更新可能影响其他由系统包管理器拥有的副本。
+
+> **Status: Outdated** (2026-11-16)
+> `uv-bun` 第 3 段 self-update 已加入 tuios，标题为 `self-update (herdr, hc, umans, rtk, plannotator, witr, sip, tuios)`；版本过期时执行 `tuios update`，该命令在与 tuios 同目录时同时替换 tuios 与 tuios-web 两个二进制。依据见 [tuios 0.13.1 升级语义、sip 依赖与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-16-tuios-0-13-1-sip-dependency-and-uv-bun.md)与文末「uv-bun 覆盖与 tuios 0.13.1 升级语义」。
 
 `GITHUB_TOKEN` 可以直接从 `gh` 已保存的认证中读取：
 
@@ -129,3 +132,37 @@ TUIOS 则直接提供浏览器页面。Herdr 的后台 server 负责保存 pane 
 该版本 `tuios-web` 没有 `--font-family` 参数。sip 前端的 `setOptions` 可以调整当前页面的字体名称；TUIOS Web 中的实际字形尚未测量。字体需供运行浏览器的系统使用，WSL 安装字体不会自动提供给 Windows 浏览器。
 
 独立 sip v0.10.0 的字体名称与实际字形可能不同，原因及 Chrome Console 临时操作见 [sip v0.10.0 使用参考](sip-v0.10.0-usage-reference.md#字体与渲染)。
+
+## uv-bun 覆盖与 tuios 0.13.1 升级语义
+
+本机 `uv-bun` 共十个段落，第 3 段 self-update 于 2026-11-16 加入 tuios。检查方式与 herdr、witr 等一致：取 `tuios --version` 首行 `tuios version X.Y.Z` 与 GitHub `Gaurav-Gosain/tuios` 最新 release 对比（tuios 的版本输出是多行格式，需专用正则，与其他工具的整行匹配不同）；过期时执行 `tuios update`。`bun test` 行为测试 1 pass 0 fail，耗时 49.8 秒。
+
+`tuios update` 只更新 release archive 安装的二进制并校验发布页 checksum；包管理器、Homebrew、Nix store、Go tool 拥有的副本拒绝覆盖。
+
+0.13.1 的升级语义与 0.12.1 不同：
+
+- 0.12.1 的 daemon 早于 live upgrade 机制，升到 0.13.1 必须执行一次 `tuios restart-server`；这次重启会终止 pane 内程序，会话带原布局与每 pane 最后 1000 行历史回来，shell 是新的。
+- 从 0.13.1 起，后续升级在 macOS 与 Linux 上用 `tuios daemon upgrade` 完成，daemon 换到新构建且 pane 内程序全部保留运行。
+
+本机两个二进制已是 0.13.1（`Built: 2026-11-15T03:31:54Z`），daemon 尚未重启，仍跑 0.12.1 构建。
+
+## 0.13.1 用户可见默认变化
+
+以下条目来自 v0.13.1 release notes，daemon 未重启，未在运行实例上复测：
+
+- **Cell frames 默认开启**：在运行 tuios 的终端上按 cell 增量发帧，Windows、SSH 与网页客户端除外；200x60 窗口敲一键的帧耗时从 1023 us 降到 205 us，分配次数从 792 降到 376。画面异常时设 `appearance.cell_frames = "off"` 或环境变量 `TUIOS_CELL_FRAME=0`。
+- **bash/zsh pane 默认注入 OSC 133 提示符标记**，不改用户 shell 文件；`[shell] integration = "off"` 可关闭。
+- **agent 用量限流独立为 `limit_reached` 状态**（此前归入 `errored`），等待 `errored` 的脚本需改判断。
+- **hook 直连 daemon socket**：升级后需重跑 `tuios integration install` 换新 hook，事件经 `nc -U`/`socat` 发送，不再每次起一个完整 tuios。
+- 稀有 Mermaid 图类型移到 `sketch` 插件，八种常见类型仍在主程序。
+- 从源码构建需要 Go 1.27.4 toolchain，ghostty 后端用 libghostty-vt 1.0.1。
+
+0.13.1 新增配置键（`appearance.cell_frames`、`[shell] integration` 等）目前只有 release notes 级证据；待 daemon 重启后用 `tuios list-options --json` 与 0.12.0 的 271 项基线比对，再更新配置类文章。
+
+## sip 与 tuios 的依赖和抽离关系
+
+tuios 仓库创建于 `2025-09-06T18:13:51Z`，sip 仓库创建于 `2025-12-02T19:09:04Z`（GitHub API `created_at`）；sip README 自述它是从 TUIOS 抽出的 Web 终端功能。依赖方向单边：`tuios` 二进制的模块依赖表中没有 sip，`tuios-web` 经 `go.mod` 依赖 `github.com/Gaurav-Gosain/sip v0.10.0`（2026-11-16 本机 `go version -m` 实测）。
+
+Web 层的更新顺序是 `webterm`（前端 JS，内含 kitty overlay 等）打包进 `sip` 发版，`tuios` 再升级 `go.mod` 里的 sip 版本号。sip v0.10.0 的可选 worker 引擎（libghostty-vt 加 WebGL2 放进 Web Worker）release notes 实测数字：50 MiB 输出下主线程耗时 6,788 ms 降到 190 ms，最长帧间隔 250 ms 降到 16.8 ms。`tuios` 本体的窗口管理、快捷键、agent 看板等逻辑不经过 sip。
+
+`Gaurav-Gosain/tuios-web` 没有独立仓库，tuios-web 的发布 tarball 是 tuios release 的第二个资产；`tuios update --help` 原文写明两个二进制「move together or not at all」。

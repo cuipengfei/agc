@@ -2291,3 +2291,9 @@
 - Created: wiki/omp/kitty-capabilities-and-gates.md
 - Updated: wiki/terminal-graphics/terminal-image-protocol-matrix.md（Herdr 段补 OMP 侧判定与链接）; wiki/herdr-plannotator/herdr-config-user-experience.md（本机 kitty_graphics 改动与通知发声映射）; wiki/herdr-plannotator/toolchain-reference.md（配置表本机取值）; wiki/omp/env-variables-reference.md（PI_FORCE_IMAGE_PROTOCOL 补多路复用器说明）; wiki/omp/markdown-heading-rendering.md（See Also）
 - 要点：Herdr 被标 `imagesRequireOverride`，自动图像协议在 pane 内返回 null，`PI_FORCE_IMAGE_PROTOCOL=kitty` 是唯一自动开启途径；OSC 66 由 `supportsTextSizing`（仅 kitty 条目 true）与 `tui.textSizing` 双门禁，trueColor 身份下不发送；DECCARA 与带样式下划线在多路复用器内硬性关闭；通知改走 `herdr notification show`，面板 `Notify: BEL` 是回退字段；伪造 KITTY_WINDOW_ID 的后果只写到「OMP 会发送」一层。
+
+## [2026-11-16] ingest | tuios 0.13.1 升级语义、sip 依赖与 uv-bun 集成
+- Disposition: Update
+- Raw: raw/terminal-multiplexers/2026-11-16-tuios-0-13-1-sip-dependency-and-uv-bun.md
+- Updated: wiki/terminal-multiplexers/tuios-web-and-updates.md（原「uv-bun 未覆盖 TUIOS」句加 Status: Outdated；新增 uv-bun 覆盖与 0.13.1 升级语义、0.13.1 默认变化、sip 与 tuios 依赖抽离三节）; wiki/terminal-graphics/browser-kitty-terminals.md（路线三补依赖方向）; wiki/agent-tooling/beads-install-and-runtime-surface.md（uv-bun 段数九改十）
+- 要点：0.12.1 daemon 必须先 `tuios restart-server` 一次，0.13.1 起 `tuios daemon upgrade` 免重启；`tuios update` 同目录同时换 tuios 与 tuios-web 两二进制；uv-bun 第 3 段加入 tuios（`tuios --version` 首行专用正则），bun test 1 pass 0 fail（49.8 秒）；依赖单边（tuios 本体无 sip，tuios-web 固定 sip v0.10.0），sip 2025-12-02 从 tuios（2025-09-06）抽出；0.13.1 默认变化含 cell frames（1023 us→205 us、792→376 allocations）、OSC 133、`limit_reached`、hook 直连 socket；配置键仅有 release notes 级证据，待 daemon 重启后核对注册表。
