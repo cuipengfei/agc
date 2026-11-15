@@ -610,6 +610,14 @@ AI 驱动的新闻聚合器：多源抓取、profile 评分、双语简报与多
 |---------|---------|---------|
 | [Horizon 架构与部署方式](horizon/horizon-architecture-and-deployment.md) | 四阶段流水线（抓取→AI 分析过滤→补充→生成投递）、10 种信息源、4 个内置 profile、11 种 AI provider、三种定时方式（GitHub Actions / 本地 cron / Docker+主机 cron）、四条投递渠道在 GitHub Actions 下的实际可用性边界（模板默认仅 Pages+webhook 飞书，邮件需额外配置且订阅者状态不持久化，微信需交互式登录且会话文件无法跨 run 保留）、Actions 免费额度与模型 API 费用区分、MCP Server 7 个工具 | 2026-11-04 |
 
+## ag-ui
+
+AG-UI agent-用户交互协议：事件模型、生命周期、生态与基线对比。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [AG-UI 协议与生态](ag-ui/ag-ui-protocol-and-ecosystem.md) | 31 事件 8 族的事件线协议；三种 outcome + RUN_ERROR + 截断的五层结束语义；前端工具回合、共享状态 RFC 6902、interrupt/resume；Svelte/Solid 无客户端、八语言社区 SDK；Known divergences 与处理模型缺口；Vercel/LangGraph/手写 SSE 基线对比；接入判断 | 2026-11-15 |
+
 ## webtop
 
 浏览器访问的 Linux 桌面在 WSL 上的组件构成、与 Webtop 的对应关系、免登录入口的剩余边界、i3 Sway 变体的配置错误横幅修复、窗口模式 Ctrl Alt modifier 调整、Selkies 指针尺寸链路、KDE Wayland 输入法启动器与私有桌面可见性边界。

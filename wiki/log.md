@@ -2187,3 +2187,10 @@
 - Created: wiki/agent-development-environments/t3code-orca-herdr-run-surfaces.md
 - Updated: wiki/agent-development-environments/ade-candidate-inventory.md（Orca 行加 Status: Outdated，Updated 改 2026-11-15）; wiki/agent-development-environments/ade-selection-method.md（Orca 排除段加 Status: Outdated，Updated 改 2026-11-15）; wiki/herdr-plannotator/herdr-app-core-mobile.md（See Also 交叉引用）
 - 要点：按程序本体、控制面、agent 进程、状态四层区分三家运行形态；T3 有本机网页（`t3` 打开 localhost:3000）与托管网页 app.t3.codes，Orca 有 orca serve 且 web client 由 runtime 自身提供（`vite.web.config.ts` 构建 out/web，issue #10687 引用 `orca serve --help` 原文并写明 web client 只由 runtime 提供），Herdr TUI 无网页与手机；三家都可全本地，Herdr 无云端产品；T3 内置 provider 无 OMP（仓库搜索 "oh-my-pi" 0 结果），接入走本地 ACP 命令（`omp acp`），ACP 不支持 agent 对话回滚、无 subagent 谱系；Herdr agents 支持表含 OMP（status 需集成，resume 用 `omp --resume`）；ttyd 组合以 root 运行 `login -f <USER>`，回环端口无鉴权，浏览器为 xterm.js 终端画面，T3 本机网页为专用前端。Herdr app/core 线判为 No material（已有 herdr-app-core-mobile.md 覆盖）。未安装、未运行；App Store 页面返回 HTTP 429。
+
+## [2026-11-15] ingest | AG-UI 协议与生态
+- Disposition: New
+- Raw: raw/ag-ui/2026-11-15-ag-ui-spec-core-model.md; raw/ag-ui/2026-11-15-ag-ui-clients-and-ecosystem.md; raw/ag-ui/2026-11-15-ag-ui-maturity-and-divergences.md; raw/ag-ui/2026-11-15-ag-ui-baselines-comparison.md
+- Created: wiki/ag-ui/ag-ui-protocol-and-ecosystem.md
+- Updated: wiki/index.md（新增 ag-ui 主题小节）
+- 要点：1.0 行为规范（事件模型 31 事件 8 族、生命周期、工具调用、状态、中断恢复、处理模型、版本兼容、HTTP SSE 绑定）与 spec/README.md 的 Known divergences 全量入库；客户端生态按 1st Party/Community 区分（Svelte/Solid 无客户端，npm 404 核实）；Vercel AI SDK UI message stream、LangGraph stream modes + interrupts 作基线；Dojo 特征与周流水线、LangGraph Python 适配器 4,881 行。会话内先经四轮外部审校更正（规范路径、Channels SDK/OpenBot 归属、Intelligence 托管范围、Svelte/Solid）。未安装、未运行；Dojo 演示未抓包。
