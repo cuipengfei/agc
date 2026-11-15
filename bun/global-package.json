@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@anthropic-ai/claude-code": "2.1.325",
-    "@biomejs/biome": "2.6.7",
+    "@biomejs/biome": "2.6.8",
     "@colbymchenry/codegraph": "1.6.2",
     "@deepseek-ai/dsh": "0.2.2-rc.1",
     "@earendil-works/pi-coding-agent": "1.5.2",
@@ -31,8 +31,8 @@
     "oc-tweaks": "0.11.3",
     "oh-my-claude-sisyphus": "5.8.4",
     "oh-my-codex": "0.22.7",
-    "oh-my-openagent": "5.1.70",
-    "omo-ai": "5.1.70",
+    "oh-my-openagent": "5.1.71",
+    "omo-ai": "5.1.71",
     "pyright": "1.1.414",
     "qiushi-skill": "^2.0.0",
     "skills": "1.8.1",
