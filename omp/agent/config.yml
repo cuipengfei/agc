@@ -267,7 +267,7 @@ ask:
   notify: "on"
   enabled: true
 recap:
-  enabled: true
+  enabled: false
   idleSeconds: 300
 collab:
   relayUrl: wss://my.omp.sh
