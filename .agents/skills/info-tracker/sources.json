@@ -11,7 +11,9 @@
     { "owner": "deepseek-ai", "repo": "deepseek-harness" },
     { "owner": "anthropics", "repo": "claude-code" },
     { "owner": "Yeachan-Heo", "repo": "oh-my-claudecode" },
-    { "owner": "backnotprop", "repo": "plannotator" }
+    { "owner": "backnotprop", "repo": "plannotator" },
+    { "owner": "Gaurav-Gosain", "repo": "tuios" },
+    { "owner": "Gaurav-Gosain", "repo": "sip" }
   ],
   "github_copilot_pricing": [
     {

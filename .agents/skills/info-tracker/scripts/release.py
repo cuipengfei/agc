@@ -93,16 +93,23 @@ def collect(state_dir: Path, config) -> dict:
             cached = []
             if key not in state["repos"]:
                 cached = _release_list(_read_json(cache_path, []))
-            result = subprocess.run(
-                ["gh", "api", "--paginate", "--slurp", f"repos/{repository}/releases?per_page=30"],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            pages = json.loads(result.stdout)
-            if not isinstance(pages, list) or any(not isinstance(page, list) for page in pages):
-                raise ValueError("release response must be an array of pages")
-            releases = _release_list([item for page in pages for item in page])
+            page_size = 30
+            page_releases = []
+            for page_number in (1, 2, 3):
+                result = subprocess.run(
+                    ["gh", "api", f"repos/{repository}/releases?per_page={page_size}&page={page_number}"],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                page = json.loads(result.stdout)
+                if not isinstance(page, list):
+                    raise ValueError("release response page must be a JSON array")
+                page_releases.extend(page)
+                if len(page) < page_size:
+                    break
+            # only the newest handful are kept, so cap the sweep at 3 pages instead of paginating full history
+            releases = _release_list(page_releases)
             if not releases:
                 continue
 
