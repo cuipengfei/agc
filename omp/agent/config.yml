@@ -131,7 +131,7 @@ images:
   describeForTextModels: true
   questionTimeoutMs: 300000
 tui:
-  motion: reduced
+  motion: full
   maxInlineImageColumns: 100
   maxInlineImageRows: 20
   maxInlineImages: 8
@@ -151,7 +151,7 @@ tui:
   titleSpinner: braille
   completeScrollback: true
 display:
-  shimmer: classic
+  shimmer: kitt
   smoothStreaming: true
   showTokenUsage: true
   cacheMissMarker: true

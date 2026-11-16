@@ -11,7 +11,7 @@
     "@oh-my-pi/pi-coding-agent": "18.20.3",
     "@openai/codex": "0.169.0",
     "@opencode/cli": "2.3.0",
-    "@upstash/context7-mcp": "4.7.0",
+    "@upstash/context7-mcp": "4.7.1",
     "acpx": "0.22.0",
     "backpass": "0.1.44",
     "bash-language-server": "^5.8.1",
