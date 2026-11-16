@@ -1,0 +1,57 @@
+{
+  "sections": [
+    {
+      "title": "General",
+      "keys": [
+        {
+          "key": "onboarding",
+          "type": "boolean",
+          "default": "unset",
+          "description": "Show first-run setup on startup."
+        }
+      ]
+    },
+    {
+      "title": "Server",
+      "keys": [
+        {
+          "key": "server.headless_cols",
+          "type": "integer",
+          "default": "120",
+          "description": "Virtual terminal width used for layout when no client is attached."
+        }
+      ]
+    },
+    {
+      "title": "UI and sidebar",
+      "keys": [
+        {
+          "key": "ui.host_cursor",
+          "type": "string",
+          "default": "auto on Linux and macOS, drawn under WSL and Windows",
+          "values": ["native", "drawn", "auto"],
+          "description": "Host cursor policy."
+        },
+        {
+          "key": "ui.agent_panel_sort",
+          "type": "string",
+          "default": "\"spaces\"",
+          "values": ["spaces", "priority"],
+          "description": "Agent sidebar ordering."
+        }
+      ]
+    },
+    {
+      "title": "Terminal",
+      "keys": [
+        {
+          "key": "terminal.shell_mode",
+          "type": "string",
+          "default": "\"pseudoterminal\"",
+          "values": ["pseudoterminal", "pipe"],
+          "description": "How interactive panes run their shell."
+        }
+      ]
+    }
+  ]
+}

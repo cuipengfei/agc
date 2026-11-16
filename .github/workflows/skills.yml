@@ -1,0 +1,37 @@
+name: Skill behavior checks
+
+on:
+  push:
+    paths:
+      - '.agents/skills/**'
+      - 'tests/test_info_tracker*.py'
+      - '.github/workflows/skills.yml'
+  pull_request:
+    paths:
+      - '.agents/skills/**'
+      - 'tests/test_info_tracker*.py'
+      - '.github/workflows/skills.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  behavior:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.3'
+      - name: OMP configuration scripts
+        run: bun test ./omp-configs.test.ts
+        working-directory: .agents/skills/omp-configs/tests
+      - name: OpenCode configuration scripts
+        run: bun test ./lib.test.mjs ./review-evidence.test.mjs ./upgrade.test.mjs
+        working-directory: .agents/skills/opencode-configs/scripts
+      - name: Herdr configuration scripts
+        run: bun .agents/skills/herdr-configs/tests/run.mjs
+      - name: OMO configuration scripts
+        run: bun .agents/skills/omo-configs/scripts/tests/run-tests.mjs
+      - name: Release tracker
+        run: python3 -m unittest discover -s tests -p 'test_info_tracker*.py' -v

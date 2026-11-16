@@ -65,11 +65,15 @@ bun $S/scripts/report-gaps.mjs --old $S/cache/settings-prev.json $S/cache/settin
 
 升级 Herdr 后的复查流程：先把旧 `cache/settings.json` 复制成 `cache/settings-prev.json`，升级后重跑 dump 与 report-gaps。
 
+离线行为检查：`bun .agents/skills/herdr-configs/tests/run.mjs`；使用独立 fixture 和 stub，不读取本机配置，也不访问网络。
+
 ## 翻译层
 
 `translations.json` 在 skill 根目录（受版本管理，随仓库长期保存——这是 LLM 手写的翻译层，放 `cache/` 会被 gitignore 而丢失），render-html 按 `join(import.meta.dir, "../translations.json")` 读取。格式 `{"<key>": {"label": "…", "desc": "…"}, …, "_groups": {"<英文分组名>": "<中文>"}}`。写 HTML 前校验：文件必须存在；每个键必须有非空中文 label 与 desc（包括官方参考无说明的键与本地扩展键）；每个分组必须有译名。缺一项即终止并列出缺项，不渲染英文或空说明。当前 212 键全覆盖（211 个官方键 + `keys.command` 本地扩展键），15 个分组。
 
 升级后 report-gaps 报 fingerprint 变化的键，其官方 description 可能改了：抽出该键新旧 description 重新翻译对应条目，保持全覆盖。
+
+`translations.json` 保存中文说明；官方 reference 文本的版本和指纹可用于复查。`behavior-evidence.json` 记录已识别的部分消费方行为及其来源，未列出的键仍可能含有人工说明。回答时先按键复用已有证据；Herdr 版本变化或相关指纹变化时，针对实际询问的键复查消费方，因为 reference 指纹不会覆盖代码行为。委派时传递已有证据、版本、待核键和具体缺口，只查尚未取得的部分。
 
 ## 脱敏边界
 
@@ -99,4 +103,4 @@ Herdr 的配置结构上不承载凭据（全部是界面与行为偏好），�
 - 比较用稳定序列化，因此对象键顺序不影响判定；但类型不同（如 `26` 与 `"26"`）会判为不同
 - `unset` 指配置文件里没有这个键，包含「用默认值」与「Herdr 内部回退」两种情况
 - `unknown` 表示参考条目给的是条件默认值（例如按平台不同），本机又写了值；此时无法判断是否等于默认值，脚本不去猜
-- 模板扫描只认右侧能独立解析为 TOML 值的行，因此 `herdr --default-config` 里夹在说明文字中的示例不会被当成默认值；当前覆盖 211 个官方键中的 117 个，其余靠参考条目补齐
+- 模板扫描只认右侧能独立解析为 TOML 值的行，因此 `herdr --default-config` 里夹在说明文字中的示例不会被当成默认值；按 0.9.5 实跑 `--default-config` 实测当前覆盖 211 个官方键中的 138 个，其余靠参考条目补齐

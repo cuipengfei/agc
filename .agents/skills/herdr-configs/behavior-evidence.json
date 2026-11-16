@@ -1,0 +1,18 @@
+{
+  "version": "0.9.5",
+  "source": "已核对的 Herdr v0.9.5 资料与仓库学习记录；translations.json 为中文说明。",
+  "review": "下列键含官方 reference 之外的行为说明。Herdr 版本变化或对应 reference 指纹变化时，针对用户实际查询的键复查消费方；参考条目的指纹无法反映消费方变化。未列出的键不表示没有其他手工说明。委派时传递版本、待核键、已有来源和具体缺口。",
+  "settings": {
+    "ui.agent_panel_sort": [
+      "raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md:99-128",
+      "https://github.com/herdrdev/herdr/blob/v0.9.5/src/app/agent_view.rs"
+    ],
+    "ui.host_cursor": [
+      "wiki/herdr-plannotator/herdr-config-user-experience.md:127（平台行为的既有归纳；源码位置待核对）"
+    ],
+    "keys.command": [
+      "raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md:56-97",
+      "raw/herdr-plannotator/2026-09-29-herdr-placement-popup-measurement.md:44-62"
+    ]
+  }
+}

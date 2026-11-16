@@ -1,0 +1,8 @@
+onboarding = false
+
+[server]
+# headless_cols = 120
+headless_rows = 40
+
+[ui]
+# host_cursor: drawn is forced under WSL and Windows

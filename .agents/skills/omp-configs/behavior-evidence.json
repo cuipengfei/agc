@@ -1,0 +1,30 @@
+{
+  "version": "18.20.3",
+  "source": "@oh-my-pi/pi-coding-agent/src",
+  "descriptionSource": "translations.json 的同名键 desc",
+  "review": "描述符指纹变化时复查描述符；OMP 版本变化时还须复查所用键的消费方，即使描述符指纹未变。源码行号仅为定位线索。",
+  "settings": {
+    "judgment.attemptTimeoutMs": ["config/model-settings.ts:142-153", "judgment/index.ts:541-560,582-610"],
+    "systemPromptTemplates": ["session/settings.ts:425-475", "session/session-tools.ts:1143-1148", "system-prompt.ts:793-813,1091-1092,1149-1158"],
+    "session.warnCost": ["session/settings.ts:1679-1684", "session/cost-gate.ts:56-72,106-116", "main.ts:2002-2004"],
+    "session.maxCost": ["session/settings.ts:1686-1692", "session/cost-gate.ts:56-58,79-103,130-143", "main.ts:2002-2004"],
+    "find.hitThreshold": ["tools/settings.ts:613-630", "tools/jfind/index.ts:130-144", "tools/jfind/cascade.ts:58-60,123-125,486-498"],
+    "launch.persist": ["tools/settings.ts:657-665", "launch/services.ts:262-263", "launch/broker.ts:1554-1561", "main.ts:2068-2069"],
+    "skills.manualSkills": ["extensibility/settings.ts:77-81", "extensibility/skills.ts:611-618", "capability/skill.ts:12-24", "session/session-tools.ts:2137-2143"],
+    "gc.strip": ["cli/gc-settings.ts:31-35", "cli/gc-cli.ts:339-340,2131-2142", "cli/gc-strip.ts:14-18,179-181,229-250"],
+    "gc.stripAfterDays": ["cli/gc-settings.ts:37", "cli/gc-cli.ts:73-74,296-299,323-327,367,2131-2142"],
+    "gc.autoCompress": ["cli/gc-settings.ts:39-41", "main.ts:2750-2774", "cli/gc-auto-compress.ts:1-33,39-77"],
+    "spotlight.experiment.holdout": ["spotlight/settings.ts:25-32", "spotlight/session.ts:137-144", "spotlight/index.ts:122-128,208-237"],
+    "spotlight.experiment.scoreFree": ["spotlight/settings.ts:37-44", "spotlight/session.ts:137-144", "spotlight/scorer.ts:17-18"],
+    "spotlight.experiment.tools": ["spotlight/settings.ts:49-55", "spotlight/session.ts:112-124", "spotlight/index.ts:146-149,380-382", "tools/jfind/index.ts:130-144"],
+    "spotlight.url": ["spotlight/settings.ts:79-84", "spotlight/types.ts:19-20", "spotlight/client.ts:89-92", "spotlight/session.ts:232-239"],
+    "spotlight.model": ["spotlight/settings.ts:86-90", "spotlight/types.ts:21-22", "spotlight/client.ts:89-92"],
+    "spotlight.thinking": ["spotlight/settings.ts:92-97", "spotlight/session.ts:202-212,223-227"],
+    "spotlight.timeoutMs": ["spotlight/settings.ts:99-104", "spotlight/client.ts:105-118,138-154"],
+    "models.noJudge": ["config/auxiliary-model-policy.ts:3-4", "judgment/index.ts:400-408,701-706"],
+    "models.noSpotlight": ["config/auxiliary-model-policy.ts:6-7", "spotlight/session.ts:223-239"],
+    "models.offline": ["config/auxiliary-model-policy.ts:9-10", "sdk.ts:4895-4898", "judgment/index.ts:400-408", "spotlight/session.ts:223-239"],
+    "title.refreshAfterPrompts": ["utils/title-settings.ts:69-90", "session/agent-session.ts:11663-11677,11703-11732"],
+    "mnemopi.recallRelevance": ["mnemopi/settings.ts:107-121", "mnemopi/state.ts:708-746", "mnemopi/relevance.ts:17-21,40-67"]
+  }
+}

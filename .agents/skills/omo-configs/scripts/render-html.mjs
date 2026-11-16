@@ -45,6 +45,11 @@ code{background:#1f1f1f;padding:1px 4px;border-radius:4px;font-size:12px;word-br
 .b-unset{background:#2a2a55;color:#cdd6ff} .b-default-explicit{background:#5a4413;color:#ffd98a} .b-customized{background:#1e4620;color:#8affa1} .b-schema-only{background:#3a2a4a;color:#e0c8ff}
 .desc{color:#a8a8a8;font-size:12px;line-height:1.5}
 .unset-hint{color:#9a9a9a;font-style:italic} .dash{color:#555}
+.warn{display:none;background:#331c0c;border:1px solid #b3622a;color:#ffcf9e;padding:10px 14px;border-radius:8px;margin:12px 0;font-size:13px;white-space:pre-wrap}
+.b-verified{background:#1e3a2a;color:#8affc1}
+.b-unverified{background:#4a2410;color:#ffb98a}
+.stale{outline:1px dashed #b3622a;border-radius:4px;padding:0 2px}
+.evtag{color:#777;font-size:12px}
 @media (max-width:1099px){
   body{margin:12px;overflow-x:auto}
   table{min-width:0}
@@ -57,12 +62,14 @@ code{background:#1f1f1f;padding:1px 4px;border-radius:4px;font-size:12px;word-br
   td:nth-child(3)::before{content:"状态　"}
   td:nth-child(4)::before{content:"默认值 "}
   td:nth-child(5)::before{content:"生效值 "}
+  td:nth-child(7)::before{content:"证据　"}
 }
 </style>
 </head>
 <body>
 <h1>OMO Native 配置总览</h1>
 <div class="meta" id="meta"></div>
+<div class="warn" id="warn"></div>
 <div class="controls">
 <input id="q" placeholder="搜索 key / label / 描述" size="28">
 <select id="state"><option value="">全部状态</option><option value="unset">未设置</option><option value="default-explicit">显式默认</option><option value="customized">已修改</option><option value="schema-only">仅声明</option></select>
@@ -72,7 +79,7 @@ code{background:#1f1f1f;padding:1px 4px;border-radius:4px;font-size:12px;word-br
 <table id="t">
 <thead><tr>
 <th data-k="key">key</th><th data-k="label">label</th><th data-k="state">状态</th>
-<th>默认值</th><th>生效值</th><th>说明</th>
+<th>默认值</th><th>生效值</th><th>说明</th><th>证据</th>
 </tr></thead>
 <tbody></tbody>
 </table>
@@ -83,10 +90,21 @@ const ALL = [
   ...D.senpi.fields.map(f => ({...f, section: "senpi"})),
   ...D.native.fields.map(f => ({...f, section: "native"})),
 ];
+// Evidence honesty: a native row is trustworthy only when its evidence version
+// matches the actually detected omo-ai install; anything else is shown as
+// 未核实 — default, effective value AND state may all be wrong for this install.
+const detected = D.evidence ? D.evidence.omoAiVersion : null;
+const unverified = f => f.evidence != null && f.evidence !== detected;
+if (D.evidence && D.evidence.staleWarning) {
+  const w = document.getElementById("warn");
+  w.style.display = "block";
+  w.textContent = "⚠ " + D.evidence.staleWarning;
+}
 document.getElementById("meta").textContent =
   "生成于 " + D.generatedAt + " · 共 " + D.counts.total + " 项 · 已修改 " + D.counts.customized +
-  " · 显式默认 " + D.counts.defaultExplicit + " · 未设置 " + D.counts.unset + " · 来源 " + D.senpiSrc;
-const labels = {unset:"未设置","default-explicit":"显式默认","customized":"已修改","schema-only":"仅声明"};
+  " · 显式默认 " + D.counts.defaultExplicit + " · 未设置 " + D.counts.unset + " · 来源 " + D.senpiSrc +
+  " · omo-ai " + (detected ?? "未检测到");
+const labels = {unset:"未设置","default-explicit":"显式默认",customized:"已修改","schema-only":"仅声明"};
 // A value cell answers "what do I get here". Quote empty/whitespace strings so
 // they're visible; a bare null/undefined becomes a quiet dash via renderCell.
 const fmt = v => typeof v === "string"
@@ -94,14 +112,23 @@ const fmt = v => typeof v === "string"
   : JSON.stringify(v);
 // Default column: show the real shipped default when present; otherwise show
 // the "when unset" behavior so the user can decide whether to configure it.
+// Unverified rows (evidence version != detected install) get a dashed outline:
+// the printed default/value may not be this install's real behavior.
 function defaultCell(f){
-  if (f.default !== null && f.default !== undefined) return '<code>'+esc(fmt(f.default))+'</code>';
+  const cls = unverified(f) ? ' class="stale"' : "";
+  if (f.default !== null && f.default !== undefined) return '<code'+cls+'>'+esc(fmt(f.default))+'</code>';
   if (f.whenUnset) return '<span class="unset-hint">未配置即：'+esc(f.whenUnset)+'</span>';
   return '<span class="dash">—</span>';
 }
 function valueCell(f){
-  if (f.value !== null && f.value !== undefined) return '<code>'+esc(fmt(f.value))+'</code>';
+  const cls = unverified(f) ? ' class="stale"' : "";
+  if (f.value !== null && f.value !== undefined) return '<code'+cls+'>'+esc(fmt(f.value))+'</code>';
   return '<span class="dash">—</span>';
+}
+function evidenceCell(f){
+  if (f.evidence == null) return '<span class="dash">—</span>';
+  if (unverified(f)) return '<span class="badge b-unverified" title="安装版本与证据版本不一致：此行的默认值、生效值与状态分类均不可靠">⚠ 未核实</span> <span class="evtag">'+esc(f.evidence)+'</span>';
+  return '<span class="badge b-verified">'+esc(f.evidence)+'</span>';
 }
 let sortK = "key", sortAsc = true;
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
@@ -114,11 +141,13 @@ function render(){
     (!q || (f.key+" "+f.label+" "+f.desc).toLowerCase().includes(q)));
   rows.sort((a,b)=>{const x=a[sortK]??"",y=b[sortK]??"";return (x<y?-1:x>y?1:0)*(sortAsc?1:-1)});
   document.getElementById("count").textContent = "显示 " + rows.length + " / " + ALL.length;
-  document.querySelector("tbody").innerHTML = rows.map(f =>
-    '<tr><td><code>'+esc(f.key)+'</code></td><td>'+esc(f.label)+'</td>'+
-    '<td><span class="badge b-'+f.state+'">'+labels[f.state]+'</span></td>'+
+  document.querySelector("tbody").innerHTML = rows.map(f => {
+    const staleTitle = unverified(f) ? ' title="状态分类基于未核实的证据默认值，可能不准确"' : "";
+    return '<tr><td><code>'+esc(f.key)+'</code></td><td>'+esc(f.label)+'</td>'+
+    '<td><span class="badge b-'+f.state+'"'+staleTitle+'>'+labels[f.state]+'</span></td>'+
     '<td>'+defaultCell(f)+'</td><td>'+valueCell(f)+'</td>'+
-    '<td class="desc">'+esc(f.desc)+'</td></tr>').join("");
+    '<td class="desc">'+esc(f.desc)+'</td><td>'+evidenceCell(f)+'</td></tr>';
+  }).join("");
 }
 for (const el of ["q","state","section"]) document.getElementById(el).addEventListener("input", render);
 document.querySelectorAll("th[data-k]").forEach(th => th.addEventListener("click", () => {

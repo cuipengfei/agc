@@ -1,0 +1,10 @@
+{
+	"app.title": { "label": "应用标题", "desc": "应用窗口标题" },
+	"app.mode": { "label": "模式", "desc": "运行模式" },
+	"app.fruits": { "label": "水果", "desc": "允许的水果" },
+	"app.endpoint": { "label": "端点", "desc": "公网 API 端点" },
+	"app.profile": { "label": "连接配置", "desc": "连接配置档" },
+	"app.apiKey": { "label": "API 密钥", "desc": "服务 API 密钥" },
+	"app.trim": { "label": "裁剪值", "desc": "值会被裁剪" },
+	"_groups": { "general": "常规", "network": "网络" }
+}

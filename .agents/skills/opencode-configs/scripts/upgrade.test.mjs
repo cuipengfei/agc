@@ -42,6 +42,10 @@ describe("默认资产信任边界", () => {
   test("CLI 与服务版本不同终止", () => expect(() => validateAssets(defaults, evidence, version, "2.0.27")).toThrow());
   test("缺少文件关联终止", () => expect(() => rows({}, defaults, { ...evidence, keys: {} })).toThrow());
   test("非法哈希终止", () => expect(() => rows({}, defaults, { ...evidence, sources: { "src/config.ts": { sha256: "invalid" } } })).toThrow());
+  test.each(["/abs/config.ts", "a/../b.ts"])("非法 source 路径终止：%s", (badPath) => {
+    const bad = { ...evidence, sources: { "src/config.ts": { sha256: "a".repeat(64) }, [badPath]: { sha256: "b".repeat(64) } } };
+    expect(() => validateAssets(defaults, bad, version)).toThrow();
+  });
   test("新增叶字段必须补齐默认值", () => expect(() => rows({}, { warming: defaults.warming })).toThrow());
 });
 
@@ -57,6 +61,11 @@ describe("配置文档到脱敏行的组合行为", () => {
   });
   test("warming 对象显式采用默认间隔", () => {
     expect(rows({ warming: { interval: "4 minutes" } }).find((r) => r.key === "warming").state).toBe("default-explicit");
+  });
+  test("行内携带结构化证据来源（path+sha256），下游 diff/report 直接复用", () => {
+    const row = rows({}).find((r) => r.key === "warming");
+    expect(row.defaultEvidence).toBe("源码默认关闭");
+    expect(row.defaultEvidenceSources).toEqual([{ path: "src/config.ts", sha256: "a".repeat(64) }]);
   });
 });
 

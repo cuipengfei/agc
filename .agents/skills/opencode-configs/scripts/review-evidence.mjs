@@ -1,7 +1,7 @@
 // 版本化取证复查：对照目标 tag 重新计算 evidence.json 里每个来源文件的 SHA256，
-// 列出 changedSources / missingSources / affectedKeys / unchangedKeys，供 LLM 复查后人工更新资产。
-// 不修改 evidence.json 与 defaults.json；输出不含任何配置值。
-//
+// 列出 changedSources / missingSources / affectedKeys / unchangedKeys；affectedKeyMap
+// 逐键给出 changed/missing/unchanged 来源，复查与委派只针对 changed/missing 来源，
+// unchanged 来源的既有取证直接复用。不修改 evidence.json 与 defaults.json；输出不含任何配置值。
 // Usage: bun review-evidence.mjs --version VERSION [--out cache/evidence-review.json] [--source-dir DIR]
 //   --version     目标版本（2.0.28 或 v2.0.28 均可；输出 version 归一化为不带 v，与引擎 info.version 对齐）
 //   --out         复查结果输出路径（默认 ../cache/evidence-review.json，相对脚本目录）
@@ -82,6 +82,21 @@ export function review(evidence, fetchBytes, version) {
   const unchangedKeys = Object.keys(keys)
     .filter((key) => !affectedKeys.includes(key))
     .sort();
+  const changedSet = new Set(changed.map((c) => c.path));
+  const missingSet = new Set(missing);
+  const unchangedSet = new Set(unchanged);
+  const pickRefs = (refs, set) => refs.filter((ref) => set.has(ref)).sort();
+  // 逐键委派映射：复查/委派只传 changed/missing 来源，unchanged 来源复用既有取证
+  const affectedKeyMap = Object.fromEntries(
+    affectedKeys.map((key) => [
+      key,
+      {
+        changed: pickRefs(keys[key], changedSet),
+        missing: pickRefs(keys[key], missingSet),
+        unchanged: pickRefs(keys[key], unchangedSet),
+      },
+    ]),
+  );
 
   return {
     repository: evidence.repository,
@@ -90,6 +105,7 @@ export function review(evidence, fetchBytes, version) {
     missingSources: missing,
     unchangedSources: unchanged,
     affectedKeys,
+    affectedKeyMap,
     unchangedKeys,
   };
 }

@@ -1,17 +1,29 @@
 import { existsSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { availableParallelism } from "node:os";
+import {
+  EVIDENCE_VERSION,
+  RE_VERIFIED_5_1_72,
+  RESIDENCY_MAX_CHILDREN_DEFAULT,
+  resolveGlobalConcurrency,
+  detectOmoAiVersion,
+  evidenceFor,
+  evidenceWarning,
+} from "./omo-evidence.mjs";
 
 const HOME = process.env.HOME ?? "";
 const OMO_HOME = process.env.OMO_HOME ?? join(HOME, ".omo");
 const AGENT_DIR = process.env.OMO_AGENT_DIR ?? join(OMO_HOME, "agent");
 const PROBE_CWD = process.env.OMO_PROBE_CWD ?? "/tmp";
-// task concurrency resolves per available parallelism at runtime (v5.0.1
-// resolveOmoTaskSettings uses availableParallelism, not cpus().length), so
-// compute this machine's real effective values with the same primitive.
+// task.global_concurrency's effective-when-unset value resolves per available
+// parallelism at runtime (omo-ai resolveOmoTaskSettings uses
+// max(8, 2*availableParallelism)); compute this machine's real effective value
+// with the same primitive. Note: this is the runtime FORMULA result, not the
+// zod schema default — the schema declares .default(8) since omo-ai 5.1.72
+// (see omo-evidence.mjs). residency_max_children has no such formula anymore:
+// its schema default is "unlimited" since 5.1.72.
 const PAR = availableParallelism();
-const RESOLVED_GLOBAL_CONCURRENCY = Math.max(8, 2 * PAR);
-const RESOLVED_RESIDENCY = Math.min(16, Math.max(8, 2 * PAR));
+const RESOLVED_GLOBAL_CONCURRENCY = resolveGlobalConcurrency(PAR);
 
 // Resolve the installed Senpi engine (holds core/settings-manager.js) by
 // absolute path, mirroring omp-configs: agc has no node_modules linking the
@@ -112,7 +124,6 @@ const SETTINGS_FIELDS = [
   { key: "httpProxy", raw: true, label: "HTTP 代理", desc: "出站 HTTP 请求走的代理地址；处于需代理才能访问模型端点的网络时设", whenUnset: "直连，不走代理" },
   { key: "defaultProjectTrust", getter: "getDefaultProjectTrust", label: "默认项目信任", desc: "打开新项目时的默认信任级别，默认 ask 每次问；always 直接信任、never 直接不信任（ask/always/never）" },
   { key: "openai", getter: "getOpenAIServiceTier", label: "OpenAI 服务级别", desc: "OpenAI 请求的 serviceTier 值；启用后由 service-tier 扩展的 addServiceTierToPayload 加到 OpenAI 请求 payload 的 service_tier 字段（源码 service-tier.js）。想对 OpenAI 模型选服务档时设，具体可选值取决于 OpenAI 账号", whenUnset: "不设置 OpenAI 服务级别" },
-  { key: "experimental", getter: "getExperimentalSharedHost", label: "实验性 sharedHost", desc: "实验开关对象，getter 判定 experimental.sharedHost===true（默认 false）；控制是否启用 sharedHost 实验特性。实验性有风险，具体行为未在消费点逐一核实" },
   { key: "providers", getter: "getProviderSettings", label: "提供方配置", desc: "按提供方 ID 的运行配置（如并发限制）对象；想给某提供方限并发或调参时设" },
 ];
 // Nested-object settings whose sub-fields get enumerated as their own report
@@ -266,13 +277,20 @@ const NATIVE_FIELDS = [
 ];
 
 // [native] task/memory expanded into comparable sub-field rows. No engine getter
-// exists, so defaults come from OMO's own zod schema, read directly from the
-// version-matched public source at tag v5.0.1 (task.ts + memory.ts of
-// code-yeongyu/oh-my-openagent), which matches the installed omo-ai 5.0.1 bundle.
-// A row unconfigured in the user's [native] block runs at the schema default, so
-// the effective value shows that default (state unset), mirroring Senpi getters.
-// Fields optional with no schema default show — (absent at runtime); the dag block
-// is optional as a whole, so its sub-fields show their fallback default as
+// exists, so defaults come from OMO's own zod schema. Provenance (see
+// omo-evidence.mjs): these 73 schemaDefault values were read from the PUBLIC
+// source tag v5.0.1 (task.ts + memory.ts of code-yeongyu/oh-my-openagent) —
+// only task.global_concurrency / task.residency_max_children are re-verified
+// against installed omo-ai 5.1.72; every dumped row carries an `evidence`
+// column stating which. Do NOT treat unmarked rows as verified against the
+// installed bundle; dump warns on stdout/stderr when versions diverge.
+// A row unconfigured in the user's [native] block runs at the schema default,
+// so the effective value shows that default (state unset), mirroring Senpi
+// getters — EXCEPT rows with `effectiveWhenUnset(par)`, whose effective value
+// is the runtime formula result while the `default` column stays the schema
+// default.
+// Fields optional with no schema default show — (absent at runtime); the dag
+// block is optional as a whole, so its sub-fields show their fallback default as
 // reference and — as effective (state 仅声明) until the block is configured.
 const NATIVE_NESTED_SETTINGS_FIELDS = [
   { parent: "task", group: "任务", subs: [
@@ -286,11 +304,11 @@ const NATIVE_NESTED_SETTINGS_FIELDS = [
     { key: "host_engine_policy", label: "宿主引擎策略", schemaDefault: "upgrade", note: "运行中 daemon 引擎版本与本客户端不一致时：upgrade 把 daemon 升到新版 | fallback 不动 daemon、子任务各自独立进程跑。想避免自动升级共享 daemon 时用 fallback" },
     { key: "host_idle_exit_ms", label: "宿主空闲退出", schemaDefault: null, note: "本客户端启动的 daemon 空闲多久自动退出（毫秒）。设了则 daemon 闲置到点自杀省资源，未配置沿用启动规格。想让闲置 daemon 更快释放时设" },
     { key: "default_concurrency", label: "默认并发", schemaDefault: 5, note: "未给具体 category 限额时每类默认可并行的子任务数。调大同类任务更并行更快也更吃资源，调小更省。默认 5，按机器负载调" },
-    { key: "global_concurrency", label: "全局并发", schemaDefault: RESOLVED_GLOBAL_CONCURRENCY, note: `跨所有分类同时并行的子任务总上限。调大整体更并行但更吃 CPU/内存，0 表示不限；未配置时按 max(8,2×并行度) 自适应（本机并行度 ${PAR}→${RESOLVED_GLOBAL_CONCURRENCY}）。资源紧张就显式调小` },
+    { key: "global_concurrency", label: "全局并发", schemaDefault: 8, effectiveWhenUnset: resolveGlobalConcurrency, note: `跨所有分类同时并行的子任务总上限。调大整体更并行但更吃 CPU/内存，0 表示不限。schema 默认 8（5.1.72 起）；未配置时生效公式 max(8,2×并行度)（本机并行度 ${PAR}→${RESOLVED_GLOBAL_CONCURRENCY}），与 schema 默认是两个概念勿混淆。资源紧张就显式调小` },
     { key: "provider_concurrency", label: "按提供方并发", schemaDefault: null, note: "按提供方 ID 单独限并发（provider→数字）。给某 provider 限流以避开其速率限制时设，未配置则不针对 provider 限" },
     { key: "model_concurrency", label: "按模型并发", schemaDefault: null, note: "按模型 ID 单独限并发（model→数字）。给贵/慢的模型限流时设，未配置则不针对模型限" },
     { key: "max_depth", label: "最大深度", schemaDefault: 1, note: "子任务再派生子任务的最大嵌套深度。默认 1（子任务不能再开子任务）；调大允许多层任务树但可能扩散失控。需要多层编排时才调大" },
-    { key: "residency_max_children", label: "常驻子任务上限", schemaDefault: RESOLVED_RESIDENCY, note: `常驻代理最多同时留驻多少个完整子会话在内存。留驻多则复用快但吃内存，0 表示全放行；未配置时按 min(16,max(8,2×并行度)) 自适应（本机→${RESOLVED_RESIDENCY}）。内存紧张就调小` },
+    { key: "residency_max_children", label: "常驻子任务上限", schemaDefault: RESIDENCY_MAX_CHILDREN_DEFAULT, note: "常驻代理最多同时留驻多少个完整子会话在内存（非负整数，或 unlimited）。留驻多则复用快但吃内存，0 表示全放行。schema 默认 unlimited（5.1.72 起；5.0.1 为 min(16,max(8,2×并行度)) 自适应，旧证据）。内存紧张就调小" },
     { key: "resident_idle_timeout_ms", label: "常驻空闲超时", schemaDefault: 900000, note: "常驻代理空闲多久后被回收（毫秒），900000=15 分钟。调大代理留驻更久、复用更多但占内存久，调小更快释放。频繁复用同一代理时调大" },
     { key: "ttl_ms", label: "任务存活时长", schemaDefault: 86400000, note: "任务记录在存储里保留多久（毫秒），86400000=24 小时，到期清理。想留久便于回溯就调大，想省空间就调小" },
     { key: "state_dir", label: "状态目录", schemaDefault: null, note: "任务状态（run 记录等）的存储目录。想把状态放到指定位置（如快盘）时设，未配置用默认位置" },
@@ -409,7 +427,10 @@ for (const grp of NATIVE_NESTED_SETTINGS_FIELDS) {
       value = null;
       state = "schema-only";
     } else {
-      value = sub.schemaDefault;
+      // Rows with effectiveWhenUnset run at the runtime FORMULA result, not the
+      // schema default (currently only task.global_concurrency); the `default`
+      // column below still shows the schema default.
+      value = sub.effectiveWhenUnset ? sub.effectiveWhenUnset(PAR) : sub.schemaDefault;
       state = "unset";
     }
     nativeNestedRows.push({
@@ -419,6 +440,7 @@ for (const grp of NATIVE_NESTED_SETTINGS_FIELDS) {
       value: value ?? null,
       default: sub.schemaDefault,
       state,
+      evidence: evidenceFor(`${grp.parent}.${sub.key}`),
       source: isSet ? "omo.jsonc[native]" : "omo-schema-default",
     });
   }
@@ -461,6 +483,24 @@ function schemaSettingsKeys(src) {
   return keys;
 }
 
+// Detect the installed omo-ai version so stale schema evidence cannot pass
+// silently: the 73 schemaDefault rows are EVIDENCE_VERSION-sourced, and only
+// RE_VERIFIED_5_1_72 are re-checked against 5.1.72. Candidates — no shell
+// probes: OMO_AI_DIR env (explicit override), then the Senpi global-install
+// sibling. omo-ai declares @code-yeongyu/senpi as a dependency, so the package
+// dir next to the engine's own global install is the omo-ai that installed
+// this engine; its package.json IS install metadata. Absence is fine (CI) —
+// it yields the undetectable-version warning, not a failure.
+function omoAiCandidates() {
+  const candidates = [];
+  if (process.env.OMO_AI_DIR) candidates.push(process.env.OMO_AI_DIR);
+  candidates.push(join(SRC, "..", "..", "..", "omo-ai"));
+  return candidates;
+}
+const omoAiVersion = detectOmoAiVersion(omoAiCandidates(), (p) =>
+  readFileSync(p, "utf8")
+);
+const staleEvidenceWarning = evidenceWarning(omoAiVersion);
 // Nested-object settings are represented by their sub-field rows, not a parent
 // row in SETTINGS_FIELDS, so count their top-level key as covered for parity.
 const mapped = new Set([
@@ -483,6 +523,12 @@ const out = {
   senpiSrc: SRC,
   settingsSources: current.getSelectedSettingsSources?.() ?? [],
   omoJsoncSource: omoJsoncPath ?? null,
+  evidence: {
+    omoAiVersion,
+    evidenceVersion: EVIDENCE_VERSION,
+    reVerifiedKeys: RE_VERIFIED_5_1_72,
+    staleWarning: staleEvidenceWarning,
+  },
   senpi: { count: rows.length + nestedRows.length, fields: [...rows, ...nestedRows] },
   senpiNested: { count: nestedRows.length, fields: nestedRows },
   native: { count: nativeRows.length + nativeNestedRows.length, fields: [...nativeRows, ...nativeNestedRows] },
@@ -526,5 +572,10 @@ if (missingFromTable.length) {
 if (extraInTable.length) {
   console.warn(
     `WARNING: ${extraInTable.length} SETTINGS_FIELDS key(s) absent from the Settings interface — likely renamed/removed upstream: ${extraInTable.join(", ")}`
+  );
+}
+if (staleEvidenceWarning) {
+  console.warn(
+    `\n********** EVIDENCE WARNING **********\n${staleEvidenceWarning}\n**************************************\n`
   );
 }

@@ -38,7 +38,7 @@ bun $S/scripts/report-gaps.mjs --old $S/cache/settings-prev.json $S/cache/settin
 bun $S/scripts/review-evidence.mjs --version 2.x.y --out $S/cache/evidence-review.json
 
 # 行为与资产校验测试
-bun test ./$S/scripts/
+(cd "$S/scripts" && bun test ./lib.test.mjs ./review-evidence.test.mjs ./upgrade.test.mjs)
 ```
 
 ## 采集门槛与数据来源
@@ -72,8 +72,8 @@ HTML 转义嵌入 JSON 与单元格文本，筛选只提供上述四态。发现
 
 ## 升级复查流程
 
-1. 保留旧快照，运行 `review-evidence --version <新版>`。脚本比较已关联源码及文档文件 SHA-256；变化或被删除的文件映射到 affectedKeys。网络或鉴权失败明确终止。
-2. LLM 读取变化文件，检查相应默认值、是否生效、条件分支与说明文字。文件未变的既有取证复用；新增 schema 字段按覆盖缺项调查。源码出现新的调用依赖时，将该依赖加入证据关联。
+1. 保留旧快照，运行 `review-evidence --version <新版>`。脚本比较已关联源码及文档文件 SHA-256；变化或被删除的文件映射到 affectedKeys，affectedKeyMap 逐键列出该键的 changed/missing/unchanged 来源。网络或鉴权失败明确终止。
+2. LLM 或子代理只针对 affectedKeyMap 里的 changed/missing 来源调查，unchanged 来源的既有取证随映射一并传递、直接复用；新增 schema 字段按覆盖缺项调查。检查相应默认值、是否生效、条件分支与说明文字。源码出现新的调用依赖时，将该依赖加入证据关联。
 3. 审核后更新 `defaults.json`、`translations.json` 和 `evidence.json` 的版本与文件指纹。文件哈希只能来自实际读取的源码字节；复查脚本不自动批准语义、不自动改写审核资产。
 4. 新版本采集成功后运行 `report-gaps --old`。报告新增、删除、schema 指纹变化、完整默认语义变化、状态变化与独立的 evidenceChanged。行为默认描述、known/inert 形态均参加比较。
 5. 执行测试及 dump/render，并在浏览器验证受影响行和状态筛选。全部通过后保留更新的可复用资产；HTML 和配置快照只保留本机。

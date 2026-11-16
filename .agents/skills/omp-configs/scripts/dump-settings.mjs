@@ -58,6 +58,7 @@ function fingerprint(setting) {
 		pathScoped: def.pathScoped ?? null,
 		items: def.items ?? null,
 		normalize: def.normalize ? String(def.normalize) : null,
+		validate: def.validate ? String(def.validate) : null,
 	};
 	return createHash("sha256").update(JSON.stringify(shape)).digest("hex").slice(0, 16);
 }
@@ -70,11 +71,37 @@ function isRemoteUrl(value) {
 	);
 }
 
+function looksLikeSecret(value) {
+	if (typeof value !== "string" || value.length < 20) return false;
+	return (
+ 		/^(sk-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AKIA[0-9A-Z]{16}|hf_[A-Za-z0-9]{16,})$/.test(value)
+	);
+}
+
+// 只处理已配置的值：默认值是源码常量（公网 URL 等非机密保留），用户配置里的
+// 嵌套远程 URL 与未标记 isCredential 的密钥形态字面值才是盲区。空串、localhost、
+// 无凭据结构原样保留，只替换敏感叶子。
+function redactLeaves(value) {
+	if (typeof value === "string") {
+		if (value.length === 0) return value;
+		if (isRemoteUrl(value) || looksLikeSecret(value)) return "<redacted>";
+		return value;
+	}
+	if (Array.isArray(value)) return value.map(redactLeaves);
+	if (value && typeof value === "object") {
+		return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, redactLeaves(v)]));
+	}
+	return value;
+}
+
 function redact(setting, value, configured = false) {
-	if (!setting.isCredential && !(configured && isRemoteUrl(value))) return value;
-	if (value == null) return value;
-	if (typeof value === "string" && value.length === 0) return value;
-	return "<redacted>";
+	if (setting.isCredential) {
+		if (value == null) return value;
+		if (typeof value === "string" && value.length === 0) return value;
+		return "<redacted>";
+	}
+	if (!configured || value == null) return value;
+	return redactLeaves(value);
 }
 
 const rows = [];
@@ -91,6 +118,9 @@ for (const setting of orderedSettings()) {
 		group: setting.ui?.group ?? null,
 		label: setting.ui?.label ?? null,
 		description: setting.ui?.description ?? null,
+		items: setting.definition.items ?? null,
+		normalize: setting.definition.normalize ? String(setting.definition.normalize) : null,
+		validate: setting.definition.validate ? String(setting.definition.validate) : null,
 		default: redact(setting, def) ?? null,
 		enumValues: setting.enumValues ?? null,
 		credential: setting.isCredential,

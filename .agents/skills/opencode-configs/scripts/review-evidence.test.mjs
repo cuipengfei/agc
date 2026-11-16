@@ -45,6 +45,11 @@ describe("review 核心对比", () => {
     expect(r1.missingSources).toEqual(["gone.ts"]);
     expect(r1.affectedKeys).toEqual(["keyAB", "keyClean", "keyGone"]);
     expect(r1.unchangedKeys).toEqual(["keyA"]);
+    expect(r1.affectedKeyMap).toEqual({
+      keyAB: { changed: ["docs/b.md"], missing: [], unchanged: ["a.ts"] },
+      keyClean: { changed: ["docs/b.md"], missing: [], unchanged: [] },
+      keyGone: { changed: [], missing: ["gone.ts"], unchanged: [] },
+    });
     expect(JSON.stringify(r1)).toBe(JSON.stringify(r2)); // 确定性
   });
 
@@ -56,10 +61,9 @@ describe("review 核心对比", () => {
     expect(() => review(ev, fetchBytes, ev.version)).toThrow(/auth required/);
   });
 
-  test("输出不含配置值", () => {
+  test("输出不含配置值，字段集合固定", () => {
     const ev = fixtureEvidence();
     const r = review(ev, (path) => (path === "docs/b.md" ? randomBytes(16) : (ev._bytes[path] ?? null)), ev.version);
-    const out = JSON.stringify(r);
     expect(Object.keys(r.changedSources[0])).toEqual(["path", "expected", "actual"]);
     expect(Object.keys(r)).toEqual([
       "repository",
@@ -68,8 +72,15 @@ describe("review 核心对比", () => {
       "missingSources",
       "unchangedSources",
       "affectedKeys",
+      "affectedKeyMap",
       "unchangedKeys",
     ]);
+    // 委派映射只含 evidence.json 已登记的源码路径，不带任何配置值
+    for (const entry of Object.values(r.affectedKeyMap)) {
+      for (const refs of Object.values(entry)) {
+        for (const ref of refs) expect(Object.hasOwn(ev.sources, ref)).toBe(true);
+      }
+    }
   });
 });
 
@@ -114,6 +125,11 @@ describe("--source-dir 离线模式", () => {
     expect(result.missingSources).toEqual(["gone.ts"]);
     expect(result.unchangedSources).toEqual(["a.ts"]);
     expect(result.affectedKeys).toEqual(["keyAB", "keyClean", "keyGone"]);
+    expect(result.affectedKeyMap).toEqual({
+      keyAB: { changed: ["docs/b.md"], missing: [], unchanged: ["a.ts"] },
+      keyClean: { changed: ["docs/b.md"], missing: [], unchanged: [] },
+      keyGone: { changed: [], missing: ["gone.ts"], unchanged: [] },
+    });
   });
 });
 

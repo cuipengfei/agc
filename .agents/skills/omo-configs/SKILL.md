@@ -59,7 +59,9 @@ bun $S/scripts/render-html.mjs
 bun $S/scripts/report-gaps.mjs --old $S/cache/settings-prev.json $S/cache/settings.json
 ```
 
-产物写入 `$S/cache/settings.json` 与 `$S/cache/settings.html`。`cache/` 已 gitignore，产物只留本机，不要提交。
+# 4. 证据/默认值/清单覆盖离线测试（无需本机 OMO 安装，bun 或 node 均可，CI 可跑）
+bun $S/scripts/tests/run-tests.mjs
+```
 
 ## 值与默认值的权威来源
 
@@ -67,10 +69,10 @@ bun $S/scripts/report-gaps.mjs --old $S/cache/settings-prev.json $S/cache/settin
 
 - **引擎实读**（多数 Senpi 标量、列表、已展开的嵌套子字段）：`dump-settings.mjs` 调 Senpi 自己的 `SettingsManager`——生效值走 `create(cwd, agentDir)`（global + project scope 合并后逐个 getter），默认值走 `inMemory({})`（磁盘无设置，同一 getter 取 shipped default）；三态读 `getGlobalSettings()`/`getProjectSettings()` 原始键判定（缺键 `unset`、等于默认 `default-explicit`、不同 `customized`）。写 `NESTED_SETTINGS_FIELDS` 前，从 `Object.getPrototypeOf(SettingsManager.inMemory({}))` 枚举真实 getter 名——接口字段名不等于 getter 名，按 `.d.ts` 字段名拼 getter 会取不到。
 - **schema-only**（如 `promptCache.cacheAwareTimeouts`、`safetyBufferSeconds`）：引擎无对应 getter，取不到运行值。默认值填源码 schema 声明的常量，`state` 标 `schema-only`，生效值列留破折号并注源。
-- **`[native]` 段**（`omo.jsonc` 的 `[native]`）：用 Senpi 的 `parseSettingsJson` 解析（字符串内 `//` 不被误删，解析失败就地抛错）。`model_profile`/`model_profiles`/`categories`/`agents` 四项按整值呈现（`unset`/`customized`）。`task`/`memory` 无 Senpi getter，按 OMO 自身 zod schema 逐字段展成子行——schema 与默认直接读版本匹配的公开源码 tag `v5.0.1`（`code-yeongyu/oh-my-openagent` 的 `packages/omo-config-core/{task,memory}.ts`，与安装版 omo-ai 5.0.1 bundle 一致）。未配置项的生效值取 schema 解析后的运行默认（并发用 `availableParallelism()` 按本机解析，与 `resolveOmoTaskSettings` 同源）；`task.dag` 整块可选，未配置时子字段生效值为 —（标 `schema-only`）。
+- **`[native]` 段**（`omo.jsonc`）：使用 Senpi 的 `parseSettingsJson` 解析。`model_profile`、`model_profiles`、`categories`、`agents` 按整值呈现；`task` 和 `memory` 按已知 schema 展开。两个键的默认值已对照 omo-ai 5.1.72 的 `plugin/extensions/omo-task.js` 和 `plugin/CHANGELOG.md` 核对：`task.global_concurrency` 的 schema 默认值为 8，未设置时的运行公式为 `max(8, 2×并行度)`；`task.residency_max_children` 的 schema 默认值为 `unlimited`。其余 71 项使用 `code-yeongyu/oh-my-openagent` v5.0.1 的 `packages/omo-config-core/{task,memory}.ts` 证据，未逐项核对当前版本。每行记录证据版本；安装版本与该行证据不同时，HTML 标记该行未核实。dump 从 `OMO_AI_DIR` 或 Senpi 安装目录相邻的 omo-ai 包读取版本；存在不匹配项或无法检测版本时输出警告。未配置的 `task.dag` 子字段标为 `schema-only`。
 - 少数用户数据映射（`modelServiceTiers`、`modelLastOnThinkingLevels`）无批量 getter，直接读合并后原始设置，默认值为空，字段表标 `raw`。
 
-本地 bundle（omo-ai）压缩难提取时走公开源码取证：grep.app 搜独特标识符（如 `residency_max_children`）定位仓库，本地 bundle 与公开源码双证。
+本地 bundle（omo-ai）压缩难提取时走公开源码取证：grep.app 搜独特标识符（如 `residency_max_children`）定位仓库，本地 bundle 与公开源码双证。**只查缺项、不全面重核**：复核只针对新出现或被质疑的键，逐键对照安装版 bundle/公开源码 tag 取证并记录证据版本；其余键保持旧证据标记，不得宣称全面验证。委派子代理补字段时必须随 patch 携带证据（版本号 + 来源文件/行），无证据的默认值不得入库。
 
 **每个字段回答三问**：是什么、驱动什么行为、什么场景配它——逐项对着 getter 实现、消费点或 schema 取证。`dump-settings.mjs` 的 `descGaps` 门槛在任一字段缺 label/desc 时就地抛错（结构底线）；语义准确由取证保证，门槛不代管。
 
@@ -90,8 +92,11 @@ Senpi 引擎没有 OMP 那样的描述符注册表，因此无指纹。改用快
 ## 已知限制
 
 - getter 返回「配置文件解析后的值」，不解析命令行 flag 或环境变量覆盖，不是「运行时最终值」
-- 字段表覆盖对着引擎 `Settings` 接口顶层键校验：`dump-settings.mjs` 解析 `settings-manager.d.ts` 的 `Settings` 接口全部顶层键与字段表 diff，接口有表没有进 `schemaMissing`（stderr 告警），表有接口没有进 `schemaExtra`。按 schema 校验，未设置的键也查；升级新增键据告警补进字段表
 - 嵌套对象（`markdown`/`promptCache`/`images`/`todo`）逐项拆成子字段行；`terminal` 仍整值一行（未拆子字段），`lookAt`/`httpProxy` 无子字段 getter 同样整值一行
-- `[native]` 的 `task`（35 项）/`memory`（38 项）按 `v5.0.1` schema 逐字段展成子行，字段清单与源码做差集校验（缺项为零）；`model_profile`/`model_profiles`/`categories`/`agents` 四项仍整值呈现。OMO 新增段补进 `NATIVE_FIELDS`，新增子字段补进 `NATIVE_NESTED_SETTINGS_FIELDS`
+- 字段表覆盖对着引擎 `Settings` 接口顶层键校验：`dump-settings.mjs` 解析 `settings-manager.d.ts` 的 `Settings` 接口全部顶层键与字段表 diff，接口有表没有进 `schemaMissing`（stderr 告警），表有接口没有进 `schemaExtra`。按 schema 校验，未设置的键也查；升级新增键据告警补进字段表；`schemaExtra` 非零即不可声称全覆盖
+- `[native]` 的 `task`（35 项）/`memory`（38 项）共 73 个 schemaDefault 中仅 `task.global_concurrency`/`task.residency_max_children` 已对照安装版 5.1.72 复核，其余为 v5.0.1 公开源码旧证据（见「值与默认值的权威来源」）；**清单覆盖由离线 CLI 行为测试保障**（`scripts/tests/run-tests.mjs`：以假 `SENPI_SRC` fixture SettingsManager + 故意不完整的 Settings schema + 临时无凭据 `OMO_HOME` 真实执行 dump-settings 子进程，断言 73 行计数、键唯一、label/desc 非空、已复核键证据标签、版本检测覆盖与 schema 不完整不误报全覆盖），dump 运行时不与源码做差集，版本漂移靠 EVIDENCE WARNING 暴露；`model_profile`/`model_profiles`/`categories`/`agents` 四项仍整值呈现。OMO 新增段补进 `NATIVE_FIELDS`，新增子字段补进 `NATIVE_NESTED_SETTINGS_FIELDS` 并立即标注证据版本
 - 深色主题锁 `color-scheme:dark`，列宽固定（`table-layout:fixed`），不同窗口宽度下的显示未逐宽度抽查
 - native 子字段 desc 由 `` `${group} · ${note}` `` 拼成，note 空时 desc 仍非空（有群组前缀），`descGaps` 门槛不会报。当前全部 note 非零无实际漏检，但新增子字段时须人工核对 note 非空
+
+- Senpi 2026.11.15-2 起引擎退役 `experimental.sharedHost`（`settings-retired-keys.js` 加载时主动从设置文件删除该键，`Settings` 接口已无 `experimental`），字段表已同步移除该死行；旧版留档 diff 若含该行，`report-gaps` 会报删除
+- 当前安装版 `Settings` 接口另有 16 个键未进字段表（`contextFiles`/`fallback`/`reducedMotion`/`tools`/`enableSessionShare`/`deviceId`/`handoffHint`/`jobWidgets`/`engineTurns`/`turn_inactivity_ms`/`turn_max_runtime_ms`/`threads`/`sessionShutdownQuitBudgetMs`/`extensionEventHandlerWarnMs`/`extensionEventHandlerTimeoutMs`/`fullscreenWheelScrollLines`），dump 以 `schemaMissing` 告警逐个暴露，**尚未补表**——每条须先对照 getter 实现/消费点取证写 desc，不得直接抄名入库

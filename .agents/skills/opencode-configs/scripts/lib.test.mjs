@@ -1,4 +1,6 @@
 import { describe, expect, test } from "bun:test";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   walkSchema,
   mergeDocs,
@@ -9,6 +11,7 @@ import {
   descGaps,
   diffSnapshots,
   fingerprint,
+  validateAssets,
 } from "./lib.mjs";
 
 const SPEC = {
@@ -187,5 +190,22 @@ describe("getPath", () => {
     expect(getPath({ a: { b: 1 } }, "a.b")).toBe(1);
     expect(getPath({ a: {} }, "a.b")).toBeUndefined();
     expect(getPath(undefined, "a")).toBeUndefined();
+  });
+});
+
+describe("真实资产自校验（离线，无需 opencode 服务）", () => {
+  const ROOT = join(import.meta.dir, "..");
+  const defaults = JSON.parse(readFileSync(join(ROOT, "defaults.json"), "utf8"));
+  const evidence = JSON.parse(readFileSync(join(ROOT, "evidence.json"), "utf8"));
+
+  test("defaults/evidence 通过 validateAssets：三形态唯一、证据非空、关联完整", () => {
+    expect(() => validateAssets(defaults, evidence, evidence.version)).not.toThrow();
+  });
+  test("两资产键集合一致：每个 defaults 键都有结构化来源，无多余来源键", () => {
+    expect(Object.keys(evidence.keys).sort()).toEqual(Object.keys(defaults).sort());
+  });
+  test("证据版本与取证仓库固定", () => {
+    expect(evidence.version).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(evidence.repository).toBe("anomalyco/opencode");
   });
 });

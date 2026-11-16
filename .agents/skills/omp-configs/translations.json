@@ -189,7 +189,7 @@
  },
  "tui.mouse": {
   "label": "鼠标点击聚焦",
-  "desc": "在主会话中捕获鼠标点击，让实时的子 agent 卡片和 HUD 行可以通过点击聚焦，目标上有悬停高亮。开启后原生文本选择变为 Shift+拖动，滚轮滚动变为 Shift+滚轮"
+  "desc": "在主会话中捕获鼠标点击，让实时子 agent 卡片与 HUD 行支持点击聚焦和悬停高亮，并将扩展链接的点击交给扩展处理；链接提示快捷键也可选择这些链接。开启后使用 Shift+拖动选择原生文本，终端滚轮事件交给 OMP；查看终端历史时使用终端的键盘滚动快捷键，或关闭此项。"
  },
  "tui.tight": {
   "label": "紧凑布局",
@@ -197,7 +197,7 @@
  },
  "display.shimmer": {
   "label": "微光",
-  "desc": "工作/加载消息的动画样式"
+  "desc": "工作与加载消息的动画样式；tui.motion 为 reduced 或 none 时关闭此动画。"
  },
  "display.pinnedAgents": {
   "label": "固定 Agent",
@@ -205,7 +205,7 @@
  },
  "display.smoothStreaming": {
   "label": "平滑流式",
-  "desc": "在数据块到达时平滑地显示 assistant 文本和流式工具输入"
+  "desc": "在数据块到达时平滑显示 assistant 文本与流式工具输入；Tern 自行处理 assistant 文本的逐字显示。"
  },
  "display.hideToolActivity": {
   "label": "隐藏工具活动",
@@ -329,7 +329,7 @@
  },
  "magicKeywords.enabled": {
   "label": "魔法关键词",
-  "desc": "为单独使用的 ultrathink、orchestrate、workflowz、jevify 关键词启用隐藏提示"
+  "desc": "为单独使用的 ultrathink、chillax、orchestrate、workflowz、jevify 关键词启用隐藏提示。"
  },
  "magicKeywords.ultrathink": {
   "label": "Ultrathink 关键词",
@@ -357,7 +357,7 @@
  },
  "ask.timeout": {
   "label": "询问超时",
- "desc": "多少秒后自动选择推荐的询问选项（0 表示禁用）。该值也限制 cfg:// 批准提示；批准请求无人回答时拒绝写入，不自动选择。"
+  "desc": "询问表单等待多少秒后自动提交当前填写值，包括预选答案；0 禁用自动提交。该值也限制 cfg:// 批准提示的等待时间；批准请求无人回答时拒绝写入。"
  },
  "ask.notify": {
   "label": "询问通知",
@@ -445,7 +445,7 @@
  },
  "model.toolCallLoopGuard.exemptTools": {
   "label": "工具调用循环豁免工具",
-  "desc": "允许连续重复而不会触发跨回合循环防护的工具名称"
+  "desc": "允许连续重复且不触发跨回合循环防护的工具名称，也可填写执行写入操作的 xd:// device 名称，例如 mcp__peers_wait。"
  },
  "inlineToolDescriptors": {
   "label": "内联工具描述符",
@@ -605,7 +605,7 @@
  },
  "providers.openaiWebsockets": {
   "label": "OpenAI WebSockets",
-  "desc": "OpenAI Codex 模型的 Websocket 策略（auto 使用模型默认值，on 强制启用，off 禁用）"
+  "desc": "仅控制 OpenAI Codex 模型的 WebSocket 策略：auto 使用模型默认值，on 强制启用，off 禁用。标准 OpenAI Responses 模型另由 providers.openaiResponsesWebsockets 控制。"
  },
  "providers.openaiLiveSteering": {
   "label": "OpenAI 实时引导",
@@ -953,7 +953,7 @@
  },
  "mnemopi.dbPath": {
   "label": "Mnemopi 数据库路径",
-  "desc": "可选的 SQLite 数据库路径，默认为 agent 的记忆目录。"
+  "desc": "可选的 SQLite 数据库路径，支持以 ~ 表示用户主目录；未设置时使用 agent 的记忆目录。"
  },
  "mnemopi.bank": {
   "label": "Mnemopi Bank",
@@ -1181,7 +1181,7 @@
  },
  "edit.mode": {
   "label": "编辑模式",
-  "desc": "选择编辑工具的变体（replace、patch、hashline 或 apply_patch）"
+  "desc": "选择 edit 工具的变体：replace、patch、hashline 或 apply_patch；none 移除 edit 工具并保留 bash。"
  },
  "edit.modelVariants": {
   "label": null,
@@ -1481,7 +1481,7 @@
  },
  "lsp.enabled": {
   "label": "LSP",
-  "desc": "是否启用 lsp 工具进行代码智能（定义、引用、诊断、重命名）"
+  "desc": "启用 language server 集成，包括 lsp 工具、write/edit 后的诊断和写入时格式化；命令行 --no-lsp 可在当前运行中关闭。"
  },
  "lsp.lazy": {
   "label": "LSP 懒启动",
@@ -1653,7 +1653,7 @@
  },
  "task.eager": {
   "label": "优先任务委派",
-  "desc": "推动把工作委派给子代理的力度"
+  "desc": "推动主 agent 委派工作的力度；子 agent 保留其模型自身的委派策略。"
  },
  "task.batch": {
   "label": "批量任务调用",
@@ -1889,11 +1889,11 @@
  },
  "browser.enabled": {
   "label": "浏览器",
-  "desc": "是否启用用于脚本化 Chromium 自动化（Puppeteer）的浏览器 eval 前置代码"
+  "desc": "是否启用 browser eval 前置代码，让 agent 通过脚本执行浏览器自动化。"
  },
  "browser.cdpUrl": {
   "label": "浏览器 CDP URL",
-  "desc": "默认的 HTTP CDP 发现端点（例如 http://127.0.0.1:9222），连接它而不是启动浏览器。工具调用上显式指定的 app.cdp_url 或 app.path 优先。"
+  "desc": "默认的 HTTP CDP 发现端点，例如 http://127.0.0.1:9222；设置后连接已有浏览器。工具调用中显式指定的 app 优先。"
  },
  "browser.relay": {
   "label": "浏览器中继",
@@ -1905,7 +1905,7 @@
  },
  "browser.headless": {
   "label": "无头浏览器",
-  "desc": "以无头模式启动浏览器（禁用此项可显示浏览器界面）"
+  "desc": "是否在无窗口模式下运行浏览器。OMP WebKit 在提供 viewer 的平台（macOS）会同时切换全部标签页窗口；其他平台需要可见窗口时使用 Chromium，并在下次打开时应用新模式。"
  },
  "browser.cmux": {
   "label": "cmux 浏览器",
@@ -1913,7 +1913,7 @@
  },
  "browser.freezeOnTurnEnd": {
   "label": "回合结束时冻结浏览器标签页",
-  "desc": "回合结束时冻结 OMP 拥有的无头浏览器标签页，让动画页面在空闲时不再消耗 CPU/GPU。下次使用时会自动解冻；打开标签页时传入 persist:true 可选择退出冻结。"
+  "desc": "回合结束时冻结 OMP 管理的无头 Chromium 标签页，减少动画页面空闲时的 CPU/GPU 消耗；WebKit 只在收到请求时绘制。下次使用时自动恢复；打开标签页时传入 persist:true 可让该标签页保持运行。"
  },
 "browser.idleCloseSec": {
  "label": "浏览器空闲关闭超时",
@@ -2229,7 +2229,7 @@
 },
 "browser.tern": {
  "label": "Tern 浏览器",
- "desc": "在 Tern 窗格中打开浏览器标签页时，使用覆盖在 OMP 窗格上的原生画中画网页视图，而非无头 Chromium；没有可承载标签页的 Tern 窗口时回退到 Chromium。显式应用选项、relay 和 Browser CDP URL 优先级更高；`app.tern:false` 可关闭一次打开操作；也可使用 `PI_BROWSER_TERN=0` 或 `PI_BROWSER_TERN=1` 覆盖。"
+ "desc": "在 Tern pane 中打开浏览器标签页时，使用覆盖在 OMP pane 上的原生画中画网页视图；没有可承载标签页的 Tern 窗口时使用 OMP 自有浏览器。显式 app、relay 和 Browser CDP URL 优先；app 设为 own 可让单次打开使用自有浏览器。环境变量 PI_BROWSER_TERN=0 或 PI_BROWSER_TERN=1 可覆盖此设置。"
 },
 "gc.stale": {
  "label": null,
@@ -2243,7 +2243,280 @@
  "label": null,
  "desc": "过期文件清理阶段保留文件的天数，默认保留最近 30 天的文件；超过期限且不在最新文件保留数量内的文件才会被清理。"
 },
+ "auth.unpausedProviders": {
+  "label": "恢复暂停的 Provider",
+  "desc": "恢复被 OMP 暂停的 provider，使登录、token 刷新与已保存凭据重新可用。每个暂停说明都会列出恢复时接受的账号风险；项目配置无法设置此项。"
+ },
+ "tui.colorfulMarkdown": {
+  "label": "彩色 Markdown",
+  "desc": "使用主题的 ANSI 色板为各级标题、粗体、斜体、行内代码和表头着色；关闭后标题使用统一颜色，粗体与斜体保留普通样式。"
+ },
+ "tui.spinnerInterval": {
+  "label": "Spinner 帧间隔（毫秒）",
+  "desc": "设置全部 spinner 的帧间隔，包括终端标题中的 spinner；0 显示静态符号。未设置时跟随 tui.motion。"
+ },
+ "tui.maxFps": {
+  "label": "界面最高帧率",
+  "desc": "限制 TUI 重绘频率，包括流式文本。键盘输入回显保持 30 fps，以维持当前输入 pane 的响应。"
+ },
+ "tui.motion": {
+  "label": "界面动画",
+  "desc": "统一控制 spinner、微光以及装饰性的闪烁和淡入淡出，full 为完整动画、reduced 为减少动画、none 为关闭动画。流式文本另由最高帧率设置控制；显式设置的 spinner 帧间隔优先。"
+ },
+ "display.shellVisualization": {
+  "label": "Shell 执行可视化",
+  "desc": "将 bash 命令显示为可交互的执行可视化界面；关闭后显示普通 shell 命令。"
+ },
+ "display.advisorCollapsedLines": {
+  "label": "Advisor 折叠预览行数",
+  "desc": "限制已折叠 Advisor 卡片在标题下方显示的笔记行数；0 保留完整预览。可使用工具输出展开快捷键展开卡片。"
+ },
+ "btw.inject": {
+  "label": "/btw 转向提示",
+  "desc": "请求 /btw 起草转向提示时，让它使用 <inject> 标签，并在回答中高亮显示。按 Alt+I（app.btw.inject）可把提示发送给主会话。"
+ },
+ "composer.predictionAlternatives": {
+  "label": "多个输入预测",
+  "desc": "单次请求最多生成四个不同的输入预测，按可能性排序。内联预览显示与当前草稿匹配的首项；插入后再次按 Tab 可选择其他预测。请求次数不变，输出 token 略有增加。"
+ },
+ "update.auto": {
+  "label": "自动更新 OMP",
+  "desc": "启动时在后台安装 OMP 更新；下次启动运行新版本。"
+ },
+ "magicKeywords.chillax": {
+  "label": "Chillax 关键词",
+  "desc": "允许单独使用的 chillax 将 thinking 降到模型最低 effort，并附加隐藏提示。支持按消息调整 effort 的模型可在回合中途应用。"
+ },
+ "session.worktreeScope": {
+  "label": "恢复列表的 Worktree 范围",
+  "desc": "控制恢复会话选择器的当前目录范围：directory 仅包含当前目录，repo 包含同一仓库其他 worktree 中的会话。"
+ },
+ "prewalk.from": {
+  "label": "Prewalk 规划模型",
+  "desc": "指定 /prewalk restart 返回的规划模型或角色，默认 @default。"
+ },
+ "prewalk.into": {
+  "label": "Prewalk 目标模型",
+  "desc": "指定首次 edit/write 时接手的模型或角色，默认 @smol；适用于 /prewalk、/prewalk restart、Enable Prewalk 和 --prewalk。自动 Prewalk 使用独立目标设置。"
+ },
+ "encourageEdits": {
+  "label": "要求使用 Edit 工具",
+  "desc": "要求 agent 使用 edit 工具编辑文件，并禁止通过 sed、perl 或 Python 编辑。"
+ },
+ "retry.rateLimitWalksChain": {
+  "label": "限流时继续模型回退链",
+  "desc": "当前回合包含失败模型签名的 thinking 时，允许限流后继续 retry.fallbackChains。关闭时先持续重试该模型，耗尽 retry.maxRetries 后才进入回退链。"
+ },
+ "providers.openaiResponsesWebsockets": {
+  "label": "OpenAI Responses WebSocket",
+  "desc": "为模型目录中支持此传输的标准 OpenAI Responses 模型启用 WebSocket；模型级或请求级显式 false 会禁用。"
+ },
+ "providers.openai-codex.daybreak": {
+  "label": "Codex Daybreak Blue",
+  "desc": "为符合条件的 ChatGPT 账号自动请求 Daybreak Blue 网络安全访问计划。OpenAI 可能使用该计划会话的内容改进模型。此设置不控制专用 gpt-daybreak-blue-* 模型；这些模型仍可能以 Daybreak 会话运行。"
+ },
+ "codexResets.autoRedeem5h": {
+  "label": "Codex 五小时重置自动兑换",
+  "desc": "将已保存的 Codex 重置用于仅五小时窗口耗尽的封锁，以及覆盖窗口中用量最高者为五小时的即将过期额度。unset 在花费前询问且无人回答时不花费；yes 自动花费；no 禁用。"
+ },
+ "codexResets.autoRedeemWeekly": {
+  "label": "Codex 每周重置自动兑换",
+  "desc": "将已保存的 Codex 重置用于每周窗口封锁，以及覆盖窗口中用量最高者为每周的即将过期额度。仅从短暂 429 等待获知的封锁需要同时满足两个 Codex 窗口的条件。unset 在花费前询问且无人回答时不花费；yes 自动花费；no 禁用。"
+ },
+ "claudeResets.autoRedeem5h": {
+  "label": "Claude 五小时重置自动兑换",
+  "desc": "将 Claude Cedar 或 Juniper 重置用于仅五小时窗口耗尽的封锁，以及覆盖限额中用量最高者为五小时的即将过期额度。unset 在花费前询问且无人回答时不花费；yes 自动花费；no 禁用。"
+ },
+ "claudeResets.autoRedeemWeekly": {
+  "label": "Claude 每周重置自动兑换",
+  "desc": "将 Claude Cedar 重置用于每周或按模型区分的封锁，以及覆盖限额中用量最高者为每周的即将过期额度。unset 在花费前询问且无人回答时不花费；yes 自动花费；no 禁用。"
+ },
+ "claudeResets.autoRedeemFable": {
+  "label": "Claude Fable 重置自动兑换",
+  "desc": "控制 Claude Fable 上线重置的使用，该重置同时恢复 Fable 每周用量和五小时窗口，仅受此设置控制。unset 在花费前询问且无人回答时不花费；yes 自动花费；no 禁用。"
+ },
+ "mnemopi.recallRelevance": {
+  "label": "Mnemopi 召回相关性检查",
+  "desc": "自动召回记忆的相关性过滤：off 不过滤；auto 仅在存在原生 judge 时过滤，否则直接注入；on 使用 judge 角色可解析的模型过滤，包括本地 judge。本地 judge 仅及时回答部分候选时，未回答项会被丢弃；过滤失败可能跳过本次自动召回。"
+ },
+ "mnemopi.embeddingQueryPrefix": {
+  "label": "Mnemopi 查询 Embedding 前缀",
+  "desc": "在召回查询生成 embedding 之前添加的文本，适用于 Qwen3-Embedding、E5 等需要指令的模型；写入记忆时不添加此前缀。"
+ },
+ "mnemopi.embeddingInputType": {
+  "label": "Mnemopi Embedding 输入类型",
+  "desc": "向 embedding API 发送 input_type：召回查询使用 query，保存的记忆使用 passage；NVIDIA NIM 的非对称 embedding 模型需要此字段。"
+ },
+ "hindsight.globalScope": {
+  "label": "Hindsight 全局记忆作用域",
+  "desc": "允许 retain 和 learn 使用 scope: global，保存不带项目标签、可由全部项目召回的记忆；需要 global 或 per-project-tagged scoping。"
+ },
+ "tools.restrictedFolders": {
+  "label": "受限制文件夹",
+  "desc": "这些文件夹及其子目录中的读取、写入、编辑、搜索与命令均须显式批准，不受当前审批模式或已记住的授权影响。命令按执行目录匹配；值为路径组成的 JSON 数组，例如 [\"~/secrets\"]。"
+ },
+ "todo.midRunNudges": {
+  "label": "回合中的 Todo 提醒",
+  "desc": "控制长回合持续修改内容时更新 todo 的提醒频率：off 关闭，capped 限定次数，backoff 逐步增加提醒间隔。"
+ },
+ "find.verifyModel": {
+  "label": "Find 片段核验模型",
+  "desc": "指定 find 核验候选片段时优先尝试的模型 selector，例如 openrouter/liquid/d1-ultra；文件名与概要排序仍使用 judge 角色。未设置时片段核验也使用 judge 角色。"
+ },
+ "commit.enabled": {
+  "label": "选择性提交",
+  "desc": "启用 commit eval 前置代码与 /commit，仅提交当前 agent 及其子 agent 编写的修改行。"
+ },
+ "out.enabled": {
+  "label": "任务中途回复",
+  "desc": "允许 agent 向 out:// 写入回复，在继续执行任务的同时向用户显示消息。未显式配置时，交互式 TUI 默认开启，print、RPC 和 ACP 模式默认关闭。"
+ },
+ "async.printWake": {
+  "label": "后台结果唤醒 Print 模式",
+  "desc": "在 print 模式（-p、--mode json）处理完最后一条提示后，继续等待本次运行的后台任务；每个结果会在同一会话中启动新回合，直到没有任务与待处理结果。关闭时处理完提示即退出，并取消仍在运行的任务。"
+ },
+ "tools.xdevNotices": {
+  "label": "xd:// 挂载提示",
+  "desc": "MCP 或扩展工具挂载、卸载时显示 xd://: mounted 等通知；关闭通知后，模型仍会在下一条提示中获知变化。"
+ },
+ "bash.allowedEnvVars": {
+  "label": "Bash 允许的环境变量",
+  "desc": "bash.patterns 的 allow 规则允许出现在命令开头 KEY=VALUE 中的环境变量全名，不支持通配符，变量值不受限制。仅添加无害的构建或测试变量；PATH、LD_PRELOAD、BASH_ENV、*_RUNNER、*_WRAPPER 等可改变执行行为的变量会允许任意命令执行。"
+ },
+ "ovnfs.path": {
+  "label": "ovnfs 可执行文件",
+  "desc": "指定 ovnfs 可执行文件；未设置时从 PATH 查找。找到后，系统提示会引导 agent 使用写时复制 checkout 创建目录副本；允许隔离且 isolation.backend 为 auto 时，隔离子 agent 也使用 ovnfs checkout。"
+ },
+ "task.autoParallel": {
+  "label": "自动识别并行任务",
+  "desc": "请通过 judge 角色解析出的原生 judge 判断每条顶层用户提示中可并行的部分。需要原生 judge 和 task 工具；off 关闭，suggest 提出建议，on 启用自动并行指引。缺少任一条件时不执行判断。"
+ },
+ "task.steps": {
+  "label": "子 Agent 有序步骤",
+  "desc": "将子 agent 输入从单个 task 改为有序 steps：完成当前步骤后才收到下一步；超过四个步骤时，较早的消息会合并多个步骤。最后一个步骤的结果作为整个任务结果。"
+ },
+ "task.perCallModel": {
+  "label": "按次指定子 Agent 模型",
+  "desc": "控制子 agent 调用是否可通过单个精确 provider/model-id[@upstream][:level] selector 指定模型。@upstream 属于模型身份，仅聚合服务支持；仅接受配置已经许可的模型。项目配置可关闭此能力，无法启用或批准模型；eval 模式仅向 eval 调用开放。"
+ },
+ "task.perCallModelAllow": {
+  "label": "按次模型许可列表",
+  "desc": "进一步限制按次可用的精确 provider/model-id selector；只有指定 OpenRouter 或 Vercel 上游时才包含 @upstream，例如 openrouter/x@y。空列表允许配置已经许可的全部模型；项目列表只能进一步收窄范围。"
+ },
+ "task.workerThreads": {
+  "label": "子 Agent Worker 线程上限",
+  "desc": "限制子 agent 使用的 worker 线程数量。并发数不超过 8 时使用主线程，达到 9 时增加首个 worker，之后在 18、36、72 等阈值增加。worker 内没有运行中的子 agent 达一分钟后停止；0 让全部子 agent 留在主线程。"
+ },
+ "title.refreshAfterPrompts": {
+  "label": "按提示次数复查标题",
+  "desc": "自动生成的标题在累计指定数量的有效用户提示后，请 judge 检查是否仍符合对话，需要时重新生成；0 关闭该周期检查。首次自动命名和 title.refreshOnReplan 控制的刷新独立生效；用户手动设置的标题不会被替换。"
+ },
+ "extensionHandlers.modeControl": {
+  "label": "扩展模式控制",
+  "desc": "允许扩展通过 ctx.sessionModes.set() 进入或退出 plan、vibe、goal 和 loop 模式；关闭后仍可读取模式状态。"
+ },
+ "extensionRenderers.assistantText": {
+  "label": "扩展回答渲染",
+  "desc": "允许扩展改变 assistant 回答的显示方式、原位置重绘回答，并接收扩展链接的点击；会话记录、导出内容和模型上下文保留原始回答。"
+ },
+ "extensionRenderers.transcriptPresenters": {
+  "label": "扩展会话块渲染",
+  "desc": "允许扩展将工具调用等会话块显示为完整内容、紧凑单行或隐藏；会话记录、导出内容和模型上下文保持不变。"
+ },
+ "browser.webkit": {
+  "label": "WebKit 浏览器",
+  "desc": "安装引擎后优先使用 OMP 自有的无头 WebKit；缺少浏览器时，OMP 优先将 ABKit 下载到 ~/.o2/lib/abkit。需要可见窗口但引擎没有 viewer，或引擎启动失败时使用 Chromium。显式 app、relay、Browser CDP URL、Tern 和 cmux 优先；app 设为 chromium 可让单次打开使用 Chromium。PI_BROWSER_WEBKIT=0 或 1 可覆盖。"
+ },
+ "browser.webkitPath": {
+  "label": "WebKit 引擎路径",
+  "desc": "指定 OMP WebKit 的 host 可执行文件，或包含 ABHost 的 ABKit 目录；Windows 使用 ABHost.exe。未设置时使用 ~/.o2/lib/abkit 中的已安装引擎，支持 ~；PI_BROWSER_WEBKIT_PATH 环境变量优先。"
+ },
+ "spotlight.experiment.enabled": {
+  "label": "Spotlight 实验",
+  "desc": "使用 Stencil Spotlight 整理工具输出并为 find 结果排序，将每次整理结果记录到会话中。"
+ },
+ "judgment.attemptTimeoutMs": {
+  "label": null,
+  "desc": "每个原生 judge 候选的超时预算，单位为毫秒。仅当前候选为原生 judge 且后面仍有显式配置的候选可回退时生效；本地图片准备不计入。超时后跳过后续隐式候选，继续显式回退。必须是正安全整数。"
+ },
+ "systemPromptTemplates": {
+  "label": null,
+  "desc": "按模型标识的子串匹配系统提示模板路径，忽略大小写；路径须为绝对路径或 ~/ 路径。仅在显式自定义 prompt 与已发现的 SYSTEM.md、SYSTEM_TEMPLATE.md 均未接管时替换内置默认提示。模板缺失、空白或渲染无效时警告并使用内置提示；空对象不覆盖。"
+ },
+ "session.warnCost": {
+  "label": null,
+  "desc": "会话树累计模型费用达到此美元金额时警告一次；根会话、子 agent 与相关辅助请求共用费用统计，按响应完成后累计。未设置时不警告，恢复时已经超过阈值不会重复警告；--warn-cost 可在单次运行中覆盖。"
+ },
+ "session.maxCost": {
+  "label": null,
+  "desc": "会话树累计模型费用达到此美元上限后，阻止发送后续模型请求。根会话、子 agent 与辅助请求共用额度；当前请求完成计费后影响后续请求。未设置时不限制，--max-cost 可在单次运行中覆盖。"
+ },
+ "find.hitThreshold": {
+  "label": null,
+  "desc": "find 仅在已核验片段的相关概率达到此阈值时报告文件命中，并仅列出达到阈值的行区间。未设置时使用内部阈值 0.2；取值必须大于 0 且不超过 1。"
+ },
+ "launch.persist": {
+  "label": null,
+  "desc": "控制新启动的命名服务是否在最后一个 OMP 项目客户端退出后继续运行；false 随最后客户端退出停止，true 保留服务。非交互启动会将此值临时覆盖为 true。"
+ },
+ "skills.manualSkills": {
+  "label": null,
+  "desc": "按 skill 原始名称或规范名称匹配的 glob 列表。匹配的 skill 仍会加载，但从模型可见的 skill 提示列表中隐藏；用户可通过 skill:// 或 /skill:<name> 显式调用。空列表不隐藏任何 skill。"
+ },
+ "gc.strip": {
+  "label": null,
+  "desc": "启用 omp gc --strip 阶段，从满足空闲时长条件的会话记录中移除 provider 重放专用数据，包括签名、缓存和请求 payload。保留最近的 replay turn，跳过活动文件与持有锁的文件；仅在 GC 选择 strip 阶段时生效。"
+ },
+ "gc.stripAfterDays": {
+  "label": null,
+  "desc": "执行 strip 前会话记录需要达到的空闲天数；实际截止时间至少保留五分钟写入宽限。此项不会单独启用 strip；0 仍保留五分钟宽限。"
+ },
+ "gc.autoCompress": {
+  "label": null,
+  "desc": "交互式启动时在后台调度 omp gc --compress --apply，最多每天一次；仅在支持文件系统透明压缩的卷上启动，子进程以低优先级运行。"
+ },
+ "spotlight.experiment.holdout": {
+  "label": null,
+  "desc": "从 Spotlight 本来会裁剪的工具输出中，随机抽取此比例作为对照组：模型收到完整结果，实验记录保留原计划的裁剪。0 关闭对照抽样；仅输出整理实验启用时生效，不控制 find 排序。"
+ },
+ "spotlight.experiment.scoreFree": {
+  "label": null,
+  "desc": "在未被 holdout 抽中的待整理结果中，随机抽取此比例跳过 Spotlight 请求，由无分数回退规则决定裁剪。0 关闭此抽样组；仅影响工具输出整理，不关闭 find 排序。"
+ },
+ "spotlight.experiment.tools": {
+  "label": null,
+  "desc": "参与工具输出整理和 journal 记录的工具名称列表；星号 * 表示全部工具。未列出的工具返回原始结果且不记录；空列表关闭全部工具结果整理，但 find 的 Spotlight 排名独立控制。"
+ },
+ "spotlight.url": {
+  "label": null,
+  "desc": "Spotlight 服务端点，可由 STENCIL_SPOTLIGHT_URL 环境变量覆盖。空字符串使用内置默认端点；是否请求仍受实验开关与辅助模型 provider 限制控制。"
+ },
+ "spotlight.model": {
+  "label": null,
+  "desc": "发送给 Spotlight 服务的模型 ID。空字符串使用内置默认模型；仅在 Spotlight 请求获准时使用。"
+ },
+ "spotlight.thinking": {
+  "label": null,
+  "desc": "Spotlight 排名请求的 thinking 档位，可选 low、med、high、max；是否发起请求由实验开关与辅助模型 provider 限制决定。"
+ },
+ "spotlight.timeoutMs": {
+  "label": null,
+  "desc": "单次 Spotlight 排名请求的超时预算，单位为毫秒；超时后该次调用使用不依赖排名分数的回退规则。是否发起请求仍受实验开关与辅助模型 provider 限制控制。"
+ },
+ "models.noJudge": {
+  "label": null,
+  "desc": "将 judge 辅助模型限制在当前会话模型的 provider 内；开启且当前 provider 未知时不提供候选模型。同一 provider 中的 judge 仍可使用。"
+ },
+ "models.noSpotlight": {
+  "label": null,
+  "desc": "限制 Spotlight 辅助请求；开启时通常不请求 Spotlight，但服务端点为内置默认值且当前会话 provider 为 stencil 时仍允许。独立运行的 omp find 在开启此项时关闭 Spotlight 排名。"
+ },
+ "models.offline": {
+  "label": null,
+  "desc": "将模型与辅助模型请求限制到当前会话 provider，拒绝不同 provider 的模型请求，并应用 judge 与 Spotlight 的辅助模型限制。当前 provider 自身仍可通过网络提供服务。"
+ },
  "_groups": {
+  "Find": "查找",
   "Prompt": "提示词",
   "Startup & Updates": "启动与更新",
   "Git": "Git",

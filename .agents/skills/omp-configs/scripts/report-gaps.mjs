@@ -30,43 +30,51 @@ if (existsSync(explDir)) {
 
 let prevById = null;
 let prevVersion = null;
-if (oldPath && existsSync(oldPath)) {
+if (oldPath) {
+	if (!existsSync(oldPath)) {
+		throw new Error(`--old 指定的旧版本快照不存在：${oldPath}（没有旧版本就不要传 --old，基于证据版本 review 或标记 unknown）`);
+	}
 	const prev = JSON.parse(await readFile(oldPath, "utf8"));
 	prevVersion = prev.version;
 	prevById = new Map(prev.settings.map((s) => [s.id, s]));
 }
-
 const baseline = prevById ?? explIndex;
-const baselineKind = prevById ? "previous snapshot" : "explanation index";
+const baselineKind = prevById
+	? "previous snapshot"
+	: explIndex.size
+		? "explanation index"
+		: "none";
 
 const added = [];
 const removed = [];
 const fingerprintChanged = [];
-const descriptorChanged = [];
-
 for (const [id, s] of freshById) {
 	const base = baseline instanceof Map && baseline.get(id);
 	if (!base) {
 		added.push(id);
 		continue;
 	}
-	if (prevById) {
-		if (base.fingerprint !== s.fingerprint) fingerprintChanged.push(id);
-	} else {
-		// Explanation index carries no fingerprint; flag every explained key on a
-		// version bump so a human can confirm the prose still matches the code.
-		if (prevVersion && prevVersion !== fresh.version) descriptorChanged.push(id);
-	}
+	if (prevById && base.fingerprint !== s.fingerprint) fingerprintChanged.push(id);
 }
 for (const id of baseline instanceof Map ? baseline.keys() : []) {
 	if (!freshById.has(id)) removed.push(id);
 }
 
 const versionBumped = prevVersion != null && prevVersion !== fresh.version;
+const needsReviewOnVersionBump = versionBumped
+	? [...explIndex.keys()].filter((id) => freshById.has(id)).sort()
+	: [];
+// 没有旧快照时没有任何版本证据，明确标 unknown，不虚构升级比较。
+const versionComparison = prevVersion
+	? versionBumped
+		? "upgraded"
+		: "unchanged"
+	: "unknown";
 const report = {
 	newVersion: fresh.version,
 	previousVersion: prevVersion ?? null,
 	versionBumped,
+	versionComparison,
 	baselineKind,
 	counts: {
 		freshKeys: freshById.size,
@@ -74,15 +82,12 @@ const report = {
 		added: added.length,
 		removed: removed.length,
 		fingerprintChanged: fingerprintChanged.length,
-		needsReviewOnVersionBump: versionBumped ? descriptorChanged.length : 0,
+		needsReviewOnVersionBump: needsReviewOnVersionBump.length,
 	},
 	added: added.sort(),
 	removed: removed.sort(),
 	fingerprintChanged: fingerprintChanged.sort(),
-	// On a version bump with only the explanation index available, every key
-	// with an explanation may be stale in prose even though its descriptor
-	// hash is stable — the hash cannot see behavior living in consuming code.
-	needsReviewOnVersionBump: versionBumped ? [...explIndex.keys()].sort() : [],
+	needsReviewOnVersionBump,
 };
 
 const text = JSON.stringify(report, null, 2);

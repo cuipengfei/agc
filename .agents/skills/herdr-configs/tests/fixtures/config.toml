@@ -1,0 +1,13 @@
+onboarding = false
+
+[server]
+headless_cols = 120
+
+[ui]
+host_cursor = "drawn"
+
+[[keys.command]]
+key = "ctrl+x"
+type = "popup"
+command = "ghp_abcdefghijklmnop1234567890"
+repo_url = "https://git.example.com/private/repo"
