@@ -106,7 +106,9 @@ class InfoTrackerTests(unittest.TestCase):
             else:
                 payload = "\n".join(json.dumps(page) for page in pages)
         else:
-            payload = json.dumps(pages[0])
+            page_number = re.search(r"[?&]page=(\d+)", joined)
+            page_index = int(page_number.group(1)) - 1 if page_number else 0
+            payload = json.dumps(pages[page_index] if page_index < len(pages) else [])
         return subprocess.CompletedProcess(args, 0, payload, "")
 
     def _fake_urlopen(self, url, **kwargs):
@@ -235,7 +237,7 @@ class InfoTrackerTests(unittest.TestCase):
         self.assertTrue(by_tag["v1.2.0"]["prerelease"])
         self.assertFalse(by_tag["v1.3.0"]["prerelease"])
 
-    def test_reports_new_releases_across_all_pages(self):
+    def test_reports_new_releases_across_three_pages(self):
         self._write_sources()
         self._seed_data()
         self.assertEqual(self._invoke()[0], 0)
@@ -254,10 +256,10 @@ class InfoTrackerTests(unittest.TestCase):
         releases = payload["sources"]["releases"]
         self.assertEqual(releases["status"], "ok")
         self.assertEqual(releases["errors"], [])
-        self.assertEqual(len(releases["changes"]), 101)
+        self.assertEqual(len(releases["changes"]), 90)
         self.assertEqual(
             {change["tag"] for change in releases["changes"]},
-            {item["tag_name"] for item in new_releases},
+            {item["tag_name"] for item in new_releases[:90]},
         )
 
     def test_six_releases_with_same_timestamp_are_not_reported_twice(self):
@@ -284,6 +286,43 @@ class InfoTrackerTests(unittest.TestCase):
         self.assertEqual(releases["status"], "ok")
         self.assertEqual(releases["errors"], [])
         self.assertEqual(releases["changes"], [])
+
+    def test_release_history_survives_incremental_fetches(self):
+        self._write_sources()
+        self._seed_data()
+        old_releases = [
+            gh_release(f"v1.{index}.0", f"2026-10-{index:02d}T00:00:00Z")
+            for index in range(10, 0, -1)
+        ]
+        self.gh_releases[REPO] = old_releases
+        self.assertEqual(self._invoke()[0], 0)
+
+        updated = gh_release("v1.10.0", "2026-10-10T00:00:00Z", body="updated notes")
+        new_release = gh_release("v1.11.0", "2026-10-11T00:00:00Z")
+        self.gh_releases[REPO] = [new_release, updated, *old_releases[1:5]]
+        code, payload = self._invoke()
+        self.assertEqual(code, 0)
+        self.assertEqual(
+            [change["tag"] for change in payload["sources"]["releases"]["changes"]],
+            ["v1.11.0"],
+        )
+
+        state_dir = self.root / "state" / "release-tracker"
+        state = json.loads((state_dir / "state.json").read_text(encoding="utf-8"))
+        history = state["repos"]["demo"]["version_history"]
+        cached = json.loads((state_dir / "repos" / "demo.json").read_text(encoding="utf-8"))
+        expected = {f"v1.{index}.0" for index in range(1, 12)}
+        self.assertEqual({entry["tag"] for entry in history}, expected)
+        self.assertEqual({entry["tag_name"] for entry in cached}, expected)
+        self.assertEqual(len(history), 11)
+        self.assertEqual(len(cached), 11)
+        self.assertEqual(next(entry for entry in history if entry["tag"] == "v1.10.0")["notes_digest"], "updated notes")
+        self.assertEqual(next(entry for entry in cached if entry["tag_name"] == "v1.10.0")["body"], "updated notes")
+
+        code, payload = self._invoke()
+        self.assertEqual(code, 0)
+        self.assertEqual(payload["sources"]["releases"]["changes"], [])
+        self.assertEqual(json.loads((state_dir / "repos" / "demo.json").read_text(encoding="utf-8")), cached)
 
     def test_state_replace_failure_does_not_hide_new_release_on_retry(self):
         self._write_sources()
