@@ -2327,3 +2327,27 @@
 - Raw: raw/omp-commands/2026-11-16-gc-compress-strip-mechanics.md
 - Updated: wiki/omp-commands/gc-storage-garbage-collection.md（阶段表由四阶段扩到 blobs/archive/wal/stale/compress/strip，新增 compress（含后台自动压缩）与 strip 两节，默认配置表补五行，Overview 记录 v18.10.4 与 v18.13.2 的引入版本）
 - 要点：透明压缩只认 APFS（`ditto --hfsCompression` + SHA-256 校验后 rename）与 NTFS（`compact /c /i /a /q` 的 LZNT1）；`gc.autoCompress` 每 `24` 小时最多拉起一次 detached 压缩，日志 `gc-auto-compress.log`，跳过消息为 `compress skipped: unsupported on this filesystem (APFS or NTFS only)`；本机根为 ext4（`/dev/sdf`），判定返回空，`chattr(1)` 1.47.2 明确 ext2/3/4 不支持 `c` 属性，Linux 上可用压缩路径是 archive 的 gzip `level: 9`；strip 剥除十个 replay 键、保护最新 replay 回合、staging 后 rename 替换，本机 `gc.strip=true`、`stripAfterDays=30`，本次未执行 gc。
+
+## [2026-11-16] ingest | OMP 配置键全量清单、指纹与凭据遮蔽边界
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-16-omp-18-20-3-config-census.md
+- Updated: OMP 配置键全量清单、指纹与凭据遮蔽边界
+- 要点：18.20.3 为 625 键、60 分组、凭据 8 键；18.3.1/18.4.2/18.16.0 分别为 512/515/582 键；三态计数随会话变动（两次 `customized` 为 111 与 112）；描述符导出 `items`/`validate`/`normalize`；指纹覆盖 `validate` 并由「只改 validate 即翻转」测试验证；已配置值递归遮蔽嵌套远程 URL 与已知密钥前缀形态，40 位十六进制标识符保留；`--old` 缺失报错、无旧快照 `unknown`、同版本 `unchanged`、版本变化 `upgraded` 并列出需复查的解释；页面 390px 视口宽 396px、下拉框无可访问名称、排序表头不可键盘触发；`bun test` 在点开头目录下收集 0 个文件。
+
+## [2026-11-16] ingest | Stencil Spotlight：工具输出的相关性评分
+- Disposition: New
+- Raw: raw/omp-config/2026-11-16-stencil-spotlight-protocol.md
+- Created: wiki/omp/spotlight-relevance-scoring.md
+- 要点：`POST https://cloud.stencil.so/v1/spotlight`（GET 为 405）；请求 `model + state{task,commands,said,intent} + source + items[] + questions{probe} + thinking`，`thinking` 默认 `low`；响应 `answers.<id>.scores[]` 长度须等于 `items`，头 `stencil-cost-usd` 与 `x-request-id`；凭据为 `STENCIL_API_KEY` 或 stencil 登录，缺失报 `no_credential`；门禁为 `spotlight.experiment.enabled`，`models.noSpotlight`/`offline` 下除默认端点加 `stencil` 会话外不请求；`holdout` 0.05、`scoreFree` 0.15、`timeoutMs` 5000；客户端不重试，超时回退按规则处理；`omp find` 另有 20 秒预算；公开页面未列出单价。
+
+## [2026-11-16] ingest | 配置清单类 skill 的证据复用与确定性检查
+- Disposition: New
+- Raw: raw/agent-tooling/2026-11-16-config-inventory-skill-evidence-and-checks.md
+- Created: wiki/agent-tooling/config-inventory-skill-maintenance.md
+- 要点：三层证据（运行时快照、消费方证据、翻译层）；`omp-configs` 22 键、`herdr-configs` 3 键、OpenCode 逐键 `changed`/`missing`/`unchanged`、OMO 版本常量与已复核键集合；只查缺项的复用流程与委派携带版本来源；五个 skill 的隔离测试规模 10/72/3/20/23，断言覆盖指纹翻转、缺失旧快照报错、翻译缺项中止、注入转义、快照一致；`skills.yml` 在 `.agents/skills/**` 变化时运行，`tern-maintain.yml` 不覆盖该路径；Bun 跳过点开头目录；OMO 安装 5.1.72、73 项中 2 项已核对、导出 158 行、`schemaMissing` 16、71 行未核实。
+
+## [2026-11-16] ingest | workpool `yield` 参数为空的失败形态
+- Disposition: Update
+- Raw: raw/omp/2026-11-16-workpool-yield-empty-arguments.md
+- Updated: workflowz 运行机制与生命周期
+- 要点：workpool 模式下 `yield` 的 `key` 必填，空参数报 `key must be one of: 1`；三个工作者与三条池项都出现空参数，同一工作者连续五次；三条池项标记 failed，调查与编辑已完成而报告未返回；归因需要同一请求的出站工具声明与原始流式 tool-call 参数，session 仅保存解析后参数；带 `outputSchema` 的 `agent()` 句柄可正常交付。

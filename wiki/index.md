@@ -67,6 +67,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [ABKit：面向 agent 的 WebKit 浏览器引擎](agent-tooling/abkit-agent-browser-engine.md) | WebKit WPE 派生引擎与 ABHost：`u32` LE 加 JSON 帧、block 操作表、页面身份与 `identity`、macOS `present` 与 `ABView`、Linux/Windows 仅 `capture` 或进程内加载；八目标构建、glibc 2.35 与 musl 1.2.5、`~/.o2/lib/abkit` 安装；omp 18.19.0 优先后端与 Tern 引擎；build.stencil.so 发行 API；omp docs 最轻路径与浏览器自动化边界 | 2026-11-12 |
 | [SkillEvaluator 的计分与门禁机制](agent-tooling/skillevaluator-scoring-and-gating.md) | 三档分工与外部依赖、质量分四维加权与扣分口径、rubric 本地聚合双门槛（≥60 且每条 ≥7）、门禁两条独立失败路径（分数走 fail_gate 不可被 override 豁免、error 级 HIGH 降级即放行）、Tier 3 判定顺序与 lift 判定带；扫描器首次下载与 INCOMPLETE 非零退出、一把 NVIDIA_API_KEY 覆盖三档的边界、docker 自装固定版本 CLI 而 local 才用本机 CLI、支持列表无 OMP | 2026-11-16 |
 | [SkillEvaluator 的效度边界](agent-tooling/skillevaluator-validity-boundaries.md) | 88.8 分纸面复现与分项推导（五条扣分合计 25 分）、四个缺陷变体的命中与盲区（引用不存在的脚本与文实矛盾无感）、947 case 反推 sd≈0.26 与 12–38 个 case 的功效需求、默认 1 个 case 错判约 27%、Wilson 半宽规则最少 21 个 case、grader 自测 15/15 放行 | 2026-11-16 |
+| [配置清单类 skill 的证据复用与确定性检查](agent-tooling/config-inventory-skill-maintenance.md) | 三层证据（运行时快照不进库、消费方证据进库、翻译层随描述符更新）；只查缺项的复用流程与委派时携带版本来源；五个 skill 的隔离测试规模与断言类型；skills.yml 与 tern-maintain 的触发路径差异；Bun 跳过点开头目录；OMO 的版本证据与未核实标记（安装 5.1.72、73 项中 2 项已核对、schemaMissing 16） | 2026-11-16 |
 
 ## ai-coding-agents
 
@@ -236,7 +237,7 @@ OMP 配置项的源码级行为边界。
 | [OMP per-call model 与许可机制](omp-config/per-call-model-and-allowlist.md) | task.perCallModel off/eval/on 三态（本机已 on）与 project 只降不升；按次 model 须单一精确 provider/model-id[@upstream][:level]，role 别名/数组/glob 拒绝；许可来自 operator chat 角色、bundled/user agent frontmatter、父会话单一选择器路由、^标记 m<N>；perCallModelAllow 双层收窄；agentModelOverrides 并用冲突、seance 不受理、无 retry fallback/prewalk、task.maxEffort 档位上限；本机 broadcast 6 个许可选择器与两次拒绝实测；v18.5.0 旧设计（role 别名+候选数组）已撤回 | 2026-11-02 |
 | [OMP 自定义 sub-agent：定义、工具名适配与验证](omp-config/custom-subagent-deployment.md) | 用户级 agents/*.md 的 frontmatter 连字符与 camelCase 等效（`rawKeys=false` 归一，官方文档写 read-summarize/thinking-level）；跨机复刻三处替换（模型 provider、MCP 注册名、manifest 归属）；本机 5 agent + architect/designer/balanced 三 role（16 键，per-call 许可 7 个 selector）；selector 的 `:level` 后缀优先于 thinkingLevel，中间档须用无后缀 role；`spawns: []` 仍注入 task 工具，省略才真正没有；验证两段（loadReadOnly+discoverAgents 断言、五条冒烟自报模型 ID）；TTSR+扩展双层 task agent 选择引导（不硬编码清单）；OMO 5.1.57 原型吸收与四份补齐（Metis/Momus/Oracle Triple、年份门槛/permalink/恢复分支、组件下限/设计系统/验收门、既有证据核查/产物引用）；18.19.0 工具面解析（五类自动补齐，`wait` 由执行器追加；`alwaysInclude` 使 MCP 与扩展工具不受 frontmatter 约束；`restrictToolNames` 三来源为 seance、plan mode、受限父会话，任一命中即关闭 MCP；只读判定为 16 名白名单成员关系）与提示词分层冲突（`# 2. Hand-off` 禁子代理自行跑构建测试）；五 agent 实测内置工具数 24/20/19/14/13，builder 省略 tools 加 spawns:* 与 task 逐项相同 | 2026-11-12 |
 | [OMP Advisor 上下文标记](omp-config/advisor-context-markers.md) | `**user**:`/`**agent**:` 角色标记、会话更新状态头、工具结果渲染预算、evictStaleResults 清理、Advisor 直接回答的投递缺口；技能调用消息走 `customOneLiner` 的 120 字符预览，`User:` 尾部被截掉；#19164 的机器人修复分支与当时受阻的 PR 检查 | 2026-11-13 |
-| [OMP 配置键全量清单与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、128 键无 ui 文字须读源码、isCredential 只覆盖 8 键须按值形态补遮蔽、枚举 API、指纹盲区；18.4.2 达 515 键 | 2026-09-28 |
+| [OMP 配置键全量清单、指纹与凭据遮蔽边界](omp-config/config-key-census.md) | 18.3.1 起 512 键、18.4.2 为 515 键、18.16.0 为 582 键、18.20.3 为 625 键与 60 分组；128 键无 ui 文字须读源码；isCredential 只覆盖 8 键，另有未标记的敏感键须按值形态遮蔽，已配置值递归处理嵌套 URL 与密钥前缀形态；描述符导出 items/validate/normalize，指纹覆盖 validate 并由隔离测试验证；report-gaps 的 unknown/unchanged/upgraded 基线与缺失旧快照报错；两次快照 customized 分别为 111 与 112 | 2026-11-16 |
 | [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
 | [OMP cfg:// 配置解析：合并视图与 source 归属](omp-config/cfg-url-resolution.md) | cfg:// 三层下钻键发现、合并视图 vs yaml、default/global config/项目/会话四层 source 归属、写入 session-only + save 持久化 | 2026-10-11 |
 | [OMP Codex WebSocket 传输判定与回退](omp-config/websocket-transport-policy.md) | 仅 `openai-codex-responses` 有 WebSocket 路径；三处开关与五步判定（模型级 false 挡住环境变量、全局 off 位于环境变量之后）；状态函数与 `lastTransport` 用途区分；V2 beta 头、帧内走 `client_metadata`、致命错误触发 `disableWebsocket` 回退 | 2026-10-24 |
@@ -321,7 +322,7 @@ OMP 模式、Vibe、Task/Hub 与 Magic Keywords。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 工作模式与 Magic Keywords](omp-modes/modes-and-magic-keywords.md) | 模式触发、能力收窄、组合关系与使用建议；各模式系统指令对照（plan/vibe/goal/orchestrate/workflowz/loop）；orchestrate 的 10 条规则、7 步 workflow、7 条 anti-patterns；Vibe fast/good 固定映射与 agentModelOverrides 共享边界；magic keywords 四词与单开关（含 `magicKeywords.workflow`）、ultrathink 旁路 `autoThinkingMaxEffort`、HTML/XML 元素内容按配对屏蔽与 expanded prompt 匹配；workflowz 以 workpool 规则描述并指向专题 | 2026-11-02 |
-| [workflowz 运行机制与生命周期](omp-modes/workflowz-runtime-and-lifecycle.md) | 触发与 notice 位置、池对象与批次、配置项默认值、投递与截断、匹配边界、历史与文档/测试落差；交叉引用并行度四道闸门与 maxInFlightRequests 关系 | 2026-10-27 |
+| [workflowz 运行机制与生命周期](omp-modes/workflowz-runtime-and-lifecycle.md) | 触发与 notice 位置、池对象与批次、配置项默认值、投递与截断、匹配边界、历史与文档/测试落差；交叉引用并行度四道闸门与 maxInFlightRequests 关系；`yield` 的 `key` 必填与空参数失败形态、归因所需的配对 wire 记录 | 2026-11-16 |
 
 ## omp-prewalk
 
@@ -547,6 +548,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP 界面图标：三档 symbolPreset 与 Glyph Protocol](omp/symbol-presets-and-glyph-protocol.md) | `symbolPreset` 枚举 unicode/nerd/ascii（默认 unicode，本机 nerd）；277 个符号键分 24 类；nerd 档仅图标换私有区码位、制表符与进度条仍为 Unicode；自带 270 个轮廓（JetBrainsMono NFM 2.304 / Nerd Fonts 3.5.1，upm 1000、aw 600、lh 1320）；APC `25a1` 四动词握手、三段私有区、确认码位 0xf0d57（icon.omp）；与 emoji 短码表分界；未实跑切换效果 | 2026-11-07 |
 | [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](omp/subagent-workspace-isolation.md) | 三层开关与生效条件；Linux 后端顺序与本机 overlay 可用性；ovnfs 三个作用点、管理协议版本与无静默回退；运行期间写入工作区、结束时一次捕获，合并阶段根仓库一次、嵌套仓库分别应用；`detachGitDir` 使原生隔离拥有独立 git 元数据；`bash.gitGuard` 默认关闭；本机 18.18.1 两个开关均关 | 2026-11-08 |
 | [Markdown 标题的 TUI 渲染：彩色 ### 的来源与两种消除方式](omp/markdown-heading-rendering.md) | depth 1/2 去 # 着色、depth>=3 固定拼回 `"#".repeat(depth)`（markdown.ts:4852-4856）；colorfulMarkdown 默认开、heading 按级 magenta/yellow/blue；消除靠 extensionRenderers.assistantText 扩展改写或用户级规则限 ## | 2026-11-15 |
+| [Stencil Spotlight：工具输出的相关性评分](omp/spotlight-relevance-scoring.md) | 专用评分协议 `POST /v1/spotlight`：`state` 共享上下文、`items` 候选项、`questions{probe}` 多维度；响应 `answers.<id>.scores` 长度等于候选项数；凭据来自 `STENCIL_API_KEY` 或 stencil 登录；`models.noSpotlight`/`offline` 门禁与 stencil 会话例外；与 Decisions、Jev 的外层差异；单次费用由 `stencil-cost-usd` 返回，公开单价未取得 | 2026-11-16 |
 
 ## tokscale
 

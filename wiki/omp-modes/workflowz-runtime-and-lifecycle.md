@@ -1,8 +1,8 @@
 # workflowz 运行机制与生命周期
 
-> Sources: oh-my-pi 官方文档与源码，2026-10-27；本机会话实测，2026-10-27
-> Raw: [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md)
-> Updated: 2026-10-27
+> Sources: oh-my-pi 官方文档与源码，2026-10-27；本机会话实测，2026-10-27；本会话 workpool `yield` 运行记录与 `src/tools/yield.ts`，2026-11-16
+> Raw: [workflowz 运行时与生命周期源码摘录](../../raw/omp-modes/2026-10-27-workflowz-runtime-source-excerpts.md); [workflowz 五项池实测](../../raw/omp-modes/2026-10-27-workflowz-live-pool-run.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [workpool `yield` 参数为空的失败形态与归因边界](../../raw/omp/2026-11-16-workpool-yield-empty-arguments.md)
+> Updated: 2026-11-16
 
 ## Overview
 
@@ -76,6 +76,16 @@
 - 池排空后关闭；再 `push()` 抛 `workpool <name> is closed`。池名在所属会话结束前一直保留，下一阶段要换名字。
 - 单独 `close()` 只取消排队项，正在跑的回合继续；终止聚合任务才会取消所有批次。
 - 没有 `pool.wait()`；完全阻塞时离开 `eval` 调用 `wait` 工具。
+
+## `yield` 参数缺失的失败形态
+
+workpool 模式下，`yield` 要求 `key` 必填，取值是当前池中待提交项的编号；`data` 与 `error` 承载结果。缺少合法 `key` 时调用被拒绝，错误文本为 `key must be one of: 1`。
+
+本会话的三个工作者与三条池项都出现空参数 `arguments: {}`；同一工作者连续重复五次。三条池项都标记 failed。其中至少两项的调查与编辑已经完成并写入仓库，交付报告没有返回，只能从 `history://` 与 session JSONL 重建结论。
+
+空参数的来源需要同一请求的配对记录才能判定：实际出站的 `yield` 工具声明，以及服务返回的原始流式 tool-call 参数。session 层保存的是解析后的参数，单看它无法区分模型生成、服务或中转处理、本地流式解析三种情况。同批工作者调用 `read`、`grep`、`edit` 正常，工具面没有整体失效。
+
+同批调查改用带 `outputSchema` 的 `agent()` 句柄后正常返回。该路径不经过 workpool 的 `yield` 参数。
 
 ## 五项池实测
 
