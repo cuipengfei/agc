@@ -1,6 +1,6 @@
 # herdr-core 手机接入排障：hc 运行形态与 Tailscale SSH policy
 
-> Source: 本机会话命令输出, 2026-11-17; tailscale/tailscale 源码摘录
+> Source: 本机会话命令输出, 2026-11-17; tailscale/tailscale 与 herdrdev/herdr-core 源码摘录, 2026-11-17
 > Collected: 2026-11-17
 > Published: Unknown
 
@@ -47,6 +47,38 @@ Description=[systemd-run] /home/<USER>/.local/bin/herdr-core serve
 ```
 
 `hc-hold-78e2a145.service` 运行 `/home/<USER>/.local/bin/herdr-core hold --socket /run/user/1000/herdr-core/default.holder.60102e78.sock`；`hc-shutdown-8a7d5a97664ec1b7.service` 状态为 exited。
+
+## installed_by 语义（herdr-core 源码）
+
+`crates/herdr-core/src/client.rs` 的 `installed_by` 注释：
+
+```rust
+/// The package manager this hc came from, or "system package manager" as a
+/// compatibility marker when its folder isn't writable. None for a replaceable install.
+pub fn installed_by() -> Option<&'static str> {
+```
+
+识别逻辑按二进制路径匹配三个包管理器前缀：
+
+```rust
+fn manager_of(path: &str) -> Option<&'static str> {
+    [("/Cellar/", "homebrew"), ("/nix/store/", "nix"), ("/mise/installs/", "mise")]
+        .into_iter()
+        .find(|(mark, _)| path.contains(mark))
+        .map(|(_, manager)| manager)
+}
+```
+
+同文件的测试 `the_package_manager_is_read_from_the_path`：
+
+```rust
+assert_eq!(manager_of("/opt/homebrew/Cellar/herdr-core/0.2.0/bin/herdr-core"), Some("homebrew"));
+assert_eq!(manager_of("/nix/store/abc-herdr-core/bin/herdr-core"), Some("nix"));
+assert_eq!(manager_of("/home/me/.local/share/mise/installs/herdr-core/0.2.0/herdr-core"), Some("mise"));
+assert_eq!(manager_of("/home/me/.local/bin/herdr-core"), None);
+```
+
+本机二进制位于 `/home/<USER>/.local/bin/herdr-core`，对应最后一条断言，`installed_by` 为 `null` 表示普通可替换安装，与是否作为持久服务运行无关。源码按 GitHub `herdrdev/herdr-core` master 读取，2026-11-17。
 
 ## 自启检查
 

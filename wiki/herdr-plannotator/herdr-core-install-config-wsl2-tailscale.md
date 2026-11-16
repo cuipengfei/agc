@@ -16,7 +16,7 @@ curl -fsSL https://releases.herdr.dev/core/install.sh | sh
 
 ## core 的启动与保活形态
 
-`hc` 按需启动 core：首次需要后台程序时，`hc` 用 systemd-run 创建 transient unit（本机为 `hc-serve-<hash>.service`），机器重启后该 unit 不保留。`hc server status` 的 `installed_by` 为 `null` 表示没有安装成持久服务；`keeps_running_after_logout` 与 `logout_linger_user` 依赖 logind 的 linger（本机 `Linger=yes`），只保证退出登录后 core 继续运行。
+`hc` 按需启动 core：首次需要后台程序时，`hc` 用 systemd-run 创建 transient unit（本机为 `hc-serve-<hash>.service`），机器重启后该 unit 不保留。`hc server status` 的 `installed_by` 为 `null`，表示没有从二进制路径识别到包管理器（homebrew、nix、mise），属于普通可替换安装，与是否作为持久服务运行无关；`keeps_running_after_logout` 与 `logout_linger_user` 依赖 logind 的 linger（本机 `Linger=yes`），只保证退出登录后 core 继续运行。
 
 判断有没有开机自启，核对四处：`~/.config/systemd/user/` 下是否有 herdr 单元、`default.target.wants/` 是否有对应链接、shell 启动文件是否调用 `hc serve` 或 `hc server start`、`hc server` 是否提供安装子命令（0.1.21 只有 start、stop、status、restart）。本机 2026-11-17 核对四处均为空。
 
