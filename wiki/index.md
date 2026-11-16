@@ -211,7 +211,7 @@ OMP 内置命令的机制与动态发现。
 |---------|---------|---------|
 | [OMP Cleanse：动态诊断修复](omp-commands/cleanse.md) | 按项目文件和可用 binary 动态发现 checker，多语言支持 | 2026-09-09 |
 | [CLI 子命令全量参考](omp-commands/cli-subcommands-reference.md) | omp v18.10.1 的 launch 入口形态、启动 flags 七组、子命令八组及网页文档差异；browser-relay 行指向 browser prelude 架构 | 2026-10-26 |
-| [gc 存储垃圾回收](omp-commands/gc-storage-garbage-collection.md) | omp gc 四阶段存储清理：blobs/archive/wal/stale 的路径、阈值、保留额度与安全机制 | 2026-10-12 |
+| [gc 存储垃圾回收](omp-commands/gc-storage-garbage-collection.md) | omp gc 阶段清理：blobs/archive/wal/stale 的路径、阈值与保留额度，加 compress 的文件系统限定（APFS/NTFS，Linux 跳过）与 strip 的 replay 数据剥除、后台自动压缩入口 | 2026-11-16 |
 
 ## omp-config
 
@@ -240,6 +240,9 @@ OMP 配置项的源码级行为边界。
 | [OMP advisor fallback 链解析与 web 角色 effort 层级坑](omp-config/advisor-web-fallback-chain.md) | 18.4.5 effort 层级（#13789）使 advisor 无链时命中 web 角色键 → web-search provider 全部 Unhandled API；探针复现；本地修法（modelRoles.web 改 firecrawl + 显式 fallbackChains.web/advisor） | 2026-10-07 |
 | [OMP cfg:// 配置解析：合并视图与 source 归属](omp-config/cfg-url-resolution.md) | cfg:// 三层下钻键发现、合并视图 vs yaml、default/global config/项目/会话四层 source 归属、写入 session-only + save 持久化 | 2026-10-11 |
 | [OMP Codex WebSocket 传输判定与回退](omp-config/websocket-transport-policy.md) | 仅 `openai-codex-responses` 有 WebSocket 路径；三处开关与五步判定（模型级 false 挡住环境变量、全局 off 位于环境变量之后）；状态函数与 `lastTransport` 用途区分；V2 beta 头、帧内走 `client_metadata`、致命错误触发 `disableWebsocket` 回退 | 2026-10-24 |
+| [OMP 工具调用循环防护与 exemptTools](omp-config/tool-call-loop-guard.md) | 两族循环防护的分界；跨回合相同工具调用集合的匹配与计数（键排序、跳过意图字段）；豁免回合的跳过与重置两种结局；`exemptTools` 整体替换默认 `["wait"]` 的陷阱；`xd://` 设备别名豁免 | 2026-11-16 |
+| [OMP 终端动画设置：motion 与 shimmer 形态](omp-config/terminal-animation-settings.md) | `tui.motion` 预设对 `display.shimmer` 的强制覆盖、`kitt` 拼写、classic 与 kitt 的亮度分布与形态常量、只作用于 working 文案、native 与 ANSI 两条渲染路径 | 2026-11-16 |
+| [OMP 18.12.1–18.10.1 配置项增量](omp-config/release-config-changes-18-12-1-to-18-10-1.md) | 十个 release 的九个新增键、九个既有键行为变化、模型与 agent 字段、快捷键与环境变量、已移除项；含按注册表交叉匹配的增量调查方法与去重教训 | 2026-11-16 |
 
 ## omp-context-files
 

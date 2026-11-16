@@ -2303,3 +2303,27 @@
 - Raw: raw/agent-tooling/2026-11-16-skillevaluator-official-docs.md; raw/agent-tooling/2026-11-16-skillevaluator-scoring-and-gating-source.md; raw/agent-tooling/2026-11-16-skillevaluator-validity-evidence.md
 - Created: wiki/agent-tooling/skillevaluator-scoring-and-gating.md; wiki/agent-tooling/skillevaluator-validity-boundaries.md
 - 要点：三档分工；质量分四维 0.35/0.25/0.25/0.15 起扣；rubric 加权 3/2/1 均值 ×10 且每条 ≥7；门禁两条路径（分数走 fail_gate 不可被 override 豁免、error 级映射 HIGH 可被降级后重算放行）；Tier 1 默认调模型须 `--no-llm` 才纯静态；Tier 3 默认 docker 自装 Claude Code 2.1.292/Codex 0.161.0/OpenCode 1.19.5，local 才用本机 CLI，支持列表无 OMP；`nv_build` 一把 NVIDIA_API_KEY 覆盖 Tier 1/2/3（云后端与跨 provider 例外）；扫描器首次下载、缺证据即 INCOMPLETE 非零退出；Tier 2 两个阈值分别记录（inter-skill `--threshold` 默认 0.75、intra-skill 聚类 0.80）；88.8 分可复现；947 case 反推 sd≈0.26、需 12 至 38 个 case、默认 1 个 case 错判约 27%；Wilson 半宽 ≤0.20 最少 21 个 case。
+
+## [2026-11-16] ingest | OMP 工具调用循环防护与 exemptTools
+- Disposition: New
+- Raw: raw/omp-config/2026-11-16-tool-call-loop-guard-exempt-tools.md
+- Created: wiki/omp-config/tool-call-loop-guard.md
+- 要点：两族防护分界（`model.loopGuard.*` 盯单次流式重复，`model.toolCallLoopGuard.*` 盯跨回合相同调用集合）；比较口径为整回合调用串排序后的哈希，参数键排序、跳过 `INTENT_FIELD` 与 `__intent`，结果摘要 200 字符、参数摘要 400 字符；阈值默认 `5`；整回合豁免且全部 `useless` 时跳过计数，其余豁免回合重置；`exemptTools` 默认 `["wait"]` 且整体替换，`write` 的 `xd://` 设备名参与豁免；guard 实例缓存键为阈值加数组 JSON。
+
+## [2026-11-16] ingest | OMP 终端动画设置：motion 与 shimmer 形态
+- Disposition: New
+- Raw: raw/omp-config/2026-11-16-tui-motion-and-shimmer-scanner.md
+- Created: wiki/omp-config/terminal-animation-settings.md
+- 要点：`tui.motion` 的 `reduced`/`none` 强制 `display.shimmer` 为 `disabled`，显式 `tui.spinnerInterval` 优先于预设；第三个值是 `kitt` 不是 `kitty`；位置按固定 `30` cells/s 推进，classic 为单向余弦亮带（边距 `10`、半宽 `6`），kitt 为往返亮点加尾迹（头 `0.6`、尾 `7`）；档位阈值 `0.65`/`0.22`；shimmer 只作用于 working 文案，关闭时重绘节奏退回约 12.5fps；本机 `motion=full`、`shimmer=kitt`，观感未目视验证。
+
+## [2026-11-16] ingest | OMP 18.12.1–18.10.1 配置项增量
+- Disposition: New
+- Raw: raw/omp-config/2026-11-16-release-config-inventory-18-12-1-18-10-1.md
+- Created: wiki/omp-config/release-config-changes-18-12-1-to-18-10-1.md
+- 要点：十个 release 新增九个 `config.yml` 键（`advisor.continueSeverity` 默认 `concern`、`sharpshooter.minPromptLength` 默认 `16` 最小 `2`、`lsp.requestTimeout` 默认 `10`、`gc.compress`/`compressAfterDays` 默认 `false`/`7`、`task.structured` 默认 `false` 本机 `true`、`prewalk.auto`/`autoTarget`、`statusLine.segmentOptions.pi.showProfile`）；九个既有键的行为修复；`models.yml` 的 `contextWindow`/`maxTokens` 显式值优先于 catalog；`imageCountBudget` 未知 host 兜底 `5`；快捷键 `app.approval.approve` 默认 `ctrl+enter`/`ctrl+q`；`PI_REQUEST_COMPRESSION` 取代 `PI_CODEX_ZSTD`；`MNEMOPI_*_WEIGHT` 八项默认值；v18.10.1 无候选。方法：注册表 ID 正则交叉匹配 release body，先建已覆盖清单再输出增量。
+
+## [2026-11-16] ingest | OMP gc 的 compress 与 strip 阶段
+- Disposition: Update
+- Raw: raw/omp-commands/2026-11-16-gc-compress-strip-mechanics.md
+- Updated: wiki/omp-commands/gc-storage-garbage-collection.md（阶段表由四阶段扩到 blobs/archive/wal/stale/compress/strip，新增 compress（含后台自动压缩）与 strip 两节，默认配置表补五行，Overview 记录 v18.10.4 与 v18.13.2 的引入版本）
+- 要点：透明压缩只认 APFS（`ditto --hfsCompression` + SHA-256 校验后 rename）与 NTFS（`compact /c /i /a /q` 的 LZNT1）；`gc.autoCompress` 每 `24` 小时最多拉起一次 detached 压缩，日志 `gc-auto-compress.log`，跳过消息为 `compress skipped: unsupported on this filesystem (APFS or NTFS only)`；本机根为 ext4（`/dev/sdf`），判定返回空，`chattr(1)` 1.47.2 明确 ext2/3/4 不支持 `c` 属性，Linux 上可用压缩路径是 archive 的 gzip `level: 9`；strip 剥除十个 replay 键、保护最新 replay 回合、staging 后 rename 替换，本机 `gc.strip=true`、`stripAfterDays=30`，本次未执行 gc。

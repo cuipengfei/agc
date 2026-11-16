@@ -1,14 +1,14 @@
 # OMP gc 存储垃圾回收
 
-> Sources: oh-my-pi 仓库 gc-cli.ts + gc-settings.ts 源码直读; 本机 omp v18.10.1 `omp gc --help` / `--json` / `--apply --json` / `--stale --apply --json` 输出直采, 2026-10-12
-> Raw: [gc 存储机制源码与命令输出](../../raw/omp-commands/2026-10-12-gc-storage-mechanism.md)
-> Updated: 2026-10-12
+> Sources: oh-my-pi 仓库 gc-cli.ts + gc-settings.ts 源码直读; 本机 omp v18.10.1 `omp gc --help` / `--json` / `--apply --json` / `--stale --apply --json` 输出直采, 2026-10-12; 本机 OMP 18.20.3 的 gc-auto-compress.ts / gc-compress.ts 源码与文件系统勘查, 2026-11-16
+> Raw: [gc 存储机制源码与命令输出](../../raw/omp-commands/2026-10-12-gc-storage-mechanism.md); [omp gc 的 compress 与 strip 阶段](../../raw/omp-commands/2026-11-16-gc-compress-strip-mechanics.md)
+> Updated: 2026-11-16
 
 ## Overview
 
-`omp gc` 清理 OMP 自身在 `~/.omp/agent` 下积累的四类存储产物：未被引用的内容寻址 blob、过期的冷会话、SQLite WAL 文件、悬空指针与过期产物。默认全部 dry-run，加 `--apply` 才真执行。四个阶段中 blobs、archive、wal 默认开启，stale 默认关闭（因为它删的是用户可见文件）。
+`omp gc` 清理 OMP 自身在 `~/.omp/agent` 下积累的存储产物：未被引用的内容寻址 blob、过期的冷会话、SQLite WAL 文件、悬空指针与过期产物，以及冷 session 的文件系统透明压缩与 replay 数据剥除。默认全部 dry-run，加 `--apply` 才写入磁盘。blobs、archive、wal 默认开启；stale、compress、strip 默认关闭（stale 删的是用户可见文件，compress 依赖文件系统能力，strip 会改变保存的 session 数据）。本页 2026-10-12 的实测基于 v18.10.1，只覆盖 blobs/archive/wal/stale 四个阶段；compress 在 v18.10.4 引入，`gc.autoCompress` 后台入口在 v18.13.2 引入。
 
-## 四阶段总表
+## 阶段总表
 
 | 阶段 | 清理对象 | 路径（默认 agent dir = `~/.omp/agent`） | 默认开关 |
 |---|---|---|---|
@@ -16,8 +16,10 @@
 | archive | 冷会话整体从活跃区搬到归档区（连同工件目录），并清 history.db / stats.db 对应行 | 从 `~/.omp/agent/sessions/` 移到 `~/.omp/agent/archive/sessions/` | 开 |
 | wal | 两个 SQLite 数据库的 WAL 文件做 checkpoint 截断 | `~/.omp/agent/history.db-wal`、`~/.omp/agent/models.db-wal` | 开 |
 | stale | 悬空指针与过期产物 | 四处目录（详见下文） | 关 |
+| compress | 冷 session 的文件系统透明压缩（APFS / NTFS），会话保持可恢复与可搜索 | `~/.omp/agent/sessions/` 内的 transcript 与工件 | 关 |
+| strip | 剥除闲置 session 的 provider replay 数据 | `~/.omp/agent/sessions/` 与归档区内的 transcript | 关 |
 
-用 `--blobs`/`--archive`/`--wal`/`--stale` 中任意一个显式点名后，只跑被点名的阶段；一个都不点则按配置默认值跑（即前三项）。
+用 `--blobs`/`--archive`/`--wal`/`--stale`/`--compress`/`--strip` 中任意一个显式点名后，只跑被点名的阶段；一个都不点则按配置默认值跑。
 
 ## blobs 阶段
 
@@ -59,6 +61,22 @@ stale 阶段删除四类对象：
 
 `fresh` 的 breadcrumb 是 `/new` 的惰性边界，保留。`resolveConfigRootStores` 逻辑：默认 agent dir（`~/.omp/agent`）解析到 `~/.omp/reports/` 和 `~/.omp/collab/`；自定义 agent dir 名为 `agent` 则父目录为 config root；其他名字的 agent dir 没有 config root 可清。
 
+## compress 阶段
+
+`gc.compress` 决定默认计划是否包含透明压缩，`gc.compressAfterDays` 的闲置阈值为 `7` 天。压缩由文件系统完成：APFS 用 `ditto --hfsCompression` 复制、比对 SHA-256 后 rename 替换原文件；NTFS 用 `compact /c /i /a /q` 就地启用 LZNT1。文件路径、读取内容与 mtime 保持原样，会话仍可恢复与搜索；被重新写入的文件会以未压缩形式保存。
+
+平台判定只认 APFS 与 NTFS，其他平台或文件系统返回空。本机根文件系统为 ext4（`/dev/sdf`），判定返回空；`chattr(1)`（e2fsprogs 1.47.2）也写明当前 Linux 内核不支持 ext2/3/4 的 `c` 压缩属性。因此本机即使把 `gc.autoCompress` 设为 `true`，到期运行也只会往 `gc-auto-compress.log` 写一行跳过原因，不压缩任何 session。Linux 上可用的压缩路径是 archive 阶段的 gzip（`level: 9`，写成 `.jsonl.gz`）。
+
+### 后台自动压缩
+
+`gc.autoCompress` 在交互启动时拉起 detached 的 `omp gc --compress --apply`，每 `24` 小时最多一次，子进程优先级为 `PRIORITY_LOW`。启动只做卷类型判定，压缩是否真的生效由子进程写入探测文件验证；不支持时日志内容为 `compress skipped: unsupported on this filesystem (APFS or NTFS only)`。
+
+## strip 阶段
+
+`gc.strip` 剥除闲置 session 的 provider replay 数据，闲置阈值来自默认 `30` 天的 `gc.stripAfterDays`；`gc.strip` 开启后进入默认 `omp gc` 计划。被剥除的键包括 `thinkingSignature`、`redactedThinking`、`thoughtSignature`、`providerPayload`、`requestControls`、`inputTransformations`、`partialArgs`、`streamIndex`、`providerFile`、`itemId`。
+
+最新一个 replay 回合所在的行受保护，保证最近一次可重放请求完整。正在被进程持有的 session 跳过；文件在阈值之后被修改过、存在硬链接、或最新 replay 回合之外没有 replay 数据时也不处理。写入走 staging 文件，校验 inode、大小、mtime 与链接数后用 rename 替换，权限位保留。
+
 ## 默认配置值
 
 | 配置项 | 默认值 |
@@ -70,6 +88,11 @@ stale 阶段删除四类对象：
 | `gc.retainNewestPerCwd` | 10 |
 | `gc.staleRetainNewest` | 20 |
 | `gc.staleRetainDays` | 30 |
+| `gc.compress` | `false` |
+| `gc.compressAfterDays` | 7 |
+| `gc.autoCompress` | `false` |
+| `gc.strip` | `false` |
+| `gc.stripAfterDays` | 30 |
 
 ## 安全机制
 
