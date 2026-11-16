@@ -2297,3 +2297,9 @@
 - Raw: raw/terminal-multiplexers/2026-11-16-tuios-0-13-1-sip-dependency-and-uv-bun.md
 - Updated: wiki/terminal-multiplexers/tuios-web-and-updates.md（原「uv-bun 未覆盖 TUIOS」句加 Status: Outdated；新增 uv-bun 覆盖与 0.13.1 升级语义、0.13.1 默认变化、sip 与 tuios 依赖抽离三节）; wiki/terminal-graphics/browser-kitty-terminals.md（路线三补依赖方向）; wiki/agent-tooling/beads-install-and-runtime-surface.md（uv-bun 段数九改十）
 - 要点：0.12.1 daemon 必须先 `tuios restart-server` 一次，0.13.1 起 `tuios daemon upgrade` 免重启；`tuios update` 同目录同时换 tuios 与 tuios-web 两二进制；uv-bun 第 3 段加入 tuios（`tuios --version` 首行专用正则），bun test 1 pass 0 fail（49.8 秒）；依赖单边（tuios 本体无 sip，tuios-web 固定 sip v0.10.0），sip 2025-12-02 从 tuios（2025-09-06）抽出；0.13.1 默认变化含 cell frames（1023 us→205 us、792→376 allocations）、OSC 133、`limit_reached`、hook 直连 socket；配置键仅有 release notes 级证据，待 daemon 重启后核对注册表。
+
+## [2026-11-16] ingest | SkillEvaluator 的计分与门禁机制
+- Disposition: New
+- Raw: raw/agent-tooling/2026-11-16-skillevaluator-official-docs.md; raw/agent-tooling/2026-11-16-skillevaluator-scoring-and-gating-source.md; raw/agent-tooling/2026-11-16-skillevaluator-validity-evidence.md
+- Created: wiki/agent-tooling/skillevaluator-scoring-and-gating.md; wiki/agent-tooling/skillevaluator-validity-boundaries.md
+- 要点：三档分工；质量分四维 0.35/0.25/0.25/0.15 起扣；rubric 加权 3/2/1 均值 ×10 且每条 ≥7；门禁两条路径（分数走 fail_gate 不可被 override 豁免、error 级映射 HIGH 可被降级后重算放行）；Tier 1 默认调模型须 `--no-llm` 才纯静态；Tier 3 默认 docker 自装 Claude Code 2.1.292/Codex 0.161.0/OpenCode 1.19.5，local 才用本机 CLI，支持列表无 OMP；`nv_build` 一把 NVIDIA_API_KEY 覆盖 Tier 1/2/3（云后端与跨 provider 例外）；扫描器首次下载、缺证据即 INCOMPLETE 非零退出；Tier 2 两个阈值分别记录（inter-skill `--threshold` 默认 0.75、intra-skill 聚类 0.80）；88.8 分可复现；947 case 反推 sd≈0.26、需 12 至 38 个 case、默认 1 个 case 错判约 27%；Wilson 半宽 ≤0.20 最少 21 个 case。

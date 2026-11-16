@@ -65,6 +65,8 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [sandcastle：把 agent 关进进程围栏的编排库](agent-tooling/sandcastle.md) | TypeScript 编排库：`run()` 建沙箱、起 agent、收提交；三种分支策略的工作区差别（`head` 无 worktree、`merge-to-head` 结束时自动合并、`branch` 提交留在指定分支），进程围栏与三者互不影响；九种沙箱（导出十条，文档漏列 DayTona）、六个 agent 提供方；原生围栏隐藏主目录与登录凭据、网络全开、无 root，Linux 上强度约等于 runc；抛错不回退、提供方错误不重试；`init` 按提供方生成 4 或 5 个文件、npm 包 0.14.0；`RunResult.branch` 为目标分支，`output` 需显式开启 | 2026-11-09 |
 | [OMP computer use 与 agent-desktop 对照](agent-tooling/omp-computer-use-vs-agent-desktop.md) | 进程内 Eval 预置对象与独立二进制两类形态；投递三档对 headless/headed 两档（后台物理输入只在 OMP，坐标点击在 agent-desktop 需前台）；引用寿命：OMP 随工作进程清空，agent-desktop 在命名空间内写盘续用、换会话作废；审批分类不等于询问，默认 `yolo`；agent-desktop 60 个命令名 56 可用、按住类缺席；含未实测项 | 2026-11-09 |
 | [ABKit：面向 agent 的 WebKit 浏览器引擎](agent-tooling/abkit-agent-browser-engine.md) | WebKit WPE 派生引擎与 ABHost：`u32` LE 加 JSON 帧、block 操作表、页面身份与 `identity`、macOS `present` 与 `ABView`、Linux/Windows 仅 `capture` 或进程内加载；八目标构建、glibc 2.35 与 musl 1.2.5、`~/.o2/lib/abkit` 安装；omp 18.19.0 优先后端与 Tern 引擎；build.stencil.so 发行 API；omp docs 最轻路径与浏览器自动化边界 | 2026-11-12 |
+| [SkillEvaluator 的计分与门禁机制](agent-tooling/skillevaluator-scoring-and-gating.md) | 三档分工与外部依赖、质量分四维加权与扣分口径、rubric 本地聚合双门槛（≥60 且每条 ≥7）、门禁两条独立失败路径（分数走 fail_gate 不可被 override 豁免、error 级 HIGH 降级即放行）、Tier 3 判定顺序与 lift 判定带；扫描器首次下载与 INCOMPLETE 非零退出、一把 NVIDIA_API_KEY 覆盖三档的边界、docker 自装固定版本 CLI 而 local 才用本机 CLI、支持列表无 OMP | 2026-11-16 |
+| [SkillEvaluator 的效度边界](agent-tooling/skillevaluator-validity-boundaries.md) | 88.8 分纸面复现与分项推导（五条扣分合计 25 分）、四个缺陷变体的命中与盲区（引用不存在的脚本与文实矛盾无感）、947 case 反推 sd≈0.26 与 12–38 个 case 的功效需求、默认 1 个 case 错判约 27%、Wilson 半宽规则最少 21 个 case、grader 自测 15/15 放行 | 2026-11-16 |
 
 ## ai-coding-agents
 
