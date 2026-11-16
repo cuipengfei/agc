@@ -754,18 +754,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/architect/SKILL.md",
-      "skillFolderHash": "edc17d8867a54539a010bdfc469464b0114f562a",
+      "skillFolderHash": "ed1403d9e98e9680520ac38fe387f5cc52d7ff36",
       "installedAt": "2026-10-04T15:35:43.277Z",
-      "updatedAt": "2026-10-27T13:33:47.576Z"
+      "updatedAt": "2026-11-16T12:23:16.818Z"
     },
     "arena": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/arena/SKILL.md",
-      "skillFolderHash": "291ec317adcba3fac4e7422cbf2479d8ab4a8752",
+      "skillFolderHash": "84ccf3322a3d5ae9a77024e39c2fd781fd832566",
       "installedAt": "2026-10-04T15:35:43.280Z",
-      "updatedAt": "2026-11-12T12:19:28.450Z"
+      "updatedAt": "2026-11-16T12:23:16.883Z"
     },
     "automate-me": {
       "source": "backnotprop/pstack",
@@ -790,9 +790,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/blast-radius/SKILL.md",
-      "skillFolderHash": "9437b18aef01b61d24b57d0fd3de24386398b643",
+      "skillFolderHash": "88d9b57545971959dd93878d6c6ac7f3a84737b8",
       "installedAt": "2026-10-04T15:35:43.296Z",
-      "updatedAt": "2026-10-27T13:33:47.581Z"
+      "updatedAt": "2026-11-16T12:23:16.952Z"
     },
     "bro": {
       "source": "backnotprop/pstack",
@@ -835,9 +835,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/how/SKILL.md",
-      "skillFolderHash": "30710d3ef1f8f62d0aa031741ad49935515b335a",
+      "skillFolderHash": "d7a6f2baff1a9fe0842ade86c88a66e2541407b1",
       "installedAt": "2026-10-04T15:35:43.303Z",
-      "updatedAt": "2026-10-27T13:33:47.586Z"
+      "updatedAt": "2026-11-16T12:23:17.023Z"
     },
     "interrogate": {
       "source": "backnotprop/pstack",
@@ -862,9 +862,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/no-comments/SKILL.md",
-      "skillFolderHash": "297745926d3234c73740514f4ba3d21fba1647ca",
+      "skillFolderHash": "77f61e89880d0eaffbcf8066d1e75f0bbdfa8143",
       "installedAt": "2026-10-04T15:35:43.307Z",
-      "updatedAt": "2026-10-27T13:33:47.594Z"
+      "updatedAt": "2026-11-16T12:23:17.103Z"
     },
     "principle-attack-the-premise": {
       "source": "backnotprop/pstack",
@@ -1087,27 +1087,27 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/recall/SKILL.md",
-      "skillFolderHash": "20f183e05609a07f3c2c834915325859bc3e06a5",
+      "skillFolderHash": "e145c1f2fdeabacef1d0ddb85b6237f7678cabb0",
       "installedAt": "2026-10-04T15:35:43.347Z",
-      "updatedAt": "2026-10-27T13:33:47.619Z"
+      "updatedAt": "2026-11-16T12:23:17.170Z"
     },
     "reflect": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/reflect/SKILL.md",
-      "skillFolderHash": "849de06c8b7882505e72805d93e0a3abf6d36719",
+      "skillFolderHash": "c5316a054bd45a9e83a462f39b5c7d3bb96018f0",
       "installedAt": "2026-10-04T15:35:43.348Z",
-      "updatedAt": "2026-10-27T13:33:47.620Z"
+      "updatedAt": "2026-11-16T12:23:17.279Z"
     },
     "setup-pstack": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/setup-pstack/SKILL.md",
-      "skillFolderHash": "78ceb53a3b53ec4bfb07251ca8ed5bf63537be4b",
+      "skillFolderHash": "033bc51923ae6806849ce0efb61e5bba2c250185",
       "installedAt": "2026-10-04T15:35:43.349Z",
-      "updatedAt": "2026-10-29T13:44:51.333Z"
+      "updatedAt": "2026-11-16T12:23:17.344Z"
     },
     "show-me-your-work": {
       "source": "backnotprop/pstack",
@@ -1123,9 +1123,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/swarm/SKILL.md",
-      "skillFolderHash": "f5148d80e9cca464397a6a1f0a5cf28e27d3478b",
+      "skillFolderHash": "9c4cd83a2962670c91c6124df6d47813d997be1a",
       "installedAt": "2026-10-04T15:35:43.352Z",
-      "updatedAt": "2026-10-27T13:33:47.625Z"
+      "updatedAt": "2026-11-16T12:23:17.408Z"
     },
     "technical-writing": {
       "source": "backnotprop/pstack",
@@ -1159,9 +1159,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/why/SKILL.md",
-      "skillFolderHash": "01f035d232040c8d294b8ff42b0ff37d54e56e66",
+      "skillFolderHash": "2608dc2d93794dd7060b826b81b6da0be6bc673c",
       "installedAt": "2026-10-04T15:35:43.361Z",
-      "updatedAt": "2026-10-27T13:33:47.630Z"
+      "updatedAt": "2026-11-16T12:23:17.485Z"
     },
     "implement-spec": {
       "source": "mattpocock/skills",
@@ -1224,45 +1224,45 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "8fe3628b7b7b27b33f880bb123cc06988861c43f",
+      "skillFolderHash": "0ffdd26eb8bb76764a68e53ed1b283acf70bde4a",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-12T12:19:29.364Z"
+      "updatedAt": "2026-11-16T12:23:22.370Z"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "63505fb565b8ec1dfb52a3c2d047cc32ef35a81c",
+      "skillFolderHash": "19745e7c8e975a9c6d0060efb139f34ef57fa7ec",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-15T13:32:46.284Z"
+      "updatedAt": "2026-11-16T12:23:22.689Z"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "ca686aa889dbc82a3f8723df546a31f65ed2956c",
+      "skillFolderHash": "d94a75bef50256243c26b843fbd98c2fe870e109",
       "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-11-05T12:59:50.510Z"
+      "updatedAt": "2026-11-16T12:23:23.027Z"
     },
     "media-use": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "e2b35beb86880468f27382bea75317e25b863817",
+      "skillFolderHash": "1ce7abca5111d0c8c802578d6e931bd530da4882",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-15T13:32:47.552Z"
+      "updatedAt": "2026-11-16T12:23:24.178Z"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "24a2b4f27483be782dd6112fa7e53dc72cdacbe5",
+      "skillFolderHash": "4a2522e50445dae4e20428701060d948a26e3ec3",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-10-29T13:44:56.569Z"
+      "updatedAt": "2026-11-16T12:23:17.901Z"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1369,27 +1369,28 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-help/SKILL.md",
-      "skillFolderHash": "ba0f59c612ad2ea072d5eac1051c207cece59604",
+      "skillFolderHash": "9e6b2e7e24d1837fe4a2d761132d2da5b195a64e",
       "installedAt": "2026-10-27T13:33:47.595Z",
-      "updatedAt": "2026-10-29T13:45:05.096Z"
+      "updatedAt": "2026-11-16T12:27:01.260Z",
+      "commit": "74bcc61bd216687b1d6d480c28f109adfc9824ec"
     },
     "sharpen": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/sharpen/SKILL.md",
-      "skillFolderHash": "726fcb216692c5a2ad78b5c2ae19c2e6ac66cb67",
+      "skillFolderHash": "672ef555c7b4c24b4a5bd016647c5d836a1d6aa6",
       "installedAt": "2026-10-27T13:33:47.622Z",
-      "updatedAt": "2026-10-27T13:33:47.622Z"
+      "updatedAt": "2026-11-16T12:23:17.963Z"
     },
     "statechart": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/statechart/SKILL.md",
-      "skillFolderHash": "fc8234cff29087bdc1c4a2dc5d2fac6acfa89245",
+      "skillFolderHash": "23c4f2aa01a8c02cc5cb49556888283c620d628d",
       "installedAt": "2026-10-27T13:33:47.624Z",
-      "updatedAt": "2026-11-06T07:13:40.931Z"
+      "updatedAt": "2026-11-16T12:23:21.451Z"
     },
     "ub-mode": {
       "source": "unclebob/ub-mode",
@@ -1423,9 +1424,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/teach/SKILL.md",
-      "skillFolderHash": "3ee517292dae0476dc516f9f3805c08fb943c6ff",
+      "skillFolderHash": "f8530de72921e487b8b1e5d53a0f7867d31d6053",
       "installedAt": "2026-11-07T04:00:18.193Z",
-      "updatedAt": "2026-11-07T04:00:18.193Z"
+      "updatedAt": "2026-11-16T12:23:21.507Z"
     }
   },
   "dismissed": {

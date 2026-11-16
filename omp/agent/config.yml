@@ -131,6 +131,7 @@ images:
   describeForTextModels: true
   questionTimeoutMs: 300000
 tui:
+  motion: reduced
   maxInlineImageColumns: 100
   maxInlineImageRows: 20
   maxInlineImages: 8
@@ -148,7 +149,7 @@ tui:
   mouse: false
   autoGraph: auto
   titleSpinner: braille
-  completeScrollback: false
+  completeScrollback: true
 display:
   shimmer: classic
   smoothStreaming: true
@@ -174,7 +175,7 @@ model:
     enabled: true
     threshold: 5
     exemptTools:
-      - hub
+      - wait
 inlineToolDescriptors: "on"
 includeModelInPrompt: true
 includeWorkspaceTree: false
@@ -258,6 +259,7 @@ magicKeywords:
   orchestrate: true
   jevify: true
   workflow: true
+  chillax: true
 completion:
   notify: "on"
 error:
@@ -266,6 +268,8 @@ ask:
   timeout: 0
   notify: "on"
   enabled: true
+btw:
+  inject: true
 recap:
   enabled: false
   idleSeconds: 300
@@ -338,6 +342,7 @@ mnemopi:
   embeddingApiUrl: http://localhost:4140/v1
   embeddingModel: text-embedding-3-small
   autoRecall: true
+  recallRelevance: auto
   autoRetain: true
   polyphonicRecall: true
   enhancedRecall: true
@@ -455,6 +460,7 @@ todo:
   reminders: true
   remindersMax: 3
   eager: preferred
+  midRunNudges: capped
 glob:
   enabled: true
 grep:
@@ -620,6 +626,8 @@ gc:
   coldArchiveAfterDays: 30
   retainNewestGlobal: 20
   retainNewestPerCwd: 10
+  strip: true
+  autoCompress: true
 thinkingBudgets:
   minimal: 1024
   low: 2048
@@ -631,6 +639,7 @@ composer:
   shape: claude
   tokenRate: true
   predictions: false
+  predictionAlternatives: false
 externalThinking: false
 skillful: true
 out:
@@ -638,6 +647,7 @@ out:
 extensionHandlers:
   modeControl: true
 extensionRenderers:
-  assistantText: false
+  assistantText: true
+  transcriptPresenters: true
 update:
   auto: false
