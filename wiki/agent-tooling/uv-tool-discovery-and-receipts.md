@@ -1,8 +1,8 @@
 # uv 工具发现机制与 uv-receipt.toml
 
-> Sources: DeepWiki（astral-sh/uv 源码索引）, 2026-10-05; 本机实测, 2026-10-05; uv 官方文档、源码 `6ff87607937b55055ed4c75d3e965aad61bcbc91` 与本次会话安装升级日志, 2026-11-12
-> Raw: [uv-tool-receipts-deepwiki](../../raw/agent-tooling/2026-10-05-uv-tool-receipts-deepwiki.md); [uv Git 安装与升级证据](../../raw/agent-tooling/2026-11-12-uv-git-tools-install-and-upgrade.md)
-> Updated: 2026-11-12
+> Sources: DeepWiki（astral-sh/uv 源码索引）, 2026-10-05; 本机实测, 2026-10-05; uv 官方文档、源码 `6ff87607937b55055ed4c75d3e965aad61bcbc91` 与本次会话安装升级日志, 2026-11-12; uv CLI 帮助输出, 2026-11-17
+> Raw: [uv-tool-receipts-deepwiki](../../raw/agent-tooling/2026-10-05-uv-tool-receipts-deepwiki.md); [uv Git 安装与升级证据](../../raw/agent-tooling/2026-11-12-uv-git-tools-install-and-upgrade.md); [本机安装与验证日志](../../raw/agent-tooling/2026-11-17-clojure-viewer-local-install-log.md)
+> Updated: 2026-11-17
 
 ## Overview
 
@@ -53,6 +53,10 @@ uv tool upgrade --all
 当前源码 `on_checkout_complete` 直接格式化 `Updated`，该输出路径没有比较新旧 hash。因此，同一 hash 配合最终无升级结果属于正常的来源刷新。本次读取的源码是 `6ff87607937b55055ed4c75d3e965aad61bcbc91`，环境日志来自 uv 0.13.7，两者没有做发布版本对应核验。
 
 实际验证覆盖临时 Git 安装、依赖导入和无更新场景的 `upgrade --all`，用户也提供了全局安装升级日志。没有模拟远端新增 commit 后的升级；相关命令的预期用途依据 uv 文档记录。
+
+## 清单只覆盖 Python 工具
+
+`uv tool list` 的发现单位是 uv 自己安装的 Python 工具目录；每个工具由独立 venv 与 `uv-receipt.toml` 组成。`--show-extras` 只展开这些工具已安装的附加依赖，帮助原文见 raw 的代码块。Clojure、Go、Rust 等非 Python 全局命令行程序不在这个目录里，不会出现在 `uv tool list`，`uv tool upgrade --all` 也管不到。2026-11-17 本机在装好 Clojure CLI 与 uml-viewer 后检查，`uv tool list --show-extras` 输出了 crapper、dryer、mutator 等 Python 工具，没有 `uml-viewer`；`command -v uml-viewer` 仍指向 `~/.local/bin/uml-viewer`。
 
 ## 对配置同步实践的启示
 

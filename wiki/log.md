@@ -2351,3 +2351,10 @@
 - Raw: raw/omp/2026-11-16-workpool-yield-empty-arguments.md
 - Updated: workflowz 运行机制与生命周期
 - 要点：workpool 模式下 `yield` 的 `key` 必填，空参数报 `key must be one of: 1`；三个工作者与三条池项都出现空参数，同一工作者连续五次；三条池项标记 failed，调查与编辑已完成而报告未返回；归因需要同一请求的出站工具声明与原始流式 tool-call 参数，session 仅保存解析后参数；带 `outputSchema` 的 `agent()` 句柄可正常交付。
+
+## [2026-11-17] ingest | Clojure CLI 与 uml-viewer 的运行环境
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-17-clojure-cli-install-and-launcher-delta.md; raw/agent-tooling/2026-11-17-uml-viewer-gui-and-launch-surfaces.md; raw/agent-tooling/2026-11-17-zulu-ca-and-headless-awt.md; raw/agent-tooling/2026-11-17-clojure-viewer-local-install-log.md
+- Created: wiki/agent-tooling/clojure-cli-and-uml-viewer-runtime.md
+- Updated: wiki/agent-tooling/ub-mode-companion-tools.md; wiki/agent-tooling/uv-tool-discovery-and-receipts.md
+- 要点：官方 Clojure CLI 与 Ubuntu `clojure 1.12.0-1build2` 提供不同启动器，后者只有 `clojure1.12`/`clojurec1.12`，manpage 无 `-Sdeps`/`-M`；2021-08-23 GSoC 报告记录迁移到上游 `clj`/`clojure` 的工作当时未完成，现行维护决策没有说明；`linux-install.sh` 1.12.6.1673 下载 `clojure-tools-1.12.6.1673.tar.gz` 并校验 SHA-256，安装到 `/usr/local`；`rlwrap` 只服务 `clj`，查看器的 `./uml` 调用 `clojure`；仅有 headless Zulu 时 `libawt_xawt.so` 缺席、`isHeadless` 为 true，补装 `zulu25-ca-jre 25.0.5.0.3-5` 后 Xvfb 中窗口为 `1500×920`；全局入口不创建 `./uml` 也不改 `.gitignore`；`uv tool list` 只覆盖 Python 工具，`--show-extras` 只展开这些工具的附加依赖；Grok companion 邮件/重启与真实显示通道未验证，首次依赖解析的 TLS 中断未定位。

@@ -52,8 +52,8 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [codegraph 与 graphify 的分工边界](agent-tooling/codegraph-vs-graphify.md) | 符号级索引 vs 混合语料地图：单查询探测 codegraph 未达 wiki 条目而 graphify 以 wiki 为枢纽；分层分工、选用建议与证据边界；2026-10-27 补横向对比入口 | 2026-10-27 |
 | [代码智能工具全景与选型](agent-tooling/code-intelligence-tool-landscape.md) | CodeGraph、Semble、Graphify 的机制核对、相似方案、概念分层与编码 agent 选型；含 OMP find 对比，该部分标注 2026-10-01 前源码快照 | 2026-10-27 |
 | [Anatomy skill：物理装置隐喻的交互式等距出图机制与自解释成品](agent-tooling/anatomy-skill-mechanics.md) | 概念→可交互物理装置的一对一映射；几何 audit + line check 双重门槛；Standalone HTML/静态 SVG/React/gallery 四交付；136 solids 自解释成品的 iframe srcdoc + Bun bundle 嵌入方式与后续改动走手动编辑的合规流程 | 2026-10-18 |
-| [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv per-tool receipt 与浅层同步；补 Git 工具隔离环境、mutator 的 --with crapper 导入依赖、upgrade --all 与 Updated/Nothing to upgrade 两阶段输出及实测边界 | 2026-11-12 |
-| [ub-mode 配套工具：安装、升级与项目运行方式](agent-tooling/ub-mode-companion-tools.md) | crapper/dryer/mutator CLI 与可选 uml-viewer；uv Git 安装、extras 与 Clojure 前提；语言注册矩阵与 dryer 的 JavaScript 两层缺口（PR #16/#19）；CRAP、变异、相似度三种信号的读法与覆盖率归属失真；作者仓库自用证据；agc 修复前后实测 | 2026-11-13 |
+| [uv 工具发现机制与 uv-receipt.toml](agent-tooling/uv-tool-discovery-and-receipts.md) | uv per-tool receipt 与浅层同步；补 Git 工具隔离环境、mutator 的 --with crapper 导入依赖、upgrade --all 与 Updated/Nothing to upgrade 两阶段输出及实测边界；2026-11-17 补清单只覆盖 Python 工具，--show-extras 只展开已装工具的附加依赖 | 2026-11-17 |
+| [ub-mode 配套工具：安装、升级与项目运行方式](agent-tooling/ub-mode-companion-tools.md) | crapper/dryer/mutator CLI 与可选 uml-viewer；uv Git 安装、extras 与 Clojure 前提；语言注册矩阵与 dryer 的 JavaScript 两层缺口（PR #16/#19）；CRAP、变异、相似度三种信号的读法与覆盖率归属失真；作者仓库自用证据；agc 修复前后实测；2026-11-17 补 viewer 安装与图形验证指路 | 2026-11-17 |
 | [harness 接入工具的三条通道](agent-tooling/harness-integration-paths.md) | 内置工具、配置分发、外部任务系统三条通道的判据与缺口；ast-grep 引擎随 `pi-natives` 发布（`ast-grep-core 0.39.9`）；APM 的 manifest、lock、SBOM 与 policy 及 9 个支持宿主（不含 OMP）；Beads 的 14 个 `bd setup` 配方（不含 pi/omp）与 `AGENTS.md`、`beads-mcp` 两条接入路；本机 bd 1.3.4 已装，同步与 server 模式需要独立 Dolt 2.6.0+ | 2026-11-05 |
 | [Beads 的安装与运行面](agent-tooling/beads-install-and-runtime-surface.md) | 一个 bd 二进制内含 Dolt 引擎；安装脚本/npm/brew 的下载物与校验差异；独立 Dolt 只在同步与 server 模式需要（2.6.0+）；beads-mcp 三个直接 pin 与 69 个 wheel 闭包；本机手动安装证据与 1.3.4 升级；buntoolbox Docker 安装 vs WSL 只检查版本；bd init auto-commit 与 bd prime 空库行为；uv-bun 段落清单核对为十段 | 2026-11-16 |
 | [Beads 1.3.4 的命令面与帮助树结构](agent-tooling/beads-command-surface.md) | 1.3.4 递归 --help 共 299 页（120 一级、172 二级、7 三级；一级含 bd 根）；任务循环、依赖、同步、维护、集成分组；帮助树解析的三个边界 | 2026-11-05 |
@@ -68,6 +68,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [SkillEvaluator 的计分与门禁机制](agent-tooling/skillevaluator-scoring-and-gating.md) | 三档分工与外部依赖、质量分四维加权与扣分口径、rubric 本地聚合双门槛（≥60 且每条 ≥7）、门禁两条独立失败路径（分数走 fail_gate 不可被 override 豁免、error 级 HIGH 降级即放行）、Tier 3 判定顺序与 lift 判定带；扫描器首次下载与 INCOMPLETE 非零退出、一把 NVIDIA_API_KEY 覆盖三档的边界、docker 自装固定版本 CLI 而 local 才用本机 CLI、支持列表无 OMP | 2026-11-16 |
 | [SkillEvaluator 的效度边界](agent-tooling/skillevaluator-validity-boundaries.md) | 88.8 分纸面复现与分项推导（五条扣分合计 25 分）、四个缺陷变体的命中与盲区（引用不存在的脚本与文实矛盾无感）、947 case 反推 sd≈0.26 与 12–38 个 case 的功效需求、默认 1 个 case 错判约 27%、Wilson 半宽规则最少 21 个 case、grader 自测 15/15 放行 | 2026-11-16 |
 | [配置清单类 skill 的证据复用与确定性检查](agent-tooling/config-inventory-skill-maintenance.md) | 三层证据（运行时快照不进库、消费方证据进库、翻译层随描述符更新）；只查缺项的复用流程与委派时携带版本来源；五个 skill 的隔离测试规模与断言类型；skills.yml 与 tern-maintain 的触发路径差异；Bun 跳过点开头目录；OMO 的版本证据与未核实标记（安装 5.1.72、73 项中 2 项已核对、schemaMissing 16） | 2026-11-16 |
+| [Clojure CLI 与 uml-viewer 的运行环境](agent-tooling/clojure-cli-and-uml-viewer-runtime.md) | 官方 CLI 与 Ubuntu clojure 启动器差别（clj、-Sdeps 缺席）；rlwrap 只服务 clj；linux-install.sh 1.12.6.1673 的下载物与 SHA-256；headless Zulu 的 libawt_xawt 缺口与 zulu25-ca-jre 修复；全局入口与 get-uml-viewer 的副作用对照；uv 清单只覆盖 Python 工具；Xvfb 1500×920 窗口证据与未验证项 | 2026-11-17 |
 
 ## ai-coding-agents
 

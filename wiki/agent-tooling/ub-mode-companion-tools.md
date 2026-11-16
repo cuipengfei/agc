@@ -1,8 +1,8 @@
 # ub-mode 配套工具：安装、升级与项目运行方式
 
-> Sources: unclebob/ub-mode 与四个配套仓库文档和包配置，2026-11-12 采集；uv 官方文档与本次会话安装日志，2026-11-12；edn-format/edn 规范及提交历史，2026-11-12 采集；crapper `c757ec7`、dryer `66ff6d2`、mutator `830ec7e` 的源码与提交说明，2026-11-13 采集；dryer PR #16、issue #17、PR #19，2026-11-13；本机 agc 仓库的 crapper 与 mutator 实测输出，2026-11-13
-> Raw: [配套工具文档与配置](../../raw/agent-tooling/2026-11-12-ub-mode-companion-tools.md); [uv Git 安装与升级证据](../../raw/agent-tooling/2026-11-12-uv-git-tools-install-and-upgrade.md); [EDN 规范与作者记录](../../raw/agent-tooling/2026-11-12-edn-specification-and-authorship.md); [语言支持与上游缺口](../../raw/agent-tooling/2026-11-13-ub-mode-tools-language-matrix.md); [作者自用证据](../../raw/agent-tooling/2026-11-13-ub-mode-tools-self-run-evidence.md); [修复前后实测](../../raw/agent-tooling/2026-11-13-ub-mode-metrics-before-after.md)
-> Updated: 2026-11-13
+> Sources: unclebob/ub-mode 与四个配套仓库文档和包配置，2026-11-12 采集；uv 官方文档与本次会话安装日志，2026-11-12；edn-format/edn 规范及提交历史，2026-11-12 采集；crapper `c757ec7`、dryer `66ff6d2`、mutator `830ec7e` 的源码与提交说明，2026-11-13 采集；dryer PR #16、issue #17、PR #19，2026-11-13；本机 agc 仓库的 crapper 与 mutator 实测输出，2026-11-13；Clojure 官方安装页与 Ubuntu 软件包页面，2026-11-17 采集；Azul Zulu CA 文档，2026-11-17 采集；本机 uml-viewer 安装与图形验证，2026-11-17
+> Raw: [配套工具文档与配置](../../raw/agent-tooling/2026-11-12-ub-mode-companion-tools.md); [uv Git 安装与升级证据](../../raw/agent-tooling/2026-11-12-uv-git-tools-install-and-upgrade.md); [EDN 规范与作者记录](../../raw/agent-tooling/2026-11-12-edn-specification-and-authorship.md); [语言支持与上游缺口](../../raw/agent-tooling/2026-11-13-ub-mode-tools-language-matrix.md); [作者自用证据](../../raw/agent-tooling/2026-11-13-ub-mode-tools-self-run-evidence.md); [修复前后实测](../../raw/agent-tooling/2026-11-13-ub-mode-metrics-before-after.md); [Clojure CLI 安装与启动器差别](../../raw/agent-tooling/2026-11-17-clojure-cli-install-and-launcher-delta.md); [uml-viewer 图形界面与启动面](../../raw/agent-tooling/2026-11-17-uml-viewer-gui-and-launch-surfaces.md); [Azul Zulu CA 与 headless AWT](../../raw/agent-tooling/2026-11-17-zulu-ca-and-headless-awt.md); [本机安装与验证日志](../../raw/agent-tooling/2026-11-17-clojure-viewer-local-install-log.md)
+> Updated: 2026-11-17
 
 ## Overview
 
@@ -71,7 +71,7 @@ mutator 的包配置未声明 crapper，但代码需要导入它。uv 为各工�
 
 前三个工具的 Python 环境由 uv 管理；运行目标项目测试时，仍需要项目自己的依赖及构建工具。分析非 Clojure 项目无需为这三个工具额外安装 Clojure CLI。生成 Clojure 覆盖率时使用 `clj -M:cov --lcov`；Clojure 变异测试命令取决于项目使用的 clj 或 bb 测试入口。
 
-uml-viewer 自身需要 Clojure CLI 和 Java 21+。官方 bootstrap 使用 zsh、Git；完整 companion 流程还涉及 tmux 和 Grok。它属于 Clojure 应用，没有本次三个 Python 工具那样的 uv 安装入口。
+uml-viewer 自身需要 Clojure CLI 和 Java 21+。官方 bootstrap 使用 zsh、Git；完整 companion 流程还涉及 tmux 和 Grok。它属于 Clojure 应用，没有本次三个 Python 工具那样的 uv 安装入口。安装步骤、Ubuntu 启动器差别、图形组件与全局入口见 [Clojure CLI 与 uml-viewer 的运行环境](clojure-cli-and-uml-viewer-runtime.md)。
 
 如需可视化，在要查看的项目中按官方文档运行：
 
@@ -84,7 +84,7 @@ chmod +x get-uml-viewer
 ./uml
 ```
 
-脚本会获取源码到 `.uml-viewer/uml-viewer/`、生成 `./uml` 并更新项目 `.gitignore`。重复执行 `./get-uml-viewer --install-only` 会重新获取选定 ref；它不属于 `uv tool upgrade --all` 的管理范围。本次没有安装或运行 viewer。
+脚本会获取源码到 `.uml-viewer/uml-viewer/`、生成 `./uml` 并更新项目 `.gitignore`。重复执行 `./get-uml-viewer --install-only` 会重新获取选定 ref；它不属于 `uv tool upgrade --all` 的管理范围。2026-11-12 本次没有安装或运行 viewer；2026-11-17 已在隔离虚拟显示中完成安装与窗口验证，使用的是不创建项目文件的全局入口，companion 邮件与重启流程未验证。
 
 ## agent 在目标仓库中怎样使用 mutator
 
