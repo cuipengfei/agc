@@ -39,6 +39,7 @@ JSON 顶层为 `run_at`、`result_path`、`sources`。`sources` 的键与 `scrip
 ## 历史与边界
 
 - 本文所有 `state/` 路径以 `.agents/skills/info-tracker/` 为基准。活动状态为 `state/release-tracker/state.json`、`state/github-copilot-pricing-monitor/<name>.baseline`（`<name>` 为定价文档名）、`state/opencode-go-pricing-monitor/pricing.baseline`、`state/github-copilot-changelog/state.json`；运行结果位于 `state/runs/`。
+- Release 采集每次最多读取最近三页，每页 30 条；`release-tracker/repos/<repo>.json` 保存已采集的完整条目，`state.json` 保存对应摘要，后续运行按 tag 合并并保留历史。单次读取范围之外的缺失版本需要单独回填。
 - `state/` 是本地历史目录，已被 Git 忽略，从旧 Hermes/Kimi Claw workspace 迁移而来；保留所有旧归档，不需要提交。
 - 本 skill 不包含 lock、cron 调度器或推送投递；也不会直接调用任何独立模型 API——中文分析由读取结果的 agent 完成。
 

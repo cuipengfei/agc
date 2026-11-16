@@ -90,9 +90,8 @@ def collect(state_dir: Path, config) -> dict:
                 raise ValueError("repository latest_published requires latest_tag")
             if not isinstance(previous.get("history", []), list):
                 raise ValueError("repository history must be a JSON array")
-            cached = []
-            if key not in state["repos"]:
-                cached = _release_list(_read_json(cache_path, []))
+            cached = _release_list(_read_json(cache_path, []))
+            baseline_cache = cached if key not in state["repos"] else []
             page_size = 30
             page_releases = []
             for page_number in (1, 2, 3):
@@ -108,18 +107,18 @@ def collect(state_dir: Path, config) -> dict:
                 page_releases.extend(page)
                 if len(page) < page_size:
                     break
-            # only the newest handful are kept, so cap the sweep at 3 pages instead of paginating full history
+            # The fetch covers up to three pages; previously cached releases remain available.
             releases = _release_list(page_releases)
             if not releases:
                 continue
 
             known_tags = {entry["tag"] for entry in version_history}
-            known_tags.update(entry["tag_name"] for entry in cached)
+            known_tags.update(entry["tag_name"] for entry in baseline_cache)
             if previous.get("latest_tag"):
                 known_tags.add(previous["latest_tag"])
             published_history = [previous.get("latest_published", "")]
             published_history.extend(entry.get("published_at", "") for entry in version_history)
-            published_history.extend(entry["published_at"] for entry in cached)
+            published_history.extend(entry["published_at"] for entry in baseline_cache)
             cutoff = max(published_history)
             has_baseline = bool(known_tags or cutoff)
             new_changes = []
@@ -141,8 +140,15 @@ def collect(state_dir: Path, config) -> dict:
                     )
 
             summaries = {
-                entry["tag"]: entry for entry in version_history
+                item["tag_name"]: {
+                    "tag": item["tag_name"],
+                    "published_at": item["published_at"],
+                    "prerelease": item.get("prerelease", False),
+                    "notes_digest": (item.get("body") or "")[:10000],
+                }
+                for item in cached
             }
+            summaries.update({entry["tag"]: entry for entry in version_history})
             for item in releases:
                 summaries[item["tag_name"]] = {
                     "tag": item["tag_name"],
@@ -153,9 +159,6 @@ def collect(state_dir: Path, config) -> dict:
             recent = sorted(
                 summaries.values(), key=lambda entry: entry.get("published_at", ""), reverse=True
             )
-            if len(recent) > 5:
-                boundary = recent[4].get("published_at", "")
-                recent = [entry for entry in recent if entry.get("published_at", "") >= boundary]
             updated = dict(previous)
             updated.update(owner=owner, repo=key, version_history=recent)
             latest = recent[0]
@@ -173,7 +176,7 @@ def collect(state_dir: Path, config) -> dict:
             )[-20:]
             next_state = dict(state)
             next_state["repos"] = {**state["repos"], key: updated}
-            _write_json(cache_path, releases[:5])
+            _write_json(cache_path, _release_list(releases + cached))
             _write_json(state_path, next_state)
             state = next_state
             changes.extend(new_changes)
