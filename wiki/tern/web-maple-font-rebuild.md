@@ -1,8 +1,8 @@
 # Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
 
-> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29；Tern 0.9.8 与 0.9.9 仅字体部署与 CI 作用域，2026-11-02；Tern 0.9.10 仅字体部署，2026-11-03；Tern 0.9.12 仅字体部署与 Geist 字体观察，2026-11-05；Tern 0.9.18 仅字体部署，2026-11-12；Tern 0.9.21 仅字体部署，2026-11-14
-> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md)
-> Updated: 2026-11-14
+> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29；Tern 0.9.8 与 0.9.9 仅字体部署与 CI 作用域，2026-11-02；Tern 0.9.10 仅字体部署，2026-11-03；Tern 0.9.12 仅字体部署与 Geist 字体观察，2026-11-05；Tern 0.9.18 仅字体部署，2026-11-12；Tern 0.9.21 仅字体部署，2026-11-14；Tern 0.9.23 无补丁部署与网页字体设置，2026-11-16
+> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [0.9.23 无补丁部署](../../raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md)
+> Updated: 2026-11-17
 
 ## 适用范围与完成标准
 
@@ -180,6 +180,16 @@ WASM SHA-256 为 `c1f7c57518ea1afb1ef020e9a4fab78a7d1b6ea3aed4527a4db7783a6815ce
 `verify-page` 只访问无凭据、无 query 的 loopback 真实入口，页面内监测并拒绝 WebSocket 构造（构造时抛出错误）。检查序列为 page_served、headless_forced、page_ready、fonts_injected、candidate_hash、websocket_absent；wire_mount 与 gpu_interaction_full 恒 `not_run`。fonts_injected 要求页面自报的 family 为 `Maple Mono NF CN` 且恰有 Bold、Regular 两份；candidate_hash 要求页面自报的 candidate SHA-256 与本次导航实际服务的 `/pkg/client.wasm` 字节一致。字体或模块 hash 错误路径体现为 fonts_injected 或 candidate_hash `failed`。
 
 2026-10-21 已观察：`font_manifest.py` 真实生产退出 0，产出 fonts.json 与两份字体；字符映射与 CJK 计数、两个字体 SHA-256 与上文 0.9.5 历史结果一致；全量 Bun 测试最终 61 pass / 0 fail（7 个测试文件）。`assets` 真实 CLI 用已验证 bundle 与上述 fonts 生成 `workflow-eV2Po2/site`（index.html、maple.js、fonts.json、pkg/ 与 deploy-manifest.json，7 个文件逐字节 hash 核对）。verify-page 正常路径 6 项 passed、2 项 not_run（退出 0）；错误字体 hash 路径仅经 HTTP 替换 `/fonts.json` 响应，3 项 failed、3 项 passed、2 项 not_run（退出 1）；receipt 为 `real-page-smoke.json` 与两份报告。未验证：完整 GPU、mount、native desktop UI、其他物理机器与操作系统。
+
+## 不装配字体时的渲染路径
+
+0.9.23 原版部署演示了另一条路径：`tern web serve` 不传 `--assets` 时提供内嵌官方页面，WASM 从 `build.stencil.so` 取，`pkg/client.wasm` 与 `pkg/client.js` 返回 404。此路径下内嵌八个字体（Symbols Nerd Font、Geist、Ioskeley Mono Term、Ioskeley Mono Term Medium、Excalifont、Inter Variable、DejaVu Sans、Latin Modern Math）的 CJK 计数全为 0，浏览器 console 固定输出 `font database loaded count=0 elapsed=0ns`，`document.fonts.size` 为 0。
+
+中文仍能显示，来自 Chrome 内核在 canvas 上绘制缺字形字符时的系统字体补绘：隔离 profile 的 `localStorage` 只有 `tern-web-token`、没有 `settings.json`，此状态下仍绘出中文，Windows 侧存在微软雅黑等字体，绘制结果与 `□` 轮廓不同。0.9.21 与 0.9.23 的 WASM 含同一段字体族列表（`Microsoft YaHei`、`DengXian`、`SimSun`、`Noto Sans CJK SC`…），两版的 `--tv-font` 280 次、`font_family` 30 次，计数一致，因此不能把这段列表当作 0.9.23 新增能力。
+
+用户自有 Chrome profile 的结论不同：事故前的 `settings.json` 已把 `font_family`、`font_family_bold`、`font_family_italic`、`font_family_bold_italic` 四项都设为 `Maple Mono NF CN`，该 profile 里看到的中文因此优先来自 Maple；不能把那次显示归因为默认雅黑回退，也不能据此判定字体装配不必要。
+
+要让终端文本优先使用 Maple，设置 `settings.json` 的 `font_family`：写入 `{"font_family":"Maple Mono NF CN"}` 并重载后，同一区域截图从 25179 字节变为 27617 字节，600×300 区域像素差异 7045/180000（3.91%）。改 `--tv-font`／`--mono` CSS 变量、加 `!important`、写 `tern-settings` 都不改变 canvas 内容；`getComputedStyle(canvas).fontFamily` 只反映 canvas 元素自身 CSS，不能用来判断 WASM 绘制结果。
 
 ## See Also
 

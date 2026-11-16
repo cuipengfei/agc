@@ -2358,3 +2358,21 @@
 - Created: wiki/agent-tooling/clojure-cli-and-uml-viewer-runtime.md
 - Updated: wiki/agent-tooling/ub-mode-companion-tools.md; wiki/agent-tooling/uv-tool-discovery-and-receipts.md
 - 要点：官方 Clojure CLI 与 Ubuntu `clojure 1.12.0-1build2` 提供不同启动器，后者只有 `clojure1.12`/`clojurec1.12`，manpage 无 `-Sdeps`/`-M`；2021-08-23 GSoC 报告记录迁移到上游 `clj`/`clojure` 的工作当时未完成，现行维护决策没有说明；`linux-install.sh` 1.12.6.1673 下载 `clojure-tools-1.12.6.1673.tar.gz` 并校验 SHA-256，安装到 `/usr/local`；`rlwrap` 只服务 `clj`，查看器的 `./uml` 调用 `clojure`；仅有 headless Zulu 时 `libawt_xawt.so` 缺席、`isHeadless` 为 true，补装 `zulu25-ca-jre 25.0.5.0.3-5` 后 Xvfb 中窗口为 `1500×920`；全局入口不创建 `./uml` 也不改 `.gitignore`；`uv tool list` 只覆盖 Python 工具，`--show-extras` 只展开这些工具的附加依赖；Grok companion 邮件/重启与真实显示通道未验证，首次依赖解析的 TLS 中断未定位。
+
+## [2026-11-17] ingest | Tern 0.9.23 原版无补丁部署与 systemd 用户服务
+- Disposition: Update
+- Raw: raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md
+- Updated: wiki/tern/maintenance-toolkit.md; wiki/tern/portable-patching-runbook.md; wiki/tern/web-maple-font-rebuild.md
+- 要点：`tern 0.9.23 (35c63ab)`，binary `ab24dcd7…`，包 `ca21b387…`；不传 `--assets` 时服务提供内嵌官方页面，`pkg/client.wasm` 与 `pkg/client.js` 返回 404，`verify-service` 因此不适用，验收改用根页面 HTTP、preload 的 `build.stencil.so/web/tern/0.9.23/` 地址、`pkg/stencil_tern_web.js` 200、`inspect-runtime` 与 pane 列表；`prepare` 输出目录没有 `index.html`，不能直接当 `--assets`。systemd 用户单元 `tern-daemon.service` 与 `tern-web.service` 用 `Restart=always`、`RestartSec=3`、`StartLimitIntervalSec=0`、`StandardOutput=null`、`StandardError=null`；SIGKILL 后主进程换号、`NRestarts` 由 0 变 1，journal 记录 `code=killed, status=9/KILL` 与 `Scheduled restart job, restart counter is at 1.`；进程 `PPID` 为 `273`、`SID` 等于自身 pid；Windows 侧 HTTP 200，三个 pane 保持 live。
+
+## [2026-11-17] ingest | Tern 网页端中文渲染路径与终端字体设置
+- Disposition: Update
+- Raw: raw/tern/2026-11-16-web-font-rendering-and-settings.md
+- Updated: wiki/tern/web-maple-font-rebuild.md; wiki/tern/settings-storage.md; wiki/tern/portable-patching-runbook.md
+- 要点：0.9.23 内嵌八个字体（Symbols Nerd Font `10624`、Geist `728`、`Ioskeley Mono Term` `7564`、`Ioskeley Mono Term Medium` `7564`、Excalifont `212`、Inter Variable `1543`、DejaVu Sans `1579`、Latin Modern Math `2045`）CJK 计数全为 0，console 恒为 `font database loaded count=0 elapsed=0ns`，`document.fonts.size` 为 0；隔离 profile 没有 `settings.json` 时仍能显示中文，由 Chrome 内核在 canvas 上补绘；0.9.21 与 0.9.23 的 WASM 含同一段字体族列表（`Microsoft YaHei`…），`--tv-font` 280 次与 `font_family` 30 次计数一致，不能当作 0.9.23 新增能力。`settings.json` 的 `font_family` 是终端字体入口，写入 `{"font_family":"Maple Mono NF CN"}` 后截图由 25179 字节变 27617 字节、600×300 区域像素差异 `7045/180000`（3.91%）；CSS 变量与 `!important` 不改变 canvas 内容，`getComputedStyle(canvas).fontFamily` 不能判定 WASM 绘制结果。用户自有 profile 在覆盖前已把四项 `font_family` 设为 Maple，该 profile 的中文优先来自 Maple，不能归因为默认回退。
+
+## [2026-11-17] ingest | 覆盖式写入丢失 Chrome 本地设置与 LevelDB 历史恢复
+- Disposition: New; Update
+- Raw: raw/tern/2026-11-17-chrome-localstorage-recovery.md
+- Updated: wiki/tern/settings-storage.md
+- 要点：`localStorage.setItem('settings.json', JSON.stringify({font_family:...}))` 按整键替换，原有 30 个字段全丢，只剩 50 字节 `{"theme":"Dark","font_family":"Maple Mono NF CN"}`；Chrome 用户键编码为 `_<origin><key>`，同 origin 另有 `META:`／`METAACCESS:` 元数据键；`leveldbutil dump` 对 Chrome 的 `.ldb` 报 `Corruption: corrupted snappy compressed block length`，`python-snappy` 直接解压切片报空错误，`plyvel` 无 wheel 且源码编译失败；`ccl_chromium_reader`（GitHub `cclgroupltd/ccl_chromium_reader`，不在 PyPI）的 `storage_formats.ccl_leveldb.LdbFile` 可按 SSTable 迭代 `Record`（`user_key`／`value`／`seq`／`state`），从 `019306.ldb` 读出 5 条同键记录，长度 30／50／30／778／655，seq `591348` 的 778 字节记录含完整 30 字段配置；本记录只声明配置已提取并通过 JSON 校验，浏览器写回未确认。

@@ -1,8 +1,8 @@
 # Tern 升级辅助工具与验收边界
 
-> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29; CI test scope and 0.9.8/0.9.9 deploy, 2026-11-02; 0.9.10 structure observation and deploy, 2026-11-03; 0.9.12 Geist font observation and GPU adapter probe, 2026-11-05; bun hook budget and 0.9.18 deploy, 2026-11-12; 0.9.21 structure observation and service hosting boundary, 2026-11-14
-> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [bun 钩子超时](../../raw/tern/2026-11-12-bun-hook-timeout.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [服务托管生命周期](../../raw/tern/2026-11-14-agent-hosted-service-lifetime.md)
-> Updated: 2026-11-14
+> Sources: agc Tern maintenance toolkit and local validation, 2026-10-17; Tern 0.9.3 local upgrade and patches, 2026-10-18; Tern 0.9.5 upgrade and patching workflow, 2026-10-20; deterministic build and portability acceptance, 2026-10-21; write-error input cancellation acceptance, 2026-10-21; browser reproduction guard and 0.9.7 font-only deploy, 2026-10-29; CI test scope and 0.9.8/0.9.9 deploy, 2026-11-02; 0.9.10 structure observation and deploy, 2026-11-03; 0.9.12 Geist font observation and GPU adapter probe, 2026-11-05; bun hook budget and 0.9.18 deploy, 2026-11-12; 0.9.21 structure observation and service hosting boundary, 2026-11-14; 0.9.23 raw deploy and systemd user units, 2026-11-16
+> Raw: [工具说明与 0.9.2 验收记录](../../raw/tern/2026-10-17-maintenance-toolkit-and-validation.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级与补丁](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [写入失败时取消输入等待](../../raw/tern/2026-10-21-write-error-input-cancellation.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [bun 钩子超时](../../raw/tern/2026-11-12-bun-hook-timeout.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [服务托管生命周期](../../raw/tern/2026-11-14-agent-hosted-service-lifetime.md); [0.9.23 无补丁部署](../../raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md)
+> Updated: 2026-11-17
 
 ## 用途
 
@@ -90,6 +90,18 @@ FontTools 数据测试确认 lookup 名称转换后完整 cmap 保留。每份�
 本工具不覆盖笔记交互、完整字形外观与字符宽度。`markdown-windows` 覆盖页面响应、画面变化与应用重绘，中文内容语义仍需实际操作确认。GitHub Actions 工作流运行 `bun run check`、Bun 行为测试、FontTools 字体数据测试及同步项目现有 unittest；它不下载真实 WASM、不启动桌面浏览器、不访问本机凭据，CI 结果以 Actions 运行记录为准。真实 native 后台烟雾检查只覆盖隔离 daemon、HTTP 和 pane 集合不变，不影响原有服务。Windows 页面验收依赖本机 Windows Node、Playwright 与 Chrome，该组合在 CI 中未运行。
 
 新 Tern 版本必须重新生成分析并人工审核。旧版本的 profile 只用于固定 SHA 的行为回归，不用于推导新版本的地址或函数编号。
+
+## 无补丁部署与内嵌官方资源
+
+`tern web serve` 不传 `--assets` 时使用 binary 内嵌官方页面：根路径 200，页面 preload 指向 `https://build.stencil.so/web/tern/<version>/stencil_tern_web_bg.wasm`，`pkg/stencil_tern_web.js` 200，而 `pkg/client.wasm` 与 `pkg/client.js` 返回 404。`prepare` 的输出目录只有 `official.html`、`pkg/client.js`、`pkg/original.wasm`、`initial.bin`、`inputs.json`，入口文件名不是 `index.html`，不能直接当 `--assets`。
+
+因此 `verify-service` 在这种部署下不适用：它固定抓取 `pkg/client.wasm`、`pkg/client.js` 与本地 assets 比对（`lifecycle.mjs:316-328`）。无补丁验收改用根页面 HTTP 状态、页面内 WASM 地址、`inspect-runtime` 的版本与 `matchesInstalled`、以及 pane 列表；不要为让该检查通过而造补丁式目录。
+
+## 系统服务持久化
+
+会话托管启动的进程会随宿主 worker 退出而消失，用户侧表现为 `ERR_CONNECTION_REFUSED`。systemd 用户单元是可持续方案：`tern-daemon.service` 与 `tern-web.service` 放在 `~/.config/systemd/user/`，`Restart=always`、`RestartSec=3`、`StartLimitIntervalSec=0`，并用 `StandardOutput=null` 与 `StandardError=null` 避免 `web serve` 启动时把带 token 的 URL 写进日志。启用后进程 `PPID` 为 `273`、`SID` 等于自身 pid。
+
+自愈实测：`systemctl --user kill --kill-whom=main --signal=KILL tern-web.service` 后主进程换号、`ActiveState` 仍为 `active`、`NRestarts` 从 0 变 1，journal 记录 `Main process exited, code=killed, status=9/KILL` 与 `Scheduled restart job, restart counter is at 1.`。
 
 ## See Also
 

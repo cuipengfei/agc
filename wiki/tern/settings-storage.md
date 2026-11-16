@@ -1,8 +1,8 @@
 # Tern 设置存储位置
 
-> Sources: Tern 0.9.2 module strings and local CLI, 2026-10-17; Stencil official plugin SDK documentation, 2026-10-17
-> Raw: [Web 设置存储实现](../../raw/tern/2026-10-17-web-settings-storage.md); [Packages and Manifests 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md)
-> Updated: 2026-10-20
+> Sources: Tern 0.9.2 module strings and local CLI, 2026-10-17; Stencil official plugin SDK documentation, 2026-10-17; Tern 0.9.23 web settings and Chrome Local Storage forensics, 2026-11-16
+> Raw: [Web 设置存储实现](../../raw/tern/2026-10-17-web-settings-storage.md); [Packages and Manifests 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md); [Chrome 本地设置恢复](../../raw/tern/2026-11-17-chrome-localstorage-recovery.md)
+> Updated: 2026-11-17
 
 ## 原生与 Web 使用不同存储
 
@@ -23,6 +23,16 @@ Web 存储只写相对默认设置发生变化的值；全新的未修改设置�
 官方 Packages and Manifests 文档只明确两个主机插件设置：`plugins` 是总开关，`plugins_disabled` 是保持不加载的插件 id 列表。每台机器读取自己的设置，不在主机之间同步。手动修改后在下一次加载或重载时生效。
 
 这两个键的证明范围是主机端插件加载，不能用来解释 Web 浏览器中的全部设置内容。
+
+## Web 端键名、字体设置与覆盖风险
+
+WASM 端读取设置时用 `local_storage().and_then(|storage| storage.get_item(FILE)...)`，其中 `const FILE: &str = "settings.json";`。浏览器里因此只有 `settings.json` 这一个键，`tern-settings` 不是有效键名。
+
+`settings.json` 的 `font_family` 是终端 grid 的字体族，注释为「empty: the monospace face」。实测写入 `{"font_family":"Maple Mono NF CN"}` 并重载后，同一区域截图由 25179 字节变为 27617 字节，600×300 区域像素差异 7045/180000（3.91%），canvas 绘制的字形确实改变。CSS 变量 `--tv-font`／`--mono` 与 `!important` 不改变 canvas 内容。
+
+上面 25179 与 27617 的对照在新建隔离 profile 里完成，该 profile 没有 `settings.json`。用户自有 profile 的 `settings.json` 在覆盖前已把 `font_family` 四项设为 `Maple Mono NF CN`，因此那份 profile 里的中文优先来自 Maple，而不是默认系统回退。
+
+`localStorage.setItem` 按整键替换。直接写入只含一个字段的对象会丢弃该键内其他全部设置，包括主题、光标、标签布局等。修改时先取出当前字符串、`JSON.parse`、合并字段，再整体写回。Chrome 把 Local Storage 存在 `Local Storage/leveldb`，用户键编码为 `_<origin><key>`；触发 LevelDB compaction 前，被覆盖的旧值仍可从 SSTable 读出。
 
 ## See Also
 - [Tern 设置项全集](settings-schema.md)
