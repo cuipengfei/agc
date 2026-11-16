@@ -1,8 +1,8 @@
 # Herdr App、herdr-core 与手机：产品关系和终端访问
 
-> Sources: Herdr 官方网站与 herdrdev/herdr-core 文档，本次采集 2026-11-12；Herdr, Inc. 的 Google Play 应用说明，本次采集 2026-11-12；用户提供的本机 `herdr --help` 输出，2026-11-12；herdr-core 安装脚本与 WSL2/Tailscale 部署实测，2026-11-13
-> Raw: [Herdr 产品关系、core 接口与手机官方摘录](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 默认会话与指定会话的接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md); [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md)
-> Updated: 2026-11-13
+> Sources: Herdr 官方网站与 herdrdev/herdr-core 文档，本次采集 2026-11-12；Herdr, Inc. 的 Google Play 应用说明，本次采集 2026-11-12；用户提供的本机 `herdr --help` 输出，2026-11-12；herdr-core 安装脚本与 WSL2/Tailscale 部署实测，2026-11-13；本机手机接入排障实测，2026-11-17
+> Raw: [Herdr 产品关系、core 接口与手机官方摘录](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 默认会话与指定会话的接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md); [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md); [herdr-core 手机接入排障：hc 运行形态与 Tailscale SSH policy](../../raw/herdr-plannotator/2026-11-17-hc-phone-connect-ssh-policy.md)
+> Updated: 2026-11-17
 
 ## 产品名称与各自负责的事情
 
@@ -45,6 +45,7 @@ core 可以运行 shell、脚本、编辑器、开发服务器和 coding agent�
 ## 手机连接需要什么
 
 目标电脑需要 herdr-core，手机需要能够通过 SSH 登录这台电脑。用户在手机添加电脑的名称或地址，并配置登录方式。官方 Android 说明支持把手机生成的 SSH key 加到电脑，也支持 Tailscale SSH。
+使用 Tailscale SSH 时还有第三个前提：tailnet policy 的 `ssh` 段必须放行，`action` 为 `accept`。策略缺失或处于 check 模式时，连接会被接受后挂起等待浏览器授权，非交互客户端无法完成，表现为反复重连；本机 2026-11-17 的失败形态与修改步骤见 [herdr-core 安装配置与 WSL2/Tailscale 手机接入](herdr-core-install-config-wsl2-tailscale.md)。
 
 手机 App 直接与用户的电脑通信，不需要 Herdr 账户，终端内容不经过 Herdr 的服务器。离开家以后，Tailscale 或其他 VPN 可以提供到电脑的网络访问。
 
@@ -105,7 +106,7 @@ Google 语音识别是可选方式，手机也支持本地语音模型。这个�
 - 产品关系、命令、连接方式、接口顺序和手机功能来自 raw 中保存的官方摘录。
 - Context7 和 DeepWiki 用于辅助核对；以官方原文为依据。
 - 对 Android 内部实现、手机任意界面定制和华为兼容性，保留未知项。
-- 本次没有安装程序、启动服务、连接设备或运行手机测试。命令示例来自文档。
+- 2026-11-17 补手机接入实测：tailnet policy 放行到 `"accept": true`，App 端到端连接未完成；其余命令示例来自文档。
 
 ## See Also
 

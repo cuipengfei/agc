@@ -2376,3 +2376,9 @@
 - Raw: raw/tern/2026-11-17-chrome-localstorage-recovery.md
 - Updated: wiki/tern/settings-storage.md
 - 要点：`localStorage.setItem('settings.json', JSON.stringify({font_family:...}))` 按整键替换，原有 30 个字段全丢，只剩 50 字节 `{"theme":"Dark","font_family":"Maple Mono NF CN"}`；Chrome 用户键编码为 `_<origin><key>`，同 origin 另有 `META:`／`METAACCESS:` 元数据键；`leveldbutil dump` 对 Chrome 的 `.ldb` 报 `Corruption: corrupted snappy compressed block length`，`python-snappy` 直接解压切片报空错误，`plyvel` 无 wheel 且源码编译失败；`ccl_chromium_reader`（GitHub `cclgroupltd/ccl_chromium_reader`，不在 PyPI）的 `storage_formats.ccl_leveldb.LdbFile` 可按 SSTable 迭代 `Record`（`user_key`／`value`／`seq`／`state`），从 `019306.ldb` 读出 5 条同键记录，长度 30／50／30／778／655，seq `591348` 的 778 字节记录含完整 30 字段配置；本记录只声明配置已提取并通过 JSON 校验，浏览器写回未确认。
+
+## [2026-11-17] ingest | herdr-core 安装配置与 WSL2/Tailscale 手机接入
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-17-hc-phone-connect-ssh-policy.md
+- Updated: wiki/herdr-plannotator/herdr-app-core-mobile.md
+- 要点：`hc` 是 `herdr-core` 的符号链接；core 由 `hc` 用 systemd-run 按需启动为 transient unit，`installed_by: null`，靠 logind linger（`Linger=yes`）在退出登录后保活；user unit 目录、`default.target.wants`、shell 启动文件与 `hc server` 子命令四处核对均无开机自启入口。`procs` 按命令行子串匹配，`herdr-core serve` 不含 `hc`，`procs hc` 会误判 core 没有运行。手机连接失败的日志形态是反复 `handling conn: <PHONE_IP>:<PORT>-><USER>@<TAILSCALE_IP>:22` 且无认证成功记录；修改前 `SSHPolicy` 的 `action` 是 `holdAndDelegate`（check 模式，连接接受后挂起等待浏览器授权），`tailcfg.SSHAction` 注释与 `ssh/tailssh/tailssh.go:392` 分支为证；在 tailnet policy 的 `ssh` 段设为 `accept` 后，`SSHPolicy` 返回 `"accept": true` 与三项转发许可；系统未安装 openssh-server 不影响 Tailscale SSH；Herdr App 端到端连接未完成。
