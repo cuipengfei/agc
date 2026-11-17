@@ -106,10 +106,10 @@ You are omp's trusted coding assistant.
 
 ## 本机规避配置
 
-两处配置共同恢复本机 `antigravity-cli` 会话。
+两处配置对应该会话的两个独立故障，证据强度不同。
 
-1. 系统提示词替换：扩展 `antigravity-prompt-adapter.ts` 在 `before_agent_start` 中按 `ctx.model?.provider` 限定 `antigravity-cli`，把 `event.systemPrompt` 各段里的身份句替换为 `You are a helpful coding assistant.`。实现细节与接口边界见 [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)。
-2. MCP 服务器抑制：`~/.omp/agent/mcp.json` 顶层 `disabledServers` 列入 `search-tavily`，绕过该服务器的空枚举 schema 引起的 `400 INVALID_ARGUMENT`。机制见 `src/mcp/config.ts` 的 `suppressServer`。
+1. 系统提示词替换：扩展 `antigravity-prompt-adapter.ts` 在 `before_agent_start` 中按 `ctx.model?.provider` 限定 `antigravity-cli`，把 `event.systemPrompt` 各段里的身份句替换为 `You are a helpful coding assistant.`。修好模型接口后，用户在实际会话中报告 `ok, it worked`。实现细节与接口边界见 [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)。
+2. MCP 服务器抑制：`~/.omp/agent/mcp.json` 顶层 `disabledServers` 列入 `search-tavily`，绕开该服务器的空枚举 schema 引起的 `400 INVALID_ARGUMENT`。机制见 `src/mcp/config.ts` 的 `suppressServer`；抑制后的完整 E2E 由用户自行执行，本次未收到该轮结果。
 
 `agy` 自身的重试行为会把 `429` 加重：它按退避重试并经由 `agent_message_chunk` 输出 `⚠ API error (attempt N)` 横幅，OMP 侧会把该横幅当成助手正文，累积 8 个近似片段后报 `Thinking loop detected`，用户看到的因此是思考循环而不是配额错误。
 

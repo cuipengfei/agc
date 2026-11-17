@@ -70,6 +70,10 @@ You are omp's trusted coding assistant.
 
 OMP `src/mcp/config.ts` 从用户级 `mcp.json` 读取顶层 `disabledServers` 数组（第 128 行），并在 `suppressServer`（第 141–145 行）中抑制命中名字的服务器。本机 `~/.omp/agent/mcp.json` 第 2 行为 `"disabledServers": ["search-tavily"],`。
 
+### 用户在真实会话中的确认
+
+扩展修好 `ctx.model` 那处后，用户在实际 OMP 会话中回了一句 `ok, it worked`。这一句是本机扩展生效的用户报告；`disabledServers` 抑制后的完整 E2E 由用户自行执行，本次没有收到该轮的结果回报。
+
 ## 外部交叉证据摘录
 
 以下为公开仓库 issue 中与本机现象同型的对照记录，用于核对触发粒度与历史演进；各项均为第三方用户报告。
