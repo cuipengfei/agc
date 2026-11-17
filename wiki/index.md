@@ -477,7 +477,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 
 | Article | Summary | Updated |
-| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体与时间定位、确定性构建、写流失败取消输入、真实 Windows Chrome 复现与 viewport 重绘判据、checkJs 机械检查、CI 测试作用域、test:receipt、0.9.7–0.9.18 描述符结构波动与 Geist 字体观察、WSL headless GPU adapter 三种开关实测、Bun 钩子默认 5 秒预算与超时报错边界、正式进程身份检查、0.9.21 内嵌八字体与描述符新槽位、agent 托管服务在会话结束后不可用与 `__redact` detached 启动、0.9.23 无补丁部署的内嵌官方资源与 `verify-service` 不适用边界、systemd 用户单元持久化与 SIGKILL 自愈实测、服务端 `/fonts` 字体投递通道与 0.9.26 一致性确认 | 2026-11-18 |
+| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体与时间定位、确定性构建、写流失败取消输入、真实 Windows Chrome 复现与 viewport 重绘判据、checkJs 机械检查、CI 测试作用域、test:receipt、0.9.7–0.9.18 描述符结构波动与 Geist 字体观察、WSL headless GPU adapter 三种开关实测、Bun 钩子默认 5 秒预算与超时报错边界、正式进程身份检查、0.9.21 内嵌八字体与描述符新槽位、agent 托管服务在会话结束后不可用与 `__redact` detached 启动、0.9.23 无补丁部署的内嵌官方资源与 `verify-service` 不适用边界、systemd 用户单元持久化与 SIGKILL 自愈实测、服务端 `/fonts` 字体投递接口实测与 0.9.26 一致性确认、浏览器侧 `/fonts` 请求未观测到的边界 | 2026-11-18 |
 | [Tern 官方文档地图](tern/official-docs-map.md) | 官方文档站 82 页结构、获取方式、九分区页数、七个示例插件与概念导航 | 2026-10-20 |
 | [Tern 对象模型：包含关系、数量与生命周期](tern/object-model.md) | 核心对象定义、数量与包含关系、所有权、生命周期、进程拓扑实测与术语冲突记录 | 2026-10-20 |
 | [Tern 设置项全集](tern/settings-schema.md) | 本机 0.9.4 二进制内嵌设置结构体全字段、提取方法与分组整理 | 2026-10-20 |
