@@ -2394,3 +2394,9 @@
 - Raw: raw/gcp-model-armor/2026-11-17-model-armor-pi-and-integration.md
 - Created: wiki/gcp-model-armor/model-armor-filters-and-enforcement.md
 - 要点：PI 指 prompt injection；filterEnforcement 未设置等同 Disabled，confidenceLevel 未设置等同 LOW_AND_ABOVE；少于三个词不判；原生 Agent Platform 集成限 Gemini generateContent 非流式文本，floor settings 可项目级生效；Gemini Enterprise 只覆盖点名 agent；Antigravity 三种接入方式，Enterprise Gateway 可选；Model Armor 按区域提供；配置与账单在自有项目，检测在 Google 托管区域服务，默认无状态。
+
+## [2026-11-17] ingest | Google Cloud Model Armor：五类过滤器、接入点与执行边界
+- Disposition: Update; Disputed
+- Raw: raw/gcp-model-armor/2026-11-17-model-armor-other-filters.md
+- Updated: wiki/gcp-model-armor/model-armor-filters-and-enforcement.md
+- 要点：官方 filters 章节共五类（RAI 四类、PI/越狱、SDP、恶意 URL、CSAM）；SDP basic 六类、advanced 支持去标识化；恶意 URL 最多前 256 个；CSAM 英文页支持启停并给出区域默认值，中文页写「默认启用且无法关闭」，标 Disputed；文档与图片是输入形态。

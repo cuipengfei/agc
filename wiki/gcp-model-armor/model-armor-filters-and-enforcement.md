@@ -1,12 +1,47 @@
-# Google Cloud Model Armor：PI/越狱过滤器、接入点与执行边界
+# Google Cloud Model Armor：五类过滤器、接入点与执行边界
 
-> Sources: Google Cloud Model Armor 官方文档, 2026-11-17; Google Antigravity 与 Gemini Enterprise 官方文档, 2026-11-17
-> Raw: [Model Armor 与 Antigravity 官方文档摘录](../../raw/gcp-model-armor/2026-11-17-model-armor-pi-and-integration.md)
+> Sources: Google Cloud Model Armor 官方文档（英文与中文 overview）, 2026-11-17; Google Antigravity 与 Gemini Enterprise 官方文档, 2026-11-17
+> Raw: [Model Armor 与 Antigravity 官方文档摘录](../../raw/gcp-model-armor/2026-11-17-model-armor-pi-and-integration.md); [其他过滤器官方文档摘录](../../raw/gcp-model-armor/2026-11-17-model-armor-other-filters.md)
 > Updated: 2026-11-17
 
 ## Overview
 
 Model Armor 是 Google Cloud 的内容检查服务，在 prompt 送入模型前和 response 返回用户前各检查一次。它按模板和 floor settings 配置，只在显式接入的链路上工作；Vertex 的 API 调用不会全部经过它。官方集成表里，Vertex 侧只覆盖 Gemini 的非流式 `generateContent`。
+
+## 五个过滤器
+
+官方 filters 章节列了五个过滤器。按子类别计数是八个检测项：Responsible AI 四类，加上 PI/越狱、Sensitive Data Protection、Malicious URL detection、CSAM detection。
+
+| 过滤器 | 检查内容 | 配置要点 |
+|---|---|---|
+| Responsible AI safety | hate speech、harassment、sexually explicit、dangerous content | 四类分别设置信度 |
+| Prompt injection and jailbreak | 输入中的指令注入与越狱 | 见「PI 与越狱过滤器」一节 |
+| Sensitive Data Protection | PII 与敏感 IP | basic 检查；advanced 模板支持检查与去标识化 |
+| Malicious URL detection | prompt 和 response 中的 URL | 最多扫描前 256 个 |
+| CSAM detection | 儿童性虐待内容 | 英文页支持启停；默认值随 floor settings、模板与区域变化 |
+
+文档扫描和图片扫描属于输入形态，归入上面的过滤器，不构成额外的过滤器。
+
+## 其他四个过滤器
+
+### Responsible AI safety
+
+一个过滤器，内含四类：hate speech、harassment、sexually explicit、dangerous content。每类分别设置 `HIGH` / `MEDIUM_AND_ABOVE` / `LOW_AND_ABOVE`。
+
+### Sensitive Data Protection
+
+basic 模式覆盖信用卡号、美国 SSN、金融账号、美国 ITIN、Google Cloud 凭据、Google Cloud API key，只做检查，不支持 SDP 模板。advanced 模式使用 Sensitive Data Protection 模板，支持检查和去标识化。SDP 的置信度按 match likelihood，不走其他过滤器的档位。
+
+### Malicious URL detection
+
+扫描 prompt 和 response 中的 URL，防钓鱼与恶意软件分发；最多提取并扫描前 256 个 URL。
+
+### CSAM detection
+
+英文 overview 支持启停 CSAM 过滤器并设置信度。floor settings 默认启用 `HIGH`；模板在支持区域或关闭数据驻留合规时默认启用 `HIGH`，在不支持区域且开启数据驻留合规时默认关闭；只能通过 API 配置。
+
+> **Status: Disputed**
+> 中文 overview 页面写 CSAM「默认处于启用状态，并且无法关闭」；英文 overview 与 API 配置写支持启停，并给出不同区域的默认值。两处官方页面冲突，本文按英文页与 API 配置描述当前行为，中文页面待复核。
 
 ## PI 与越狱过滤器
 
@@ -17,7 +52,7 @@ Model Armor 是 Google Cloud 的内容检查服务，在 prompt 送入模型前�
 
 启用后，Model Armor 同时检查 prompt 和 response，命中时按模板执行方式记录或拦截。
 
-模板里只有两个开关：
+PI 过滤器在模板里只有两个开关：
 
 | 字段 | 取值 | 行为 |
 |---|---|---|
@@ -133,6 +168,9 @@ Model Armor 在各方式下的覆盖：
 - 「没有企业合同门槛」是从文档未设置许可门槛推断。
 - 检测模型的具体结构未公开；文章只写模型评分与置信度阈值。
 - 受测语言清单来自官方正文，作为过滤器边界记录。
+- CSAM 的英文与中文 overview 页面存在冲突；文章用 Status: Disputed 并列两种说法，不把「无法关闭」写成当前唯一行为。
+- 五个过滤器是官方 filters 章节的计数；八个检测项是按 RAI 子类别展开的计数。
+- 文档扫描与图片扫描是输入形态，不作为独立过滤器。
 
 ## See Also
 

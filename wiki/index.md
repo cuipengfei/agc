@@ -187,11 +187,11 @@ MCP server 清单筛选、star 真实性与生态知识。
 
 ## gcp-model-armor
 
-Google Cloud Model Armor 的 PI/越狱过滤器、置信度阈值、接入点、区域可用性与执行边界。
+Google Cloud Model Armor 的五类过滤器、置信度阈值、接入点、区域可用性与执行边界。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Google Cloud Model Armor：PI/越狱过滤器、接入点与执行边界](gcp-model-armor/model-armor-filters-and-enforcement.md) | PI 指 prompt injection；filterEnforcement 未设置等同 Disabled、confidenceLevel 未设置等同 LOW_AND_ABOVE；少于三个词不判；原生 Agent Platform 集成限 Gemini generateContent 非流式文本，floor settings 可项目级生效；Gemini Enterprise 只覆盖点名 agent；Antigravity 三种接入方式、Enterprise Gateway 可选；按区域提供，配置与账单在自有项目、检测在 Google 托管区域服务 | 2026-11-17 |
+| [Google Cloud Model Armor：五类过滤器、接入点与执行边界](gcp-model-armor/model-armor-filters-and-enforcement.md) | PI 指 prompt injection；五类过滤器（RAI 四类、SDP、恶意 URL、CSAM）；filterEnforcement 未设置等同 Disabled、confidenceLevel 未设置等同 LOW_AND_ABOVE；少于三个词不判；原生 Agent Platform 集成限 Gemini generateContent 非流式文本，floor settings 可项目级生效；Gemini Enterprise 只覆盖点名 agent；Antigravity 三种接入方式、Enterprise Gateway 可选；CSAM 默认值中英文页面冲突；按区域提供，配置与账单在自有项目、检测在 Google 托管区域服务 | 2026-11-17 |
 
 ## openai-api
 
