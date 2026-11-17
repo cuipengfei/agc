@@ -185,6 +185,14 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [用 Anthropic thinking signature 判断网关实际服务的模型](model-gateway-mismatch/anthropic-signature-model-verification.md) | signature 明文头三层结构（outer/envelope/header）、field 6 模型 ID 与 field 8 块类型、解析链与 128 字节长度门、版本 4 格式无 field 6 返回 undefined、不校验密码学有效性 | 2026-10-26 |
 | [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) | CAPI 以 `finish_reason: "error"` 或顶层 `error` 结束仍返回 HTTP 200、无 `native_finish_reason`；三条下游协议各自收尾与「先用量后单次错误」的顺序约束；`Provider returned error finish_reason` 文案决定 OMP 可重试；`validated` 仅在 Gemini 3 由官方客户端改写，Argon 实测接受但映射未确认；`compat.extraBody` 覆盖 `tool_choice: "none"` | 2026-11-11 |
 
+## gcp-model-armor
+
+Google Cloud Model Armor 的 PI/越狱过滤器、置信度阈值、接入点、区域可用性与执行边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Google Cloud Model Armor：PI/越狱过滤器、接入点与执行边界](gcp-model-armor/model-armor-filters-and-enforcement.md) | PI 指 prompt injection；filterEnforcement 未设置等同 Disabled、confidenceLevel 未设置等同 LOW_AND_ABOVE；少于三个词不判；原生 Agent Platform 集成限 Gemini generateContent 非流式文本，floor settings 可项目级生效；Gemini Enterprise 只覆盖点名 agent；Antigravity 三种接入方式、Enterprise Gateway 可选；按区域提供，配置与账单在自有项目、检测在 Google 托管区域服务 | 2026-11-17 |
+
 ## openai-api
 
 OpenAI API 协议层传输模式与事件语义。

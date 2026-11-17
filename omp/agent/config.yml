@@ -33,6 +33,7 @@ enabledModels:
   - typesafe-zen/*
   - nvidia/**
   - kiro/*
+  - antigravity-cli/*
 disabledProviders:
   - claude-plugins
   - codex
@@ -557,8 +558,14 @@ task:
   softRequestBudgetNotice: true
   maxEffort: high
   disabledAgents: []
-  agentModelOverrides: {}
+  agentModelOverrides:
+    task: "@architect"
   agentPrewalk: {}
+  agentPrewalkAuto:
+    builder: "@balanced"
+    frontend: "@designer"
+    qa: "@task"
+    task: "@task"
   prewalk: false
   showResolvedModelBadge: true
   structured: true

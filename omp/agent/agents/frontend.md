@@ -2,7 +2,7 @@
 name: frontend
 description: 前端界面、UI/UX、设计系统与 HTML/SVG 可视化实现员。先行提取并复用项目设计变量，交付风格统一、交互完整的前端代码。
 tools: read, write, edit, find, grep, glob, ast_grep, lsp, bash, eval, web_search
-model: "@designer"
+model: "@task"
 thinkingLevel: high
 readSummarize: false
 ---

@@ -1224,18 +1224,20 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "0ffdd26eb8bb76764a68e53ed1b283acf70bde4a",
+      "skillFolderHash": "e15a37b2ce0b62e4a60cbe55cf998dbc8b640ff2",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-16T12:23:22.370Z"
+      "updatedAt": "2026-11-17T13:23:51.986Z",
+      "commit": "b064e40e13810a73ddf27c4e467fd8a5ba33400d"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "19745e7c8e975a9c6d0060efb139f34ef57fa7ec",
+      "skillFolderHash": "f6e53c5faa5eb2ebeb5575b5c2a7d52e8b83a622",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-16T12:23:22.689Z"
+      "updatedAt": "2026-11-17T13:23:52.302Z",
+      "commit": "b064e40e13810a73ddf27c4e467fd8a5ba33400d"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1251,9 +1253,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "1ce7abca5111d0c8c802578d6e931bd530da4882",
+      "skillFolderHash": "e75ba410f94981075ae2bc157916af20d474250e",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-16T12:23:24.178Z"
+      "updatedAt": "2026-11-17T13:23:53.468Z",
+      "commit": "b064e40e13810a73ddf27c4e467fd8a5ba33400d"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
@@ -1306,9 +1309,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "9c351694439ea1171f36c65b91ba661e7a0499c8",
+      "skillFolderHash": "707362731928d0d92526c066df15dbbe6a378c07",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-15T03:43:58.542Z"
+      "updatedAt": "2026-11-17T13:23:53.607Z",
+      "commit": "707362731928d0d92526c066df15dbbe6a378c07"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",

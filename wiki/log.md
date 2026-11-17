@@ -2388,3 +2388,9 @@
 - Raw: raw/tern/2026-11-18-tern-0.9.26-fonts-server-delivery.md
 - Updated: Tern 网页字体修改与版本迁移; Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册; Tern 设置存储位置
 - 要点：0.9.26（`6a1aeb9`，binary `1691d23905417bc338e04a6db199210bbc9e5651c792a6d1a27ee67b78e79218`，包 `5fc0e7e8345faf806d2263fa4013ad70e03467f5ee25fd26da3c2c08cdb29dad`，`207215912` 字节）按无补丁分支部署：不带 `--assets`，systemd 单元重启后 daemon pid `2552967`、web pid `2552948`，双端 HTTP 200，三个 pane live。`/fonts` 通道实测与 0.9.23 一致：`GET /fonts?chars=4e2d` 返回 `{"fonts":[{"id":"b76b0433203017ca80401b2ee0dd6935","index":2}]}`（Noto `19484784` 字节），`families=Maple%20Mono%20NF%20CN` 返回 `{"fonts":[{"id":"b3f8f26efab7c88f4f72cff0fe02a3c8","index":0}]}`（Maple `20561696` 字节），字体响应头 `font/sfnt`、`Cache-Control: private, max-age=31536000, immutable`，查询响应头 `Cache-Control: no-store`、`Content-Length: 63`。安装包内只有 `tern/tern`，WASM 由 CDN 提供，`/fonts` 结论以运行中服务的 HTTP 实测为准。
+
+## [2026-11-17] ingest | Google Cloud Model Armor：PI/越狱过滤器、接入点与执行边界
+- Disposition: New
+- Raw: raw/gcp-model-armor/2026-11-17-model-armor-pi-and-integration.md
+- Created: wiki/gcp-model-armor/model-armor-filters-and-enforcement.md
+- 要点：PI 指 prompt injection；filterEnforcement 未设置等同 Disabled，confidenceLevel 未设置等同 LOW_AND_ABOVE；少于三个词不判；原生 Agent Platform 集成限 Gemini generateContent 非流式文本，floor settings 可项目级生效；Gemini Enterprise 只覆盖点名 agent；Antigravity 三种接入方式，Enterprise Gateway 可选；Model Armor 按区域提供；配置与账单在自有项目，检测在 Google 托管区域服务，默认无状态。

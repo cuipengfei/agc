@@ -2,7 +2,7 @@
 name: builder
 description: 默认工作者，处理不需要更具体角色的中等改动。选用条件：没有更对口的专业角色可派，工作量适中，范围限定在少量文件或模块。不适用场景：单文件的机械改动或模板套用改用 sonic；需要方案权衡或跨模块设计改用 oracle；需要真机端到端验证改用 qa。
 spawns: "*"
-model: "@balanced"
+model: "@task"
 thinkingLevel: medium
 readSummarize: false
 ---
