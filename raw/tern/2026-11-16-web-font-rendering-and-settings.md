@@ -1,6 +1,6 @@
 # Tern 网页端中文渲染路径与终端字体设置
 
-> Source: 本机 Tern 0.9.21 与 0.9.23 官方 WASM（`~/.local/share/tern-web-0.9.21-original/pkg/original.wasm`、`~/.local/share/tern-web-0.9.23-original/pkg/original.wasm`）、`~/.local/share/tern-web-0.9.23-original/initial.bin`、`fonts.py` 与 `analyze` 输出、Windows Chrome（`Chrome/157.0.0.0`）经 Playwright 的实测截图与 console 日志、`~/.local/share/tern-web-0.9.23/` 服务页面响应
+> Source: 本机 Tern 0.9.21 与 0.9.23 官方 WASM（`~/.local/share/tern-web-0.9.21-original/pkg/original.wasm`、`~/.local/share/tern-web-0.9.23-original/pkg/original.wasm`）、`~/.local/share/tern-web-0.9.23-original/pkg/client.js`、`~/.local/share/tern-web-0.9.23-original/initial.bin`、`~/.local/share/tern-native-0.9.26/tern`、`fonts.py` 与 `analyze` 输出、Windows Chrome（`Chrome/157.0.0.0`）经 Playwright 的实测截图与 console 日志、`127.0.0.1:8378/fonts` 接口实测响应
 > Collected: 2026-11-16
 > Published: Unknown
 
@@ -65,19 +65,22 @@ Windows Chrome（User-Agent `Mozilla/5.0 (Windows NT 10.0; Win64; x64) ... Chrom
 
 WASM 的 CSS 里另有静态定义：`--mono: 'Ioskeley Mono Term', ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;`、`:root { --tv-font: var(--mono); }`。
 
-## canvas 字形回退实测
+## WASM 光栅化与服务端 `/fonts` 动态投递通道
 
-在 Windows Chrome 的画布上用同一句中文做对照：
+`pkg/client.js` 中 `CanvasRenderingContext2D` 的 `fillText` 与 `measureText` 出现次数均为 0；页面 `<canvas id="tern">` 获取的是 WebGPU 上下文，WASM 内嵌 `harfrust-0.12.0`、`skrifa-0.44.0` 与 `crates/gfx/src/atlas.rs`，由 WASM 在内存里完成文本排版与字形光栅化，再经 `__wbg_writeTexture_30e592e8c061c3d9`（`queue.writeTexture`）上传到 WebGPU 纹理图集渲染。
 
-| 场景 | 深色像素数（区域 60×50） |
-|---|---:|
-| `48px "Ioskeley Mono Term"` + `中` | 510 |
-| 同字体 + `a` | 270 |
-| 同字体 + `□` | 186 |
-| `48px monospace` + `中` | 262 |
-| 同字体 + `a` | 131 |
+WASM 模块 `crates/tern/src/web/fonts.rs`（`stencil_tern::web::fonts`、`web_font_land`）通过 HTTP 向 `tern web serve` 按需请求服务端宿主机的字体文件，请求路径与日志字面量包含 `./fonts?chars=`、`&families=`、`./fonts/`、`the server named no fonts`、`a font of the host did not load`、`a font of the host from the cache`、`the cache did not keep a font` 与缓存名 `tern-fonts`；`pkg/client.js` 对应绑定了 `Window.caches`（`__wbg_caches_0681678104a6b0bf`）及 `CacheStorage.open`（`__wbg_open_c35e93b027257492`）、`Cache.match`（`__wbg_match_c9682c7274131c0d`）、`Cache.put`（`__wbg_put_bbca42771defa466`），WASM 拿到字体字节后调用 `crates/text/src/fonts.rs` 的 `font_register` 注册进内存字体库。该套字符串在 0.9.18、0.9.21 与 0.9.23 的 `original.wasm` 中均已存在。
 
-内嵌字体没有 `中` 的字形时，画布仍绘出笔画，轮廓与 `□` 不同，说明由系统字体补绘。Windows 侧存在 `/mnt/c/Windows/Fonts/msyh.ttc`、`simhei.ttf`、`simsun.ttc`、`Deng.ttf`、`Dengb.ttf`；用户字体目录 `C:\Users\<USER>\AppData\Local\Microsoft\Windows\Fonts\` 里已有多份 `MapleMono-NF-CN-*.ttf`。
+对本机运行中的 `127.0.0.1:8378`（WSL `tern web serve`）实测：
+
+| 请求路径 | 响应状态与类型 | 返回内容与对应 WSL 本机字体文件 |
+|---|---|---|
+| `GET /fonts?chars=4e2d&token=<REDACTED>` | 200，`application/json` | `{"fonts":[{"id":"b76b0433203017ca80401b2ee0dd6935","index":2}]}` |
+| `GET /fonts/b76b0433203017ca80401b2ee0dd6935?token=<REDACTED>` | 200，`font/sfnt`，`19484784` 字节 | OpenType font collection（`NotoSansCJKjp-Regular`），对应 WSL `/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`（`19484784` 字节） |
+| `GET /fonts?chars=4e2d&families=Maple%20Mono%20NF%20CN&token=<REDACTED>` | 200，`application/json` | `{"fonts":[{"id":"b3f8f26efab7c88f4f72cff0fe02a3c8","index":0}]}` |
+| `GET /fonts/b3f8f26efab7c88f4f72cff0fe02a3c8?token=<REDACTED>` | 200，`font/sfnt`，`20561696` 字节 | TrueType Font data，对应 WSL `/home/cpf/.local/share/fonts/maple-win/.../MapleMono-NF-CN-Regular.ttf`（`20561696` 字节） |
+
+两项 `/fonts/<id>` 响应头均带 `Cache-Control: private, max-age=31536000, immutable`。因此不传 `--assets` 时，默认状态的中文来自 WSL 服务端的 `/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`，配置 `font_family` 后的 `Maple Mono NF CN` 来自 WSL 服务端的 `~/.local/share/fonts/`。
 
 ## 终端字体设置
 
@@ -99,9 +102,9 @@ WASM 端 `Settings::load` 通过 `local_storage().and_then(|storage| storage.get
 
 固定文本 `echo 你好世界` 的截图在 600×300 区域内像素差异 7045/180000，占 3.91%，字形确实变化。
 
-上述对照在新建的隔离浏览器 profile 里完成，隔离 profile 的 `localStorage` 只有 `tern-web-token`，没有 `settings.json`，因此「无 `font_family`」一行代表默认状态。
+上述对照在新建的隔离浏览器 profile 里完成，隔离 profile 的 `localStorage` 只有 `tern-web-token`，没有 `settings.json`，因此「无 `font_family`」一行代表默认状态（服务端投递 `NotoSansCJK-Regular.ttc`），设入 `Maple Mono NF CN` 后服务端投递 `MapleMono-NF-CN-Regular.ttf`。
 
-用户自有 Chrome profile 的情况不同：事故前的 `settings.json` 已含 `font_family`、`font_family_bold`、`font_family_italic`、`font_family_bold_italic` 四项，值均为 `Maple Mono NF CN`（见 `019306.ldb` 的 778 字节记录）。用户在该 profile 里看到中文时，字体栈首位已是 Maple，不能把那次显示归因为默认雅黑回退，也不能据此证明字体装配不必要。系统侧另有事实：`C:\Users\<USER>\AppData\Local\Microsoft\Windows\Fonts\` 已有多份 `MapleMono-NF-CN-*.ttf`。
+用户自有 Chrome profile 的情况：事故前的 `settings.json` 已含 `font_family`、`font_family_bold`、`font_family_italic`、`font_family_bold_italic` 四项，值均为 `Maple Mono NF CN`（见 `019306.ldb` 的 778 字节记录），因此该 profile 会直接向服务端请求 `&families=Maple%20Mono%20NF%20CN` 并加载 WSL 本机的 Maple 字体。
 
 ## 无效路径
 
@@ -113,7 +116,6 @@ WASM 端 `Settings::load` 通过 `local_storage().and_then(|storage| storage.get
 | 以 `getComputedStyle(canvas).fontFamily` 判定 | 只反映 canvas 元素自身 CSS，与 WASM 绘制的字无关 |
 
 ## 边界
-
-- `font database loaded count=0` 说明浏览器沙箱里 WASM 的 fontdb 为空，读不到系统字体文件；中文由 Chrome 内核在绘制缺字形字符时补绘。
-- 本记录只覆盖 web 端 canvas 文本，不涉及原生端 fontconfig 行为。
-- Chrome 的字体回退顺序由 `font_family` 与内核默认栈共同决定，本记录未穷举所有平台。
+- `font database loaded count=0` 说明浏览器沙箱里 WASM 启动时无法直接枚举本地磁盘字体；后续遇到缺字或配置的 `font_family` 时，由 `stencil_tern::web::fonts` 向 `tern web serve` 的 `/fonts` 接口按需拉取服务端宿主机的字体文件，注册进 WASM 内存后通过 WebGPU 渲染到 canvas。
+- 网页端能否使用 `Maple Mono NF CN` 取决于运行 `tern web serve` 的服务端宿主机（本机为 WSL）是否安装了该字体，以及浏览器 `localStorage['settings.json']` 是否配置了 `font_family`。
+- 0.9.26 原版已按同一无补丁方式部署运行：安装包 SHA-256 `5fc0e7e8345faf806d2263fa4013ad70e03467f5ee25fd26da3c2c08cdb29dad`，`tern/tern` 为 `207215912` 字节、版本串 `tern 0.9.26 (6a1aeb9)`、SHA-256 `1691d23905417bc338e04a6db199210bbc9e5651c792a6d1a27ee67b78e79218`，页面 preload 指向 `https://build.stencil.so/web/tern/0.9.26/stencil_tern_web_bg.wasm`。

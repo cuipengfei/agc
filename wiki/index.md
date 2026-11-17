@@ -469,7 +469,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 
 | Article | Summary | Updated |
-| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体与时间定位、确定性构建、写流失败取消输入、真实 Windows Chrome 复现与 viewport 重绘判据、checkJs 机械检查、CI 测试作用域、test:receipt、0.9.7–0.9.18 描述符结构波动与 Geist 字体观察、WSL headless GPU adapter 三种开关实测、Bun 钩子默认 5 秒预算与超时报错边界、正式进程身份检查、0.9.21 内嵌八字体与描述符新槽位、agent 托管服务在会话结束后不可用与 `__redact` detached 启动、0.9.23 无补丁部署的内嵌官方资源与 `verify-service` 不适用边界、systemd 用户单元持久化与 SIGKILL 自愈实测 | 2026-11-17 |
+| [Tern 升级辅助工具与验收边界](tern/maintenance-toolkit.md) | 官方资源校验、字体与时间定位、确定性构建、写流失败取消输入、真实 Windows Chrome 复现与 viewport 重绘判据、checkJs 机械检查、CI 测试作用域、test:receipt、0.9.7–0.9.18 描述符结构波动与 Geist 字体观察、WSL headless GPU adapter 三种开关实测、Bun 钩子默认 5 秒预算与超时报错边界、正式进程身份检查、0.9.21 内嵌八字体与描述符新槽位、agent 托管服务在会话结束后不可用与 `__redact` detached 启动、0.9.23 无补丁部署的内嵌官方资源与 `verify-service` 不适用边界、systemd 用户单元持久化与 SIGKILL 自愈实测、服务端 `/fonts` 字体投递通道与 0.9.26 一致性确认 | 2026-11-18 |
 | [Tern 官方文档地图](tern/official-docs-map.md) | 官方文档站 82 页结构、获取方式、九分区页数、七个示例插件与概念导航 | 2026-10-20 |
 | [Tern 对象模型：包含关系、数量与生命周期](tern/object-model.md) | 核心对象定义、数量与包含关系、所有权、生命周期、进程拓扑实测与术语冲突记录 | 2026-10-20 |
 | [Tern 设置项全集](tern/settings-schema.md) | 本机 0.9.4 二进制内嵌设置结构体全字段、提取方法与分组整理 | 2026-10-20 |
@@ -477,10 +477,10 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | [Tern 插件能力全集](tern/plugin-capabilities.md) | 九域能力清单、事件、动作形态、预算与容量表、生命周期、信任模型与示例配方 | 2026-10-20 |
 | [Tern Surface Protocol 官方规范要点](tern/tsp-official-spec.md) | TSP 核心实体、三种 mode、握手、流控、驱逐、blob、主题、安全边界与 SDK | 2026-10-20 |
 | [Tern 脚本与自动化面](tern/scripting-surface.md) | 控制端点、脚本三路径、命令域、状态导出与块类型脚本能力 | 2026-10-20 |
-| [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 原版字体验收、descriptor 注入、0.8.3/0.9.3/0.9.5/0.9.7/0.9.8/0.9.9/0.9.10/0.9.12/0.9.18/0.9.21/0.9.23 证据、BerkeleyMono 到 Ioskeley 的字体族更换、0.9.12 起含 Geist UI 字体、0.9.21 内嵌八字体、描述符单副本与多副本的版本间波动、合并分配、`--bundle` 与 `--official` 两种资产装配、无 `--assets` 时隔离 profile 的 Chrome 系统字体补绘与自定义 profile 已设 Maple 的区分、`settings.json` `font_family` 生效实测（3.91% 像素差异）、字体与时间补丁边界 | 2026-11-17 |
+| [Tern 网页字体修改与版本迁移](tern/web-maple-font-rebuild.md) | 原版字体验收、descriptor 注入、0.8.3/0.9.3/0.9.5/0.9.7/0.9.8/0.9.9/0.9.10/0.9.12/0.9.18/0.9.21/0.9.23/0.9.26 证据、BerkeleyMono 到 Ioskeley 的字体族更换、0.9.12 起含 Geist UI 字体、0.9.21 内嵌八字体、描述符单副本与多副本的版本间波动、合并分配、`--bundle` 与 `--official` 两种资产装配、无 `--assets` 时 WASM 经 `tern web serve` `/fonts` 接口按需拉取 WSL 宿主机字体并由 `harfrust`+`skrifa` 光栅化上屏、0.9.26 上 `/fonts` 通道与 0.9.23 一致实测、`settings.json` `font_family` 生效实测（3.91% 像素差异）、字体与时间补丁边界 | 2026-11-18 |
 | [Tern 时间 API 补丁与验收](tern/time-api-patch-and-verification.md) | calendar、Instant、elapsed 语义与 ABI；按版本静态证据；0.9.7–0.9.21 的 `panicFunctions` 总数与时间调用数；Markdown 冻结及字体注入的独立验收边界 | 2026-11-14 |
-| [Tern 跨机器补丁手册](tern/portable-patching-runbook.md) | 本机原版获取、固定 recipe 重建、完整包迁移、仅字体装配、真实页面检查、重启后的启动路径、site 目录核对、0.9.18 验收形态与 GPU adapter 实测、跨版本 pane 只陈述观测不推断丢失原因、0.9.21 验收形态与独立进程托管、0.9.23 无补丁部署分支与替代验收口径，以及未知版本和平台限制 | 2026-11-17 |
-| [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围；Web 端键名 `settings.json` 与 `font_family` 实测、`localStorage.setItem` 整键替换风险、Chrome LevelDB 键编码 `_<origin><key>` 与旧值可恢复性 | 2026-11-17 |
+| [Tern 跨机器补丁手册](tern/portable-patching-runbook.md) | 本机原版获取、固定 recipe 重建、完整包迁移、仅字体装配、真实页面检查、重启后的启动路径、site 目录核对、0.9.18 验收形态与 GPU adapter 实测、跨版本 pane 只陈述观测不推断丢失原因、0.9.21 验收形态与独立进程托管、0.9.23 无补丁部署分支与替代验收口径、0.9.26 无补丁部署实例与 `/fonts` 验收点，以及未知版本和平台限制 | 2026-11-18 |
+| [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围；Web 端键名 `settings.json` 与 `font_family` 实测、`/fonts` 投递的字体 ID 对照、`localStorage.setItem` 整键替换风险、Chrome LevelDB 键编码 `_<origin><key>` 与旧值可恢复性 | 2026-11-18 |
 | [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算 | 2026-10-20 |
 | [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点；2026-11-12 补 ABKit 引擎与 Tern 网页视图 | 2026-11-12 |
 | [Tern Inbox 特征行为](tern/inbox-feature.md) | 四条 ctl/scenario 命令、默认键位、OSC 99 直写 pty 实测不进 inbox、Herdr 已排除、真实通道待查 | 2026-10-20 |

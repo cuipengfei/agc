@@ -1,8 +1,8 @@
 # Tern 跨机器补丁手册
 
-> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03；Tern 0.9.12 部署与 GPU adapter 实测，2026-11-05；Tern 0.9.18 部署与 pane 观察边界，2026-11-12；Tern 0.9.21 部署与独立进程托管，2026-11-14；Tern 0.9.23 无补丁部署与 systemd 用户服务，2026-11-16
-> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [服务托管生命周期](../../raw/tern/2026-11-14-agent-hosted-service-lifetime.md); [0.9.23 无补丁部署](../../raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md)
-> Updated: 2026-11-17
+> Sources: Tern 补丁流程要求与时间补丁归档，2026-10-20；确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署与复现工具实测，2026-10-29；Tern 0.9.8 与 0.9.9 部署及重启启动路径，2026-11-02；Tern 0.9.10 部署与 site 目录核对，2026-11-03；Tern 0.9.12 部署与 GPU adapter 实测，2026-11-05；Tern 0.9.18 部署与 pane 观察边界，2026-11-12；Tern 0.9.21 部署与独立进程托管，2026-11-14；Tern 0.9.23 无补丁部署与 systemd 用户服务，2026-11-16；Tern 0.9.26 无补丁部署与 `/fonts` 通道确认，2026-11-18
+> Raw: [补丁流程要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [0.9.5 补丁与时间验收](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [确定性构建与移植验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [复现工具误报与重绘判据](../../raw/tern/2026-10-29-browser-reproduction-redraw-guard.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [服务托管生命周期](../../raw/tern/2026-11-14-agent-hosted-service-lifetime.md); [0.9.23 无补丁部署](../../raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md); [0.9.26 服务端字体投递](../../raw/tern/2026-11-18-tern-0.9.26-fonts-server-delivery.md)
+> Updated: 2026-11-18
 
 ## 使用对象与边界
 
@@ -183,7 +183,7 @@ tern web serve --listen 127.0.0.1:8378 \
 
 用户只要求升级版本、不做任何修改时，走这条分支：原子替换 `~/.local/bin/tern`，`tern web serve` 不传 `--assets`，由 binary 提供内嵌官方页面。验收口径随之改变：`verify-service` 不适用（它比对 `pkg/client.wasm` 与 `pkg/client.js`，内嵌站这两个路径返回 404），改用根页面 HTTP 状态、页面 preload 的 `build.stencil.so/web/tern/<version>/` 地址、`pkg/stencil_tern_web.js` 200、`inspect-runtime` 的版本与 `matchesInstalled`、以及 pane 列表。
 
-此分支下内嵌字体仍无 CJK 覆盖，中文由 Chrome 内核在 canvas 上用系统字体补绘；要让终端文本使用指定等宽字体，改 web 端 `settings.json` 的 `font_family`，不要为此重新装配 WASM。
+此分支下内嵌字体仍无 CJK 覆盖，WASM 会通过 `tern web serve` 的 `/fonts?chars=...&families=...` 接口按需拉取服务端宿主机（WSL）已安装的字体文件，注册进 WASM 内存后经 WebGPU 渲染到 canvas（未设 `font_family` 时拉取 WSL 的 `NotoSansCJK-Regular.ttc`，在 web 端 `localStorage['settings.json']` 设入 `"font_family": "Maple Mono NF CN"` 时拉取 WSL 的 `MapleMono-NF-CN-Regular.ttf`）；只要服务端宿主机已安装目标等宽字体并在浏览器配置好 `font_family`，无需重新装配 WASM。0.9.26 实例：binary `1691d23905417bc338e04a6db199210bbc9e5651c792a6d1a27ee67b78e79218`（`6a1aeb9`）替换后重启两个 systemd 单元，`/fonts` 通道返回与 0.9.23 相同的字体 ID（Noto `19484784` 字节、Maple `20561696` 字节），WSL 与 Windows 侧 HTTP 均 200。
 
 ## See Also
 
