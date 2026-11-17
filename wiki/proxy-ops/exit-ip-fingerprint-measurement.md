@@ -1,8 +1,8 @@
 # 代理出口 IP 指纹批量测量与形态分类
 
-> Sources: 本机实测会话记录, 2026-09-16
-> Raw: [2026-09-16-exit-ip-fingerprint-measurement](../../raw/proxy-ops/2026-09-16-exit-ip-fingerprint-measurement.md)
-> Updated: 2026-09-16
+> Sources: 本机实测会话记录，2026-09-16；Antigravity 隔离出口对照，2026-11-17 至 2026-11-18
+> Raw: [2026-09-16 出口指纹测量](../../raw/proxy-ops/2026-09-16-exit-ip-fingerprint-measurement.md); [Antigravity 出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md)
+> Updated: 2026-11-18
 
 ## Overview
 
@@ -24,6 +24,12 @@
 - 稳定性判断要跨 ASN 比较：出口在同 ASN 内换 IP = 池内轮换（性质不变）；跨 ASN 变化 = 形态漂移（例如从商业宽频掉到骨干段）。至少间隔一小时测两轮再下"稳定/不稳定"结论。
 
 `ipconfig.io/json` 一次请求返回：出口 IP、country/city、ASN、运营商、PTR（hostname）、经纬度、时区，无需本地 GeoIP 库。
+
+## 隔离进程测量
+
+需要保持原代理组和其他流量不变时，可启动独立 mihomo 进程：仅监听 localhost 的独立 mixed 端口，关闭 TUN，以目标节点为唯一出站，并通过该端口发送测量请求。临时配置经 stdin 提供；测量后停止进程并删除临时目录。节点认证信息只在进程内处理。
+
+2026-11-18 的一次测量中，独立进程使用的节点入口 DNS 结果与原客户端节点专用 DNS 不同，导致握手失败；采用节点专用 DNS 结果后取得出口。IPinfo 和 Cloudflare 将该出口识别为新加坡，Google 无登录 Terms 页面显示中国。该页面结果是一次观察，Antigravity 服务内部采用的国家代码未公开。
 
 ## 归属冲突的收敛规则
 

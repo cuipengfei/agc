@@ -1,8 +1,8 @@
 # Google Antigravity：套餐、模型、额度与地区
 
-> Sources: Google Antigravity pricing、plans、models、enterprise 与 FAQ 页面，2026-11-14 采集；Google 套餐调整公告，2026-05-19；CodeAgentSwarm 美国区价格整理，2026-10-31；Forbes 设备试用报道，2026-10-25；Google 开发者论坛与 Reddit 用户报告，2026-03 至 2026-11；OMP `pi-ai` 18.19.0 版本说明，2026-11-12
-> Raw: [套餐与模型](../../raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md); [地区与用户报告](../../raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md); [OMP 认证与额度记录](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md)
-> Updated: 2026-11-14
+> Sources: Google Antigravity pricing、plans、models、enterprise 与 FAQ 页面，2026-11-14 采集；Google 模型页面 2026-11-18 快照；Google 套餐调整公告，2026-05-19；CodeAgentSwarm 价格整理、Forbes 报道、社区用户报告与本机会话观察
+> Raw: [套餐与模型](../../raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md); [地区与用户报告](../../raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md); [OMP 认证与额度记录](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [2026-11-18 模型快照](../../raw/ai-coding-agents/2026-11-18-antigravity-model-plan-snapshot.md); [本机接入与错误观察](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md)
+> Updated: 2026-11-18
 
 ## 套餐和价格
 
@@ -38,6 +38,12 @@ Free 和 Plus 在官方模型表中使用同一列。官方计划文档将两者
 
 官方文档当时计划在 **2026-11-18** 移除 Claude 4.6 和 GPT-OSS-120b。模型选择器和当前文档决定实际可选项。
 
+### 2026-11-18 模型表快照
+
+官方模型表在 **2026-11-18** 将 Gemini 4 Hydrogen 列为 Free / Plus 不可用、非试用的付费 Pro 可用；2026-11-14 快照将该模型列为 Free / Plus 可用。两个日期分别对应当时采集的官方表格。
+
+11-18 表格仍将 Claude 4.6 列为 Free / Plus 与 Pro 可用，并写明 Claude 4.6 和 GPT-OSS-120b 计划在当天移除；实际移除时间未验证。Argon 的 Pro 资格仍区分付费订阅与符合条件的设备试用。
+
 Google 没有在本次查阅的资料中列出完整的 `eligible premium devices` 名单。Forbes 作者于 **2026-10-25** 报告，他的促销试用账号中出现 Argon、Claude Opus 5.5 和 Sonnet 5.5；该报道描述的是账号上的可见情况，Google 文档对 Pro 档 Claude 5.5 写的是非试用订阅。
 
 ## 额度怎么计算
@@ -72,8 +78,17 @@ Google FAQ 要求个人账号关联到支持的国家或地区，并提供 [Term
 
 本次会话观察到地区更正表单包含“经常使用 VPN”的选项，没有提交申请，审批结果和通过率未知。GPS 或浏览器定位是否参与 Antigravity 判定没有查证；没有在中国大陆使用特定代理或节点调用 Claude Opus 5.5 的实测。
 
+### 本机会话观察（2026-11-17 至 2026-11-18）
+
+用户确认账号关联地区显示新加坡；一个新加坡节点的出口由 IPinfo 与 Cloudflare 识别为新加坡，Google 无登录 Terms 页面显示中国。令诊断进程全部请求通过该节点后，模型生成仍返回 `403 / UNSUPPORTED_LOCATION / 1008`。服务端响应未公开其最终采用的国家代码；Google 无登录页面结果与 Antigravity 内部判定分别记录。
+
+2026-11-17 至 2026-11-18 的 CLI 实测补充：账号与付款资料均为新加坡，本机请求出口为香港（ipinfo），`/usage` 返回 1008；Clash 规则将 daily 域名指向新加坡节点后，`/connections` 确认命中该节点，隔离测量确认该节点出口为新加坡，仍返回 1008；换成美国节点后 `/usage` 成功输出周额度。规则命中只证明路由，出口合规由服务端判定。详细操作与错误分层见 [Antigravity CLI 用量查询与配额/许可证错误分层](antigravity-cli-usage-and-quota-errors.md)。
+
+另一个美国节点的出口在 Google 无登录 Terms 页面显示美国；经该节点的 OMP 最小请求进入工具 schema 校验并返回 `400`，当次没有返回 `1008`。后续原生 `agy` 曾返回 `SUBSCRIPTION_REQUIRED / 1001`，再由用户报告两次短提示成功；这些是不同时间的观察，原因关系未知。
+
 `403 UNSUPPORTED_LOCATION` 是案例中报告的资格错误。账号被暂停属于另外的处理：Google 对第三方客户端使用 Antigravity 账号的限制与 OMP 版本行为见下文的关联文章。
 
 ## See Also
 
 - [OMP Antigravity 认证与社区 API](../omp-auth/google-antigravity-auth-and-api.md) — 登录提示、第三方客户端风险和接口证据
+- [Antigravity CLI 用量查询与配额/许可证错误分层](antigravity-cli-usage-and-quota-errors.md) — 打印模式与 TUI 的用量入口、1008/1001/404 分层

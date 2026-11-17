@@ -1,8 +1,8 @@
 # OMP Antigravity 认证与社区 API
 
-> Sources: Google Antigravity FAQ，2026-11-14 采集；Google Gemini CLI 维护者公告，2026-02-27；NoeFabris `opencode-antigravity-auth` 社区 API 文档，2026-10-21；CLIProxyAPIBusiness quota 源码；本机 OMP `pi-catalog`、`pi-ai` 18.20.0 源码及版本说明，2026-11-14 读取
-> Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md)
-> Updated: 2026-11-14
+> Sources: Google Antigravity FAQ，2026-11-14 采集；Google Gemini CLI 维护者公告；社区 API 文档、CLIProxyAPIBusiness quota 源码；OMP 18.20.0 源码；2026-11-17 至 2026-11-18 本机会话与 agy 1.5.10 日志
+> Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [本机会话接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [本机域名与出口观察](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md)
+> Updated: 2026-11-18
 
 ## 账号风险
 
@@ -40,7 +40,16 @@ Google Gemini CLI 维护者 **2026-02-27** 说明，针对第三方工具或代�
 
 OMP 18.20.0 的模型发现源码列出 `daily-cloudcode-pa.googleapis.com` 和 `daily-cloudcode-pa.sandbox.googleapis.com`，用于 `fetchAvailableModels` 的默认发现端点；CLIProxyAPIBusiness 的 quota 源码还列出 `cloudcode-pa.googleapis.com`。这些记录分别涉及社区文档和模型／额度发现，本次没有验证模型生成时的备用地址或权限。
 
+### 本机 `agy` 观察
+
+2026-11-17 至 2026-11-18，`agy 1.5.10` 的日志记录 `daily-cloudcode-pa.googleapis.com` 的账号与模型查询，并记录一次 `streamGenerateContent` 返回 `429`。一次 OMP 最小请求记录账号被路由到 AICode，并请求 `aicode.googleapis.com/v1alpha:fetchConfig`。这两项是本机日志观察；社区文档中的其他地址和备用路径仍以原始来源为准。
+
+## Antigravity 与 Code Assist 的关系
+
+Antigravity 的模型请求、账号资格、配额与许可证都走 Code Assist 后端。`agy` 日志显示 `loadCodeAssist`、`fetchAvailableModels`、`retrieveUserQuotaSummary` 调用 `daily-cloudcode-pa.googleapis.com`；1008 与 1001 错误域均为 `cloudaicompanion.googleapis.com`，许可证错误的帮助链接指向 `https://cloud.google.com/gemini/docs/codeassist/request-license`。`loadCodeAssist` 是 Code Assist 的开通调用，返回档位并分配项目；消费级免费档在后端的产品名是 "Gemini Code Assist for individuals"。详细用量入口与错误分层见 [Antigravity CLI 用量查询与配额/许可证错误分层](../ai-coding-agents/antigravity-cli-usage-and-quota-errors.md)。
+
 ## See Also
 
 - [Google Antigravity：套餐、模型、额度与地区](../ai-coding-agents/google-antigravity-plans-and-regions.md) — 个人与企业套餐、支持地区和用量报告
 - [OMP 环境变量全量参考](../omp/env-variables-reference.md) — `PI_AI_ANTIGRAVITY_*` 的请求头覆盖与版本变化
+- [Antigravity CLI 用量查询与配额/许可证错误分层](../ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) — 打印模式与 TUI 的用量入口、1008/1001/404 分层

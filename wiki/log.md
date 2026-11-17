@@ -2418,3 +2418,15 @@
 - Raw: raw/tern/2026-11-18-web-daemon-token-rotation.md
 - Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
 - 要点：web serve 只提供 HTTP 页面，不直接连 daemon；浏览器页面里的 WASM 通过 WebSocket 连 daemon.sock；web 与 daemon 之间没有持久 unix socket 连接是正常架构。token 轮换后旧 token 失效，用户浏览器持有旧 token 时页面报 `Tern could not start: the session daemon closed the connection`；新 token 页面正常加载。轮换步骤：生成新 token → 核对新旧 SHA-256 不同 → 原子替换 `web-token` → 重启 `tern-web.service` → 验证认证与 `/fonts` 行为不变。
+
+## [2026-11-18] ingest | Antigravity CLI 接入、域名分流与地区资格观察
+- Disposition: Update
+- Raw: raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md; raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md; raw/ai-coding-agents/2026-11-18-antigravity-model-plan-snapshot.md
+- Updated: OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider; Google Antigravity：套餐、模型、额度与地区; OMP Antigravity 认证与社区 API; 域名定向代理规则：把指定域名固定到代理组; 代理出口 IP 指纹批量测量与形态分类
+- 要点：OMP 18.22.0 与 agy 1.5.10 的本机接入；ACP、OAuth 刷新、daily-cloudcode 与 AICode 请求归属；隔离节点出口测量和 Google 地区识别差异；1008、429、1001、MCP schema 400 与原生短提示成功的时序证据；11-18 官方模型表快照。
+## [2026-11-18] ingest | Antigravity CLI 用量查询与配额/许可证错误分层
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md
+- Created: wiki/ai-coding-agents/antigravity-cli-usage-and-quota-errors.md
+- Updated: Google Antigravity：套餐、模型、额度与地区; OMP Antigravity 认证与社区 API; 域名定向代理规则：把指定域名固定到代理组
+- 要点：打印模式默认展开 slash 命令，`agy -p "/usage"` 成功而 `agy -p "/credits"` 无记录；1008 与账号/付款国家无关，请求出口香港被拒，规则指向新加坡节点仍 1008，换美国节点后配额与生成可用；1001 为许可证瞬态错误，旧 TUI 失败而新进程成功；手动 GET quota URL 404、无认证 POST 401；规则命中与出口合规是两件事。

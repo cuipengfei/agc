@@ -76,7 +76,8 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14 官方模型与地区名单快照；美国区历史月费来源、设备试用条件、5 小时与周额度、近期社区报告及地区资格边界 | 2026-11-14 |
+| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14 与 11-18 官方模型快照、套餐额度与设备试用；账号地区、代理出口识别差异及 1008、1001 本机会话观察；2026-11-17/18 CLI 实测补用量入口与错误分层 | 2026-11-18 |
+| [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits 记录、404 方法四类错误；规则命中与出口合规分开验证 | 2026-11-18 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
 | [跨 Harness 编排：workflowz 与 orchestrate 的对应物](ai-coding-agents/cross-harness-orchestration.md) | Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO `task`/`mass ulw` 与 OMP 两个关键词的映射；`mass ulw` 为独立版专属 | 2026-10-27 |
 | [Kiro 后端 API 给任意 agent 用](ai-coding-agents/kiro-backend-api-for-agents.md) | 20 仓库筛选 + 4 强排名（ns-bridge/kirocc/kiro.rs/kiro-lb）；pi-provider-kiro 与 OMP 钩子断层 PR #170 未合并；ksk_ 资格与 Billing FAQ SoT 边界 | 2026-10-22 |
@@ -208,8 +209,8 @@ OMP 认证、MCP OAuth、凭据管理，以及 Auth Broker/Gateway 的代理访�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策；OMP 18.18.4 暂停、18.18.7 恢复并提示风险；社区接口文档与地址差异，未实测登录或请求 | 2026-11-14 |
-| [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](omp-auth/antigravity-cli-acp-provider.md) | `agy acp` 本地子进程与登录流程；从 Google 清单下载 `agy`、SHA-512 校验、24 小时检查更新、`PI_AGY_PATH` 覆盖、`nc` 前置；专用 agent `bridge.md` 的 `excludeDefaultComponents: true` 与 `mcp_ide-tools_` 前缀，`manage_task` 仍留 `agy` 内；会话保持与 165 秒 hold、180 秒 MCP 截止；七个模型与思考等级；不支持 temperature/stop/输出上限；本机未登录、未下载、未发请求 | 2026-11-15 |
+| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系 | 2026-11-18 |
+| [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](omp-auth/antigravity-cli-acp-provider.md) | 本地 agy ACP 子进程、OMP 工具与 OAuth 刷新归属、下载与 PI_AGY_PATH、本机接入及地区拒绝、限流、license 和 MCP schema 错误观察 | 2026-11-18 |
 | [OMP Auth Broker 与 Gateway](omp-auth/auth-broker-gateway.md) | 凭据集中、access token 服务端解析、客户端不保存 provider key | 2026-09-09 |
 | [SOFA 官方 MCP：OMP 接入、维护与验证](omp-auth/sofa-mcp-maintenance.md) | 连接配置与凭据归属、Clash 规则查找、回调机制、工具验证及私有草稿发布边界 | 2026-10-17 |
 
@@ -501,8 +502,8 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界 | 2026-09-16 |
-| [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 批量测出口、BGP origin 收敛 ASN 冲突、命名审计 | 2026-09-16 |
-| [域名定向代理规则：把指定域名固定到代理组](proxy-ops/domain-targeted-proxy-rules.md) | 前置 DOMAIN 完整域名与首条匹配停止、填组名跟随组内选择 vs 填节点名锁定、option.rules → profiles/UID.yaml 的 prepend、clash-verge.yaml 才是生成配置、controller /rules 与 /connections 核对 | 2026-10-26 |
+| [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 切换测量与隔离内核定向测量、节点 DNS 取证、地区识别差异、BGP origin 与命名审计 | 2026-11-18 |
+| [域名定向代理规则：把指定域名固定到代理组](proxy-ops/domain-targeted-proxy-rules.md) | 前置域名规则、组名与节点名、controller 核对；Antigravity 后端和共享认证域名的分流范围；规则命中与出口合规分开验证 | 2026-11-18 |
 
 ## llm-proxy-sse
 

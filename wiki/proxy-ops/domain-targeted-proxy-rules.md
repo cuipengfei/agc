@@ -1,8 +1,8 @@
 # 域名定向代理规则：把指定域名固定到代理组
 
-> Sources: Clash Verge Rev Docs, Unknown; mihomo docs, Unknown; 本机 Clash Verge Rev 2.5.8 与 mihomo 运行配置实测, 2026-10-26
-> Raw: [Clash Verge Rev 域名定向规则与本机核对摘录](../../raw/proxy-ops/2026-10-26-domain-rule-clash-verge-rev.md)
-> Updated: 2026-10-26
+> Sources: Clash Verge Rev Docs、mihomo docs；本机 Clash Verge Rev 与 mihomo 配置实测，2026-10-26；Antigravity 域名分流会话，2026-11-17 至 2026-11-18
+> Raw: [Clash Verge Rev 域名定向规则](../../raw/proxy-ops/2026-10-26-domain-rule-clash-verge-rev.md); [Antigravity 出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md)
+> Updated: 2026-11-18
 
 ## Overview
 
@@ -35,7 +35,10 @@ graph LR
 - 规则增强文件顶层就三个键：`prepend`、`append`、`delete`。界面里的「前置规则」对应 `prepend`，「后置规则」对应 `append`。
 - 生成给内核的配置是 `clash-verge.yaml`，`rules` 在里面是完整列表；同目录的 `config.yaml` 的 `rules` 为空，不能用它判断规则。
 
-本机核对：`option.rules` 为 `rNBxcSZKEHaF`，对应 `profiles/rNBxcSZKEHaF.yaml`，`prepend` 有 2 条；`clash-verge.yaml` 含 627 条规则。controller 为 `127.0.0.1:9097`，`mixed-port` 为 `7897`。
+本机核对（2026-10-26）：`option.rules` 为 `rNBxcSZKEHaF`，对应 `profiles/rNBxcSZKEHaF.yaml`，`prepend` 有 2 条；`clash-verge.yaml` 含 627 条规则。controller 为 `127.0.0.1:9097`，`mixed-port` 为 `7897`。
+
+> **Status: Outdated** (2026-11-17)
+> 上述 UID 已被后续写入替换。当前规则增强文件 UID 需按 `profiles.yaml` 的 `current` 条目实时读取，不写死；`clash-verge.yaml` 由 Clash Verge 在规则变更后重新生成。
 
 ## 组名与节点名
 
@@ -79,6 +82,18 @@ controller 需要鉴权：不带 `Authorization: Bearer <secret>` 请求 `/confi
 
 界面侧对应位置是连接的规则与链路显示。
 
+## Antigravity 域名分流观察
+
+2026-11-17 至 2026-11-18，本机 `agy` 连接记录覆盖 `daily-cloudcode-pa.googleapis.com` 和 `aicode.googleapis.com`；前者可被前置 `DOMAIN` 规则指定到节点，后者需按自身规则匹配。Google 公共部署文档另外列出 `cloudcode-pa.googleapis.com`；该账号的生成请求是否使用它尚未确定。
+
+### 规则命中与出口合规
+
+2026-11-17 至 2026-11-18 实测：`/rules` 显示 daily 域名命中新加坡节点规则，`/connections` 显示链路为该节点，隔离测量确认该节点出口为新加坡，`agy -p "/usage"` 仍返回 `403 UNSUPPORTED_LOCATION / 1008`；换成美国节点后成功。规则命中只证明路由，不证明出口被服务端接受。详细记录见 [Antigravity CLI 用量查询与配额/许可证错误分层](../ai-coding-agents/antigravity-cli-usage-and-quota-errors.md)。
+
+登录及账号信息涉及 `accounts.google.com`、`oauth2.googleapis.com`、`www.googleapis.com`。对这些共享域名设置规则时，其他程序访问同一主机也会使用指定节点。用户提供的规则包含这些域名；当次只核验 YAML 格式，未再次核对整组规则在内核中的加载状态。
+
+规则直接引用订阅节点名时，订阅更新若移除或更改该节点名，引用可能失效并使配置加载失败。长期需要切换节点时，可使用稳定名称的代理组承接规则。
+
 ## 证据边界
 
 规则已加载有两处依据：生成配置 `clash-verge.yaml` 的第 0 条，以及 `/rules` 的第 0 条。连接命中只有一次隧道观察，未做重复测量。要进一步确认长期行为，可以在一段时间内多次采样 `/connections` 的 `chains`，检查是否持续显示 `红魔馆网络` 与该节点。
@@ -88,5 +103,6 @@ controller 需要鉴权：不带 `Authorization: Bearer <secret>` 请求 `/confi
 ## See Also
 
 - [LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置](../llm-proxy-sse/llm-api-sse-proxy-chain.md) — select 组固定出口对长连接的意义
+- [Antigravity CLI 用量查询与配额/许可证错误分层](../ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) — 用量入口与错误分层
 - [专有代理客户端迁移到标准 Clash：通用取证方法](proprietary-client-to-clash-migration.md) — 本机订阅形态来源
 - [代理出口 IP 指纹批量测量与形态分类](exit-ip-fingerprint-measurement.md) — 同用 controller 与 secret，以及切换组内节点时的测量注意事项

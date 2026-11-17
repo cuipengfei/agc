@@ -1,8 +1,8 @@
 # OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider
 
-> Sources: `can1357/oh-my-pi` v18.20.2 `docs/providers.md` 与 `packages/ai/src/providers/antigravity-cli/`、`packages/catalog/src/compat/rules/providers/antigravity-cli.kdl`，2026-11-15 阅读；Google Antigravity CLI 官方文档，2026-11-15 查阅
-> Raw: [OMP antigravity-cli provider 摘录](../../raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md)
-> Updated: 2026-11-15
+> Sources: `can1357/oh-my-pi` v18.20.2 `docs/providers.md` 与 provider 源码、Google Antigravity CLI 官方文档，2026-11-15 查阅；OMP 18.22.0 源码、agy 1.5.10 日志与用户会话输出，2026-11-17 至 2026-11-18
+> Raw: [OMP antigravity-cli provider 摘录](../../raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md); [本机会话：接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md)
+> Updated: 2026-11-18
 
 ## 它解决什么
 
@@ -69,13 +69,26 @@ OMP 源码里的相关常量为：启动超时 `60_000` 毫秒、工具宣告等
 - 登录前会显示 Google 的账号政策提示。
 - Google FAQ 称第三方软件访问 Antigravity 违反其服务条款，可能导致账号被暂停或终止；这一点与 OMP 内置的直连 provider 相同，见 [OMP Antigravity 认证与社区 API](google-antigravity-auth-and-api.md)。
 
-## 本机状态（2026-11-15）
+## 本机状态（2026-11-15 至 2026-11-17）
 
-本机 OMP 为 `18.20.2`，`enabledModels` 未包含 `antigravity-cli/*`，`~/.omp/antigravity-cli/bin` 目录不存在，`nc` 在 `PATH` 上存在。
+2026-11-15 核对时 OMP 为 `18.20.2`，`enabledModels` 未包含 `antigravity-cli/*`，`nc` 存在。2026-11-17 核对时 OMP 为 `18.22.0`、`agy` 为 `1.5.10`；用户授权加入 `enabledModels` 和 `PI_AGY_PATH`，配置读取与 `resolveAgyBinary()` 返回结果均已检查。
+
+## 本机调用与错误观察（2026-11-17 至 2026-11-18）
+
+OMP 启动本机 `agy acp` 子进程，经 stdin/stdout 发送 ACP `connection.prompt(...)`；`agy` 向模型服务发起请求。OMP 自身还向 `oauth2.googleapis.com/token` 刷新凭据。普通 `agy` 与 OMP 的 ACP 子进程使用隔离的原生凭据目录。
+
+| 观察 | 当次证据与范围 |
+|---|---|
+| `403 UNSUPPORTED_LOCATION / 1008` | ACP 登录成功后的服务端拒绝；响应未提供最终采用的国家代码 |
+| `429 RESOURCE_EXHAUSTED` | Gemini 3.8 Flash 的流式生成返回通用资源耗尽消息；日志未给出具体限流指标或重置时间 |
+| `403 SUBSCRIPTION_REQUIRED / 1001` | 原生 CLI 提示 `#3501`；当次日志同时记录 AICode `FetchConfig` 超时，两者因果关系未知 |
+| `400 INVALID_ARGUMENT` | OMP 最小请求进入 MCP 工具参数 schema 校验；`--no-tools` 未阻止 MCP 工具参与，完整生成未成功 |
+
+用户随后报告两次原生 `agy -p` 得到英文和中文回复，其中一次退出码为 `0`。原生成功对应这两次请求；OMP 的完整工具调用尚未验证。`/usage` 曾报告 Gemini 与 Claude/GPT 每周剩余均为 `100%`；另一次 `/credits` 返回 `no credits info found`。
 
 ## 证据边界
 
-文档段落、清单字段与源码常量均为一手直读。未执行登录、未下载 `agy`、未发起模型请求，因此 Google 后端实际收到的完整 system prompt、工具 schema 内容与各部分 token 占用都未实测。`excludeDefaultComponents` 在 Google 侧对最终 prompt 的裁剪结果同样未验证。
+早期文档与源码观察见 2026-11-15 原始材料；2026-11-17 至 2026-11-18 的 CLI 输出和日志见会话原始材料。`excludeDefaultComponents` 在 Google 侧对最终 prompt 的裁剪结果尚未验证。
 
 ## See Also
 
