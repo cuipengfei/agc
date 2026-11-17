@@ -2400,3 +2400,9 @@
 - Raw: raw/gcp-model-armor/2026-11-17-model-armor-other-filters.md
 - Updated: wiki/gcp-model-armor/model-armor-filters-and-enforcement.md
 - 要点：官方 filters 章节共五类（RAI 四类、PI/越狱、SDP、恶意 URL、CSAM）；SDP basic 六类、advanced 支持去标识化；恶意 URL 最多前 256 个；CSAM 英文页支持启停并给出区域默认值，中文页写「默认启用且无法关闭」，标 Disputed；文档与图片是输入形态。
+
+## [2026-11-17] ingest | OMP 自定义 sub-agent：自动 Prewalk 机制、本机配置与 OMO 5.1.75 对比
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md; raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md; raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md
+- Updated: wiki/omp-config/custom-subagent-deployment.md
+- 要点：`task.agentPrewalkAuto` 为 settings-only record，子 Agent 无独立 `prewalk.from`；from 按 per-call model → agentModelOverrides → frontmatter model → 父会话模型解析；`"on"` 用 `prewalk.autoTarget`，其他值为交接目标；judge 一次、todo gate 后首个 `edit`/`write` 切换一次。`task.steps` 时 `spawnAssignment`（`task/index.ts:650-652`）用 `renderStepsBrief` 生成含全部步骤的 assignment 交给 judge。本机已配 builder/frontend/qa 起始模型为 `@task`/`@task`/`@architect`，`task.agentModelOverrides.task: "@architect"`，`agentPrewalkAuto` 写死四个条目；实测路由见文。OMO 5.1.57→5.1.75 直接原型无核心规则差异；Caller_Warning 与 oracle avoidWhen 未覆盖；Verification Oracle 为候选；librarian 的 `@smol :high` 与 OMO `low`/`fast` 为模型/成本差异。

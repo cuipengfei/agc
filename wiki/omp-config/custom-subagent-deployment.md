@@ -1,8 +1,8 @@
 # OMP 自定义 sub-agent：定义、工具名适配与验证
 
-> Sources: 用户提供的《OMP 自定义 Sub-agents 与 Role 跨机器复刻文档》，2026-11-02；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02；OMO oh-my-openagent 5.1.57 安装包，2026-11-02；本机安装包 v18.19.0 工具面解析与提示词分层源码取证，2026-11-12
-> Raw: [自定义 sub-agent 部署与工具名适配](../../raw/omp-config/2026-11-02-custom-subagent-deployment.md); [冒烟：自报模型 ID 核验绑定链](../../raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [builder 中间档与选择引导](../../raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md); [OMO 吸收核查与补齐](../../raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md); [子代理工具面解析与提示词分层取证](../../raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md)
-> Updated: 2026-11-12
+> Sources: 用户提供的《OMP 自定义 Sub-agents 与 Role 跨机器复刻文档》，2026-11-02；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02；OMO oh-my-openagent 5.1.57 安装包，2026-11-02；本机安装包 v18.19.0 工具面解析与提示词分层源码取证，2026-11-12；OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测，2026-11-17；OMO oh-my-openagent 5.1.75 与 5.1.57 自定义子 Agent 原型对比，2026-11-17
+> Raw: [自定义 sub-agent 部署与工具名适配](../../raw/omp-config/2026-11-02-custom-subagent-deployment.md); [冒烟：自报模型 ID 核验绑定链](../../raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [builder 中间档与选择引导](../../raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md); [OMO 吸收核查与补齐](../../raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md); [子代理工具面解析与提示词分层取证](../../raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md); [OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测](../../raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md); [OMO 5.1.75 与 5.1.57 自定义子 Agent 原型对比](../../raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md); [OMP task.steps 与子 Agent Prewalk 的交互机制](../../raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md)
+> Updated: 2026-11-17
 
 ## Overview
 
@@ -145,13 +145,31 @@ modelRoles:
 
 | agent | OMO 原型 | 补齐内容 |
 |---|---|---|
-| `oracle` | oracle + momus + metis | Metis 前置缺口分析、Momus 的 OKAY/ITERATE/REJECT 三态审查、Oracle Triple 三路并行调查 |
-| `librarian` | librarian | 年份检索门槛、逐条 permalink 要求、GitHub 限流/仓库不存在/sitemap 失败恢复分支 |
-| `frontend` | visual-engineering category | 组件数量下限（5–10 个）、强制建立并保存设计系统、组件组合硬规则、逐项验收门、逐次观察 |
-| `qa` | lazycodex-qa-executor | 既有证据核查、场景 ID 与验收标准引用、PASS 必须引用非空产物路径 |
-| `builder` | quick + unspecified-low | 已完整，无需补齐；`quick` 的单文件机械改动由 sonic 承担 |
+| `oracle` | metis.toml + momus.toml + 04-oracle-triple.md | Metis 前置缺口分析、Momus 的 OKAY/ITERATE/REJECT 三态审查、Oracle Triple 三路并行调查 |
+| `librarian` | librarian.toml | 年份检索门槛、逐条 permalink 要求、GitHub 限流/仓库不存在/sitemap 失败恢复分支 |
+| `frontend` | VISUAL_CATEGORY_PROMPT_APPEND | 组件数量下限（5–10 个）、强制建立并保存设计系统、组件组合硬规则、逐项验收门、逐次观察 |
+| `qa` | lazycodex-qa-executor.toml | 既有证据核查、场景 ID 与验收标准引用、PASS 必须引用非空产物路径 |
+| `builder` | UNSPECIFIED_LOW_CATEGORY_PROMPT_APPEND + CALLER_GUIDANCE | 先读后改、只改必需、必须实测、证据回报、ESCALATE 协议；Caller_Warning（派发者写清编号步骤、禁止范围、成功标准）未覆盖 |
+
+2026-11-17 用本机 oh-my-openagent@5.1.75 与 5.1.57 基线逐文件对照：根据 5.1.57 吸收记录与 5.1.75 对应文件的功能点对照，未发现核心规则差异。可列为候选的增量：builder 的 Caller_Warning 仍未覆盖；oracle 的 ORACLE_PROMPT_METADATA.avoidWhen（简单文件操作、第一次修复尝试、能从已读代码回答的问题不要派 oracle）未进 description；`partial-runtime-evidence.md` 在 5.1.75 中有、5.1.57 审计记录未提及，其中 Verification Oracle（单路怀疑论终审）适用于非调试交付物；librarian 的 `@smol :high` 与 OMO `librarian.toml` 的 `low`/`fast` 是模型/成本差异，不算 prompt 缺口。
 
 机制层面无法照搬的 OMO 设计：模型 fallback chain（OMP 用 `modelRoles` 路由，无 provider 链概念）、双 reviewer 并行审查门（OMP 无内置编排）、manualQa 落盘矩阵与 tmux 证据通道（OMP 无对应目录结构与工具）。
+
+## 自动 Prewalk 的 from/to 与本机角色路由（18.22.0）
+
+`task.agentPrewalkAuto` 是 settings-only record（`src/task/settings.ts:694-699`），子 Agent 没有独立的 `prewalk.from` 配置项；`cfgPrewalkFrom` 只注册给主会话 `/prewalk restart` 用（`src/session/settings.ts:109-119`）。子 Agent 起始模型（from）按 `per-call model → task.agentModelOverrides[agent] → frontmatter model → 父会话模型` 解析（`src/task/structured-subagent.ts:588-602`）。`agentPrewalkAuto[agent]` 的值为 `"on"` 时用 `prewalk.autoTarget`，其他角色或模型名直接作为交接目标（to）（`src/task/executor.ts:5069-5133`；`src/config/model-resolver.ts:1415-1436`）。
+
+启动门控（`src/task/executor.ts:5074-5124`）：无条件 prewalk（`task.agentPrewalk` 或 frontmatter `prewalk`）优先，命中即跳过 judge；显式 per-call `model`（`perCallModelGrants`）或受限 plan mode（`restrictToolNames`）不做自动判断；目标不可用、目标与起始模型同模同档（`prewalkWouldBeNoop`）、judge 返回非 arming 或概率 <0.70、judge 失败，都留在起始模型。通过后才在 todo gate 打开、首个 `edit`/`write` 结果返回时切换一次（`src/session/prewalk.ts:41-75,381-423`）。
+
+本机 `modelRoles` 的 `:max`/`:high` 后缀优先于 frontmatter `thinkingLevel`（`src/task/executor.ts:5019-5023`）。要让 `.md` 里的档位生效，需在 role 值或调用处加 `:level`。
+
+2026-11-17 本机配置：builder/frontend/qa 的 frontmatter `model` 改为 `@task`/`@task`/`@architect`；`task.agentModelOverrides.task: "@architect"`；`task.agentPrewalkAuto` 写死 `builder: "@balanced"`、`frontend: "@designer"`、`qa: "@task"`、`task: "@task"`。实测路由：builder from `kimi-code/k3.1-pro:max` → to `kimi-code/kimi-for-coding:max`；frontend from `kimi-code/k3.1-pro:max` → to `sensenova/kimi-k3:max`；qa from `c8787/gpt-6.1-sol:high` → to `kimi-code/k3.1-pro:max`；task from `c8787/gpt-6.1-sol:high` → to `kimi-code/k3.1-pro:max`。librarian/oracle/scout/reviewer/security-reviewer/sonic 未启用。
+
+## task.steps 与自动 Prewalk 的交互（18.22.0）
+
+`task` 的 `steps` 是顺序步骤列表。`spawnAssignment`（`src/task/index.ts:650-652`）在 spawn 时生成 `assignment`：单任务用 `item.task` 全文，多步任务用 `renderStepsBrief(item.steps)`（`src/task/steps.ts:92-95` + `src/prompts/system/subagent-steps-brief.md:1-4`，按 `## Step N` 列出每步原文）。`structured-subagent.ts:747-758` 把 `steps` 打包成最多 4 条 prompt，首条作为子 Agent 初始用户消息，完整 `steps` 另传执行器；`executor.ts:5113` 将 `assignment` 交给自动 Prewalk 的 judge。
+
+因此：judge 在一次子 Agent spawn 时基于包含全部步骤的 `assignment` 判一次，不是每一步都 Prewalk 一次。steps 按序送入同一会话；todo gate 打开后首个合格 `edit`/`write` 结果触发一次切换，后续步骤沿用切换后的模型。共享 `context` 与 `solutionSpace` 不进入 judge 输入。
 
 ## 证据边界
 
@@ -160,7 +178,8 @@ modelRoles:
 - 单次耗时样本不足以判断 `frontend`（1m25s）慢于另外四个是模型特性还是网络抖动。
 - 冒烟不证明 prompt 正文的行为质量，也不覆盖结构化输出与 `outputSchema` 路径。
 - 新增 agent 在已开启的会话里，工具描述可能仍是启动时的快照；preflight 每次重载设置，但描述广播不刷新。完整生效以下一个会话为准。
-- OMO 原型定义的读取基于安装包 5.1.57 的 dist 与 packages 目录；OMO 上游更新后行号与常量名可能变化。
+- OMO 原型定义的读取基于安装包 5.1.57 与 5.1.75 的 dist 与 packages 目录；OMO 上游更新后行号与常量名可能变化。
+- `task.steps` 与自动 Prewalk 的交互结论基于 OMP 18.22.0 源码阅读（`task/index.ts:650-652`、`structured-subagent.ts:747-758`、`executor.ts:5113`），未跑真实多步 `task` 冒烟。
 - `builder` 的 18.2s 与其余四条同为单次样本，不能用来比较模型速度。
 - 工具面数据由 `resolveBuiltinToolPlan` 静态计算得出，`taskDepth` 取 1，计数已含 `wait`、`yield` 与设置门控工具的静态计划结果；不计入计数的是运行期注入的 MCP 与扩展工具，它们的实际数量未统计。
 - 提示词分层的冲突结论基于 `system-prompt.md` 与 `subagent-system-prompt.md` 的模板文本，未做改前的真实子代理行为对照。
