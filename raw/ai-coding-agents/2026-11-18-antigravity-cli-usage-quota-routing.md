@@ -140,7 +140,7 @@ help link: https://cloud.google.com/gemini/docs/codeassist/request-license
 
 ## 证据边界
 
-- 没有直接测量新加坡节点的真实出口地区；换到美国节点后成功。
+- 本实验没有直接测量新加坡节点的出口地区；后续隔离测量见 [出口与域名对照](../proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md)：IPinfo 和 Cloudflare 将该节点出口识别为新加坡，当次生成仍返回 1008。换到美国节点后 `/usage` 成功。
 - 1001 的具体触发点没有日志证据；只确定旧 TUI 失败、新进程成功。
 - Antigravity 使用 Code Assist 后端由请求契约、错误域与社区协议确认；Google 未公开架构文档。
 - 结论来自单个账号、单台机器、2026-11-17/18；不推广到其他套餐、地区或节点稳定性。
