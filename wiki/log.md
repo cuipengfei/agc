@@ -2430,3 +2430,9 @@
 - Created: wiki/ai-coding-agents/antigravity-cli-usage-and-quota-errors.md
 - Updated: Google Antigravity：套餐、模型、额度与地区; OMP Antigravity 认证与社区 API; 域名定向代理规则：把指定域名固定到代理组
 - 要点：打印模式默认展开 slash 命令，`agy -p "/usage"` 成功而 `agy -p "/credits"` 无记录；1008 与账号/付款国家无关，请求出口香港被拒，规则指向新加坡节点仍 1008，换美国节点后配额与生成可用；1001 为许可证瞬态错误，旧 TUI 失败而新进程成功；手动 GET quota URL 404、无认证 POST 401；规则命中与出口合规是两件事。
+
+## [2026-11-18] ingest | Antigravity 身份句 429 逐词对照与 OMP 提示词改写扩展
+- Disposition: Update; Disputed
+- Raw: raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md; raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md
+- Updated: OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider; OMP Antigravity 认证与社区 API; OMP Hooks vs Extensions
+- 要点：`You are omp's trusted coding assistant.` 作为 `_meta.antigravity.systemPrompt.append` 两次 429（5.13 秒、5.18 秒，通知 105 字符）；`omp`、`omp's`、`omp's trusted` 单独发送均 OK；`pi's` 或 `helpful` 替换均 OK；逐词删除六个变体均 OK；15 条记录 `role` 全为 `system`，用户消息槽位未测。同一句在 2026-11-10 的上游报告里单独发送返回 200，按观测记为时点差异（Disputed）。OMP 18.22.0 的 `ExtensionContext` 暴露 `model` getter 与 `models`，没有 `getModel()`；提示词改写扩展按 `ctx.model?.provider` 限定，并用真实 `ExtensionRunner.createContext` 测试。`agy` 的重试横幅经 `agent_message_chunk` 进入正文，累积 8 段后 OMP 报 `Thinking loop detected`。

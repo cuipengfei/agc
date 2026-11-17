@@ -1,7 +1,7 @@
 # OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider
 
 > Sources: `can1357/oh-my-pi` v18.20.2 `docs/providers.md` 与 provider 源码、Google Antigravity CLI 官方文档，2026-11-15 查阅；OMP 18.22.0 源码、agy 1.5.10 日志与用户会话输出，2026-11-17 至 2026-11-18
-> Raw: [OMP antigravity-cli provider 摘录](../../raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md); [本机会话：接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md)
+> Raw: [OMP antigravity-cli provider 摘录](../../raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md); [本机会话：接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)
 > Updated: 2026-11-18
 
 ## 它解决什么
@@ -85,6 +85,33 @@ OMP 启动本机 `agy acp` 子进程，经 stdin/stdout 发送 ACP `connection.p
 | `400 INVALID_ARGUMENT` | OMP 最小请求进入 MCP 工具参数 schema 校验；`--no-tools` 未阻止 MCP 工具参与，完整生成未成功 |
 
 用户随后报告两次原生 `agy -p` 得到英文和中文回复，其中一次退出码为 `0`。原生成功对应这两次请求；OMP 的完整工具调用尚未验证。`/usage` 曾报告 Gemini 与 Claude/GPT 每周剩余均为 `100%`；另一次 `/credits` 返回 `no credits info found`。
+
+## 系统提示词单句触发 429 与逐词对照
+
+2026-11-18 的定位结果：把渲染后提示词里的身份声明单句
+
+```text
+You are omp's trusted coding assistant.
+```
+
+单独放进 `_meta.antigravity.systemPrompt.append`，经 `agy acp` 发出的生成请求返回 `429 RESOURCE_EXHAUSTED`；同一位置的相邻文本（`# Engineering`、`- Correctness, then six-month maintainability.` 等）返回 `OK`。安装包模板 `prompts/system/system-prompt.md` 为 13,550 字节，第 1 行即该句。
+
+固定条件：真实 `@agentclientprotocol/sdk` 客户端、模型 `gemini-3.8-flash`、思考等级 `High`、用户消息 `Say OK only.`、不加载 OMP 扩展、不传 `--ide-mcp-port`；每个候选独立 `agy acp` 子进程，收到首条 429 即终止该子进程。
+
+15 条对照的结果：完整原句两次均 429（5.13 秒、5.18 秒，通知 105 字符）；`omp`、`omp's`、`omp's trusted` 分别单独发送均 OK；`You are pi's trusted coding assistant.` 与 `You are omp's helpful coding assistant.` 均 OK；逐个删除 `You`、`are`、`omp's`、`trusted`、`coding`、`assistant` 的六个变体均 OK；首尾两次中性句对照均 OK。命中需要完整句子组合，不存在单独命中的词。
+
+槽位边界：15 条记录的 `role` 全部为 `system`。本次只覆盖系统指令追加槽位，用户消息槽位未在本脚本中对照。
+
+同型现象在 2026-09-11 至 2026-11-15 期间被多个第三方客户端记录，触发文本随上游调整而更换：`<system-conventions>` 块、`RFC 2119 keywords: …` 行、`Read xd://<tool> for full docs + JSON schema before first use.`、工具描述块，以及本次的身份句。各例均表现为改写或删除命中文本后恢复 200，服务端返回体只给通用 `RESOURCE_EXHAUSTED`。
+
+## 本机规避配置
+
+两处配置共同恢复本机 `antigravity-cli` 会话。
+
+1. 系统提示词替换：扩展 `antigravity-prompt-adapter.ts` 在 `before_agent_start` 中按 `ctx.model?.provider` 限定 `antigravity-cli`，把 `event.systemPrompt` 各段里的身份句替换为 `You are a helpful coding assistant.`。实现细节与接口边界见 [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)。
+2. MCP 服务器抑制：`~/.omp/agent/mcp.json` 顶层 `disabledServers` 列入 `search-tavily`，绕过该服务器的空枚举 schema 引起的 `400 INVALID_ARGUMENT`。机制见 `src/mcp/config.ts` 的 `suppressServer`。
+
+`agy` 自身的重试行为会把 `429` 加重：它按退避重试并经由 `agent_message_chunk` 输出 `⚠ API error (attempt N)` 横幅，OMP 侧会把该横幅当成助手正文，累积 8 个近似片段后报 `Thinking loop detected`，用户看到的因此是思考循环而不是配额错误。
 
 ## 证据边界
 
