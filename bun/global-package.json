@@ -2,7 +2,7 @@
   "dependencies": {
     "@anthropic-ai/claude-code": "2.1.326",
     "@biomejs/biome": "2.6.8",
-    "@colbymchenry/codegraph": "1.6.2",
+    "@colbymchenry/codegraph": "1.6.3",
     "@deepseek-ai/dsh": "0.2.2-rc.1",
     "@earendil-works/pi-coding-agent": "1.5.2",
     "@fission-ai/openspec": "2.1.0",
