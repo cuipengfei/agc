@@ -99,7 +99,7 @@ FontTools 数据测试确认 lookup 名称转换后完整 cmap 保留。每份�
 
 ## 服务端 `/fonts` 字体投递通道
 
-无补丁部署下，WASM 通过 `tern web serve` 的 `/fonts?chars=<hex>&families=<name>` 与 `/fonts/<id>` 接口按需拉取服务端宿主机已安装的字体文件，存入浏览器 CacheStorage `tern-fonts` 后注册进 WASM 内存。实测未配置 `font_family` 时投递 WSL 的 `NotoSansCJK-Regular.ttc`（`19484784` 字节），配置 `Maple Mono NF CN` 时投递 WSL 的 `MapleMono-NF-CN-Regular.ttf`（`20561696` 字节）；两个字体 ID 在 0.9.23 与 0.9.26 上一致，字体响应头 `font/sfnt`、`Cache-Control: private, max-age=31536000, immutable`。因此字体验收多一项可直接用 `curl` 的检查：对运行中的服务请求 `/fonts?chars=4e2d&families=<name>`，核对返回的字体 ID 与 `/fonts/<id>` 的字节数。
+无补丁部署下，服务端 `/fonts` 接口行为已实测：未配置 `font_family` 时投递 WSL 的 `NotoSansCJK-Regular.ttc`（`19484784` 字节），配置 `Maple Mono NF CN` 时投递 WSL 的 `MapleMono-NF-CN-Regular.ttf`（`20561696` 字节）；两个字体 ID 在 0.9.23 与 0.9.26 上一致，字体响应头 `font/sfnt`、`Cache-Control: private, max-age=31536000, immutable`。浏览器侧的实际请求与缓存路径未观测到：新建隔离 profile 中 Playwright `page.on('request')` 未捕获 `/fonts` 请求，`caches.keys()` 无 `tern-fonts`。因此「浏览器向服务端拉取字体并缓存注册」是服务端接口与 WASM 字面量支持的推断，不是浏览器侧直接观测到的事实。字体验收可直接用 `curl` 检查服务端接口：对运行中的服务请求 `/fonts?chars=4e2d&families=<name>`，核对返回的字体 ID 与 `/fonts/<id>` 的字节数。
 
 ## 系统服务持久化
 会话托管启动的进程会随宿主 worker 退出而消失，用户侧表现为 `ERR_CONNECTION_REFUSED`。systemd 用户单元是可持续方案：`tern-daemon.service` 与 `tern-web.service` 放在 `~/.config/systemd/user/`，`Restart=always`、`RestartSec=3`、`StartLimitIntervalSec=0`，并用 `StandardOutput=null` 与 `StandardError=null` 避免 `web serve` 启动时把带 token 的 URL 写进日志。启用后进程 `PPID` 为 `273`、`SID` 等于自身 pid。

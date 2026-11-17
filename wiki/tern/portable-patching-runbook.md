@@ -183,7 +183,7 @@ tern web serve --listen 127.0.0.1:8378 \
 
 用户只要求升级版本、不做任何修改时，走这条分支：原子替换 `~/.local/bin/tern`，`tern web serve` 不传 `--assets`，由 binary 提供内嵌官方页面。验收口径随之改变：`verify-service` 不适用（它比对 `pkg/client.wasm` 与 `pkg/client.js`，内嵌站这两个路径返回 404），改用根页面 HTTP 状态、页面 preload 的 `build.stencil.so/web/tern/<version>/` 地址、`pkg/stencil_tern_web.js` 200、`inspect-runtime` 的版本与 `matchesInstalled`、以及 pane 列表。
 
-此分支下内嵌字体仍无 CJK 覆盖，WASM 会通过 `tern web serve` 的 `/fonts?chars=...&families=...` 接口按需拉取服务端宿主机（WSL）已安装的字体文件，注册进 WASM 内存后经 WebGPU 渲染到 canvas（未设 `font_family` 时拉取 WSL 的 `NotoSansCJK-Regular.ttc`，在 web 端 `localStorage['settings.json']` 设入 `"font_family": "Maple Mono NF CN"` 时拉取 WSL 的 `MapleMono-NF-CN-Regular.ttf`）；只要服务端宿主机已安装目标等宽字体并在浏览器配置好 `font_family`，无需重新装配 WASM。0.9.26 实例：binary `1691d23905417bc338e04a6db199210bbc9e5651c792a6d1a27ee67b78e79218`（`6a1aeb9`）替换后重启两个 systemd 单元，`/fonts` 通道返回与 0.9.23 相同的字体 ID（Noto `19484784` 字节、Maple `20561696` 字节），WSL 与 Windows 侧 HTTP 均 200。
+此分支下内嵌字体仍无 CJK 覆盖。服务端 `/fonts` 接口行为已实测：未设 `font_family` 时返回 WSL 的 `NotoSansCJK-Regular.ttc`（`19484784` 字节），在 web 端 `localStorage['settings.json']` 设入 `"font_family": "Maple Mono NF CN"` 时返回 WSL 的 `MapleMono-NF-CN-Regular.ttf`（`20561696` 字节）；两个字体 ID 在 0.9.23 与 0.9.26 上一致。浏览器侧的实际请求与缓存路径未观测到：新建隔离 profile 中 Playwright `page.on('request')` 未捕获 `/fonts` 请求，`caches.keys()` 无 `tern-fonts`。因此「浏览器向服务端拉取字体并注册渲染」是服务端接口与 WASM 字面量支持的推断，canvas 字形改变但具体渲染路径未确认。只要服务端宿主机已安装目标等宽字体并在浏览器配置好 `font_family`，无需重新装配 WASM。0.9.26 实例：binary `1691d23905417bc338e04a6db199210bbc9e5651c792a6d1a27ee67b78e79218`（`6a1aeb9`）替换后重启两个 systemd 单元，`/fonts` 通道返回与 0.9.23 相同的字体 ID，WSL 与 Windows 侧 HTTP 均 200。
 
 ## See Also
 
