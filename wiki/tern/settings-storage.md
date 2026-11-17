@@ -1,7 +1,7 @@
 # Tern 设置存储位置
 
-> Sources: Tern 0.9.2 module strings and local CLI, 2026-10-17; Stencil official plugin SDK documentation, 2026-10-17; Tern 0.9.23 web settings and Chrome Local Storage forensics, 2026-11-16; Tern 0.9.26 /fonts delivery confirmation, 2026-11-18
-> Raw: [Web 设置存储实现](../../raw/tern/2026-10-17-web-settings-storage.md); [Packages and Manifests 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md); [Chrome 本地设置恢复](../../raw/tern/2026-11-17-chrome-localstorage-recovery.md); [0.9.26 服务端字体投递](../../raw/tern/2026-11-18-tern-0.9.26-fonts-server-delivery.md)
+> Sources: Tern 0.9.2 module strings and local CLI, 2026-10-17; Stencil official plugin SDK documentation, 2026-10-17; Tern 0.9.23 web settings and Chrome Local Storage forensics, 2026-11-16; Tern 0.9.26 /fonts delivery confirmation, 2026-11-18; WASM rendering path and /fonts channel, 2026-11-18
+> Raw: [Web 设置存储实现](../../raw/tern/2026-10-17-web-settings-storage.md); [Packages and Manifests 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md); [Chrome 本地设置恢复](../../raw/tern/2026-11-17-chrome-localstorage-recovery.md); [0.9.26 服务端字体投递](../../raw/tern/2026-11-18-tern-0.9.26-fonts-server-delivery.md); [WASM 渲染链路](../../raw/tern/2026-11-18-tern-web-font-wasm-rendering-path.md)
 > Updated: 2026-11-18
 
 ## 原生与 Web 使用不同存储

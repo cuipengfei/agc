@@ -2406,3 +2406,15 @@
 - Raw: raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md; raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md; raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md
 - Updated: wiki/omp-config/custom-subagent-deployment.md
 - 要点：`task.agentPrewalkAuto` 为 settings-only record，子 Agent 无独立 `prewalk.from`；from 按 per-call model → agentModelOverrides → frontmatter model → 父会话模型解析；`"on"` 用 `prewalk.autoTarget`，其他值为交接目标；judge 一次、todo gate 后首个 `edit`/`write` 切换一次。`task.steps` 时 `spawnAssignment`（`task/index.ts:650-652`）用 `renderStepsBrief` 生成含全部步骤的 assignment 交给 judge。本机已配 builder/frontend/qa 起始模型为 `@task`/`@task`/`@architect`，`task.agentModelOverrides.task: "@architect"`，`agentPrewalkAuto` 写死四个条目；实测路由见文。OMO 5.1.57→5.1.75 直接原型无核心规则差异；Caller_Warning 与 oracle avoidWhen 未覆盖；Verification Oracle 为候选；librarian 的 `@smol :high` 与 OMO `low`/`fast` 为模型/成本差异。
+
+## [2026-11-18] ingest | Tern 网页终端渲染链路：WASM 光栅化与服务端 `/fonts` 投递
+- Disposition: Update
+- Raw: raw/tern/2026-11-18-tern-web-font-wasm-rendering-path.md
+- Updated: Tern 网页字体修改与版本迁移; Tern 升级辅助工具与验收边界; Tern 设置存储位置; Tern 跨机器补丁手册
+- 要点：`pkg/client.js` 中 `fillText`/`measureText` 为 0 次，终端文字由 WASM 内嵌 `harfrust-0.12.0`（排版）与 `skrifa-0.44.0`（光栅化）完成，经 `__wbg_writeTexture_30e592e8c061c3d9`（`queue.writeTexture`）上传 WebGPU 纹理图集（`crates/gfx/src/atlas.rs`）渲染到 `<canvas id="tern">`。WASM 的 `crates/tern/src/web/fonts.rs`（`stencil_tern::web::fonts`、`web_font_land`）包含请求 `./fonts?chars=`、`&families=`、`./fonts/` 的代码路径，字面量含 `the server named no fonts`、`a font of the host did not load`、`a font of the host from the cache`、`the cache did not keep a font` 与缓存名 `tern-fonts`；glue 绑定 `Window.caches`、`CacheStorage.open`、`Cache.match`、`Cache.put`。服务端 `/fonts` 实测：未配置 `font_family` 时返回 WSL 的 `NotoSansCJK-Regular.ttc`（`19484784` 字节），配置 `Maple Mono NF CN` 时返回 WSL 的 `MapleMono-NF-CN-Regular.ttf`（`20561696` 字节），两个 ID 在 0.9.23 与 0.9.26 上一致。浏览器侧请求未观测到：新建隔离 profile 中 Playwright `page.on('request')` 未捕获 `/fonts` 请求，`caches.keys()` 无 `tern-fonts`；「浏览器向服务端拉取字体」是服务端接口与 WASM 字面量支持的推断，canvas 字形改变但具体渲染路径未确认。
+
+## [2026-11-18] ingest | Tern web 与 daemon 的架构关系及 token 轮换排障
+- Disposition: New; Update
+- Raw: raw/tern/2026-11-18-web-daemon-token-rotation.md
+- Updated: Tern 升级辅助工具与验收边界; Tern 跨机器补丁手册
+- 要点：web serve 只提供 HTTP 页面，不直接连 daemon；浏览器页面里的 WASM 通过 WebSocket 连 daemon.sock；web 与 daemon 之间没有持久 unix socket 连接是正常架构。token 轮换后旧 token 失效，用户浏览器持有旧 token 时页面报 `Tern could not start: the session daemon closed the connection`；新 token 页面正常加载。轮换步骤：生成新 token → 核对新旧 SHA-256 不同 → 原子替换 `web-token` → 重启 `tern-web.service` → 验证认证与 `/fonts` 行为不变。
