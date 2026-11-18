@@ -209,8 +209,8 @@ OMP 认证、MCP OAuth、凭据管理，以及 Auth Broker/Gateway 的代理访�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系；系统指令文本触发的假 429（15 条单句对照、跨客户端指纹演进、零宽混淆失效） | 2026-11-18 |
-| [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](omp-auth/antigravity-cli-acp-provider.md) | 本地 agy ACP 子进程、OMP 工具与 OAuth 刷新归属、下载与 PI_AGY_PATH、本机接入及地区拒绝、限流、license 和 MCP schema 错误观察；身份句单句 429 的逐词对照与本机规避配置（提示词替换扩展、`disabledServers`） | 2026-11-18 |
+| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系；系统指令文本触发的假 429（身份句 15 条单句对照、提交说明整行对照、跨客户端指纹演进、零宽混淆失效） | 2026-11-18 |
+| [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](omp-auth/antigravity-cli-acp-provider.md) | 本地 agy ACP 子进程、OMP 工具与 OAuth 刷新归属、下载与 PI_AGY_PATH、本机接入及地区拒绝、限流、license 与 MCP schema 错误观察；身份句与提交说明整行 429 的对照；可空枚举工具声明 400、schema 兼容扩展与真实 Tavily 搜索验收 | 2026-11-18 |
 | [OMP Auth Broker 与 Gateway](omp-auth/auth-broker-gateway.md) | 凭据集中、access token 服务端解析、客户端不保存 provider key | 2026-09-09 |
 | [SOFA 官方 MCP：OMP 接入、维护与验证](omp-auth/sofa-mcp-maintenance.md) | 连接配置与凭据归属、Clash 规则查找、回调机制、工具验证及私有草稿发布边界 | 2026-10-17 |
 
@@ -281,7 +281,7 @@ OMP Extension 与 Hook 的职责边界。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Hooks vs Extensions](omp-extensibility/hooks-vs-extensions.md) | Extension 覆盖 HookAPI 全部用例并增加 tool/provider，Hook 是 legacy 兼容层；`ExtensionContext` 的 `model` getter 与 `models` 查询外观、无 `getModel()` 的运行时接口边界，以及用真实 `ExtensionRunner.createContext` 测试提示词改写扩展 | 2026-11-18 |
+| [OMP Hooks vs Extensions](omp-extensibility/hooks-vs-extensions.md) | Extension 覆盖 HookAPI 全部用例并增加 tool/provider，Hook 是 legacy 兼容层；`ExtensionContext` 的 `model` getter、自定义 provider api 与会话级 `setModel`、工具声明投影，以及用真实 `ExtensionRunner.createContext` 测试提示词改写扩展 | 2026-11-18 |
 | [OMP tool_call 范围防护扩展：执行前阻断危险 Grep](omp-extensibility/tool-call-range-guard-extension.md) | `tool_call` 阶段返回 `block`/`reason` 的范围拦截；受保护集合、父目录候选枚举、排除项与 symlink 归一、未注册 URI 拒绝、失败关闭；23 项边界回归、6 项真实执行验收与 strace 证据；只覆盖 Grep | 2026-11-02 |
 
 ## omp-tips

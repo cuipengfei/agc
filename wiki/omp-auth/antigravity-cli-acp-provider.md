@@ -1,7 +1,7 @@
 # OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider
 
-> Sources: `can1357/oh-my-pi` v18.20.2 `docs/providers.md` 与 provider 源码、Google Antigravity CLI 官方文档，2026-11-15 查阅；OMP 18.22.0 源码、agy 1.5.10 日志与用户会话输出，2026-11-17 至 2026-11-18
-> Raw: [OMP antigravity-cli provider 摘录](../../raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md); [本机会话：接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)
+> Sources: `can1357/oh-my-pi` v18.20.2 `docs/providers.md` 与 provider 源码、Google Antigravity CLI 官方文档，2026-11-15 查阅；OMP 18.22.2 源码、agy 1.5.10 至 1.5.11 日志与本机 TUI 输出，2026-11-17 至 2026-11-18
+> Raw: [OMP antigravity-cli provider 摘录](../../raw/omp-auth/2026-11-15-omp-antigravity-cli-acp-provider.md); [本机会话：接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md); [提交说明 429 对照](../../raw/omp-auth/2026-11-18-antigravity-commit-line-429-probe.md); [可空枚举与工具声明投影](../../raw/omp-auth/2026-11-18-antigravity-nullable-enum-tool-400.md)
 > Updated: 2026-11-18
 
 ## 它解决什么
@@ -86,7 +86,7 @@ OMP 启动本机 `agy acp` 子进程，经 stdin/stdout 发送 ACP `connection.p
 
 用户随后报告两次原生 `agy -p` 得到英文和中文回复，其中一次退出码为 `0`。原生成功对应这两次请求；OMP 的完整工具调用尚未验证。`/usage` 曾报告 Gemini 与 Claude/GPT 每周剩余均为 `100%`；另一次 `/credits` 返回 `no credits info found`。
 
-## 系统提示词单句触发 429 与逐词对照
+## 系统提示词文本触发 429
 
 2026-11-18 的定位结果：把渲染后提示词里的身份声明单句
 
@@ -104,21 +104,37 @@ You are omp's trusted coding assistant.
 
 同型现象在 2026-09-11 至 2026-11-15 期间被多个第三方客户端记录，触发文本随上游调整而更换：`<system-conventions>` 块、`RFC 2119 keywords: …` 行、`Read xd://<tool> for full docs + JSON schema before first use.`、工具描述块，以及本次的身份句。各例均表现为改写或删除命中文本后恢复 200，服务端返回体只给通用 `RESOURCE_EXHAUSTED`。
 
-## 本机规避配置
+### 提交说明整行
 
-两处配置对应该会话的两个独立故障，证据强度不同。
+同日另一组对照把 OMP 系统提示词里的提交说明整行单独放入同一槽位。该行 271 字符，发送两次均返回 `429`；重复轮 5.10 秒。改写为 194 字符的等义说明后返回 `OK`（4.39 秒）。身份句已替换的完整 system 在零工具条件下仍返回 `429`（6.20 秒），中性 system 对照返回 `OK`（10.07 秒）。该组没有逐词隔离，不能判定具体命中片段。该组 ACP 配置为 `model=gemini-3.8-flash`、`thought_level=medium`；`503` 文本里的 `gemini-3.8-flash-medium` 是服务端模型变体名，`-medium` 不是思考等级字段。一次整份改写无工具请求返回 `503` 容量错误（4.83 秒），未计入 `429` 对照。
 
-1. 系统提示词替换：扩展 `antigravity-prompt-adapter.ts` 在 `before_agent_start` 中按 `ctx.model?.provider` 限定 `antigravity-cli`，把 `event.systemPrompt` 各段里的身份句替换为 `You are a helpful coding assistant.`。修好模型接口后，用户在实际会话中报告 `ok, it worked`。实现细节与接口边界见 [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)。
-2. MCP 服务器抑制：`~/.omp/agent/mcp.json` 顶层 `disabledServers` 列入 `search-tavily`，绕开该服务器的空枚举 schema 引起的 `400 INVALID_ARGUMENT`。机制见 `src/mcp/config.ts` 的 `suppressServer`；抑制后的完整 E2E 由用户自行执行，本次未收到该轮结果。
+## 工具声明与可空枚举
+
+`search-tavily` 的 `topic`、`search_depth`、`time_range` 使用 `anyOf: [字符串枚举, null]`。OMP 18.22.2 的 `toolWireSchema` 在 `copyNullableScalarConstraints`（`src/utils/schema/wire.ts:161-175`）中把可空标量合并，生成的 `enum` 数组包含 `null`。`agy` 返回 `400 INVALID_ARGUMENT`，错误点名 `topic.enum[2]`、`search_depth.enum[4]`、`time_range.enum[4]`，并包含 `cannot be empty`。
+
+中性 system 加 54 个原工具声明时返回 `400`（6.38 秒）；同一批工具仅从模型声明的 `enum` 移除 `null` 后返回 `OK`（6.02 秒）。原始工具参数对象没有改变，工具执行与参数校验仍使用 OMP 原来的定义。
+
+上游的对应投影在 `src/providers/antigravity-cli/host.ts:854-858`：`toMcpTool` 调用 `normalizeSchemaForMCP(toolWireSchema(tool))`。provider 的 `runStep` 不调用 `onPayload`，`before_provider_request` 无法修改这份声明；可用的修改点是扩展的 `streamSimple` 代理。
+
+## 本机兼容扩展
+
+两类扩展与一处早期配置对应两类独立故障。
+
+1. 系统提示词替换：`antigravity-prompt-adapter.ts` 在 `before_agent_start` 中按 `ctx.model?.provider` 限定 `antigravity-cli`，把身份句替换为 `You are a helpful coding assistant.`，并把提交说明原行替换为 194 字符的等义改写。两段目标文本都未命中时只警告一次。实现细节见 [扩展模型接口与提示词改写](../../raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md)。
+2. 工具声明投影：`antigravity-schema-adapter.ts` 通过 `registerProvider` 注册自定义 api `antigravity-schema-compat`，在 `before_agent_start` 中用 `pi.setModel` 做会话级切换，并在 `streamSimple` 代理官方 `streamAntigravityCli` 前移除工具声明枚举中的 `null`。OAuth、reasoning 与工具执行参数校验保持原样。`setModel` 的 `persist` 默认为 `false`。
+3. 早期的 `disabledServers` 抑制把 `search-tavily` 整体禁用，用来绕过该 `400`；当前 schema 扩展保留该服务器启用。真实 TUI 中一次仅带 query 的 `tavily_search` 返回 10 条结果并完成回答。
+
+扩展放入 `~/.omp/agent/extensions/` 后由新进程自动发现；在 `config.yml` 中显式写路径不是必要条件。
 
 `agy` 自身的重试行为会把 `429` 加重：它按退避重试并经由 `agent_message_chunk` 输出 `⚠ API error (attempt N)` 横幅，OMP 侧会把该横幅当成助手正文，累积 8 个近似片段后报 `Thinking loop detected`，用户看到的因此是思考循环而不是配额错误。
 
 ## 证据边界
 
-早期文档与源码观察见 2026-11-15 原始材料；2026-11-17 至 2026-11-18 的 CLI 输出和日志见会话原始材料。`excludeDefaultComponents` 在 Google 侧对最终 prompt 的裁剪结果尚未验证。
+早期文档与源码观察见 2026-11-15 原始材料；2026-11-17 至 2026-11-18 的 CLI 输出、TUI 验收与源码行号见会话原始材料。`excludeDefaultComponents` 在 Google 侧对最终 prompt 的裁剪结果尚未验证。提交说明整行对照没有逐词隔离；工具声明结论只覆盖 `search-tavily`、一个模型与一组版本；OMP 升级后 `toolWireSchema`、`normalizeSchemaForMCP`、`streamAntigravityCli` 与 `setModel` 的接口需要重新核对。
 
 ## See Also
 
 - [OMP Antigravity 认证与社区 API](google-antigravity-auth-and-api.md)
 - [Google Antigravity：套餐、模型、额度与地区](../ai-coding-agents/google-antigravity-plans-and-regions.md)
 - [OMP 环境变量全量参考](../omp/env-variables-reference.md)
+- [OMP Hooks vs Extensions](../omp-extensibility/hooks-vs-extensions.md) — 自定义 provider api、会话级模型切换与工具声明投影

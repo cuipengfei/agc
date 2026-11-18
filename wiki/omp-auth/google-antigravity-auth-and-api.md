@@ -1,7 +1,7 @@
 # OMP Antigravity 认证与社区 API
 
-> Sources: Google Antigravity FAQ，2026-11-14 采集；Google Gemini CLI 维护者公告；社区 API 文档、CLIProxyAPIBusiness quota 源码；OMP 18.20.0 源码；2026-11-17 至 2026-11-18 本机会话与 agy 1.5.10 日志
-> Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [本机会话接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [本机域名与出口观察](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md)
+> Sources: Google Antigravity FAQ，2026-11-14 采集；Google Gemini CLI 维护者公告；社区 API 文档、CLIProxyAPIBusiness quota 源码；OMP 18.20.0 与 18.22.2 源码；2026-11-17 至 2026-11-18 本机会话与 agy 1.5.10 至 1.5.11 日志
+> Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [本机会话接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [本机域名与出口观察](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [提交说明 429 对照](../../raw/omp-auth/2026-11-18-antigravity-commit-line-429-probe.md)
 > Updated: 2026-11-18
 
 ## 账号风险
@@ -52,7 +52,7 @@ Antigravity 的模型请求、账号资格、配额与许可证都走 Code Assis
 
 除配额与许可之外，还有一类与请求正文相关的 `429`：账号配额充足、响应体只有 `Resource has been exhausted (e.g. check quota).` 与 `RESOURCE_EXHAUSTED`，不含重置时间或限流指标；把命中的系统指令文本改写或去掉即恢复 200。
 
-2026-11-18 的本机对照把触发点收敛到一个完整句子。15 条记录全部只改 `_meta.antigravity.systemPrompt.append`，模型 `gemini-3.8-flash`、思考等级 `High`、用户消息 `Say OK only.`：
+2026-11-18 的第一组本机对照把身份句的触发点收敛到一个完整句子。15 条记录全部只改 `_meta.antigravity.systemPrompt.append`，模型 `gemini-3.8-flash`、思考等级 `High`、用户消息 `Say OK only.`：
 
 | 系统提示词内容 | 结果 |
 |---|---|
@@ -64,6 +64,8 @@ Antigravity 的模型请求、账号资格、配额与许可证都走 Code Assis
 
 命中需要完整句子组合，不存在单独命中的词。15 条记录的 `role` 全部为 `system`，用户消息槽位未在同一脚本中对照。
 
+同一天的另一组对照把 OMP 系统提示词里的提交说明整行单独放入 `_meta.antigravity.systemPrompt.append`。该行 271 字符，发送两次均返回 `429`；重复轮 5.10 秒。改写为 194 字符的等义说明后返回 `OK`（4.39 秒）。身份句已替换的完整 system 在零工具条件下仍返回 `429`（6.20 秒），中性系统对照返回 `OK`（10.07 秒）。该组没有逐词隔离，不能判定具体命中片段。该组 ACP 配置为 `model=gemini-3.8-flash`、`thought_level=medium`；`503` 文本里的 `gemini-3.8-flash-medium` 是服务端模型变体名；一次整份改写无工具请求返回 `503`，未计入 `429` 对照。
+
 同类报告来自多个客户端与多个时期，触发文本随上游调整更换：`<system-conventions>` 块（2026-09-11）、`RFC 2119 keywords: MUST, REQUIRED, SHOULD, RECOMMENDED, MAY, OPTIONAL.`（2026-11-10）、`Read xd://<tool> for full docs + JSON schema before first use.`（2026-11-15）、工具描述块，以及本机的身份句（2026-11-18）。2026-11-10 的同一份报告里，身份句单独发送返回 200；到 2026-11-18 该句单独发送返回 429。中间没有公开的上游说明，按观测记录为时点差异，不解释为规则内容。
 
 绕过手段的有效性也在变化：2026-11-15 的记录显示 `U+200B`、`U+034F` 零宽字符混淆对若干身份短语已失效，字面替换（如 `DeepSeek Harness` → `Assistant Framework`）可恢复 200。这类改写只是规避当前命中文本，不改变 Google 对第三方客户端的使用条款立场。
@@ -73,3 +75,4 @@ Antigravity 的模型请求、账号资格、配额与许可证都走 Code Assis
 - [Google Antigravity：套餐、模型、额度与地区](../ai-coding-agents/google-antigravity-plans-and-regions.md) — 个人与企业套餐、支持地区和用量报告
 - [OMP 环境变量全量参考](../omp/env-variables-reference.md) — `PI_AI_ANTIGRAVITY_*` 的请求头覆盖与版本变化
 - [Antigravity CLI 用量查询与配额/许可证错误分层](../ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) — 打印模式与 TUI 的用量入口、1008/1001/404 分层
+- [OMP antigravity-cli：ACP provider](antigravity-cli-acp-provider.md) — 提交说明 429、可空枚举工具声明 400 与本地兼容扩展
