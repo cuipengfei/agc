@@ -60,6 +60,20 @@ Herdr 的同步范围限定为主配置 `config.toml`，作为 protected 条目�
 
 详细规则见 [`AGENTS.md`](AGENTS.md)。
 
+## OMP Antigravity 兼容扩展
+
+`omp/agent/extensions/antigravity-prompt-adapter.ts` 为 `antigravity-cli` 改写系统提示中的身份句与提交说明，保留原有操作要求。`antigravity-schema-adapter.ts` 从发送给 Antigravity 的工具枚举中移除 `null`，原工具参数校验保持不变；仅含 `null` 的枚举会明确报错。
+
+两个扩展由 OMP 自动发现，在新进程中生效。schema 扩展通过官方扩展接口选择会话内的兼容 API，继续使用原有 OAuth 和模型设置。扩展从当前 Bun 全局安装的 OMP 加载 provider、schema 工具与 `json-schema-traverse`，升级后需重验这些接口。
+
+已在 OMP `18.22.2`、agy `1.5.11`、Gemini `3.8 Flash` / `medium` 下完成真实 TUI 问候与一次 Tavily 搜索，收到搜索结果并完成回答。
+
+回归测试在来源目录维护，由 manifest 定向同步到 `omp/agent/extension-tests/`，从仓库根目录执行：
+
+```bash
+bun test omp/agent/extension-tests/antigravity-prompt-adapter.test.ts omp/agent/extension-tests/antigravity-schema-adapter.test.ts
+```
+
 ## Tern 升级辅助工具
 
 [`tools/tern-maintain`](tools/tern-maintain/README.md) 提供官方资源校验、WASM 结构与字体定位、人工修改清单、字体清单生成、结构报告和无界面检查。它独立于配置同步，不自动改写 WASM 指令，不接触现有 pane。行为测试由 `.github/workflows/tern-maintain.yml` 执行。

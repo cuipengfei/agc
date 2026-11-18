@@ -155,6 +155,14 @@ providers:
     baseUrl: https://agent-gw.kimi.com/coding
     apiKey: <REDACTED>
     models:
+      - id: k3d1-agent
+        compactionModel: c8787/gpt-6-luna
+        name: K3.1 Pro
+        reasoning: true
+        input:
+          - text
+          - image
+        contextWindow: 262144
       - id: k3-agent
         compactionModel: c8787/gpt-6-luna
         name: K3

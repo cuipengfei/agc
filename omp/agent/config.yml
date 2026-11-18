@@ -19,6 +19,7 @@ git:
 extensions:
   - /home/cpf/.omp/.pi/extensions/rtk.ts
   - /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
+  - /home/cpf/.omp/agent/extensions/antigravity-prompt-adapter.ts
 enabledModels:
   - c8787/*
   - c8787-chat/*
@@ -595,12 +596,12 @@ secrets:
 live:
   voice: sol
 tts:
-  localVoice: af_heart
+  localVoice: harper
 speech:
   enabled: false
   mode: assistant
   enhanced: false
-  voice: af_heart
+  voice: harper
 features:
   unexpectedStopDetection: smart
 codexResets:

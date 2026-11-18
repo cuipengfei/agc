@@ -176,6 +176,17 @@
       ]
     },
     {
+      "name": "omp-antigravity-extension-tests",
+      "source": "~/.omp/agent/extension-tests",
+      "repo": "omp/agent/extension-tests",
+      "protected": false,
+      "directory": true,
+      "include": [
+        "antigravity-prompt-adapter.test.ts",
+        "antigravity-schema-adapter.test.ts"
+      ]
+    },
+    {
       "name": "omp-hooks",
       "source": "~/.omp/agent/hooks",
       "repo": "omp/agent/hooks",
