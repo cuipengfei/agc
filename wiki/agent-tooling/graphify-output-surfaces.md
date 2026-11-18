@@ -1,8 +1,8 @@
 # graphify 的图谱产物形态与导出限制
 
-> Sources: graphify 0.9.100 extras 与可视化产物实测, 2026-11-02
-> Raw: [graphify 0.9.100 extras 清单与可视化产物实测](../../raw/agent-tooling/2026-11-02-graphify-extras-and-visual-outputs.md)
-> Updated: 2026-11-02
+> Sources: graphify 0.9.100 extras 与可视化产物实测, 2026-11-02; graphify 0.9.112 本机升级与 AGC 全量图谱刷新实测, 2026-11-18
+> Raw: [graphify 0.9.100 extras 清单与可视化产物实测](../../raw/agent-tooling/2026-11-02-graphify-extras-and-visual-outputs.md); [graphify 0.9.112 本机升级与 AGC 全量图谱刷新实测](../../raw/agent-tooling/2026-11-18-graphify-0-9-112-agc-full-refresh.md)
+> Updated: 2026-11-18
 
 ## Overview
 
@@ -21,9 +21,9 @@
 
 ## graph.html 的聚合阈值
 
-`export html` 的 `--node-limit` 默认 5000。超过阈值的图会折叠成社区级视图：agc 仓库 9663 个节点变成 937 个社区节点加 1276 条跨社区边，导出耗时 0.32 秒。要看节点级全貌，把 `--node-limit` 提高到实际节点数以上，或者走 `export obsidian`。
+`export html` 的 `--node-limit` 默认 5000。超过阈值的图会折叠成社区级视图：agc 仓库 16,320 个节点在 0.9.112 上变成 1,347 个社区节点加 1,649 条跨社区边，产物 `graph.html` 为 1,078,005 bytes。0.9.100 的 9,663 节点样本则是 937 个社区节点加 1,276 条跨社区边，耗时 0.32 秒，产物 818 KB。要看节点级全貌，把 `--node-limit` 提高到实际节点数以上，或者走 `export obsidian`。
 
-`export html` 在 9663 节点上的耗时是 0.32 秒，产物 818 KB；`graphify tree` 全部输出 837.6 KB，耗时 0.28 秒；`export callflow-html --lang zh-CN` 耗时 1.85 秒，产出 17 节、16 张 Mermaid 图、15 张调用表。三者都只遍历图，不做布局求解。
+0.9.112 的 AGC 实测：`graphify tree --root . --label agc` 写出 1,413,430 bytes 的 `GRAPH_TREE.html`；`export callflow-html --lang zh-CN` 写出 353,948 bytes、18 节、16 张 Mermaid 图、15 张调用表；`export svg` 写出 56,459,877 bytes 的 `graph.svg`。三者都只遍历图，不做布局求解；SVG 额外承担 spring_layout 成本。
 
 ## 外部依赖
 
@@ -44,6 +44,10 @@ ParseException: Expected end of text, found '$'  (at char 16), (line:1, col:17)
 `to_svg()` 调用 `nx.spring_layout(G, seed=42, k=2.0/(G.number_of_nodes()**0.5+1))`。networkx 3.7 的 `spring_layout` 默认 `method='auto'`，节点数小于 500 用 `force`，否则用 `energy`；9663 个节点走 energy 实现，按节点对批量计算距离，成本随节点数二次增长，`iterations` 默认 50 为上限。
 
 实测可核实的数字：第一次导出 3 分 24 秒后因 mathtext 崩溃，第二次 265 秒成功，产物 26.0 MB。n²×50 的成对计算量只是估算，没有计数实测。
+
+## benchmark 的真实仓库读数
+
+2026-11-18 在 16,320-node AGC 图谱上，`graphify benchmark graphify-out/graph.json` 输出 `Corpus: 745422 words → ~932706 tokens (naive)`、`Avg query cost: ~1626 tokens`、`Reduction: 669.1x fewer tokens per query`。0.9.79 曾在 3 节点沙箱图上测得 5.3x；小图只验证公式，不代表真实仓库压缩比。
 
 ## 打开方式
 

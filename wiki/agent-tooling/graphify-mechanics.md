@@ -1,8 +1,8 @@
 # graphifyy 工作机制
 
-> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07; Graphify v8 README 与核心源码摘录, 2026-10-27; graphify 0.9.100 OMP 集成方式源码核对与实测, 2026-11-02; graphify 0.9.100 extras 与可视化产物实测, 2026-11-02
-> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md); [Graphify v8 README 与核心源码摘录](../../raw/agent-tooling/2026-10-27-graphify-v8-readme-and-source-excerpts.md); [graphify 0.9.100 与 OMP 集成方式](../../raw/agent-tooling/2026-11-02-graphify-omp-integration-contracts.md); [graphify 0.9.100 extras 清单与可视化产物实测](../../raw/agent-tooling/2026-11-02-graphify-extras-and-visual-outputs.md)
-> Updated: 2026-11-02
+> Sources: graphifyy skill (SKILL.md + references/, 0.9.x), 2026-09-26; 本地 graphify-out/ 实测产物, 2026-09-26; graphify 0.9.79 CLI 全命令清单实测, 2026-10-07; Graphify v8 README 与核心源码摘录, 2026-10-27; graphify 0.9.100 OMP 集成方式源码核对与实测, 2026-11-02; graphify 0.9.100 extras 与可视化产物实测, 2026-11-02; graphify 0.9.112 本机升级与 AGC 全量图谱刷新实测, 2026-11-18
+> Raw: [graphifyy 工作机制一手摘录](../../raw/agent-tooling/2026-09-26-graphify-mechanics.md); [graphify 0.9.79 全命令清单试用记录](../../raw/agent-tooling/2026-10-07-graphify-079-inventory-trial.md); [Graphify v8 README 与核心源码摘录](../../raw/agent-tooling/2026-10-27-graphify-v8-readme-and-source-excerpts.md); [graphify 0.9.100 与 OMP 集成方式](../../raw/agent-tooling/2026-11-02-graphify-omp-integration-contracts.md); [graphify 0.9.100 extras 清单与可视化产物实测](../../raw/agent-tooling/2026-11-02-graphify-extras-and-visual-outputs.md); [graphify 0.9.112 本机升级与 AGC 全量图谱刷新实测](../../raw/agent-tooling/2026-11-18-graphify-0-9-112-agc-full-refresh.md)
+> Updated: 2026-11-18
 
 ## Overview
 
@@ -223,6 +223,20 @@ INFERRED 边 33 条分布：references 23 / uses 8 / indirect_call 2；来源 AG
 - MCP 工具面在 `serve.py:2303-2422` 核查到 10 个：`query_graph`、`get_node`、`get_neighbors`、`get_community`、`god_nodes`、`graph_stats`、`shortest_path`、`list_prs`、`get_pr_impact`、`triage_prs`。
 
 上述内容来自源码快照，未运行安装或基准测试；与 0.9.79 的实测记录并列保留。
+
+## 2026-11-18 0.9.112 全量刷新与运行顺序
+
+0.9.112 本机升级与 AGC 全量混合语料刷新给出两条可复用结论。第一，带 extras 的 uv tool 升级应按 receipt 保留集合执行：
+
+```bash
+uv tool install --upgrade 'graphifyy[svg,leiden,mcp,sql,postgres,chinese]'
+graphify install --platform claude
+graphify install --platform codex
+graphify install --platform opencode
+graphify install --platform agents
+```
+
+第二，partial semantic retry 会改变最终 community IDs。正确顺序是先重跑 partial semantic，再对合并后的 extraction 做最终聚类，最后只对最终 communities 命名并导出报告；先命名旧聚类再 retry，会让旧 labels 绑到已经消失的 community IDs 上。本轮 AGC 最终图谱为 16,320 nodes / 21,318 links / 1,347 labeled communities，对应 1,157 files / 745,422 words。
 
 ## See Also
 
