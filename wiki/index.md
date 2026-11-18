@@ -77,7 +77,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14 与 11-18 官方模型快照、套餐额度与设备试用；账号地区、代理出口识别差异及 1008、1001 本机会话观察；2026-11-17/18 CLI 实测补用量入口与错误分层 | 2026-11-18 |
-| [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits 记录、404 方法四类错误；规则命中与出口合规分开验证 | 2026-11-18 |
+| [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits、404 四类错误；周额度窗口两态锚点规律与滚动机制；规则命中与出口合规分开验证 | 2026-11-18 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
 | [跨 Harness 编排：workflowz 与 orchestrate 的对应物](ai-coding-agents/cross-harness-orchestration.md) | Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO `task`/`mass ulw` 与 OMP 两个关键词的映射；`mass ulw` 为独立版专属 | 2026-10-27 |
 | [Kiro 后端 API 给任意 agent 用](ai-coding-agents/kiro-backend-api-for-agents.md) | 保留 2026-10-22 第三方接入调查与认证边界；新增 OMP 18.22.2 内置 Kiro、ns-omp-provider-kiro 0.5.3 名称冲突与禁用后的启动验证 | 2026-11-18 |

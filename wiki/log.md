@@ -2449,3 +2449,7 @@
 - Created: wiki/software-testing/deterministic-simulation-testing.md
 - Updated: Mutation testing、test oracle 与 invariant
 - 要点：真实集群复现失败分两层——故障调度没有种子、执行本身不确定（时钟、线程调度、网络时序、磁盘时序）；DST 把四类来源收归单线程 `tick()` 显式推进，四类接管方式与 Tickloom 的 `Tickable`、`Message`/`SimulatedNetwork`（投递 tick + 递增序号保证 FIFO）、按 tick 计数的 `Timeout`、`Cluster`/`tickUntil` 逐项对应文章代码。种子化故障注入默认请求概率 0.4、故障概率 0.08、每 40 tick 自愈，seed 42 重放；TigerBeetle `tick_ms = 10`、etcd 100ms ticker 加 10 tick 选举超时，模拟里 tick 只是循环迭代。`SimulatedFile` 用 `visible`/`durable` 两个数组区分写入与持久化，`crash()` 重置 `visible`。`CompletableFuture` 的阻塞方法与 `thenApplyAsync()` 分别卡住主线程、引入后台线程不确定；`TickCompletableFuture` 无阻塞方法并检查 owner 线程。六条编码规则与 ArchUnit `DeterminismRulesTest`、运行时 owner 检查、种子化一致性检查三层守护。边界：消息级模拟不经过分帧代码（`NioConnection`），FoundationDB 的 `Sim2Conn` 在字节流层；Antithesis 用确定性 hypervisor 支持未修改应用；生产单线程架构以 Redis、FoundationDB、TigerBeetle 为例，多核靠多进程。
+## [2026-11-18] ingest | Antigravity CLI 用量查询与配额/许可证错误分层
+- Disposition: Update
+- Raw: raw/ai-coding-agents/2026-11-18-antigravity-quota-window-anchoring.md
+- 要点：周额度窗口两态锚点规律——有用量组锚点固定于首笔未滚出用量+7天（20:22:31 生成后 20:31、20:40 两次查询均为 98% 与 11-25 20:22:26），零用量组锚点随查询时刻前移（20:06、20:17、20:38）；滚动 vs 日历周判据与分步恢复例（推断）；Pro 双层结构与 "rolling weekly allowance"、"rolling window, not a hard reset" 原文；验证方法为先产生真实用量再连续查询；20:06 用量记录清空原因未知。
