@@ -1,8 +1,8 @@
 # Mutation testing、test oracle 与 invariant
 
-> Sources: Thoughtworks Technology Radar, 2026-04-15; The Oracle Problem in Software Testing: A Survey, 2015; MDN Glossary: Invariant, Published date unknown; Efficient Mutation Testing by Checking Invariant Violations, 2009; Reverify 项目审计（本机），2026-09-19
-> Raw: [Thoughtworks mutation testing](../../raw/software-testing/2026-09-09-thoughtworks-mutation-testing.md); [test oracle survey](../../raw/software-testing/2026-09-09-test-oracle-survey.md); [invariant definition](../../raw/software-testing/2026-09-09-invariant-definition.md); [mutation and invariant violations](../../raw/software-testing/2026-09-09-mutation-invariant-violations.md); [Reverify 项目审计](../../raw/agent-tooling/2026-09-19-reverify-project-audit.md)
-> Updated: 2026-09-19
+> Sources: Thoughtworks Technology Radar, 2026-04-15; The Oracle Problem in Software Testing: A Survey, 2015; MDN Glossary: Invariant, Published date unknown; Efficient Mutation Testing by Checking Invariant Violations, 2009; Reverify 项目审计（本机），2026-09-19; Unmesh Joshi (martinfowler.com), 2026-11-17
+> Raw: [Thoughtworks mutation testing](../../raw/software-testing/2026-09-09-thoughtworks-mutation-testing.md); [test oracle survey](../../raw/software-testing/2026-09-09-test-oracle-survey.md); [invariant definition](../../raw/software-testing/2026-09-09-invariant-definition.md); [mutation and invariant violations](../../raw/software-testing/2026-09-09-mutation-invariant-violations.md); [Reverify 项目审计](../../raw/agent-tooling/2026-09-19-reverify-project-audit.md); [deterministic simulation testing](../../raw/software-testing/2026-11-17-fowler-deterministic-simulation-testing.md)
+> Updated: 2026-11-18
 
 Mutation testing evaluates a test suite by changing the program under test, running the tests against the changed versions, and recording whether the tests detect the changes. Test oracles determine whether observed behavior is acceptable. Invariants are properties that must remain true during relevant program execution; they can be used as one kind of oracle or as evidence that a mutant changed behavior.
 
@@ -29,6 +29,10 @@ Test oracle 是判断测试执行结果是否正确或可接受的机制。它�
 - invariant 或其他可检查性质。
 
 没有 oracle，测试可以执行程序，但不能根据结果判断行为是否正确。
+
+### 分布式系统：客户端历史作为 oracle
+
+分布式系统测试里，oracle 常以「客户端可见的操作历史」形式出现：录下每次操作的 invoke 与随后的 ok、fail 或超时，再交给一致性检查器判断这段历史是否符合系统声称的语义。Jepsen 用 EDN 表示这段历史；文章中的 Tickloom 例子把它交给 `ConsistencyChecker` 检查 register 的线性一致性。这类判断属于 specification 类 oracle，检出的典型违规是写入已被确认之后，另一个客户端仍读到旧值（stale read）。
 
 ### 窄例：源码差分 oracle（Reverify functions_equiv）
 
@@ -74,3 +78,7 @@ Mutation score 只能描述当前 mutation operators、测试输入、测试断�
 - 被排除的每个 mutant 都是 equivalent mutant。
 
 Mutation testing 的结果必须和 mutation model、test oracle、测试套件范围以及 equivalent mutant 处理方式一起解释。
+
+## See Also
+
+- [Deterministic Simulation Testing（确定性模拟测试）：单线程 Tick 驱动与故障重放](deterministic-simulation-testing.md)

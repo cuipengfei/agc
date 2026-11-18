@@ -2442,3 +2442,10 @@
 - Raw: raw/omp-tips/2026-11-18-omp-kiro-builtin-plugin-conflict.md
 - Updated: Kiro 接入 OMP：ns-omp-provider-kiro 设置与验证实录; Kiro 后端 API 给任意 agent 用：仓库生态与 OMP 视角排名; SoL-Pi 与 OMP 兼容性：机制核查与装得上但开不了
 - 要点：OMP 18.22.2 新增内置 Kiro，启用的 ns-omp-provider-kiro 0.5.3 以保留名称 kiro-api 注册自定义实现时出现 ConfigurationError；用户授权后执行 `omp plugin disable ns-omp-provider-kiro`，仅该插件 enabled 变为 false；`omp --mode rpc --no-session --no-ui` 的 get_state 返回 success: true，退出码 0，无注册冲突。内置 Kiro 登录、凭据迁移、模型生成请求与交互式 TUI 未执行验证。
+
+## [2026-11-18] ingest | Deterministic Simulation Testing：单线程 Tick 驱动与故障重放
+- Disposition: New; Update
+- Raw: raw/software-testing/2026-11-17-fowler-deterministic-simulation-testing.md
+- Created: wiki/software-testing/deterministic-simulation-testing.md
+- Updated: Mutation testing、test oracle 与 invariant
+- 要点：真实集群复现失败分两层——故障调度没有种子、执行本身不确定（时钟、线程调度、网络时序、磁盘时序）；DST 把四类来源收归单线程 `tick()` 显式推进，四类接管方式与 Tickloom 的 `Tickable`、`Message`/`SimulatedNetwork`（投递 tick + 递增序号保证 FIFO）、按 tick 计数的 `Timeout`、`Cluster`/`tickUntil` 逐项对应文章代码。种子化故障注入默认请求概率 0.4、故障概率 0.08、每 40 tick 自愈，seed 42 重放；TigerBeetle `tick_ms = 10`、etcd 100ms ticker 加 10 tick 选举超时，模拟里 tick 只是循环迭代。`SimulatedFile` 用 `visible`/`durable` 两个数组区分写入与持久化，`crash()` 重置 `visible`。`CompletableFuture` 的阻塞方法与 `thenApplyAsync()` 分别卡住主线程、引入后台线程不确定；`TickCompletableFuture` 无阻塞方法并检查 owner 线程。六条编码规则与 ArchUnit `DeterminismRulesTest`、运行时 owner 检查、种子化一致性检查三层守护。边界：消息级模拟不经过分帧代码（`NioConnection`），FoundationDB 的 `Sim2Conn` 在字节流层；Antithesis 用确定性 hypervisor 支持未修改应用；生产单线程架构以 Redis、FoundationDB、TigerBeetle 为例，多核靠多进程。

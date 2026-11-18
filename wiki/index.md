@@ -430,11 +430,12 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 
 ## software-testing
 
-软件测试中的 mutation testing、test oracle、invariant 与 mutant 分类。
+软件测试中的 mutation testing、test oracle、invariant、mutant 分类，以及分布式系统的确定性模拟测试（DST）。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界 | 2026-09-19 |
+| [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界；客户端操作历史作为分布式系统的一致性 oracle | 2026-11-18 |
+| [Deterministic Simulation Testing：单线程 Tick 驱动与故障重放](software-testing/deterministic-simulation-testing.md) | 灰色故障与真实集群复现的两层障碍、四类不确定性接管、Tickloom 的 Tickable/SimulatedNetwork/按 tick 超时、种子化故障注入与时间快进、文件系统 visible/durable 崩溃模型、TickCompletableFuture、六条规则与三层 fitness function、消息级与字节级模拟边界、应用层与 hypervisor 层路线 | 2026-11-18 |
 
 ## technology-radar
 
