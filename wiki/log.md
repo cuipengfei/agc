@@ -2460,11 +2460,11 @@
 - Updated: Kimi Claw 专用网关
 - 要点：目录增至三个模型，新增 `k3d1-agent`（K3.1 Pro），`k2d6-agent` 变为 `k2d8-preview` 的 legacy ID，三者 `context_length` 均为 1,000,000；XL 对当前 key 不可用（`LEVEL_ADVANCED`），官方非 1M 档上限 256K，OMP `contextWindow` 统一取 262144；`k3d1-agent` 独有 fast 速度档（`LEVEL_INTERMEDIATE`，2x 以上用量）。
 
-## [2026-11-18] ingest | graphify 0.9.112 本机升级与 AGC 16,320 节点全量图谱刷新
-- Disposition: New; Update
-- Raw: raw/agent-tooling/2026-11-18-graphify-0-9-112-agc-full-refresh.md
-- Updated: graphifyy 工作机制; graphify 的图谱产物形态与导出限制
-- 要点：`uv tool install --upgrade 'graphifyy[svg,leiden,mcp,sql,postgres,chinese]'` 后按 `graphify install --platform claude|codex|opencode|agents` 刷新四份 skill，实测均为 0.9.112。AGC 全量混合语料 178 code / 979 Markdown / 1,157 files / 745,422 words；最终图 16,320 nodes / 21,318 links / 1,347 labeled communities。token 记账：第一轮 39,561,854 input / 935,165 output，partial retry 269,722 / 25,034，合计 39,831,576 / 960,199。产物：`graph.html` 1,078,005 bytes（1,347 社区聚合节点 + 1,649 跨社区边）、`GRAPH_TREE.html` 1,413,430 bytes、`agc-callflow.html` 353,948 bytes（18 节、16 Mermaid、15 调用表）、`graph.svg` 56,459,877 bytes；benchmark 为 `669.1x fewer tokens per query`，平均查询约 1,626 tokens。健康检查：missing 0、dangling 0、collapsed 0、self-loop 20；`check-update .` 退出 0 且无输出。运行顺序结论：partial semantic retry 必须先于最终聚类与社区命名，否则旧 community IDs 会被 retry 改变。
+## [2026-11-18] ingest | Antigravity 提交说明 429 与可空枚举工具声明 400
+- Disposition: Update
+- Raw: raw/omp-auth/2026-11-18-antigravity-commit-line-429-probe.md; raw/omp-auth/2026-11-18-antigravity-nullable-enum-tool-400.md; raw/omp-extensibility/2026-11-18-registerprovider-session-model-switch.md
+- Updated: OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider; OMP Antigravity 认证与社区 API; OMP Hooks vs Extensions
+- 要点：提交说明整行单独两次 429、等义改写成功；Tavily 可空枚举经 toolWireSchema 带入 null，54 工具 400，移除 null 后成功；registerProvider 自定义 api 加会话级 setModel，真实 TUI 搜索返回 10 条结果，8 项测试通过。
 
 ## [2026-11-18] ingest | graphify 0.9.112 本机升级与 AGC 16,320 节点全量图谱刷新
 - Disposition: New; Update
