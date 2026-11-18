@@ -2453,3 +2453,9 @@
 - Disposition: Update
 - Raw: raw/ai-coding-agents/2026-11-18-antigravity-quota-window-anchoring.md
 - 要点：周额度窗口两态锚点规律——有用量组锚点固定于首笔未滚出用量+7天（20:22:31 生成后 20:31、20:40 两次查询均为 98% 与 11-25 20:22:26），零用量组锚点随查询时刻前移（20:06、20:17、20:38）；滚动 vs 日历周判据与分步恢复例（推断）；Pro 双层结构与 "rolling weekly allowance"、"rolling window, not a hard reset" 原文；验证方法为先产生真实用量再连续查询；20:06 用量记录清空原因未知。
+
+## [2026-11-18] ingest | Kimi Claw 专用网关
+- Disposition: Update
+- Raw: raw/kimi-claw/2026-11-18-kimi-claw-models-catalog.md
+- Updated: Kimi Claw 专用网关
+- 要点：目录增至三个模型，新增 `k3d1-agent`（K3.1 Pro），`k2d6-agent` 变为 `k2d8-preview` 的 legacy ID，三者 `context_length` 均为 1,000,000；XL 对当前 key 不可用（`LEVEL_ADVANCED`），官方非 1M 档上限 256K，OMP `contextWindow` 统一取 262144；`k3d1-agent` 独有 fast 速度档（`LEVEL_INTERMEDIATE`，2x 以上用量）。

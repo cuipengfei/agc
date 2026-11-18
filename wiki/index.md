@@ -302,7 +302,7 @@ Kimi Claw 专用网关（agent-gw.kimi.com）的模型目录、会员档位与 e
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Kimi Claw 专用网关](kimi-claw/gateway-overview.md) | agent-gw.kimi.com 模型目录、会员档位 1M 门槛、k3-agent 身份证据与已知问题 | 2026-09-08 |
+| [Kimi Claw 专用网关](kimi-claw/gateway-overview.md) | agent-gw.kimi.com 三模型目录（K3.1 Pro/K3/K2.8 Preview）、L/XL 上下文档位与 256K 客户端取值、会员 1M 门槛、k3-agent 身份证据与已知问题 | 2026-11-18 |
 
 ## omp-background-agents
 
