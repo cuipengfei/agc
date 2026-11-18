@@ -2471,3 +2471,8 @@
 - Raw: raw/agent-tooling/2026-11-18-graphify-0-9-112-agc-full-refresh.md
 - Updated: graphifyy 工作机制; graphify 的图谱产物形态与导出限制
 - 要点：`uv tool install --upgrade 'graphifyy[svg,leiden,mcp,sql,postgres,chinese]'` 后按 `graphify install --platform claude|codex|opencode|agents` 刷新四份 skill，实测均为 0.9.112。AGC 全量混合语料 178 code / 979 Markdown / 1,157 files / 745,422 words；最终图 16,320 nodes / 21,318 links / 1,347 labeled communities。token 记账：第一轮 39,561,854 input / 935,165 output，partial retry 269,722 / 25,034，合计 39,831,576 / 960,199。产物：`graph.html` 1,078,005 bytes（1,347 社区聚合节点 + 1,649 跨社区边）、`GRAPH_TREE.html` 1,413,430 bytes、`agc-callflow.html` 353,948 bytes（18 节、16 Mermaid、15 调用表）、`graph.svg` 56,459,877 bytes；benchmark 为 `669.1x fewer tokens per query`，平均查询约 1,626 tokens。健康检查：missing 0、dangling 0、collapsed 0、self-loop 20；`check-update .` 退出 0 且无输出。运行顺序结论：partial semantic retry 必须先于最终聚类与社区命名，否则旧 community IDs 会被 retry 改变。
+
+## [2026-11-18] ingest | OMP 状态栏 cost 段的三段金额组成
+- Disposition: New
+- Raw: raw/omp/2026-11-18-omp-status-line-cost-segments-source.md
+- 要点：`default` 预设将 `cost` 置于左侧末尾；`costSummary` 组织三段金额，主会话花费扣除已入账子代理任务（`ownCost = Math.max(0, cost - taskResultCost)`），子代理树取 Hub 投影与 task 结果较大值，顾问花费来自 `getAdvisorCost()`；排版单位 `$` 仅打印一次，子代理用括号，顾问以 `+ ` 连接且 Nerd 码位 `\uea70` 剪贴板易丢失留双空格；顾问使用独立文件持久化，主会话 transcript 不含其轮次，三项开销互不重叠且可直接相加。

@@ -560,6 +560,7 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](omp/subagent-workspace-isolation.md) | 三层开关与生效条件；Linux 后端顺序与本机 overlay 可用性；ovnfs 三个作用点、管理协议版本与无静默回退；运行期间写入工作区、结束时一次捕获，合并阶段根仓库一次、嵌套仓库分别应用；`detachGitDir` 使原生隔离拥有独立 git 元数据；`bash.gitGuard` 默认关闭；本机 18.18.1 两个开关均关 | 2026-11-08 |
 | [Markdown 标题的 TUI 渲染：彩色 ### 的来源与两种消除方式](omp/markdown-heading-rendering.md) | depth 1/2 去 # 着色、depth>=3 固定拼回 `"#".repeat(depth)`（markdown.ts:4852-4856）；colorfulMarkdown 默认开、heading 按级 magenta/yellow/blue；消除靠 extensionRenderers.assistantText 扩展改写或用户级规则限 ## | 2026-11-15 |
 | [Stencil Spotlight：工具输出的相关性评分](omp/spotlight-relevance-scoring.md) | 专用评分协议 `POST /v1/spotlight`：`state` 共享上下文、`items` 候选项、`questions{probe}` 多维度；响应 `answers.<id>.scores` 长度等于候选项数；凭据来自 `STENCIL_API_KEY` 或 stencil 登录；`models.noSpotlight`/`offline` 门禁与 stencil 会话例外；与 Decisions、Jev 的外层差异；单次费用由 `stencil-cost-usd` 返回，公开单价未取得 | 2026-11-16 |
+| [OMP 状态栏 cost 段的三段金额组成](omp/status-line-cost-segments.md) | 状态栏 cost 段三项开销（主会话、子代理树、顾问）的组织算法、排版单位规则、Nerd 图标丢字现象与独立分账可加性 | 2026-11-18 |
 
 ## tokscale
 
