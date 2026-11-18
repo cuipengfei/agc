@@ -100,7 +100,7 @@ self-loop edges: 20
 
 `graphify check-update .`：退出码 0，无输出。
 
-`graphify tree` 曾用绝对仓库根路径返回 "no nodes under root"；改用 `--root .` 成功写出 `GRAPH_TREE.html`。
+`graphify tree` 曾用绝对仓库根路径报错：`error: --root /home/cpf/code-inside/agc matched 0 of 1120 source files (source_file paths are stored repo-relative, e.g. '.agents/skills/beads/SKILL.md')`；改用 `--root .` 成功写出 `GRAPH_TREE.html`。
 
 ## SVG 导出边界
 
