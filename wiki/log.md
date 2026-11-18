@@ -2436,3 +2436,9 @@
 - Raw: raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md; raw/omp-extensibility/2026-11-18-before-agent-start-model-context-and-adapter.md
 - Updated: OMP `antigravity-cli`：把 Google Antigravity CLI 包装成 ACP provider; OMP Antigravity 认证与社区 API; OMP Hooks vs Extensions
 - 要点：`You are omp's trusted coding assistant.` 作为 `_meta.antigravity.systemPrompt.append` 两次 429（5.13 秒、5.18 秒，通知 105 字符）；`omp`、`omp's`、`omp's trusted` 单独发送均 OK；`pi's` 或 `helpful` 替换均 OK；逐词删除六个变体均 OK；15 条记录 `role` 全为 `system`，用户消息槽位未测。同一句在 2026-11-10 的上游报告里单独发送返回 200，按观测记为时点差异（Disputed）。OMP 18.22.0 的 `ExtensionContext` 暴露 `model` getter 与 `models`，没有 `getModel()`；提示词改写扩展按 `ctx.model?.provider` 限定，并用真实 `ExtensionRunner.createContext` 测试。`agy` 的重试横幅经 `agent_message_chunk` 进入正文，累积 8 段后 OMP 报 `Thinking loop detected`。
+
+## [2026-11-18] ingest | OMP 内置 Kiro 与插件 API 注册冲突
+- Disposition: Update
+- Raw: raw/omp-tips/2026-11-18-omp-kiro-builtin-plugin-conflict.md
+- Updated: Kiro 接入 OMP：ns-omp-provider-kiro 设置与验证实录; Kiro 后端 API 给任意 agent 用：仓库生态与 OMP 视角排名; SoL-Pi 与 OMP 兼容性：机制核查与装得上但开不了
+- 要点：OMP 18.22.2 新增内置 Kiro，启用的 ns-omp-provider-kiro 0.5.3 以保留名称 kiro-api 注册自定义实现时出现 ConfigurationError；用户授权后执行 `omp plugin disable ns-omp-provider-kiro`，仅该插件 enabled 变为 false；`omp --mode rpc --no-session --no-ui` 的 get_state 返回 success: true，退出码 0，无注册冲突。内置 Kiro 登录、凭据迁移、模型生成请求与交互式 TUI 未执行验证。

@@ -8,7 +8,7 @@ Agent harness 的 prompt、上下文架构与运行形态差异。
 |---------|---------|---------|
 | [Hermes vs OpenClaw 架构差异](agent-harness/hermes-vs-openclaw-architecture.md) | 相同模型表现差异背后的 prompt、技能加载、压缩、记忆和用户建模因素 | 2026-08-30 |
 | [托管个人 Agent 与自托管 Agent](agent-harness/hosted-agents-vs-self-hosted-agents.md) | Muse、Grok Bot、Dots 与 Hermes、OpenClaw 的托管云端电脑、账户集成、浏览器配置与证据边界 | 2026-10-14 |
-| [SoL-Pi 与 OMP 兼容性](agent-harness/sol-pi-omp-compat.md) | SoL-Pi 四机制核查、推广文章三处错漏、pi→oh-my-pi 身份链、Action Fusion 机制与 OMP 兼容矩阵：装得上但 actionFusion 兼容修复 #11991 未进入 18.3.0 | 2026-09-25 |
+| [SoL-Pi 与 OMP 兼容性](agent-harness/sol-pi-omp-compat.md) | SoL-Pi 四机制与 OMP 18.3.0 兼容矩阵；Kiro 关联说明补充 OMP 18.22.2 内置 provider 与 ns-omp-provider-kiro 0.5.3 注册冲突及禁用验证 | 2026-11-18 |
 | [OmO 停止条件与意图检测机制](agent-harness/omo-stop-condition-mechanisms.md) | OmO 三层停止机制：代码层 &lt;promise&gt; 标签正则+会话状态机（不解析自然语言）、提示词纪律层 Hephaestus intent line 三版演进（5.5 承诺做完→5.6 停止条件声明即承诺+Stop Goal→6 Intent Gate）、门控层 STOP WHEN 存在性 lint+EVIDENCE_RECORDED 四重校验收据门+gate-reviewer 终审；防过度执行/漂移/假完成/半成品 | 2026-10-09 |
 | [OMP 默认系统指令](agent-harness/omp-default-system-instruction.md) | v18.9.0 默认 system-instruction 的 bundle 位置、`cts` 模板结构、渲染关系、尺寸与 `SYSTEM.md` 覆盖边界 | 2026-10-11 |
 | [OmO 技能生态与 skills CLI 安装](agent-harness/omo-ulw-skills-ecosystem.md) | skills.sh 官方发布 44 技能 10.2K 安装；ulw 家族停止条件定义者差异（loop/ultrawork 目标级、mass-ulw 节点级、execute 继承）；意图行无技能复刻；skills CLI 单次观察 13 vs 44 差异与直接路径安装绕过、lock 跟踪、PromptScript 不支持全局 | 2026-10-09 |
@@ -80,7 +80,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits 记录、404 方法四类错误；规则命中与出口合规分开验证 | 2026-11-18 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
 | [跨 Harness 编排：workflowz 与 orchestrate 的对应物](ai-coding-agents/cross-harness-orchestration.md) | Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO `task`/`mass ulw` 与 OMP 两个关键词的映射；`mass ulw` 为独立版专属 | 2026-10-27 |
-| [Kiro 后端 API 给任意 agent 用](ai-coding-agents/kiro-backend-api-for-agents.md) | 20 仓库筛选 + 4 强排名（ns-bridge/kirocc/kiro.rs/kiro-lb）；pi-provider-kiro 与 OMP 钩子断层 PR #170 未合并；ksk_ 资格与 Billing FAQ SoT 边界 | 2026-10-22 |
+| [Kiro 后端 API 给任意 agent 用](ai-coding-agents/kiro-backend-api-for-agents.md) | 保留 2026-10-22 第三方接入调查与认证边界；新增 OMP 18.22.2 内置 Kiro、ns-omp-provider-kiro 0.5.3 名称冲突与禁用后的启动验证 | 2026-11-18 |
 | [omo native 合法 agent 名册与配置三层](ai-coding-agents/omo-native-agent-roster.md) | 10 categories 实配状态与内置默认、具名 subagent 的 categories 绑定耦合、三层配置分工 | 2026-09-27 |
 | [Grok Build](ai-coding-agents/grok-build.md) | xAI 终端 coding agent：doom-loop、LazinessDetector 与并行度真值 | 2026-09-04 |
 | [开源 Harness 与托管推理不是一回事](ai-coding-agents/open-harness-vs-hosted-inference.md) | 区分客户端、runtime、Provider 主权、模型成本与端到端自托管，并补充托管个人 Agent 与自托管 Agent 的边界 | 2026-10-14 |
@@ -294,7 +294,7 @@ OMP 启动提示与交互快捷方式。
 | [OMP web search 自定义 Responses API 端点](omp-tips/web-search-custom-responses-provider.md) | codex provider 接入兼容 /codex/responses 的端点：路径拼接、请求形状、凭证分支、实测 | 2026-09-19 |
 | [OMP web search provider 清单与 fallback](omp-tips/web-search-provider-inventory.md) | 25 个 provider 四类分级、串行 fallback、public 并发合并、webSearchOrder 追加语义、Tavily MCP 与原生 `web/tavily` 凭证来源差异 | 2026-09-29 |
 | [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描全部 `*.ts`/`*.js` 扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法 | 2026-09-19 |
-| [Kiro 接入 OMP 设置与验证实录](omp-tips/kiro-omp-setup-via-ns-bridge.md) | ns-omp-provider-kiro 设置与模型验证；Node AAAA 查询约 11s 触发 undici 10s 超时，Kiro 管理请求 IPv4 dispatcher 修复；刷新后目录 8 模型，菜单原因未知 | 2026-10-23 |
+| [Kiro 接入 OMP 设置与验证实录](omp-tips/kiro-omp-setup-via-ns-bridge.md) | OMP 18.22.2 内置 Kiro 与 ns-omp-provider-kiro 0.5.3 的 kiro-api 注册冲突、单插件禁用和 RPC 启动验证；保留 OMP 18.12.5 接入与目录刷新记录 | 2026-11-18 |
 
 ## kimi-claw
 

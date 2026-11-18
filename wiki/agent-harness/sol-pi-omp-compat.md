@@ -1,8 +1,8 @@
 # SoL-Pi 与 OMP 兼容性：机制核查与装得上但开不了
 
-> Sources: GitHub NVlabs/SoL-Pi；arXiv:2609.20519；官方博客；npm registry；oh-my-pi 仓库源码直读；本机 SoL-Pi 仓库与 OMP release/PR 复查
-> Raw: [sol-pi-forensics](../../raw/agent-harness/2026-09-19-sol-pi-forensics.md); [sol-pi-current-state](../../raw/agent-harness/2026-09-25-sol-pi-current-state.md); [pi-provider-kiro 兼容断层](../../raw/omp-discovery/2026-10-22-omp-custom-provider-kiro-mismatch.md)
-> Updated: 2026-10-22
+> Sources: GitHub NVlabs/SoL-Pi；arXiv:2609.20519；官方博客；npm registry；oh-my-pi 仓库源码直读；本机 SoL-Pi 仓库与 OMP release/PR 复查；本机 OMP 18.22.2 的 Kiro 插件冲突与启动验证, 2026-11-18
+> Raw: [sol-pi-forensics](../../raw/agent-harness/2026-09-19-sol-pi-forensics.md); [sol-pi-current-state](../../raw/agent-harness/2026-09-25-sol-pi-current-state.md); [pi-provider-kiro 兼容断层](../../raw/omp-discovery/2026-10-22-omp-custom-provider-kiro-mismatch.md); [内置 Kiro 与插件注册冲突](../../raw/omp-tips/2026-11-18-omp-kiro-builtin-plugin-conflict.md)
+> Updated: 2026-11-18
 
 SoL-Pi 是 NVIDIA Efficient AI 团队（负责人韩松，MIT 副教授、NVIDIA 研究总监）2026-09-02 开源的 agent harness 优化层（github.com/NVlabs/SoL-Pi，MIT 协议），论文 arXiv:2609.20519。本文核查其推广文章的事实准确性，并给出当前 OMP 上的真实兼容性结论。
 
@@ -74,7 +74,10 @@ Action Fusion 是四机制中唯一改变 agent 行为序列的一个，实现�
 
 SoL-Pi 在 Pi 0.85.1 上是经 NVIDIA 测试的独立扩展，但在 OMP 上仍要区分两件事：OMP 18.3.0 已经发布，Action Fusion 兼容修复 #11991 仍 open 且未合入 release。观察大输出、让便宜模型读诊断日志、按完成边界触发压缩，这三类能力在本机 Headroom / context-mode / DCP / RTK 中已有相近路径；Action Fusion 仍缺 OMP 原生等价能力。要解锁它，路径仍是等 #11991 合并，或等 #12530 的原生支持落地。
 
-**pi 生态 Kiro provider 的钩子断层是同类问题**：pi-provider-kiro 0.12.1 用 pi 钩子 `refreshModels` 与 `apiKey:"$KIRO_API_KEY"`（OMP 实测不解析 `$` 前缀），OMP 18.12.5 对应的是 `fetchDynamicModels` 钩子；作者 PR #170 针对 OMP 修正但未合并。OMP 用户接 Kiro 走 ns-omp-provider-kiro 或本地网关详见 [Kiro 后端 API 给任意 agent 用](../ai-coding-agents/kiro-backend-api-for-agents.md)。
+**pi 生态 Kiro provider 的钩子断层是同类问题**：2026-10-22 的调查中，pi-provider-kiro 0.12.1 用 pi 钩子 `refreshModels` 与 `apiKey:"$KIRO_API_KEY"`（OMP 实测不解析 `$` 前缀），OMP 18.12.5 对应的是 `fetchDynamicModels` 钩子；当时作者 PR #170 针对 OMP 修正但未合并。该版本的 OMP 接入路径记录见 [Kiro 后端 API 给任意 agent 用](../ai-coding-agents/kiro-backend-api-for-agents.md)。
+
+> **Status: Outdated** (2026-11-18)
+> OMP 18.22.2 已新增内置 Kiro provider，入口为 `/login kiro`。本机 `ns-omp-provider-kiro@0.5.3` 使用保留名称 `kiro-api` 注册自定义实现时出现启动异常；执行 `omp plugin disable ns-omp-provider-kiro` 后，OMP 初始化与 RPC `get_state` 验证通过。该版本的处理方法见 [Kiro 接入 OMP 设置与验证实录](../omp-tips/kiro-omp-setup-via-ns-bridge.md)。
 
 ## See Also
 

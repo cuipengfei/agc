@@ -1,14 +1,20 @@
 # Kiro 后端 API 给任意 agent 用：仓库生态与 OMP 视角排名
 
-> Sources: 本会话 GitHub 实测与仓库源码直读, 2026-10-22
-> Raw: [Kiro 仓库生态](../../raw/ai-coding-agents/2026-10-22-kiro-api-gateway-landscape.md); [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md); [pi-provider-kiro 兼容断层](../../raw/omp-discovery/2026-10-22-omp-custom-provider-kiro-mismatch.md)
-> Updated: 2026-10-22
+> Sources: 本会话 GitHub 实测与仓库源码直读, 2026-10-22; 本机 OMP 18.22.2 发布记录、插件代码与启动验证, 2026-11-18
+> Raw: [Kiro 仓库生态](../../raw/ai-coding-agents/2026-10-22-kiro-api-gateway-landscape.md); [Kiro 认证与 SoT](../../raw/model-gateway-mismatch/2026-10-22-kiro-auth-paths-billing-sot.md); [pi-provider-kiro 兼容断层](../../raw/omp-discovery/2026-10-22-omp-custom-provider-kiro-mismatch.md); [内置 Kiro 与插件注册冲突](../../raw/omp-tips/2026-11-18-omp-kiro-builtin-plugin-conflict.md)
+> Updated: 2026-11-18
 
 ## Overview
 
-Kiro 订阅用户可以让任何 agent（OMP、Claude Code、OpenCode 等）消费其后端模型，目前有三条实现路径：**OMP 专用 provider**、**Anthropic/OpenAI 兼容本地网关**、**直连 pi 扩展层**。上文整理候选 20 项与最终 4 强。
+本文保留 2026-10-22 对 Kiro 第三方接入路径的调查：**OMP 专用 provider**、**Anthropic/OpenAI 兼容本地网关**、**直连 pi 扩展层**，包括候选 20 项与最终 4 强。OMP 18.22.2 的内置 Kiro 支持及插件冲突见下节。
 
-## 最终 4 强（OMP 视角）
+## OMP 18.22.2 内置 Kiro 与插件状态
+
+已安装 OMP 18.22.2 的 changelog 新增内置 Kiro provider，入口为 `/login kiro`。本机启用的 `ns-omp-provider-kiro@0.5.3` 尝试用内置保留名称 `kiro-api` 注册自定义实现，触发 `ConfigurationError`。执行 `omp plugin disable ns-omp-provider-kiro` 后，插件状态为 `enabled: false`；OMP 初始化与 RPC `get_state` 响应验证通过，进程退出码为 `0`。
+
+内置 Kiro 登录与模型生成请求本次未执行。禁用方法、代码机制和启动验证见 [Kiro 接入 OMP 设置与验证实录](../omp-tips/kiro-omp-setup-via-ns-bridge.md)。
+
+## 最终 4 强（OMP 视角，2026-10-22 调查）
 
 | 排名 | repo | ★ | 形态 | 凭据路径 | 为什么 |
 |--:|---|--:|---|---|---|
@@ -26,10 +32,13 @@ Kiro 订阅用户可以让任何 agent（OMP、Claude Code、OpenCode 等）消�
 - `ns-omp-provider-kiro` 登录时凭据写入 `~/.omp/agent/agent.db`
 - **SoT 约束**：Billing FAQ 禁止第三方 automation harness 绕过 Kiro 原生接口；第三方直连属允许范围之外
 
-## OMP 本机验证结论
+## OMP 18.12.5 本机验证记录（2026-10-22）
 
 - pi-provider-kiro 0.12.1 有 OMP 意向，但钩子（`refreshModels`）与 API Key 引用（`$KIRO_API_KEY`，本机实测不解析）与 OMP 18.12.5 不匹配；PR #170 修复未合并。
 - ns-omp-provider-kiro 专门解决了这些差异：注册、认证、目录、流式、工具调用全部走 OMP 原生接口。
+
+> **Status: Outdated** (2026-11-18)
+> 上述记录适用于当时的 OMP 18.12.5。OMP 18.22.2 内置 Kiro 后，本机 `ns-omp-provider-kiro@0.5.3` 出现 API 名称冲突，已禁用该插件，启动与 RPC 验证通过。
 
 ## See Also
 
