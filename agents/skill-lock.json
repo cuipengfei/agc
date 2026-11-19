@@ -627,10 +627,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/virgiliojr94/book-to-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "185936caf5781525d14c3deb08174f6d4feae4e4",
+      "skillFolderHash": "dec99dd429a95d2250a264212c5161ed7983d787",
       "installedAt": "2026-08-17T13:12:19.212Z",
-      "updatedAt": "2026-11-19T13:22:19.788Z",
-      "commit": "185936caf5781525d14c3deb08174f6d4feae4e4"
+      "updatedAt": "2026-11-19T17:05:32.355Z",
+      "commit": "dec99dd429a95d2250a264212c5161ed7983d787"
     },
     "humanizer": {
       "source": "blader/humanizer",
