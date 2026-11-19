@@ -2,7 +2,7 @@
 
 运行目录为 `tools/tern-maintain`。本工具与配置同步独立，不修改 manifest，不写入来源配置，不提交 Git。
 
-## 0.9.5 本机验收
+## 0.9.5 历史验收
 
 正式 daemon、Web 和安装 binary 已统一为 `0.9.5 (2863c37)`，端口继续使用 `8378`，保留原认证文件及升级前的 pane 集合。后台进程由 `runtime.mjs __redact` 管理。
 
@@ -98,9 +98,9 @@ bun cli.mjs verify-page --url http://127.0.0.1:PORT \
 
 构建包包含 `original.wasm`、`glue.js`、`profile.json`、`recipe.json`、全部 `parts/` 与 `exports/` 片段、`candidate.wasm`、`test.wasm`、`structure.json`、`time.json` 和 `build.json`；`build.json` 记录构建工具源码（`build.mjs`、`analyze.mjs`、`resources.mjs`、`interface.mjs`、`verify-time.mjs`、`package.json`、`bun.lock`）的 SHA-256 以及 WABT 与运行时版本。`rebuild` 仅凭包内相对路径输入重建到新目录，是跨机器重建所需的全部输入，不需要原机器的绝对路径或历史临时文件；工具源码身份与构建记录不一致时校验停止，不手工修改清单。
 
-`assets` 将通过 `check-build` 的候选 WASM（绝不接受测试模块）、glue、字体清单、两份完整 Maple 字体、加载器和 `index.template.html` 生成的实际入口页面装配到新目录，写入 `deploy-manifest.json` 记录每个输出文件的实际 SHA-256；输出目录必须不存在。`verify-page` 强制 headless，访问 `assets` 生成的真实 `index.html` 入口，页面在浏览器内执行真实 WASM init 与字体注入；检查按页面自己发布的结构化状态核对初始化完成、两份字体真实注入、页面报告的 candidate SHA-256 与服务字节一致、全程零 WebSocket 构造；无 token 入口不执行 mount，完整 GPU 交互与 mount 始终记 `not_run`。真实页面 smoke（`workflow-eV2Po2`）对该入口通过：6 passed（含 page_ready、fonts_injected、candidate_hash）、2 `not_run`；把 `fonts.json` 中任一 font SHA-256 改写后 verify-page 退出 1，`page_ready`/`fonts_injected`/`candidate_hash` 失败并拒绝，其余检查不受影响（`artifacts/workflow-eV2Po2/real-page-smoke.json`、`real-page-valid.json`、`real-page-invalid-font-hash.json`）。
+`assets` 历史模式（`--fonts`，deprecated）将通过 `check-build` 的候选 WASM（绝不接受测试模块）、glue、字体清单、两份完整 Maple 字体、加载器和 `index.template.html` 生成的实际入口页面装配到新目录，写入 `deploy-manifest.json` 记录每个输出文件的实际 SHA-256；输出目录必须不存在。`verify-page` 强制 headless，访问 `assets` 生成的真实 `index.html` 入口，页面在浏览器内执行真实 WASM init 与字体注入；检查按页面自己发布的结构化状态核对初始化完成、两份字体真实注入、页面报告的 candidate SHA-256 与服务字节一致、全程零 WebSocket 构造；无 token 入口不执行 mount，完整 GPU 交互与 mount 始终记 `not_run`。真实页面 smoke（`workflow-eV2Po2`）对该入口通过：6 passed（含 page_ready、fonts_injected、candidate_hash）、2 `not_run`；把 `fonts.json` 中任一 font SHA-256 改写后 verify-page 退出 1，`page_ready`/`fonts_injected`/`candidate_hash` 失败并拒绝，其余检查不受影响（`artifacts/workflow-eV2Po2/real-page-smoke.json`、`real-page-valid.json`、`real-page-invalid-font-hash.json`）。
 
-仅替换字体时，`assets` 接受 `prepare` 的原版输入目录；`--bundle` 与 `--official` 必须且只能提供一个：
+历史替换字体流程（`--fonts` 字体清单 + 完整 Maple 字体 + `maple.js` 运行时注入，含 `--bundle` 与 `--official` 两种模式）仍可用但已 deprecated，仅作兼容保留。仅替换字体时，`assets` 接受 `prepare` 的原版输入目录；`--bundle` 与 `--official` 必须且只能提供一个：
 
 ```bash
 bun cli.mjs assets --official /path/to/original --fonts /path/to/font-assets \
@@ -108,8 +108,53 @@ bun cli.mjs assets --official /path/to/original --fonts /path/to/font-assets \
 ```
 
 此模式读取 `inputs.json` 的 version、WASM SHA-256 与 glue SHA-256，分别核对实际文件后逐字节复制原版模块和 glue。部署清单记录 `mode: "font-only"`、`originalSha256`、`glueSha256` 与 `wasmUnmodified: true`，不要求时间补丁构建包。字体描述符来自当前版本分析，WASM 内存中的字体在页面运行时替换，磁盘原版模块保持不变。`bundle` 模式记录 `mode: "patched"`，其余校验不变。
+字体名称登记补丁（Tern 0.9.28 的动态字体名称登记修复）改由 `--registration` 装配：补丁构建目录包含 `registration.json`（`{schemaVersion: 1, kind: "font-registration", version, originalSha256, candidateSha256, glueSha256}`）、`candidate.wasm` 与 `glue.js`，装配时逐一核对 schema、kind、version 与三个身份 hash，任一不符即拒绝：
 
-## 字体清单
+```bash
+bun cli.mjs assets --registration /path/to/font-registration-build --out /tmp/tern-registration-site
+```
+
+新模式不要求 `--fonts`，不复制 Maple 替换字体、不携带 `maple.js`，页面直接加载候选 WASM（token 鉴权与 mount 参数处理不变）；输出仅 `index.html`、`pkg/client.wasm`、`pkg/client.js` 与 `deploy-manifest.json`，清单记录 `mode: "font-registration"` 及 original/candidate/glue 三个 SHA-256。`--registration` 不得与 `--fonts`、`--bundle` 或 `--official` 同时使用。
+
+## 0.9.28 字体登记补丁与后续版本检查
+
+`font-registration-build` 修复 Web 动态字体加入名称登记表的流程，保留内置字体。构建器锁定已审核的 0.9.28 官方 WASM 与 glue SHA-256，复用程序原有的字体名称解析、HashMap entry 与 SmallVec 追加过程；输入身份不匹配即停止，不把旧地址用于其他版本。
+
+```bash
+bun cli.mjs font-registration-build --original /path/to/original.wasm \
+  --glue /path/to/official-glue.js --out /tmp/tern-registration-build
+bun cli.mjs assets --registration /tmp/tern-registration-build --out /tmp/tern-registration-site
+```
+
+`font-check.mjs` 使用真实 Chrome，检查首次加载、字体缓存、内置字体正对照和不存在字体的负对照。它读取该版本原字体匹配函数的实际返回值，同时记录资源身份、字体响应 hash 和 Settings 截图。profile 的 `wasmSha256` 与 `statusOffset` 必须来自对应模块；补丁和原版分别使用 `profiles/font-registration-0.9.28-patched.json` 与 `profiles/font-registration-0.9.28-original.json`。
+
+在 WSL 中通过 Windows Node 运行（将 Node、Playwright、Chrome 和输出路径替换为本机值）：
+
+```bash
+WIN_NODE='/mnt/d/Program Files/nodejs/node.exe'
+"$WIN_NODE" "$(wslpath -w "$PWD/font-check.mjs")" \
+  --url http://127.0.0.1:8378 \
+  --token-file "$(wslpath -w "$HOME/.config/tern/web-token")" \
+  --playwright-module 'C:\path\to\playwright\index.mjs' \
+  --chromium-executable 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe' \
+  --profile "$(wslpath -w "$PWD/profiles/font-registration-0.9.28-patched.json")" \
+  --out 'C:\Temp\tern-font-check.json'
+```
+
+检查使用独立浏览器 context，只改变隔离页面的字体设置；认证值仅在 RAM 中处理。可选 `--wasm FILE` 仅用于把已经校验的官方文件投递到隔离原版页面，报告会标记 `source: routed`；正式入口验收不传该参数，以 `source: served` 核对实际部署。
+
+| classification | 判定与后续动作 |
+|---|---|
+| `working` | 冷暖两次均选择目标字体，内置与不存在字体的对照正确；原版得到此结果时无需登记补丁。 |
+| `registration_missing` | 字体完整投递且身份正确，冷暖两次名称查询均未匹配，对照正确；审核该版本登记路径后制作对应补丁。 |
+| `needs_investigation` | 包括未知模块身份、字体投递失败、对照失败或观测不完整；保留截图与报告，查明失败阶段，停止应用历史补丁。 |
+
+退出码 0 表示得到前两种明确结果，退出码 2 表示需要调查；调用方应读取 `classification` 决定后续步骤。后续新版本先检查官方原版。模块 hash 不同会保留界面证据并报告 `needs_investigation`，须重新定位字体查询函数、建立并验证新版 profile，再判定官方是否已修复。未来版本不自动制作或部署补丁。
+
+本流程的资源产物没有 `maple.js`、`fonts.json` 或替换内嵌字体文件。历史 `--fonts` 流程已 deprecated，不参与登记补丁部署。
+
+
+## 字体替换清单（deprecated）
 
 使用与资源模式对应的原版或 candidate WASM、对应初始内存和完整 Maple Regular/Bold 原始文件：
 

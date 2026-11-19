@@ -17,7 +17,9 @@
   <div id="status" role="status">正在加载 Tern 和完整 Maple Mono NF CN 字体…</div>
   <script type="module">
     import init, { mount } from './pkg/client.js';
+<!--TERN:FONTS-->
     import { loadClient, injectMaple } from './maple.js';
+<!--/TERN:FONTS-->
     const status = document.getElementById('status');
     // checkPage 读取的结构化验收状态；绝不携带 token。
     const verification = window.__ternVerification = {
@@ -25,16 +27,40 @@
       candidateSha: null, fonts: null, error: null,
     };
     try {
+<!--TERN:FONTS-->
       const bytes = await loadClient();
+<!--/TERN:FONTS-->
+<!--TERN:REGISTER-->
+      // 资源请求携带与入口相同的 token；无 token 时保持原路径。
+      const authorized = path => {
+        const token = new URLSearchParams(location.search).get('token');
+        if (!token) return path;
+        const url = new URL(path, location.href);
+        url.searchParams.set('token', token);
+        return url;
+      };
+      const response = await fetch(authorized('./pkg/client.wasm'), { cache: 'no-store' });
+      if (! response.ok) throw new Error(`WASM HTTP ${ response.status }`);
+      const bytes = new Uint8Array(await response.arrayBuffer());
+<!--/TERN:REGISTER-->
       verification.candidateSha = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), value => value.toString(16).padStart(2, '0')).join('');
+<!--TERN:REGISTER-->
+      if (verification.candidateSha !== '<!--TERN:WASM_SHA256-->') throw new Error('WASM SHA-256 mismatch');
+<!--/TERN:REGISTER-->
       const wasm = await init({ module_or_path: bytes });
+<!--TERN:FONTS-->
       window.ternMaple = await injectMaple(wasm);
       verification.fonts = window.ternMaple.fonts;
+<!--/TERN:FONTS-->
       verification.ready = true;
+<!--TERN:FONTS-->
       status.textContent = '完整 Maple 字体已注入，正在连接 Tern 会话…';
+<!--/TERN:FONTS-->
+<!--TERN:REGISTER-->
+      status.textContent = '候选 WASM 已加载，正在连接 Tern 会话…';
+<!--/TERN:REGISTER-->
       const token = new URLSearchParams(location.search).get('token');
       if (!token) {
-        // Fonts and init are fully verified above; without a token we stop here.
         verification.tokenPrompt = true;
         status.textContent = '请打开服务启动时打印的带 token 网址。';
       } else {

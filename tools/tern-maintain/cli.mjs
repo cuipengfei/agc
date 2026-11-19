@@ -23,7 +23,9 @@ const usage=`Tern maintenance (no GUI)
   bun cli.mjs verify-mounted --url URL --playwright-module FILE --chromium-executable FILE --token-file FILE --out REPORT
   bun cli.mjs rebuild --bundle DIR --wabt-dir DIR --out NEW_DIR
   bun cli.mjs check-build --bundle DIR
-  bun cli.mjs assets (--bundle DIR | --official DIR) --fonts DIR --out NEW_DIR
+  bun cli.mjs font-registration-build --original FILE --glue FILE --out NEW_DIR
+  bun cli.mjs assets --registration DIR --out NEW_DIR
+  bun cli.mjs assets (--bundle DIR | --official DIR) --fonts DIR --out NEW_DIR  [deprecated]
   bun cli.mjs verify-page --url URL --playwright-module FILE --chromium-executable FILE [--out REPORT]
   bun cli.mjs markdown-windows --binary FILE --assets DIR --out REPORT [--node FILE] [--playwright-module DIR] [--chromium-executable FILE] [--socket-dir DIR]
 
@@ -31,7 +33,7 @@ Font inventory: uv run --with-requirements requirements.txt python fonts.py MEMO
 Reports never authorize deployment by themselves. Unknown versions stop for review.
 `;
 
-const OPTION_NAMES=['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir'];
+const OPTION_NAMES=['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir','registration'];
 const REPORT_COMMANDS=new Set(['analyze','verify']);
 const WRITTEN_COMMANDS=new Set(['analyze','verify','browser','function','inspect-runtime','verify-service','upgrade','verify-page']);
 
@@ -130,10 +132,16 @@ const COMMANDS={
     const {checkBundle}=await import('./build.mjs');
     return checkBundle({bundle:resolve(v.bundle)});
   },
+  'font-registration-build':async v=>{
+    required(v,'original','glue','out');
+    const {buildRegistrationPatch}=await import('./font-registration.mjs');
+    return buildRegistrationPatch({original:resolve(v.original),glue:resolve(v.glue),out:resolve(v.out)});
+  },
   assets:async v=>{
-    required(v,'fonts','out');
+    required(v,'out');
+    if(!v.registration)required(v,'fonts');
     const {assembleAssets}=await import('./assets.mjs');
-    return assembleAssets({bundle:v.bundle&&resolve(v.bundle),official:v.official&&resolve(v.official),fonts:resolve(v.fonts),out:resolve(v.out)});
+    return assembleAssets({registration:v.registration&&resolve(v.registration),bundle:v.bundle&&resolve(v.bundle),official:v.official&&resolve(v.official),fonts:v.fonts&&resolve(v.fonts),out:resolve(v.out)});
   },
   'verify-page':async v=>{
     required(v,'url','playwright-module','chromium-executable');
