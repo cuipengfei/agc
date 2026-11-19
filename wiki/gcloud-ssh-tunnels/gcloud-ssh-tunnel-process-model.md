@@ -47,7 +47,7 @@ ps -ef | grep '[s]tart-iap-tunnel'  # IAP 模式下的 gcloud 子进程
 ss -tlnp                            # 监听端口的持有者：ssh 还是 gcloud 主进程
 ```
 
-终止隧道：终止 ssh 进程即可；workstations 模式还需终止 gcloud 主进程。
+终止隧道：终止 ssh 进程即可；gcloud 主进程在 ssh 退出后随命令结束自行退出（`workstations.py:383`）。
 
 ## 证据边界
 

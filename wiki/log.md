@@ -2494,3 +2494,9 @@
 - Disposition: New
 - Raw: raw/gcloud-ssh-tunnels/2026-11-20-gcloud-ssh-tunnel-mechanism.md
 - 要点：本机 Cloud SDK 594.0.0 源码确认 gcloud 拼 ssh 命令后作为子进程运行；直连只需 ssh，compute ssh 走 IAP 用 ProxyCommand 拉起 start-iap-tunnel --listen-on-stdin 子进程经 stdin/stdout 管道通信、WebSocket 端点为 wss://tunnel.cloudproxy.app，workstations ssh 由单 gcloud 主进程的守护线程在本机监听端口并向 wss://<workstation 域名>/_workstation/tcp/<端口> 建 WebSocket，令牌来自 GenerateAccessToken；两模块无 IAP 交叉引用，为两套独立机制。新建 gcloud-ssh-tunnels topic 与文章，无 cascade。
+
+## [2026-11-20] ingest | 修正 gcloud SSH 隧道文章中的收尾行为
+- Disposition: Update
+- Raw: raw/gcloud-ssh-tunnels/2026-11-20-gcloud-ssh-tunnel-mechanism.md
+- Updated: gcloud SSH 隧道的进程形态
+- 要点：`workstations.py:383` 的 `return cmd.Run(self.env)` 在 ssh 退出后返回，`surface/workstations/ssh.py:88` 随后结束 Run，gcloud 主进程自行退出；文章收尾句改为终止 ssh 进程即可。

@@ -197,6 +197,22 @@ IAP 模式的 ProxyCommand 构造：
 347:    host, port = self._GetLocalHostPort(args)
 ```
 
+`Ssh` 在 ssh 退出后返回：
+
+```
+373:    cmd = ssh.SSHCommand(
+374:        remote=remote,
+375:        port=port,
+376:        options=options,
+377:        extra_flags=extra_flags,
+378:        tty=tty,
+379:        remainder=remainder,
+380:        remote_command=remote_command,
+381:    )
+382:
+383:    return cmd.Run(self.env)
+```
+
 访问令牌来源：
 
 ```
