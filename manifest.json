@@ -183,7 +183,8 @@
       "directory": true,
       "include": [
         "antigravity-prompt-adapter.test.ts",
-        "antigravity-schema-adapter.test.ts"
+        "antigravity-schema-adapter.test.ts",
+        "agy-sensitive-guard.test.ts"
       ]
     },
     {
