@@ -663,3 +663,11 @@ AG-UI agent-用户交互协议：事件模型、生命周期、生态与基线�
 | [i3 Sway 变体的配置错误横幅：重复键位与修复](webtop/i3-sway-config-error-banner.md) | swaynag 红色 error in config file 横幅由 `Mod4+Return` 重复产生 binding overwrite 触发；唯一定义 `bindsym $mod+Return exec /usr/bin/st` 与 upstream.json 生成硬约束；窗口模式 modifier 调整为 `Control+Mod1` 键盘 + `Mod1` 鼠标（避免 Win 键宿主冲突），native IPC 同 PID reload；capture 收据 20261108T032036-fe44effc6f14 与 20261108T100156-2cb8f075aceb；doctor ok、13 desktop tests、HTTP 200；用户确认消失；与 KDE 变体单端口互斥（wsl-webtop-us2） | 2026-11-08 |
 | [KDE Wayland 输入法启动器与 Fcitx 归属](webtop/kde-wayland-input-method-launcher.md) | 警告根因是项目直启 Fcitx 加 `QT_IM_MODULE=fcitx` 全局污染；按官方改 `kwinrc` `[Wayland] InputMethod=/usr/share/applications/fcitx5-wayland-launcher.desktop`，KWin 拥有 socket、私有 D-Bus 激活单一 Fcitx；取消 `QT/GTK/SDL_IM_MODULE`、保留 `XMODIFIERS`；`-platformpluginpath` 方案因 QPA 搜索路径差异被否；重启授权后 `available:false→true`、协议 1、1 IC、无 LD/QT 路径；`[Wayland] InputMethod` 进 capture 白名单；拼音组合输入未实测（用户目视验收项） | 2026-11-08 |
 | [私有桌面的共享边界：字体、应用入口与命令路径](webtop/private-desktop-visibility.md) | 同一 WSL，搜索路径不同：系统程序与系统字体共用；配置/数据/D-Bus/音频私有；`terminal-fonts.py` 把 `~/.local/share/fonts` 导入项目 Fontconfig 且 `monospace` 与 `Liberation Mono` 别名选 Maple Mono NF CN（Starship 8 个 codepoint `E0B0 E0B4 E0B6 F418 F432 F43A F0079 F0548` 全覆盖，DejaVu/Liberation 全缺）；`session.environment` 接入既有用户命令目录与 `XDG_DATA_DIRS`（项目数据目录优先）；实测 `wmenu-run` 按命令 PATH 列项、KDE 菜单走 `.desktop` 入口，命令解析成功不等于菜单逐项可见；`.local/bin` 里 `pnpm/pnpx` 损坏链接等为宿主遗留 | 2026-11-08 |
+
+## gcloud-ssh-tunnels
+
+gcloud CLI 建立 SSH 隧道时的进程归属、端口持有者与中转机制边界。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [gcloud SSH 隧道的进程形态](gcloud-ssh-tunnels/gcloud-ssh-tunnel-process-model.md) | 隧道无持久实体，物理形态是本机进程与连接；直连只需 ssh、compute ssh 走 IAP 需 ssh 加 start-iap-tunnel 子进程、workstations ssh 需 ssh 加 gcloud 主进程；IAP 与 Cloud Workstations 是两套独立中转服务及各自端点与鉴权 | 2026-11-20 |

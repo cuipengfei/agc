@@ -2489,3 +2489,8 @@
 - Created: pstack 与 matt 的同场景选型
 - Updated: pstack 技能地图与行为; skill 系统的两种组织轴; pstack 移植版生态全景
 - 要点：本机 poteto-mode/playbooks 清点 22 本（无 orchestrate.md，2026-11-14 记录的 23 为历史状态）；逐本正文读取出边与转交：multi-phase-plan 只显式引 prototype 与 sequence-verifiable-units、opening-a-pr 只点名 /deslop、investigation 只点名 why 与 unslop，三处与 2026-11-09 grep 边表口径不同；转交主线为诊断三本转 Bug fix / Perf issue、实现类七本收尾于 Opening a PR、babysit 停在 merge-ready 由 merge/land/ship 指令转 Shipping、autopilot-stack 是 autopilot-full 的不合并变体。同场景配对按 lock 计 57+30 建 14 组表；触发档位按 frontmatter 与 poteto-help 原文分四档：matt 11 个无 disable 行为自动/手调、pstack 仅 setup-pstack、typescript-best-practices 由宿主按 paths 加载、principle 由 /poteto-mode 按名读取（用户很少直接调）。cascade：技能地图文新增「playbook 逐本调用链（2026-11-20 正文口径）」小节并在 Overview、编成与执行边、分层边表、行为面四处置 Status 块；组织轴文与移植版全景文把 23 份与 orchestrate 条目标为历史口径。可选项 learn-pstack 页面 raw 未建（页面版本早于本机安装，本文无需引用其独有判据句）。
+
+## [2026-11-20] ingest | gcloud SSH 隧道的进程形态
+- Disposition: New
+- Raw: raw/gcloud-ssh-tunnels/2026-11-20-gcloud-ssh-tunnel-mechanism.md
+- 要点：本机 Cloud SDK 594.0.0 源码确认 gcloud 拼 ssh 命令后作为子进程运行；直连只需 ssh，compute ssh 走 IAP 用 ProxyCommand 拉起 start-iap-tunnel --listen-on-stdin 子进程经 stdin/stdout 管道通信、WebSocket 端点为 wss://tunnel.cloudproxy.app，workstations ssh 由单 gcloud 主进程的守护线程在本机监听端口并向 wss://<workstation 域名>/_workstation/tcp/<端口> 建 WebSocket，令牌来自 GenerateAccessToken；两模块无 IAP 交叉引用，为两套独立机制。新建 gcloud-ssh-tunnels topic 与文章，无 cascade。
