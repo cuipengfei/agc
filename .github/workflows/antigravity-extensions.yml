@@ -1,0 +1,46 @@
+name: Antigravity extension checks
+
+on:
+  push:
+    paths:
+      - 'omp/agent/extensions/antigravity-*.ts'
+      - 'omp/agent/extensions/agy-sensitive-guard.ts'
+      - 'omp/agent/extension-tests/antigravity-*.test.ts'
+      - 'omp/agent/extension-tests/agy-sensitive-guard.test.ts'
+      - 'tools/agy-acp-diagnose/**'
+      - 'bun/global-package.json'
+      - '.github/workflows/antigravity-extensions.yml'
+  pull_request:
+    paths:
+      - 'omp/agent/extensions/antigravity-*.ts'
+      - 'omp/agent/extensions/agy-sensitive-guard.ts'
+      - 'omp/agent/extension-tests/antigravity-*.test.ts'
+      - 'omp/agent/extension-tests/agy-sensitive-guard.test.ts'
+      - 'tools/agy-acp-diagnose/**'
+      - 'bun/global-package.json'
+      - '.github/workflows/antigravity-extensions.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.4'
+      - name: Install OMP and its schema traversal dependency
+        run: |
+          version=$(bun -e 'const p = await Bun.file("bun/global-package.json").json(); console.log(p.dependencies["@oh-my-pi/pi-coding-agent"])')
+          test -n "$version"
+          bun add --global "@oh-my-pi/pi-coding-agent@$version" 'json-schema-traverse@1.0.0'
+          command -v nc >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends netcat-openbsd)
+      - name: Run local protocol and extension tests
+        run: >-
+          bun test
+          omp/agent/extension-tests/antigravity-prompt-adapter.test.ts
+          omp/agent/extension-tests/antigravity-schema-adapter.test.ts
+          omp/agent/extension-tests/agy-sensitive-guard.test.ts
+          tools/agy-acp-diagnose/*.test.ts
