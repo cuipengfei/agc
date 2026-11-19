@@ -504,7 +504,8 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 |---------|---------|---------|
 | [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界 | 2026-09-16 |
 | [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 切换测量与隔离内核定向测量、节点 DNS 取证、地区识别差异、BGP origin 与命名审计 | 2026-11-18 |
-| [域名定向代理规则：把指定域名固定到代理组](proxy-ops/domain-targeted-proxy-rules.md) | 前置域名规则、组名与节点名、controller 核对；Antigravity 后端和共享认证域名的分流范围；规则命中与出口合规分开验证 | 2026-11-18 |
+| [域名定向代理规则：把指定域名固定到代理组](proxy-ops/domain-targeted-proxy-rules.md) | 前置域名规则、组名与节点名、controller 核对；Antigravity 后端和共享认证域名的分流范围；规则命中与出口合规分开验证；七域名规则从节点名迁移到 url-test 组名的实测案例 | 2026-11-19 |
+| [地区自动选线与测速判定：url-test 组的实测行为](proxy-ops/regional-url-test-auto-fallback.md) | url-test 组配置面（include-all-proxies+filter、interval/tolerance/max-failed-times）、选点与双路径回退（定时测速判失效 + 建连 3 次失败补测）、切换只影响新连接；测速地址决定候选集，17 节点 GitHub/gstatic 双地址实测（9 双通、2 仅 gstatic、6 双失败）；Clash Verge Rev 脚本加组、规则改组名、controller 热加载与 GUI 15 秒刷新 | 2026-11-19 |
 
 ## llm-proxy-sse
 
@@ -512,7 +513,7 @@ LLM API SSE 流式调用在 Clash Verge/mihomo + 机场链路上的长连接机�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置](llm-proxy-sse/llm-api-sse-proxy-chain.md) | SSE=单条长生命周期响应流、mihomo 透明转发无害、url-test 拨号时刻选路不杀已有流；keep-alive 键名三证定版、idle 调长更不安全（15 优于 30）；select 组固定出口 + 客户端读超时/重试兜底 | 2026-09-19 |
+| [LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置](llm-proxy-sse/llm-api-sse-proxy-chain.md) | SSE=单条长生命周期响应流、mihomo 透明转发无害、url-test 拨号时刻选路不杀已有流；keep-alive 键名三证定版、idle 调长更不安全（15 优于 30）；select 组固定出口 + 客户端读超时/重试兜底；本机已运行 url-test 地区组，"无 url-test 组"基线标 Outdated | 2026-11-19 |
 
 ## herdr-plannotator
 

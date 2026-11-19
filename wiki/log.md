@@ -2476,3 +2476,9 @@
 - Disposition: New
 - Raw: raw/omp/2026-11-18-omp-status-line-cost-segments-source.md
 - 要点：`default` 预设将 `cost` 置于左侧末尾；`costSummary` 组织三段金额，主会话花费扣除已入账子代理任务（`ownCost = Math.max(0, cost - taskResultCost)`），子代理树取 Hub 投影与 task 结果较大值，顾问花费来自 `getAdvisorCost()`；排版单位 `$` 仅打印一次，子代理用括号，顾问以 `+ ` 连接且 Nerd 码位 `\uea70` 剪贴板易丢失留双空格；顾问使用独立文件持久化，主会话 transcript 不含其轮次，三项开销互不重叠且可直接相加。
+
+## [2026-11-19] ingest | 地区自动选线与测速判定：url-test 组的实测行为
+- Disposition: New; Update
+- Raw: raw/proxy-ops/2026-11-19-regional-url-test-auto-fallback.md
+- Updated: 域名定向代理规则：把指定域名固定到代理组; LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置
+- 要点：本机 Clash Verge Rev 2.5.10 + mihomo v1.19.33（运行路径在 D 盘，C 盘 2.4.1 为误判后更正）新增香港/美国 url-test 组：include-all-proxies + filter 圈候选（17/6 个），interval 180 秒、timeout 5000、tolerance 0、max-failed-times 3。选点取最近一次测速延迟并缓存约 10 秒；失效两条路：定时测速判失效（最多等一个周期）与建连失败 3 次/5 秒窗口补测、connection refused 即补测；切换只影响新建连接。测速判定"到该地址的可达与延迟"，17 香港节点 GitHub/gstatic 双地址实测 9 双通、2 仅 gstatic 通、6 双失败，换测速地址改变候选集。落地方式：扩展脚本加组、规则增强文件七域名目标改美国自动组、controller PUT /configs 热加载核对，GUI 前台 15 秒拉代理视图。cascade：domain-targeted-proxy-rules 补七域名节点名迁组名实测案例；llm-api-sse-proxy-chain 的"本机无 url-test 组"基线标 Outdated。

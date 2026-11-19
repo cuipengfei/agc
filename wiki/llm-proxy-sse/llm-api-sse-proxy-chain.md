@@ -2,11 +2,14 @@
 
 > Sources: 本机研究, 2026-09-19
 > Raw: [2026-09-19-llm-api-sse-streaming-clash-mihomo-study](../../raw/llm-proxy-sse/2026-09-19-llm-api-sse-streaming-clash-mihomo-study.md); [2026-09-19-clash-verge-mihomo-local-config-forensics](../../raw/llm-proxy-sse/2026-09-19-clash-verge-mihomo-local-config-forensics.md); [2026-09-19-mihomo-keep-alive-key-name-verification](../../raw/llm-proxy-sse/2026-09-19-mihomo-keep-alive-key-name-verification.md)
-> Updated: 2026-09-19
+> Updated: 2026-11-19
 
 ## Overview
 
 LLM API 流式调用（SSE）的本质是单条长生命周期的 HTTP 响应流：连接任一中断这条流就死、不能续传。mihomo 本身对流式调用基本无害——它对 HTTPS 是逐字节转发的透明 TCP 隧道，不缓冲、不杀已建立的连接，url-test 自动切节点只影响新建连接；真正有害的是链路中段（节点稳定性、落地 NAT/防火墙空闲超时）。配置上能给的不多但明确：keep-alive 键只有无 `tcp-` 前缀的三个全局键，`tcp-keep-alive-*`/`dial-timeout` 不存在；keep-alive-idle 调长更不安全（15 略优于 30，已纠正）；LLM API 域名固定走 select 组；客户端侧靠读超时 + 重试兜底。本机（Clash Verge Rev 2.4.1 + mihomo v1.19.13）出站 keepalive 15s/15s 已生效，TUN 开、无 url-test 组。
+
+> **Status: Outdated** (2026-11-19)
+> 「本机无 url-test 组」已过时：本机 2026-11-19 起新增香港/美国两个 url-test 地区组（Clash Verge Rev 2.5.10 + mihomo v1.19.33），默认流量经主 select 组选择香港自动组。url-test 只影响新建连接的源码结论不变，运行确认见 [地区自动选线与测速判定：url-test 组的实测行为](../proxy-ops/regional-url-test-auto-fallback.md)。
 
 ## Q1：SSE 长连接机制
 
@@ -98,5 +101,6 @@ LLM API 流式调用（SSE）的本质是单条长生命周期的 HTTP 响应流
 ## See Also
 
 - [代理出口 IP 指纹批量测量与形态分类](../proxy-ops/exit-ip-fingerprint-measurement.md) — 选线应以实测出口为准，不以节点名为准
+- [地区自动选线与测速判定：url-test 组的实测行为](../proxy-ops/regional-url-test-auto-fallback.md) — 本机 url-test 组的实际运行确认与补测触发机制
 - [专有代理客户端迁移到标准 Clash：通用取证方法](../proxy-ops/proprietary-client-to-clash-migration.md) — 本机订阅形态来源（`flag=meta` 标准输出）
 - [未终止 chunked 流的客户端行为](../../experiments/2026-09-05-unterminated-chunked-stream-client-behavior.md) — 与「连接被杀死」互补的另一类流式截断：终止块缺失

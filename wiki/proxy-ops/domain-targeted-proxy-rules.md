@@ -1,8 +1,8 @@
 # 域名定向代理规则：把指定域名固定到代理组
 
-> Sources: Clash Verge Rev Docs、mihomo docs；本机 Clash Verge Rev 与 mihomo 配置实测，2026-10-26；Antigravity 域名分流会话，2026-11-17 至 2026-11-18
-> Raw: [Clash Verge Rev 域名定向规则](../../raw/proxy-ops/2026-10-26-domain-rule-clash-verge-rev.md); [Antigravity 出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md)
-> Updated: 2026-11-18
+> Sources: Clash Verge Rev Docs、mihomo docs；本机 Clash Verge Rev 与 mihomo 配置实测，2026-10-26；Antigravity 域名分流会话，2026-11-17 至 2026-11-18；地区自动选线实测，2026-11-19
+> Raw: [Clash Verge Rev 域名定向规则](../../raw/proxy-ops/2026-10-26-domain-rule-clash-verge-rev.md); [Antigravity 出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [地区自动选线与测速判定实测](../../raw/proxy-ops/2026-11-19-regional-url-test-auto-fallback.md)
+> Updated: 2026-11-19
 
 ## Overview
 
@@ -92,7 +92,7 @@ controller 需要鉴权：不带 `Authorization: Bearer <secret>` 请求 `/confi
 
 登录及账号信息涉及 `accounts.google.com`、`oauth2.googleapis.com`、`www.googleapis.com`。对这些共享域名设置规则时，其他程序访问同一主机也会使用指定节点。用户提供的规则包含这些域名；当次只核验 YAML 格式，未再次核对整组规则在内核中的加载状态。
 
-规则直接引用订阅节点名时，订阅更新若移除或更改该节点名，引用可能失效并使配置加载失败。长期需要切换节点时，可使用稳定名称的代理组承接规则。
+规则直接引用订阅节点名时，订阅更新若移除或更改该节点名，引用可能失效并使配置加载失败。长期需要切换节点时，可使用稳定名称的代理组承接规则。2026-11-19 实测迁移案例：本机七条指定美国出口的域名规则（`antigravity.google` 后缀与六个 Google 域名）第三项由节点名 `美国01-海外中转-0.6倍率` 改为 url-test 组名 `美国自动`（`filter: 美国`），节点失效时组内自动切换，规则无需改动；迁移方式为规则增强文件改目标，controller `PUT /configs` 热加载后 `/rules` 核对。选点与回退行为见 [地区自动选线与测速判定：url-test 组的实测行为](regional-url-test-auto-fallback.md)。
 
 ## 证据边界
 
