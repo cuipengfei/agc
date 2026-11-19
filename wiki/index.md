@@ -76,7 +76,8 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14 与 11-18 官方模型快照、套餐额度与设备试用；账号地区、代理出口识别差异及 1008、1001 本机会话观察；2026-11-17/18 CLI 实测补用量入口与错误分层 | 2026-11-18 |
+| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14/18/20 三次模型快照、两个定价页六处档位不对应、SG 价格与促销、家庭共享共用池与排除权益、社区额度估算、goofish 检索与低价渠道现状；账号地区、代理出口识别差异及 1008、1001 本机会话观察；CLI 实测补用量入口与错误分层 | 2026-11-20 |
+| [Antigravity Orchestrator 机制](ai-coding-agents/antigravity-orchestrator-mechanism.md) | 单模型全程 vs 规划/执行分工（规划模型+Hydrogen）；同一次回复内自动交接与三条回控触发；固定配置不可调 thinking level、非模型路由；24% 省额度/19% 提速测试数据；Orchestrator (Neon) 首入 Pro 清单 | 2026-11-20 |
 | [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits、404 四类错误；周额度窗口两态锚点规律与滚动机制；规则命中与出口合规分开验证 | 2026-11-18 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
 | [跨 Harness 编排：workflowz 与 orchestrate 的对应物](ai-coding-agents/cross-harness-orchestration.md) | Claude Code subagents/agent teams、Codex subagents、OpenCode subagents、OMO `task`/`mass ulw` 与 OMP 两个关键词的映射；`mass ulw` 为独立版专属 | 2026-10-27 |

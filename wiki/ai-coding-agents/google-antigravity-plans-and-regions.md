@@ -1,8 +1,8 @@
 # Google Antigravity：套餐、模型、额度与地区
 
-> Sources: Google Antigravity pricing、plans、models、enterprise 与 FAQ 页面，2026-11-14 采集；Google 模型页面 2026-11-18 快照；Google 套餐调整公告，2026-05-19；CodeAgentSwarm 价格整理、Forbes 报道、社区用户报告与本机会话观察
-> Raw: [套餐与模型](../../raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md); [地区与用户报告](../../raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md); [OMP 认证与额度记录](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [2026-11-18 模型快照](../../raw/ai-coding-agents/2026-11-18-antigravity-model-plan-snapshot.md); [本机接入与错误观察](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md)
-> Updated: 2026-11-18
+> Sources: Google Antigravity pricing、plans、models、enterprise 与 FAQ 页面，2026-11-14 采集；Google 模型页面 2026-11-18 快照；Google Antigravity 定价页 2026-11-20 快照；Google One plans 页、SG 购买页与家庭共享帮助页，2026-11-20 采集；googledevs 公告；InfoWorld、MindStudio、eesel 报道；Google 套餐调整公告，2026-05-19；CodeAgentSwarm 价格整理、Forbes 报道、linux.do 额度估算、goofish.com 检索实测与社区用户报告
+> Raw: [套餐与模型](../../raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md); [地区与用户报告](../../raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md); [OMP 认证与额度记录](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [2026-11-18 模型快照](../../raw/ai-coding-agents/2026-11-18-antigravity-model-plan-snapshot.md); [本机接入与错误观察](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [2026-11-20 定价页与 Orchestrator](../../raw/ai-coding-agents/2026-11-20-antigravity-plans-models-orchestrator.md); [2026-11-20 家庭共享、额度估算与渠道](../../raw/ai-coding-agents/2026-11-20-google-one-sharing-quota-market.md)
+> Updated: 2026-11-20
 
 ## 套餐和价格
 
@@ -19,6 +19,21 @@ Antigravity 个人用户可以免费使用，也可以通过 Google AI 套餐获
 Free 和 Plus 在官方模型表中使用同一列。官方计划文档将两者归入同一额度类别，但没有给出各自的绝对额度。
 
 企业用户可以通过 Gemini Enterprise Standard／Plus 座位，或具备相应条件的 Google Cloud project 按用量计费。Antigravity 定价页称 Standard／Plus 从每座位每月 **$30 USD** 起，按用量方案没有座位费。Enterprise 文档称首方 Gemini 使用共享座位额度，Standard 为每月 **$10**、Plus 为每月 **$15**；第三方模型须由管理员开启并按 token 用量计费。
+
+新加坡区购买页（2026-11-20 采集）：AI Plus SGD 6.98/月（促销 SGD 1.78/月 × 3 个月，400 GB）；AI Pro SGD 28.99/月（促销 SGD 7.28/月 × 3 个月，5 TB）；AI Ultra SGD 139.99/月起（无促销，20 TB）。SG 页的 Ultra 起步价对应 5x 档；20x 档价格在选择器内，未在默认页面展示。“5 倍于 AI Pro 的 Gemini 用量限额”文案即 5x 名称来源。
+
+## 两个定价页的档位对照
+
+antigravity.google/pricing 按 Antigravity 产品内的访问等级列档：Individual（免费）、Google AI Pro、Google AI Ultra、Business via Google Cloud。one.google.com 按 Google One 购买档位列：免费、AI Plus、AI Pro、AI Ultra 5x、AI Ultra 20x。两页并排读时六处不对应：
+
+1. Plus 在 Antigravity 定价页没有卡片；其 Antigravity 权益只在 Google AI plans 详细对比表中以 Limited 级出现。
+2. Antigravity 页的 Ultra 一张卡对应两个购买价（$99.99 的 5x 与 $199.99 的 20x）；区分两档只能看详细对比表的 Higher/Highest 两列。
+3. 倍数基准不同：Gemini 应用用量中 Plus 2x、Pro 4x 以免费档为基准；Ultra 5x、20x 以 Pro 为基准（5x 即 5 倍 Pro，20x 即 20 倍 Pro）。
+4. 模型目录范围不同：one.google 每档只标注一个主打模型（Plus Hydrogen、Pro Neon、Ultra Carbon）；Antigravity 页列完整目录，含 one.google 页没有的 Orchestrator 变体。
+5. 试用与付费的权益差别只在 Antigravity 页脚注区分（脚注 2、3、5）；one.google 页不分试用与付费。
+6. 企业档只在 Antigravity 页出现，走 Google Cloud 的 Gemini Enterprise；one.google 只卖个人档。
+
+Google AI plans 详细对比表把 Antigravity agent requests 分为四级：Plus Limited、Pro Expanded、Ultra 5x Higher、Ultra 20x Highest。Antigravity 页自己只用 baseline、generous、highest 描述，与四级不互相对齐。
 
 ## 各档模型
 
@@ -46,6 +61,12 @@ Free 和 Plus 在官方模型表中使用同一列。官方计划文档将两者
 
 Google 没有在本次查阅的资料中列出完整的 `eligible premium devices` 名单。Forbes 作者于 **2026-10-25** 报告，他的促销试用账号中出现 Argon、Claude Opus 5.5 和 Sonnet 5.5；该报道描述的是账号上的可见情况，Google 文档对 Pro 档 Claude 5.5 写的是非试用订阅。
 
+### 2026-11-20 定价页模型快照
+
+Antigravity 定价页在 **2026-11-20**（GA 横幅“Gemini 4 Neon 与 Orchestrator 现已登陆”）将 **Orchestrator (Neon) 首次列入 Pro 模型清单**（脚注 2，付费 Pro 或符合条件的设备试用）；Ultra 清单含 Orchestrator (Carbon)。Pro 与 Ultra 的清单差别只剩 Carbon 两个入口（Gemini 4 Carbon、Orchestrator (Carbon)）。页面上 Claude Sonnet 4.6、Claude Opus 4.6 与 GPT-OSS-120b 仍列于各档，脚注 4 写“将于 2026 年 11 月 18 日移除”——移除日期已过但页面仍列，实际移除未验证。Pro 列表同时含 Claude 4.6 与 5.5 两代，脚注 5 说明：试用 Pro 给 4.6 双款，付费 Pro 给 5.5 双款。
+
+Pro／Ultra 的个人档要求 personal Google Account：工作账号（Workspace）不能订阅 Pro／Ultra，须走按用量的 Cloud project 或 Gemini Enterprise。
+
 ## 额度怎么计算
 
 Google 将额度与 agent 完成的工作量关联：任务越复杂，使用量可能越高。官方提供相对额度和刷新方式，没有给出各套餐固定的每月 token 数或固定请求次数。
@@ -62,6 +83,24 @@ Pro／Ultra 的 AI Credit Overages 设置可选 `Never` 或 `Always`。选 `Neve
 - **2026-11-09**：一位用户称 Claude Opus 在 CSV 任务中消耗 `2500 tokens` 并在不到 30 分钟触及 5 小时限制，任务最多启动了 8 个 subagents。该用户未注明套餐，报告中的 `2500 tokens` 含义也未进一步说明。
 
 这些是个人使用报告，不能换算成每个套餐的固定 token 数。
+
+### 社区额度估算（未核实）
+
+官方只公布刷新节奏和 Ultra 相对 Pro 的 5x/20x 倍数，从不公布 token 数。社区按“等效 API 美金池”逆向（Gemini 4 Argon、高缓存命中编程场景、按 API 官方价格折算）：Plus 周上限约 $15；Pro 5 小时上限约 $4-10（flash 与 argon 分池计量）、周上限两帖实测约 $15 与 $40；Ultra 5x 5 小时约 $50、周约 $200；Ultra 20x 5 小时约 $200、周约 $800。锚点：一个真实编程日（45 次调用、约 480 万 token）约 $3。免费档无可靠估算。这些数字 2026 年 10 月提额近一倍后采集，Google 会悄悄调整，只作量级参考。
+
+## 家庭共享
+
+没有单独的家庭版可买：买个人订阅后在 Google One 设置里开“与家庭共享”，最多加 5 位家人（连自己 6 个账号），订阅价不变。前提：管理人年满 18 岁；家人与管理人员同住一个国家。
+
+**Antigravity 和 Flow 的用量限额由整个家庭组共享，家人没有各自独立的额度**（官方帮助页原文标注“重要”）；Gemini 聊天应用则每个家人有自己的模型用量（Google 订阅负责人公告）。加家人不会让 Antigravity 额度变多，6 人共耗同一份每周/每 5 小时额度。AI credits 全家共享、可用于 Antigravity 超额，但只有管理人能购买。
+
+全家可用：存储池、Gemini 应用与 Antigravity、AI credits、Workspace 高级功能（Plus 2 TB 及以上）、Google Health Premium（限 Pro 及以上、部分地区）。只归管理人：Google Developer Program premium（Pro 每月 $10、Ultra 每月 $40 的 Cloud credits）、Google Home Premium、Google Colab 算力单元、YouTube Premium Lite 与加购。Ultra 的 YouTube Premium 家庭方案须由家庭组管理员持有 Ultra 才能启用。
+
+## 低价转卖渠道
+
+2026-11-20 实测：goofish.com（闲鱼网页版）搜索须登录，移动端端点 404；四轮搜索引擎收录的 goofish 商品页检索（gemini ultra 拼车 代充、谷歌 gemini 账号等关键词）无任何 Google AI Pro/Ultra 或 Antigravity 账号/车位商品。“反重力”一词被护肤品商品名（“h6反重力胶囊 2.0”）占据；同类 AI 订阅交易（Cursor、Kimi、GLM 拼车）仍活跃。登录后实时列表未核实，卖家可能用规避词。
+
+同类渠道现状（2026-11 社区报告）：淘宝家庭组拼车约 300 元人民币/月仍活跃，但存在付 20x 钱被拉进 5x 组的坑（知乎 11-12 亲历）；linux.do 11-11 报告拼车 20x 成员掉订阅、账号弹验证；土区自购（约 3000₺/月）+ 拼车仍为主流省钱路线；反代接 Antigravity 会封号。几十元独立 Ultra 号几天内被封的历史报告（2026-01）与 goofish 收录消失一致。
 
 ## 地区与账号资格
 
@@ -92,3 +131,4 @@ Google FAQ 要求个人账号关联到支持的国家或地区，并提供 [Term
 
 - [OMP Antigravity 认证与社区 API](../omp-auth/google-antigravity-auth-and-api.md) — 登录提示、第三方客户端风险和接口证据
 - [Antigravity CLI 用量查询与配额/许可证错误分层](antigravity-cli-usage-and-quota-errors.md) — 打印模式与 TUI 的用量入口、1008/1001/404 分层
+- [Antigravity Orchestrator 机制](antigravity-orchestrator-mechanism.md) — 单模型选择与 Orchestrator 的规划/执行分工、回控触发与档位可用性

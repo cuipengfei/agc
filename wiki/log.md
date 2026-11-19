@@ -2500,3 +2500,10 @@
 - Raw: raw/gcloud-ssh-tunnels/2026-11-20-gcloud-ssh-tunnel-mechanism.md
 - Updated: gcloud SSH 隧道的进程形态
 - 要点：`workstations.py:383` 的 `return cmd.Run(self.env)` 在 ssh 退出后返回，`surface/workstations/ssh.py:88` 随后结束 Run，gcloud 主进程自行退出；文章收尾句改为终止 ssh 进程即可。
+
+## [2026-11-20] ingest | Antigravity 两定价页档位对照、家庭共享、额度估算与 Orchestrator 机制
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-20-antigravity-plans-models-orchestrator.md; raw/ai-coding-agents/2026-11-20-google-one-sharing-quota-market.md
+- Created: Antigravity Orchestrator 机制
+- Updated: Google Antigravity：套餐、模型、额度与地区
+- 要点：两个定价页按不同口径列档，六处不对应（Plus 无卡片、Ultra 一卡两价、倍数基准不同、模型目录范围不同、试用/付费差异、企业档单侧）；详细对比表分四级 Limited/Expanded/Higher/Highest。SG 区价格与促销；家庭共享 6 账号共用一份订阅，Antigravity/Flow 额度全家共用池而 Gemini 聊天按人，credits 仅管理员购买；可共享与排除权益清单。社区按 API 价等值逆向各档 5 小时/周上限（估算口径与限定）。goofish 四轮检索无 Google AI 账号商品、"反重力"被护肤品占据；淘宝拼车 5x 冒充 20x 的坑与土区路线。2026-11-20 定价页：Orchestrator (Neon) 首入 Pro 清单，Pro/Ultra 清单差别只剩 Carbon 两入口，Claude 4.6/GPT-OSS-120b 标移除但页面上仍在。新建 Orchestrator 文章：单模型 vs 规划/执行分工、三条回控触发、固定配置、非模型路由、24%/19% 测试数据、档位可用性。
