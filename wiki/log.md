@@ -2507,3 +2507,9 @@
 - Created: Antigravity Orchestrator 机制
 - Updated: Google Antigravity：套餐、模型、额度与地区
 - 要点：两个定价页按不同口径列档，六处不对应（Plus 无卡片、Ultra 一卡两价、倍数基准不同、模型目录范围不同、试用/付费差异、企业档单侧）；详细对比表分四级 Limited/Expanded/Higher/Highest。SG 区价格与促销；家庭共享 6 账号共用一份订阅，Antigravity/Flow 额度全家共用池而 Gemini 聊天按人，credits 仅管理员购买；可共享与排除权益清单。社区按 API 价等值逆向各档 5 小时/周上限（估算口径与限定）。goofish 四轮检索无 Google AI 账号商品、"反重力"被护肤品占据；淘宝拼车 5x 冒充 20x 的坑与土区路线。2026-11-20 定价页：Orchestrator (Neon) 首入 Pro 清单，Pro/Ultra 清单差别只剩 Carbon 两入口，Claude 4.6/GPT-OSS-120b 标移除但页面上仍在。新建 Orchestrator 文章：单模型 vs 规划/执行分工、三条回控触发、固定配置、非模型路由、24%/19% 测试数据、档位可用性。
+
+## [2026-11-20] ingest | Tern 0.9.28 Web 字体名称登记补丁构建、正式部署与验收
+- Disposition: Update
+- Raw: raw/tern/2026-11-20-tern-0-9-28-font-registration-patch-deploy.md
+- Updated: Tern 升级辅助工具与验收边界; Tern 设置存储位置
+- 要点：0.9.28 Web 已完整收到 Maple 字体但按名称选择返回空；官方原版对照分类 `registration_missing`，登记补丁候选分类 `working`。候选 WASM SHA-256 `0a41f8c18682fc6a26c92d8aaf5ff2979d1a852c2f3abb492817f235dc418da1`，官方原版 `36abf20e257cbb0e356e2ee0b539d2a1186c6be346bbba35e4ac4bf786a9614d`。新增 `font-registration-build`、`assets --registration` 与 `font-check`；未来版本只报告 `working`/`registration_missing`/`needs_investigation`，不自动应用补丁。正式 Web 只追加 `--assets ~/.local/share/tern-maintain/0.9.28-registration-0a41f8c18682/site` 并重启 Web，daemon PID `462844` 不变，session `4` 与三个 pane ID 保持不变；正式验收 `source: served`、classification `working`，真实画面确认 ASCII、中文、四个 Nerd Font 符号、20 列边界与固定光标。旧的 `--fonts` 替换流程标记 deprecated。
