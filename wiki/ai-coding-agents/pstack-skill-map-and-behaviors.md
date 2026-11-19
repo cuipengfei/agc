@@ -1,12 +1,15 @@
 # pstack 技能地图与行为（backnotprop/pstack@25abb38）
 
-> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09；四种口径的可达性闭包（57 个目录、143 个 markdown 文件全量扫描），2026-11-10；上游与本机目录比较，2026-11-15
-> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md); [可达性的四种口径](../../raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md); [三仓安装与本机清点](../../raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md)
-> Updated: 2026-11-15
+> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09；四种口径的可达性闭包（57 个目录、143 个 markdown 文件全量扫描），2026-11-10；上游与本机目录比较，2026-11-15；本机 22 本 playbook 逐本正文读取与 14 组同场景配对 frontmatter，2026-11-20
+> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md); [可达性的四种口径](../../raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md); [三仓安装与本机清点](../../raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md); [本机 22 本 playbook 逐本调用链](../../raw/ai-coding-agents/2026-11-20-pstack-playbook-call-chains.md); [pstack 与 matt 同场景配对 frontmatter](../../raw/ai-coding-agents/2026-11-20-pstack-matt-same-scenario-pairs.md)
+> Updated: 2026-11-20
 
 ## Overview
 
 backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit 25abb38（2026-10-29）共有 61 个 `SKILL.md`：`skills/` 下 58 个注册技能 + `automations/benny/skills/` 下 3 个 Slack 自动化专用技能（不进 slash 菜单）。注册技能 = 24 个 `principle-*` 判例 + 34 个功能技能。全部技能的 frontmatter 除 `setup-pstack` 外都设 `disable-model-invocation: true`——模型不能自由触发它们，只有用户显式调用或技能间按正文指令调用。执行路由分三层：入口（poteto-mode / poteto-help / setup-pstack）→ 流程（poteto-mode 的 23 份 playbook）→ 工序（功能技能）与判例（principle）。按「加判例条件派发」口径（判例按条件被点名），三个入口可达 48 个，9 个功能技能只能由用户直接点名；只算 `t` 与 `b` 两类边则为 36 个。四种口径并列见「可达性」小节。本机 `.skill-lock.json` 记录的 pstack 条目为 57 个（`tdd` 因同名目录来自 mattpocock/skills 而未被占用装上，`teach` 已于 2026-11-07 换成 pstack 版）。
+
+> **Status: Outdated**（2026-11-20）
+> 本句「23 份 playbook」为 commit 25abb38 口径。本机 2026-11-20 逐本清点为 22 本（无 orchestrate.md），详见下文「playbook 逐本调用链（2026-11-20 正文口径）」。
 
 2026-11-15 对照上游 commit `f905b88ebdd877e6b36fcc791970d47f44d15a15`：本机 lock 中 pstack 来源的 57 个技能目录与上游对应目录逐目录比较一致。上游 `skills/` 下唯一未安装的 pstack 版本是 `tdd`，本机同名技能来自 mattpocock。此清点范围为 `skills/`，不包括下文单列的 `automations/benny/skills/`。
 
@@ -27,6 +30,10 @@ backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit
 
 - **poteto-mode 触发器路由**（SKILL.md:20-37）：Non-negotiables 把特定情形固定路由到 how（研究）、architect（跨函数边界写码）、swarm/arena（并行扇出/方案竞赛）、interrogate（争议设计）、unslop（任何成文表面）、technical-writing（文档类）、no-comments（评审前）、benchmark-checklist（报数字前）、show-me-your-work（自主长任务）、principle-model-the-domain（任何代码）、Shipping playbook（落地绿色栈）。
 - **playbook 分派**（SKILL.md:136）：23 份 playbook，其中 16 份有自己的技能出边；7 份（orchestrate、autopilot-stack、babysit、pause-safely、visual-parity、authoring-a-skill、runtime-forensics）不含技能调用，纯自述步骤。
+
+> **Status: Outdated**（2026-11-20）
+> 本条按 25abb38 记 23 份。本机 2026-11-20 为 22 本且出边按正文重算，见下文新小节；orchestrate 条目在本机不存在。
+
 - **principle 命名规则**（SKILL.md:41-80）：标题转 kebab-case 加 `principle-` 前缀；`sequence-verifiable-units` 是唯一也顺带给出显式括号 slug 的（L69）。
 - **README 与正文矛盾**：README:46-48 自述一批技能「不调用其他 pstack 技能」，但正文有 why→how、architect→how、blast-radius→(how, why, arena, unslop)、ketchup→bro、ketchup-video→ketchup 的执行边；README:52-64 的「Also install」依赖表与正文一致，以正文为准。
 
@@ -70,6 +77,9 @@ backnotprop/pstack（cursor/plugins/pstack 的 harness 中立镜像）在 commit
 
 playbook 覆盖按调用强度分四档：16 本有执行调用指令；`orchestrate` 只在 `playbooks/orchestrate.md:3` 做口径区分（「One ambitious run that needs a bespoke workflow is figure-it-out.」），2026-10-29 的抽取记为 playbook-instruction 0 条；`pause-safely` 只在 `playbooks/pause-safely.md:8` 提到 show-me-your-work 的 trail，未计边；`authoring-a-skill`、`autopilot-stack`、`babysit`、`runtime-forensics`、`visual-parity` 五本无任何技能名。
 
+> **Status: Outdated**（2026-11-20）
+> 本段四档覆盖统计与 orchestrate 条目为 2026-11-09 grep 口径。按 2026-11-20 正文逐行读取：multi-phase-plan 只显式引用 prototype 与 sequence-verifiable-units；opening-a-pr 只点名 /deslop；investigation 只点名 why 与 unslop。差异细节与逐本调用链见下文新小节。
+
 ## 安装核对（本机，2026-10-29）
 
 `~/.agents/.skill-lock.json` 共 155 条 skills 条目；`source == backnotprop/pstack` 56 条。2026-11-07 换源后为 156 条，其中 pstack 57 条。
@@ -93,6 +103,10 @@ playbook 覆盖按调用强度分四档：16 本有执行调用指令；`orchest
 ### 入口三个
 
 - **poteto-mode**：任务总控。先复述用户目标与最小改动（L19）；按任务匹配 23 份 playbook，把 playbook 步骤原样抄成 todo list 逐条执行，无匹配时交 figure-it-out 现场设计（L136-140）；触发器在岔路口路由功能技能（见上文）；自主规则「可逆直接做、不可逆写必停」（L84-86）；子代理一律后台、按角色配模型（代码默认 `grok-4.7-xhigh-fast`，判断与文书默认 `claude-opus-5-5-xhigh`，L96）。
+
+> **Status: Outdated**（2026-11-20）
+> 「匹配 23 份 playbook」改为本机 22 本口径；路由规则本身不变（poteto-mode/SKILL.md:120）。
+
 - **poteto-help**：前台咨询。回答 pstack 使用问题，给一段可发送的提示词与来源链接，明确不替用户开工（pstack 运行花费真实 tokens）；只有用户让它干活时才读 poteto-mode 并在其下执行（L9、L11）；推荐前先读被推荐的技能（L64）。
 - **setup-pstack**：配置员。探测可用模型 slug，问四档预算（unlimited/large/medium/small），按模型家族与别名（inherit-parent/auto）映射角色写规则文件（Cursor 写 `~/.cursor/rules/pstack-models.mdc`、Claude Code 写 `~/.claude/rules/pstack-models.md`、其他写 `~/.agents/pstack-models.md`，L10-14）；重跑幂等（L45）；可选触发 create-verification-skill（L80）与 create-formal-verification-skill（L84）。
 
@@ -186,6 +200,59 @@ playbook 覆盖按调用强度分四档：16 本有执行调用指令；`orchest
 - **triage-issue-reports**：Slack 新报告触发。冻结原帖坐标，分类，用 how/why 做有限源码与历史排查，工单查重，只在原帖线程发唯一结论（带 `[benny:bug]`/`[benny:performance]`/`[benny:other]` 标记）；只有明确新 bug 才建工单；硬规则「coordinator 是唯一 Slack poster、子代理 read-only 且 prompt 显式禁一切 Slack 写」（SKILL.md L13-28）。
 - **reproduce-and-fix-issues**：等可信 triage 标记后启动。通过配置的 control adapter 在真实 UI 上把症状复现两次；先查有没有 PR/commit 已修（有就转 verify 模式，不覆盖）；确认复现才允许一次有界根因修复（可用 tdd），做前后对照证明，只开草稿 PR（SKILL.md L13-28；FOR_AGENTS.md:21、:36）。
 
+## playbook 逐本调用链（2026-11-20 正文口径）
+
+按本机 `poteto-mode/playbooks/` 逐本正文读取，共 22 本，无 orchestrate.md。总控路由：`poteto-mode/SKILL.md:120` 把任务匹配到 playbook、步骤抄成 todo list，无匹配或大型跨切面任务路由到 figure-it-out；`poteto-help` 的 Playbooks 节列出六条直接触发短语（babysit this pr / land the stack / take over this branch / pause safely / full autopilot 或 autopilot, don't merge / run the eval playbook）。
+
+| playbook | 正文点名的技能与判例 | 转交 |
+|---|---|---|
+| investigation | why、unslop | 只读出报告；后续要改代码转 Bug fix 或 Feature |
+| runtime-forensics | guard-the-context-window | 诊断后转 Bug fix 或 Perf issue |
+| trace-forensics | guard-the-context-window | 诊断后转 Bug fix 或 Perf issue |
+| prototype | exhaust-the-design-space、architect（交接正式结构） | 无待决问题直接转 Feature；选定方向交 Feature |
+| multi-phase-plan | sequence-verifiable-units；第 2 步引 playbooks/prototype.md | 写完计划即停，等操作员指令 |
+| feature | architect、arena、interrogate、separate-before-serializing-shared-state、model-the-domain、sequence-verifiable-units | 第 8 步 Opening a PR |
+| bug-fix | why、architect、interrogate、tdd、sequence-verifiable-units | 第 6 步 Opening a PR |
+| perf-issue | benchmark-checklist、architect、sequence-verifiable-units | 第 6 步 Opening a PR；持续刷分转 Hillclimb |
+| hillclimb | prove-it-works、build-the-lever、benchmark-checklist、show-me-your-work、perf-issue 口诀排序、autonomous-run 唤醒机制、guard-the-context-window、separate-before-serializing-shared-state、sequence-verifiable-units、laziness-protocol | 第 8 步 Opening a PR |
+| refactoring | figure-it-out（大型转交）、architect 与 9 条判例（model-the-domain、foundational-thinking、redesign-from-first-principles、subtract-before-you-add、laziness-protocol、migrate-callers-then-delete-legacy-apis、prove-it-works、minimize-reader-load、sequence-verifiable-units） | 缺功能或重设计转 Feature；第 8 步 Opening a PR |
+| visual-parity | separate-before-serializing-shared-state | 每组件或每批 Opening a PR |
+| authoring-a-skill | create-skill / skill-creator、encode-lessons-in-structure | 第 4 步 Opening a PR |
+| eval | arena Phase B/C、读本地 transcript 核对实开文件 | 独立收尾，给是否晋升的建议 |
+| opening-a-pr | /deslop（cursor-team-kit） | 自述为其他 playbook 的收尾步；开 PR 不自动 babysit |
+| babysit | 不调技能，读 references/bugbot-triage.md | 停在 merge-ready；merge/land/ship 指令交 Shipping |
+| shipping | control-ui / control-cli 独立 verifier、git patch-id | 合并进主干即止 |
+| autopilot-full | opening-a-pr、babysit、shipping（patch-id 规则）、deslop、no-comments、show-me-your-work、swarm、ketchup | 全流程推进到合并 |
+| autopilot-stack | 继承 autopilot-full 全部步骤 | 停在 verified，不合并 |
+| session-pickup | guard-the-context-window、prove-it-works | 恢复现场后把剩余工作路由给匹配的 playbook |
+| pause-safely | show-me-your-work 账本指针（如已有） | 下次由 Session pickup 接手 |
+| autonomous-run | sequence-verifiable-units、poteto-mode（中途自修复）、show-me-your-work | 满足退出条件或真阻塞时停 |
+| worktree-cleanup | build-the-lever、encode-lessons-in-structure、prove-it-works、guard-the-context-window | 清理后报告 df -h / 前后差值 |
+
+```mermaid
+flowchart TD
+  PM["/poteto-mode 匹配任务"] --> INV[Investigation] & RF[Runtime forensics] & TF[Trace forensics] & PROTO[Prototype] & MPP[Multi-phase plan]
+  PM --> FEAT[Feature] & BF[Bug fix] & PI[Perf issue] & HC[Hillclimb] & RE[Refactoring] & VP[Visual parity] & AS[Authoring a skill]
+  PM --> EVAL[Eval] & APF[Autopilot-full] & APS[Autopilot-stack] & SP[Session pickup] & PS[Pause safely] & AR[Autonomous run] & WC[Worktree cleanup]
+  MPP --> PROTO
+  PROTO --> FEAT
+  INV --> BF & FEAT
+  RF --> BF & PI
+  TF --> BF & PI
+  PI --> HC
+  RE --> FEAT
+  FEAT & BF & PI & HC & RE & VP & AS --> OPR[Opening a PR]
+  APF --> OPR
+  APF --> BAB[Babysit]
+  OPR -.->|"merge / land / ship 指令"| BAB
+  BAB --> SHIP[Shipping]
+  APS --> APF
+  PS --> SP
+  SP --> PM
+```
+
+与 2026-11-09 旧边表的三处口径差异（旧表为 grep 口径、本表为正文逐行读取）：multi-phase-plan、opening-a-pr、investigation 的出边以本表为准。
+
 ## 边界与未验证项
 
 - 层级是文档指令的重建模型，未做运行时路由探测；边的存在性有 `file:line` 原文依据，实际触发取决于宿主与任务。
@@ -199,3 +266,4 @@ playbook 覆盖按调用强度分四档：16 本有执行调用指令；`orchest
 - [pstack 移植版生态全景](pstack-ports-landscape.md)
 - [skill 系统的两种组织轴：pstack 与 mattpocock/skills 对照](skill-system-organization-axes.md)
 - [mattpocock/skills：两轴分类的工程 skill 集](mattpocock-skills-system.md)
+- [pstack 与 matt 的同场景选型](pstack-vs-matt-skill-selection.md)

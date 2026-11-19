@@ -1,8 +1,8 @@
 # skill 系统的两种组织轴：pstack 与 mattpocock/skills 对照
 
-> Sources: poteto-mode SKILL.md 原文, 2026-10-05; mattpocock/skills README 与 ask-matt, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29; 两仓同名 tdd 与 teach 对照（pstack@f104aa8、mattpocock/skills@4ae2317）, 2026-11-07
-> Raw: [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [EGM 仓库一手材料](../../raw/ai-coding-agents/2026-11-14-elephant-goldfish-model.md); [本地技能栈与覆盖对照](../../raw/ai-coding-agents/2026-11-14-local-skill-stack-overlap.md)
-> Updated: 2026-11-14
+> Sources: poteto-mode SKILL.md 原文, 2026-10-05; mattpocock/skills README 与 ask-matt, 2026-10-05; 仓库树枚举与抽取（backnotprop/pstack@25abb38559ddbabec563646224d09eff9a250eca，已安装 56 个 SKILL.md 逐字节比对一致）, 2026-10-29; 两仓同名 tdd 与 teach 对照（pstack@f104aa8、mattpocock/skills@4ae2317）, 2026-11-07; 本机 22 本 playbook 正文清点, 2026-11-20
+> Raw: [pstack-poteto-mode-skill](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [mattpocock-skills-readme](../../raw/ai-coding-agents/2026-10-05-mattpocock-skills-readme.md); [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [EGM 仓库一手材料](../../raw/ai-coding-agents/2026-11-14-elephant-goldfish-model.md); [本地技能栈与覆盖对照](../../raw/ai-coding-agents/2026-11-14-local-skill-stack-overlap.md); [本机 22 本 playbook 逐本调用链](../../raw/ai-coding-agents/2026-11-20-pstack-playbook-call-chains.md)
+> Updated: 2026-11-20
 
 ## Overview
 
@@ -13,6 +13,10 @@ pstack 与 mattpocock/skills 是同代工程 skill 集的两个代表（pstack 2
 ## 组织轴
 
 - **pstack（任务类型轴）**：2026-10-05 快照 50 个 skill = 24 个 `principle-*` 决策规则 + 26 个功能 skill；2026-10-29 复核（commit 25abb38）为 58 注册 + 3 自动化，另配 23 份 playbook。每个任务先由 poteto-mode 分类到一份 playbook，playbook 再调用功能 skill，principle 在岔路口做决策。三层：路由 → 流程 → 工序/判例。
+
+> **Status: Outdated**（2026-11-20）
+> 「另配 23 份 playbook」为 commit 25abb38 口径。本机 2026-11-20 逐本清点为 22 本（无 orchestrate.md），逐本调用链见 [pstack 技能地图与行为](pstack-skill-map-and-behaviors.md)。
+
 - **mattpocock（调用者轴）**：27 个 skill 分 user-invoked（编排）与 model-invoked（纪律）两层，明文规定 user-invoked 不可平级互调。流程知识集中写在 ask-matt 的一张流程图里（主线 + 三条 on-ramp + vocabulary 层），skill 自身保持小颗粒。
 
 ## 路由强度
@@ -23,6 +27,10 @@ pstack 与 mattpocock/skills 是同代工程 skill 集的两个代表（pstack 2
 ## 编排密度
 
 - pstack 内建完整的多 agent 体系：subagent 默认后台运行、按角色配模型（代码 `grok-4.7-xhigh-fast`、判断与文书 `claude-opus-5-5-max`）、三个评审团类角色（arena runners、interrogate reviewers、cross-judge pool）、专门的多 PR 自主 playbook（autopilot-full / autopilot-stack / orchestrate）。
+
+> **Status: Outdated**（2026-11-20）
+> 自主 playbook 名单里的 orchestrate 在本机 2026-11-20 已不存在；现存两本为 autopilot-full 与 autopilot-stack。
+
 - mattpocock 的 subagent 集中在两处：`/implement-spec` 的并行 implementer 和 `/code-review` 的双轴并行评审，其余 skill 单线程执行。
 
 ## 自主与验证

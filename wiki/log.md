@@ -2482,3 +2482,10 @@
 - Raw: raw/proxy-ops/2026-11-19-regional-url-test-auto-fallback.md
 - Updated: 域名定向代理规则：把指定域名固定到代理组; LLM API SSE 流式调用：Clash Verge/mihomo + 机场链路的机制、影响与配置
 - 要点：本机 Clash Verge Rev 2.5.10 + mihomo v1.19.33（运行路径在 D 盘，C 盘 2.4.1 为误判后更正）新增香港/美国 url-test 组：include-all-proxies + filter 圈候选（17/6 个），interval 180 秒、timeout 5000、tolerance 0、max-failed-times 3。选点取最近一次测速延迟并缓存约 10 秒；失效两条路：定时测速判失效（最多等一个周期）与建连失败 3 次/5 秒窗口补测、connection refused 即补测；切换只影响新建连接。测速判定"到该地址的可达与延迟"，17 香港节点 GitHub/gstatic 双地址实测 9 双通、2 仅 gstatic 通、6 双失败，换测速地址改变候选集。落地方式：扩展脚本加组、规则增强文件七域名目标改美国自动组、controller PUT /configs 热加载核对，GUI 前台 15 秒拉代理视图。cascade：domain-targeted-proxy-rules 补七域名节点名迁组名实测案例；llm-api-sse-proxy-chain 的"本机无 url-test 组"基线标 Outdated。
+
+## [2026-11-20] ingest | pstack 本机 22 本 playbook 逐本调用链与 pstack/matt 同场景选型
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-20-pstack-playbook-call-chains.md; raw/ai-coding-agents/2026-11-20-pstack-matt-same-scenario-pairs.md
+- Created: pstack 与 matt 的同场景选型
+- Updated: pstack 技能地图与行为; skill 系统的两种组织轴; pstack 移植版生态全景
+- 要点：本机 poteto-mode/playbooks 清点 22 本（无 orchestrate.md，2026-11-14 记录的 23 为历史状态）；逐本正文读取出边与转交：multi-phase-plan 只显式引 prototype 与 sequence-verifiable-units、opening-a-pr 只点名 /deslop、investigation 只点名 why 与 unslop，三处与 2026-11-09 grep 边表口径不同；转交主线为诊断三本转 Bug fix / Perf issue、实现类七本收尾于 Opening a PR、babysit 停在 merge-ready 由 merge/land/ship 指令转 Shipping、autopilot-stack 是 autopilot-full 的不合并变体。同场景配对按 lock 计 57+30 建 14 组表；触发档位按 frontmatter 与 poteto-help 原文分四档：matt 11 个无 disable 行为自动/手调、pstack 仅 setup-pstack、typescript-best-practices 由宿主按 paths 加载、principle 由 /poteto-mode 按名读取（用户很少直接调）。cascade：技能地图文新增「playbook 逐本调用链（2026-11-20 正文口径）」小节并在 Overview、编成与执行边、分层边表、行为面四处置 Status 块；组织轴文与移植版全景文把 23 份与 orchestrate 条目标为历史口径。可选项 learn-pstack 页面 raw 未建（页面版本早于本机安装，本文无需引用其独有判据句）。
