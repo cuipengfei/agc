@@ -29,6 +29,15 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 
 测试通过公开命令和验收接口检查参数、退出码、报告校验、输出文件保护与浏览器清理。页面用例隔离 Playwright 外部依赖；真实浏览器、GPU 与正式服务的验收使用下文对应命令。
 
+提交前，pre-commit 对暂存内容运行定向检查：`tools/tern-maintain/` 变更执行 `bun test cli.test.mjs`；`tools/wiki-check/`、`wiki/` 或 `raw/` 变更执行 Wiki 证据检查；Tern workflow 或 `.pre-commit-config.yaml` 变更执行两项检查。检查在暂存内容的临时副本中执行，不读取未暂存或未跟踪文件；失败会阻止提交。启用 hook：
+
+```bash
+uv tool install pre-commit
+pre-commit install
+```
+
+CLI 测试需要 Bun；临时副本中的 Bun 依赖使用冻结的锁定文件安装，优先使用缓存。Wiki 证据检查需要 Python 3。完整 CI 检查仍执行全部 Bun 测试、类型检查、Wiki 证据检查和两组 Python unittest，需要 Bun、uv、Python 3、C 编译器及 WABT 1.0.42。安装 WABT 可运行 `mkdir -p ~/.cache/agc`，然后运行 `bash ci/install-wabt.sh ~/.cache/agc/wabt-1.0.42`；安装目录必须不存在。也可通过 `WABT_DIR` 指定已有 WABT 1.0.42 的 bin 目录。手动运行完整检查可执行 `bash ci/check.sh`；检查当前暂存内容可执行 `bash ci/check.sh --staged`。
+
 字体工具使用 FontTools 和 JSON Schema；通过 `uv run --with-requirements requirements.txt python ...` 运行，无需改变同步项目的 Python 环境。
 
 ## 获取与定位

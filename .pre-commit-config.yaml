@@ -4,3 +4,12 @@ repos:
     hooks:
       - id: gitleaks
         stages: [pre-commit, pre-push]
+  - repo: local
+    hooks:
+      - id: tern-ci-checks
+        name: Tern quick checks
+        entry: bash tools/tern-maintain/ci/check.sh --staged
+        language: system
+        stages: [pre-commit]
+        always_run: true
+        pass_filenames: false
