@@ -2538,3 +2538,9 @@
 - Raw: raw/omp/2026-11-20-omp-dsm-ghidra-jdk-provisioning.md
 - Created: OMP 二进制分析的按需依赖安装
 - 要点：裸读只返回元数据，`:overview`/`:strings`/`dsm.open` 在首次分析时安装 Ghidra 12.2、JDK 25、PyGhidra。JDK 查找只认 `JAVA_HOME` 与自管目录，不读 `PATH`；本机 `JAVA_HOME` 未设置、已有 Zulu 25.0.5.1，仍下载 Temurin 25.0.5.1。占用 `~/.omp/ghidra` 1.2G 与分析项目 697M。本次浏览器侧无新增下载：Chromium 为 2026-11-07 系统包。
+
+## [2026-11-20] ingest | OMP hook-status footer：主题着色与变化提示
+- Disposition: New
+- Raw: raw/omp-extensibility/2026-11-20-hook-status-footer-theme-and-flash.md; raw/omp/2026-11-20-bash-pty-overlay-vs-bang-command.md
+- Created: OMP hook-status footer：主题着色与变化提示; OMP bash 工具的 PTY 浮层与 `!` 命令的 PTY 路径
+- 要点：`setStatus` 写 hook-status 行，`sanitizeHookStatusText` 保留 SGR 闪烁码与背景色码；主题色用颜色名，切换主题后下一轮刷新生效；本机终端实测颜色正常、`\x1b[5m` 不显示，改用 250ms 相位切换背景共 8 相位；`clearTimer` 后须置空句柄。实测完整刷新中位 1.443 ms、请求占 62%、闪烁回调 CPU 中位 0.068 ms；Bun CPU profile 因空闲间隔污染不可用，改 `process.cpuUsage()`。另录 `pty: true` 浮层与 `!` headless PTY 的能力差异与门控。

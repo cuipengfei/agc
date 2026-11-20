@@ -276,6 +276,7 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 | [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批分类与接管语义；2026-11-09 补档位解析：是否询问取决于 `tools.approvalMode`，默认 `yolo`，前台控制另走确认；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件 | 2026-11-09 |
 | [OMP bash 命令行折叠标记与 /dev/null 语义](omp-tools/bash-shell-visualization-idioms.md) | `🔇 out`/`🔇 err`/`🔇 silent` 与 `+err` 的四类重定向映射（idioms 层默认开）；命令文本来源链（模型 → rtk 扩展改写 `event.input.command`，6 次 rewrite 实测中 2 次带重定向均原样保留）；丢弃验证 `echo hidden-line >/dev/null` 不进工具结果；同区域 `⇡ first N`/`⇣ last N`/`⟵ ↓`/`⟦..↓⟧`/`⏱`/`# stop on first error` 等词汇表；`display.shellVisualization` 默认开；v18.18.0 tag 取证与未验证项 | 2026-11-07 |
 | [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](omp-tools/xd-protocol-and-selective-commit-journal.md) | `xd://` 三类入口全表：10 个 `xd://<tool>/<topic>` 按需文档主题（`read`/`eval`）、4 个常驻动作设备（`resolve`/`reject`/`propose`/`report_issue`）、`tools.xdev` 动态工具抽屉（本机 `config.yml:116` 为 `false`）；`commit.draft()` 背后的会话级 `changes.jsonl`（`change`/`call`/`commit` 三类记录）与 `blobs/<size>-<hash>` gzip 快照（≤8 MiB，父子代理共享 artifacts 目录） | 2026-11-15 |
+| [OMP bash 工具的 PTY 浮层与 `!` 命令的 PTY 路径](omp-tools/bash-pty-overlay-and-bang-commands.md) | `pty: true` 打开当前 TUI 内的全屏浮层、键盘直通、生命周期跟随工具调用；`!` 走 headless PTY 与 vterm 回放，仅在用户 shell 为 zsh/fish 且 `PI_NO_PTY` 未设时分配；全屏程序在 `!` 中不可用 | 2026-11-20 |
 
 ## omp-extensibility
 
@@ -285,6 +286,7 @@ OMP Extension 与 Hook 的职责边界。
 |---------|---------|---------|
 | [OMP Hooks vs Extensions](omp-extensibility/hooks-vs-extensions.md) | Extension 覆盖 HookAPI 全部用例并增加 tool/provider，Hook 是 legacy 兼容层；`ExtensionContext` 的 `model` getter、自定义 provider api 与会话级 `setModel`、工具声明投影，以及用真实 `ExtensionRunner.createContext` 测试提示词改写扩展 | 2026-11-18 |
 | [OMP tool_call 范围防护扩展：执行前阻断危险 Grep](omp-extensibility/tool-call-range-guard-extension.md) | `tool_call` 阶段返回 `block`/`reason` 的范围拦截；受保护集合、父目录候选枚举、排除项与 symlink 归一、未注册 URI 拒绝、失败关闭；23 项边界回归、6 项真实执行验收与 strace 证据；只覆盖 Grep | 2026-11-02 |
+| [OMP hook-status footer：主题着色与变化提示](omp-extensibility/hook-status-footer-patterns.md) | `setStatus` 写 hook-status 行而非 segment bar；`ctx.ui.theme` 颜色名随主题切换即时生效；终端不保证渲染 SGR 闪烁时改用 250ms 相位切换；`clearTimer` 必须同时置空句柄；刷新中位 1.443 ms、闪烁回调中位 0.068 ms 与测量边界 | 2026-11-20 |
 
 ## omp-tips
 
