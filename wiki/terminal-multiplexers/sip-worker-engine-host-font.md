@@ -30,7 +30,7 @@ ExecStart=/home/cpf/go/bin/sip -H localhost -p 7682 -- /usr/bin/zsh -l
 
 ### 2. 重载并重启
 
-本机 sip 服务现为 `KillMode=process`（`sip.service:8`），与 ttyd 一致。按 systemd.kill(5) 语义，下面的重启只结束 sip 主进程，Herdr server 与 pane 程序留在原 cgroup，浏览器重连后 attach 回到原会话；此条为推断，修改后尚未实测。详见 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启波及范围”小节。
+重启前先确认目标机器的停止策略：`systemctl --user show sip -p KillMode`。只有生效值为 `process` 时，下面的重启才只结束 sip 主进程；否则按 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启边界：两份服务的 KillMode”一节设置 `KillMode=process` 并 `daemon-reload`，或先保存、迁移需要保留的 Herdr 与 pane。本机生效值为 `process`（`sip.service:8`）；按 systemd.kill(5) 语义，Herdr server 与 pane 程序留在原 cgroup、重连后 attach 回到原会话，此条为推断，修改后尚未实测。
 
 ```bash
 systemd-analyze --user verify "$HOME/.config/systemd/user/sip.service"

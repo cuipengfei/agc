@@ -73,7 +73,7 @@ v0.9.5 的 Linux 分支仍保留“先清除再开启”。
 - 已核实：源码中的调用链与清除序列；隔离实验五组结果。
 - 未核实：真实浏览器会话里的焦点与鼠标事件顺序；ttyd 与 sip 在真实使用中表现不同的具体原因（同一人工时序下 ttyd 前端也会丢失松开）。
 - 本机可读 xterm 源码为 6.1.0-beta.216，sip 标称内嵌 beta.290；行为差异未逐版本比对。
-- sip 服务现为 `KillMode=process`（`sip.service:8`），与 ttyd 一致。按 systemd.kill(5) 语义，重启只结束 sip 主进程，Herdr server 与 pane 程序留在原 cgroup，重连后 attach 回到原会话；此条为推断，修改后尚未实测。见 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启波及范围”小节。
+- sip 服务现为 `KillMode=process`（`sip.service:8`），与 ttyd 一致。按 systemd.kill(5) 语义，重启只结束 sip 主进程，Herdr server 与 pane 程序留在原 cgroup，重连后 attach 回到原会话；此条为推断，修改后尚未实测。见 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启边界：两份服务的 KillMode”一节。
 
 ## See Also
 
