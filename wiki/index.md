@@ -671,3 +671,12 @@ gcloud CLI 建立 SSH 隧道时的进程归属、端口持有者与中转机制�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [gcloud SSH 隧道的进程形态](gcloud-ssh-tunnels/gcloud-ssh-tunnel-process-model.md) | 隧道无持久实体，物理形态是本机进程与连接；直连只需 ssh、compute ssh 走 IAP 需 ssh 加 start-iap-tunnel 子进程、workstations ssh 需 ssh 加 gcloud 主进程；IAP 与 Cloud Workstations 是两套独立中转服务及各自端点与鉴权 | 2026-11-20 |
+
+## phishing-defense
+
+邮件认证滥用、仿冒域名与登录页镜像代理的识别和防护。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [ESP 租户滥用：认证通过不等于内容可信](phishing-defense/esp-tenant-abuse.md) | 认证链、头部读法、DMARC 边界与账户接管路径 | 2026-11-20 |
+| [令牌门控的登录页镜像代理](phishing-defense/cookie-gated-login-mirror.md) | 令牌 Cookie 门控、跳转诱饵、实时镜像证据与凭据/会话路径 | 2026-11-20 |

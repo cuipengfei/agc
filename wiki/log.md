@@ -2513,3 +2513,9 @@
 - Raw: raw/tern/2026-11-20-tern-0-9-28-font-registration-patch-deploy.md
 - Updated: Tern 升级辅助工具与验收边界; Tern 设置存储位置
 - 要点：0.9.28 Web 已完整收到 Maple 字体但按名称选择返回空；官方原版对照分类 `registration_missing`，登记补丁候选分类 `working`。候选 WASM SHA-256 `0a41f8c18682fc6a26c92d8aaf5ff2979d1a852c2f3abb492817f235dc418da1`，官方原版 `36abf20e257cbb0e356e2ee0b539d2a1186c6be346bbba35e4ac4bf786a9614d`。新增 `font-registration-build`、`assets --registration` 与 `font-check`；未来版本只报告 `working`/`registration_missing`/`needs_investigation`，不自动应用补丁。正式 Web 只追加 `--assets ~/.local/share/tern-maintain/0.9.28-registration-0a41f8c18682/site` 并重启 Web，daemon PID `462844` 不变，session `4` 与三个 pane ID 保持不变；正式验收 `source: served`、classification `working`，真实画面确认 ASCII、中文、四个 Nerd Font 符号、20 列边界与固定光标。旧的 `--fonts` 替换流程标记 deprecated。
+
+## [2026-11-20] ingest | ESP 租户滥用：认证通过不等于内容可信
+- Disposition: New
+- Raw: raw/phishing-defense/2026-11-20-esp-tenant-abuse-and-login-mirror.md
+- Created: 令牌门控的登录页镜像代理
+- 要点：认证通过只证明 ESP 租户身份；令牌 Cookie 门控在无 Cookie 时跳回官方登录域，带 Cookie 时投放现场改写的登录页；66 个资源路径一致、主机名被改写、nonce 随请求变化；凭据与会话转发按代理形态推断，未提交凭据。
