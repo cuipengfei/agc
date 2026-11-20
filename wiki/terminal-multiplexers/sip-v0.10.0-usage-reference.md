@@ -1,7 +1,7 @@
 # sip v0.10.0 使用参考
 
 > Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与官方源码，2026-11-15；Gaurav-Gosain/webterm 字体加载源码；本机 systemd 与隔离浏览器端实测，2026-11-15；sip v0.10.0 源码与隔离 Chromium 实测（渲染器与鼠标），2026-11-20
-> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md)
+> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md); [sip v0.10.0 Worker engine：字体加载路径与宿主字体切换](../../raw/terminal-multiplexers/2026-11-20-sip-worker-engine-host-font.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md)
 > Updated: 2026-11-20
 
 ## Overview
@@ -62,13 +62,15 @@ URL 参数刷新后仍在；设置面板重启浏览器后仍在；CLI 参数重
 | `--font` | 空 | 将服务器上的字体文件提供给浏览器下载 |
 | `--renderer` | 空（自动 WebGL） | 初始默认渲染器 |
 
-`--font-family` 设置字体名称；`--font` 提供服务器上的字体文件。浏览器还会加载 sip 内置的 JetBrains 字体：v0.10.0 没有为这组字体单独指定名称，webterm 会把它们注册为配置列表里的第一个名称。
+`--font-family` 设置字体名称；`--font` 提供服务器上的字体文件。浏览器还会加载 sip 内置的 JetBrains 字体：v0.10.0 没有为这组字体单独指定名称，前端会把它们注册为配置列表里的第一个名称。
 
-本机配置 `--font-family "Maple Mono NF CN, monospace"`，Windows Chrome 已安装 Maple，但隔离测试的英文和数字实际使用 `JetBrainsMonoNFM-Regular`。单独提供 Maple 文件并设置相同字体名称时，测试文字仍使用 JetBrains。
+启动命令使用 `--font-family "Maple Mono NF CN, monospace"` 时，隔离测试的英文和数字命中 `JetBrainsMonoNFM-Regular`；单独提供 Maple 文件并设置相同字体名称时，测试文字仍使用 JetBrains。本机当前启动命令不指定字体名，Worker engine 下由页面选择宿主字体，步骤见下文链接。
+
+Worker engine 下字体在 Worker 内加载，页面 `document.fonts` 与它互相独立；用宿主字体的步骤与判据见 [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md)。
 
 #### Chrome Console 临时操作
 
-适用于上述 sip v0.10.0 配置，且运行 Chrome 的电脑已安装 `Maple Mono NF CN`。在 sip 标签页按 F12，打开 Console，执行：
+适用于 xterm 系渲染器（Auto、WebGL、Canvas、DOM、vtgl）的 sip v0.10.0 配置，且运行 Chrome 的电脑已安装 `Maple Mono NF CN`。在 sip 标签页按 F12，打开 Console，执行：
 
 ```js
 [...document.fonts]
@@ -82,7 +84,7 @@ window.sipTerm.webterm.setOptions({
 
 这会从当前页面的字体集合移除以该名称注册的网页字体，并重新应用终端字体；电脑上安装的字体文件不受影响。隔离 Chrome 的 DOM 终端测试中，英文和数字切换到 `MapleMono-NF-CN-Regular`，终端对象保持不变。Canvas 和 WebGL 测试观察到画布重绘，未直接测量画布字形的字体。
 
-操作只影响当前页面，刷新后可再次执行。操作本身不会主动刷新或重连，字体更换可能触发终端尺寸调整；刷新会断开 sip 连接并结束 sip 直接运行的 shell，Herdr 后台会话可重新连接。`window.sipTerm` 是 sip 的内部接口，升级后可能变化；本机现有标签页未参与隔离测试。
+操作只影响当前页面，刷新后可再次执行。操作本身不会主动刷新或重连，字体更换可能触发终端尺寸调整；刷新会断开 sip 连接并结束 sip 直接运行的 shell，Herdr 的会话记录可用 `herdr --session` 重新进入。`window.sipTerm` 是 sip 的内部接口，升级后可能变化；本机现有标签页未参与隔离测试。
 
 ### 键盘与图形
 
@@ -138,7 +140,7 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 | `Canvas` | xterm.js + Canvas 2D | Windows + WSL2 首选；字体抗锯齿自然；彻底避开 WebGL 色块故障 |
 | `DOM` | xterm.js + HTML 元素 | 无 GPU 环境、屏幕阅读器、自动化测试 |
 | `vtgl` | xterm.js + 独立绘制组件 `static/webterm-vtgl.js` | 实验性，测试字形排版整形 |
-| `Worker engine` | libghostty-vt（WebAssembly）+ WebGL2，必要时 Canvas 2D；解析与绘制在 Web Workers | 实验性，海量输出时保持页面响应；指针与键盘走独立实现 |
+| `Worker engine` | libghostty-vt（WebAssembly）+ WebGL2，必要时 Canvas 2D；解析与绘制在 Web Workers | 实验性，海量输出时保持页面响应；指针与键盘走独立实现；字体在 Worker 内加载，见 [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md) |
 
 ## Transport 选型
 
@@ -159,10 +161,12 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 - Canvas 渲染器「字体抗锯齿自然」是相对 WebGL 的体感描述，非量化指标。
 - `vtgl` 实际稳定性未在本机长期验证。
 - `Worker engine` 在焦点重设期间保留鼠标松开事件（隔离 Chromium 实测）；Kitty 图形与键盘协议在源码中具备，未实跑验证；长期稳定性未验证。
+- 本机用户确认 Worker engine 的字体切换生效；未做字形级字体来源测量。截图比对受重绘时序影响，不作为判据。
 - 鼠标松开丢失的机制与实验对照见 [焦点刷新期间的鼠标松开丢失](focus-refresh-mouse-release-loss.md)。
 
 ## See Also
 
 - [Go 与 sip 安装升级](go-and-sip-install-upgrade.md)
 - [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md)
+- [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md)
 - [浏览器端 Kitty 图形终端](../terminal-graphics/browser-kitty-terminals.md)

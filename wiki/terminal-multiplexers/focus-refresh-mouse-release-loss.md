@@ -1,7 +1,7 @@
 # 焦点刷新期间的鼠标松开丢失
 
-> Sources: herdrdev/herdr v0.9.5 源码，2026-11-20；Gaurav-Gosain/sip v0.10.0 源码与隔离 Chromium 实验，2026-11-20
-> Raw: [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md)
+> Sources: herdrdev/herdr v0.9.5 源码与 `config-reference.json`，2026-11-20；Gaurav-Gosain/sip v0.10.0 源码与隔离 Chromium 实验，2026-11-20
+> Raw: [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md); [Herdr 0.9.5：标签栏位置与滚轮步长](../../raw/herdr-plannotator/2026-11-20-herdr-tab-bar-position-and-scroll-lines.md)
 > Updated: 2026-11-20
 
 ## Overview
@@ -62,7 +62,8 @@ v0.9.5 的 Linux 分支仍保留“先清除再开启”。
 
 ## 规避与修复
 
-- 浏览器侧：sip 设置面板把 Renderer 改为 `Worker engine (experimental)` 并连接受影响会重连、保留 Herdr 会话。设置持久保存在浏览器。
+- 浏览器侧：sip 设置面板把 Renderer 改为 `Worker engine (experimental)`，本机切换后该现象不再出现；设置保存在浏览器。重连或刷新会结束 sip 的当前 shell，Herdr 的会话记录可用 `herdr --session` 重新进入。
+- 滚轮幅度：Herdr `ui.mouse_scroll_lines` 默认 3，最小 1；本机设为 1，客户端需 `menu → reload config` 读取。改动后的体感未单独确认。
 - 临时手段：在页面控制台执行 `window.sipTerm.term.write('\x1b[?1004l')`，关闭该标签页的焦点报告；页面刷新或重连后失效，恢复用 `\x1b[?1004h`。
 - 程序侧修复方向：捕获已开启时只重申启用状态，仅在关闭捕获或退出时清除全部模式。
 - 已提交上游报告：herdrdev/herdr#6114。
@@ -72,8 +73,10 @@ v0.9.5 的 Linux 分支仍保留“先清除再开启”。
 - 已核实：源码中的调用链与清除序列；隔离实验五组结果。
 - 未核实：真实浏览器会话里的焦点与鼠标事件顺序；ttyd 与 sip 在真实使用中表现不同的具体原因（同一人工时序下 ttyd 前端也会丢失松开）。
 - 本机可读 xterm 源码为 6.1.0-beta.216，sip 标称内嵌 beta.290；行为差异未逐版本比对。
+- sip 的服务级重启按 `control-group` 结束其 cgroup 内全部进程，与该 shell 同组的 Herdr 会一起结束；见 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启波及范围”。
 
 ## See Also
 
 - [sip v0.10.0 使用参考](sip-v0.10.0-usage-reference.md)
 - [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md)
+- [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md)

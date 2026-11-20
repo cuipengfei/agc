@@ -2551,3 +2551,16 @@
 - Created: OMP 自有浏览器后端：WebKit 与 Chromium 对照
 - Updated: OMP browser prelude 与 relay 架构; ABKit：面向 agent 的 WebKit 浏览器引擎; OMP 配置语义手册
 - 要点：19.0.1 的 `browser.enabled` 默认 `true`；WebKit 引擎只在显式 `app:"webkit"` 或受管 Chromium 需要先下载时安装，系统 Chromium、`PUPPETEER_EXECUTABLE_PATH`、`~/.omp/puppeteer` 任一就绪即跳过；`browser.webkit: false` 只关自动选择，`PI_BROWSER_WEBKIT=0` 才是硬关闭。`VIEWER_PLATFORMS` 只有 `darwin`，Linux 与 Windows 的可见窗口归 Chromium。设置改动经目录监视热加载，进行中会话在下一轮带隐藏 prelude 通知；浏览器类 MCP server 过滤名单不含 `chrome-devtools`。本机开 enabled 后 `typeof browser` 为 `object`，首个标签走系统 Chromium，无下载；Google 搜索可用。
+
+## [2026-11-20] ingest | sip Worker engine 下使用宿主字体
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-20-sip-worker-engine-host-font.md
+- Created: sip Worker engine 下使用宿主字体
+- Updated: sip v0.10.0 使用参考
+- 要点：Worker engine 在 Worker 内加载字体，内嵌 JetBrains 按配置首个字体名登记进 `self.fonts`，`loadFonts` 只追加不移除；页面 `document.fonts` 与它互相独立。`term.cw`/`term.ch` 反映单元格宽度与行高，实际字形结合目视或来源检查；截图受 `setOptions` 触发的 `fit()` 与重绘影响，不作判据。改法：启动命令去掉 `--font-family`、`daemon-reload` 与重启、页面 `setOptions` 指向宿主字体、检查尺寸并目视确认；本机用户确认生效。浏览器在 Windows 宿主取字体，WSL 的 `fc-match` 不参与；可选持久化走 `sip.appearance.set` 与 `CapAppearance`，未实测。
+
+## [2026-11-20] ingest | sip 服务重启的 cgroup 波及范围
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md
+- Updated: ttyd 与 sip 并存部署; 焦点刷新期间的鼠标松开丢失; sip v0.10.0 使用参考
+- 要点：单元未设 `KillMode`，默认 `control-group`；Herdr 在 sip 的 shell 内启动，服务重启向整个 cgroup 发 SIGTERM，命令返回 143；`Restart=always` 使异常重启同样波及 Herdr 与全部 pane 进程。验收用 `systemd-cgls --user-unit sip`；迁移方式为独立 user unit 或 `systemd-run --user --scope`，本机未实施。cgroup 与 POSIX 进程组不同，`setsid`、`disown` 无法脱离单元。
