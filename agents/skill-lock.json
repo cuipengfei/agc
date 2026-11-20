@@ -627,21 +627,21 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/virgiliojr94/book-to-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "dec99dd429a95d2250a264212c5161ed7983d787",
+      "skillFolderHash": "57f3db51ff338edfd940a255b885c60ac90e40fa",
       "installedAt": "2026-08-17T13:12:19.212Z",
-      "updatedAt": "2026-11-19T17:05:32.355Z",
-      "commit": "dec99dd429a95d2250a264212c5161ed7983d787"
+      "updatedAt": "2026-11-20T11:46:15.129Z",
+      "commit": "57f3db51ff338edfd940a255b885c60ac90e40fa"
     },
     "humanizer": {
       "source": "blader/humanizer",
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "a48c60c2a3f7a0f6ecc8f9b8d2b1ef71c7927155",
+      "skillFolderHash": "a32f24407364c74c812b43c15926d638bee1e072",
       "pluginName": "humanizer",
       "installedAt": "2026-09-02T12:55:58.315Z",
-      "updatedAt": "2026-11-19T12:31:01.335Z",
-      "commit": "a48c60c2a3f7a0f6ecc8f9b8d2b1ef71c7927155"
+      "updatedAt": "2026-11-20T11:46:15.297Z",
+      "commit": "a32f24407364c74c812b43c15926d638bee1e072"
     },
     "codebase-onboarding": {
       "source": "affaan-m/ecc",
@@ -767,10 +767,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/arena/SKILL.md",
-      "skillFolderHash": "e4e95ae25a1b192db53c68141df2cbce9b3d289d",
+      "skillFolderHash": "4af9439698662918226e4011c15e1a78c71a7d98",
       "installedAt": "2026-10-04T15:35:43.280Z",
-      "updatedAt": "2026-11-18T11:33:51.562Z",
-      "commit": "83a729a182a29b59a2a42fc3d7736b0c376b55d4"
+      "updatedAt": "2026-11-20T11:46:15.352Z",
+      "commit": "4a4f41c46c67a006658ac17cef2d092593f6b26a"
     },
     "automate-me": {
       "source": "backnotprop/pstack",
@@ -1130,10 +1130,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/setup-pstack/SKILL.md",
-      "skillFolderHash": "74753c26f636ed4c67ca506b03a02a736c5346f0",
+      "skillFolderHash": "c8f30df356b9b695c5cf7737b62980e2fc758e2e",
       "installedAt": "2026-10-04T15:35:43.349Z",
-      "updatedAt": "2026-11-18T11:33:52.917Z",
-      "commit": "83a729a182a29b59a2a42fc3d7736b0c376b55d4"
+      "updatedAt": "2026-11-20T11:46:15.410Z",
+      "commit": "4a4f41c46c67a006658ac17cef2d092593f6b26a"
     },
     "show-me-your-work": {
       "source": "backnotprop/pstack",
@@ -1254,10 +1254,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "5c487dfcf246fb1cc855197b2ac67420105ccc73",
+      "skillFolderHash": "dc7fc09d8e7be1170bc12003f9b8fc6ea928cf2b",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-19T12:31:05.074Z",
-      "commit": "def770ed9886171789f420d9cd3fcd79eaace91b"
+      "updatedAt": "2026-11-20T11:46:16.692Z",
+      "commit": "468ab907ee9836e076abdd7d0e0611c475dc1271"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
@@ -1284,20 +1284,20 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "32dc6a52323deb625547354431c4e04afbea7d85",
+      "skillFolderHash": "7b4d07649bbcb69909812c666f24543247927d5d",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-19T12:31:06.352Z",
-      "commit": "def770ed9886171789f420d9cd3fcd79eaace91b"
+      "updatedAt": "2026-11-20T11:46:17.924Z",
+      "commit": "468ab907ee9836e076abdd7d0e0611c475dc1271"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "b0364090215e6c47fb988529c9446b66ee62e8f2",
+      "skillFolderHash": "051dc796e406185d33b4b893d632fa8d023ffcad",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-11-18T11:33:53.562Z",
-      "commit": "83a729a182a29b59a2a42fc3d7736b0c376b55d4"
+      "updatedAt": "2026-11-20T11:46:15.774Z",
+      "commit": "4a4f41c46c67a006658ac17cef2d092593f6b26a"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1314,10 +1314,10 @@
       "sourceUrl": "https://github.com/code-yeongyu/oh-my-openagent.git",
       "ref": "dev",
       "skillPath": "packages/omo-senpi/skills/ultrawork/SKILL.md",
-      "skillFolderHash": "083e7028fe6722739f39527683429416b1a2fac1",
+      "skillFolderHash": "d9c239e1d584424a6b339efe8f986e03d9f5ff99",
       "installedAt": "2026-10-08T16:13:21.148Z",
-      "updatedAt": "2026-11-17T14:40:47.468Z",
-      "commit": "d07327dbe15a189d3355de7532f5735a3e289a14"
+      "updatedAt": "2026-11-20T11:46:18.456Z",
+      "commit": "03423f19439a102aef734677f0a12c7ca9703f9b"
     },
     "note": {
       "source": "cuipengfei/prompts",
@@ -1342,10 +1342,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/danyuchn/asd-ste100-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "707362731928d0d92526c066df15dbbe6a378c07",
+      "skillFolderHash": "65c8ab6ef5fcb3619c8e6daca43e68627f3d7b4a",
       "installedAt": "2026-10-24T07:57:31.304Z",
-      "updatedAt": "2026-11-17T13:23:53.607Z",
-      "commit": "707362731928d0d92526c066df15dbbe6a378c07"
+      "updatedAt": "2026-11-20T11:46:18.584Z",
+      "commit": "65c8ab6ef5fcb3619c8e6daca43e68627f3d7b4a"
     },
     "restating-complete-answers": {
       "source": "cuipengfei/prompts",
