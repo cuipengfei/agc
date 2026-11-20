@@ -187,6 +187,7 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [Kiro 认证凭据路径速查](model-gateway-mismatch/kiro-auth-paths-cheatsheet.md) | 免费社交登录 vs 付费 ksk_、凭据落点与 Billing FAQ SoT；Free 计划下原生 Sonnet 4.5 请求通过，目录含 Haiku，Opus/GPT 请求不可用；IP 因果未受控 | 2026-10-23 |
 | [用 Anthropic thinking signature 判断网关实际服务的模型](model-gateway-mismatch/anthropic-signature-model-verification.md) | signature 明文头三层结构（outer/envelope/header）、field 6 模型 ID 与 field 8 块类型、解析链与 128 字节长度门、版本 4 格式无 field 6 返回 undefined、不校验密码学有效性 | 2026-10-26 |
 | [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) | CAPI 以 `finish_reason: "error"` 或顶层 `error` 结束仍返回 HTTP 200、无 `native_finish_reason`；三条下游协议各自收尾与「先用量后单次错误」的顺序约束；`Provider returned error finish_reason` 文案决定 OMP 可重试；`validated` 仅在 Gemini 3 由官方客户端改写，Argon 实测接受但映射未确认；`compat.extraBody` 覆盖 `tool_choice: "none"` | 2026-11-11 |
+| [Gemini Thought Summaries 与 OMP reasoning_text 回传链路](model-gateway-mismatch/gemini-thought-summaries-and-omp-replay.md) | 服务端摘要本质与完整推理计费口径、Gemini 3+ 签名回传强制校验、OMP 摘要流式采集与环回判定开启 replayReasoningContent 后 reasoning_text 回传 CAPI、tool call 签名采集回放而文本摘要无签名、AGENTS.md「内部推理：中文」对该链路无约束、CAPI 对无签名配对 reasoning_text 的处理未验证 | 2026-11-21 |
 
 ## gcp-model-armor
 

@@ -2576,3 +2576,9 @@
 - Raw: raw/terminal-multiplexers/2026-11-20-sip-killmode-process-and-ttyd-parity.md
 - Updated: ttyd 与 sip 并存部署; 焦点刷新期间的鼠标松开丢失; sip Worker engine 下使用宿主字体
 - 要点：ttyd 单元明写 `KillMode=process`（`/usr/lib/systemd/system/ttyd.service:11`），sip 新增相同设置（`sip.service:8`）。按 systemd.kill(5)，`control-group` 停止时向单元 cgroup 内全部进程发信号，`process` 只向主进程发信号。改动经 `systemd-analyze --user verify` 与 `daemon-reload` 生效，sip MainPID 未变，未重启。重启后 Herdr server 与 pane 程序留在原 cgroup、重连后 attach 回到原会话为推断，未实测。本机 session 名称临场决定，采用全局设置对所有 session 一致生效。
+
+## [2026-11-21] ingest | Gemini Thought Summaries 与 OMP reasoning_text 回传链路
+- Disposition: New
+- Raw: raw/model-gateway-mismatch/2026-11-21-gemini-thinking-docs-thought-summaries.md; raw/model-gateway-mismatch/2026-11-21-omp-reasoning-text-replay-forensics.md
+- Created: Gemini Thought Summaries 与 OMP reasoning_text 回传链路
+- 要点：完整推理在服务端生成并按完整 thought tokens 计费，API 只返回摘要与加密 signature；Gemini 3+ 跨轮延续依赖签名回传（缺失返回 400）。OMP 链路取证：摘要按 reasoning_content/reasoning/reasoning_text 择一采集存为 thinking 块；`c8787-chat` 环回 baseUrl 命中 hasLocalLoopbackBaseUrl 自动开启 replayReasoningContent，历史摘要以 reasoning_text 写回 assistant 消息并由 copilot-api 转发 CAPI；tool call 级签名（extra_content.google|vertex.thought_signature）被采集并回放（165–195、1660–1665、1724–1733、2799–2808），文本摘要本身无签名；AGENTS.md「内部推理：中文」对摘要语言无可见约束。CAPI 对无签名配对 reasoning_text 的处理未验证，出站请求体未抓包。
