@@ -9,6 +9,7 @@ show_agent_labels_on_pane_borders = true
 agent_panel_sort = "spaces"
 status_indicators = "dots"
 pane_scrollbars = true
+tab_bar_position = "bottom"
 tab_bar_right = [
   { type = "zoom" },
   { type = "datetime", format = "%H:%M" },
@@ -16,6 +17,7 @@ tab_bar_right = [
 tab_bar_right_separator = " · "
 window_title = "{workspace}"
 copy_on_select = true
+mouse_scroll_lines = 1
 
 [ui.sidebar.agents.rows_by_agent]
 omp = [
