@@ -1,7 +1,7 @@
 # ttyd 与 sip 并存部署
 
 > Sources: 本机 systemd 配置与实测，2026-11-15；sip v0.10.0 官方源码与隔离浏览器实测，2026-11-15；本机 systemd cgroup 与重启实测，2026-11-20
-> Raw: [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md)
+> Raw: [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md); [sip 的 KillMode=process 与 ttyd 对齐](../../raw/terminal-multiplexers/2026-11-20-sip-killmode-process-and-ttyd-parity.md)
 > Updated: 2026-11-20
 
 ## Overview
@@ -21,6 +21,7 @@
 
 ```ini
 ExecStart=/home/cpf/go/bin/sip -H localhost -p 7682 -- /usr/bin/zsh -l
+KillMode=process
 Restart=always
 RestartSec=2
 WantedBy=default.target
@@ -32,19 +33,22 @@ WantedBy=default.target
 
 启动命令不覆盖字体名，Worker engine 下由页面选择宿主字体；步骤与判据见 [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md)。
 
-## 重启波及范围
+## 重启边界：两份服务的 KillMode
 
-`sip.service` 未设置 `KillMode`，systemd 默认按 `control-group` 停止单元 cgroup 内的全部进程。`systemctl --user restart sip` 会向这些进程发 SIGTERM，命令返回码 143。
+两份服务现均为 `KillMode=process`：`/usr/lib/systemd/system/ttyd.service:11` 明写，`/home/cpf/.config/systemd/user/sip.service:8` 于 2026-11-20 新增。语义来自 systemd.kill(5)：`control-group` 停止时向单元 cgroup 内全部进程发信号，`process` 只向主进程发信号。
 
-Herdr 在该服务的 shell 内启动时，客户端、server 与全部 pane 进程同属一个 cgroup，一起结束；`Restart=always` 使 sip 异常重启时同样如此。
+sip 修改前使用默认 `control-group`，重启时连同 herdr server、pane 进程与发起重启的 shell 一起结束，命令返回码 143。修改后 `systemd-analyze --user verify` 通过、`daemon-reload` 后生效值为 `process`，sip MainPID 未变。
 
-验收：
+按该语义，重启 sip 只结束 sip 主进程，Herdr server 与 pane 程序留在原 cgroup，浏览器重连后 attach 回到原会话；此条为推断，修改后尚未实测。
+
+`process` 不改变进程归属：采集时三个 herdr server 仍在 `sip.service` cgroup。本机 session 名称临场决定，采用全局设置对所有 session 一致生效。
+
+核对生效值：
 
 ```bash
-systemd-cgls --user-unit sip
+systemctl --user show sip -p KillMode
+systemctl show ttyd -p KillMode
 ```
-
-输出中不再包含 herdr server 及其 pane 进程树，即 Herdr 已离开该单元。迁移方式为独立 user unit 或 `systemd-run --user --scope`；本机提交时未实施。
 
 ## 进程树与 herdr 嵌套问题
 

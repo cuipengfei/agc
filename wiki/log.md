@@ -2570,3 +2570,9 @@
 - Raw: raw/omp-tools/2026-11-20-omp-computer-use-doc-boundary-and-control.md
 - Updated: OMP computer prelude 与桌面自动化
 - 要点：`computer` 不是浏览器 DOM API，网页内选择器、ARIA/DOM、页面 JS 与 CDP 标签页归 `browser`；`browser` 够不着原生外壳与菜单栏、由 `openAndSavePanelService` 绘制的系统开关面板、未开 `--remote-debugging-port` 的 Electron、非网页桌面程序。原生改动与菜单读取取跨进程输入/焦点锁，等待上限 5 秒后 `InputBusy`；物理 `Esc` 中止接管并使该会话本回合后续调用被拒到用户下一条消息；macOS 接管前要求 5 s 空闲，等待在超时前 0.25 s 结束。`control.acquire` 与批准档位无关，`tools.approval["computer.control"]` 是字面键，嵌在 `computer` 下不生效。macOS 持 `PreventUserIdleDisplaySleep` 断言；锁屏时键击、接管与 AX 失败，后台点击仍可达锁屏后的应用。本机 `computer.enabled: false`、`browser.enabled: true`，只做网页工作时保持该组合。
+
+## [2026-11-20] ingest | sip 重启只结束主进程：KillMode=process 与 ttyd 对齐
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-20-sip-killmode-process-and-ttyd-parity.md
+- Updated: ttyd 与 sip 并存部署; 焦点刷新期间的鼠标松开丢失; sip Worker engine 下使用宿主字体
+- 要点：ttyd 单元明写 `KillMode=process`（`/usr/lib/systemd/system/ttyd.service:11`），sip 新增相同设置（`sip.service:8`）。按 systemd.kill(5)，`control-group` 停止时向单元 cgroup 内全部进程发信号，`process` 只向主进程发信号。改动经 `systemd-analyze --user verify` 与 `daemon-reload` 生效，sip MainPID 未变，未重启。重启后 Herdr server 与 pane 程序留在原 cgroup、重连后 attach 回到原会话为推断，未实测。本机 session 名称临场决定，采用全局设置对所有 session 一致生效。

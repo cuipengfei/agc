@@ -1,7 +1,7 @@
 # sip Worker engine 下使用宿主字体
 
 > Sources: Gaurav-Gosain/sip v0.10.0 源码与隔离 Chromium 实验，2026-11-20；本机 sip systemd 单元与实测，2026-11-20
-> Raw: [sip v0.10.0 Worker engine：字体加载路径与宿主字体切换](../../raw/terminal-multiplexers/2026-11-20-sip-worker-engine-host-font.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md)
+> Raw: [sip v0.10.0 Worker engine：字体加载路径与宿主字体切换](../../raw/terminal-multiplexers/2026-11-20-sip-worker-engine-host-font.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md); [sip 的 KillMode=process 与 ttyd 对齐](../../raw/terminal-multiplexers/2026-11-20-sip-killmode-process-and-ttyd-parity.md)
 > Updated: 2026-11-20
 
 ## Overview
@@ -30,7 +30,7 @@ ExecStart=/home/cpf/go/bin/sip -H localhost -p 7682 -- /usr/bin/zsh -l
 
 ### 2. 重载并重启
 
-重启前用 `systemd-cgls --user-unit sip` 检查单元内进程。当中有需要保留的 Herdr server、pane 或其他进程时，先确保这些进程独立运行或保存工作。`KillMode=control-group` 会在重启时结束该 cgroup 内的全部进程；参见 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启波及范围”。
+本机 sip 服务现为 `KillMode=process`（`sip.service:8`），与 ttyd 一致。按 systemd.kill(5) 语义，下面的重启只结束 sip 主进程，Herdr server 与 pane 程序留在原 cgroup，浏览器重连后 attach 回到原会话；此条为推断，修改后尚未实测。详见 [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md) 的“重启波及范围”小节。
 
 ```bash
 systemd-analyze --user verify "$HOME/.config/systemd/user/sip.service"
