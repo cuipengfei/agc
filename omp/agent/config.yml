@@ -20,6 +20,7 @@ extensions:
   - /home/cpf/.omp/.pi/extensions/rtk.ts
   - /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
   - /home/cpf/.omp/agent/extensions/antigravity-prompt-adapter.ts
+  - /home/cpf/.omp/agent/extensions/sys-sticky-footer.ts
 enabledModels:
   - c8787/*
   - c8787-chat/*
