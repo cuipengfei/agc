@@ -28,7 +28,7 @@ providers:
       statefulResponses: false
     models:
       - id: gpt-5.3-codex
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-5.3 Codex
         reasoning: true
         input:
@@ -36,7 +36,7 @@ providers:
         contextWindow: 272000
         maxTokens: 24000
       - id: gpt-5.4-mini
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: gpt-5.4-mini
         reasoning: true
         input:
@@ -44,7 +44,7 @@ providers:
         contextWindow: 272000
         maxTokens: 24000
       - id: gpt-5.6-sol
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-5.6 Sol
         reasoning: true
         input:
@@ -52,7 +52,7 @@ providers:
         contextWindow: 400000
         maxTokens: 58000
       - id: gpt-5.6-terra
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-5.6 Terra
         reasoning: true
         input:
@@ -60,7 +60,7 @@ providers:
         contextWindow: 400000
         maxTokens: 62000
       - id: gpt-5.6-luna
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-5.6 Luna
         reasoning: true
         input:
@@ -68,7 +68,7 @@ providers:
         contextWindow: 1050000
         maxTokens: 128000
       - id: gpt-6-luna
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-6 Luna
         reasoning: true
         input:
@@ -76,7 +76,7 @@ providers:
         contextWindow: 1000000
         maxTokens: 128000
       - id: gpt-6-sol
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-6 Sol
         reasoning: true
         input:
@@ -84,7 +84,7 @@ providers:
         contextWindow: 400000
         maxTokens: 55000
       - id: gpt-6.1-sol
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-6.1 Sol
         reasoning: true
         input:
@@ -92,7 +92,7 @@ providers:
         contextWindow: 400000
         maxTokens: 55000
       - id: gpt-6.1-terra
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-6.1 Terra
         reasoning: true
         input:
@@ -100,7 +100,7 @@ providers:
         contextWindow: 400000
         maxTokens: 55000
       - id: gpt-6-astra
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GPT-6 Astra
         reasoning: true
         input:
@@ -131,7 +131,7 @@ providers:
       supportsLongPromptCacheRetention: true
     models:
       - id: gemini-3.8-flash
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: Gemini 3.8 Flash
         reasoning: true
         input:
@@ -142,7 +142,7 @@ providers:
         compat:
           extraBody:
             tool_choice: validated
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: Gemini 4 Argon
         reasoning: true
         input:
@@ -156,7 +156,7 @@ providers:
     apiKey: <REDACTED>
     models:
       - id: k3d1-agent
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: K3.1 Pro
         reasoning: true
         input:
@@ -164,7 +164,7 @@ providers:
           - image
         contextWindow: 262144
       - id: k3-agent
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: K3
         reasoning: true
         input:
@@ -172,7 +172,7 @@ providers:
           - image
         contextWindow: 262144
       - id: k2d8-preview
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: K2.8 Preview
         reasoning: true
         input:
@@ -182,26 +182,26 @@ providers:
   kimi-code:
     modelOverrides:
       k3:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       k3-256k:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       kimi-for-coding:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       kimi-for-coding-highspeed:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       kimi-k2:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       kimi-k2-turbo-preview:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       kimi-k2.5:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
   sensenova:
     api: openai-completions
     baseUrl: https://token.sensenova.cn/v1
     apiKey: <REDACTED>
     models:
       - id: deepseek-v4-flash
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: DeepSeek V4 Flash
         reasoning: true
         input:
@@ -214,7 +214,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: deepseek-flash
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: DeepSeek V4.1 Flash
         reasoning: true
         input:
@@ -227,7 +227,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: deepseek-v4.1-flash
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: DeepSeek V4.1 Flash
         reasoning: true
         input:
@@ -240,7 +240,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: glm-5.2
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GLM-5.2
         reasoning: true
         input:
@@ -253,7 +253,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: glm-5.3
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: GLM-5.3
         reasoning: true
         input:
@@ -266,7 +266,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: kimi-k3
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: Kimi K3
         reasoning: true
         input:
@@ -279,7 +279,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: sensenova-6.8-flash
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: SenseNova 6.8 Flash
         reasoning: true
         input:
@@ -293,7 +293,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: sensenova-6.8-flash-lite
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: SenseNova 6.8 Flash Lite
         reasoning: true
         input:
@@ -307,7 +307,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
       - id: sensenova-u1.5-lite
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
         name: SenseNova U1.5 Lite
         reasoning: true
         input:
@@ -322,11 +322,11 @@ providers:
   deepseek:
     modelOverrides:
       deepseek-v4-flash:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       deepseek-v4-flash-vision-exp:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
       deepseek-v4-pro:
-        compactionModel: c8787/gpt-6-luna
+        compactionModel: c8787/gpt-6.1-terra
   typesafe-zen:
     api: typesafe
     baseUrl: https://opencode.ai/zen

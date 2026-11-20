@@ -226,6 +226,12 @@
       "protected": true
     },
     {
+      "name": "claude-rules",
+      "source": "~/.claude/CLAUDE.md",
+      "repo": "claude/CLAUDE.md",
+      "protected": true
+    },
+    {
       "name": "dsh-settings",
       "source": "~/.dsh/settings.yaml",
       "repo": "dsh/settings.yaml"

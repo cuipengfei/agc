@@ -1,12 +1,12 @@
 # Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 
-> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25; 三轮 Plannotator 批注与重排定稿, 2026-11-14
-> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md); [CLAUDE.md 三轮 Plannotator 批注的重排与定点定稿](../../raw/harness-engineering/2026-11-14-claude-md-reorg-and-annotation-refinements.md); [CLAUDE.md 定稿全文快照（2026-11-14）](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md)
-> Updated: 2026-11-14
+> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25; 三轮 Plannotator 批注与重排定稿, 2026-11-14; OpenAI GPT-6 Astra 提示词指南与 Rethinking skills 博客, 2026-09; 本机 `manifest.json`、`./pull.sh` 与 unittest 实测, 2026-11-21
+> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md); [CLAUDE.md 三轮 Plannotator 批注的重排与定点定稿](../../raw/harness-engineering/2026-11-14-claude-md-reorg-and-annotation-refinements.md); [CLAUDE.md 定稿全文快照（2026-11-14）](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md); [CLAUDE.md 的 GPT-6 反模式硬化与仓库内复刻路径](../../raw/harness-engineering/2026-11-21-claude-md-gpt6-hardening-and-repo-replication.md)
+> Updated: 2026-11-21
 
 ## Overview
 
-在复杂技术问答与多轮澄清中，LLM/Agent 常因换讨论对象不换代词、混用不同分类标准、漏掉结论前提、跨组件动作断链、新概念不交代来路、比较时拿共同点充当优势、以及在作废旧草稿上打局部补丁，导致读者难以建立一致心智模型。另有第 8 类由 2026-10-25 批注归纳的反模式：用「不能证明 X」的免责句替代判断。本文记录这 **8 类表达问题**、外部多轮对话退化研究与 `skills.sh` 生态对标，并给出 `~/.claude/CLAUDE.md`（同步至 `~/.omp/agent/AGENTS.md` 与 `~/.codex/AGENTS.md`）**378 行定稿全文快照、两条复刻路径（全文覆盖与定点补丁）与前置 Skill 安装清单**，供新机器复刻。
+在复杂技术问答与多轮澄清中，LLM/Agent 常因换讨论对象不换代词、混用不同分类标准、漏掉结论前提、跨组件动作断链、新概念不交代来路、比较时拿共同点充当优势、以及在作废旧草稿上打局部补丁，导致读者难以建立一致心智模型。另有第 8 类由 2026-10-25 批注归纳的反模式：用「不能证明 X」的免责句替代判断。本文记录这 **8 类表达问题**、外部多轮对话退化研究与 `skills.sh` 生态对标，并给出 `~/.claude/CLAUDE.md`（同步至 `~/.omp/agent/AGENTS.md` 与 `~/.codex/AGENTS.md`）的**当前 344 行定稿与复刻路径**：仓库内 `claude/CLAUDE.md` 直接复制、旧快照重放后套 2026-11-21 硬化补丁、以及面向 431 行基线的历史定点补丁，另附前置 Skill 安装清单。
 
 ## 八类导致读者困惑的表达模式与覆盖映射
 
@@ -67,6 +67,26 @@
 
 ---
 
+## 2026-11-21：GPT-6 反模式硬化与仓库内复刻路径
+
+改动来自两项依据：OpenAI 在 `GPT-6 Astra` 提示词指南与 `Rethinking skills and prompts for GPT-6 Astra` 中记录的指令交叉触发（旧模型的强制自证小结、每步 checkpoint、报备未执行检查，在 GPT-6 上放大成宣布顺从、反向报备与半途停工），以及用户批注与拍板。
+
+`~/.claude/CLAUDE.md` 从 378 行降到 344 行，变更如下：
+
+- **删除**：`### 1.1`–`### 1.3` 三个 karpathy 小节（末尾「karpathy 证据」小结、sub-agent 强制附加条款）、`### 2.4` 每步 checkpoint 流水账、`### 2.5` 独立小节（并入 `### 2.4`）、`“看起来无关”是危险信号。`、`如果你不理解代码为什么这样组织，先问清楚或继续查证，再写。`
+- **句式**：新增中英逐词对应的机械总结标签与自问自答封禁（`Bottom Line:`、`Conclusion:`、`In short:`、`The simplest mental model is:`、`Question? Answer.`、`Why does this matter? Because...`），新增 Prose-First 段落要求与反向报备/内部推理简写禁令。
+- **用词**：新增中英逐词对应的 slop 词封禁（`delve`、`foster`、`leverage`、`promote`、`tapestry`、`pivotal`、`testament`、`underscores`、`it's worth noting`、`what's important is`、`importantly`、`genuinely`、`really/truly`）与生造连字符复合词封禁（`exact-head checks`、`editorial-row layouts`）。
+- **交互模式**：原「禁止居高临下的语气」扩为「说教与临床/道德框定」，新增「禁止死抠字面挑刺与强行改写原意」。
+- **Goal-Driven**：改为静默遵守，禁止在正文宣布「我已遵守某规则」。
+- **Karpathy 协议**：合并为一节，保留前置加载，取消末尾自证小结；与 skill 第 1 节「不确定就停下提问」冲突时以 2.2 节为准。
+- **2.2**：改名「写之前先读与行动边界」，补入复用优先、禁止单次 helper 与防御性归一化函数、`strictly out of scope` 越权防线、Bias Towards Action。
+- **2.3**：新增按需收敛的测试范围条款。
+- **2.4**：只报实际跑过的检查，禁止罗列未执行的无关检查与跳过项。
+
+`~/.omp/agent/WATCHDOG.md` 同步补入五类审查锚点：意图漂移段的字面挑刺/强行改写原意与半途停工，blocker 段的欺骗性汇报，concern 段的意图柔化与重复输出，nit 段的中英逐词 slop 文风，以及硬性禁令第 6 条改为只报实际执行过的检查。
+
+仓库内复刻路径：`~/.claude/CLAUDE.md` 原先不在 `manifest.json` 覆盖范围，新增 `claude-rules` 条目（`source: ~/.claude/CLAUDE.md`，`repo: claude/CLAUDE.md`，`protected: true`）。`pull` 后仓库副本与来源逐字节一致，脱敏无命中。新机器执行 `cp claude/CLAUDE.md ~/.claude/CLAUDE.md`，再重建 `~/.codex/AGENTS.md` 与 `~/.omp/agent/AGENTS.md` 两个 symlink。`~/.claude/` 其余文件（`RTK.md`、`MEMORY.md`、`CLAUDE-omc.md`、`.credentials.json`）不在同步范围。
+
 ## 新机器复刻指南（`~/.claude/CLAUDE.md` 全文覆盖与定点补丁）
 
 在另一台机器 clone 本仓库后，按以下 4 步即可复刻本套表达规则与 Skill 体系：
@@ -102,9 +122,9 @@ ln -sfn ~/.claude/CLAUDE.md ~/.omp/agent/AGENTS.md
 
 两条路径按目标机器现状选择。
 
-**路径 A（推荐，全文覆盖）**：从 [定稿全文快照](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md) 复制代码块内的 378 行全文写入 `~/.claude/CLAUDE.md`，再按下方「机器相关行」调整。
+**路径 A（推荐，全文覆盖）**：clone 本仓库后执行 `cp claude/CLAUDE.md ~/.claude/CLAUDE.md`，得到 344 行定稿（与来源逐字节一致），再按下方「机器相关行」调整。2026-11-14 的 [定稿全文快照](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md) 是 378 行历史基线，仅在无法取用仓库副本时按上一小节重放补丁。
 
-**路径 B（定点补丁）**：仅当目标机器已有与重排前基线一致的 431 行版本时使用。该基线文件（本机 `~/.claude/CLAUDE.md.bak`）没有随本仓库入库，本仓库也不保存它的全文；无法确认基线一致时直接走路径 A。补丁内容为 11 项删除、4 处去重与移动、6 段替换，片段见下方各段。
+**路径 B（定点补丁，历史）**：仅当目标机器已有与重排前基线一致的 431 行版本时使用。该基线文件（本机 `~/.claude/CLAUDE.md.bak`）没有随本仓库入库，本仓库也不保存它的全文；无法确认基线一致时直接走路径 A。补丁内容为 11 项删除、4 处去重与移动、6 段替换，片段见下方各段。
 
 #### 机器相关行
 
@@ -138,18 +158,22 @@ grep -nP "[\x00-\x08\x0B\x0C\x0E-\x1F]" ~/.claude/CLAUDE.md
 readlink -e ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.omp/agent/AGENTS.md
 # Karpathy 章节顺序必须为 0 → 1 → 2 连续
 grep -nE "^## [012]\." ~/.claude/CLAUDE.md
+# 2026-11-21 硬化项：以下四条均须命中
+grep -n "Prose-First\|Out-of-Scope Guard\|Bias Towards Action\|禁止死抠字面挑刺与强行改写原意" ~/.claude/CLAUDE.md
+# 2026-11-21 删除项必须 0 命中
+grep -c "karpathy 证据」小结，证明" ~/.claude/CLAUDE.md
+grep -c "每完成一个重要步骤，总结" ~/.claude/CLAUDE.md
 ```
 
-路径 A 的比对放在调整机器相关行之前：从快照抽出代码块内容，与刚写入的文件做字节比对，`cmp` 无输出即通过。
+路径 A 的比对放在调整机器相关行之前：仓库副本与来源同源，`cmp` 无输出即通过。
 
 ```bash
-awk '/^```markdown$/{f=1;next} /^```$/{if(f)exit} f' raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md > /tmp/claude-snapshot-body.md
-cmp /tmp/claude-snapshot-body.md ~/.claude/CLAUDE.md
+cmp claude/CLAUDE.md ~/.claude/CLAUDE.md
 ```
 
-比对通过后再调整机器相关行，最后跑步骤 4 的校验。删除 `@` 挂载行会使行数少于 378，属正常。
+比对通过后再调整机器相关行，最后跑步骤 4 的校验。删除 `@` 挂载行会使行数少于 344，属正常。
 
-**复刻时不要做**：不改写措辞、不顺手润色、不保留纠偏痕迹、不把下面的片段当成全文。以下片段是路径 B 的补丁素材；全文以快照为准。
+**复刻时不要做**：不改写措辞、不顺手润色、不保留纠偏痕迹、不把下面的片段当成全文。以下片段是路径 B 的补丁素材；全文以仓库副本 `claude/CLAUDE.md` 为准。
 
 **首句与全局范围说明**
 

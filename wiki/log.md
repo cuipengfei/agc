@@ -2582,3 +2582,9 @@
 - Raw: raw/model-gateway-mismatch/2026-11-21-gemini-thinking-docs-thought-summaries.md; raw/model-gateway-mismatch/2026-11-21-omp-reasoning-text-replay-forensics.md
 - Created: Gemini Thought Summaries 与 OMP reasoning_text 回传链路
 - 要点：完整推理在服务端生成并按完整 thought tokens 计费，API 只返回摘要与加密 signature；Gemini 3+ 跨轮延续依赖签名回传（缺失返回 400）。OMP 链路取证：摘要按 reasoning_content/reasoning/reasoning_text 择一采集存为 thinking 块；`c8787-chat` 环回 baseUrl 命中 hasLocalLoopbackBaseUrl 自动开启 replayReasoningContent，历史摘要以 reasoning_text 写回 assistant 消息并由 copilot-api 转发 CAPI；tool call 级签名（extra_content.google|vertex.thought_signature）被采集并回放（165–195、1660–1665、1724–1733、2799–2808），文本摘要本身无签名；AGENTS.md「内部推理：中文」对摘要语言无可见约束。CAPI 对无签名配对 reasoning_text 的处理未验证，出站请求体未抓包。
+
+## [2026-11-21] ingest | CLAUDE.md 的 GPT-6 反模式硬化与仓库内复刻路径
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-21-claude-md-gpt6-hardening-and-repo-replication.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- 要点：`~/.claude/CLAUDE.md` 由 378 行降到 344 行。删除 `### 1.1`–`### 1.3`（末尾强制「karpathy 证据」自证小结、sub-agent 附加条款）、`### 2.4` 每步 checkpoint、`### 2.5`（并入 2.4）、`“看起来无关”是危险信号。`、`如果你不理解代码为什么这样组织，先问清楚或继续查证，再写。`。新增中英逐词对应的 slop 与机械总结标签封禁、Prose-First 段落要求、反向报备与内部推理简写禁令、说教与临床框定禁令、字面挑刺与强行改写原意禁令、`strictly out of scope` 越权防线、Bias Towards Action（与 karpathy skill 第 1 节冲突时以 2.2 为准）、按需测试收敛、只报实际跑过的检查。`WATCHDOG.md` 补五类审查锚点（意图漂移两条例、blocker 欺骗性汇报、concern 意图柔化、nit slop 文风）并改写硬性禁令第 6 条。复刻：`~/.claude/CLAUDE.md` 原先不在 manifest，新增 `claude-rules` 条目（`repo: claude/CLAUDE.md`，protected）后 pull 得逐字节一致副本，`protected_slots=40` 脱敏无命中；新机器 `cp claude/CLAUDE.md` 再重建两个 symlink，实测 `cmp` 一致且 `readlink -f` 均解析到该副本。`~/.claude/` 其余文件不在同步范围，条款效果未做真实模型对照实验。

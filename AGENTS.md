@@ -49,6 +49,7 @@ pull.sh / sync.py pull
 | --------------- | ------------------------------------------------ |
 | `src/agc_sync/` | 同步实现                                         |
 | `tests/`        | 标准库 `unittest` 测试                           |
+| `claude/`       | 用户级共享规则 `CLAUDE.md` 副本；`~/.codex/AGENTS.md` 与 `~/.omp/agent/AGENTS.md` 是指向它的 symlink |
 | `codex/`        | Codex 配置与 hooks                               |
 | `opencode/`     | OpenCode 配置与 plugins                          |
 | `omo/`          | OMO 配置                                         |
@@ -160,6 +161,7 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 
 | 仓库路径            | 本机来源                      |
 | ------------------- | ----------------------------- |
+| `claude/CLAUDE.md`  | `~/.claude/CLAUDE.md`         |
 | `codex/`            | `~/.codex/`                   |
 | `opencode/`         | `~/.config/opencode/`         |
 | `omo/`              | `~/.omo/`                     |
@@ -179,6 +181,7 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 - 不追踪明文形态的凭据与运行时产物：token、secret、password、cookie、credential、authorization、私钥、数据库、WAL、历史、日志、缓存、session、运行时状态、备份和生成文件。例外：manifest protected 条目以 `<REDACTED>` 脱敏值入库，例如 `omp/agent/.env`（manifest `omp-env` 条目，`protected: true`）——仓库内出现的是脱敏副本，不是真实凭据，且已跟踪文件不受 `.gitignore` 的 `.env*` 规则影响。
 - 明确排除的用户专属文件有两个不同层级：`omp/agent/extensions/umans-status.ts` 由 manifest 条目的 `exclude` 阻止 pull 刷新；`codex/umans.config.toml` 根本不在任何 manifest 条目覆盖范围内（`~/.codex/` 只同步 manifest 列出的具体文件与 `hooks/` 目录）。两者都存在于工作树、都被 `.gitignore` 排除，属历史残留，不纳入可提交内容。
 - Prime Agent 侧排除 `auth.json`、`telemetry.json`、`AGENTS.md`（symlink 到用户级共享规则）及 sessions/logs/venv 等运行时产物；只同步 `settings.json` 与 `models.json`，两者均 protected。
+- 新机器复刻：clone 仓库后把 `claude/CLAUDE.md` 复制到 `~/.claude/CLAUDE.md`，再建 `~/.codex/AGENTS.md` 与 `~/.omp/agent/AGENTS.md` 两个指向它的 symlink；其余 `~/.claude/` 文件（`RTK.md`、`MEMORY.md`、`CLAUDE-omc.md` 等）不在同步范围。
 - `pull`、`status`、`diff` 均通过 manifest 约束范围；不要执行广泛同步替代单文件需求。
 - `raw/`、`experiments/` 和 `wiki/` 是本仓库自产的学习/实验记录，不在 `manifest.json` 中，不参与 pull 同步。入库前必须脱敏，不存放 token、cookie、authorization header 等凭据内容。`experiments/` 只记录结构化实验过程；只有可复用结论才晋升到 `wiki/`。
 - `.gitignore` 是凭据边界的第二道闸，通配规则匹配任意层级。`profiles/` 对 `dsh/profiles/` 有反向例外；`.pi/better-harness/` 被忽略，`omp/.pi/extensions` 仍由 manifest 同步。`.gitignore` 只控制 Git 忽略，不过滤 pull，也不脱敏文件内容；同步范围看 manifest，敏感值由 protected 策略处理。往仓库加新目录前，同时检查 `.gitignore` 与 manifest。
