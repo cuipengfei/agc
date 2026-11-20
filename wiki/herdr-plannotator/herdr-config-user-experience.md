@@ -1,8 +1,8 @@
 # Herdr 配置项与用户体验
 
-> Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12; kitty_graphics 改动实测, 2026-11-15
-> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [OMP 在 Herdr 多路复用器下的 Kitty 能力与开关](../../raw/terminal-graphics/2026-11-15-omp-kitty-capabilities-under-herdr.md)
-> Updated: 2026-11-15
+> Sources: Herdr configuration docs + config-reference.json, v0.9.5, 2026-10-25; 本机配置快照与校验输出, 2026-10-25; Herdr App、core 与手机官方说明, 2026-11-12; kitty_graphics 改动实测, 2026-11-15; 标签栏位置与滚轮步长源码与校验, 2026-11-20
+> Raw: [Herdr 配置参考与本机快照](../../raw/herdr-plannotator/2026-10-25-herdr-config-reference-and-local-snapshot.md); [CLI reload 边界与面板优先级](../../raw/herdr-plannotator/2026-10-25-herdr-config-cli-reload-boundary-and-panel-priority.md); [Herdr 产品关系与手机边界](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [OMP 在 Herdr 多路复用器下的 Kitty 能力与开关](../../raw/terminal-graphics/2026-11-15-omp-kitty-capabilities-under-herdr.md); [Herdr 0.9.5：标签栏位置与滚轮步长](../../raw/herdr-plannotator/2026-11-20-herdr-tab-bar-position-and-scroll-lines.md)
+> Updated: 2026-11-20
 
 ## Overview
 
@@ -64,12 +64,19 @@ CLI 只有 server 侧入口：`herdr config` 的子命令是 `check` 与 `reset-
 ## Tab 栏状态信息与外层窗口标题
 
 `ui.tab_bar_right` 在 tab 栏右侧放有序状态条目，默认空。五类：`zoom`（active tab zoomed 时显示固定 `ZOOM` pill）、`hostname`、`datetime`（`strftime` 格式，`%z`/`%s` 被拒，因为是 server 本地墙上时间）、`text`、`command`。
+`ui.tab_bar_position` 取 `"top"`（默认）或 `"bottom"`，把整个桌面标签栏放到窗格上方或下方。同一栏的右侧状态条目随栏一起移动，位置不单独设置。
 
 `command` 条目：立即运行一次，再按 `interval_seconds` 重复，不阻塞渲染也不与上次运行重叠；interval 1–31,536,000 秒，timeout 1–3,600 秒；取成功输出的最后一行，剥离 ESC 控制序列，失败/空/超时后清空；Linux 与 macOS 用 `/bin/sh -lc`，Windows 用 `cmd.exe /d /c`。`hostname`/`datetime`/`command` 都在 Herdr server 解析，所以 `herdr --remote` 显示远端机器的值。窄行时整组状态让位给 tab 与控件。`tab_bar_right_separator` 默认在可见条目间出现，设 `""` 直接拼接。
 
 `ui.window_title` 控制 Herdr 写给承载它的外层终端的标题——这是窗口管理器与终端标签栏读到的。token：`{hostname}`、`{workspace}`、`{tab}`、`{pane}`（聚焦 pane 的手动名）、`{terminal_title}`（聚焦 pane 自己的 terminal title，已剥离 spinner）。**没有值的 token 渲染为空**，所以模板里如果留了分隔符，空标题会留下尾随分隔符——写模板时把可选标题前的分隔符去掉。`window_title = ""` 让外层标题保持不变；`client.window_title.set` 临时覆盖，`client.window_title.clear` 交还。
 
 本机：`tab_bar_right` 放 `zoom` 与 `datetime %H:%M`，分隔符 ` · `；`window_title` 用 `{hostname}: {workspace} / {tab} {terminal_title}`（标题前用空格而非 `—`，空标题不留尾随符号）。
+
+## 鼠标滚轮与选择
+
+`ui.mouse_scroll_lines` 控制每个滚轮刻度滚动多少行历史，默认 `3`。类型是 `Option<NonZeroUsize>`，最小值 `1`，写 `0` 会被拒绝。浏览器终端会把像素滚动折算成行数，一次手势可能送出多个滚轮事件；两者相叠加，体感会明显变快。把值调到 `1` 是最小步长。本机在切换 sip 渲染器后设为 `1`。
+
+滚轮在存在进行中的鼠标选择时会改为扩展选区，这是单击聚焦后滚轮选中文字的触发点，机制与规避方式见 [焦点刷新期间的鼠标松开丢失](../terminal-multiplexers/focus-refresh-mouse-release-loss.md)。
 
 ## 快捷键与临时工具窗口
 

@@ -1,8 +1,8 @@
 # sip v0.10.0 使用参考
 
-> Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与官方源码，2026-11-15；Gaurav-Gosain/webterm 字体加载源码；本机 systemd 与隔离浏览器端实测，2026-11-15
-> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md)
-> Updated: 2026-11-15
+> Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与官方源码，2026-11-15；Gaurav-Gosain/webterm 字体加载源码；本机 systemd 与隔离浏览器端实测，2026-11-15；sip v0.10.0 源码与隔离 Chromium 实测（渲染器与鼠标），2026-11-20
+> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md)
+> Updated: 2026-11-20
 
 ## Overview
 
@@ -131,14 +131,14 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 
 ## 渲染器选型
 
-| 渲染器 | 适合场景 |
-|---|---|
-| `Canvas` | Windows + WSL2 首选；字体抗锯齿自然；彻底避开 WebGL 色块故障 |
-| `WebGL` | GPU 正常且跑重度 TUI（btop、大量滚屏）；帧率最高 |
-| `Auto` | 显卡驱动没问题的设备开箱即用 |
-| `DOM` | 无 GPU 环境、屏幕阅读器、自动化测试 |
-| `vtgl` | 实验性，测试字形排版整形 |
-| `Worker engine` | 实验性，终端解析放后台线程，适合海量输出时保持页面响应 |
+| 渲染器 | 终端核心与绘制 | 适合场景 |
+|---|---|---|
+| `Auto` | xterm.js，绘制方式自动选择 | 显卡驱动没问题的设备开箱即用 |
+| `WebGL` | xterm.js + WebGL | GPU 正常且跑重度 TUI（btop、大量滚屏）；帧率最高 |
+| `Canvas` | xterm.js + Canvas 2D | Windows + WSL2 首选；字体抗锯齿自然；彻底避开 WebGL 色块故障 |
+| `DOM` | xterm.js + HTML 元素 | 无 GPU 环境、屏幕阅读器、自动化测试 |
+| `vtgl` | xterm.js + 独立绘制组件 `static/webterm-vtgl.js` | 实验性，测试字形排版整形 |
+| `Worker engine` | libghostty-vt（WebAssembly）+ WebGL2，必要时 Canvas 2D；解析与绘制在 Web Workers | 实验性，海量输出时保持页面响应；指针与键盘走独立实现 |
 
 ## Transport 选型
 
@@ -157,7 +157,9 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 
 - WebTransport 弱网优势是协议机制推断，本机 localhost 环境无法实测。
 - Canvas 渲染器「字体抗锯齿自然」是相对 WebGL 的体感描述，非量化指标。
-- `vtgl` / `Worker engine` 实际稳定性未在本机长期验证。
+- `vtgl` 实际稳定性未在本机长期验证。
+- `Worker engine` 在焦点重设期间保留鼠标松开事件（隔离 Chromium 实测）；Kitty 图形与键盘协议在源码中具备，未实跑验证；长期稳定性未验证。
+- 鼠标松开丢失的机制与实验对照见 [焦点刷新期间的鼠标松开丢失](focus-refresh-mouse-release-loss.md)。
 
 ## See Also
 

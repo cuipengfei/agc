@@ -2519,3 +2519,22 @@
 - Raw: raw/phishing-defense/2026-11-20-esp-tenant-abuse-and-login-mirror.md
 - Created: 令牌门控的登录页镜像代理
 - 要点：认证通过只证明 ESP 租户身份；令牌 Cookie 门控在无 Cookie 时跳回官方登录域，带 Cookie 时投放现场改写的登录页；66 个资源路径一致、主机名被改写、nonce 随请求变化；凭据与会话转发按代理形态推断，未提交凭据。
+
+## [2026-11-20] ingest | 焦点刷新期间的鼠标松开丢失
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md
+- Created: 焦点刷新期间的鼠标松开丢失
+- Updated: sip v0.10.0 使用参考
+- 要点：Herdr v0.9.5 Linux 在焦点进入（`\x1b[I`）时先清除全部鼠标模式再开启；xterm 在该时序移除 document 级 `mouseup` 监听，松开丢失，Herdr 保留选择起点，滚轮改走扩展选区分支。隔离 Chromium `156.0.8078.73` 五组对照：sip xterm 与 ttyd 部署前端在完整清除后均丢失松开，只重申启用、关闭焦点报告（`\x1b[?1004l`）、Worker engine 均保留。上游 #4319 已在 Windows 修同类问题，Linux 分支未改；已提交 #6114。真实会话事件顺序与 ttyd 表现差异的原因未确认。
+
+## [2026-11-20] ingest | Herdr 0.9.5：标签栏位置与滚轮步长
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-20-herdr-tab-bar-position-and-scroll-lines.md
+- Updated: Herdr 配置项与用户体验
+- 要点：`ui.tab_bar_position` 为枚举 `top`/`bottom`，默认 `top`，右侧状态条目随栏移动；`ui.mouse_scroll_lines` 类型 `Option<NonZeroUsize>`，默认 3，最小 1，写 0 被拒绝。本机已设 `bottom` 与 `1`，`herdr config check` 返回 `config: ok`。客户端侧改动需界面 `menu → reload config` 生效。
+
+## [2026-11-20] ingest | OMP 二进制分析的按需依赖安装
+- Disposition: New
+- Raw: raw/omp/2026-11-20-omp-dsm-ghidra-jdk-provisioning.md
+- Created: OMP 二进制分析的按需依赖安装
+- 要点：裸读只返回元数据，`:overview`/`:strings`/`dsm.open` 在首次分析时安装 Ghidra 12.2、JDK 25、PyGhidra。JDK 查找只认 `JAVA_HOME` 与自管目录，不读 `PATH`；本机 `JAVA_HOME` 未设置、已有 Zulu 25.0.5.1，仍下载 Temurin 25.0.5.1。占用 `~/.omp/ghidra` 1.2G 与分析项目 697M。本次浏览器侧无新增下载：Chromium 为 2026-11-07 系统包。
