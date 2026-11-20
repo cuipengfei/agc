@@ -1,8 +1,8 @@
 # ABKit：面向 agent 的 WebKit 浏览器引擎
 
-> Sources: Stencil Labs（stencil-hq/abkit README 与 docs），2026-11-12; build.stencil.so 构建 API，2026-11-12; omp docs Web & browser，2026-11-12; agent-browser 与 chrome-devtools MCP 源材料，2026-11-07; Tern：TSP 与 browser 后端原文摘录，2026-10-10
-> Raw: [ABKit README、docs 与构建 API](../../raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md); [agent-browser 与 chrome-devtools MCP 源材料](../../raw/agent-tooling/agent-browser-and-chrome-devtools-mcp-sources.md); [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md)
-> Updated: 2026-11-12
+> Sources: Stencil Labs（stencil-hq/abkit README 与 docs），2026-11-12; build.stencil.so 构建 API，2026-11-12; omp docs Web & browser，2026-11-12; agent-browser 与 chrome-devtools MCP 源材料，2026-11-07; Tern：TSP 与 browser 后端原文摘录，2026-10-10; 本机安装包 `@oh-my-pi/pi-coding-agent` 19.0.1 的引擎安装与路由源码，2026-11-20
+> Raw: [ABKit README、docs 与构建 API](../../raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md); [agent-browser 与 chrome-devtools MCP 源材料](../../raw/agent-tooling/agent-browser-and-chrome-devtools-mcp-sources.md); [Tern：TSP 与 browser 后端原文摘录](../../raw/omp-tips/2026-10-10-tern-tsp-and-browser-backend.md); [19.0.1 路由、下载顺序与开关语义](../../raw/omp-tools/2026-11-20-omp-19-browser-backend-routing-and-downloads.md); [自有浏览器后端源码摘录](../../raw/omp-tools/2026-11-20-omp-own-browser-backends-webkit-vs-chromium.md)
+> Updated: 2026-11-20
 
 ## Overview
 
@@ -71,6 +71,15 @@ Linux 的 glibc 构建要求 glibc 2.35 及以上（Ubuntu 22.04、Debian 12、F
 - **Tern**：从 `~/.o2/lib/abkit` 加载。macOS 运行 `ABHost`，Linux 与 Windows 在进程内加载引擎库；`STENCIL_WEBKIT_DIR` 指定其他目录，`STENCIL_WEBKIT` 选择引擎。
 - **omp 18.19.0**：浏览器会话优先使用随包的 ABKit WebKit，未安装时自动安装并校验 SHA-256；Chromium 为回退，`app: "chromium"` 显式选择，`app: "webkit"` 要求 WebKit；配置项为 `browser.webkit` 与 `browser.webkitPath`。macOS 上的 headed 标签页可以显示为真实窗口并直接操作。
 
+> **Status: Outdated** (2026-11-20)
+> 「随包」只适用于 18.19.0 发行说明的措辞。19.0.1 的引擎按需下载到 `~/.o2/lib/abkit` 并校验大小与 SHA-256，不随安装包分发；发行引擎的视图程序仅 macOS 有 `ABView`，Linux 与 Windows 的可见窗口归 Chromium。
+
+## 在 omp 19.0.1 里的接入条件
+
+- 引擎从 Stencil 构建服务下载（产品 `abkit`，最新稳定构建）到 `~/.o2/lib/abkit`：下载流中校验大小与 SHA-256，解包后必须以 `abkit/` 目录带宿主可执行文件的形式存在；版本记录在引擎目录的 `VERSION` 文件，实际版本目录另存，目录通过链接切换。
+- 下载只发生在两种情况：显式 `app: "webkit"`，或本次 open 落在无头 Chromium 且 Chromium 本身需要先下载。`PUPPETEER_EXECUTABLE_PATH`、非 macOS 平台可用的系统 Chrome/Chromium、`~/.omp/puppeteer` 里对应版本的 Chrome for Testing，三者任一成立就不会预装引擎。
+- 自动选择里，`browser.webkit: false` 只让 WebKit 退出自动分流；`PI_BROWSER_WEBKIT=0` 是硬关闭，显式 `app: "webkit"` 也会报错且不下载。
+
 ## 发行页与 API
 
 `build.stencil.so` 是单页应用，页面数据来自 JSON 接口：
@@ -99,7 +108,7 @@ ABKit 这类引擎处理的是客户端身份这一层：页面检测自动化�
 
 ## 证据边界
 
-- 内容来自官方 README、`docs/`、构建 API 与 omp 18.19.0 发行说明；未下载、未安装、未运行 ABKit，页面伪装与性能均未实测。
+- 内容来自官方 README、`docs/`、构建 API、omp 18.19.0 发行说明与 19.0.1 安装包源码；未下载、未安装、未运行 ABKit，页面伪装与性能均未实测。
 - 发行版为 0.1.0，仓库跟踪 WebKit `main`，行为可能变化。
 - Linux 与 Windows 的 `ABHost` 只能 `capture` 取像素；需要窗口或进程内呈现时由使用方自行加载引擎库，Tern 在 Linux 与 Windows 上就是这种方式。
 
@@ -108,3 +117,4 @@ ABKit 这类引擎处理的是客户端身份这一层：页面检测自动化�
 - [agent-browser 与 chrome-devtools MCP 对比](agent-browser-vs-chrome-devtools-mcp.md) — 同为 agent 浏览器工具，处在驱动器层
 - [OMP browser prelude 与 relay 架构](../omp-tools/browser-prelude-and-relay-architecture.md) — OMP 的浏览器门面与后端路由
 - [Tern：TSP 与 browser 后端](../tern/tsp-and-browser-backend.md) — Tern 的脚本协议与浏览器后端选择
+- [OMP 自有浏览器后端：WebKit 与 Chromium 对照](../omp-tools/own-browser-backends-webkit-vs-chromium.md) — 两个内建后端的能力与代价对照

@@ -2544,3 +2544,10 @@
 - Raw: raw/omp-extensibility/2026-11-20-hook-status-footer-theme-and-flash.md; raw/omp/2026-11-20-bash-pty-overlay-vs-bang-command.md
 - Created: OMP hook-status footer：主题着色与变化提示; OMP bash 工具的 PTY 浮层与 `!` 命令的 PTY 路径
 - 要点：`setStatus` 写 hook-status 行，`sanitizeHookStatusText` 保留 SGR 闪烁码与背景色码；主题色用颜色名，切换主题后下一轮刷新生效；本机终端实测颜色正常、`\x1b[5m` 不显示，改用 250ms 相位切换背景共 8 相位；`clearTimer` 后须置空句柄。实测完整刷新中位 1.443 ms、请求占 62%、闪烁回调 CPU 中位 0.068 ms；Bun CPU profile 因空闲间隔污染不可用，改 `process.cpuUsage()`。另录 `pty: true` 浮层与 `!` headless PTY 的能力差异与门控。
+
+## [2026-11-20] ingest | OMP browser prelude 与 relay 架构
+- Disposition: New; Update
+- Raw: raw/omp-tools/2026-11-20-omp-19-browser-backend-routing-and-downloads.md; raw/omp-tools/2026-11-20-omp-own-browser-backends-webkit-vs-chromium.md
+- Created: OMP 自有浏览器后端：WebKit 与 Chromium 对照
+- Updated: OMP browser prelude 与 relay 架构; ABKit：面向 agent 的 WebKit 浏览器引擎; OMP 配置语义手册
+- 要点：19.0.1 的 `browser.enabled` 默认 `true`；WebKit 引擎只在显式 `app:"webkit"` 或受管 Chromium 需要先下载时安装，系统 Chromium、`PUPPETEER_EXECUTABLE_PATH`、`~/.omp/puppeteer` 任一就绪即跳过；`browser.webkit: false` 只关自动选择，`PI_BROWSER_WEBKIT=0` 才是硬关闭。`VIEWER_PLATFORMS` 只有 `darwin`，Linux 与 Windows 的可见窗口归 Chromium。设置改动经目录监视热加载，进行中会话在下一轮带隐藏 prelude 通知；浏览器类 MCP server 过滤名单不含 `chrome-devtools`。本机开 enabled 后 `typeof browser` 为 `object`，首个标签走系统 Chromium，无下载；Google 搜索可用。

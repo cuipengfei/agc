@@ -1,8 +1,8 @@
 # OMP browser prelude 与 relay 架构
 
-> Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 源码, 2026-10-26; omp.sh/docs/web 与 browser-relay README, 2026-10-26; Chromium《UI Automation》与 Chrome for Developers 安全变更说明, 2026-10-26; 本机 WSL 与 Windows 回环实测, 2026-10-26; omp 18.19.0 发行说明与 ABKit README、docs, 2026-11-12
-> Raw: [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md); [ABKit README、docs 与构建 API](../../raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md)
-> Updated: 2026-11-12
+> Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 源码, 2026-10-26; omp.sh/docs/web 与 browser-relay README, 2026-10-26; Chromium《UI Automation》与 Chrome for Developers 安全变更说明, 2026-10-26; 本机 WSL 与 Windows 回环实测, 2026-10-26; omp 18.19.0 发行说明与 ABKit README、docs, 2026-11-12; 本机安装包 19.0.1 后端路由、下载门槛与开关语义源码及实测, 2026-11-20
+> Raw: [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md); [ABKit README、docs 与构建 API](../../raw/agent-tooling/2026-11-12-abkit-readme-docs-and-builds.md); [19.0.1 路由、下载顺序与开关语义](../../raw/omp-tools/2026-11-20-omp-19-browser-backend-routing-and-downloads.md); [自有浏览器后端源码摘录](../../raw/omp-tools/2026-11-20-omp-own-browser-backends-webkit-vs-chromium.md)
+> Updated: 2026-11-20
 
 ## Overview
 
@@ -12,7 +12,7 @@ OMP 的浏览器能力是注入 `eval` 内核的预置全局对象 `browser`，�
 
 prelude 是 OMP 在启动 `eval` 内核时预先注入全局作用域的预置定义集合，`browser` 与 `computer` 都属于这一类。`browser` 在工具列表里没有单独名字，`browser.open()` 返回 `BrowserTab` 对象，后续用页面方法驱动。
 
-启用条件：`browser.enabled` 为 true；当前会话启用 `eval` 工具且未把 `browser` 排除；内建 prelude 生效时，OMP 会过滤同类的 browser MCP server。源码默认 `browser.enabled`、`browser.relay` 为 false，`browser.headless` 为 true。
+启用条件：`browser.enabled` 为 true；当前会话启用 `eval` 工具且未把 `browser` 排除；内建 prelude 生效时，OMP 会过滤同类的 browser MCP server。源码默认值随版本变化：18.12.6 的 `browser.enabled` 为 `false`，19.0.1 起为 `true`；两版的 `browser.relay` 默认都是 `false`，`browser.headless` 默认都是 `true`。
 
 ## 四种后端与八条路由
 
@@ -32,15 +32,49 @@ prelude 是 OMP 在启动 `eval` 内核时预先注入全局作用域的预置�
 > **Status: Outdated** (2026-11-12)
 > 这一段描述 18.12.6 的默认路由。omp 18.19.0 起浏览器会话优先使用随包的 ABKit WebKit 引擎，未安装时自动安装并校验 SHA-256；Chromium 保留为回退。见下节与 [ABKit：面向 agent 的 WebKit 浏览器引擎](../agent-tooling/abkit-agent-browser-engine.md)。
 
-## 2026-11-12 更新：ABKit/WebKit 后端
+## 2026-11-12 记录：ABKit/WebKit 后端（18.19.0）
 
-omp 18.19.0 的发行说明给出当前行为：
+omp 18.19.0 的发行说明原文：
 
 - 浏览器会话优先使用随包的 ABKit WebKit 引擎，未安装时自动安装并校验 SHA-256。
 - WebKit 提供 headed、用户可见的标签页；Chromium 为回退，可用 `app: "chromium"` 显式选择，`app: "webkit"` 要求 WebKit。
 - 配置项为 `browser.webkit` 与 `browser.webkitPath`，对应环境变量为 `PI_BROWSER_WEBKIT` 与 `PI_BROWSER_WEBKIT_PATH`；`PI_BROWSER_WEBKIT=0` 关闭后端。
 - WebKit 标签窗口的显示与隐藏立即生效；headed 的 WebKit 标签页可以直接交互，Chromium 标签页保留原有的模式切换行为。
 - 引擎安装在 `~/.o2/lib/abkit`，`ABHost` 以无窗口方式运行；macOS 通过 `ABView` 显示窗口。
+
+> **Status: Outdated** (2026-11-20)
+> 发行引擎只在 macOS 带视图程序 `ABView`；19.0.1 的 `VIEWER_PLATFORMS` 只有 `darwin`，Linux 与 Windows 上的 WebKit 标签没有窗口，`headed: true` 交给 Chromium。引擎按需从 Stencil 构建服务下载到 `~/.o2/lib/abkit`，校验大小与 SHA-256，不随安装包分发。
+
+## 19.0.1 的路由与下载顺序
+
+19.0.1 的自动选择保留 relay、`browser.cdpUrl`、Tern、cmux 四个顺位，最后的自有浏览器按引擎是否安装分流：装了就是无头 WebKit，没装就是受管 Chromium。可见窗口在非 macOS 平台归 Chromium，因为发行引擎的视图程序只有 macOS 的 `ABView`。
+
+WebKit 引擎的下载由 `installWebKitForOpen` 单独把关，只有两种情况会安装：
+
+- 显式 `app: "webkit"`。
+- 本次 open 最终落在无头 Chromium，且 Chromium 本身需要先下载。
+
+`chromiumNeedsDownload()` 以下任一成立就返回 false，WebKit 预装分支整个跳过：`PUPPETEER_EXECUTABLE_PATH` 已设、非 macOS 平台找到系统 Chrome/Chromium、`~/.omp/puppeteer` 里已有对应版本的 Chrome for Testing。受管 Chromium 首次下载在源码注释里标注约 180 MB。
+
+## 配置开关与生效路径
+
+| 开关 | 作用范围 |
+|---|---|
+| `browser.enabled` | 控制 prelude 是否注入；19.0.1 默认 `true` |
+| `browser.webkit` | 只影响自动选择；显式 `app: "webkit"` 仍会下载并使用引擎 |
+| `PI_BROWSER_WEBKIT=0`/`1` | 两个方向上的最终覆盖；`0` 时 `app: "webkit"` 直接报错且不下载 |
+| `browser.headless` | 默认 `true`；非 macOS 平台可见窗口归 Chromium |
+| `/browser` | 只切无头与可见；功能关闭时提示 `Browser capability is disabled (enable in settings).` |
+
+改动 `config.yml` 后，设置模块的目录级 `fs.watch` 监视去抖重载，`browser.enabled` 的监听器重新计算 eval prelude，并先重新过滤浏览器类 MCP server。空会话重建系统提示；进行中的会话在下一条用户消息带隐藏 prelude 通知；开启失败会回退为关闭。
+
+浏览器类 MCP server 的过滤名单是 `puppeteer`、`playwright`、`browserbase`、`browser-tools`、`browser-use`、`browser`，加上对应包名模式与 `browserbase.com`、`browser-use.com` 两个 URL 模式；生效条件是不限制工具名、prelude 开启、`eval` 已注册且在本会话可用。`chrome-devtools` 不在名单内。
+
+## 本机 WSL 实测（2026-11-20）
+
+本机 OMP 19.0.1。`/usr/bin/chromium` 是发行版 launcher 脚本，`--version` 输出 `Chromium 156.0.8078.73`；`~/.omp/puppeteer/chrome` 已有 `linux-150.0.7871.24`；`~/.o2` 不存在。
+
+把 `browser.enabled` 从 `false` 改为 `true` 后重置 eval 内核，`typeof browser` 返回 `object`。首个标签结果为 `Opened tab "smoke" on omp's headless Chromium (shared)`，页面标题 `Example Domain`；全程没有下载，`~/.o2` 仍不存在。Google 搜索走同一受管无头 Chromium，落到 `google.com.hk`，正文没有 CAPTCHA 类标记，二次查询后取到 8 个结果标题。
 
 ## relay 的端点与真实安全边界
 
