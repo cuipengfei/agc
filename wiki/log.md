@@ -2564,3 +2564,9 @@
 - Raw: raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md
 - Updated: ttyd 与 sip 并存部署; 焦点刷新期间的鼠标松开丢失; sip v0.10.0 使用参考
 - 要点：单元未设 `KillMode`，默认 `control-group`；Herdr 在 sip 的 shell 内启动，服务重启向整个 cgroup 发 SIGTERM，命令返回 143；`Restart=always` 使异常重启同样波及 Herdr 与全部 pane 进程。验收用 `systemd-cgls --user-unit sip`；迁移方式为独立 user unit 或 `systemd-run --user --scope`，本机未实施。cgroup 与 POSIX 进程组不同，`setsid`、`disown` 无法脱离单元。
+
+## [2026-11-20] ingest | OMP computer prelude 与桌面自动化
+- Disposition: Update
+- Raw: raw/omp-tools/2026-11-20-omp-computer-use-doc-boundary-and-control.md
+- Updated: OMP computer prelude 与桌面自动化
+- 要点：`computer` 不是浏览器 DOM API，网页内选择器、ARIA/DOM、页面 JS 与 CDP 标签页归 `browser`；`browser` 够不着原生外壳与菜单栏、由 `openAndSavePanelService` 绘制的系统开关面板、未开 `--remote-debugging-port` 的 Electron、非网页桌面程序。原生改动与菜单读取取跨进程输入/焦点锁，等待上限 5 秒后 `InputBusy`；物理 `Esc` 中止接管并使该会话本回合后续调用被拒到用户下一条消息；macOS 接管前要求 5 s 空闲，等待在超时前 0.25 s 结束。`control.acquire` 与批准档位无关，`tools.approval["computer.control"]` 是字面键，嵌在 `computer` 下不生效。macOS 持 `PreventUserIdleDisplaySleep` 断言；锁屏时键击、接管与 AX 失败，后台点击仍可达锁屏后的应用。本机 `computer.enabled: false`、`browser.enabled: true`，只做网页工作时保持该组合。
