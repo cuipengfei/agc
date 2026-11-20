@@ -510,7 +510,7 @@ web_search:
 security:
   enabled: true
 browser:
-  enabled: false
+  enabled: true
   headless: true
   cmux: true
 async:
