@@ -94,7 +94,7 @@ const MISSING = [
   [['build'], 'original'],
   [['rebuild'], 'bundle'],
   [['check-build'], 'bundle'],
-  [['assets'], 'fonts'],
+  [['assets', '--out', path.join(root, 'assets-missing-fonts')], 'fonts'],
   [['verify-page'], 'url'],
   [['markdown-windows'], 'binary'],
 ];
