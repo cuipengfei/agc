@@ -117,7 +117,7 @@ bun cli.mjs assets --official /path/to/original --fonts /path/to/font-assets \
 ```
 
 此模式读取 `inputs.json` 的 version、WASM SHA-256 与 glue SHA-256，分别核对实际文件后逐字节复制原版模块和 glue。部署清单记录 `mode: "font-only"`、`originalSha256`、`glueSha256` 与 `wasmUnmodified: true`，不要求时间补丁构建包。字体描述符来自当前版本分析，WASM 内存中的字体在页面运行时替换，磁盘原版模块保持不变。`bundle` 模式记录 `mode: "patched"`，其余校验不变。
-字体名称登记补丁（Tern 0.9.28 的动态字体名称登记修复）改由 `--registration` 装配：补丁构建目录包含 `registration.json`（`{schemaVersion: 1, kind: "font-registration", version, originalSha256, candidateSha256, glueSha256}`）、`candidate.wasm` 与 `glue.js`，装配时逐一核对 schema、kind、version 与三个身份 hash，任一不符即拒绝：
+字体名称登记补丁（Tern 0.9.28 和 0.9.29 的动态字体名称登记修复）由 `--registration` 装配：补丁构建目录包含 `registration.json`（`{schemaVersion: 1, kind: "font-registration", version, originalSha256, candidateSha256, glueSha256}`）、`candidate.wasm` 与 `glue.js`，装配时逐一核对 schema、kind、version 与三个身份 hash，任一不符即拒绝：
 
 ```bash
 bun cli.mjs assets --registration /path/to/font-registration-build --out /tmp/tern-registration-site
@@ -125,9 +125,9 @@ bun cli.mjs assets --registration /path/to/font-registration-build --out /tmp/te
 
 新模式不要求 `--fonts`，不复制 Maple 替换字体、不携带 `maple.js`，页面直接加载候选 WASM（token 鉴权与 mount 参数处理不变）；输出仅 `index.html`、`pkg/client.wasm`、`pkg/client.js` 与 `deploy-manifest.json`，清单记录 `mode: "font-registration"` 及 original/candidate/glue 三个 SHA-256。`--registration` 不得与 `--fonts`、`--bundle` 或 `--official` 同时使用。
 
-## 0.9.28 字体登记补丁与后续版本检查
+## 0.9.28 和 0.9.29 字体登记补丁与后续版本检查
 
-`font-registration-build` 修复 Web 动态字体加入名称登记表的流程，保留内置字体。构建器锁定已审核的 0.9.28 官方 WASM 与 glue SHA-256，复用程序原有的字体名称解析、HashMap entry 与 SmallVec 追加过程；输入身份不匹配即停止，不把旧地址用于其他版本。
+`font-registration-build` 修复 Web 动态字体加入名称登记表的流程，保留内置字体。构建器锁定已审核的 0.9.28 和 0.9.29 官方 WASM 与各自的 glue SHA-256，复用程序原有的字体名称解析、HashMap entry 与 SmallVec 追加过程；输入身份不匹配即停止，不把旧地址用于其他版本。
 
 ```bash
 bun cli.mjs font-registration-build --original /path/to/original.wasm \
@@ -135,7 +135,7 @@ bun cli.mjs font-registration-build --original /path/to/original.wasm \
 bun cli.mjs assets --registration /tmp/tern-registration-build --out /tmp/tern-registration-site
 ```
 
-`font-check.mjs` 使用真实 Chrome，检查首次加载、字体缓存、内置字体正对照和不存在字体的负对照。它读取该版本原字体匹配函数的实际返回值，同时记录资源身份、字体响应 hash 和 Settings 截图。profile 的 `wasmSha256` 与 `statusOffset` 必须来自对应模块；补丁和原版分别使用 `profiles/font-registration-0.9.28-patched.json` 与 `profiles/font-registration-0.9.28-original.json`。
+`font-check.mjs` 使用真实 Chrome，检查首次加载、字体缓存、内置字体正对照和不存在字体的负对照。它读取该版本原字体匹配函数的实际返回值，同时记录资源身份、字体响应 hash 和 Settings 截图。profile 的 `wasmSha256` 与 `statusOffset` 必须来自对应模块；0.9.28 和 0.9.29 的原版与补丁版分别使用 `profiles/font-registration-<version>-original.json` 与 `profiles/font-registration-<version>-patched.json`。
 
 在 WSL 中通过 Windows Node 运行（将 Node、Playwright、Chrome 和输出路径替换为本机值）：
 
@@ -146,7 +146,7 @@ WIN_NODE='/mnt/d/Program Files/nodejs/node.exe'
   --token-file "$(wslpath -w "$HOME/.config/tern/web-token")" \
   --playwright-module 'C:\path\to\playwright\index.mjs' \
   --chromium-executable 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe' \
-  --profile "$(wslpath -w "$PWD/profiles/font-registration-0.9.28-patched.json")" \
+  --profile "$(wslpath -w "$PWD/profiles/font-registration-0.9.29-patched.json")" \
   --out 'C:\Temp\tern-font-check.json'
 ```
 

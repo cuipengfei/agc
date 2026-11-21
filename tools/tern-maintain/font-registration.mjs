@@ -5,8 +5,18 @@ import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { sha256, walk } from './analyze.mjs';
 
-const ORIGINAL_SHA256 = '36abf20e257cbb0e356e2ee0b539d2a1186c6be346bbba35e4ac4bf786a9614d';
-const GLUE_SHA256 = 'a520492de67d649f6ccfeeac494e3f0a7831ef5b328595d6edfe78ab1f1eac43';
+const RELEASES = {
+  '36abf20e257cbb0e356e2ee0b539d2a1186c6be346bbba35e4ac4bf786a9614d': {
+    version: '0.9.28', glueSha256: 'a520492de67d649f6ccfeeac494e3f0a7831ef5b328595d6edfe78ab1f1eac43',
+    builtin: '7979', selector: '14268', downloaded: '5024', entry: '18164',
+    parse: '15878', family: '22165', string: '1303', free: '29798', append: '31952', statusFunctionIndex: 14775,
+  },
+  'fb165ec4aa5b23af48cb4d0b83e70e21ff3211a6bb62707daf37b278cc301085': {
+    version: '0.9.29', glueSha256: '9f47fbf06321f2d55d69d5bf538037746f1d32d91d9fb5935220b5af4f2c4d93',
+    builtin: '8042', selector: '14350', downloaded: '5084', entry: '18267',
+    parse: '15976', family: '22304', string: '1316', free: '29948', append: '32105', statusFunctionIndex: 14857,
+  },
+};
 const HELPER = 'tern_register_downloaded_font_name';
 const APPEND = 'tern_append_named_downloaded_font';
 
@@ -25,14 +35,16 @@ function directCall(ref, target) {
 export async function buildRegistrationPatch({ original, glue, out }) {
   if (!original || !glue || !out) throw Error('original, glue and out are required');
   const input = await readFile(original), glueBytes = await readFile(glue);
-  if (sha256(input) !== ORIGINAL_SHA256) throw Error('Unknown official WASM: investigate this version before applying the registration patch');
-  if (sha256(glueBytes) !== GLUE_SHA256) throw Error('Official JavaScript glue does not match the reviewed release');
+  const originalSha256 = sha256(input);
+  const release = RELEASES[originalSha256];
+  if (!release) throw Error('Unknown official WASM: investigate this version before applying the registration patch');
+  if (sha256(glueBytes) !== release.glueSha256) throw Error('Official JavaScript glue does not match the reviewed release');
   if (await lstat(out).then(() => true, error => { if (error.code === 'ENOENT') return false; throw error; })) throw Error('Output directory already exists');
   const module = binaryen.readBinary(input);
   try {
-    const builtin = binaryen.getFunctionInfo(module.getFunction('7979'));
-    const selector = binaryen.getFunctionInfo(module.getFunction('14268'));
-    const downloaded = binaryen.getFunctionInfo(module.getFunction('5024'));
+    const builtin = binaryen.getFunctionInfo(module.getFunction(release.builtin));
+    const selector = binaryen.getFunctionInfo(module.getFunction(release.selector));
+    const downloaded = binaryen.getFunctionInfo(module.getFunction(release.downloaded));
     const copy = ref => module.copyExpression(ref);
     const local = index => module.local.get(index, binaryen.i32);
     const constant = value => module.i32.const(value);
@@ -42,17 +54,17 @@ export async function buildRegistrationPatch({ original, glue, out }) {
     const set = (index, value) => module.local.set(index, value);
     const restore = () => module.global.set('global$0', add(local(2), 208));
 
-    const registration = findOne(builtin.body, node => node.id === binaryen.BlockId && node.children.some(ref => directCall(ref, '18164')), 'Builtin name registration');
-    const registrationIndex = registration.node.children.findIndex(ref => directCall(ref, '18164'));
+    const registration = findOne(builtin.body, node => node.id === binaryen.BlockId && node.children.some(ref => directCall(ref, release.entry)), 'Builtin name registration');
+    const registrationIndex = registration.node.children.findIndex(ref => directCall(ref, release.entry));
     const nativeRegistration = registration.node.children.slice(registrationIndex, registrationIndex + 4);
     if (nativeRegistration.length !== 4 || binaryen.getExpressionInfo(nativeRegistration[1]).id !== binaryen.BlockId || binaryen.getExpressionInfo(nativeRegistration[3]).id !== binaryen.BlockId) throw Error('Builtin name registration layout changed');
     const entry = binaryen.getExpressionInfo(nativeRegistration[0]);
     const mapArgument = binaryen.getExpressionInfo(entry.operands[1]);
     if (mapArgument.id !== binaryen.BinaryId || binaryen.getExpressionInfo(mapArgument.right).value !== 288) throw Error('Name registration map is not FontSystem+288');
 
-    const parser = findOne(selector.body, node => node.id === binaryen.BlockId && node.children.some(ref => directCall(ref, '15878')) && node.children.some(ref => directCall(ref, '22165')), 'Font family metadata parser');
-    const parseIndex = parser.node.children.findIndex(ref => directCall(ref, '15878'));
-    const nameIndex = parser.node.children.findIndex(ref => directCall(ref, '22165'));
+    const parser = findOne(selector.body, node => node.id === binaryen.BlockId && node.children.some(ref => directCall(ref, release.parse)) && node.children.some(ref => directCall(ref, release.family)), 'Font family metadata parser');
+    const parseIndex = parser.node.children.findIndex(ref => directCall(ref, release.parse));
+    const nameIndex = parser.node.children.findIndex(ref => directCall(ref, release.family));
     const rawBytes = parser.node.children[parseIndex - 1];
     if (binaryen.getExpressionInfo(rawBytes).id !== binaryen.CallIndirectId || nameIndex <= parseIndex + 2) throw Error('Font metadata extraction layout changed');
     const familyName = binaryen.getExpressionInfo(parser.node.children[nameIndex]);
@@ -70,8 +82,8 @@ export async function buildRegistrationPatch({ original, glue, out }) {
         module.if(module.i32.eq(local(1), constant(2)), module.br('registration_done')),
         ...fontReferenceAndName.map(copy),
         module.if(module.i32.eq(load(48), constant(-1)), module.br('registration_done')),
-        module.call('1303', [frame(160), load(52), load(56)], binaryen.none),
-        module.if(load(48), module.call('29798', [load(52), load(48)], binaryen.none)),
+        module.call(release.string, [frame(160), load(52), load(56)], binaryen.none),
+        module.if(load(48), module.call(release.free, [load(52), load(48)], binaryen.none)),
         set(0, frame(160)),
         ...nativeRegistration.map(copy),
       ], binaryen.none),
@@ -79,15 +91,15 @@ export async function buildRegistrationPatch({ original, glue, out }) {
     ], binaryen.none);
     module.addFunction(HELPER, builtin.params, binaryen.none, builtin.vars, body);
     module.addFunction(APPEND, binaryen.createType([binaryen.i32, binaryen.i32]), binaryen.i32, [binaryen.i32], module.block(null, [
-      set(2, module.call('31952', [local(0), local(1)], binaryen.i32)),
+      set(2, module.call(release.append, [local(0), local(1)], binaryen.i32)),
       module.call(HELPER, [local(0), local(2)], binaryen.none),
       local(2),
     ], binaryen.i32));
-    const append = findOne(downloaded.body, node => node.id === binaryen.CallId && node.target === '31952', 'Downloaded font append');
+    const append = findOne(downloaded.body, node => node.id === binaryen.CallId && node.target === release.append, 'Downloaded font append');
     binaryen.Call.setTarget(append.ref, APPEND);
     if (!module.validate()) throw Error('Patched module validation failed');
     const candidate = module.emitBinary();
-    const manifest = { schemaVersion: 1, kind: 'font-registration', version: '0.9.28', originalSha256: ORIGINAL_SHA256, candidateSha256: sha256(candidate), glueSha256: sha256(glueBytes), patch: { caller: 5024, originalAppend: 31952, entry: 18164, statusFunctionIndex: 14775 } };
+    const manifest = { schemaVersion: 1, kind: 'font-registration', version: release.version, originalSha256, candidateSha256: sha256(candidate), glueSha256: sha256(glueBytes), patch: { caller: Number(release.downloaded), originalAppend: Number(release.append), entry: Number(release.entry), statusFunctionIndex: release.statusFunctionIndex } };
     await mkdir(out, { recursive: false });
     await writeFile(join(out, 'candidate.wasm'), candidate, { flag: 'wx' });
     await writeFile(join(out, 'glue.js'), glueBytes, { flag: 'wx' });
