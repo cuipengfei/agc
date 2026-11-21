@@ -652,6 +652,7 @@ VS Code（含 serve-web）的设置分层、Web 客户端存储与 Remote 配置
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [VS Code serve-web 的设置分层：浏览器 User 与 WSL Remote](vscode/serve-web-settings-layers.md) | Web 客户端用户设置存于浏览器 IndexedDB（`vscode-web-db` / `vscode-userdata-store`）；serve-web 以请求 Host 作为 `remoteAuthority`，Remote 层读取服务端 `data/Machine/settings.json`；优先级 User < Remote < Workspace < Policy；`window.title` 默认 scope 为 WINDOW，Workspace 层接受、Folder 层不接受；Remote 层值为 `${rootName}`，最终生效值未验证 | 2026-10-21 |
+| [VS Code Web Git hook 的 PATH 与 locale](vscode/serve-web-git-hook-environment.md) | Tern hook 找不到 Bun 的进程环境取证；Git 扩展 locale 设置、systemd 用户 PATH 快照与 environment.d 排序、验证边界 | 2026-11-21 |
 
 ## horizon
 

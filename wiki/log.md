@@ -2649,3 +2649,8 @@
 ## [2026-11-21] ingest | Tern 升级辅助工具与验收边界
 - Disposition: Update
 - Raw: raw/tern/2026-11-21-tern-font-skill-scripted-verification.md
+
+## [2026-11-21] ingest | VS Code Web Git hook 的 PATH 与 locale
+- Disposition: New
+- Raw: raw/vscode/2026-11-21-serve-web-git-hook-path-locale.md
+- Created: VS Code Web Git hook 的 PATH 与 locale
