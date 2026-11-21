@@ -1284,10 +1284,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "d63f2b9ae5152436f0c6d02894d914a1afd63f15",
+      "skillFolderHash": "223ed813a0155676157b734491bb1e06e4b76ae8",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-21T03:26:51.494Z",
-      "commit": "370f09d74ca61020ba51417e7fd375b8bb50ad28"
+      "updatedAt": "2026-11-21T05:22:32.443Z",
+      "commit": "7df3ae0a516c106abfc605aca183bc99eb1785d7"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
