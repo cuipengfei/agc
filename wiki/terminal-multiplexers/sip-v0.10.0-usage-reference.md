@@ -1,8 +1,8 @@
 # sip v0.10.0 使用参考
 
-> Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与官方源码，2026-11-15；Gaurav-Gosain/webterm 字体加载源码；本机 systemd 与隔离浏览器端实测，2026-11-15；sip v0.10.0 源码与隔离 Chromium 实测（渲染器与鼠标），2026-11-20
-> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md); [sip v0.10.0 Worker engine：字体加载路径与宿主字体切换](../../raw/terminal-multiplexers/2026-11-20-sip-worker-engine-host-font.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md)
-> Updated: 2026-11-20
+> Sources: Gaurav-Gosain/sip v0.10.0 CLI 帮助与官方源码，2026-11-15；Gaurav-Gosain/webterm 字体加载源码；本机 systemd 与隔离浏览器端实测，2026-11-15；sip v0.10.0 源码与隔离 Chromium 实测（渲染器与鼠标），2026-11-20；sip v0.10.0 传输与绘制源码、IETF RFC 与 W3C WebTransport 文档，2026-11-21；WebAssembly.org 与 Mozilla Developer Network 浏览器接口文档，2026-11-21
+> Raw: [sip v0.10.0 CLI、URL 与设置面板使用记录](../../raw/terminal-multiplexers/2026-11-15-sip-v0.10.0-cli-url-settings-usage.md); [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip + Herdr：焦点刷新期间的鼠标松开丢失](../../raw/terminal-multiplexers/2026-11-20-sip-herdr-focus-refresh-mouseup-loss.md); [sip v0.10.0 Worker engine：字体加载路径与宿主字体切换](../../raw/terminal-multiplexers/2026-11-20-sip-worker-engine-host-font.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md); [sip 传输、渲染回退与 Worker 绘制](../../raw/terminal-multiplexers/2026-11-21-sip-transport-renderer-worker.md); [WebAssembly 浏览器显示资料](../../raw/terminal-graphics/2026-11-21-webassembly-rendering-targets.md)
+> Updated: 2026-11-21
 
 ## Overview
 
@@ -108,7 +108,7 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 
 | 参数 | 可选值 | 行为 |
 |---|---|---|
-| `?renderer=` | `webgl`/`canvas`/`dom`/`vtgl`/`engine`/`auto` | 强制当前标签页渲染器 |
+| `?renderer=` | `webgl`/`canvas`/`dom`/`vtgl`/`engine`/`auto` | 选择当前标签页的首选渲染器；初始化失败时仍可能回退 |
 | `?mobile=` | `1`/`0` | 强制开启/关闭触屏按键栏 |
 | `?vtglShaper=` | `pfb`/`none` | 仅 `renderer=vtgl` 时生效 |
 | `?vtglBackend=` | `canvas2d` | 仅 `renderer=vtgl` 时生效 |
@@ -119,7 +119,7 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 
 | 控件 | 默认值 | 行为 |
 |---|---|---|
-| Transport | `auto` | `auto` 优先 QUIC 失败回 WebSocket；`webtransport` 强制 UDP；`websocket` 强制 TCP |
+| Transport | `auto` | `auto` 与 `webtransport` 都先尝试 WebTransport，失败时使用 WebSocket；`websocket` 直接使用 WebSocket |
 | Renderer | `auto` | 六项，见下文选型 |
 | Font Size | `14`（滑杆 10–28） | 字号变化即时重排行列数 |
 | Copy on select | 关 | 选中即复制 |
@@ -133,22 +133,52 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 
 ## 渲染器选型
 
-| 渲染器 | 终端核心与绘制 | 适合场景 |
+Renderer 选项指定首选方式，实际使用的渲染器可能因初始化失败而回退。`Auto` 和 `WebGL` 在 v0.10.0 中的选择顺序相同。
+
+| 渲染器 | 终端核心与启动顺序 | 使用体验 |
 |---|---|---|
-| `Auto` | xterm.js，绘制方式自动选择 | 显卡驱动没问题的设备开箱即用 |
-| `WebGL` | xterm.js + WebGL | GPU 正常且跑重度 TUI（btop、大量滚屏）；帧率最高 |
-| `Canvas` | xterm.js + Canvas 2D | Windows + WSL2 首选；字体抗锯齿自然；彻底避开 WebGL 色块故障 |
-| `DOM` | xterm.js + HTML 元素 | 无 GPU 环境、屏幕阅读器、自动化测试 |
-| `vtgl` | xterm.js + 独立绘制组件 `static/webterm-vtgl.js` | 实验性，测试字形排版整形 |
-| `Worker engine` | libghostty-vt（WebAssembly）+ WebGL2，必要时 Canvas 2D；解析与绘制在 Web Workers | 实验性，海量输出时保持页面响应；指针与键盘走独立实现；字体在 Worker 内加载，见 [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md) |
+| `Auto` | xterm.js；WebGL → Canvas → DOM | 自动选择可用的绘制方式 |
+| `WebGL` | xterm.js；WebGL → Canvas → DOM | 优先使用 WebGL 绘图；无法启动时继续尝试 Canvas 和 DOM |
+| `Canvas` | xterm.js；Canvas → DOM | 使用 Canvas 2D；WebGL 绘图出现问题时可单独选择 |
+| `DOM` | xterm.js；DOM | 使用 HTML 元素显示终端内容 |
+| `vtgl` | xterm.js；vtgl → WebGL → Canvas → DOM | 实验性绘制组件；默认使用 WebGL2 和 HarfBuzz 字形处理 |
+| `Worker engine` | libghostty-vt WebAssembly；Worker WebGL2 → Worker Canvas 2D | 实验性终端核心与绘制路径；整个引擎无法启动时使用 xterm.js 的 `Auto` 顺序 |
+
+Worker engine 使用网络 Worker 接收数据，终端 Worker 处理屏幕状态并绘图。页面中的 Canvas 交给 OffscreenCanvas；字形先由浏览器按字体生成像素图集，WebGL2 再绘制终端画面。字体加载另见 [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md)。
+
+WebGL2 是浏览器的绘图接口；是否使用硬件 GPU 取决于浏览器的图形实现。Worker Canvas 2D 仍使用 libghostty-vt；设置面板中的 `Canvas` 选项则使用 xterm.js。
+
+设置面板的 `Renderer` 显示实际结果：`Worker engine` 表示 Worker WebGL2，`Worker engine (Canvas2D)` 表示 Worker Canvas 2D；`WebGL`、`Canvas` 和 `DOM` 表示 xterm.js 路径。
 
 ## Transport 选型
 
-| 场景 | 选择 |
+| 选项 | v0.10.0 的连接顺序 |
 |---|---|
-| 本机 localhost | `Auto` 或 `WebSocket`（回环延迟近 0，两者体感相同，WebSocket 省去 QUIC 握手） |
-| Wi-Fi / 4G / 弱网 | `WebTransport (QUIC)`（UDP 抗丢包，不会队头阻塞） |
-| 反向代理 / SSH 转发 | `WebSocket`（代理通常不转发 UDP） |
+| `Auto (prefer QUIC)` | 先尝试 WebTransport；失败时使用 WebSocket |
+| `WebTransport (QUIC)` | 先尝试 WebTransport；失败时同样使用 WebSocket |
+| `WebSocket` | 直接使用 WebSocket |
+
+WebTransport 向网页代码提供浏览器通信接口；sip 使用 HTTP/3 和 QUIC/UDP，默认在网页服务端口加 1 的端口提供 QUIC。终端数据使用一条双向流。WebSocket 使用 TCP；sip 在 HTTPS 页面选择 `wss:`，在 HTTP 页面选择 `ws:`。支持 WebSocket 的反向代理和只转发 TCP 的 SSH 隧道可以使用这条路径。
+
+QUIC 用 UDP 承载数据包，并使用 TLS 1.3 的安全机制；满足协议要求的更新 TLS 版本也可协商。QUIC 的可靠流按顺序交付字节；一条流内的等待不会强制其他流等待同一段数据，多条流仍共享连接的拥塞控制。sip 的终端连接使用一条双向流，该流一个方向上的数据丢失时，后续内容可能等待补发。
+
+QUIC DATAGRAM 是协商后可用的数据报扩展，丢失的 DATAGRAM 帧不重传，但仍受连接的拥塞控制。sip 的终端消息使用上述流；服务端启用数据报能力与终端消息的实际路径是两个不同事实。
+
+面板的 `Transport` 显示实际连接；`WebSocket (WebTransport unavailable)` 表示当前使用 WebSocket。更改选项后点击 `Apply & Reconnect` 才会应用。
+
+## Transport 与 Renderer 的组合
+
+两个菜单共有 18 种可选组合。表中 `Q→W` 表示先尝试 WebTransport，失败时使用 WebSocket；`W` 表示直接使用 WebSocket。每一格同时表示连接和终端绘制方式。
+
+| Renderer | Auto 或 WebTransport | WebSocket |
+|---|---|---|
+| Auto、WebGL | `Q→W`；xterm.js，WebGL → Canvas → DOM | `W`；xterm.js，WebGL → Canvas → DOM |
+| Canvas | `Q→W`；xterm.js，Canvas → DOM | `W`；xterm.js，Canvas → DOM |
+| DOM | `Q→W`；xterm.js，DOM | `W`；xterm.js，DOM |
+| vtgl | `Q→W`；xterm.js，vtgl 优先 | `W`；xterm.js，vtgl 优先 |
+| Worker engine | `Q→W`；libghostty-vt 与 Worker 绘制 | `W`；libghostty-vt 与 Worker 绘制 |
+
+Worker engine 搭配 WebSocket 时，网络接收仍由网络 Worker 处理。vtgl 和 Worker engine 的具体回退顺序见上表。
 
 ## 剪贴板与 OSC 52
 
@@ -157,8 +187,7 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 
 ## 证据边界
 
-- WebTransport 弱网优势是协议机制推断，本机 localhost 环境无法实测。
-- Canvas 渲染器「字体抗锯齿自然」是相对 WebGL 的体感描述，非量化指标。
+- 18 组组合根据菜单与源码选择路径推导，未逐项切换实测；本次浏览器目标查询超时，当前页面的实际连接、渲染器与硬件 GPU 状态未确认。
 - `vtgl` 实际稳定性未在本机长期验证。
 - `Worker engine` 在焦点重设期间保留鼠标松开事件（隔离 Chromium 实测）；Kitty 图形与键盘协议在源码中具备，未实跑验证；长期稳定性未验证。
 - 本机用户确认 Worker engine 的字体切换生效；未做字形级字体来源测量。截图比对受重绘时序影响，不作为判据。
@@ -170,3 +199,4 @@ Kitty graphics 和 Sixel 在 sip 里默认开启，不需要额外参数。
 - [ttyd 与 sip 并存部署](ttyd-and-sip-side-by-side.md)
 - [sip Worker engine 下使用宿主字体](sip-worker-engine-host-font.md)
 - [浏览器端 Kitty 图形终端](../terminal-graphics/browser-kitty-terminals.md)
+- [WebAssembly 在浏览器中的运行与显示](../terminal-graphics/webassembly-browser-rendering.md)

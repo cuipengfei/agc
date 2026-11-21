@@ -2629,3 +2629,14 @@
 - Disposition: Update
 - Raw: raw/omp-turn/2026-11-21-omp-out-protocol-and-memory-id.md
 - Updated: OMP 内建工具全集、会话暴露边界与内部地址空间
+
+## [2026-11-21] ingest | sip v0.10.0 传输与渲染选择
+- Disposition: Update
+- Raw: raw/terminal-multiplexers/2026-11-21-sip-transport-renderer-worker.md
+- Updated: sip v0.10.0 使用参考
+
+## [2026-11-21] ingest | WebAssembly 在浏览器中的运行与显示
+- Disposition: New
+- Raw: raw/terminal-graphics/2026-11-21-webassembly-rendering-targets.md
+- Created: WebAssembly 在浏览器中的运行与显示
+- Updated: sip v0.10.0 使用参考
