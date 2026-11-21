@@ -2645,3 +2645,7 @@
 - Disposition: Update
 - Raw: raw/proxy-ops/2026-11-21-hk-auto-group-geoip-crosscheck.md
 - Updated: 代理出口 IP 指纹批量测量与形态分类
+
+## [2026-11-21] ingest | Tern 升级辅助工具与验收边界
+- Disposition: Update
+- Raw: raw/tern/2026-11-21-tern-font-skill-scripted-verification.md
