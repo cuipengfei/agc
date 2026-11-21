@@ -2609,3 +2609,23 @@
 - Raw: raw/omp-config/2026-11-21-omp-19-rollover-runtime-forensics.md
 - Updated: OMP Compaction Methods & History URI Tool Support
 - 要点：父会话 `<SESSION_ID>` 的 compaction entry `<ENTRY_ID>` 于 12:21:03（UTC+8）记录 `experimental-context-rollover`，`tokensBefore: 370256`，日志记录消息数 `715 → 20`；v19.0.1 的 `runAutoCompaction` 在实验门满足时直接走 rollover，后续 `shake` 分支不执行；阈值日志中的 `methods` 字段是配置顺序，不是当次执行顺序。
+
+## [2026-11-21] ingest | OMP Turn、Run 与中途消息投递模式
+- Disposition: New
+- Raw: raw/omp-turn/2026-11-21-omp-turn-lifecycle-source.md; raw/omp-turn/2026-11-21-omp-midrun-message-modes-source.md
+- Created: OMP Turn、Run 与中途消息投递模式
+
+## [2026-11-21] ingest | Herdr 与 OMP 自定义 Widget 位置
+- Disposition: New
+- Raw: raw/omp-widgets/2026-11-21-omp-herdr-widget-positions.md
+- Created: Herdr 与 OMP 自定义 Widget 位置
+
+## [2026-11-21] ingest | WSL 到 Windows 桌面通知桥
+- Disposition: New
+- Raw: raw/wsl-windows/2026-11-21-wsl-to-windows-desktop-notifications.md
+- Created: WSL 到 Windows 桌面通知桥
+
+## [2026-11-21] ingest | out:// 协议与 memory:// ID 获取路径
+- Disposition: Update
+- Raw: raw/omp-turn/2026-11-21-omp-out-protocol-and-memory-id.md
+- Updated: OMP 内建工具全集、会话暴露边界与内部地址空间

@@ -623,6 +623,7 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 | [Docker Desktop 退出与 WSL2 发行版存活](wsl-windows/docker-desktop-quit-and-wsl2-lifecycle.md) | 后端日志证 Docker 退出只终止 docker-desktop 发行版、不执行 `wsl --shutdown`；用户发行版消失归因于空闲超时（instanceIdleTimeout 默认 15000ms、`-1` 禁用；vmIdleTimeout 默认 60000ms）为推断；给出验证方法 | 2026-10-10 |
 | [WSL 服务排障手法](wsl-windows/wsl-service-debug-playbook.md) | 四个反复使用的手法：`LD_LIBRARY_PATH` 隔离对照判定「库还是程序」、`ss -ltnp` 验证监听地址（`-i lo` 在 WSL 可能解析为 `10.255.255.254`）、`apt-cache policy` 与 `showhold` 看版本来源与锁定、`journalctl` 与 `NRestarts` 确认崩溃循环；每式含适用场景、命令模板、预期输出、误判陷阱 | 2026-11-08 |
 | [Git 可执行权限、core.filemode 与脚本执行](wsl-windows/git-executable-modes-and-shell-scripts.md) | 本地权限、Git index、revision 与 `core.filemode` 分层检查；Linux 执行许可与 shebang；MSYS2 `noacl` 环境的执行位推断及适用边界 | 2026-11-21 |
+| [WSL 到 Windows 桌面通知桥](wsl-windows/wsl-to-windows-notifications.md) | SIP 前端不处理 Notification API；Herdr `delivery = "herdr"` 只在面板内显示，`"system"` 在 WSL 调用 `notify-send` 但无此命令；wsl-notify-send 桥接方案（Windows .exe + WSL 适配器合并 TITLE+BODY）；六工具 stars/维护/安装对比 | 2026-11-21 |
 
 ## ubuntu-packaging
 
@@ -696,3 +697,19 @@ gcloud CLI 建立 SSH 隧道时的进程归属、端口持有者与中转机制�
 |---------|---------|---------|
 | [ESP 租户滥用：认证通过不等于内容可信](phishing-defense/esp-tenant-abuse.md) | 认证链、头部读法、DMARC 边界与账户接管路径 | 2026-11-20 |
 | [令牌门控的登录页镜像代理](phishing-defense/cookie-gated-login-mirror.md) | 令牌 Cookie 门控、跳转诱饵、实时镜像证据与凭据/会话路径 | 2026-11-20 |
+
+## omp-turn
+
+OMP 模型循环的 turn、run 生命周期与中途消息投递模式。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [OMP Turn、Run 与中途消息投递模式](omp-turn/turn-run-and-midrun-messaging.md) | `turn` 定义与 `turn_end` 登记时机；`stopReason: "stop"` 与 `"toolUse"` 同样触发工具执行；`agent_pause` 与 `wakeSources` 四类唤醒源；`agent_end` 唯一终点；非 Goal 长任务步数由模型自主决定；steering / followUp / aside 三种队列的取出时机与打断行为；`joinActiveTurn` admission 边界；`steeringMode` / `followUpMode` 配置 | 2026-11-21 |
+
+## omp-widgets
+
+Herdr 与 OMP 的自定义 Widget 位置与扩展入口。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Herdr 与 OMP 自定义 Widget 位置](omp-widgets/omp-herdr-widget-positions.md) | Herdr 五个显示位置（标签栏右侧 / Agent 条目 / workspace 条目 / 独立 pane / popup overlay）与 16×16 token 限制；OMP 六个扩展入口（`setStatus` / `setWidget` / `ctx.ui.custom()` / `setEditorComponent` / `registerComposerShape` / `registerMessageRenderer`）；`setHeader()` / `setFooter()` 在 interactive 模式无实际实现 | 2026-11-21 |

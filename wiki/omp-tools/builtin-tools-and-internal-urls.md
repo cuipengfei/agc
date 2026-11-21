@@ -1,8 +1,8 @@
 # OMP 内建工具全集、会话暴露边界与内部地址空间
 
-> Sources: omp docs (Tools index), 2026-10-11; 本机 OMP 源码 + 本会话 harness 实测, 2026-10-11; pi-natives 第三方组件清单, 2026-11-04; 本机 xd:// 协议与 ChangeJournal 源码核验, 2026-11-15
-> Raw: [omp.sh/docs/tools](../../raw/omp-tools/2026-10-11-omp-sh-docs-tools.md); [源码与会话实测](../../raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md); [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md); [OMP xd:// 虚拟协议与 ChangeJournal 源码摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md)
-> Updated: 2026-11-15
+> Sources: omp docs (Tools index), 2026-10-11; 本机 OMP 源码 + 本会话 harness 实测, 2026-10-11; pi-natives 第三方组件清单, 2026-11-04; 本机 xd:// 协议与 ChangeJournal 源码核验, 2026-11-15; 本机 out:// 协议源码核验, 2026-11-21
+> Raw: [omp.sh/docs/tools](../../raw/omp-tools/2026-10-11-omp-sh-docs-tools.md); [源码与会话实测](../../raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md); [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md); [OMP xd:// 虚拟协议与 ChangeJournal 源码摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md); [OMP out:// 协议与 memory:// ID 获取路径](../../raw/omp-turn/2026-11-21-omp-out-protocol-and-memory-id.md)
+> Updated: 2026-11-21
 
 ## Overview
 
@@ -98,8 +98,11 @@ OMP 的内建工具由两处权威定义：源码常量 `BUILTIN_TOOL_NAMES`（3
 | `xd://report_issue` | 自动 QA 记录 | write（纯文本，不依赖 `tools.xdev`） |
 | `xd://resolve`、`xd://reject`、`xd://propose` | 应用/丢弃暂存修改、提交 `/plan` 计划审批 | write（纯文本，不依赖 `tools.xdev`） |
 | `xd://`、`xd://<tool>` | `tools.xdev: true` 时挂载的 discoverable 虚拟工具设备 | read（列清单/读 schema）；write（传 JSON 执行） |
+| `out://` | Agent 中途回复通道 | write（64 KiB 上限；仅 interactive TUI；子代理禁用） |
 
 此外 `read`/`write` 把本地容器当可导航文件系统：SQLite（`db.sqlite:table:key`、`?q=SELECT`）、压缩包成员（`archive.ext:member`，ZIP/tar 系/`.asar` 可写）、JSON/JSONL（`?q=<jq>`）、PDF/文档（抽取文本）、笔记本（可编辑 cell）、图片（`:img`/`:raw`）、视频（帧/时间点）、普通文本行选择器（`:50-200`、`:-60`、`:raw`）。`bash` 也认这些地址作路径。
+
+`out://` 是 Agent 向用户发送中间消息的专用通道（`out-protocol.ts:1-16`）。Agent 调用 `write out://` 或通过 `bash` 重定向 `> out://` 写入 Markdown，OMP TUI 将其渲染为普通 assistant 回复样式，Agent 无法通过 `read` 读取自己的输出。用途是工具执行期间（当前 `turn` 卡在工具执行阶段时）向用户发中间消息，不中断当前 `turn`。仅支持写入，上限 64 KiB（`out-protocol.ts:34-35`），仅在 interactive TUI 会话中启用，子代理禁用（`out-protocol.ts:36-46`）。
 
 ## 设计观察：Unix 词汇 + LLM 当 shell
 
