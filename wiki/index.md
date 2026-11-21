@@ -423,6 +423,14 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 |---------|---------|---------|
 | [Keyboard-Driven Pointer Control](keyboard-input/keyboard-driven-pointer-control.md) | 三条机制路径区分、工具矩阵、Capslock 与 Windows 方案 | 2026-09-03 |
 
+## container-images
+
+容器镜像的 shell 选择、构建缓存与拉取时的层复用。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [容器镜像中的 shell 选择与镜像层复用](container-images/shell-selection-and-layer-reuse.md) | 按调用方式判定解释器；`/bin/sh`、shebang 与 Bash POSIX 模式；末尾新增层的构建缓存条件；拉取时按层 digest 复用本地内容 | 2026-11-21 |
+
 ## software-factory
 
 AI software factory 的概念判据、部署形态、真工厂短名单与机械关卡参照。
@@ -436,12 +444,13 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 
 ## software-testing
 
-软件测试中的 mutation testing、test oracle、invariant、mutant 分类，以及分布式系统的确定性模拟测试（DST）。
+软件测试中的 mutation testing、test oracle、invariant、mutant 分类、分布式系统的确定性模拟测试（DST），以及发布资产与镜像的逐项验收。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界；客户端操作历史作为分布式系统的一致性 oracle | 2026-11-18 |
 | [Deterministic Simulation Testing：单线程 Tick 驱动与故障重放](software-testing/deterministic-simulation-testing.md) | 灰色故障与真实集群复现的两层障碍、四类不确定性接管、Tickloom 的 Tickable/SimulatedNetwork/按 tick 超时、种子化故障注入与时间快进、文件系统 visible/durable 崩溃模型、TickCompletableFuture、六条规则与三层 fitness function、消息级与字节级模拟边界、应用层与 hypervisor 层路线 | 2026-11-18 |
+| [发布资产与镜像的验证方法](software-testing/release-artifact-verification.md) | 从 release `tag_name` 构造资产 URL；HEAD 探测与版本检查分工；原始 CI 日志逐项 PASS/FAIL；按平台和 manifest digest 对照测试与发布产物 | 2026-11-21 |
 
 ## technology-radar
 
@@ -604,7 +613,7 @@ HTML 驱动的 agent 视频生成工具链。
 
 ## wsl-windows
 
-WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标准账户降低物理内存占用的可达范围，以及 Docker 退出对发行版生命周期的影响。
+WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标准账户降低物理内存占用的可达范围、Docker 退出对发行版生命周期的影响，以及 Git 可执行权限与跨平台脚本执行。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
@@ -613,6 +622,7 @@ WSL2 在 Windows 宿主侧的内存/swap 配置、内存回收工具行为、标
 | [标准用户降低 Windows 物理内存占用的可达范围](wsl-windows/nonadmin-physical-memory-reduction.md) | 按进程清空工作集的调用条件（`PROCESS_SET_QUOTA` + `PROCESS_QUERY_INFORMATION`，本次脚本另按 SID 筛自有进程，API 无所有者条件）；RAMMap Empty 五项的作用范围与权限未核实；本机实测清空 146 个进程后 3 秒「使用中」降 1,362 MB、可用升 1,362 MB、工作集 3,726→556 MB，63 秒可用低于基线 657 MB，提交占用未测；适用场景与定期清理的收益边界 | 2026-10-25 |
 | [Docker Desktop 退出与 WSL2 发行版存活](wsl-windows/docker-desktop-quit-and-wsl2-lifecycle.md) | 后端日志证 Docker 退出只终止 docker-desktop 发行版、不执行 `wsl --shutdown`；用户发行版消失归因于空闲超时（instanceIdleTimeout 默认 15000ms、`-1` 禁用；vmIdleTimeout 默认 60000ms）为推断；给出验证方法 | 2026-10-10 |
 | [WSL 服务排障手法](wsl-windows/wsl-service-debug-playbook.md) | 四个反复使用的手法：`LD_LIBRARY_PATH` 隔离对照判定「库还是程序」、`ss -ltnp` 验证监听地址（`-i lo` 在 WSL 可能解析为 `10.255.255.254`）、`apt-cache policy` 与 `showhold` 看版本来源与锁定、`journalctl` 与 `NRestarts` 确认崩溃循环；每式含适用场景、命令模板、预期输出、误判陷阱 | 2026-11-08 |
+| [Git 可执行权限、core.filemode 与脚本执行](wsl-windows/git-executable-modes-and-shell-scripts.md) | 本地权限、Git index、revision 与 `core.filemode` 分层检查；Linux 执行许可与 shebang；MSYS2 `noacl` 环境的执行位推断及适用边界 | 2026-11-21 |
 
 ## ubuntu-packaging
 

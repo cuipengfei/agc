@@ -2588,3 +2588,18 @@
 - Raw: raw/harness-engineering/2026-11-21-claude-md-gpt6-hardening-and-repo-replication.md
 - Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 - 要点：`~/.claude/CLAUDE.md` 由 378 行降到 344 行。删除 `### 1.1`–`### 1.3`（末尾强制「karpathy 证据」自证小结、sub-agent 附加条款）、`### 2.4` 每步 checkpoint、`### 2.5`（并入 2.4）、`“看起来无关”是危险信号。`、`如果你不理解代码为什么这样组织，先问清楚或继续查证，再写。`。新增中英逐词对应的 slop 与机械总结标签封禁、Prose-First 段落要求、反向报备与内部推理简写禁令、说教与临床框定禁令、字面挑刺与强行改写原意禁令、`strictly out of scope` 越权防线、Bias Towards Action（与 karpathy skill 第 1 节冲突时以 2.2 为准）、按需测试收敛、只报实际跑过的检查。`WATCHDOG.md` 补五类审查锚点（意图漂移两条例、blocker 欺骗性汇报、concern 意图柔化、nit slop 文风）并改写硬性禁令第 6 条。复刻：`~/.claude/CLAUDE.md` 原先不在 manifest，新增 `claude-rules` 条目（`repo: claude/CLAUDE.md`，protected）后 pull 得逐字节一致副本，`protected_slots=40` 脱敏无命中；新机器 `cp claude/CLAUDE.md` 再重建两个 symlink，实测 `cmp` 一致且 `readlink -f` 均解析到该副本。`~/.claude/` 其余文件不在同步范围，条款效果未做真实模型对照实验。
+
+## [2026-11-21] ingest | Git 可执行权限、core.filemode 与脚本执行
+- Disposition: New
+- Raw: raw/wsl-windows/2026-11-21-git-file-modes-and-shell-execution.md
+- Created: Git 可执行权限、core.filemode 与脚本执行
+
+## [2026-11-21] ingest | 容器镜像中的 shell 选择与镜像层复用
+- Disposition: New
+- Raw: raw/container-images/2026-11-21-shell-selection-and-layer-reuse.md
+- Created: 容器镜像中的 shell 选择与镜像层复用
+
+## [2026-11-21] ingest | 发布资产与镜像的验证方法
+- Disposition: New
+- Raw: raw/software-testing/2026-11-21-release-artifact-verification.md
+- Created: 发布资产与镜像的验证方法
