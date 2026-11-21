@@ -208,6 +208,12 @@
       "protected": true
     },
     {
+      "name": "herdr-sys-status",
+      "source": "~/.config/herdr/sys-status.ts",
+      "repo": "herdr/sys-status.ts",
+      "protected": false
+    },
+    {
       "name": "tuios-config",
       "source": "~/.config/tuios/config.toml",
       "repo": "tuios/config.toml",

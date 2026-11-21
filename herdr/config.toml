@@ -10,8 +10,10 @@ agent_panel_sort = "spaces"
 status_indicators = "dots"
 pane_scrollbars = true
 tab_bar_position = "bottom"
+hide_tab_bar_when_single_tab = false
 tab_bar_right = [
   { type = "zoom" },
+  { type = "command", command = "/home/cpf/.bun/bin/bun /home/cpf/.config/herdr/sys-status.ts", interval_seconds = 5, timeout_seconds = 4 },
   { type = "datetime", format = "%H:%M" },
 ]
 tab_bar_right_separator = " · "

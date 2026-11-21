@@ -18,14 +18,14 @@
 | `opencode/` | `~/.config/opencode/` |
 | `omo/` | `~/.omo/` |
 | `omp/` | `~/.omp/` |
-| `herdr/config.toml` | `~/.config/herdr/config.toml` |
+| `herdr/`（清单列出的文件） | `~/.config/herdr/` |
 | `prime/` | `~/.prime/agent/` |
 | `starship/` | `~/.config/starship.toml` |
 | `plannotator/` | `~/.plannotator/` |
 
 仓库保存来源文件的副本，不使用 symlink。同步是单向的：来源 -> 仓库。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。实际同步范围由 `manifest.json` 控制。
 
-Herdr 的同步范围限定为主配置 `config.toml`，作为 protected 条目处理。
+Herdr 同步主配置 `config.toml`（protected）和 `sys-status.ts` 状态脚本。
 
 ## 代码结构
 
@@ -49,6 +49,20 @@ Herdr 的同步范围限定为主配置 `config.toml`，作为 protected 条目�
 ```
 
 `pull` 不把来源凭据带入仓库。仓库不会写回来源，因此仓库里不应出现真实凭据。
+
+## Herdr 常驻状态
+
+`herdr/sys-status.ts` 在标签栏显示 `Left · Used · CPU · RAM`。部署到 `~/.config/herdr/sys-status.ts` 后，`config.toml` 的 `ui.tab_bar_right` 每 5 秒调用一次 Bun；整条输出采用 Herdr 标签栏样式。`Left` 是本月剩余额度按剩余工作日分摊的预算，`Used` 是本机 `127.0.0.1:4139/api/status` 返回的累计金额。接口失败时两项显示 `--`，CPU/RAM 仍更新。
+
+CPU 使用 `/proc/stat` 相邻采样的差值，首次与系统计数重置后用 100ms 采样；RAM 使用 `MemTotal - MemAvailable`。CPU 计数缓存写在 `$XDG_RUNTIME_DIR/herdr-sys-status/cpu.json`，环境变量未设置时使用临时目录内当前用户的专属目录，缓存不参与同步。窄窗口中 Herdr 会隐藏整组右侧状态；远程连接时脚本在 Herdr server 所在机器运行。
+
+修改显示配置后，在 Herdr 按默认快捷键 `Ctrl+B`、`Shift+R` 重载配置，或从菜单选择 `reload config`。`herdr server reload-config` 只重载 server，新客户端会读取当前显示配置。
+
+```bash
+bun herdr/sys-status.ts
+bun test ./herdr/sys-status.test.ts
+herdr config check
+```
 
 ## 不追踪
 
