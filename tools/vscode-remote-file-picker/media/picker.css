@@ -1,0 +1,215 @@
+:root {
+  color-scheme: light dark;
+  --picker-background: var(--vscode-editor-background);
+  --picker-foreground: var(--vscode-foreground);
+  --picker-muted: var(--vscode-descriptionForeground);
+  --picker-sidebar: var(--vscode-sideBar-background, var(--picker-background));
+  --picker-border: var(--vscode-panel-border, var(--vscode-widget-border, var(--picker-muted)));
+  --picker-hover: var(--vscode-list-hoverBackground);
+  --picker-hover-foreground: var(--vscode-list-hoverForeground, var(--picker-foreground));
+  --picker-selection: var(--vscode-list-activeSelectionBackground);
+  --picker-selection-foreground: var(--vscode-list-activeSelectionForeground);
+  --picker-focus: var(--vscode-focusBorder);
+  --picker-error: var(--vscode-errorForeground);
+  --picker-font: var(--vscode-editor-font-family);
+  --picker-font-size: var(--vscode-editor-font-size);
+  --picker-text-small: 0.9em;
+  --picker-text-h4: 1em;
+  --picker-text-h3: 1.15em;
+  --picker-text-h2: 1.35em;
+  --picker-text-h1: 1.6em;
+  --picker-leading: 1.5;
+  --picker-space-1: 4px;
+  --picker-space-2: 8px;
+  --picker-space-3: 12px;
+  --picker-space-4: 16px;
+  --picker-radius: 4px;
+  --picker-line: 1px;
+  --picker-focus-line: 2px;
+  --picker-shadow: 0 var(--picker-space-1) var(--picker-space-3) var(--vscode-widget-shadow);
+  --picker-transition: 100ms;
+  --picker-disabled-opacity: 0.5;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--picker-background);
+  color: var(--picker-foreground);
+  font: var(--picker-font-size)/var(--picker-leading) var(--picker-font);
+}
+
+h1 { font-size: var(--picker-text-h1); }
+h2 { font-size: var(--picker-text-h2); }
+h3 { font-size: var(--picker-text-h3); }
+h4 { font-size: var(--picker-text-h4); }
+
+.picker-shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: var(--picker-space-2);
+  padding: var(--picker-space-3);
+}
+
+.picker-address-bar, .picker-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--picker-space-2);
+  flex-shrink: 0;
+}
+
+.picker-input, .picker-button {
+  box-sizing: border-box;
+  border: var(--picker-line) solid var(--picker-border);
+  border-radius: var(--picker-radius);
+  padding: var(--picker-space-1) var(--picker-space-2);
+  font: inherit;
+  transition: background-color var(--picker-transition);
+}
+
+.picker-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border-color: var(--vscode-input-border, var(--picker-border));
+}
+
+.picker-button {
+  cursor: pointer;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border-color: var(--vscode-button-border, transparent);
+}
+
+.picker-button:hover { background: var(--vscode-button-hoverBackground); }
+.picker-button-secondary {
+  background: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+}
+.picker-button-secondary:hover { background: var(--vscode-button-secondaryHoverBackground); }
+.picker-button:disabled { cursor: default; opacity: var(--picker-disabled-opacity); }
+
+.picker-input:focus-visible, .picker-button:focus-visible,
+#remote-file-picker .elfinder-button:focus-visible {
+  outline: var(--picker-focus-line) solid var(--picker-focus);
+  outline-offset: var(--picker-line);
+}
+
+.picker-input[aria-invalid="true"] { border-color: var(--picker-error); }
+.picker-error { margin: 0; color: var(--picker-error); overflow-wrap: anywhere; }
+.picker-content { flex: 1; min-height: 0; min-width: 0; }
+.picker-footer { justify-content: space-between; }
+.picker-help { margin: 0; color: var(--picker-muted); font-size: var(--picker-text-small); }
+[hidden] { display: none !important; }
+
+#remote-file-picker {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: var(--picker-line) solid var(--picker-border);
+  border-radius: var(--picker-radius);
+  background: var(--picker-background);
+  color: var(--picker-foreground);
+  font-family: var(--picker-font);
+  font-size: var(--picker-font-size);
+}
+
+#remote-file-picker * {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#remote-file-picker .ui-widget-content,
+#remote-file-picker .elfinder-workzone,
+#remote-file-picker .elfinder-cwd-wrapper,
+#remote-file-picker .elfinder-cwd table tr,
+#remote-file-picker .elfinder-cwd-wrapper-list.elfinder-cwd-fixheader::before,
+#remote-file-picker .std42-dialog,
+#remote-file-picker .elfinder-contextmenu {
+  background: var(--picker-background);
+  color: var(--picker-foreground);
+  border-color: var(--picker-border);
+}
+
+#remote-file-picker .ui-widget-header,
+#remote-file-picker .ui-state-default,
+#remote-file-picker .elfinder-toolbar,
+#remote-file-picker .elfinder-statusbar,
+#remote-file-picker .elfinder-button-menu {
+  background: var(--picker-sidebar);
+  color: var(--picker-foreground);
+  border-color: var(--picker-border);
+}
+
+#remote-file-picker .elfinder-navbar {
+  background: var(--picker-sidebar);
+  border-color: var(--picker-border);
+}
+
+#remote-file-picker .elfinder-buttonset { background: transparent; }
+#remote-file-picker .elfinder-statusbar,
+#remote-file-picker .elfinder-statusbar a { color: var(--picker-muted); }
+
+#remote-file-picker input, #remote-file-picker textarea, #remote-file-picker select {
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border-color: var(--vscode-input-border, var(--picker-border));
+}
+
+#remote-file-picker .ui-state-hover,
+#remote-file-picker .elfinder-cwd table thead td.ui-state-hover {
+  background: var(--picker-hover);
+  color: var(--picker-hover-foreground);
+  border-color: var(--picker-focus);
+}
+
+#remote-file-picker .ui-state-active,
+#remote-file-picker .ui-selected,
+#remote-file-picker .elfinder-cwd-view-icons .elfinder-cwd-filename.ui-state-hover,
+#remote-file-picker .elfinder-cwd table td.ui-state-hover,
+#remote-file-picker .elfinder-cwd table thead td.ui-state-active {
+  background: var(--picker-selection);
+  color: var(--picker-selection-foreground);
+  border-color: var(--picker-focus);
+}
+
+#remote-file-picker .elfinder-cwd-icon::before {
+  background: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+}
+
+#remote-file-picker .elfinder-lock,
+#remote-file-picker .elfinder-ro .elfinder-perms {
+  display: none;
+}
+
+#remote-file-picker .elfinder-na .elfinder-perms {
+  display: block;
+}
+
+#remote-file-picker .elfinder-ui-progressbar { background: var(--vscode-progressBar-background); }
+#remote-file-picker .std42-dialog { box-shadow: var(--picker-shadow); }
+#remote-file-picker .ui-state-disabled { color: var(--vscode-disabledForeground); }
+
+#remote-file-picker ::-webkit-scrollbar-thumb {
+  background: var(--vscode-scrollbarSlider-background);
+  box-shadow: none;
+}
+#remote-file-picker ::-webkit-scrollbar-thumb:hover { background: var(--vscode-scrollbarSlider-hoverBackground); }
+#remote-file-picker ::-webkit-scrollbar-track { box-shadow: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .picker-input, .picker-button { transition: none; }
+}
+
+@media (max-width: 480px) {
+  .picker-shell { padding: var(--picker-space-2); }
+  .picker-address-bar label { flex-basis: 100%; }
+  .picker-help { flex: 1; }
+}

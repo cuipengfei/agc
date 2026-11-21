@@ -1,0 +1,4 @@
+This extension is private local software. All rights reserved.
+
+The packaged third-party components remain under their respective licenses.
+See THIRD-PARTY-LICENSES.txt for elFinder, jQuery and jQuery UI license notices.

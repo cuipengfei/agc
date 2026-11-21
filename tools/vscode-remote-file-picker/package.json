@@ -1,0 +1,47 @@
+{
+  "name": "remote-file-picker",
+  "displayName": "Remote File Picker",
+  "description": "Browse server files in VS Code Web with elFinder.",
+  "publisher": "cpf-local",
+  "version": "0.2.1",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cuipengfei/agc.git",
+    "directory": "tools/vscode-remote-file-picker"
+  },
+  "engines": { "vscode": "^1.90.0" },
+  "categories": ["Other"],
+  "main": "./extension.js",
+  "extensionKind": ["workspace"],
+  "capabilities": { "untrustedWorkspaces": { "supported": true } },
+  "contributes": {
+    "commands": [{
+      "command": "remoteFilePicker.open",
+      "title": "Remote File Picker: Open File",
+      "enablement": "isWeb"
+    }],
+    "keybindings": [{
+      "command": "remoteFilePicker.open",
+      "key": "ctrl+o",
+      "when": "isWeb && !terminalFocus"
+    }],
+    "menus": {
+      "commandPalette": [{ "command": "remoteFilePicker.open", "when": "isWeb" }]
+    }
+  },
+  "dependencies": {
+    "elfinder": "https://github.com/Studio-42/elFinder/archive/refs/tags/2.1.70.tar.gz",
+    "jquery": "3.7.1",
+    "jquery-ui-dist": "1.13.3"
+  },
+  "devDependencies": {
+    "puppeteer-core": "25.18.1"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "build": "node build-assets.js",
+    "smoke": "node test/smoke.js",
+    "package": "bun run build && bunx @vscode/vsce@4.1.1 package --no-dependencies"
+  }
+}
