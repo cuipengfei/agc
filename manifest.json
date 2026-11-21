@@ -269,6 +269,12 @@
       "repo": "agents/skill-lock.json"
     },
     {
+      "name": "agents-vsc",
+      "source": "/usr/local/bin/vsc",
+      "repo": "agents/vsc.py",
+      "protected": false
+    },
+    {
       "name": "bun-global-packages",
       "source": "~/.bun/install/global/package.json",
       "repo": "bun/global-package.json"

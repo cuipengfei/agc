@@ -19,6 +19,7 @@
 | `omo/` | `~/.omo/` |
 | `omp/` | `~/.omp/` |
 | `herdr/`（清单列出的文件） | `~/.config/herdr/` |
+| `agents/vsc.py` | `/usr/local/bin/vsc` |
 | `prime/` | `~/.prime/agent/` |
 | `starship/` | `~/.config/starship.toml` |
 | `plannotator/` | `~/.plannotator/` |
@@ -26,6 +27,12 @@
 仓库保存来源文件的副本，不使用 symlink。同步是单向的：来源 -> 仓库。要改配置就在来源处改，再 pull 进仓库并提交，仓库只作版本化备份与变更历史。实际同步范围由 `manifest.json` 控制。
 
 Herdr 同步主配置 `config.toml`（protected）和 `sys-status.ts` 状态脚本。
+
+## VS Code Web 目录命令
+
+`agents/vsc.py` 是本机 `/usr/local/bin/vsc` 的同步副本。运行 `vsc .`、`vsc ../project` 或 `vsc /absolute/path`，可以通过 `wslview` 在 Windows 默认浏览器中打开对应的 WSL 目录。命令需要 Python 3、`wslview` 和监听 `localhost:6688` 的 VS Code Web 服务。
+
+在新机器上按需安装：`sudo install -m 0755 agents/vsc.py /usr/local/bin/vsc`。修改时以 `/usr/local/bin/vsc` 为来源，再同步到仓库。
 
 ## 代码结构
 

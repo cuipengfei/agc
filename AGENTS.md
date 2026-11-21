@@ -57,7 +57,7 @@ pull.sh / sync.py pull
 | `omp/plugins/`  | OMP 插件包与锁定文件                             |
 | `prime/`        | Prime Agent 配置（settings、models）             |
 | `herdr/`、`tuios/`、`dsh/`、`plannotator/`、`starship/` | 其他工具配置副本 |
-| `agents/`、`bun/`、`uv/` | 技能锁、Bun 全局包清单与指定的 `uv-receipt.toml` 文件 |
+| `agents/`、`bun/`、`uv/` | 技能锁、`vsc` 命令副本、Bun 全局包清单与指定的 `uv-receipt.toml` 文件 |
 | `tools/tern-maintain/` | 独立 Tern 维护工具与验收入口 |
 | `tools/wiki-check/` | Wiki 字面证据检查器 |
 | `raw/`          | 学习记录原始材料（repo-owned，不同步）           |
@@ -172,6 +172,7 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 | `tuios/config.toml` | `~/.config/tuios/config.toml` |
 | `dsh/`（仅清单声明的文件） | `~/.dsh/` |
 | `agents/skill-lock.json` | `~/.agents/.skill-lock.json` |
+| `agents/vsc.py` | `/usr/local/bin/vsc` |
 | `bun/global-package.json` | `~/.bun/install/global/package.json` |
 | `uv/tools/` | `~/.local/share/uv/tools/`（仅 `*/uv-receipt.toml`） |
 | `starship/starship.toml` | `~/.config/starship.toml` |
