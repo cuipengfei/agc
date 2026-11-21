@@ -2,6 +2,8 @@
 
 运行目录为 `tools/tern-maintain`。本工具与配置同步独立，不修改 manifest，不写入来源配置，不提交 Git。
 
+仅字体部署与新版本验证使用仓库技能 `.agents/skills/tern-font-only-deploy/`；本文继续提供维护工具的命令、开发说明和验收边界。
+
 ## 0.9.5 历史验收
 
 正式 daemon、Web 和安装 binary 已统一为 `0.9.5 (2863c37)`，端口继续使用 `8378`，保留原认证文件及升级前的 pane 集合。后台进程由 `runtime.mjs __redact` 管理。
