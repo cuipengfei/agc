@@ -2640,3 +2640,8 @@
 - Raw: raw/terminal-graphics/2026-11-21-webassembly-rendering-targets.md
 - Created: WebAssembly 在浏览器中的运行与显示
 - Updated: sip v0.10.0 使用参考
+
+## [2026-11-21] ingest | 代理出口 IP 指纹批量测量与形态分类
+- Disposition: Update
+- Raw: raw/proxy-ops/2026-11-21-hk-auto-group-geoip-crosscheck.md
+- Updated: 代理出口 IP 指纹批量测量与形态分类
