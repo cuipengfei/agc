@@ -767,10 +767,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/arena/SKILL.md",
-      "skillFolderHash": "4af9439698662918226e4011c15e1a78c71a7d98",
+      "skillFolderHash": "95b350288808b6eb5576a9326dda0abd924afb4c",
       "installedAt": "2026-10-04T15:35:43.280Z",
-      "updatedAt": "2026-11-20T11:46:15.352Z",
-      "commit": "4a4f41c46c67a006658ac17cef2d092593f6b26a"
+      "updatedAt": "2026-11-21T03:26:45.722Z",
+      "commit": "c3464c11c60b1352d5e8f5f0428a3a6943837568"
     },
     "automate-me": {
       "source": "backnotprop/pstack",
@@ -1130,10 +1130,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/setup-pstack/SKILL.md",
-      "skillFolderHash": "c8f30df356b9b695c5cf7737b62980e2fc758e2e",
+      "skillFolderHash": "33393492e19dd18116f6dfec14dd9b25e51b9cf0",
       "installedAt": "2026-10-04T15:35:43.349Z",
-      "updatedAt": "2026-11-20T11:46:15.410Z",
-      "commit": "4a4f41c46c67a006658ac17cef2d092593f6b26a"
+      "updatedAt": "2026-11-21T03:26:45.790Z",
+      "commit": "c3464c11c60b1352d5e8f5f0428a3a6943837568"
     },
     "show-me-your-work": {
       "source": "backnotprop/pstack",
@@ -1264,10 +1264,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "769751493e69d3209c17b85102ece222d1088731",
+      "skillFolderHash": "489449625dbdeb222a7db88c084f7139b933b124",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-18T11:33:54.936Z",
-      "commit": "9acf26868015f359212cb3916db69ac3f9c7aa14"
+      "updatedAt": "2026-11-21T03:26:50.229Z",
+      "commit": "370f09d74ca61020ba51417e7fd375b8bb50ad28"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
@@ -1284,20 +1284,20 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "7b4d07649bbcb69909812c666f24543247927d5d",
+      "skillFolderHash": "d63f2b9ae5152436f0c6d02894d914a1afd63f15",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-20T11:46:17.924Z",
-      "commit": "468ab907ee9836e076abdd7d0e0611c475dc1271"
+      "updatedAt": "2026-11-21T03:26:51.494Z",
+      "commit": "370f09d74ca61020ba51417e7fd375b8bb50ad28"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/poteto-mode/SKILL.md",
-      "skillFolderHash": "051dc796e406185d33b4b893d632fa8d023ffcad",
+      "skillFolderHash": "e4847c4a3713e55c62a65d63c1534a1ea0ba8cd8",
       "installedAt": "2026-10-08T15:21:21.094Z",
-      "updatedAt": "2026-11-20T11:46:15.774Z",
-      "commit": "4a4f41c46c67a006658ac17cef2d092593f6b26a"
+      "updatedAt": "2026-11-21T03:26:46.172Z",
+      "commit": "c3464c11c60b1352d5e8f5f0428a3a6943837568"
     },
     "make-bot-ui": {
       "source": "backnotprop/pstack",
@@ -1425,9 +1425,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/pstack.git",
       "skillPath": "skills/statechart/SKILL.md",
-      "skillFolderHash": "23c4f2aa01a8c02cc5cb49556888283c620d628d",
+      "skillFolderHash": "d3d60f78916e8c17a598c39738e45ab419603f06",
       "installedAt": "2026-10-27T13:33:47.624Z",
-      "updatedAt": "2026-11-16T12:23:21.451Z"
+      "updatedAt": "2026-11-21T03:26:49.858Z",
+      "commit": "c3464c11c60b1352d5e8f5f0428a3a6943837568"
     },
     "ub-mode": {
       "source": "unclebob/ub-mode",
