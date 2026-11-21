@@ -1,8 +1,8 @@
 # OMP Compaction Methods & History URI Tool Support
 
-> Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09; installed `@oh-my-pi/pi-coding-agent` 18.8.7 source, 2026-10-10; OMP session JSONL `01a1163e` + log `omp.2026-10-10.41920.log`, 2026-10-10; 本机 oh-my-pi 源码直读（换窗门控、前瞻带宽、裁剪保护区）, 2026-11-01
-> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md); [OpenAI Responses API Compaction 官方指南、Codex 源码与社区取舍摘录](../../raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md)
-> Updated: 2026-11-01
+> Sources: can1357/oh-my-pi source code at `/home/cpf/code-inside/oh-my-pi` (`d2c894854d`), 2026-10-09; installed `@oh-my-pi/pi-coding-agent` 18.8.7 source, 2026-10-10; OMP session JSONL `01a1163e` + log `omp.2026-10-10.41920.log`, 2026-10-10; 本机 oh-my-pi 源码直读（换窗门控、前瞻带宽、裁剪保护区）, 2026-11-01; installed `@oh-my-pi/pi-coding-agent` 19.0.1 source + session JSONL + log `omp.2026-11-21.<PID>.log`, 2026-11-21
+> Raw: [compaction methods and history URI (2026-10-09)](../../raw/omp-config/2026-10-09-compaction-methods-and-history-uri.md); [experimental context management (2026-09-11)](../../raw/omp-config/2026-09-11-experimental-context-management.md); [experimental context deep dive (2026-09-12)](../../raw/omp-config/2026-09-12-experimental-context-deep-dive.md); [Vibe mode 关闭实验性 rollover (2026-10-10)](../../raw/omp-config/2026-10-10-vibe-mode-disables-experimental-rollover.md); [OpenAI Responses API Compaction 官方指南、Codex 源码与社区取舍摘录](../../raw/openai-api/2026-10-24-responses-compaction-docs-and-community.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md); [OMP 19.0.1 自动换窗运行取证](../../raw/omp-config/2026-11-21-omp-19-rollover-runtime-forensics.md)
+> Updated: 2026-11-21
 
 ## Overview
 
@@ -47,6 +47,15 @@ rollover 后模型有三样恢复机制：
 3. **`history://current/full`**：完整历史入口，支持 read、grep、find
 
 如果模型没写 notebook，它仍可用 grep 或 find 搜索完整历史，找回之前的工作内容。
+
+## v19.0.1 运行时取证：rollover 不先跑 shake
+
+2026-11-21 12:21:03（UTC+8），父会话 `<SESSION_ID>` 的 compaction entry `<ENTRY_ID>` 记录 `details.kind: "experimental-context-rollover"`、`tokensBefore: 370256`；同一秒的 runtime log 记录 `messagesBefore: 715`、`messagesAfter: 20`。续接会话 `<SESSION_ID>` 的 `parentSession` 字段指回父会话。
+
+已安装 19.0.1 的 `runAutoCompaction` 在 `usesExperimentalContextManagement()` 为真时直接调用 `#runExperimentalContextRollover` 并返回，后续 `resolveCompactionMethodOrder` 与 `shake` 分支不会执行；rollover 的 result 使用固定 `experimentalContextRolloverPrompt` 并以 `method: undefined` 提交，因此没有压缩摘要模型调用。
+
+日志中的 `methods: ["shake","handoff","soft"]` 来自阈值决策日志写入的 `resolveCompactionMethodOrder(compactionSettings.methodOrder)`，是配置顺序，不是当次执行顺序。12:12:52 和 12:17:40 的两次阈值决策均为 `shouldCompact: false`，早于 12:21:03 的 rollover。
+
 
 ## Vibe mode 使实验 rollover 失效
 

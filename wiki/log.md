@@ -2603,3 +2603,9 @@
 - Disposition: New
 - Raw: raw/software-testing/2026-11-21-release-artifact-verification.md
 - Created: 发布资产与镜像的验证方法
+
+## [2026-11-21] ingest | OMP Compaction Methods & History URI Tool Support
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-21-omp-19-rollover-runtime-forensics.md
+- Updated: OMP Compaction Methods & History URI Tool Support
+- 要点：父会话 `<SESSION_ID>` 的 compaction entry `<ENTRY_ID>` 于 12:21:03（UTC+8）记录 `experimental-context-rollover`，`tokensBefore: 370256`，日志记录消息数 `715 → 20`；v19.0.1 的 `runAutoCompaction` 在实验门满足时直接走 rollover，后续 `shake` 分支不执行；阈值日志中的 `methods` 字段是配置顺序，不是当次执行顺序。
