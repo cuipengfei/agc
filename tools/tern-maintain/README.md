@@ -38,7 +38,7 @@ uv tool install pre-commit
 pre-commit install
 ```
 
-临时副本中的 Bun 主依赖与 typecheck 子包使用冻结的锁定文件安装，优先使用缓存。技能检查通过 `ci/requirements.txt` 固定 PyYAML 和 markdown-it-py，并通过 `uv run --with shellcheck-py shellcheck` 检查 Bash。完整 CI 执行全部 Bun 测试、类型检查、技能检查及其单元测试、Wiki 证据检查和两组 Python unittest，需要 Bun、uv、Python 3、C 编译器及 WABT 1.0.42。安装 WABT 可运行 `mkdir -p ~/.cache/agc`，然后运行 `bash ci/install-wabt.sh ~/.cache/agc/wabt-1.0.42`；安装目录必须不存在。也可通过 `WABT_DIR` 指定已有 WABT 1.0.42 的 bin 目录。完整检查执行 `bash ci/check.sh`；暂存内容检查执行 `bash ci/check.sh --staged`。
+Tern 定向快检需要 Bun 和 uv，技能检查的 Python 由 uv 提供；无需 WABT 或 C 编译器。仅 Wiki 变更仍只执行 Python 证据检查。临时副本中的 Bun 主依赖与 typecheck 子包使用冻结的锁定文件安装，优先使用缓存。技能检查通过 `ci/requirements.txt` 固定 PyYAML 和 markdown-it-py，并通过 `uv run --with shellcheck-py shellcheck` 检查 Bash。完整 CI 执行全部 Bun 测试、类型检查、技能检查及其单元测试、Wiki 证据检查和两组 Python unittest，需要 Bun、uv、Python 3、C 编译器及 WABT 1.0.42。安装 WABT 可运行 `mkdir -p ~/.cache/agc`，然后运行 `bash ci/install-wabt.sh ~/.cache/agc/wabt-1.0.42`；安装目录必须不存在。也可通过 `WABT_DIR` 指定已有 WABT 1.0.42 的 bin 目录。完整检查执行 `bash ci/check.sh`；暂存内容检查执行 `bash ci/check.sh --staged`。
 
 字体工具使用 FontTools 和 JSON Schema；通过 `uv run --with-requirements requirements.txt python ...` 运行，无需改变同步项目的 Python 环境。
 

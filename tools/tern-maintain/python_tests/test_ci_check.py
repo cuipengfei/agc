@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -51,19 +52,24 @@ class StagedCheckTests(unittest.TestCase):
         self.put("tools/tern-maintain/ci/check.sh", SCRIPT.read_text(encoding="utf-8"))
         self.put("tools/tern-maintain/ci/staged-fixture", "staged")
         self.put("wiki/staged.md", "staged")
-        self.git("add", "tools/tern-maintain/ci", "wiki/staged.md")
+        shutil.copytree(
+            SCRIPT.parents[3] / ".agents/skills/tern-font-only-deploy",
+            self.root / ".agents/skills/tern-font-only-deploy",
+        )
+        self.git("add", "tools/tern-maintain/ci", "wiki/staged.md", ".agents/skills/tern-font-only-deploy")
         self.put("tools/tern-maintain/ci/staged-fixture", "unstaged")
         self.put("tools/tern-maintain/ci/untracked-fixture", "untracked")
         envbin = self.root / "envbin"
         envbin.mkdir()
-        self.put(
-            "envbin/bun",
+        snapshot_guard = (
             "#!/bin/bash\n"
             "[[ -z ${GIT_INDEX_FILE:-} && -z ${GIT_DIR:-} && -z ${GIT_WORK_TREE:-} ]] || exit 10\n"
-            "[[ $(cat ci/staged-fixture) == staged ]] || exit 11\n"
-            "[[ ! -e ci/untracked-fixture ]] || exit 12\n"
-            "[[ $1 == install || ( $1 == test && $2 == cli.test.mjs ) ]] || exit 13\n",
+            "root=${PWD%/tools/tern-maintain}\n"
+            "[[ $(cat \"$root/tools/tern-maintain/ci/staged-fixture\") == staged ]] || exit 11\n"
+            "[[ ! -e \"$root/tools/tern-maintain/ci/untracked-fixture\" ]] || exit 12\n"
         )
+        self.put("envbin/bun", snapshot_guard)
+        self.put("envbin/uv", snapshot_guard)
         self.put(
             "envbin/python3",
             "#!/bin/bash\n"
@@ -95,17 +101,35 @@ class StagedCheckTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("Wiki evidence check passed", result.stdout)
 
-    def test_tern_only_does_not_require_python_wabt_or_uv(self):
+    def test_tern_only_checks_skill_without_wiki_or_wabt(self):
         self.put("tools/tern-maintain/ci/check.sh", SCRIPT.read_text(encoding="utf-8"))
         self.put("tools/tern-maintain/change.txt", "staged")
-        self.git("add", "tools/tern-maintain")
-        self.put("envbin/bun", "#!/bin/bash\nexit 0\n")
-        (self.root / "envbin/bun").chmod(0o755)
+        shutil.copytree(
+            SCRIPT.parents[3] / ".agents/skills/tern-font-only-deploy",
+            self.root / ".agents/skills/tern-font-only-deploy",
+        )
+        self.git("add", "tools/tern-maintain", ".agents/skills/tern-font-only-deploy")
+        for command in ("bun", "uv"):
+            self.put(f"envbin/{command}", "#!/bin/bash\nexit 0\n")
+            (self.root / f"envbin/{command}").chmod(0o755)
         self.env["PATH"] = f"{self.root / 'envbin'}:/usr/bin:/bin"
         self.env["WABT_DIR"] = "/missing"
         result = self.run_check()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertNotIn("Wiki evidence check passed", result.stdout)
+
+    def test_skill_check_failure_blocks_staged_checks(self):
+        self.put("tools/tern-maintain/ci/check.sh", SCRIPT.read_text(encoding="utf-8"))
+        self.put("tools/tern-maintain/change.txt", "staged")
+        self.git("add", "tools/tern-maintain")
+        self.put("envbin/bun", "#!/bin/bash\nexit 0\n")
+        self.put("envbin/uv", "#!/bin/bash\nexit 23\n")
+        for command in ("bun", "uv"):
+            (self.root / f"envbin/{command}").chmod(0o755)
+        self.env["PATH"] = f"{self.root / 'envbin'}:/usr/bin:/bin"
+        result = self.run_check()
+        self.assertEqual(result.returncode, 23, result.stdout + result.stderr)
+
 
     def test_deleted_relevant_path_still_runs_check(self):
         self.put("tools/tern-maintain/ci/check.sh", SCRIPT.read_text(encoding="utf-8"))
