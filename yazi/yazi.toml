@@ -1,0 +1,8 @@
+[mgr]
+sort_by = "natural"       # 1、2、10 按自然数值顺序排列
+sort_translit = true      # 带变音符号的名称更容易参与排序
+linemode = "size"         # 文件列表右侧显示大小
+show_hidden = true        # 直接看到 .config、.git 等隐藏内容
+
+[preview]
+wrap = "yes"              # 长代码行自动折行

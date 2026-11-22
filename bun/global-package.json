@@ -23,7 +23,7 @@
     "figlet": "1.13.0",
     "firecrawl-mcp": "3.41.0",
     "folocli": "^0.0.5",
-    "hyperframes": "0.9.80",
+    "hyperframes": "0.9.81",
     "kanban": "0.1.70",
     "mcp-excalidraw-server": "2.2.0",
     "node-gyp": "^13.1.0",

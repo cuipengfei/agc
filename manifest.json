@@ -300,6 +300,12 @@
       "protected": false
     },
     {
+      "name": "yazi-config",
+      "source": "~/.config/yazi/yazi.toml",
+      "repo": "yazi/yazi.toml",
+      "protected": false
+    },
+    {
       "name": "omp-agent-agents",
       "source": "~/.omp/agent/agents",
       "repo": "omp/agent/agents",
