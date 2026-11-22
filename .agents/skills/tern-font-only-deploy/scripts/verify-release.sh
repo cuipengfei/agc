@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# jq filters interpret their own dollar-prefixed variables.
+# shellcheck disable=SC2016
 set -euo pipefail
 
 script_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -12,10 +14,12 @@ target_font="${TERN_TARGET_FONT:-$HOME/.local/share/fonts/maple-win/MapleMono-NF
 target_bold="${TERN_TARGET_BOLD:-$HOME/.local/share/fonts/maple-win/MapleMono-NF-CN-backup-v7.700-20260523-224529/MapleMono-NF-CN-Bold.ttf}"
 
 umask 077
-export TERN_VERIFY_WORK="$(mktemp -d /tmp/tern-verify.XXXXXX)"
+TERN_VERIFY_WORK="$(mktemp -d /tmp/tern-verify.XXXXXX)"
+export TERN_VERIFY_WORK
 evidence_root="${TERN_EVIDENCE_ROOT:-$HOME/.local/share/tern-maintain/verification-evidence}"
 mkdir -p "$evidence_root"
-export TERN_EVIDENCE="$(mktemp -d "$evidence_root/run.XXXXXX")"
+TERN_EVIDENCE="$(mktemp -d "$evidence_root/run.XXXXXX")"
+export TERN_EVIDENCE
 printf 'Evidence: %s\n' "$TERN_EVIDENCE"
 
 cleanup() {
@@ -86,7 +90,8 @@ test -f "$target_font"
 cd "$TERN_TOOL_ROOT"
 run doctor-binary bun --version
 run doctor-tern "$TERN_VERIFY_BINARY" --version
-export TERN_VERIFY_VERSION="$(awk 'NR == 1 {print $2}' "$TERN_EVIDENCE/doctor-tern.stdout")"
+TERN_VERIFY_VERSION="$(awk 'NR == 1 {print $2}' "$TERN_EVIDENCE/doctor-tern.stdout")"
+export TERN_VERIFY_VERSION
 [[ "$TERN_VERIFY_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
 run doctor-binaryen bun -e 'await import("binaryen"); console.log("binaryen available")'
 

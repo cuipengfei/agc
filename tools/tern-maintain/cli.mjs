@@ -12,6 +12,7 @@ const usage=`Tern maintenance (no GUI)
   bun cli.mjs prepare --binary FILE --out NEW_DIRECTORY
   bun cli.mjs analyze --wasm FILE --out REPORT [--fonts FONT_REPORT]
   bun cli.mjs function --wasm FILE --index NUMBER --out REPORT
+  bun cli.mjs function-analysis --wasm CURRENT --names comma-separated-names [--original PREVIOUS] [--wabt-dir WABT_BIN_DIR] --out REPORT
   bun cli.mjs memory --wasm FILE --out MEMORY_FILE
   bun cli.mjs verify --original FILE --candidate FILE --out REPORT
   bun cli.mjs status --binary FILE --socket FILE --port NUMBER
@@ -33,9 +34,9 @@ Font inventory: uv run --with-requirements requirements.txt python fonts.py MEMO
 Reports never authorize deployment by themselves. Unknown versions stop for review.
 `;
 
-const OPTION_NAMES=['url','out','wasm','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir','registration'];
+const OPTION_NAMES=['url','out','wasm','names','fonts','original','candidate','glue','binary','socket','port','assets','state-dir','playwright-module','chromium-executable','index','candidate-binary','token-file','version','profile','structure-report','time-report','font-report','headless-report','runtime-report','service-report','skipped','recipe','wabt-dir','bundle','official','node','socket-dir','registration'];
 const REPORT_COMMANDS=new Set(['analyze','verify']);
-const WRITTEN_COMMANDS=new Set(['analyze','verify','browser','function','inspect-runtime','verify-service','upgrade','verify-page']);
+const WRITTEN_COMMANDS=new Set(['analyze','verify','browser','function','function-analysis','inspect-runtime','verify-service','upgrade','verify-page']);
 
 function required(values,...keys){for(const key of keys)if(!values[key])throw Error(`Missing --${key}`);}
 function portValue(values){
@@ -77,6 +78,11 @@ const COMMANDS={
   function:async v=>{
     required(v,'wasm','index','out');
     return inspectFunction(await readBytes(v.wasm),Number(v.index));
+  },
+  'function-analysis':async v=>{
+    required(v,'wasm','names','out');
+    const {functionAnalysis}=await import('./function-analysis.mjs');
+    return functionAnalysis({wasm:resolve(v.wasm),original:v.original&&resolve(v.original),names:v.names.split(','),wabtDir:v['wabt-dir']&&resolve(v['wabt-dir'])});
   },
   verify:async v=>{
     required(v,'original','candidate','out');

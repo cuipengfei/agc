@@ -31,14 +31,14 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 
 测试通过公开命令和验收接口检查参数、退出码、报告校验、输出文件保护与浏览器清理。页面用例隔离 Playwright 外部依赖；真实浏览器、GPU 与正式服务的验收使用下文对应命令。
 
-提交前，pre-commit 对暂存内容运行定向检查：`tools/tern-maintain/` 变更执行 `bun test cli.test.mjs`；`tools/wiki-check/`、`wiki/` 或 `raw/` 变更执行 Wiki 证据检查；Tern workflow 或 `.pre-commit-config.yaml` 变更执行两项检查。检查在暂存内容的临时副本中执行，不读取未暂存或未跟踪文件；失败会阻止提交。启用 hook：
+提交前，pre-commit 对暂存内容运行定向检查：`tools/tern-maintain/` 或 `.agents/skills/tern-font-only-deploy/` 变更执行现有类型检查、CLI 行为测试、技能 frontmatter/地图/链接检查，以及辅助脚本的 Bash 语法、ShellCheck 和 JavaScript 编译检查；`tools/wiki-check/`、`wiki/` 或 `raw/` 变更执行 Wiki 证据检查；Tern workflow 或 `.pre-commit-config.yaml` 变更执行两组检查。检查在暂存内容的临时副本中执行，失败会阻止提交。启用 hook：
 
 ```bash
 uv tool install pre-commit
 pre-commit install
 ```
 
-CLI 测试需要 Bun；临时副本中的 Bun 依赖使用冻结的锁定文件安装，优先使用缓存。Wiki 证据检查需要 Python 3。完整 CI 检查仍执行全部 Bun 测试、类型检查、Wiki 证据检查和两组 Python unittest，需要 Bun、uv、Python 3、C 编译器及 WABT 1.0.42。安装 WABT 可运行 `mkdir -p ~/.cache/agc`，然后运行 `bash ci/install-wabt.sh ~/.cache/agc/wabt-1.0.42`；安装目录必须不存在。也可通过 `WABT_DIR` 指定已有 WABT 1.0.42 的 bin 目录。手动运行完整检查可执行 `bash ci/check.sh`；检查当前暂存内容可执行 `bash ci/check.sh --staged`。
+临时副本中的 Bun 主依赖与 typecheck 子包使用冻结的锁定文件安装，优先使用缓存。技能检查通过 `ci/requirements.txt` 固定 PyYAML 和 markdown-it-py，并通过 `uv run --with shellcheck-py shellcheck` 检查 Bash。完整 CI 执行全部 Bun 测试、类型检查、技能检查及其单元测试、Wiki 证据检查和两组 Python unittest，需要 Bun、uv、Python 3、C 编译器及 WABT 1.0.42。安装 WABT 可运行 `mkdir -p ~/.cache/agc`，然后运行 `bash ci/install-wabt.sh ~/.cache/agc/wabt-1.0.42`；安装目录必须不存在。也可通过 `WABT_DIR` 指定已有 WABT 1.0.42 的 bin 目录。完整检查执行 `bash ci/check.sh`；暂存内容检查执行 `bash ci/check.sh --staged`。
 
 字体工具使用 FontTools 和 JSON Schema；通过 `uv run --with-requirements requirements.txt python ...` 运行，无需改变同步项目的 Python 环境。
 
@@ -70,6 +70,16 @@ bun cli.mjs function --wasm /tmp/tern-candidate/pkg/original.wasm --index NUMBER
 ```
 
 报告只包含所选函数。正常分析不生成整个 WAT、不按字符串猜测 instruction 边界。`manualEdits` 包含时间 panic 的局部后续指令及成对 i64/i32 loads 推导出的 timestamp buffer 候选；这些候选仍需结合 ABI 审核，尤其是 elapsed 输入与输出。
+
+`function-analysis` 固定使用同一 Binaryen 实例，按精确函数名报告签名、完整正文、常量、调用目标、内容 hash 和包含 imports 的函数索引。提供参考模块时，函数名属于参考模块；当前模块最多列出三个相同签名的候选，记录形状排序和正文差异。常量保留在调用名归一化正文中。可选 WABT 1.0.42 的 `wasm-objdump` 提供局部变量声明之后的候选 CDP 指令位置：
+
+```bash
+bun cli.mjs function-analysis --wasm /path/to/current/original.wasm \
+  --original /path/to/0.9.29/original.wasm --names 14350,18267 \
+  --wabt-dir /path/to/wabt-1.0.42/bin --out /tmp/tern-function-analysis.json
+```
+
+新版本审核顺序与失败实验保存方式见技能的 [新版分析参考](../../.agents/skills/tern-font-only-deploy/references/new-version-analysis.md)。
 
 ## 修改和编译
 
@@ -139,20 +149,20 @@ bun cli.mjs assets --registration /tmp/tern-registration-build --out /tmp/tern-r
 
 `font-check.mjs` 使用真实 Chrome，检查首次加载、字体缓存、内置字体正对照和不存在字体的负对照。它读取该版本原字体匹配函数的实际返回值，同时记录资源身份、字体响应 hash 和 Settings 截图。profile 的 `wasmSha256` 与 `statusOffset` 必须来自对应模块；0.9.28 和 0.9.29 的原版与补丁版分别使用 `profiles/font-registration-<version>-original.json` 与 `profiles/font-registration-<version>-patched.json`。
 
-在 WSL 中通过 Windows Node 运行（将 Node、Playwright、Chrome 和输出路径替换为本机值）：
+字体检查使用技能的统一隔离启动器。从 AGC 仓库根目录运行：
 
 ```bash
-WIN_NODE='/mnt/d/Program Files/nodejs/node.exe'
-"$WIN_NODE" "$(wslpath -w "$PWD/font-check.mjs")" \
-  --url http://127.0.0.1:8378 \
-  --token-file "$(wslpath -w "$HOME/.config/tern/web-token")" \
-  --playwright-module 'C:\path\to\playwright\index.mjs' \
-  --chromium-executable 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe' \
-  --profile "$(wslpath -w "$PWD/profiles/font-registration-0.9.29-patched.json")" \
-  --out 'C:\Temp\tern-font-check.json'
+TERN_PLAYWRIGHT_MODULE='/path/to/Windows/playwright/index.mjs' \
+  .agents/skills/tern-font-only-deploy/scripts/check-fonts.sh \
+  --site /path/to/candidate-site \
+  --profile tools/tern-maintain/profiles/font-registration-0.9.29-patched.json --smoke
 ```
 
-检查使用独立浏览器 context，只改变隔离页面的字体设置；认证值仅在 RAM 中处理。可选 `--wasm FILE` 仅用于把已经校验的官方文件投递到隔离原版页面，报告会标记 `source: routed`；正式入口验收不传该参数，以 `source: served` 核对实际部署。
+原版调查使用 `--original /path/to/official` 与对应 original profile；候选站点使用 `--site` 与 patched profile。启动器核对资源、创建私有服务和中文窗格、生成认证文件并保留实验证据。完整输入与路径参考见 [字体检查](../../.agents/skills/tern-font-only-deploy/references/font-check.md)。
+
+`--smoke` 检查目标字体及内置、不存在字体两项对照，报告 `kind: font-registration-smoke-check`；省略参数执行冷暖两次的完整检查，报告 `kind: font-registration-check`。目标字体响应完成后立即进行名称检查。原版路由模块报告 `source: routed`，候选站点报告 `source: served`。
+
+底层 `font-check.mjs` 也支持 `--mode full|smoke`，其余参数为 `--url`、`--token-file`、`--playwright-module`、`--chromium-executable`、`--profile`、`--out` 和可选 `--wasm`。认证值通过文件传入，仅在 RAM 中处理。
 
 | classification | 判定与后续动作 |
 |---|---|
