@@ -71,7 +71,7 @@ modelRoles:
   task: kimi-code/k3.1-pro:max
   vision: opencode-go/deepseek-v4.1-flash:max
   tiny: sensenova/glm-5.3:max
-  advisor: sensenova/sensenova-6.8-flash-lite:xhigh
+  advisor: sensenova/glm-5.3:max
   default: opencode-go/deepseek-v4.1-flash:max
   web: web/firecrawl
   memory: sensenova/glm-5.3:max
