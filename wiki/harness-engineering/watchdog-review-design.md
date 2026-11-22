@@ -1,8 +1,8 @@
 # watchdog-review-design
 
-> Sources: raw/harness-engineering/2026-09-20-watchdog-review-design.md, 2026-09-20; 本会话 WATCHDOG.md 重构记录, 2026-09-26; WATCHDOG.md 免责句式禁令与共用反免责清单, 2026-10-25, 2026-11-05
-> Raw: [watchdog 审查设计笔记摘录](../../raw/harness-engineering/2026-09-20-watchdog-review-design.md); [WATCHDOG.md 重构与 jevify 盘点](../../raw/harness-engineering/2026-09-26-watchdog-md-restructure.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md)
-> Updated: 2026-11-05
+> Sources: raw/harness-engineering/2026-09-20-watchdog-review-design.md, 2026-09-20; 本会话 WATCHDOG.md 重构记录, 2026-09-26; WATCHDOG.md 免责句式禁令与共用反免责清单, 2026-10-25, 2026-11-05; 表达与审查规则改动, 2026-11-22
+> Raw: [watchdog 审查设计笔记摘录](../../raw/harness-engineering/2026-09-20-watchdog-review-design.md); [WATCHDOG.md 重构与 jevify 盘点](../../raw/harness-engineering/2026-09-26-watchdog-md-restructure.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md); [表达与 Watchdog 审查规则改动](../../raw/harness-engineering/2026-11-22-writing-and-watchdog-config-changes.md)
+> Updated: 2026-11-22
 
 Advisor 自审需要结构化框架，以便区分可观测的会话数据、Advisor 的明确断言，以及缺少可核对证据的部分。
 
@@ -55,6 +55,8 @@ Advisor 的提醒曾反复使用「X 不能证明 Y」这类句式，并把同�
 信息不完整或验证未完成时，Advisor 只保留两种提法：要求主代理给出有证据支持的最佳猜测或最佳解释，把依据和仍缺部分写在判断旁；点名当前任务所需的验证，写清具体检查、缺少的结果及其影响，代码功能检查相关测试和实际行为，文档与 skill 文案检查内容、格式、引用和示例一致性。对 skill 文案做真实模型调用、付费 API 实验、压力测试或对照抽样，须经用户明确授权。
 
 规则在 `~/.omp/agent/WATCHDOG.md` 生效，通过 `./pull.sh` 同步到本仓库 `omp/agent/WATCHDOG.md`。
+
+2026-11-22 补充了两类审查：`concern` 检查无具体出处的「社区普遍反映」「很多用户提到」等归因，以及把猜测写成事实空白填补；`nit` 增加开场铺垫、指挥读者反应的旁白、无生命对象使用人的心理动词与强行凑三点排比。`CLAUDE.md` 同步要求保留真实语气、具体人名、数字和日期。
 
 ## 相关
 

@@ -1,8 +1,8 @@
 # OMP TTSR 与 /omfg：流式行为护栏
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24；本会话 18.1.21 源码核验与内存复现，2026-09-14；本机 fork 736ce1d99a 直读，2026-10-08
-> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [deferred 注入竞态调查](../../raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [TTSR judge 规则同步边界与迁移](../../raw/omp-ttsr/2026-10-08-ttsr-judge-config-migration.md)
-> Updated: 2026-10-08
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；本会话 OMP 活体演示，2026-08-24；本会话 18.1.21 源码核验与内存复现，2026-09-14；本机 fork 736ce1d99a 直读，2026-10-08；官方 Rulebook Matching Pipeline 与本机插件规则验证，2026-11-22
+> Raw: [机制调研](../../raw/omp-ttsr/2026-08-24-omp-ttsr-omfg-mechanism.md); [活体演示](../../raw/omp-ttsr/2026-08-24-omp-ttsr-live-demo.md); [重复 XML 注入实验](../../raw/omp-ttsr/2026-08-25-ttsr-repeated-injection-session-test.md); [TTSR 生命周期与设计模式](../../raw/omp-ttsr/2026-08-29-ttsr-lifecycle-and-design-patterns.md); [task agent 显式声明防护研究](../../raw/omp-ttsr/2026-08-29-omp-task-agent-extension-ttsr-guard.md); [deferred 注入竞态调查](../../raw/omp-ttsr/2026-09-14-ttsr-deferred-injection-race.md); [TTSR 判定机制源码取证](../../raw/omp-ttsr/2026-10-08-omp-ttsr-judge-mechanism.md); [TTSR judge 规则同步边界与迁移](../../raw/omp-ttsr/2026-10-08-ttsr-judge-config-migration.md); [官方规则分类与加载方式](../../raw/omp-ttsr/2026-11-22-omp-ttsr-ecosystem-survey.md); [插件规则发现与匹配验证](../../raw/omp-extensibility/2026-11-22-omp-kit-companion-plugin-install.md)
+> Updated: 2026-11-22
 
 ## 速查
 
@@ -42,6 +42,10 @@
 | `ttsr.builtinRules` | `true`/`false` | 是否加载内置规则包。默认 `true` |
 | `ttsr.disabledRules` | string[] | 按名屏蔽，内置与自定义均生效。默认 `[]` |
 | `ttsr.judge` | `auto`/`on`/`off` | judge 判定开关，只影响带 `question` 的规则。默认 `auto`（judge 角色链首必须是原生 System One）；`on`（无条件判）；`off`（`question` 规则永不触发）。详见 [TTSR 判定机制与 question 规则](ttsr-and-judge.md) |
+
+官方 [Rulebook Matching Pipeline](https://github.com/can1357/oh-my-pi/blob/e1a9f4b41d24fe223bb71e864bef552f0fae6948/docs/rulebook-matching-pipeline.md) 当前允许每条规则覆盖全局 `interruptMode` 和 `repeatMode`；规则级 `repeatMode` 另有 `always`，它在下一 turn 重新启用，但不会在规则自身提醒触发的重试中再次触发。`alwaysApply: true` 与有效条件同时存在时，优先归入 TTSR。
+
+OMP 插件的 `rules/*.{md,mdc}` 由 `omp-plugins` provider 加载。2026-11-22 本机 `omp ttsr list` 输出 50 条规则，其中 19 条来自插件；`omp ttsr test` 对 `All tests pass now.` 命中 `kit-unverified-done`。这只验证 CLI 的发现与正则匹配。
 
 **当前配置**（2026-09-14 pull 快照）：`discard` + `always` + `once` + `repeatGap: 5`（此前为 `after-gap`）。`always` + `once` 恰好绕开 deferred 竞态（见下文「已知问题」）。
 

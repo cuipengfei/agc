@@ -143,7 +143,7 @@ Harness 的编辑格式、上下文载体与人类理解闭环。
 | [文档、测验与 AI 代码库的认知债务](harness-engineering/documentation-and-cognitive-debt.md) | 用文档保存意图与决策，用 Quiz 暴露理解偏差，用测试验证行为 | 2026-09-01 |
 | [Jev 语义回归检查方法](harness-engineering/jev-semantic-regression-testing.md) | 原子 question、可引用 criteria、基线复用、重复调用与完整输入输出记录；jevify 批量分类工作流（冻结 rubric、升级规则、人工复核、双通道验证） | 2026-09-26 |
 | [Reviewer Blind Spots](harness-engineering/reviewer-blind-spots.md) | 审查架构的可见性缺口：截断输入、升级语气与判决材料充分性 | 2026-09-20 |
-| [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计、发送条件有序散文列表、jevify 盘点验证方法；2026-11-05 与 CLAUDE.md 对齐 6 条共用反免责清单、10 项禁用短语与 concern/nit 判级钩子，完成报告与验证要求按当前任务分派 | 2026-11-05 |
+| [Watchdog Review Design](harness-engineering/watchdog-review-design.md) | 三桶审查框架与证据链设计、发送条件有序散文列表、jevify 盘点验证方法；共用反免责清单与按任务验证；2026-11-22 补无出处归因、猜测填补与表达误报审查 | 2026-11-22 |
 | [Claude Code 上下文窗口与自动压缩控制](harness-engineering/claude-code-context-and-compaction.md) | MAX_CONTEXT_TOKENS 三情形、[1m] 客户端语义、压缩触发点与两个失效变量 | 2026-09-05 |
 | [三家宿主 MCP 配置、验证阶梯与凭据事故](harness-engineering/mcp-setup-validation.md) | stdio 配置与验证阶梯；HTTP OAuth 的宿主认证、调用与发布状态边界；凭据安全及状态命令副作用 | 2026-10-17 |
 | [双层循环操控模型](harness-engineering/dual-loop-steering-model.md) | 徐昊课程全 30 讲主框架：双层循环（PDCA+操控循环）、四子系统、前馈/反馈/调整三环节；自我纠正循环是 ReAct 的特殊形式；edge 是窗口截断边界；Böckeler 的 guides/sensors 对应；feedforward 起源（Richards 1951 Macy Conference）；13 种坏味道（07–19）与重构手法；Skills 最佳实践（20）、锚定（21）；新增 22 人的介入、23 Eval 驱动自我改进、24 Loop Engineering、25 多 Agent 编排、26 内部 Harness 三扩展点、27 Agent First Workspace、28 写课实例、29–30 遗留系统实战与结束语；含全课概念五层结构与六类关系网络 | 2026-11-07 |
@@ -299,7 +299,8 @@ OMP 启动提示与交互快捷方式。
 | [OMP 启动提示全表](omp-tips/startup-tips.md) | 28 条提示（27 条 + 1 条条件提示）、加权随机、Agent Hub、yield-queue | 2026-09-09 |
 | [OMP web search 自定义 Responses API 端点](omp-tips/web-search-custom-responses-provider.md) | codex provider 接入兼容 /codex/responses 的端点：路径拼接、请求形状、凭证分支、实测 | 2026-09-19 |
 | [OMP web search provider 清单与 fallback](omp-tips/web-search-provider-inventory.md) | 25 个 provider 四类分级、串行 fallback、public 并发合并、webSearchOrder 追加语义、Tavily MCP 与原生 `web/tavily` 凭证来源差异 | 2026-09-29 |
-| [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描全部 `*.ts`/`*.js` 扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法 | 2026-09-19 |
+| [OMP 扩展自动加载机制](omp-tips/omp-extension-auto-loading.md) | OMP 四路合并自动扫描扩展、config.yml 声明非加载开关、canary 实测与禁用正确方法；2026-11-22 补 Git 插件按 manifest 禁用扩展的实例 | 2026-11-22 |
+| [OMP Git 插件升级与本地筛选](omp-tips/omp-git-plugin-updates.md) | uv-bun 对 Git 插件的检查与刷新路径；omp-kit-companion 按扩展、技能和规则分别筛选；本机 19 条插件规则发现与匹配验证 | 2026-11-22 |
 | [Kiro 接入 OMP 设置与验证实录](omp-tips/kiro-omp-setup-via-ns-bridge.md) | OMP 18.22.2 内置 Kiro 与 ns-omp-provider-kiro 0.5.3 的 kiro-api 注册冲突、单插件禁用和 RPC 启动验证；保留 OMP 18.12.5 接入与目录刷新记录 | 2026-11-18 |
 
 ## kimi-claw
@@ -383,8 +384,9 @@ OMP TTSR 流式行为护栏、Extension 分层与上下文处置。
 |---------|---------|---------|
 | [OMP Extension 与 TTSR 分层防护](omp-ttsr/extension-and-ttsr-layering.md) | schema、tool_call extension 与 TTSR 的职责边界；TTSR 两类规则（流式条件 vs `question` 判定）的适用范围 | 2026-10-08 |
 | [TTSR keep vs discard](omp-ttsr/keep-vs-discard.md) | 命中规则后保留或丢弃错误上下文的证据与取舍 | 2026-08-26 |
-| [OMP TTSR 与 /omfg](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、配置、生命周期、规则生成与实测边界；deferred 注入竞态（#12057）；2026-10-08 补 ttsr.judge 三值配置行 | 2026-10-08 |
-| [OMP TTSR 判定机制与 question 规则](omp-ttsr/ttsr-and-judge.md) | Rule.question 分流开关；claim() 语义（NO 不消耗 once 状态、请求次数=pre-filter 命中数）；ttsr.judge 三值；omp ttsr test 不调 judge 的 CLI 边界；judge 可见性边界；规则发现路径与 omp-rules 同步边界；加 question 的评估方法 | 2026-10-08 |
+| [OMP TTSR 与 /omfg](omp-ttsr/ttsr-and-omfg.md) | TTSR scope、配置、生命周期、规则生成与实测边界；deferred 注入竞态；2026-11-22 补规则级 interrupt/repeat、alwaysApply 分组及插件规则加载 | 2026-11-22 |
+| [OMP 社区 TTSR 规则资源与筛选](omp-ttsr/community-rule-packs-and-selection.md) | 公开 TTSR 规则仓库的 stars、最后 push、规则形态与适用限制；优先阅读来源；omp-kit-companion 的 Git 插件安装与本地筛选 | 2026-11-22 |
+| [TTSR 规则可靠性与误报案例](omp-ttsr/rule-design-and-false-positive-cases.md) | 文本匹配与实际验证的区别；无效测试提醒；remnic 放弃广泛检测的合法代码案例；验证检查范围与 429 Retry-After 边界 | 2026-11-22 |
 
 ## personal-knowledge
 

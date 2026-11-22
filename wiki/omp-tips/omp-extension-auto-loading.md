@@ -1,8 +1,8 @@
 # OMP 扩展自动加载机制
 
-> Sources: oh-my-pi 上游源码直读（can1357/oh-my-pi commit 71c5eec）+ 本机 canary 探针实测（2026-09-19）
-> Raw: [extension-auto-loading-canary](../../raw/omp-tips/2026-09-19-extension-auto-loading-canary.md)
-> Updated: 2026-09-19
+> Sources: oh-my-pi 上游源码直读（can1357/oh-my-pi commit 71c5eec）+ 本机 canary 探针实测（2026-09-19）；omp-kit-companion manifest 与本机安装，2026-11-22
+> Raw: [extension-auto-loading-canary](../../raw/omp-tips/2026-09-19-extension-auto-loading-canary.md); [omp-kit-companion 安装与验证](../../raw/omp-extensibility/2026-11-22-omp-kit-companion-plugin-install.md)
+> Updated: 2026-11-22
 
 OMP 会自动扫描扩展目录加载全部 `*.ts`/`*.js` 扩展文件；config.yml 的 `extensions` 列表只是追加/去重，**不是加载开关**。
 
@@ -48,6 +48,8 @@ OMP 会自动扫描扩展目录加载全部 `*.ts`/`*.js` 扩展文件；config.
 1. 改名加 `.archived` 后缀（如 `umans-status.ts` → `umans-status.ts.archived`），不匹配 glob 即不再加载
 2. 加入 `disabledExtensions` 列表
 3. 临时全局关闭：`--no-extensions`
+
+Git 插件同样按 manifest 的扩展入口加载。2026-11-22 安装 `omp-kit-companion@0.2.145` 后，本机将其 manifest 中 15 个扩展入口全部写入 `disabledExtensions`，保留规则资源；仓库里其他扩展文件不能按目录总数算作该插件自动加载项。配置与规则验证见 [OMP Git 插件升级与本地筛选](omp-git-plugin-updates.md)。
 
 ## 本机现状（2026-09-19）
 
