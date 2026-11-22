@@ -2663,3 +2663,13 @@
 ## [2026-11-22] ingest | Tern 插件架构与平台边界
 - Disposition: Update
 - Raw: raw/tern/2026-11-22-tern-web-sidebar-agent-status.md
+
+## [2026-11-22] ingest | Yazi 远程文件选择器
+- Disposition: New
+- Raw: raw/vscode/2026-11-22-yazi-remote-file-picker-replacement.md
+- Created: Yazi 远程文件选择器
+
+## [2026-11-22] ingest | VS Code Web 工作区信任边界
+- Disposition: New
+- Raw: raw/vscode/2026-11-22-yazi-vs-code-web-workspace-trust.md
+- Created: VS Code Web 工作区信任边界

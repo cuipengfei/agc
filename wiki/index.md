@@ -653,6 +653,8 @@ VS Code（含 serve-web）的设置分层、Web 客户端存储与 Remote 配置
 |---------|---------|---------|
 | [VS Code serve-web 的设置分层：浏览器 User 与 WSL Remote](vscode/serve-web-settings-layers.md) | Web 客户端用户设置存于浏览器 IndexedDB（`vscode-web-db` / `vscode-userdata-store`）；serve-web 以请求 Host 作为 `remoteAuthority`，Remote 层读取服务端 `data/Machine/settings.json`；优先级 User < Remote < Workspace < Policy；`window.title` 默认 scope 为 WINDOW，Workspace 层接受、Folder 层不接受；Remote 层值为 `${rootName}`，最终生效值未验证 | 2026-10-21 |
 | [VS Code Web Git hook 的 PATH 与 locale](vscode/serve-web-git-hook-environment.md) | Tern hook 找不到 Bun 的进程环境取证；Git 扩展 locale 设置、systemd 用户 PATH 快照与 environment.d 排序、验证边界 | 2026-11-21 |
+| [Yazi 远程文件选择器](vscode/yazi-remote-file-picker.md) | 用 Yazi chooser 取代自写 webview picker；继承用户 Yazi 配置与写操作；本机 26.9.1 升级来源与 uv-bun 维护入口；选择退出状态、remote URI 保留与真实 Web 验收边界 | 2026-11-22 |
+| [VS Code Web 工作区信任边界](vscode/vs-code-web-workspace-trust.md) | serve-web 工作区信任随 Chrome profile 与服务实例保存；专用测试工作区、独立 Chrome profile 与自动化验收的安全边界；父目录授权混入 profile 与服务数据的失败形态 | 2026-11-22 |
 
 ## horizon
 
