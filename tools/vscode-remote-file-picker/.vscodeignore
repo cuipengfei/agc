@@ -2,6 +2,7 @@
 .vscodeignore
 node_modules/**
 test/**
-build-assets.js
 bun.lock
 *.vsix
+coverage/**
+.metrics/**

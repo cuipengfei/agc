@@ -1,88 +1,133 @@
 const vscode = require('vscode');
-const { dirname } = require('node:path').posix;
-const { homedir } = require('node:os');
-const { randomBytes } = require('node:crypto');
-const { createConnector } = require('./connector');
-const { renderPicker } = require('./webview');
+const { dirname, isAbsolute, join } = require('node:path');
+const { homedir, tmpdir } = require('node:os');
+const { mkdtemp, readFile, rm } = require('node:fs/promises');
 
-let activePanel;
+let activeSession;
 
 function activate(context) {
-  const storage = Object.assign(Object.create(null), context.globalState.get('remoteFilePicker.storage', {}));
-
-  context.subscriptions.push(vscode.commands.registerCommand('remoteFilePicker.open', () => {
-    if (activePanel) {
-      activePanel.reveal();
-      return;
-    }
-    const previous = vscode.window.activeTextEditor;
-    const workspace = vscode.workspace.workspaceFolders?.[0]?.uri;
-    const baseUri = workspace || previous?.document.uri || vscode.Uri.file(homedir());
-    const current = previous?.document.uri;
-    const currentIsFile = current && current.scheme === baseUri.scheme && current.authority === baseUri.authority;
-    const initialPath = currentIsFile ? dirname(current.path) : baseUri.path;
-    const connector = createConnector({ fs: vscode.workspace.fs, baseUri, initialPath });
-    const column = previous?.viewColumn || vscode.window.tabGroups.activeTabGroup.viewColumn;
-    const panel = vscode.window.createWebviewPanel('remoteFilePicker', 'Open Remote File', column, {
-      enableScripts: true,
-      retainContextWhenHidden: true,
-      localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
-    });
-    activePanel = panel;
-    let disposed = false;
-    const listener = panel.webview.onDidReceiveMessage(async message => {
-      if (disposed) return;
-      if (message?.type === 'cancel') {
-        panel.dispose();
-        return;
-      }
-      const id = message?.id;
-      if (!Number.isSafeInteger(id) || id <= 0) {
-        await vscode.window.showErrorMessage('Remote File Picker received an invalid request identifier.');
-        return;
-      }
-      try {
-        let result;
-        if (message.type === 'request' && message.data && !Array.isArray(message.data) && typeof message.data === 'object') {
-          result = await connector.request(message.data);
-        } else if (message.type === 'navigate' && typeof message.path === 'string') {
-          result = await connector.navigate(message.path);
-        } else if (message.type === 'storage' && typeof message.key === 'string' && message.key.length > 0 && (typeof message.value === 'string' || message.value === null)) {
-          if (message.value === null) delete storage[message.key];
-          else storage[message.key] = message.value;
-          await context.globalState.update('remoteFilePicker.storage', storage);
-          result = true;
-        } else if (message.type === 'select' && typeof message.hash === 'string') {
-          const uri = await connector.select(message.hash);
-          if (disposed) return;
-          await vscode.commands.executeCommand('vscode.open', uri, { viewColumn: column, preview: false });
-          result = true;
-        } else {
-          throw new Error('Invalid Remote File Picker request.');
-        }
-        if (!disposed) await panel.webview.postMessage({ id, result });
-        if (message.type === 'select' && !disposed) panel.dispose();
-      } catch (error) {
-        if (!disposed) await panel.webview.postMessage({ id, error: error.message });
-      }
-    });
-    panel.onDidDispose(() => {
-      disposed = true;
-      listener.dispose();
-      if (activePanel === panel) activePanel = undefined;
-    });
-    panel.webview.html = renderPicker({
-      webview: panel.webview,
-      extensionUri: context.extensionUri,
-      nonce: randomBytes(18).toString('base64url'),
-      config: { startHash: connector.startHash, initialPath, storageKey: context.globalStorageUri.toString(), storage },
-    });
-  }));
-  console.info('[Remote File Picker] Ready. Command: remoteFilePicker.open');
+  context.subscriptions.push(
+    vscode.commands.registerCommand('remoteFilePicker.open', () => openPicker().catch(reportError)),
+    vscode.window.onDidCloseTerminal(terminal => {
+      const session = activeSession;
+      if (session?.terminal === terminal) return finishPicker(session, terminal.exitStatus).catch(reportError);
+    }),
+  );
 }
 
-function deactivate() {
-  activePanel?.dispose();
+function reportError(error) {
+  return vscode.window.showErrorMessage(`Yazi file picker: ${error.message}`);
+}
+
+function createSession() {
+  const previous = vscode.window.activeTextEditor;
+  const workspace = vscode.workspace.workspaceFolders?.[0]?.uri;
+  const { baseUri, initialPath } = initialDirectory(previous?.document.uri, workspace);
+  const column = previous?.viewColumn || vscode.window.tabGroups.activeTabGroup.viewColumn;
+  return { previous, baseUri, initialPath, column, cancelled: false };
+}
+
+function initialDirectory(current, workspace) {
+  const usable = current && current.scheme !== 'untitled';
+  const baseUri = workspace || (usable ? current : vscode.Uri.file(homedir()));
+  const sameHost = usable && current.scheme === baseUri.scheme && current.authority === baseUri.authority;
+  return { baseUri, initialPath: sameHost ? dirname(current.path) : baseUri.path };
+}
+
+async function openPicker() {
+  if (activeSession) {
+    activeSession.terminal?.show(false);
+    return;
+  }
+  const session = createSession();
+  activeSession = session;
+  try {
+    session.directory = await mkdtemp(join(tmpdir(), 'vscode-yazi-'));
+    if (session.cancelled) return await cleanup(session);
+    session.resultFile = join(session.directory, 'selection');
+    session.terminal = vscode.window.createTerminal({
+      name: 'Yazi — Open File',
+      shellPath: 'yazi',
+      shellArgs: ['--chooser-file', session.resultFile],
+      cwd: session.baseUri.with({ path: session.initialPath, query: '', fragment: '' }),
+      location: { viewColumn: session.column },
+      isTransient: true,
+    });
+    session.terminal.show(false);
+  } catch (error) {
+    await cleanup(session);
+    throw error;
+  }
+}
+
+async function readSelection(session) {
+  let text;
+  try {
+    text = await readFile(session.resultFile, 'utf8');
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+  if (!text) return [];
+  const paths = text.endsWith('\n') ? text.slice(0, -1).split('\n') : text.split('\n');
+  return Promise.all(paths.map(value => selectedFile(session.baseUri, value)));
+}
+
+async function selectedFile(baseUri, value) {
+  if (!isAbsolute(value) || value.includes('\0')) throw new Error('Yazi returned an invalid file path.');
+  const uri = baseUri.with({ path: value, query: '', fragment: '' });
+  const stat = await vscode.workspace.fs.stat(uri);
+  if (!(stat.type & vscode.FileType.File) || (stat.type & vscode.FileType.Directory)) {
+    throw new Error(`Select a file with Enter; enter directories with the right arrow: ${value}`);
+  }
+  return uri;
+}
+
+async function restoreEditor(session) {
+  if (session.cancelled) return;
+  if (session.previous) {
+    await vscode.commands.executeCommand('vscode.open', session.previous.document.uri, { viewColumn: session.column, preserveFocus: false });
+  } else {
+    await vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+  }
+}
+
+async function finishPicker(session, status) {
+  try {
+    if (session.cancelled) return;
+    if (status?.reason === vscode.TerminalExitReason.Shutdown) return;
+    if (!status) return await restoreEditor(session);
+    if (status.code === undefined) return await restoreEditor(session);
+    await openSelection(session, status);
+  } catch (error) {
+    await restoreEditor(session);
+    throw error;
+  } finally {
+    await cleanup(session);
+  }
+}
+
+async function openSelection(session, status) {
+  if (status.code !== 0) throw new Error(`Yazi exited with status ${status.code}. Check that yazi is available on the server PATH.`);
+  const files = await readSelection(session);
+  if (!files.length) return await restoreEditor(session);
+  for (const file of files) {
+    if (session.cancelled) return;
+    await vscode.commands.executeCommand('vscode.open', file, { viewColumn: session.column, preview: false, preserveFocus: false });
+  }
+}
+
+async function cleanup(session) {
+  if (session.directory) await rm(session.directory, { recursive: true, force: true });
+  if (activeSession === session) activeSession = undefined;
+}
+
+async function deactivate() {
+  const session = activeSession;
+  if (!session) return;
+  session.cancelled = true;
+  session.terminal?.dispose();
+  await cleanup(session);
 }
 
 module.exports = { activate, deactivate };

@@ -4,11 +4,6 @@
   "workspaces": {
     "": {
       "name": "remote-file-picker",
-      "dependencies": {
-        "elfinder": "https://github.com/Studio-42/elFinder/archive/refs/tags/2.1.70.tar.gz",
-        "jquery": "3.7.1",
-        "jquery-ui-dist": "1.13.3",
-      },
       "devDependencies": {
         "puppeteer-core": "25.18.1",
       },
@@ -27,8 +22,6 @@
 
     "devtools-protocol": ["devtools-protocol@0.0.1717327", "", {}, "sha512-3RDLDzyvv8XAYf1L+TL1og0EEk0eOW1Jn0yi88uG6Bj8fUKO1ZKfgNtwbJkqf5SWdPDS4VGEPxwdUWz78V6Xcg=="],
 
-    "elfinder": ["elfinder@https://github.com/Studio-42/elFinder/archive/refs/tags/2.1.70.tar.gz", {}, "sha512-pxkTNFiGi1+d1cLwFn8hVZLRc9OCyBVlvZksOt5fG2MbJefoMxxauk/TKKDar/nE9/wh2qqOwu9L+l6ufXXw6Q=="],
-
     "emoji-regex": ["emoji-regex@10.6.0", "", {}, "sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A=="],
 
     "escalade": ["escalade@3.2.0", "", {}, "sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA=="],
@@ -36,10 +29,6 @@
     "get-caller-file": ["get-caller-file@2.0.5", "", {}, "sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg=="],
 
     "get-east-asian-width": ["get-east-asian-width@1.7.0", "", {}, "sha512-XjH1AECxf0giL2V1aU8vKyRR2ppRUb5c0EvT7zuJTokQ74bNo52zOtghqdWIqrhUD79fo3x0WfKZdOqxF6LG1Q=="],
-
-    "jquery": ["jquery@3.7.1", "", {}, "sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg=="],
-
-    "jquery-ui-dist": ["jquery-ui-dist@1.13.3", "", { "dependencies": { "jquery": ">=1.8.0 <4.0.0" } }, "sha512-qeTR3SOSQ0jgxaNXSFU6+JtxdzNUSJKgp8LCzVrVKntM25+2YBJW1Ea8B2AwjmmSHfPLy2dSlZxJQN06OfVFhg=="],
 
     "mitt": ["mitt@3.0.1", "", {}, "sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw=="],
 
