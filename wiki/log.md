@@ -2654,3 +2654,8 @@
 - Disposition: New
 - Raw: raw/vscode/2026-11-21-serve-web-git-hook-path-locale.md
 - Created: VS Code Web Git hook 的 PATH 与 locale
+
+## [2026-11-22] ingest | Tern 升级辅助工具与验收边界
+- Disposition: Update
+- Raw: raw/tern/2026-11-22-tern-font-determinism-improvements.md; raw/tern/2026-11-22-tern-0-9-30-native-registration-deploy.md
+- Updated: Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
