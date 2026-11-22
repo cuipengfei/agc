@@ -482,6 +482,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | [ttyd 与 sip 并存部署](terminal-multiplexers/ttyd-and-sip-side-by-side.md) | 7681/7682 双服务进程树归属、herdr 环境变量隔离、入口切换；sip 启动命令不覆盖字体名；两份服务的 `KillMode` 差异与 sip 采用 `process` 后的重启边界，按 systemd 语义推断、未实测 | 2026-11-20 |
 | [焦点刷新期间的鼠标松开丢失](terminal-multiplexers/focus-refresh-mouse-release-loss.md) | 焦点进入时 Herdr 先清除再开启鼠标捕获，xterm 在该时序移除 document 级 `mouseup` 监听，松开丢失；随后滚轮走扩展选区分支，表现为选中文字。五组隔离对照（sip xterm、只重申启用、关闭焦点报告、ttyd 前端、Worker engine）、三步判定顺序、Worker engine 作为本机采用方案、滚轮步长 3→1、证据边界 | 2026-11-20 |
 | [sip Worker engine 下使用宿主字体](terminal-multiplexers/sip-worker-engine-host-font.md) | Worker 把内嵌 JetBrains 按配置首个字体名登记进 `self.fonts`，页面 `document.fonts` 与它互相独立；`loadFonts` 只追加、不移除；复现步骤涵盖启动命令去掉 `--font-family`、daemon-reload 与重启、页面 `setOptions` 指向宿主字体、`cw`/`ch` 尺寸检查与目视确认；浏览器取宿主字体的位置、回退与证据边界 | 2026-11-20 |
+| [Herdr 与 Tern：agent 侧栏与对象层级](terminal-multiplexers/herdr-tern-agent-sidebar.md) | Herdr 0.9.5 的 Spaces/workspace 与独立 Agents 区；Tern 的 space=session、window 与 daemon 分工；当前 Web 竖向侧栏按 tab 成行、双 pane 仍一条记录，以及 Peek、Mission Control、attention inbox 和增加 Web Agents 侧栏的路线与边界 | 2026-11-22 |
 
 ## terminal-graphics
 
@@ -510,7 +511,7 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | [Tern 时间 API 补丁与验收](tern/time-api-patch-and-verification.md) | calendar、Instant、elapsed 语义与 ABI；按版本静态证据；0.9.7–0.9.21 的 `panicFunctions` 总数与时间调用数；Markdown 冻结及字体注入的独立验收边界 | 2026-11-14 |
 | [Tern 跨机器补丁手册](tern/portable-patching-runbook.md) | 本机原版获取、固定 recipe 重建、完整包迁移、仅字体装配、真实页面检查、重启后的启动路径、site 目录核对、0.9.18 验收形态与 GPU adapter 实测、跨版本 pane 只陈述观测不推断丢失原因、0.9.21 验收形态与独立进程托管、0.9.23 无补丁部署分支与替代验收口径、0.9.26 无补丁部署实例与 `/fonts` 验收点，以及未知版本和平台限制 | 2026-11-18 |
 | [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围；Web 端键名 `settings.json` 与 `font_family` 实测、`/fonts` 投递的字体 ID 对照、`localStorage.setItem` 整键替换风险、Chrome LevelDB 键编码 `_<origin><key>` 与旧值可恢复性、0.9.28 已投递 Maple 但名称选择失败的登记缺失判定与当前补丁状态 | 2026-11-20 |
-| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算；Web `Vertical tabs` 实测可用、OMP 窗格图标状态与 Herdr 式独立 Agents 面板不存在 | 2026-11-22 |
+| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算；Web `Vertical tabs` 按 tab 成行、双 pane 仍一条记录；与 Herdr 侧栏的差别见专文 | 2026-11-22 |
 | [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点；2026-11-12 补 ABKit 引擎与 Tern 网页视图 | 2026-11-12 |
 | [Tern Inbox 特征行为](tern/inbox-feature.md) | 四条 ctl/scenario 命令、默认键位、OSC 99 直写 pty 实测不进 inbox、Herdr 已排除、真实通道待查 | 2026-10-20 |
 | [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 旧版冻结报告与 0.8.4 浏览器 panic；0.9.6 原版与 0.9.7 仅字体版均未复现；viewport 重绘判据与 `not_run` 边界；按 `file`/`id` 关闭目标 pane 的恢复步骤 | 2026-10-29 |
@@ -642,8 +643,8 @@ Ubuntu 的 apt 来源优先级、第三方 PPA 回归的定位与长期防护，
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26）；另登记四个非 ADE 的真工厂方案（2026-10-29）；Orca 行 2026-11-15 标注 Outdated（orca serve/浏览器客户端已有文档） | 2026-11-15 |
-| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项；Orca 排除段 2026-11-15 标注 Outdated | 2026-11-15 |
+| [ADE 候选清单](agent-development-environments/ade-candidate-inventory.md) | 27 个公开仓库（2026-10-26 增 ThinkRail）+ Tern + Orca/Air 桌面过滤；Paseo/bb/Ekko/T3/Nodeterm 源码复核；stars 与 pushed_at 来自 GitHub API 快照（候选表 2026-10-18，ThinkRail 行 2026-10-26）；另登记四个非 ADE 的真工厂方案（2026-10-29）；Orca 行 2026-11-15 标注 Outdated；Tern Web 0.9.30 侧栏按 tab 成行且无同等 Agents 总览 | 2026-11-22 |
+| [ADE 选型方法](agent-development-environments/ade-selection-method.md) | 核验纪律、排除项、Tern 插件型归类；本机排序 TUIOS→Paseo→Agent Deck→bb；Provider 适配边界与未实测项；Orca 排除段 2026-11-15 标注 Outdated；Tern Web 按 tab 显示、无同等 Agents 总览 | 2026-11-22 |
 | [ThinkRail 与 JetBrains 的 ADE 版图](agent-development-environments/thinkrail-and-jetbrains-air.md) | ThinkRail 深挖：worktree 工作区、自托管浏览器模式、update 无版本比较、遥测与回环边界、WSL 实测；Air 2026-03 预览接管 Fleet 平台；Gateway WSL2 原生客户端；Projector 独立版暂停；CodeCanvas 停止开发 | 2026-10-26 |
 | [T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界](agent-development-environments/t3code-orca-herdr-run-surfaces.md) | 四层运行拓扑（界面/控制面/agent 进程/状态）、客户端形态（桌面、本机网页、托管网页、手机、TUI；Orca web client 由 runtime 提供）、全本地与账号依赖、OMP 经 ACP 接入 T3 与 Herdr 原生支持、ttyd+Herdr 与 T3 本机网页的取舍；官方文档、源码与 issue 2026-11-15 | 2026-11-15 |
 

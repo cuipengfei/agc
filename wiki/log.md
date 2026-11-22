@@ -2680,3 +2680,9 @@
 - Created: OMP 社区 TTSR 规则资源与筛选; TTSR 规则可靠性与误报案例; OMP Git 插件升级与本地筛选
 - Updated: OMP TTSR 与 /omfg; Watchdog Review Design; OMP 扩展自动加载机制
 - 要点：区分 TTSR、alwaysApply 和按需 rulebook；15 个新候选的一手仓库指标与规则限制；remnic 放弃广泛检测的合法代码案例；429 可带 Retry-After；omp-kit-companion 0.2.145 安装后禁用 15 个扩展、6 个技能和 8 个私有规则，50 条启用规则中 19 条来自插件。
+
+## [2026-11-22] ingest | Herdr 与 Tern：agent 侧栏与对象层级
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-22-herdr-tern-agent-sidebar.md
+- Created: Herdr 与 Tern：agent 侧栏与对象层级
+- Updated: Tern 插件架构与平台边界; ADE 候选清单; ADE 选型方法

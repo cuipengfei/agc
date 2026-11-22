@@ -1,7 +1,7 @@
 # Tern 插件架构与平台边界
 
-> Sources: Stencil official Tern Plugin SDK documentation, 2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20; Tern Web sidebar and agent status session, 2026-11-22
-> Raw: [Packages、Architecture、Support Matrix 与 CLI 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [Tern 官方文档：Concepts / Guides / Reference / Examples 摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-concepts-guides-reference.md); [Tern Web 侧栏与 agent 状态](../../raw/tern/2026-11-22-tern-web-sidebar-agent-status.md)
+> Sources: Stencil official Tern Plugin SDK documentation, 2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20; Tern Web sidebar and agent status session, 2026-11-22; Herdr and Tern sidebar comparison, 2026-11-22
+> Raw: [Packages、Architecture、Support Matrix 与 CLI 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [Tern 官方文档：Concepts / Guides / Reference / Examples 摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-concepts-guides-reference.md); [Tern Web 侧栏与 agent 状态](../../raw/tern/2026-11-22-tern-web-sidebar-agent-status.md); [Herdr 与 Tern agent 侧栏](../../raw/terminal-multiplexers/2026-11-22-herdr-tern-agent-sidebar.md)
 > Updated: 2026-11-22
 
 ## 插件包与配置目录
@@ -28,11 +28,11 @@ Web tab 不运行任何 Lua，也不加载自己的插件。它接收提供页�
 
 ## Web 侧栏与 agent 状态（2026-11-22 补）
 
-Tern Web 可用 `Vertical tabs` 显示左侧标签列；本机 0.9.30 实测该命令可执行，左侧出现 session/tab 树。官方标签导航文档列出 `tabs [horizontal|vertical|toggle]`、`tabs autohide` 与 `filter`；官方 chrome 文档说明每个标签按窗格显示程序图标，OMP 属于编程 agent 程序键，图标可表达正在处理、等待、完成或失败。
+Tern Web 可用 `Vertical tabs` 显示左侧标签列；本机 0.9.30 实测该命令可执行，左侧出现 session/tab 树。官方标签导航文档列出 `tabs [horizontal|vertical|toggle]`、`tabs autohide` 与 `filter`。一个包含两个 pane 的 tab 仍占一条 tab 记录；tab 文字来自 focused pane，`panes` 与 `busy` 描述整条 tab。
 
-Web tab 不运行桌面 Lua 窗口逻辑，也不加载自己的插件；它渲染提供页面那台主机 daemon 产生的 catalog。因而 Web 端能显示现有窗格、标签和图标状态，但没有桌面 `Rail` 布局、Lua chrome 状态段或原生「Agents 面板」。本机截图中，左侧是 session/tab 树和 `Filter tabs`，不是 Herdr 的独立 Spaces + Agents 列表。
+官方 chrome 文档说明每个标签按窗格显示程序图标，OMP 属于编程 agent 程序键。本机 Web 观察没有验证图标单击跳转，也没有触发真实 OMP 的工作、等待、完成或失败状态变化。Web tab 不运行 Lua 窗口逻辑，左侧常驻列表的单位仍是 tab。
 
-把每个在 Tern 中运行的 OMP 放进独立标签，就能只看左侧窗格图标判断 agent 状态；「Herdr 式一键总览所有 agent」没有从官方文档或本机实测得到支持。本次未触发 OMP 的工作、等待或完成状态变化。
+与 Herdr 常驻 Agents 列表的差别，以及一个 agent 一个 tab、Peek、Mission Control 等替代路线，见 [Herdr 与 Tern：agent 侧栏与对象层级](../terminal-multiplexers/herdr-tern-agent-sidebar.md)。
 
 ## `tern plugin` 的行为范围
 
@@ -58,3 +58,4 @@ install、remove、link 和 unlink 修改目录后请求重载。install 与 lin
 - [Tern：TSP 与 browser 后端](tsp-and-browser-backend.md)
 - [Tern 插件能力全集](plugin-capabilities.md)
 - [Tern 官方文档地图](official-docs-map.md)
+- [Herdr 与 Tern：agent 侧栏与对象层级](../terminal-multiplexers/herdr-tern-agent-sidebar.md)
