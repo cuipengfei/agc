@@ -61,7 +61,22 @@ providers:
   fetch: auto
   cacheRetention: long
   cacheWarming: idle
-disabledExtensions: []
+disabledExtensions:
+  - extension-module:kit-seat-identity
+  - extension-module:kit-guard-optin
+  - extension-module:kit-save-guard
+  - extension-module:fleet-guard
+  - extension-module:kit-callback
+  - extension-module:kit-flywheel-guard
+  - extension-module:kit-loop-guard
+  - extension-module:kit-upgrade-notice
+  - extension-module:kit-goal-keepalive
+  - extension-module:kit-agent-mail-guard
+  - extension-module:secret-output-guard
+  - extension-module:kit-composer-state
+  - extension-module:kit-inbox-wake
+  - extension-module:kit-goal-state
+  - extension-module:kit-model-activity
 modelRoleStorage: global
 modelRoles:
   plan: c8787/gpt-6.1-sol:high
@@ -390,7 +405,15 @@ ttsr:
   repeatMode: after-gap
   repeatGap: 5
   builtinRules: true
-  disabledRules: []
+  disabledRules:
+    - kit-solo-review-not-review
+    - kit-structure-not-truth
+    - kit-commit-preflight
+    - kit-frontend-foundations
+    - kit-no-gh-poll
+    - kit-test-source-runtime
+    - kit-rea-heavy-summary
+    - kit-rea-runtime-shipped
 edit:
   mode: hashline
   fuzzyMatch: true
@@ -585,7 +608,13 @@ skills:
   enableAgentsUser: true
   enableAgentsProject: true
   customDirectories: []
-  ignoredSkills: []
+  ignoredSkills:
+    - fleet-restart
+    - fleet-round
+    - frontend-foundations
+    - jeff-planning-enhanced
+    - omp-kit-native
+    - omp-native
   includeSkills: []
 commands:
   enableClaudeUser: false

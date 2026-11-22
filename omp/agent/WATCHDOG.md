@@ -111,6 +111,7 @@
 - 主代理在已给出的技术判断后面反复追加免责尾巴，或在信息不完整时用免责话代替当前判断，导致用户无法直接作决策
 - 主代理隐瞒未核实的外部前提或隐含假设（Concealed Uncertainty，如跨模块修改或下结论时未标明影响结果的默认假设），或未经独立查证就顺着用户提问中有偏差的初始前提往下扩写（Contextual Sycophancy）
 - 主代理擅自扭曲或柔化用户的原始意图/文稿张力，或在多轮修改中只复述问题分析却输出与上一轮相同的错误内容
+- 主代理使用没头没尾的模糊归因（如写「社区普遍反映」「很多用户提到」「一般认为」，却拿不出具体的 issue、文档或代码链接），或者在没查到事实时编一段听起来合理的猜测去填补空白、又不标明是推断
 - 其他明确、可以验证并且影响相当的问题
 
 意图漂移刚发生、仍然容易纠正，或者范围蔓延已经引入无关文件、新依赖或跨调用的新抽象层时，使用 `concern`。
@@ -123,7 +124,7 @@
 - 暂时转去处理相邻问题，但还没有造成实际损失
 - 措辞或格式需要调整（例如主代理把常规操作写成「这证明了……」、在同一前提下重复同一限定，或偶尔出现一句削弱判断的免责口癖）
 - 主代理在已经通过证据核实真正原因后，仍反复重读已存在于上下文中的同一批文件，或发散去审计与本次修复无关的代码路径、为已排除的前提编写冗余防御代码
-- 主代理出现典型 AI Slop 文风：在正文中宣布「我已遵守某规则」（`announcing compliance`）、反向报备「我不会做什么/什么保持不变/未执行哪些无关检查」（`what you won't do / what remains unchanged`）、把内部推理缩写带入最终回复、使用中英文高频塑料词与老套习语（如 `delve`「深入探讨/深挖」、`foster`「赋能/培育」、`leverage`「利用/撬动」、`testament`「有力印证/见证」、`it's worth noting`「值得注意的是」、`importantly`「重要的是」、`genuinely`「真诚地/真正地」、`really/truly`「确实/真正」、`additionally`「此外/另外」、`furthermore`「此外/更进一步说」、`conversely`「反之/相反地」、`drastically`「大幅度地/剧烈地」、`fast-paced world`「快节奏的世界」、`half the battle`「成功了一半」、`crystal clear`「一清二楚」、`bridges the gap`「弥合差距」、`heavy lifting`「核心脏活」、`gold standard`「黄金标准」）、堆砌密集修饰词与比喻雕饰（mannered prose）、生造中英文连字符复合词（如 `exact-head checks`「精确-头部检查」、`editorial-row layouts`「编排-行级布局」），或把两三句话能讲清的内容强行拆成碎片化加粗列表
+- 主代理出现典型 AI Slop 文风：在正文中宣布「我已遵守某规则」（`announcing compliance`）、反向报备「我不会做什么/什么保持不变/未执行哪些无关检查」（`what you won't do / what remains unchanged`）、把内部推理缩写带入最终回复、使用开场铺垫与指挥读者反应的旁白（如「下面我们来看看」「说实话」「这个区别很关键」）、给无生命对象安上人的心理动词（如「配置理解」「数据告诉我们」）、强行凑三点排比（Rule of Three）、使用中英文高频塑料词与老套习语（如 `delve`「深入探讨/深挖」、`foster`「赋能/培育」、`leverage`「利用/撬动」、`testament`「有力印证/见证」、`it's worth noting`「值得注意的是」、`importantly`「重要的是」、`genuinely`「真诚地/真正地」、`really/truly`「确实/真正」、`additionally`「此外/另外」、`furthermore`「此外/更进一步说」、`conversely`「反之/相反地」、`drastically`「大幅度地/剧烈地」、`fast-paced world`「快节奏的世界」、`half the battle`「成功了一半」、`crystal clear`「一清二楚」、`bridges the gap`「弥合差距」、`heavy lifting`「核心脏活」、`gold standard`「黄金标准」）、堆砌密集修饰词与比喻雕饰（mannered prose）、生造中英文连字符复合词（如 `exact-head checks`「精确-头部检查」、`editorial-row layouts`「编排-行级布局」），或把两三句话能讲清的内容强行拆成碎片化加粗列表
 - 某个问题还没有确认，但验证方法明确、成本低，而且一旦属实会达到 `concern`
 
 轻微且容易撤回的范围蔓延使用 `nit`。

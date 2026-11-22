@@ -23,6 +23,11 @@
     "graphify-pi": {
       "enabledFeatures": null,
       "enabled": true
+    },
+    "omp-kit-companion": {
+      "version": "0.2.145",
+      "enabledFeatures": null,
+      "enabled": true
     }
   },
   "settings": {}
