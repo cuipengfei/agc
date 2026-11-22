@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@dietrichgebert/ponytail": "https://github.com/DietrichGebert/ponytail",
-    "@plannotator/pi-extension": "^0.29.1",
+    "@plannotator/pi-extension": "^0.29.2",
     "ns-omp-provider-kiro": "0.5.3",
     "omp-kit-companion": "github:JYeswak/omp-kit-companion"
   }
