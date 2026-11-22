@@ -1,9 +1,9 @@
 name: Tern maintenance checks
 on:
   push:
-    paths: ['tools/tern-maintain/**', 'tools/wiki-check/**', 'wiki/**', 'raw/**', '.github/workflows/tern-maintain.yml', '.pre-commit-config.yaml']
+    paths: ['tools/tern-maintain/**', 'tools/wiki-check/**', 'wiki/**', 'raw/**', '.agents/skills/tern-font-only-deploy/**', '.github/workflows/tern-maintain.yml', '.pre-commit-config.yaml']
   pull_request:
-    paths: ['tools/tern-maintain/**', 'tools/wiki-check/**', 'wiki/**', 'raw/**', '.github/workflows/tern-maintain.yml', '.pre-commit-config.yaml']
+    paths: ['tools/tern-maintain/**', 'tools/wiki-check/**', 'wiki/**', 'raw/**', '.agents/skills/tern-font-only-deploy/**', '.github/workflows/tern-maintain.yml', '.pre-commit-config.yaml']
 permissions:
   contents: read
 jobs:

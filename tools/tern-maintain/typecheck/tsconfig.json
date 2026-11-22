@@ -12,5 +12,5 @@
     "types": ["node", "bun"],
     "typeRoots": ["./node_modules/@types"]
   },
-  "files": ["./node_modules/@webgpu/types/dist/index.d.ts", "../build.mjs", "../assets.mjs", "../windows-browser.mjs"]
+  "files": ["./node_modules/@webgpu/types/dist/index.d.ts", "../build.mjs", "../assets.mjs", "../windows-browser.mjs", "../font-registration.mjs", "../font-check.mjs", "../function-analysis.mjs"]
 }

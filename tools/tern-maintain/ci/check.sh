@@ -14,6 +14,18 @@ check_wiki() {
   echo 'Wiki evidence check passed (suspects are informational)'
 }
 
+check_skill() {
+  local script
+  uv run --with-requirements tools/tern-maintain/ci/requirements.txt python tools/tern-maintain/ci/check-skill.py
+  while IFS= read -r -d '' script; do
+    bash -n "$script"
+    uv run --with shellcheck-py shellcheck "$script"
+  done < <(find .agents/skills/tern-font-only-deploy -type f -name '*.sh' -print0 | sort -z)
+  while IFS= read -r -d '' script; do
+    bun build "$script" --target=node --outfile=/dev/null
+  done < <(find .agents/skills/tern-font-only-deploy -type f -name '*.mjs' -print0 | sort -z)
+}
+
 if [[ ${1:-} == --staged ]]; then
   if [[ $# != 1 ]]; then
     echo 'Usage: bash tools/tern-maintain/ci/check.sh [--staged]' >&2
@@ -28,7 +40,7 @@ if [[ ${1:-} == --staged ]]; then
   wiki=false
   while IFS= read -r -d '' path; do
     case "$path" in
-      tools/tern-maintain/*) tern=true ;;
+      tools/tern-maintain/*|.agents/skills/tern-font-only-deploy/*) tern=true ;;
       tools/wiki-check/*|wiki/*|raw/*) wiki=true ;;
       .github/workflows/tern-maintain.yml|.pre-commit-config.yaml) tern=true; wiki=true ;;
     esac
@@ -50,8 +62,11 @@ if [[ ${1:-} == --quick && $# == 3 ]]; then
   if [[ $2 == true ]]; then
     cd tools/tern-maintain
     bun install --frozen-lockfile --prefer-offline
+    bun install --cwd typecheck --frozen-lockfile --prefer-offline
+    bun run check
     bun test cli.test.mjs
     cd "$root"
+    check_skill
   fi
   if [[ $3 == true ]]; then
     check_wiki
@@ -96,6 +111,10 @@ bun install --frozen-lockfile
 bun install --cwd typecheck --frozen-lockfile
 bun run check
 bun test
+
+cd "$root"
+check_skill
+uv run --with-requirements tools/tern-maintain/ci/requirements.txt python -m unittest discover -s tools/tern-maintain/ci -p 'test_check_skill.py' -v
 
 cd "$root"
 check_wiki

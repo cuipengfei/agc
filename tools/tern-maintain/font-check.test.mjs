@@ -30,3 +30,16 @@ test('unknown modules and incomplete observations never authorize a patch', () =
   expect(classifyFonts(incomplete)).toBe('needs_investigation');
   expect(classifyFonts({ ...incomplete, runs: [] })).toBe('needs_investigation');
 });
+
+test('smoke results require target selection and both real controls', () => {
+  const probe = { identityMatches: true, delivered: true, family, builtin, mode: 'smoke', runs: [
+    { phase: 'target', matched: family }, { phase: 'builtin', matched: builtin }, { phase: 'missing', matched: null },
+  ] };
+  expect(classifyFonts(probe)).toBe('working');
+  expect(classifyFonts({ ...probe, mode: 'full' })).toBe('needs_investigation');
+  expect(classifyFonts({ ...probe, runs: probe.runs.slice(0, 2) })).toBe('needs_investigation');
+  const missing = { ...probe, runs: [{ phase: 'target', matched: null }, ...probe.runs.slice(1)] };
+  expect(classifyFonts(missing)).toBe('registration_missing');
+  expect(classifyFonts({ ...missing, delivered: false })).toBe('needs_investigation');
+  expect(classifyFonts({ ...probe, runs: [probe.runs[0], probe.runs[0], probe.runs[2]] })).toBe('needs_investigation');
+});

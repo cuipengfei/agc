@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# jq filters interpret their own dollar-prefixed variables.
+# shellcheck disable=SC2016
 set -euo pipefail
 
 mode=check
@@ -82,7 +84,7 @@ record_programs() {
   ps -e -o ppid=,pid=,comm= | awk -v parent="$parent" '$1 == parent {print $2, $3}' | sort > "$output"
 }
 
-for tool in bun jq sha256sum curl python3 awk tar cmp ps systemctl install mktemp; do
+for tool in bun jq sha256sum curl python3 awk tar cmp comm ps systemctl install mktemp; do
   command -v "$tool"
 done > "$evidence/doctor-tools.txt"
 test -x "$candidate"
@@ -187,7 +189,8 @@ jq -S '.paneIds | sort' "$evidence/after-runtime.json" > "$evidence/after-panes.
 run panes-preserved cmp -s "$evidence/before-panes.json" "$evidence/after-panes.json"
 daemon_pid="$(jq -er '.processes[] | select(.role == "daemon") | .pid' "$evidence/after-runtime.json")"
 record_programs "$daemon_pid" "$evidence/after-programs.txt"
-run programs-preserved cmp -s "$evidence/before-programs.txt" "$evidence/after-programs.txt"
+run programs-preserved comm -23 "$evidence/before-programs.txt" "$evidence/after-programs.txt"
+[[ ! -s "$evidence/programs-preserved.stdout" ]]
 after_token_hash="$(sha256sum "$token_file")"
 after_token_hash="${after_token_hash%% *}"
 [[ "$after_token_hash" == "$token_hash" ]]
