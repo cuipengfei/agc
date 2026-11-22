@@ -34,3 +34,4 @@ Yazi 在 VS Code 集成终端中成功选择返回 `code: 0`，但 VS Code 自�
 
 - [VS Code Web 工作区信任边界](vs-code-web-workspace-trust.md)
 - [VS Code Web Git hook 环境](serve-web-git-hook-environment.md)
+- [Yazi 配置参考与本机同步](../terminal-multiplexers/yazi-configuration-reference.md)

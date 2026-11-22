@@ -15,6 +15,7 @@
 ## 升级动作
 
 新版从 `https://github.com/sxyazi/yazi/releases/download/v26.9.1/yazi-x86_64-unknown-linux-gnu.zip` 获取后校验 SHA256。两个源码 `/usr/local/bin/yazi` 和 `/usr/local/bin/ya` 先在同目录暂存，再分别原子 rename。实际完成版本为 26.9.1，升级后 `yazi --version`、`ya --version` 和 `uv-bun --yazi-check` 均确认。
+
 ## uv-bun 改动
 
 `~/.local/bin/uv-bun` 新增 `--yazi-check` 和 `--yazi-up`，原有全量维护模式同时覆盖 Yazi。回归测试固定在 `~/.local/bin/uv-bun-yazi.test.ts`，迁移后再次运行得到 6 个测试通过。

@@ -2681,8 +2681,20 @@
 - Updated: OMP TTSR 与 /omfg; Watchdog Review Design; OMP 扩展自动加载机制
 - 要点：区分 TTSR、alwaysApply 和按需 rulebook；15 个新候选的一手仓库指标与规则限制；remnic 放弃广泛检测的合法代码案例；429 可带 Retry-After；omp-kit-companion 0.2.145 安装后禁用 15 个扩展、6 个技能和 8 个私有规则，50 条启用规则中 19 条来自插件。
 
+## [2026-11-22] ingest | Antigravity 第三方客户端政策、执行范围与计费边界
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-22-antigravity-third-party-policy-enforcement.md
+- Created: Antigravity 第三方客户端政策、执行范围与计费边界
+- Updated: OMP Antigravity 认证与社区 API
+
 ## [2026-11-22] ingest | Herdr 与 Tern：agent 侧栏与对象层级
 - Disposition: New; Update
 - Raw: raw/terminal-multiplexers/2026-11-22-herdr-tern-agent-sidebar.md
 - Created: Herdr 与 Tern：agent 侧栏与对象层级
 - Updated: Tern 插件架构与平台边界; ADE 候选清单; ADE 选型方法
+
+## [2026-11-22] ingest | Yazi 配置参考与本机同步
+- Disposition: New; Update
+- Raw: raw/terminal-multiplexers/2026-11-22-yazi-configuration-official-reference.md; raw/terminal-multiplexers/2026-11-22-yazi-user-config-and-agc-sync.md
+- Created: Yazi 配置参考与本机同步
+- Updated: Yazi 远程文件选择器

@@ -1,14 +1,16 @@
 # OMP Antigravity 认证与社区 API
 
-> Sources: Google Antigravity FAQ，2026-11-14 采集；Google Gemini CLI 维护者公告；社区 API 文档、CLIProxyAPIBusiness quota 源码；OMP 18.20.0 与 18.22.2 源码；2026-11-17 至 2026-11-18 本机会话与 agy 1.5.10 至 1.5.11 日志
-> Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [本机会话接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [本机域名与出口观察](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [提交说明 429 对照](../../raw/omp-auth/2026-11-18-antigravity-commit-line-429-probe.md)
-> Updated: 2026-11-18
+> Sources: Google Antigravity FAQ，2026-11-14 采集；Google 官方论坛 199753 员工回复，2026-11-12；Google Gemini CLI 维护者公告；社区 API 文档、CLIProxyAPIBusiness quota 源码；OMP 18.20.0 与 18.22.2 源码；2026-11-17 至 2026-11-18 本机会话与 agy 1.5.10 至 1.5.11 日志
+> Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [本机会话接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [本机域名与出口观察](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [提交说明 429 对照](../../raw/omp-auth/2026-11-18-antigravity-commit-line-429-probe.md); [第三方政策与执行官方材料](../../raw/ai-coding-agents/2026-11-22-antigravity-third-party-policy-enforcement.md)
+> Updated: 2026-11-22
 
 ## 账号风险
 
 Google FAQ 称，使用第三方软件、工具或服务访问 Antigravity 违反其服务条款，可能导致账号被暂停或终止。Google 建议第三方 coding agent 使用 Gemini Enterprise 或 Google AI Studio API key。消费级套餐的 Antigravity CLI headless 模式面向直接脚本和 CI；把 CLI 包装进第三方 coding agent 或自动轮换账号不受支持。
 
 Google Gemini CLI 维护者 **2026-02-27** 说明，针对第三方工具或代理使用 Antigravity 资源和额度的封禁，也使受影响账号无法访问 Gemini CLI 与 Gemini Code Assist；维护者同时宣布对近期受影响账号进行自动解除封禁。
+
+2026-11-12 Google 官方论坛回复进一步收窄边界：交互式 ACP 客户端由人直接驱动会话时，可以启动未修改的 `antigravity-acp` / `agy acp` 二进制；但把它注册成 OMP 这类第三方 harness 的模型来源（`antigravity-acp/*`），消费级 `oauth-personal` 下不允许，围绕 `agy` 的包装脚本、OAuth 回调中继、`--dangerously-skip-permissions` 驱动 harness 工具也不合规；官方建议 OMP 内用 Gemini 改走 AI Studio API key。政策细节、计费分层与申诉路径见 [Antigravity 第三方客户端政策、执行范围与计费边界](../ai-coding-agents/antigravity-third-party-policy.md)。
 
 ## OMP 内置认证的版本变化
 

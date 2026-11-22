@@ -77,6 +77,7 @@ AI coding agent、IDE 与 harness 的横向比较。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14/18/20 三次模型快照、两个定价页六处档位不对应、SG 价格与促销、家庭共享共用池与排除权益、社区额度估算、goofish 检索与低价渠道现状；账号地区、代理出口识别差异及 1008、1001 本机会话观察；CLI 实测补用量入口与错误分层 | 2026-11-20 |
+| [Antigravity 第三方客户端政策、执行范围与计费边界](ai-coding-agents/antigravity-third-party-policy.md) | 条款第 6 条与 FAQ 的禁止边界；ACP 允许与不允许的分界（2026-11-12 官方回复：交互式客户端可、注册成 OMP harness 模型来源不可）；执行范围与申诉路径；用户自述停号（官方未确认）；AI 套餐额度与 API credits 的分离；公开理由与商业动机推断的分界 | 2026-11-22 |
 | [Antigravity Orchestrator 机制](ai-coding-agents/antigravity-orchestrator-mechanism.md) | 单模型全程 vs 规划/执行分工（规划模型+Hydrogen）；同一次回复内自动交接与三条回控触发；固定配置不可调 thinking level、非模型路由；24% 省额度/19% 提速测试数据；Orchestrator (Neon) 首入 Pro 清单 | 2026-11-20 |
 | [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits、404 四类错误；周额度窗口两态锚点规律与滚动机制；规则命中与出口合规分开验证 | 2026-11-18 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
@@ -212,7 +213,7 @@ OMP 认证、MCP OAuth、凭据管理，以及 Auth Broker/Gateway 的代理访�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系；系统指令文本触发的假 429（身份句 15 条单句对照、提交说明整行对照、跨客户端指纹演进、零宽混淆失效） | 2026-11-18 |
+| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策（含 2026-11-12 官方回复的 OMP ACP provider 边界）；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系；系统指令文本触发的假 429（身份句 15 条单句对照、提交说明整行对照、跨客户端指纹演进、零宽混淆失效） | 2026-11-22 |
 | [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](omp-auth/antigravity-cli-acp-provider.md) | 本地 agy ACP 子进程、OMP 工具与 OAuth 刷新归属、下载与 PI_AGY_PATH、本机接入及地区拒绝、限流、license 与 MCP schema 错误观察；身份句与提交说明整行 429 的对照；可空枚举工具声明 400、schema 兼容扩展与真实 Tavily 搜索验收 | 2026-11-18 |
 | [OMP Auth Broker 与 Gateway](omp-auth/auth-broker-gateway.md) | 凭据集中、access token 服务端解析、客户端不保存 provider key | 2026-09-09 |
 | [SOFA 官方 MCP：OMP 接入、维护与验证](omp-auth/sofa-mcp-maintenance.md) | 连接配置与凭据归属、Clash 规则查找、回调机制、工具验证及私有草稿发布边界 | 2026-10-17 |
@@ -483,6 +484,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | [焦点刷新期间的鼠标松开丢失](terminal-multiplexers/focus-refresh-mouse-release-loss.md) | 焦点进入时 Herdr 先清除再开启鼠标捕获，xterm 在该时序移除 document 级 `mouseup` 监听，松开丢失；随后滚轮走扩展选区分支，表现为选中文字。五组隔离对照（sip xterm、只重申启用、关闭焦点报告、ttyd 前端、Worker engine）、三步判定顺序、Worker engine 作为本机采用方案、滚轮步长 3→1、证据边界 | 2026-11-20 |
 | [sip Worker engine 下使用宿主字体](terminal-multiplexers/sip-worker-engine-host-font.md) | Worker 把内嵌 JetBrains 按配置首个字体名登记进 `self.fonts`，页面 `document.fonts` 与它互相独立；`loadFonts` 只追加、不移除；复现步骤涵盖启动命令去掉 `--font-family`、daemon-reload 与重启、页面 `setOptions` 指向宿主字体、`cw`/`ch` 尺寸检查与目视确认；浏览器取宿主字体的位置、回退与证据边界 | 2026-11-20 |
 | [Herdr 与 Tern：agent 侧栏与对象层级](terminal-multiplexers/herdr-tern-agent-sidebar.md) | Herdr 0.9.5 的 Spaces/workspace 与独立 Agents 区；Tern 的 space=session、window 与 daemon 分工；当前 Web 竖向侧栏按 tab 成行、双 pane 仍一条记录，以及 Peek、Mission Control、attention inbox 和增加 Web Agents 侧栏的路线与边界 | 2026-11-22 |
+| [Yazi 配置参考与本机同步](terminal-multiplexers/yazi-configuration-reference.md) | v26.9.1 配置根选择、内置预设与覆盖规则、五项本机配置、dark/light 内置主题、YAZI_LOG 与 SFTP 边界、agc 同步入口 | 2026-11-22 |
 
 ## terminal-graphics
 
