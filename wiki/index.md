@@ -508,7 +508,7 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 | [Tern 时间 API 补丁与验收](tern/time-api-patch-and-verification.md) | calendar、Instant、elapsed 语义与 ABI；按版本静态证据；0.9.7–0.9.21 的 `panicFunctions` 总数与时间调用数；Markdown 冻结及字体注入的独立验收边界 | 2026-11-14 |
 | [Tern 跨机器补丁手册](tern/portable-patching-runbook.md) | 本机原版获取、固定 recipe 重建、完整包迁移、仅字体装配、真实页面检查、重启后的启动路径、site 目录核对、0.9.18 验收形态与 GPU adapter 实测、跨版本 pane 只陈述观测不推断丢失原因、0.9.21 验收形态与独立进程托管、0.9.23 无补丁部署分支与替代验收口径、0.9.26 无补丁部署实例与 `/fonts` 验收点，以及未知版本和平台限制 | 2026-11-18 |
 | [Tern 设置存储位置](tern/settings-storage.md) | 原生配置目录与 Web localStorage 的区别、origin 隔离和主机插件开关范围；Web 端键名 `settings.json` 与 `font_family` 实测、`/fonts` 投递的字体 ID 对照、`localStorage.setItem` 整键替换风险、Chrome LevelDB 键编码 `_<origin><key>` 与旧值可恢复性、0.9.28 已投递 Maple 但名称选择失败的登记缺失判定与当前补丁状态 | 2026-11-20 |
-| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算 | 2026-10-20 |
+| [Tern 插件架构与平台边界](tern/plugin-architecture.md) | 插件包、host/window 分工、平台能力矩阵、Web tab 与 tern plugin 行为、生命周期与预算；Web `Vertical tabs` 实测可用、OMP 窗格图标状态与 Herdr 式独立 Agents 面板不存在 | 2026-11-22 |
 | [Tern：TSP 与 browser 后端](tern/tsp-and-browser-backend.md) | TSP 原生渲染、browser 后端、wire 协议、CLI 帮助参数的副作用边界与官方协议章要点；2026-11-12 补 ABKit 引擎与 Tern 网页视图 | 2026-11-12 |
 | [Tern Inbox 特征行为](tern/inbox-feature.md) | 四条 ctl/scenario 命令、默认键位、OSC 99 直写 pty 实测不进 inbox、Herdr 已排除、真实通道待查 | 2026-10-20 |
 | [Tern 网页 Markdown 中文触发无响应](tern/web-markdown-cjk-freeze.md) | 旧版冻结报告与 0.8.4 浏览器 panic；0.9.6 原版与 0.9.7 仅字体版均未复现；viewport 重绘判据与 `not_run` 边界；按 `file`/`id` 关闭目标 pane 的恢复步骤 | 2026-10-29 |

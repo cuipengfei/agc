@@ -1,8 +1,8 @@
 # Tern 插件架构与平台边界
 
-> Sources: Stencil official Tern Plugin SDK documentation, 2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20
-> Raw: [Packages、Architecture、Support Matrix 与 CLI 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [Tern 官方文档：Concepts / Guides / Reference / Examples 摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-concepts-guides-reference.md)
-> Updated: 2026-10-20
+> Sources: Stencil official Tern Plugin SDK documentation, 2026-10-17; Stencil official Tern Plugin SDK documentation, 2026-10-20; Tern Web sidebar and agent status session, 2026-11-22
+> Raw: [Packages、Architecture、Support Matrix 与 CLI 官方摘录](../../raw/tern/2026-10-17-plugin-sdk-four-pages.md); [Tern 官方文档：Concepts / Guides / Reference / Examples 摘录与调研笔记](../../raw/tern/2026-10-20-official-docs-concepts-guides-reference.md); [Tern Web 侧栏与 agent 状态](../../raw/tern/2026-11-22-tern-web-sidebar-agent-status.md)
+> Updated: 2026-11-22
 
 ## 插件包与配置目录
 
@@ -25,6 +25,14 @@ Host half 在会话 daemon 中运行；无 daemon 时在窗口进程的工作线
 macOS、Linux 和 Windows 支持 host 与 window 两半。iOS 不运行 host half，window half 以解释方式运行；shell 和 host 能力来自它连接的主机。
 
 Web tab 不运行任何 Lua，也不加载自己的插件。它接收提供页面的那台主机的 catalog，因此能显示该主机的插件块、lens 视图和 effects，并安装 Ready 插件的 manifest styles。Window half 运行时通过 `tern.css` 添加的样式不会到达 Web tab。
+
+## Web 侧栏与 agent 状态（2026-11-22 补）
+
+Tern Web 可用 `Vertical tabs` 显示左侧标签列；本机 0.9.30 实测该命令可执行，左侧出现 session/tab 树。官方标签导航文档列出 `tabs [horizontal|vertical|toggle]`、`tabs autohide` 与 `filter`；官方 chrome 文档说明每个标签按窗格显示程序图标，OMP 属于编程 agent 程序键，图标可表达正在处理、等待、完成或失败。
+
+Web tab 不运行桌面 Lua 窗口逻辑，也不加载自己的插件；它渲染提供页面那台主机 daemon 产生的 catalog。因而 Web 端能显示现有窗格、标签和图标状态，但没有桌面 `Rail` 布局、Lua chrome 状态段或原生「Agents 面板」。本机截图中，左侧是 session/tab 树和 `Filter tabs`，不是 Herdr 的独立 Spaces + Agents 列表。
+
+把每个在 Tern 中运行的 OMP 放进独立标签，就能只看左侧窗格图标判断 agent 状态；「Herdr 式一键总览所有 agent」没有从官方文档或本机实测得到支持。本次未触发 OMP 的工作、等待或完成状态变化。
 
 ## `tern plugin` 的行为范围
 

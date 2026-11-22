@@ -2659,3 +2659,7 @@
 - Disposition: Update
 - Raw: raw/tern/2026-11-22-tern-font-determinism-improvements.md; raw/tern/2026-11-22-tern-0-9-30-native-registration-deploy.md
 - Updated: Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
+
+## [2026-11-22] ingest | Tern 插件架构与平台边界
+- Disposition: Update
+- Raw: raw/tern/2026-11-22-tern-web-sidebar-agent-status.md
