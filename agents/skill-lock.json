@@ -116,9 +116,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/extremeprogramming-cn/pomasa.git",
       "skillPath": "skills/pomasa/SKILL.md",
-      "skillFolderHash": "2a0a0386bcd7b6841dede5c107b5272d099aa98f",
+      "skillFolderHash": "ae8e3bf08d525a89be3fa3f0308d16bed4bb6d2d",
       "installedAt": "2026-05-12T13:27:53.579Z",
-      "updatedAt": "2026-09-25T08:51:49.148Z"
+      "updatedAt": "2026-11-23T11:49:01.226Z",
+      "commit": "993568e225145971b8005a6ca3ecc5a4a98c014d"
     },
     "grill-with-docs": {
       "source": "mattpocock/skills",
@@ -306,9 +307,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/tt-a1i/archify.git",
       "skillPath": "archify/SKILL.md",
-      "skillFolderHash": "03645a096811664da641153a4a42e862c4a6bc62",
+      "skillFolderHash": "d3e9c89dd9510a64c1114d685b68ebf1887f135e",
       "installedAt": "2026-07-11T15:33:28.854Z",
-      "updatedAt": "2026-11-10T11:30:52.009Z"
+      "updatedAt": "2026-11-23T11:49:06.082Z",
+      "commit": "3ca198d867ce4b616332f846ff66e5c8e5e60f95"
     },
     "i-have-adhd": {
       "source": "ayghri/i-have-adhd",
@@ -711,10 +713,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "ed58ce288b23b5fc2f26b57e91c794088cc557bd",
+      "skillFolderHash": "c3459c1167a9e09c5e983d255d5a28928b4983d0",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-11-19T12:31:04.143Z",
-      "commit": "d74d8c2d0c78a9e1efd43137f6a9a51182a8b5f0"
+      "updatedAt": "2026-11-23T11:49:08.892Z",
+      "commit": "0eeda75a708f419560d5e032693618bb9954f17b"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
@@ -1254,40 +1256,40 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "dc7fc09d8e7be1170bc12003f9b8fc6ea928cf2b",
+      "skillFolderHash": "48d0934b7c5d0b20decf74f5b8574149f46b290d",
       "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-20T11:46:16.692Z",
-      "commit": "468ab907ee9836e076abdd7d0e0611c475dc1271"
+      "updatedAt": "2026-11-23T11:49:09.855Z",
+      "commit": "2ce48f150236ea635a510e6d783460122367c086"
     },
     "hyperframes-cli": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "489449625dbdeb222a7db88c084f7139b933b124",
+      "skillFolderHash": "fbebfcd90bf3bd35ff84359b642569318c2d1b5f",
       "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-21T03:26:50.229Z",
-      "commit": "370f09d74ca61020ba51417e7fd375b8bb50ad28"
+      "updatedAt": "2026-11-23T11:49:10.194Z",
+      "commit": "2ce48f150236ea635a510e6d783460122367c086"
     },
     "hyperframes-registry": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "6ee3da8e65ed9af9503a12f5714d03818ae6f781",
+      "skillFolderHash": "9e825d60779781ce637eb970db8cc8cb0e45899a",
       "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-11-21T14:43:48.732Z",
-      "commit": "281f1a2a48137925d114dbd8b55e03d152bdf83d"
+      "updatedAt": "2026-11-23T11:49:10.534Z",
+      "commit": "2ce48f150236ea635a510e6d783460122367c086"
     },
     "media-use": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
       "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
       "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "0c73f41a0e9e0ef465334611134e543382f42b43",
+      "skillFolderHash": "87eb6ae3c056a2f39b88787aee64499c8a3df766",
       "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-22T07:08:51.978Z",
-      "commit": "84ff7d71c28798538f33be2009d51dc22fae9794"
+      "updatedAt": "2026-11-23T11:49:11.749Z",
+      "commit": "2ce48f150236ea635a510e6d783460122367c086"
     },
     "poteto-mode": {
       "source": "backnotprop/pstack",
