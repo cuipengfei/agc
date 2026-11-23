@@ -1,8 +1,8 @@
 # herdr-core 安装配置与 WSL2/Tailscale 手机接入
 
-> Sources: herdrdev/herdr-core README 与安装脚本, 2026-11-13; 本机 Ubuntu 26.04 WSL2 部署实测, 2026-11-13; bradfitz Tailscale SSH 说明, 2022-06-22; 本机手机接入排障实测, 2026-11-17
-> Raw: [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md); [herdr-core 手机接入排障：hc 运行形态与 Tailscale SSH policy](../../raw/herdr-plannotator/2026-11-17-hc-phone-connect-ssh-policy.md)
-> Updated: 2026-11-17
+> Sources: herdrdev/herdr-core README 与安装脚本, 2026-11-13; 本机 Ubuntu 26.04 WSL2 部署实测, 2026-11-13; bradfitz Tailscale SSH 说明, 2022-06-22; 本机手机接入排障实测, 2026-11-17; 本机 tailnet 暴露面监听实测, 2026-11-24
+> Raw: [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md); [herdr-core 手机接入排障：hc 运行形态与 Tailscale SSH policy](../../raw/herdr-plannotator/2026-11-17-hc-phone-connect-ssh-policy.md); [tailnet 暴露面监听核对](../../raw/herdr-plannotator/2026-11-24-tailscale-exposure-wildcard-listeners.md)
+> Updated: 2026-11-24
 
 ## 安装与升级
 
@@ -88,6 +88,17 @@ Tailscale 侧没有手工配置文件：`/etc/default/tailscaled` 只有 `PORT`�
 手机接入的失败形态可以按日志区分：tailnet policy 没有放行 SSH 时，tailscaled 日志仍出现 `handling conn: <PHONE_IP>:<PORT>-><USER>@<TAILSCALE_IP>:22`，但之后没有认证成功记录，客户端反复重连；`SSHPolicy` 的 `action` 为 `holdAndDelegate` 就是 check 模式。改成 `accept` 后验证输出 `"accept": true`。
 
 本机不需要安装 `openssh-server`：Tailscale SSH 由 tailscaled 在入站流量内处理，系统 sshd 未安装、22 端口没有监听都不影响手机连接。
+
+## tailnet 暴露面核对（2026-11-24 快照）
+
+`tailscale serve status` 为 No serve config 只说明没有 Serve 发布的端口，不等于暴露面只有 SSH 22。2026-11-24 实测 `ss -tlnp`，按绑定地址分组：
+
+- 绑通配地址的监听：`0.0.0.0:6688`（`code-serve-web-locale-proxy.js`）、`*:4139`/`*:4140`（`bun run router/sticky-router.ts`）。这三个端口属于独立进程，与 Herdr App 的 SSH 接入路径无关。`ss` 只确认它们绑 wildcard 地址；能否被 tailnet 对端真正访问取决于 tailnet policy 与本机防火墙，本次未逐项核对，且当日手机离线、没有从在线对端实测，可达性未验证。应用层是否需要鉴权亦未核实。
+- 仅绑 127.0.0.1 的监听（sip 7682、ttyd 7681、tern 8378、headroom 8787/8788、code-tunnel 6689 等）只绑回环，没有直接监听 Tailscale 地址。
+- tailscaled 自己在 tailscale0 上监听 <TAILSCALE_IP>:52096 与 [<TAILSCALE_IPV6>]:60969（组件端口，随版本变化）。
+- 22 端口不进 `ss` 属 Tailscale SSH 设计行为，见上文；手机连接能力以 RunSSH 状态与 tailnet policy 为准。
+
+与上一节「真实验证需要另一台在线 tailnet 设备」一致：本节是监听快照，不是可达性证明。
 
 ## 升级方式与 uv-bun 集成
 

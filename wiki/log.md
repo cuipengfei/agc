@@ -2747,6 +2747,19 @@
 
 ## [2026-11-23] lint | 520 issues found, 0 auto-fixed
 
+## [2026-11-24] ingest | 轻量手机远程工具：9 个候选逐仓核实
+- Disposition: New; Update
+- Raw: raw/agent-development-environments/2026-11-24-lightweight-mobile-remote-tools.md
+- Created: wiki/agent-development-environments/lightweight-mobile-remote-tools.md
+- Updated: ADE 选型方法
+- 要点：跳出「ADE/Agent IDE + 高星」检索框，按手机远程控制方向补到 9 个候选；star 为 2026-11-24 GitHub API 快照。Codeman 847★ 专门适配 OMP 但审批 Inbox 仅提醒；Harness Remote 450★ 走 omp acp 并递归读 ~/.omp/agent/sessions；yepanywhere 559★ 未列 OMP 且简介 "no database" 过时；Termly 320★ 注册表无 omp、中继地址硬编码；ssh-to-go 65★ 为 AGPL-3.0 tmux 透传；CodeRelay 67★ 仅 tailnet；better-remote-control 0★ 声明 MIT 无 LICENSE 文件；另两个为消息审批转发层。均未实机安装。
+
+## [2026-11-24] ingest | herdr-core tailnet 暴露面监听核对
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-24-tailscale-exposure-wildcard-listeners.md
+- Updated: herdr-core 安装配置与 WSL2/Tailscale 手机接入
+- 要点：serve 无配置不等于只暴露 22；ss 实测 6688（code-serve-web-locale-proxy.js）与 4139/4140（sticky-router）绑通配地址，可达性需在线对端实测（当日手机离线，未验证）；其余服务只绑回环；22 不进 ss 属 Tailscale SSH 设计行为。
+
 ## [2026-11-24] ingest | pstack 在 OMP 的角色模型配置与档位边界
 - Disposition: New; Update
 - Raw: raw/ai-coding-agents/2026-11-24-pstack-omp-model-settings.md
@@ -2757,3 +2770,9 @@
 - Disposition: Update
 - Raw: raw/omp-config/2026-11-24-per-call-model-identity-and-effort-ceiling.md
 - Updated: OMP per-call model 与许可机制; OMP 配置语义手册; OMP 自定义 sub-agent：定义、工具名适配与验证
+
+## [2026-11-24] lint | 523 issues found, 0 auto-fixed
+- 全库检查：523 fidelity suspect(s)、0 evidence error(s)、0 unreferenced raw file(s)。三篇本轮触及文章的 scoped 复核：lightweight-mobile-remote-tools 与 herdr-core-install-config-wsl2-tailscale 已不在 suspect 列表（7501 措辞消除、raw 正文补采集日期）；ade-selection-method 剩余 6 条 suspect（1000、两条 Orca 引文、两条中文引文、2026-11-22）均为 2026-10-18 研究轮次与 2026-11-22 侧栏轮的存量，原文在既有 raw 中可查。背景 suspect 保留人工复核，不自动修改。本轮新文件的敏感标识扫描无命中；唯一命中为 log.md 第 1544 行历史条目的 tailnet 用户名（存量，追加式日志不回改，留给用户决定）。
+
+## [2026-11-24] lint | 轻量手机远程工具精修后 scoped 复核 6 suspects, 0 auto-fixed
+- 精修内容：形态分类改为四类（yepanywhere、CodeRelay 归入浏览器定制 GUI）；Herdr 接入两项事实分开陈述——官方确认 App 经 SSH 连接 core、Tailscale 非必需，`hc connect` 是协议文档给出的 stdio 远程接入方式而 App 内部是否调用未确认；Raw 字段补链 herdr-app-core-mobile-boundaries.md 作为该句证据。scoped 复核三篇触及文章：lightweight-mobile-remote-tools 与 herdr-core-install-config-wsl2-tailscale 均不在 suspect 列表；ade-selection-method 剩余 6 条均为 2026-10-18 与 2026-11-22 轮次存量。
