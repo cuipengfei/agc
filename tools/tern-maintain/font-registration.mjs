@@ -20,7 +20,13 @@ const RELEASES = {
     version: '0.9.30', glueSha256: 'db7be2a88456a84cb1c248e425730cee90f9499f452e3d508e321c1a336b1a60',
     builtin: '7844', selector: '14450', downloaded: '5056',
     parse: '16025', family: '22470', string: '1308', free: '30197', append: '32343', statusFunctionIndex: 14957,
-    nativeMapOffset: 536, frameLocal: 2, frameSize: 3920, appendDonor: true,
+    nativeMapOffset: 536, frameLocal: 2, frameSize: 3920, appendDonor: true, normalize: '30122',
+  },
+  '046f39a1a2a611353545b22a581524a63a424f6b9e542e7a55ab0313a66b5663': {
+    version: '0.9.32', glueSha256: '67783d8dd0e29a112758ab4bd30b240a2af505847f02f6efb4b85f5e86a8e89d',
+    builtin: '7853', selector: '14507', downloaded: '5345',
+    parse: '16066', family: '22474', string: '1320', free: '30223', append: '32497', statusFunctionIndex: 15014,
+    nativeMapOffset: 536, frameLocal: 2, frameSize: 3920, appendDonor: true, normalize: '30148',
   },
 };
 const HELPER = 'tern_register_downloaded_font_name';
@@ -70,7 +76,7 @@ export async function buildRegistrationPatch({ original, glue, out }) {
         const set = /** @type {binaryen.LocalSetInfo} */ (binaryen.getExpressionInfo(ref));
         return set.id === binaryen.LocalSetId && directCall(set.value, release.append);
       });
-      if (!directCall(registration.node.children[appendIndex + 1], '30122')) throw Error('Native font-name normalization changed');
+      if (!directCall(registration.node.children[appendIndex + 1], release.normalize)) throw Error('Native font-name normalization changed');
       nativeRegistration = registration.node.children.slice(appendIndex + 2, appendIndex + 18);
       findOne(registration.ref, node => {
         if (node.id !== binaryen.BinaryId) return false;

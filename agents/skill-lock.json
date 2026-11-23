@@ -1251,46 +1251,6 @@
       "installedAt": "2026-10-08T13:51:04.802Z",
       "updatedAt": "2026-10-08T13:51:04.802Z"
     },
-    "hyperframes": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes/SKILL.md",
-      "skillFolderHash": "48d0934b7c5d0b20decf74f5b8574149f46b290d",
-      "installedAt": "2026-10-08T14:50:55.405Z",
-      "updatedAt": "2026-11-23T11:49:09.855Z",
-      "commit": "2ce48f150236ea635a510e6d783460122367c086"
-    },
-    "hyperframes-cli": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-cli/SKILL.md",
-      "skillFolderHash": "fbebfcd90bf3bd35ff84359b642569318c2d1b5f",
-      "installedAt": "2026-10-08T14:50:55.465Z",
-      "updatedAt": "2026-11-23T11:49:10.194Z",
-      "commit": "2ce48f150236ea635a510e6d783460122367c086"
-    },
-    "hyperframes-registry": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/hyperframes-registry/SKILL.md",
-      "skillFolderHash": "9e825d60779781ce637eb970db8cc8cb0e45899a",
-      "installedAt": "2026-10-08T14:50:55.482Z",
-      "updatedAt": "2026-11-23T11:49:10.534Z",
-      "commit": "2ce48f150236ea635a510e6d783460122367c086"
-    },
-    "media-use": {
-      "source": "heygen-com/hyperframes",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/heygen-com/hyperframes.git",
-      "skillPath": "skills/media-use/SKILL.md",
-      "skillFolderHash": "87eb6ae3c056a2f39b88787aee64499c8a3df766",
-      "installedAt": "2026-10-08T14:50:55.497Z",
-      "updatedAt": "2026-11-23T11:49:11.749Z",
-      "commit": "2ce48f150236ea635a510e6d783460122367c086"
-    },
     "poteto-mode": {
       "source": "backnotprop/pstack",
       "sourceType": "github",
