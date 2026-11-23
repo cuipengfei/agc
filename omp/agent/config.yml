@@ -131,14 +131,14 @@ tools:
   intentTracing: true
   abortOnFabricatedResult: true
   maxTimeout: 0
-  xdev: false
+  commands: false
   speculativeExecution:
     enabled: true
     maxInFlight: 2
-  xdevDocs: inline
-  xdevInlineDevices: []
+  commandDocs: inline
+  commandInline: []
   artifactMaxBytes: 16
-  xdevNotices: true
+  commandNotices: true
 terminal:
   showImages: true
   showProgress: true
@@ -415,7 +415,7 @@ ttsr:
     - kit-rea-heavy-summary
     - kit-rea-runtime-shipped
 edit:
-  mode: hashline
+  mode: magic
   fuzzyMatch: true
   fuzzyThreshold: 0.95
   streamingAbort: false
