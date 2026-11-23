@@ -1,8 +1,8 @@
 # OMP 内建工具全集、会话暴露边界与内部地址空间
 
-> Sources: omp docs (Tools index), 2026-10-11; 本机 OMP 源码 + 本会话 harness 实测, 2026-10-11; pi-natives 第三方组件清单, 2026-11-04; 本机 xd:// 协议与 ChangeJournal 源码核验, 2026-11-15; 本机 out:// 协议源码核验, 2026-11-21
-> Raw: [omp.sh/docs/tools](../../raw/omp-tools/2026-10-11-omp-sh-docs-tools.md); [源码与会话实测](../../raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md); [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md); [OMP xd:// 虚拟协议与 ChangeJournal 源码摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md); [OMP out:// 协议与 memory:// ID 获取路径](../../raw/omp-turn/2026-11-21-omp-out-protocol-and-memory-id.md)
-> Updated: 2026-11-21
+> Sources: omp docs (Tools index), 2026-10-11; 本机 OMP 源码 + 本会话 harness 实测, 2026-10-11; pi-natives 第三方组件清单, 2026-11-04; 本机 xd:// 协议与 ChangeJournal 源码核验, 2026-11-15; 本机 out:// 协议源码核验, 2026-11-21; 本机 OMP 19.1.1 工具命令变更记录, 2026-11-23
+> Raw: [omp.sh/docs/tools](../../raw/omp-tools/2026-10-11-omp-sh-docs-tools.md); [源码与会话实测](../../raw/omp-tools/2026-10-11-omp-builtin-tools-source-and-session.md); [APM、ast-grep、Beads 的 harness 接入面](../../raw/agent-tooling/2026-11-04-apm-ast-grep-beads-harness-paths.md); [OMP xd:// 虚拟协议与 ChangeJournal 源码摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md); [OMP out:// 协议与 memory:// ID 获取路径](../../raw/omp-turn/2026-11-21-omp-out-protocol-and-memory-id.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 ## Overview
 
@@ -76,6 +76,9 @@ OMP 的内建工具由两处权威定义：源码常量 `BUILTIN_TOOL_NAMES`（3
 
 ## 内部地址空间（everything-is-a-file）
 
+> **Status: Outdated** (2026-11-23)
+> 本节涉及 xd:// 工具设备和 tools.xdev 的内容属于 v19.1.0 之前；v19.1.0 改用 bash tool commands，工具文档改为 help://<tool>/<topic>。其他内部 URL 条目不因这条说明全部失效。
+
 工具不只操作磁盘文件，还把多类对象包装成地址。各 scheme 支持的动作不同（并非一律 read/write/grep）：
 
 | 地址 | 指向 | 支持动作 |
@@ -115,3 +118,5 @@ OMP 的内建工具由两处权威定义：源码常量 `BUILTIN_TOOL_NAMES`（3
 - [OMP browser prelude 与 relay 架构](browser-prelude-and-relay-architecture.md)
 - [OMP computer prelude 与桌面自动化](computer-prelude-desktop-automation.md)
 - [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](xd-protocol-and-selective-commit-journal.md)
+- [OMP 19.1.1–19.0.1 配置项增量](../omp-config/release-config-changes-19-1-1-to-19-0-1.md)
+- [Magic Edit：主模型描述、辅助模型修改](magic-edit.md)

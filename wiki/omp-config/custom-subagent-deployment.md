@@ -1,8 +1,8 @@
 # OMP 自定义 sub-agent：定义、工具名适配与验证
 
-> Sources: 用户提供的《OMP 自定义 Sub-agents 与 Role 跨机器复刻文档》，2026-11-02；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02；OMO oh-my-openagent 5.1.57 安装包，2026-11-02；本机安装包 v18.19.0 工具面解析与提示词分层源码取证，2026-11-12；OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测，2026-11-17；OMO oh-my-openagent 5.1.75 与 5.1.57 自定义子 Agent 原型对比，2026-11-17
-> Raw: [自定义 sub-agent 部署与工具名适配](../../raw/omp-config/2026-11-02-custom-subagent-deployment.md); [冒烟：自报模型 ID 核验绑定链](../../raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [builder 中间档与选择引导](../../raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md); [OMO 吸收核查与补齐](../../raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md); [子代理工具面解析与提示词分层取证](../../raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md); [OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测](../../raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md); [OMO 5.1.75 与 5.1.57 自定义子 Agent 原型对比](../../raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md); [OMP task.steps 与子 Agent Prewalk 的交互机制](../../raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md)
-> Updated: 2026-11-17
+> Sources: 用户提供的《OMP 自定义 Sub-agents 与 Role 跨机器复刻文档》，2026-11-02；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02；OMO oh-my-openagent 5.1.57 安装包，2026-11-02；本机安装包 v18.19.0 工具面解析与提示词分层源码取证，2026-11-12；OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测，2026-11-17；OMO oh-my-openagent 5.1.75 与 5.1.57 自定义子 Agent 原型对比，2026-11-17; 本机 v19.1.1 modelRoles.smol 配置读回, 2026-11-23
+> Raw: [自定义 sub-agent 部署与工具名适配](../../raw/omp-config/2026-11-02-custom-subagent-deployment.md); [冒烟：自报模型 ID 核验绑定链](../../raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [builder 中间档与选择引导](../../raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md); [OMO 吸收核查与补齐](../../raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md); [子代理工具面解析与提示词分层取证](../../raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md); [OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测](../../raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md); [OMO 5.1.75 与 5.1.57 自定义子 Agent 原型对比](../../raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md); [OMP task.steps 与子 Agent Prewalk 的交互机制](../../raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md); [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md)
+> Updated: 2026-11-23
 
 ## Overview
 
@@ -60,6 +60,10 @@ modelRoles:
 `executor.ts:4646-4650`：selector 自带的 `:level` 后缀优先于 agent frontmatter 的 `thinkingLevel`；后者只在 selector 无后缀时生效。
 
 - `@smol` → `c8787/gpt-6-luna:high`，`:high` 覆盖 `thinkingLevel: medium`，实际跑 high。
+
+> **Status: Outdated** (2026-11-23)
+> 上述为历史示例；本机当前 `@smol` 已读回为 `c8787/gpt-6.1-terra:low`，选择器后缀优先规则本身不变。
+
 - `@balanced` → `kimi-code/k3.1-pro`（无后缀），`thinkingLevel: medium` 生效。
 
 因此中间档不能用「便宜 role + 降 thinkingLevel」实现，必须新增一个不带后缀的 role。
@@ -128,6 +132,8 @@ modelRoles:
 | `frontend` | `sensenova/glm-5.2` | 1m25s | `@designer` |
 | `builder` | `kimi-code/k3.1-pro` | 18.2s | `@balanced` |
 
+librarian 行是当时的模型实测；2026-11-23 配置已切换到 terra，未重新跑 librarian 对照。
+
 五个 ID 与映射逐一对应。派遣摘要显示实际 agent 名，说明 batch 内每个 item 的 `agent` 都按名解析，没有回落到默认 `task`。若 agent 名未生效，摘要会显示通用 task worker。`builder` 当时的工具面冒烟自报 41 个工具，含 9 条声明核心工具、`wait`、`yield` 与会话注入的 MCP 与宿主工具，无 `task`；该次冒烟发生在 `tools` 仍写显式列表的版本，改为省略 `tools` 后生效内置工具数为 24。
 
 ## task agent 选择引导
@@ -190,5 +196,6 @@ modelRoles:
 
 ## See Also
 
+- [OMP @smol 角色：直接使用、后级回退与本机模型](smol-role-consumers.md)
 - [OMP per-call model 与许可机制](per-call-model-and-allowlist.md) — 按次 `model` 的许可来源、accept 与 reject 规则，以及 agent frontmatter 作为许可来源的边界
 - [OMP 配置语义手册](config-semantics.md) — subagent 并行度四道闸门（maxConcurrency、async.maxJobs、maxInFlightRequests、batch）

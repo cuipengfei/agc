@@ -1,8 +1,8 @@
 # OMP computer use 与 agent-desktop 对照
 
-> Sources: vercel-labs/agent-desktop README 与 CONCEPTS.md, 2026-11-09; can1357/oh-my-pi 的桌面实现与批准设置源码, 2026-11-09
-> Raw: [agent-desktop 摘录](../../raw/agent-tooling/2026-11-09-agent-desktop-readme-and-concepts.md); [OMP 源码摘录](../../raw/omp-tools/2026-11-09-omp-computer-approval-and-delivery-source.md)
-> Updated: 2026-11-09
+> Sources: vercel-labs/agent-desktop README 与 CONCEPTS.md, 2026-11-09; can1357/oh-my-pi 的桌面实现与批准设置源码, 2026-11-09; 本机 OMP 19.1.1 computer.takeover 设置源码与发布记录, 2026-11-23
+> Raw: [agent-desktop 摘录](../../raw/agent-tooling/2026-11-09-agent-desktop-readme-and-concepts.md); [OMP 源码摘录](../../raw/omp-tools/2026-11-09-omp-computer-approval-and-delivery-source.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 ## Overview
 
@@ -35,6 +35,9 @@ agent-desktop 用 snapshot 返回 JSON 树，引用带快照编号限定；截�
 ## 动作与投递
 
 OMP 分三档：后台、接管、拒绝。后台路线不激活目标、不动真实指针；不可用时由 `computer.backgroundFallback` 决定重跑接管还是直接拒绝。
+
+> **Status: Outdated** (2026-11-23)
+> 本段的 `computer.backgroundFallback` 属于旧版本；v19.1.1 改用 `computer.takeover`，默认 `fallback`，另有 `foreground`、`always`、`refuse`。
 
 agent-desktop 分两档：headless 只用语义操作，不移动光标、不合成键盘输入，语义路径走不通就失败；headed 显式开启，先满足动作声明的焦点与光标前置条件。物理输入只在 headed 下发生，按平台是 `SendInput`、`CGEvent`、XTest 或 Mutter RemoteDesktop。
 
@@ -95,3 +98,4 @@ agent-desktop 这边：
 
 - [OMP computer prelude 与桌面自动化](../omp-tools/computer-prelude-desktop-automation.md)
 - [agent-browser 与 chrome-devtools MCP 对比](agent-browser-vs-chrome-devtools-mcp.md)
+- [OMP 19.1.1–19.0.1 配置项增量](../omp-config/release-config-changes-19-1-1-to-19-0-1.md)

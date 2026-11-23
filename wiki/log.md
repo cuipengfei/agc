@@ -2704,3 +2704,45 @@
 - Raw: raw/tern/2026-11-23-tern-0-9-32-registration-deploy-and-pruning.md
 - Created: Tern 0.9.32 字体登记复用与正式部署
 - Updated: Tern 升级辅助工具与验收边界; Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
+
+## [2026-11-23] ingest | OMP 19.1.1–19.0.1 配置项增量
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md
+- Created: OMP 19.1.1–19.0.1 配置项增量
+- Updated: OMP 配置语义手册; OMP Prewalk：规划后切换模型; OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal; OMP 内建工具全集、会话暴露边界与内部地址空间; OMP computer prelude 与桌面自动化; OMP computer use 与 agent-desktop 对照; OMP Snapcompact 机制
+
+## [2026-11-23] ingest | Magic Edit：主模型描述、辅助模型修改
+- Disposition: New; Update
+- Raw: raw/omp-tools/2026-11-23-magic-edit-source-and-runtime.md
+- Created: Magic Edit：主模型描述、辅助模型修改
+- Updated: OMP 环境变量全量参考; OMP 配置语义手册
+
+## [2026-11-23] ingest | OMP Auth Broker 与 Gateway
+- Disposition: Update
+- Raw: raw/omp-auth/2026-11-23-pi-native-gateway-and-scoped-clients.md
+- Updated: OMP Auth Broker 与 Gateway
+
+## [2026-11-23] ingest | OpenAI Responses instructions 缓存与 GPT-6.2 绕过规则
+- Disposition: New
+- Raw: raw/omp-config/2026-11-23-openai-responses-instructions-cache.md
+- Created: OpenAI Responses instructions 缓存与 GPT-6.2 绕过规则
+
+## [2026-11-23] lint | 516 issues found, 0 auto-fixed
+
+## [2026-11-23] ingest | Magic Edit：主模型描述、辅助模型修改
+- Disposition: Update
+- Raw: raw/omp-tools/2026-11-23-magic-edit-evolution-and-twelve-turn-trace.md
+- Updated: Magic Edit：主模型描述、辅助模型修改
+
+## [2026-11-23] ingest | Harness 格式与上下文载体
+- Disposition: Update
+- Raw: raw/omp-tools/2026-11-23-harness-problem-hashline-public-evidence.md
+- Updated: Harness 格式与上下文载体; Magic Edit：主模型描述、辅助模型修改
+
+## [2026-11-23] ingest | OMP @smol 角色：直接使用、后级回退与本机模型
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md
+- Created: OMP @smol 角色：直接使用、后级回退与本机模型
+- Updated: OMP /model 模型浏览器：角色解析与 kind 过滤; OMP 自定义 sub-agent：定义、工具名适配与验证
+
+## [2026-11-23] lint | 520 issues found, 0 auto-fixed

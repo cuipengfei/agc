@@ -1,8 +1,8 @@
 # OMP 配置语义手册
 
-> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01；本机安装包 `@oh-my-pi/pi-coding-agent` v18.16.0 provider 协议层配置项源码取证, 2026-11-03；本机 OMP 会话后续核查与离线运行, 2026-11-04；已安装 `@oh-my-pi/pi-ai` 的 `compat.extraBody` 合并顺序与 `gemini-4-argon` 配置取证, 2026-11-11；本机安装包 v18.19.0 `task.steps` 与 `task.autoParallel` 源码取证及实测, 2026-11-12；本机安装包 19.0.1 的 `browser.enabled` 默认值、热加载与 prelude 重算源码及实测, 2026-11-20
-> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP 配置当前值与同步状态取证](../../raw/omp-config/2026-11-03-config-current-values-and-sync-state.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md); [Copilot Chat 生成失败传递与 validated 取值取证](../../raw/model-gateway-mismatch/2026-11-11-copilot-chat-generation-failure-and-validated-probe.md); [task.steps 有序阶段执行与 autoParallel 源码取证](../../raw/omp-config/2026-11-12-task-steps-and-autoparallel.md); [19.0.1 路由、下载顺序与开关语义](../../raw/omp-tools/2026-11-20-omp-19-browser-backend-routing-and-downloads.md)
-> Updated: 2026-11-20
+> Sources: can1357/oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi` (`61a692cf98`)；已安装包 `@oh-my-pi/pi-coding-agent` v18.1.18 与 v18.1.21（streaming edit abort/retry 部分）；本会话取证（upstream/main `d49918fab2` 直读）, 2026-09-22；本机安装包 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证, 2026-09-29；本机 oh-my-pi 源码直读（实验性 rollover 四工具门、裁剪保护区）, 2026-11-01；本机安装包 `@oh-my-pi/pi-coding-agent` v18.16.0 provider 协议层配置项源码取证, 2026-11-03；本机 OMP 会话后续核查与离线运行, 2026-11-04；已安装 `@oh-my-pi/pi-ai` 的 `compat.extraBody` 合并顺序与 `gemini-4-argon` 配置取证, 2026-11-11；本机安装包 v18.19.0 `task.steps` 与 `task.autoParallel` 源码取证及实测, 2026-11-12；本机安装包 19.0.1 的 `browser.enabled` 默认值、热加载与 prelude 重算源码及实测, 2026-11-20; 本机 OMP 19.1.1 工具命令设置与本机迁移取证, 2026-11-23
+> Raw: [配置语义源码摘录](../../raw/omp-config/2026-09-11-config-semantics.md); [Notifications、Recap、Stop、Reactions 源码取证](../../raw/omp-config/2026-09-12-notifications-recap-stop-reactions.md); [streaming edit abort/retry 语义核验](../../raw/omp-config/2026-09-14-streaming-edit-abort-retry-semantics.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [2026-09-28-omp-18-4-2-settings-forensics](../../raw/omp-config/2026-09-28-omp-18-4-2-settings-forensics.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [browser prelude 与 relay 源码摘录](../../raw/omp-tools/2026-10-26-omp-browser-prelude-and-relay-source.md); [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [subagent 并行度闸门与 autolearn 跳过条件源码取证](../../raw/omp-config/2026-10-27-omp-subagent-parallelism-gates.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 换窗与裁剪机制](../../raw/omp-config/2026-11-01-omp-experimental-rollover-and-prune-mechanics.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP 配置当前值与同步状态取证](../../raw/omp-config/2026-11-03-config-current-values-and-sync-state.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md); [Copilot Chat 生成失败传递与 validated 取值取证](../../raw/model-gateway-mismatch/2026-11-11-copilot-chat-generation-failure-and-validated-probe.md); [task.steps 有序阶段执行与 autoParallel 源码取证](../../raw/omp-config/2026-11-12-task-steps-and-autoparallel.md); [19.0.1 路由、下载顺序与开关语义](../../raw/omp-tools/2026-11-20-omp-19-browser-backend-routing-and-downloads.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 ## 这份手册讲什么
 
@@ -101,9 +101,14 @@ provider 级并发另有一条窄槽位路径（`provider-concurrency.ts`）：�
 | `secrets.enabled: true` | outbound provider context 中对匹配 secret 做 obfuscation/redaction | provider request 组装时 | 主 agent 和 Advisor 的动态上下文都走 obfuscator；但 static system prompt、tool schema 原样通过 |
 | `eval.tools.enabled: true` | eval 定义的 tools 可暴露给 task/agent/workpool children | task/agent/workpool 组装时 | 子 agent 可用当前会话临时定义的工具 |
 | `eval.autoBackground.enabled: true` | 长时间 eval cell 自动后台化 | eval cell 运行超阈值时 | 主对话不被长 eval 阻塞 |
-| `tools.xdev: false` | 不挂载 discoverable 工具到 `xd://`，全部放顶层 | 工具组装时（`syncXdevState`，session 级 gate，配置变更即时生效） | false 后可挂载的 `loadMode = "discoverable"` 工具回到顶层直接调用，`toolName` 为各自名字；消除 MCP 工具通过 `write xd://` 触发 prewalk 的 false positive（MCP 统一 tier `write`）；代价是全部工具 schema 进每次 API 请求，prefix cache 影响未实测 |
-| `tools.xdevDocs: inline` | 所有 mounted xdev device 都成为 prompt docs 内联候选 | system prompt 组装时 | 超出 per-device / total budget 的 device 进入 `Additional devices (docs on demand)` catalog，模型需按需读 `xd://...` |
+| `tools.commands: false` | 全部启用工具放顶层，不作为 OMP bash tool commands | 工具组装时 | 系统原有命令仍可在 bash 中运行；旧 prewalk false positive 记录属于 xd:// 时代 |
+| `tools.commandDocs: inline` | 命令帮助文本内联 | system prompt 组装时 | 只影响 tool commands 文档 |
+| `tools.commandInline: []` | 额外内联动态命令 | commandDocs 为 builtins 时 | 当前为空 |
+| `tools.commandNotices: true` | 显示命令挂载通知 | 命令挂载或卸载时 | 不改变工具暴露方式 |
 | `codexResets.autoRedeem: no` | Codex saved rate-limit reset 的自动花费策略 | Codex reset 相关流程 | `unset` 首次询问；`yes` 允许自动检查/花费；`no` 跳过 auto-redeem 检查与自动花费 |
+
+> **Status: Outdated** (2026-11-23)
+> v19.1.0 将 tools.xdev、tools.xdevDocs、tools.xdevInlineDevices、tools.xdevNotices 改名为上述四键，并用 bash tool commands 取代旧 xd:// 工具设备。
 
 ## 通知与空闲回顾
 
@@ -171,7 +176,7 @@ models.yml 的 `compat.officialEndpoint: true` 是一个声明性标记，OMP �
 
 - `secrets.enabled` 只保护走 provider-context 链路的对话内容，不等于本地 session/file/log 或第三方 extension 都自动被清理。
 - `edit.autoRepair` 的 smol 请求不走主 agent / Advisor 的 obfuscation 路径。
-- `tools.xdevDocs` 是 system-prompt 文档策略，与 `providers.fetch` 的网页抓取后端无关。
+- `tools.commandDocs` 是 system-prompt 文档策略，与 `providers.fetch` 的网页抓取后端无关。
 - `compaction.experimentalContextManagement` 生效需三重门：配置开关为 true、effective tool surface 同时具备 `context_notes`/`new_context`/`read`/`grep`、调用者为 owner 且绑定 live branch。改开关后需 restart 才刷新工具列表。
 
 - 通知路径仅支持终端分层路由（Herdr → cmux → OSC 99/9 → Bell + Linux D-Bus），未提供内置 HTTP/webhook 目标。
@@ -190,3 +195,5 @@ models.yml 的 `compat.officialEndpoint: true` 是一个声明性标记，OMP �
 - [OMP 实验性上下文管理与 OpenCode DCP 对比](experimental-context-vs-dcp.md) — rollover/notes 机制与 DCP outbound transform 的对比
 - [OMP 运行时控制](runtime-controls.md) — steering / follow-up / interrupt 与 parse regression tooling
 - [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](../model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) — `finish_reason: "error"` 的三入口收尾、用量顺序约束与可重试文案
+- [Magic Edit：主模型描述、辅助模型修改](../omp-tools/magic-edit.md)
+- [OMP 19.1.1–19.0.1 配置项增量](release-config-changes-19-1-1-to-19-0-1.md)

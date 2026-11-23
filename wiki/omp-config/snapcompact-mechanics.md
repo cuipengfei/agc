@@ -1,8 +1,8 @@
 # OMP Snapcompact 机制
 
-> Sources: OMP upstream source code（本地树 HEAD 73a11421fe，v18.2.11-58）；本机 copilot-api 源码；本机 OMP 配置；GitHub issue 搜索（2026-10-01）
-> Raw: [Snapcompact 机制源码取证](../../raw/omp-config/2026-10-01-snapcompact-mechanics-forensics.md); [Snapcompact 活跃度与采用度取证](../../raw/omp-config/2026-10-01-snapcompact-activeness-adoption.md)
-> Updated: 2026-10-01
+> Sources: OMP upstream source code（本地树 HEAD 73a11421fe，v18.2.11-58）；本机 copilot-api 源码；本机 OMP 配置；GitHub issue 搜索（2026-10-01）; 本机 OMP 19.1.1 snapcompactShape schema 与形状解析源码, 2026-11-23
+> Raw: [Snapcompact 机制源码取证](../../raw/omp-config/2026-10-01-snapcompact-mechanics-forensics.md); [Snapcompact 活跃度与采用度取证](../../raw/omp-config/2026-10-01-snapcompact-activeness-adoption.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 `snapcompact` 是 OMP 的一种 compaction 方法（独立包 `@oh-my-pi/snapcompact`）：不调用 LLM 写摘要，把被裁掉的旧历史序列化成文本后**渲染成高密度 PNG 位图帧**，有视觉能力的模型直接读图恢复上下文。整个 pass 本地、确定性，光栅化与 PNG 编码走原生代码（pi-natives）。
 
@@ -44,6 +44,8 @@
 
 `resolveShape` 按**模型 id** 选形状、按**实际承载请求的 API** 算计费（Claude 走 Vertex/OpenRouter 仍用 Claude 形状）。当前态：Anthropic `11on16-bw`（opus 4.7+/fable/mythos 1932px）、Google `8on22-bw`@2048、OpenAI/gpt `8on22-bw`@1568（`detail:"original"`）、kimi `8on22-bw`、glm `8on16-bw`、未知模型落到 API 家族胜者。CJK 全宽两格渲染。CHANGELOG 里的 `8x8r-bw`/`8x8r-sent`/`6x6u-sent` 是历史形态。形状由 SQuAD 召回 eval（渲染段落→提问图里内容→按标准答案算 token 重合 F1）与 tool-result 可读性 bench 实测选出；`snapcompact.shape` 配置默认 auto 可强制。中段归档换更密的 `8on16` 变体（同帧价多约 40% 字符），头尾 `HQ_EDGE_FRAMES = 3` 帧保持清晰形状，即 foveated 归档。
 
+v19.0.1 起，models.yml 模型、modelOverrides 和扩展 `registerProvider` 模型均可设置 `snapcompactShape.variant` 与 `snapcompactShape.frameSize`；`frameSize` 接受 64–2576。全局 `snapcompact.shape` 为具体形状时优先；为 `auto` 时，依次使用模型级覆盖、模型系列默认形状和 API 系列回退形状。
+
 ## 为什么不永远用图片（边界）
 
 1. **读取有损**：冠军形状 F1 也只有 .806；冷归档允许模糊，热上下文（要改的代码、精确标识符）必须无损文本。
@@ -56,6 +58,9 @@
 ## 帧预算与可调性
 
 单请求图片总数预算（归档帧 + system prompt 成像 + tool result 成像共用）：anthropic/amazon-bedrock 90、openai/openai-codex/google 系 200、openrouter 90、umans 10、未知 provider 兜底 5（取 5 因为已测最严主流是 Groq 约 5，防未知网关静默丢帧）。归档帧上限 = min(预算, 80)。**没有环境变量、没有配置键**可改（snapcompact 全部可调项只有 `snapcompact.systemPrompt`/`toolResults`/`shape`）；想改只能上游提 issue/PR，或本地 patch node_modules（升级即被覆盖）。
+
+> **Status: Outdated** (2026-11-23)
+> 该句只可继续描述图片数量预算；v19.0.1 起，形状另有模型级 `snapcompactShape`，不能再用它概括全部 Snapcompact 可调项。
 
 ## methodOrder 语义
 
@@ -90,3 +95,4 @@
 - [OMP Compaction 阈值解析机制](compaction-threshold.md) — 何时触发
 - [OMP Shake 机制](../omp-slash-commands/shake-mechanics.md) — 同链上的无 LLM 方法
 - [OMP 配置语义手册](config-semantics.md) — compaction 各开关的触发条件
+- [OMP 19.1.1–19.0.1 配置项增量](release-config-changes-19-1-1-to-19-0-1.md)

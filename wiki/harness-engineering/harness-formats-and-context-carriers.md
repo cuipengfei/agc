@@ -1,8 +1,8 @@
 # Harness 格式与上下文载体
 
-> Sources: Can Bölük (Stencil.so)，2026-02-12; Can Bölük (Stencil.so)，2026-06-10; Reverify 项目审计（本机），2026-09-19
-> Raw: [The Harness Problem](../../raw/stencil/2026-08-30-the-harness-problem.md); [Snapcompact](../../raw/stencil/2026-08-30-snapcompact.md); [Reverify 项目审计](../../raw/agent-tooling/2026-09-19-reverify-project-audit.md)
-> Updated: 2026-09-19
+> Sources: Can Bölük (Stencil.so)，2026-02-12; Can Bölük (Stencil.so)，2026-06-10; Reverify 项目审计（本机），2026-09-19; can1357/oh-my-pi Magic Edit 三次实现提交, 2026-11-20 至 2026-11-23
+> Raw: [The Harness Problem](../../raw/stencil/2026-08-30-the-harness-problem.md); [Snapcompact](../../raw/stencil/2026-08-30-snapcompact.md); [Reverify 项目审计](../../raw/agent-tooling/2026-09-19-reverify-project-audit.md); [Hashline 公开基准](../../raw/omp-tools/2026-11-23-harness-problem-hashline-public-evidence.md)
+> Updated: 2026-11-23
 
 ## 核心主题
 
@@ -25,6 +25,8 @@
 给文件每一行加短内容哈希（如 `2:f1`）。模型编辑时引用这些 tag，不需复现原文。
 
 实验：16 个模型 × 三种格式 × 180 tasks。Grok Code Fast 1 从 6.7% 涨到 68.3%。
+
+**与 Magic Edit 的适用边界**：该 benchmark 测试的是单模型直接编辑，不能证明 Magic apply loop 的表现。Magic 在 2026-11-20 使用单轮 SEARCH/REPLACE，2026-11-21 使用行号 JSON 操作，2026-11-23 改为多轮内存草稿 replace。作者未公开解释为何 Magic 内部不用 hashline，不应把单发 benchmark 外推成 Magic 的设计理由。
 
 结论：模型不是在理解任务上不稳定，而是在表达修改上不稳定。
 
@@ -92,6 +94,7 @@ Prime Agent 的 RLM（持久 Python kernel）是另一种 harness 创新：让�
 
 ## See Also
 
+- [Magic Edit：主模型描述、辅助模型修改](../omp-tools/magic-edit.md)
 - [Prime Agent 技术实质](../prime-agent/prime-agent-technical-reality.md) — Prime Agent 的 RLM kernel 实现细节
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md) — 另一套 harness 层护栏方法论
 - [OMP Prewalk：规划后切换模型](../omp-prewalk/prewalk.md) — 模型切换时机的 harness 优化

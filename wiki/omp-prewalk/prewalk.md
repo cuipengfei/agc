@@ -1,8 +1,8 @@
 # OMP Prewalk：规划后切换模型
 
-> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13；本机源码 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证，2026-09-29；oh-my-pi 官方 docs/prewalk.md，2026-10-10
-> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [Prewalk /prewalk off、/prewalk restart 与 todo gate 机制官方摘录](../../raw/omp-prewalk/2026-10-10-prewalk-off-restart-todo-gate.md)
-> Updated: 2026-10-10
+> Sources: oh-my-pi 源码与官方文档，2026-08-24；GitHub、Hacker News、X、Reddit、掘金、V2EX、B站及中文博客公开资料，2026-08-24；Can Bölük (Stencil.so)，2026-07-13；本机源码 `@oh-my-pi/pi-coding-agent` v18.4.2 xdev 挂载与 approval 取证，2026-09-29；oh-my-pi 官方 docs/prewalk.md，2026-10-10; 本机 OMP 19.1.1 工具命令变更记录, 2026-11-23
+> Raw: [OMP Prewalk 机制调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-mechanism-investigation.md); [OMP Prewalk 社区反响调研](../../raw/omp-prewalk/2026-08-24-omp-prewalk-community-reception.md); [Stencil.so Prewalk 实验](../../raw/stencil/2026-08-30-prewalk.md); [xdev 挂载对 Prewalk 的影响与 False Positive 分析](../../raw/omp-prewalk/2026-09-29-xdev-mounting-prewalk-false-positive.md); [Prewalk /prewalk off、/prewalk restart 与 todo gate 机制官方摘录](../../raw/omp-prewalk/2026-10-10-prewalk-off-restart-todo-gate.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 ## Overview
 
@@ -47,6 +47,10 @@ plan-mode 子代理会清除 agent frontmatter 的 prewalk 设置；源码没有
 - **模型质量不会按 todo 难度自动升级。** 如果剩余项目需要更强推理，用户必须手动 `/model` 切换；prewalk 没有按项目自动回升的机制。
 - **handoff 前后的 Esc 不承担模型回切。** handoff 前中断会保留当前模型和待处理状态；handoff 后中断会保留当时模型。该行为的完整交互尚未做专门运行时实验。
 - **xd:// 挂载导致 false positive 切换。** `tools.xdev: true`（默认）时，可挂载的 `loadMode = "discoverable"` 工具（即不在 `XDEV_KEEP_TOP_LEVEL` 且非 read/write 传输工具者）挂载到 `xd://` 设备下，模型通过 `write xd://<device>` 分发调用。此时 `toolName` 为 `write`，进入 `PREWALK_ACTION_TOOLS` 判定；MCP 工具的 `approval` 统一为 `"write"`（`tool-bridge.ts:656`），不论语义是否只读（如 `ctx_search`、`headroom_stats`、`deep_wiki_ask_wiki_question`），全部触发切换。`bash` 命中 allow 规则时 tier 也为 `write`（`bash.ts:583,585`），同样触发。设为 `tools.xdev: false` 可消除这些 false positive——可挂载工具回到顶层，`toolName` 为各自名字，不在 `PREWALK_ACTION_TOOLS`（仅 `edit`/`write`）中，不触发切换。代价是全部工具 schema 进入每次 API 请求；prefix cache 是否能吸收增量取决于 provider 和请求前缀条件，本机未实测。`xd://resolve`、`xd://reject`、`xd://propose`、`xd://report_issue` 不依赖 `session.xdev`，关闭 `xdev` 后仍可用（`xd-protocol.ts:84-123`）。
+
+> **Status: Outdated** (2026-11-23)
+>
+> v19.1.0 已用 bash tool commands 取代 xd:// 工具设备，并将 `tools.xdev` 改名为 `tools.commands`。本条的挂载链路和 `tools.xdev: false` 缓解属于旧版本，不能据此断言新 tool commands 仍有同一 false positive。
 
 ## 社区反响
 
@@ -103,9 +107,11 @@ OMP 创始人 Can Bölük 在 Stencil.so 发布的自测数据（作者自测，
 - 失败 edit/write 后切换对实际交付质量的影响，尚未实测。
 - 社区没有足够样本支持采用率、满意率或“广泛喜爱”的统计结论。
 - `tools.xdev: false` 后全部可挂载工具 schema 进入每次 API 请求，对计费的实际影响取决于 provider 的 prefix cache 命中条件，本机未实测。
+- 新 tool commands 对 prewalk 的影响未在本次会话单独实测。
 
 ## See Also
 
 - [OMP 工作模式与 Magic Keywords](../omp-modes/modes-and-magic-keywords.md) — Prewalk 在 OMP 工作模式中的定位及组合建议。
 - [Harness 格式与上下文载体](../harness-engineering/harness-formats-and-context-carriers.md) — 模型切换时机的 harness 优化与编辑格式对比
 - [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](../omp-tools/xd-protocol-and-selective-commit-journal.md) — `xd://` 三类入口全集、顶层保留集合与 `tools.xdev` 挂载边界
+- [OMP 19.1.1–19.0.1 配置项增量](../omp-config/release-config-changes-19-1-1-to-19-0-1.md)

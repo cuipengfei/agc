@@ -1,12 +1,16 @@
 # OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal
 
-> Sources: 本机 OMP 安装包源码（src/internal-urls/xd-protocol.ts、src/tools/xdev.ts、src/tools/resolve.ts、src/tools/read.ts、src/tools/eval.ts、src/sdk.ts、src/tools/settings.ts、src/commit/selective/journal.ts）与当前会话 artifacts 目录实测，2026-11-15; 本机 omp/agent/config.yml，2026-11-15
-> Raw: [OMP xd:// 虚拟协议三类入口与选择性提交 ChangeJournal 源码与实测摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md)
-> Updated: 2026-11-15
+> Sources: 本机 OMP 安装包源码（src/internal-urls/xd-protocol.ts、src/tools/xdev.ts、src/tools/resolve.ts、src/tools/read.ts、src/tools/eval.ts、src/sdk.ts、src/tools/settings.ts、src/commit/selective/journal.ts）与当前会话 artifacts 目录实测，2026-11-15; 本机 omp/agent/config.yml，2026-11-15; 本机 OMP 19.1.1 工具命令变更记录, 2026-11-23
+> Raw: [OMP xd:// 虚拟协议三类入口与选择性提交 ChangeJournal 源码与实测摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 ## Overview
 
 对模型与开发者而言，`xd://` 是 OMP 把“按需说明书”“专门动作开关”和“不常用工具抽屉”收进 `read`/`write` 两个基础工具里的内部协议（`src/internal-urls/xd-protocol.ts:58-140`）。与此同时，OMP 在会话末尾提示模型用 `eval` 的 `commit.draft()` 代替 `git add`/`git commit`，靠的是会话 artifacts 目录下的 `changes.jsonl` 流水账和 `blobs/` 快照备份（`src/commit/selective/journal.ts:4-21`）：在多个 agent 与用户共用同一工作树时，精确认出哪些行是当前 agent 写的，只把这批行打包提交。
+
+> **Status: Outdated** (2026-11-23)
+>
+> 本文关于 `xd://` 三类入口、工具抽屉与 `tools.xdev` 行为的记录属于 v19.1.0 之前。v19.1.0 已用 bash tool commands 取代 `xd://` 工具设备，把工具文档移到 `help://<tool>/<topic>`，并让 `resolve`/`reject`/`propose`/`report_issue` 成为命令。ChangeJournal 部分不受这条版本标注影响。
 
 ## xd:// 里面的三类入口（完整清单）
 
@@ -40,7 +44,7 @@
 | `xd://propose` | 计划 `<slug>`（对应 `local://<slug>-plan.md`） | 在 `/plan` 模式下把计划推给用户弹窗审批 | `read` 档（`src/tools/resolve.ts:44, 61-63`） |
 | `xd://report_issue` | `<tool>: <问题描述>` | 记录工具实际输出与文档不符的自动 QA 报告 | `write` 档（`xd-protocol.ts:39, 86-89`） |
 
-**第三类：收纳不常用工具的动态抽屉 `xd://` 与 `xd://<tool>`（受 `tools.xdev` 控制）**
+**第三类（v19.1.0 前）：收纳不常用工具的动态抽屉 xd:// 与 xd://<tool>（受 tools.xdev 控制）**
 
 当 `tools.xdev: true` 时，OMP 把所有 `loadMode === "discoverable"` 的工具——减去传输工具 `XDEV_TRANSPORT_TOOLS`（`read`、`write`）和固定顶层工具 `XDEV_KEEP_TOP_LEVEL`（`todo`、`yield`、`ask`、`grep`、`web_search`）——从顶层工具数组卸下，挂进 `xd://`（`src/tools/xdev.ts:59-89`）：
 
@@ -83,3 +87,4 @@
 - [OMP 内建工具全集、会话暴露边界与内部地址空间](builtin-tools-and-internal-urls.md) — 30 个内建工具与全部内部 URL scheme 总览
 - [OMP Prewalk：规划后切换模型](../omp-prewalk/prewalk.md) — `write xd://<device>` 触发 prewalk 模型切换的机制与 `tools.xdev: false` 缓解
 - [OMP 配置语义手册](../omp-config/config-semantics.md) — `tools.xdev` 与 `tools.xdevDocs` 配置项含义
+- [OMP 19.1.1–19.0.1 配置项增量](../omp-config/release-config-changes-19-1-1-to-19-0-1.md)

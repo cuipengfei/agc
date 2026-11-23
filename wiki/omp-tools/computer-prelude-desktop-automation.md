@@ -1,8 +1,8 @@
 # OMP computer prelude 与桌面自动化
 
-> Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 与 `@oh-my-pi/pi-natives`, 2026-10-26; can1357/oh-my-pi 的 `crates/pi-natives/src/desktop/`, 2026-10-26; Chromium 与 Electron 无障碍文档, 2026-10-26; Microsoft Learn《UI Automation Support for Standard Controls》与 Oracle Java 无障碍文档, 2026-10-26; 本机 WSL 桌面能力实测, 2026-10-26; OMP 打包文档 `omp://computer-use.md`, 2026-11-20
-> Raw: [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md); [computer use 文档摘录：browser 分工、控制语义与平台边界](../../raw/omp-tools/2026-11-20-omp-computer-use-doc-boundary-and-control.md)
-> Updated: 2026-11-20
+> Sources: 本机安装包 `@oh-my-pi/pi-coding-agent` 18.12.6 与 `@oh-my-pi/pi-natives`, 2026-10-26; can1357/oh-my-pi 的 `crates/pi-natives/src/desktop/`, 2026-10-26; Chromium 与 Electron 无障碍文档, 2026-10-26; Microsoft Learn《UI Automation Support for Standard Controls》与 Oracle Java 无障碍文档, 2026-10-26; 本机 WSL 桌面能力实测, 2026-10-26; OMP 打包文档 `omp://computer-use.md`, 2026-11-20; 本机 OMP 19.1.1 computer.takeover 设置源码与发布记录, 2026-11-23
+> Raw: [computer prelude 与桌面后端摘录](../../raw/omp-tools/2026-10-26-omp-computer-prelude-and-desktop-backends.md); [Electron 与 Windows 无障碍文档摘录](../../raw/omp-tools/2026-10-26-electron-uia-and-windows-accessibility-docs.md); [WSL 回环与桌面能力实测](../../raw/wsl-windows/2026-10-26-wsl-mirrored-loopback-and-desktop-capability-probe.md); [computer use 文档摘录：browser 分工、控制语义与平台边界](../../raw/omp-tools/2026-11-20-omp-computer-use-doc-boundary-and-control.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
+> Updated: 2026-11-23
 
 ## Overview
 
@@ -82,6 +82,11 @@ Linux 原生二进制里的符号可以佐证后端构成：`ATSPI`、`atspi-pro
 - `computer.run(..., { read_only: true })` 落在 read 级，只挡 `desktop` facade 的输入与剪贴板写入；脚本运行在持久 JS 会话里，仍有完整 Bun/Node 宿主访问（`process`、`require`、`fs`），不是沙箱。
 - `computer.control.acquire({ reason })` 与批准档位无关，细节见「输入锁、急停与人类介入」。
 - 默认先走后台投递，不移动指针、不激活目标窗口；后台路线不可用时由 `computer.backgroundFallback` 决定：默认 `takeover` 重跑该次调用并接管，之后把焦点交还用户的程序，`refuse` 直接报 `BackgroundUnavailable`。显式 `takeover: true` 一开始就走前台投递。
+
+> **Status: Outdated** (2026-11-23)
+>
+> v19.1.1 以 `computer.takeover` 取代 `computer.backgroundFallback`。当前取值为 `fallback`、`foreground`、`always`、`refuse`，默认 `fallback`。旧 `backgroundFallback: refuse` 迁移为 `takeover: refuse`；旧 `takeover` 对应 `fallback`。
+
 - macOS 有物理 Escape 全局中断；Wayland 下 `globalEscape` 为 false，只能靠宿主中断。
 
 ## 输入锁、急停与人类介入
@@ -163,3 +168,4 @@ const obs = await win.observe({ maxDepth: 8 });
 - [OMP 配置语义手册](../omp-config/config-semantics.md)
 - [键盘驱动指针控制横评](../keyboard-input/keyboard-driven-pointer-control.md)
 - [OMP computer use 与 agent-desktop 对照](../agent-tooling/omp-computer-use-vs-agent-desktop.md)
+- [OMP 19.1.1–19.0.1 配置项增量](../omp-config/release-config-changes-19-1-1-to-19-0-1.md)

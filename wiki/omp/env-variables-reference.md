@@ -1,7 +1,7 @@
 # OMP 环境变量全量参考
-> Sources: omp.sh docs, 2026-10-19; oh-my-pi repo docs/environment-variables.md, 2026-10-17; 本机 `pi-catalog` 18.20.0, 2026-11-14
-> Raw: [../../raw/omp/2026-10-19-omp-environment-variables-reference.md](../../raw/omp/2026-10-19-omp-environment-variables-reference.md); [../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md](../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md); [Antigravity 认证与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md)
-> Updated: 2026-11-14
+> Sources: omp.sh docs, 2026-10-19; oh-my-pi repo docs/environment-variables.md, 2026-10-17; 本机 `pi-catalog` 18.20.0, 2026-11-14; 本机 OMP 19.1.1 edit.mode 与 Magic Edit 源码及实测, 2026-11-23
+> Raw: [../../raw/omp/2026-10-19-omp-environment-variables-reference.md](../../raw/omp/2026-10-19-omp-environment-variables-reference.md); [../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md](../../raw/omp-config/2026-10-24-omp-codex-websocket-transport.md); [Antigravity 认证与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [Magic Edit 源码与本机运行取证](../../raw/omp-tools/2026-11-23-magic-edit-source-and-runtime.md)
+> Updated: 2026-11-23
 
 OMP（`@oh-my-pi/pi-coding-agent`，源码版本 oh-my-pi `5d72f5d3f4`，2026-10-19 更新）的全量环境变量参考。官方已维护两份载体：仓库内 `docs/environment-variables.md`（自称 Current Runtime Reference，691 行 11 组，从 `packages/coding-agent`、`packages/ai`、`packages/utils`、`packages/tui` 当前代码路径推导，只记录活跃行为）与官网渲染页 `https://omp.sh/docs/env`（注意路径是 `/docs/env`；`/docs/environment-variables` 实测 404）。本文在其 11 组之上补第 12 组「源码扫描补遗」，并收录三处文档-源码校正。
 
@@ -274,7 +274,7 @@ websocket 参数共 8 个（早期会话版本曾把这两张小表合计说成�
 | `LITELLM_BASE_URL` | 默认 `http://localhost:4000/v1`；配置优先 |
 | `LM_STUDIO_BASE_URL` / `OLLAMA_BASE_URL` / `OLLAMA_HOST` / `LLAMA_CPP_BASE_URL` | 本地发现端点覆盖（默认 1234 / 11434 / 8080） |
 | `OLLAMA_CONTEXT_LENGTH` | 只影响 OMP 上下文预算 |
-| `PI_EDIT_VARIANT` | 强制 edit 变体（`patch`/`replace`/`hashline`/`apply_patch`/`sloppy`）；`edit.modelVariants` 优先 |
+| `PI_EDIT_VARIANT` | 强制 edit 变体，取值包含 `patch`、`replace`、`hashline`、`apply_patch`、`sloppy`、`magic`、`none`；它是 `edit.mode` 的环境变量来源，运行中进程继承的值不会因只改配置文件而改变 |
 | `PI_EDIT_FUZZY` / `PI_EDIT_FUZZY_THRESHOLD` | 模糊匹配开关与阈值（覆盖 `edit.fuzzyMatch`/`edit.fuzzyThreshold`） |
 | `PI_INTENT_TRACING` | 工具 intent 元数据开关（回退 `tools.intentTracing`） |
 | `PI_STRICT_EDIT_MODE` | `1` 关按模型的 edit-mode 内置回退 |
@@ -497,3 +497,4 @@ websocket 参数共 8 个（早期会话版本曾把这两张小表合计说成�
 - [OMP TypeSafe env 变量边界、.env 加载链与 zen 免费 jev 接入](judgment-typesafe-env-config.md) —— `TYPESAFE_*` 三变量与 `.env` 加载链的判定级细节
 - [Plannotator agent tool 与 quick labels](../herdr-plannotator/plannotator-agent-tool-and-quick-labels.md) —— OMP `.env` 注入通道的应用侧实例
 - [OMP Antigravity 认证与社区 API](../omp-auth/google-antigravity-auth-and-api.md) —— 认证风险、版本变化及接口来源边界
+- [Magic Edit：主模型描述、辅助模型修改](../omp-tools/magic-edit.md)

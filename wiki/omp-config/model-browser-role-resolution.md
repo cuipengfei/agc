@@ -1,8 +1,8 @@
 # OMP /model 模型浏览器：角色解析与 kind 过滤
 
-> Sources: `can1357/oh-my-pi`（fork 已同步至 upstream/main `0f9139f546`）、本机 `pi-coding-agent` 安装版
-> Raw: [model-browser 角色解析与 kind 过滤取证](../../raw/omp-config/2026-09-23-model-browser-role-resolution.md)
-> Updated: 2026-09-23
+> Sources: `can1357/oh-my-pi`（fork 已同步至 upstream/main `0f9139f546`）、本机 `pi-coding-agent` 安装版; 本机 v19.1.1 @smol 消费方源码与配置, 2026-11-23
+> Raw: [model-browser 角色解析与 kind 过滤取证](../../raw/omp-config/2026-09-23-model-browser-role-resolution.md); [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md)
+> Updated: 2026-11-23
 
 `/model` 打开 `ModelHub`（`packages/tui/src/overlays/model-hub.ts`）。三栏：左侧会话/分支与后台 agent 列表；中间 provider 侧边栏（`All models N` 为当前范围模型数）；右侧角色列表。
 
@@ -45,6 +45,8 @@
 | TASK | Subtask | chat |
 | ADVISOR | Advisor | chat |
 
+SMOL/Fast 是角色别名，本机 2026-11-23 配置为 `c8787/gpt-6.1-terra:low`；直接消费方和后级回退的完整清单见 See Also 新文。
+
 ### kind 段
 
 | 标签 | 名称 | accepts |
@@ -81,3 +83,5 @@
 ## See Also
 
 - [OMP /model 内置端侧模型目录（local-inference）](../omp/bundled-local-models.md) — `local` provider 的 14 个端侧模型清单，本篇 TINY/MEMORY/SPEECH/DICTATION/JUDGE 接受规则在这些模型上的实际应用
+- [OMP @smol 角色：直接使用、后级回退与本机模型](smol-role-consumers.md)
+- [Magic Edit：主模型描述、辅助模型修改](../omp-tools/magic-edit.md)
