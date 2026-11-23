@@ -10,7 +10,7 @@
     "@ngosangns/ns-bridge": "0.1.31",
     "@oh-my-pi/pi-coding-agent": "19.1.1",
     "@openai/codex": "0.171.0",
-    "@opencode/cli": "2.4.0",
+    "@opencode/cli": "2.4.1",
     "@upstash/context7-mcp": "4.7.3",
     "acpx": "0.22.0",
     "backpass": "0.1.44",
