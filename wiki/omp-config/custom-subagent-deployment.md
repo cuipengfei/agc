@@ -1,8 +1,8 @@
 # OMP 自定义 sub-agent：定义、工具名适配与验证
 
-> Sources: 用户提供的《OMP 自定义 Sub-agents 与 Role 跨机器复刻文档》，2026-11-02；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02；OMO oh-my-openagent 5.1.57 安装包，2026-11-02；本机安装包 v18.19.0 工具面解析与提示词分层源码取证，2026-11-12；OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测，2026-11-17；OMO oh-my-openagent 5.1.75 与 5.1.57 自定义子 Agent 原型对比，2026-11-17; 本机 v19.1.1 modelRoles.smol 配置读回, 2026-11-23
-> Raw: [自定义 sub-agent 部署与工具名适配](../../raw/omp-config/2026-11-02-custom-subagent-deployment.md); [冒烟：自报模型 ID 核验绑定链](../../raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [builder 中间档与选择引导](../../raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md); [OMO 吸收核查与补齐](../../raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md); [子代理工具面解析与提示词分层取证](../../raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md); [OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测](../../raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md); [OMO 5.1.75 与 5.1.57 自定义子 Agent 原型对比](../../raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md); [OMP task.steps 与子 Agent Prewalk 的交互机制](../../raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md); [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md)
-> Updated: 2026-11-23
+> Sources: 用户提供的《OMP 自定义 Sub-agents 与 Role 跨机器复刻文档》，2026-11-02；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02；OMO oh-my-openagent 5.1.57 安装包，2026-11-02；本机安装包 v18.19.0 工具面解析与提示词分层源码取证，2026-11-12；OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测，2026-11-17；OMO oh-my-openagent 5.1.75 与 5.1.57 自定义子 Agent 原型对比，2026-11-17; 本机 v19.1.1 modelRoles.smol 配置读回, 2026-11-23; 本机安装包 @oh-my-pi/pi-coding-agent 19.1.1 effort 优先级与 ceiling 源码及仓库脱敏配置, 2026-11-24
+> Raw: [自定义 sub-agent 部署与工具名适配](../../raw/omp-config/2026-11-02-custom-subagent-deployment.md); [冒烟：自报模型 ID 核验绑定链](../../raw/omp-config/2026-11-02-subagent-smoke-test-selfreported-models.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [builder 中间档与选择引导](../../raw/omp-config/2026-11-02-builder-balanced-and-selection-guidance.md); [OMO 吸收核查与补齐](../../raw/omp-config/2026-11-02-omo-absorption-audit-and-remediation.md); [子代理工具面解析与提示词分层取证](../../raw/omp-config/2026-11-12-subagent-tool-surface-and-prompt-layering.md); [OMP 18.22.0 子 Agent 自动 Prewalk 机制与本机配置实测](../../raw/omp-config/2026-11-17-omp-subagent-autoprewalk-config.md); [OMO 5.1.75 与 5.1.57 自定义子 Agent 原型对比](../../raw/ai-coding-agents/2026-11-17-omo-5-1-75-agent-comparison.md); [OMP task.steps 与子 Agent Prewalk 的交互机制](../../raw/omp-config/2026-11-17-omp-steps-vs-subagent-prewalk.md); [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md); [19.1.1 per-call 身份与 effort ceiling 源码摘录](../../raw/omp-config/2026-11-24-per-call-model-identity-and-effort-ceiling.md)
+> Updated: 2026-11-24
 
 ## Overview
 
@@ -167,7 +167,10 @@ librarian 行是当时的模型实测；2026-11-23 配置已切换到 terra，�
 
 启动门控（`src/task/executor.ts:5074-5124`）：无条件 prewalk（`task.agentPrewalk` 或 frontmatter `prewalk`）优先，命中即跳过 judge；显式 per-call `model`（`perCallModelGrants`）或受限 plan mode（`restrictToolNames`）不做自动判断；目标不可用、目标与起始模型同模同档（`prewalkWouldBeNoop`）、judge 返回非 arming 或概率 <0.70、judge 失败，都留在起始模型。通过后才在 todo gate 打开、首个 `edit`/`write` 结果返回时切换一次（`src/session/prewalk.ts:41-75,381-423`）。
 
-本机 `modelRoles` 的 `:max`/`:high` 后缀优先于 frontmatter `thinkingLevel`（`src/task/executor.ts:5019-5023`）。要让 `.md` 里的档位生效，需在 role 值或调用处加 `:level`。
+19.1.1 的 effort 优先级为：调用方 `effort` > selector 显式 `:level` > frontmatter `thinkingLevel` > pattern 推导的档位。只有调用方未传 `effort` 且 selector 没有显式档位时，frontmatter 才会生效；要使用 `.md` 里的档位，不要在解析后的 role/model selector 中添加显式 `:level`，也不要传调用方 `effort`。
+
+> **Status: Outdated** (2026-11-24)
+> 旧说法：「要让 `.md` 里的档位生效，需在 role 值或调用处加 `:level`」。显式后缀会覆盖 frontmatter；frontmatter 档位只在未传调用方 `effort` 且没有显式 `:level` 时生效。
 
 2026-11-17 本机配置：builder/frontend/qa 的 frontmatter `model` 改为 `@task`/`@task`/`@architect`；`task.agentModelOverrides.task: "@architect"`；`task.agentPrewalkAuto` 写死 `builder: "@balanced"`、`frontend: "@designer"`、`qa: "@task"`、`task: "@task"`。实测路由：builder from `kimi-code/k3.1-pro:max` → to `kimi-code/kimi-for-coding:max`；frontend from `kimi-code/k3.1-pro:max` → to `sensenova/kimi-k3:max`；qa from `c8787/gpt-6.1-sol:high` → to `kimi-code/k3.1-pro:max`；task from `c8787/gpt-6.1-sol:high` → to `kimi-code/k3.1-pro:max`。librarian/oracle/scout/reviewer/security-reviewer/sonic 未启用。
 

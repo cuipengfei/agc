@@ -2746,3 +2746,14 @@
 - Updated: OMP /model 模型浏览器：角色解析与 kind 过滤; OMP 自定义 sub-agent：定义、工具名适配与验证
 
 ## [2026-11-23] lint | 520 issues found, 0 auto-fixed
+
+## [2026-11-24] ingest | pstack 在 OMP 的角色模型配置与档位边界
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-24-pstack-omp-model-settings.md
+- Created: pstack 在 OMP 的角色模型配置与档位边界
+- Updated: pstack 技能地图与行为
+
+## [2026-11-24] ingest | OMP per-call model 与许可机制
+- Disposition: Update
+- Raw: raw/omp-config/2026-11-24-per-call-model-identity-and-effort-ceiling.md
+- Updated: OMP per-call model 与许可机制; OMP 配置语义手册; OMP 自定义 sub-agent：定义、工具名适配与验证

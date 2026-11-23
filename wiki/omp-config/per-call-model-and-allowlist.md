@@ -1,12 +1,12 @@
 # OMP per-call model 与许可机制
 
-> Sources: can1357/oh-my-pi 官方 docs 与 CHANGELOG（v18.14.2、v18.5.0），2026-10；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02
-> Raw: [官方机制](../../raw/omp-config/2026-11-01-per-call-model-official-definition.md); [本机许可实测](../../raw/omp-config/2026-11-01-per-call-model-local-grants-and-rejections.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md)
-> Updated: 2026-11-02
+> Sources: can1357/oh-my-pi 官方 docs 与 CHANGELOG（v18.14.2、v18.5.0），2026-10；OMP @oh-my-pi/pi-coding-agent 18.15.0 源码与本机实测，2026-11-02; 本机安装包 @oh-my-pi/pi-coding-agent 19.1.1 源码与仓库脱敏配置，2026-11-24
+> Raw: [官方机制](../../raw/omp-config/2026-11-01-per-call-model-official-definition.md); [本机许可实测](../../raw/omp-config/2026-11-01-per-call-model-local-grants-and-rejections.md); [agent 定义与 @role 绑定](../../raw/omp-config/2026-11-01-agent-role-model-binding-example.md); [19.1.1 per-call 身份与 effort ceiling 源码摘录](../../raw/omp-config/2026-11-24-per-call-model-identity-and-effort-ceiling.md)
+> Updated: 2026-11-24
 
 ## Overview
 
-`task.perCallModel`（v18.14.2 起正式发布）让 main agent 在一次 task item、flat call 或 eval `agent()`/`workpool()` 调用中传 `model`。三态 `off`/`eval`/`on` 控制打开面；按次 `model` 必须是一条精确 `provider/model-id[@upstream][:level]` 选择器，且须在 operator 已配置的许可范围内；`task.perCallModelAllow` 再收窄。与 `task.agentModelOverrides` 并用时冲突失败；bundled seance 有独立模型规则。本机 runtime 18.15.0 已开启 `on`，广播给出 6 个可许可选择器。
+`task.perCallModel`（v18.14.2 起正式发布）让 main agent 在一次 task item、flat call 或 eval `agent()`/`workpool()` 调用中传 `model`。三态 `off`/`eval`/`on` 控制打开面；按次 `model` 必须是一条精确 `provider/model-id[@upstream][:level]` 选择器，且须在 operator 已配置的许可范围内；`task.perCallModelAllow` 再收窄。与 `task.agentModelOverrides` 并用时冲突失败；bundled seance 有独立模型规则。2026-11-02 本机 runtime 18.15.0 已开启 `on`，当时广播给出 6 个可许可选择器。
 
 ## 三态开关
 
@@ -23,6 +23,14 @@
 ## 按次 model 的格式
 
 合法形态恰为一条精确 selector：`provider/model-id[@upstream][:level]`（官方示例 `anthropic/claude-sonnet-4-5:high`）。`@upstream` 钉住路由仅受 aggregator 支持，属于模型身份；`:level` 被钳到该模型支持档位，且受 `task.maxEffort` 上限约束；字面 catalog id 胜过档位后缀解析。拒绝形态：role 别名（含 `@default`、legacy `pi/<role>`）、数组、逗号列表、glob、部分 id、非 chat 模型。
+
+### 广播 :max 与批准身份（19.1.1）
+
+带 provider 前缀的 role 值按配置原样广播；allowlist 广播检查 `splitThinkingSuffix(...).base` 和完整 pattern。因此广播的 `:max` 是可调用 selector 的后缀，而非 canonical 批准身份。
+
+批准时以 `exactOnly` 解析，使用 `exactIdentity` 和 `formatModelStringWithRouting` 比较解析后的 `provider/id[@upstream]` 路由身份。全 catalog 中的字面完整 id 即使不可用，也优先于后缀拆分；`@upstream` 保留在身份中。目标还必须是可用的 chat 模型，并通过 grants 以及 operator 和 live 两层 allowlist。仅凭广播不能证明派发成功、最终线上 reasoning 参数或 provider 遵循了这些参数。
+
+### 18.15.0 拒绝实测（2026-11-02）
 
 本机安装版 18.15.0 上的两次实测拒绝（逐字）：
 
@@ -55,12 +63,14 @@
 - 对已有 `task.agentModelOverrides[agent]` 的 agent 传按次 `model`：preflight 冲突失败，override 永不被静默替换。
 - bundled seance 不支持按次 `model`；它自己的 `model` 依旧覆盖来源会话保存模型。有 agent 遮住 `seance` 名字时被视为普通 agent，适用全部规则。
 - 按次 worker 永不移到未批准模型：retry fallback、context promotion、agent prewalk 关闭；请求模型不可用或缺 working 凭据时直接失败，不回退父会话模型；请求不带 server-side fallback chain。
-- `task.maxEffort` 是每次按次 spawn 的档位上限：显式 `:level` 钳到 ≤ cap 的最高支持档位；省略 `:level` 继承 agent thinking level 并被 cap 限制；cap 下无支持档位的模型让 spawn 与后续每条请求失败。
+- 19.1.1 仅在调用方传入 `effort` 或存在 `perCallModelGrants` 时建立 `spawnEffortCeiling`；两者均无的普通 spawn 不从此路径获得 ceiling。
+- 优先级为调用方 `effort` > selector 显式 `:level` > agent frontmatter 默认值 > pattern 推导的 level。显式 level 经 `clampThinkingLevelToCeiling`，调用方 effort 经 `resolveTaskEffortLevel`；`thinkingLevelCeiling: spawnEffortCeiling` 传入 child session，按次派发时重新检查模型批准与 ceiling 支持。
+- 脱敏配置设有 `perCallModel: "on"` 和 `maxEffort: high`，但广播 `:max` 既不保证实际按字面 max 执行，也不保证每次 `:max → :high` 都成功；模型的最低 effort 若超过 ceiling，spawn 即失败。
 - 每次派发先经 `resolveEffectiveSubagentPolicy()`（重载设置、重新发现 agents、策略检查），之后 `before_subagent_spawn` hook 可阻止 spawn 或替换 model patterns。
 - 决策复用到 settings 或 catalog 变化；每条 main-loop 请求仍对照当前 grants 复查。
 - `Alt+P` 的 task model pick 仅限当前会话；在 `/agents` 保存模型会替换该运行选择并为后续会话持久化。
 
-## 本机许可实测（runtime 18.15.0）
+## 本机许可历史实测（2026-11-02，runtime 18.15.0）
 
 本机已在 `/home/cpf/.omp/agent/config.yml:524` 用编辑工具单键插入 `perCallModel: "on"`（2026-11-01）；`task.perCallModelAllow` 未设置（默认 `[]`）。本机 `modelRoles` 有 13 键，chat 角色值广播 11 个 role，归并出 6 个可许可选择器：
 
@@ -106,7 +116,8 @@ role 的两个用途：agent 默认模型别名；operator 配置的 chat 角色
 > **Status: Outdated** (2026-10-07)
 > v18.5.0（feat de4c40c77b，2026-10-02）曾引入 per-call `model`：接受 `provider/model[:level]` pattern、role 别名或有序数组，且优先级高于 `task.agentModelOverrides`。随 revert 31876ff53e（2026-10-07）移除。现行设计（v18.14.2 起）只接受单一精确 selector，别名与数组在 preflight 失败，与 `agentModelOverrides` 并用时冲突失败。
 
-- v18.14.2 起官方 docs 记载现行设计；本机安装 runtime 为 18.15.0（package.json 第 3 行），实现相同。
+- v18.14.2 起官方 docs 记载现行设计；2026-11-02 的历史源码与实测使用 runtime 18.15.0（package.json 第 3 行）。
+- 2026-11-24 本机安装包为 19.1.1；本次更新只读取源码与配置，未重新进行派发实测。
 - 本机源码 checkout HEAD `1f23be9b`（包版本 18.14.1）不含该功能（src 全树无 `perCallModel` 匹配）；本地 clone 标签止于 v18.14.1。
 - 再发布提交组只在 GitHub 侧可见（c30b1bbc…、ee175af3…、4f3e1cbf…、62bdd0c…）。
 

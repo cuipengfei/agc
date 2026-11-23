@@ -1,8 +1,8 @@
 # pstack 技能地图与行为（backnotprop/pstack@25abb38）
 
-> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09；四种口径的可达性闭包（57 个目录、143 个 markdown 文件全量扫描），2026-11-10；上游与本机目录比较，2026-11-15；本机 22 本 playbook 逐本正文读取与 14 组同场景配对 frontmatter，2026-11-20
-> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md); [可达性的四种口径](../../raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md); [三仓安装与本机清点](../../raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md); [本机 22 本 playbook 逐本调用链](../../raw/ai-coding-agents/2026-11-20-pstack-playbook-call-chains.md); [pstack 与 matt 同场景配对 frontmatter](../../raw/ai-coding-agents/2026-11-20-pstack-matt-same-scenario-pairs.md)
-> Updated: 2026-11-20
+> Sources: backnotprop/pstack 仓库树枚举与 SKILL.md 逐个读取（commit 25abb38559ddbabec563646224d09eff9a250eca，2026-10-29）；已安装的 56 个 SKILL.md 与 `~/.agents/.skill-lock.json`（version 3）逐条比对一致，2026-10-29；`teach` 换源为 pstack 版并核对字节，2026-11-07；本机 57 个技能的分层与边表复算（lock 查询 + 23 本 playbook 逐本 grep），2026-11-09；四种口径的可达性闭包（57 个目录、143 个 markdown 文件全量扫描），2026-11-10；上游与本机目录比较，2026-11-15；本机 22 本 playbook 逐本正文读取与 14 组同场景配对 frontmatter，2026-11-20；本机 setup-pstack、poteto-mode、arena、swarm、interrogate 与当前 OMP 配置/会话证据，2026-11-24
+> Raw: [pstack-skill-graph-extraction](../../raw/ai-coding-agents/2026-10-29-pstack-skill-graph-extraction.md); [pstack-skill-behaviors](../../raw/ai-coding-agents/2026-10-29-pstack-skill-behaviors.md); [poteto-mode 原文摘录](../../raw/ai-coding-agents/2026-10-05-pstack-poteto-mode-skill.md); [tdd 与 teach 四份 SKILL.md 全文与换源记录](../../raw/ai-coding-agents/2026-11-07-tdd-teach-dual-repo-versions.md); [本机 57 个技能的分层与边表](../../raw/ai-coding-agents/2026-11-09-pstack-local-graph-57.md); [可达性的四种口径](../../raw/ai-coding-agents/2026-11-10-pstack-reachability-closures.md); [三仓安装与本机清点](../../raw/ai-coding-agents/pstack-matt-ub-installation-and-inventory.md); [本机 22 本 playbook 逐本调用链](../../raw/ai-coding-agents/2026-11-20-pstack-playbook-call-chains.md); [pstack 与 matt 同场景配对 frontmatter](../../raw/ai-coding-agents/2026-11-20-pstack-matt-same-scenario-pairs.md); [pstack 在 OMP 的角色模型配置与档位边界](../../raw/ai-coding-agents/2026-11-24-pstack-omp-model-settings.md)
+> Updated: 2026-11-24
 
 ## Overview
 
@@ -107,8 +107,14 @@ playbook 覆盖按调用强度分四档：16 本有执行调用指令；`orchest
 > **Status: Outdated**（2026-11-20）
 > 「匹配 23 份 playbook」改为本机 22 本口径；路由规则本身不变（poteto-mode/SKILL.md:120）。
 
+> **Status: Outdated**（2026-11-24）
+> 上述模型默认值已过时：当前 poteto 将代码、文书与判断分组默认设为 `claude-opus-5-5-xhigh-fast`；当前 OMP 的实际覆盖见 [pstack 在 OMP 的角色模型配置与档位边界](pstack-omp-model-settings.md)。历史条目的其余内容未重新核查。
+
 - **poteto-help**：前台咨询。回答 pstack 使用问题，给一段可发送的提示词与来源链接，明确不替用户开工（pstack 运行花费真实 tokens）；只有用户让它干活时才读 poteto-mode 并在其下执行（L9、L11）；推荐前先读被推荐的技能（L64）。
 - **setup-pstack**：配置员。探测可用模型 slug，问四档预算（unlimited/large/medium/small），按模型家族与别名（inherit-parent/auto）映射角色写规则文件（Cursor 写 `~/.cursor/rules/pstack-models.mdc`、Claude Code 写 `~/.claude/rules/pstack-models.md`、其他写 `~/.agents/pstack-models.md`，L10-14）；重跑幂等（L45）；可选触发 create-verification-skill（L80）与 create-formal-verification-skill（L84）。
+
+> **Status: Outdated**（2026-11-24）
+> 上述四档预算已过时：当前技能提供 large/medium/small，旧 `unlimited` 迁移为 `large`。OMP 配置边界与快照见 [pstack 在 OMP 的角色模型配置与档位边界](pstack-omp-model-settings.md)。
 
 ### 理解四
 
@@ -263,6 +269,7 @@ flowchart TD
 
 ## See Also
 
+- [pstack 在 OMP 的角色模型配置与档位边界](pstack-omp-model-settings.md)
 - [pstack 移植版生态全景](pstack-ports-landscape.md)
 - [skill 系统的两种组织轴：pstack 与 mattpocock/skills 对照](skill-system-organization-axes.md)
 - [mattpocock/skills：两轴分类的工程 skill 集](mattpocock-skills-system.md)
