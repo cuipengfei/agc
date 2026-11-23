@@ -2698,3 +2698,9 @@
 - Raw: raw/terminal-multiplexers/2026-11-22-yazi-configuration-official-reference.md; raw/terminal-multiplexers/2026-11-22-yazi-user-config-and-agc-sync.md
 - Created: Yazi 配置参考与本机同步
 - Updated: Yazi 远程文件选择器
+
+## [2026-11-23] ingest | Tern 0.9.32 字体登记复用与正式部署
+- Disposition: New; Update
+- Raw: raw/tern/2026-11-23-tern-0-9-32-registration-deploy-and-pruning.md
+- Created: Tern 0.9.32 字体登记复用与正式部署
+- Updated: Tern 升级辅助工具与验收边界; Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移

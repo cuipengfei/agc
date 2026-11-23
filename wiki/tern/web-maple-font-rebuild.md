@@ -1,8 +1,8 @@
 # Tern 网页客户端：Maple 中文与 Nerd Font 修改及版本迁移
 
-> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29；Tern 0.9.8 与 0.9.9 仅字体部署与 CI 作用域，2026-11-02；Tern 0.9.10 仅字体部署，2026-11-03；Tern 0.9.12 仅字体部署与 Geist 字体观察，2026-11-05；Tern 0.9.18 仅字体部署，2026-11-12；Tern 0.9.21 仅字体部署，2026-11-14；Tern 0.9.23 无补丁部署与网页字体设置，2026-11-16；Tern 0.9.26 无补丁部署与服务端 `/fonts` 投递确认，2026-11-18；WASM 光栅化与 `/fonts` 通道，2026-11-18；Tern 0.9.30 原生名称登记与正式部署，2026-11-22
-> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [0.9.23 无补丁部署](../../raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md); [0.9.26 服务端字体投递](../../raw/tern/2026-11-18-tern-0.9.26-fonts-server-delivery.md); [WASM 渲染链路](../../raw/tern/2026-11-18-tern-web-font-wasm-rendering-path.md); [token 轮换排障](../../raw/tern/2026-11-18-web-daemon-token-rotation.md); [0.9.30 原生登记与部署](../../raw/tern/2026-11-22-tern-0-9-30-native-registration-deploy.md)
-> Updated: 2026-11-22
+> Sources: Tern 0.8.3 网页客户端实测与用户验收，2026-10-13；会话材料复核与源码补全，2026-10-14；Tern 0.9.3 本地升级与补丁，2026-10-18；Tern 0.9.5 升级与补丁流程复盘，2026-10-20；Tern 确定性构建与迁移验收，2026-10-21；Tern 0.9.7 仅字体部署实测，2026-10-29；Tern 0.9.8 与 0.9.9 仅字体部署与 CI 作用域，2026-11-02；Tern 0.9.10 仅字体部署，2026-11-03；Tern 0.9.12 仅字体部署与 Geist 字体观察，2026-11-05；Tern 0.9.18 仅字体部署，2026-11-12；Tern 0.9.21 仅字体部署，2026-11-14；Tern 0.9.23 无补丁部署与网页字体设置，2026-11-16；Tern 0.9.26 无补丁部署与服务端 `/fonts` 投递确认，2026-11-18；WASM 光栅化与 `/fonts` 通道，2026-11-18；Tern 0.9.30 原生名称登记与正式部署，2026-11-22；Tern 0.9.32 登记复用与正式部署，2026-11-23
+> Raw: [字体修改证据](../../raw/omp-tips/2026-10-13-tern-web-maple-font-patch-evidence.md); [完整源码与重建记录](../../raw/omp-tips/2026-10-13-tern-web-maple-client-source.md); [运行时与下载](../../raw/omp-tips/2026-10-13-tern-web-runtime-and-download-access.md); [0.9.3 升级、补丁与部署](../../raw/tern/2026-10-18-tern-0.9.3-upgrade-and-patches.md); [0.9.5 升级证据](../../raw/tern/2026-10-20-tern-0.9.5-upgrade-and-patches.md); [流程复盘与要求](../../raw/tern/2026-10-20-tern-patching-workflow-retro.md); [确定性构建与迁移验收](../../raw/tern/2026-10-21-deterministic-build-and-portability.md); [0.9.7 仅字体部署](../../raw/tern/2026-10-29-tern-0.9.7-font-only-deploy.md); [0.9.8 与 0.9.9 部署与 CI 作用域](../../raw/tern/2026-11-02-tern-0.9.8-0.9.9-font-only-and-ci-scope.md); [0.9.10 部署](../../raw/tern/2026-11-03-tern-0.9.10-font-only-deploy.md); [0.9.12 部署](../../raw/tern/2026-11-05-tern-0.9.12-font-only-deploy.md); [0.9.18 部署](../../raw/tern/2026-11-12-tern-0.9.18-font-only-deploy.md); [0.9.21 部署](../../raw/tern/2026-11-14-tern-0.9.21-font-only-deploy.md); [0.9.23 无补丁部署](../../raw/tern/2026-11-16-tern-0.9.23-raw-deploy.md); [网页字体渲染与设置](../../raw/tern/2026-11-16-web-font-rendering-and-settings.md); [0.9.26 服务端字体投递](../../raw/tern/2026-11-18-tern-0.9.26-fonts-server-delivery.md); [WASM 渲染链路](../../raw/tern/2026-11-18-tern-web-font-wasm-rendering-path.md); [token 轮换排障](../../raw/tern/2026-11-18-web-daemon-token-rotation.md); [0.9.30 原生登记与部署](../../raw/tern/2026-11-22-tern-0-9-30-native-registration-deploy.md); [0.9.32 登记复用、正式部署与版本清理](../../raw/tern/2026-11-23-tern-0-9-32-registration-deploy-and-pruning.md)
+> Updated: 2026-11-23
 
 ## 适用范围与完成标准
 
@@ -202,6 +202,14 @@ WASM SHA-256 为 `c1f7c57518ea1afb1ef020e9a4fab78a7d1b6ea3aed4527a4db7783a6815ce
 构建器复用 `7844` 的原生登记序列，保留当前版本的 parser、owning String entry 和 SmallVec insertion。候选完整检查 `experiments/run.x8I49l` 为 `served/working`，冷暖两次均选择 Maple，内置与不存在字体对照正确。正式服务随后升级到 0.9.30，8378 端口与 token 文件保持不变。
 
 页面目视证据位于 `verification-evidence/formal-font.QKoQqO/final-visual.json.png`，实际显示中文、日本語、Nerd Font 图标和等宽字符。字形观感与字符宽度由用户目视判断。
+
+## 0.9.32：登记录列原样复用，函数编号换新
+
+0.9.32 原版检查 `experiments/run.KGVl6l` 同样是 `routed/registration_missing`：目标 Maple 送达 `20561696` 字节，名称查询仍为空。候选 `experiments/run.MSZoYf` 为 `served/working`，正式入口打开含中文的文件块后 `run.lT36NU` 也是 `served/working`。
+
+登记过程与 0.9.30 形状相同，编号换新：selector `14507`、downloaded `5345`、append `32497`、normalize `30148`、string `1320`、parse `16066`、family `22474`、builtin `7853`；`FontSystem + 536`、frame local `2`、frame size `3920` 不变。候选 WASM 为 `20ea825faf71d681657690142411ea3bb8b360920b6b359bf0589626308e0f24`，原版为 `046f39a1a2a611353545b22a581524a63a424f6b9e542e7a55ab0313a66b5663`。
+
+0.9.32 的下载调用方不能靠形状相似度识别：`function-analysis` 给 `5056` 的最佳候选相似度只有 `0.2579028773759763`，最终按 append 的调用方集合定为 `5345`。字形观感与字符宽度仍由用户目视判断。
 
 ## See Also
 
