@@ -82,7 +82,7 @@ modelRoles:
   plan: c8787/gpt-6.1-sol:high
   slow: c8787/gpt-6.1-sol:high
   commit: c8787/gpt-6-luna:low
-  smol: c8787/gpt-6-luna:high
+  smol: c8787/gpt-6-luna:low
   task: kimi-code/k3.1-pro:max
   vision: opencode-go/deepseek-v4.1-flash:max
   tiny: sensenova/glm-5.3:max
