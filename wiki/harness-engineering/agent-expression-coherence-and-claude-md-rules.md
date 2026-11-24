@@ -1,8 +1,8 @@
 # Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
 
-> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25; 三轮 Plannotator 批注与重排定稿, 2026-11-14; OpenAI GPT-6 Astra 提示词指南与 Rethinking skills 博客, 2026-09; 本机 `manifest.json`、`./pull.sh` 与 unittest 实测, 2026-11-21
-> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md); [CLAUDE.md 三轮 Plannotator 批注的重排与定点定稿](../../raw/harness-engineering/2026-11-14-claude-md-reorg-and-annotation-refinements.md); [CLAUDE.md 定稿全文快照（2026-11-14）](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md); [CLAUDE.md 的 GPT-6 反模式硬化与仓库内复刻路径](../../raw/harness-engineering/2026-11-21-claude-md-gpt6-hardening-and-repo-replication.md)
-> Updated: 2026-11-21
+> Sources: Local `~/.claude/CLAUDE.md` & `~/.agents/.skill-lock.json`, 2026-10-24; Microsoft Research & Salesforce Research (`arXiv:2505.06120v1`), 2025; Meta AI S2A (`arXiv:2311.11829`) & CoVe; skills.sh ecosystem pages, 2026-10-24; Wikipedia `WP:AIDISCLAIMER`、Graphite Research AI Tells、The Strategic Linguist、LessWrong `n=900` 实验, 2026-10-25; 本机全局 Skill 来源记录与用户批注, 2026-10-25; 用户批准的验证条款, 2026-10-25; 三轮 Plannotator 批注与重排定稿, 2026-11-14; OpenAI GPT-6 Astra 提示词指南与 Rethinking skills 博客, 2026-09; 本机 `manifest.json`、`./pull.sh` 与 unittest 实测, 2026-11-21; Herdr 标签栏左对齐提问事故, 2026-11-24
+> Raw: [Agent 多轮表达一致性规则、外部研究与 CLAUDE.md 最终定稿摘录](../../raw/harness-engineering/2026-10-24-claude-md-expression-rules-and-multi-turn-study.md); [「不能证明」免责句式的禁令与 Best Guess 替代规则](../../raw/harness-engineering/2026-10-25-cannot-prove-ban-and-best-guess-rules.md); [不确定性写法条款：缺少什么与下一步确认](../../raw/harness-engineering/2026-10-25-uncertainty-wording-clause.md); [表达规则复刻的 Skill 依赖与来源记录](../../raw/harness-engineering/2026-10-25-expression-skill-dependency-sources.md); [按任务类型与授权范围选择验证方式](../../raw/harness-engineering/2026-10-25-task-scoped-verification-rule.md); [防御式免责表达的治理与规则强化](../../raw/harness-engineering/2026-11-05-anti-cya-disclaimer-governance.md); [主代理与 Advisor 共用的反免责表达标准](../../raw/harness-engineering/2026-11-05-shared-anti-cya-checklist.md); [CLAUDE.md 三轮 Plannotator 批注的重排与定点定稿](../../raw/harness-engineering/2026-11-14-claude-md-reorg-and-annotation-refinements.md); [CLAUDE.md 定稿全文快照（2026-11-14）](../../raw/harness-engineering/2026-11-14-claude-md-final-snapshot.md); [CLAUDE.md 的 GPT-6 反模式硬化与仓库内复刻路径](../../raw/harness-engineering/2026-11-21-claude-md-gpt6-hardening-and-repo-replication.md); [Herdr 标签栏左对齐提问被扩大成源码修改](../../raw/harness-engineering/2026-11-24-herdr-tab-bar-question-overexecution.md)
+> Updated: 2026-11-24
 
 ## Overview
 
@@ -265,6 +265,16 @@ skill 里自带的只交改写稿、逐段确认、写文件等流程，只有�
 ```
 
 两份文件的禁用短语保持同一组 10 项，逐项核对时直接比对这一行即可。
+
+## 事故记录：Herdr 配置问题被扩大成源码修改
+
+用户询问 Herdr 标签栏状态项能否靠左显示。已查证的事实是 Herdr 0.9.5 只有 `ui.tab_bar_right`，状态条目固定在右侧，上游也没有 `tab_bar_left` 或对齐配置。这个问题只需要回答“配置做不到”。
+
+实际执行却越过了这个边界：主代理把能力询问扩大成修改 Herdr 本体，克隆 v0.9.5 源码、创建本地分支、修改 `src/client/shell/tabs.rs`、下载 Zig 并尝试运行 `cargo test`。构建因缺少 Zig 失败；`cargo fmt` 触发 rustup 安装 Rust 1.96.1；还创建并认领了 Beads issue `agc-fw8`。用户质问后，下载被取消，进一步修改停止。
+
+这次事故没有 fork 或 push GitHub 仓库，没有替换已安装的 Herdr 二进制，也没有修改 Herdr 配置；但本地源码副本、分支和未提交修改留了下来，Rust 工具链和 Beads issue 也产生了持久状态。
+
+可复用门槛是：在 clone 第三方仓库、安装编译依赖、写源码、构建或替换正在使用的程序之前，先检查当前用户消息是否明确要求执行。`Can we change ...?` 这类疑问句只回答能力和限制；发现官方配置不支持时，直接交付这个答案并停止。若有一条需要改源码或安装依赖的路线，先说明这是另一条路线并等待明确授权。
 
 ## See Also
 

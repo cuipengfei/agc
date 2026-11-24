@@ -1,8 +1,8 @@
 # OMP @smol 角色：直接使用、后级回退与本机模型
 
 > Sources: 本机 `@oh-my-pi/pi-coding-agent` 19.1.1 源码与配置, 2026-11-23
-> Raw: [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md)
-> Updated: 2026-11-23
+> Raw: [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md); [OMP 技能简介压缩、缓存与 Optimizing skills 进度显示取证](../../raw/omp-config/2026-11-24-skill-description-optimization.md)
+> Updated: 2026-11-24
 
 ## Overview
 
@@ -20,7 +20,7 @@
 | bundled `sonic` / Vibe 轻量执行 | 机械修改与数据收集 |
 | 本机 `librarian` | 外部文档与开源仓库考证；frontmatter 为 `model: "@smol"` |
 | `omp cleanse` | 默认子代理模型 |
-| 后台 skill 描述压缩 | 生成或压缩技能描述 |
+| 后台 skill 描述压缩 | 技能简介路由提示压缩；smol 链优先，其后尝试 tiny |
 | Sharpshooter | 未配置专用提取模型时使用 |
 | Prewalk / auto-prewalk | 默认交接目标 |
 | plan-yolo | 未指定执行模型时的默认目标 |
@@ -49,6 +49,7 @@ Magic Edit 在未设置 `edit.magic.model` 时通过 `resolveRoleSelection(["smo
 
 ## See Also
 
+- [OMP 技能简介压缩：模型、缓存与 Optimizing skills](skill-description-optimization.md)
 - [Magic Edit：主模型描述、辅助模型修改](../omp-tools/magic-edit.md)
 - [OMP /model 模型浏览器：角色解析与 kind 过滤](model-browser-role-resolution.md)
 - [OMP 自定义 sub-agent：定义、工具名适配与验证](custom-subagent-deployment.md)

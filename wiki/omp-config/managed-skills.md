@@ -1,18 +1,22 @@
 # OMP Managed Skills 生命周期
 
-> Sources: OMP upstream source code; 本机目录与锁定文件实测, 2026-10-08; capture 管线源码取证, 2026-10-28
-> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md)
-> Updated: 2026-10-28
+> Sources: OMP upstream source code; 本机目录与锁定文件实测; capture 管线源码取证, 2026-10-28
+> Raw: [OMP Managed Skills 生命周期源码取证](../../raw/omp-config/2026-09-09-managed-skills-lifecycle.md); [创建门槛与 Auto-Learn 注入取证](../../raw/omp-config/2026-09-30-managed-skills-createif-and-autolearn-prompt.md); [采集日期勘误](../../raw/omp-config/2026-10-01-managed-skills-createif-autolearn-date-correction.md); [Auto-Learn capture 管线源码取证](../../raw/omp-config/2026-10-28-autolearn-capture-pipeline-forensics.md); [OMP 技能简介压缩、缓存与 Optimizing skills 进度显示取证](../../raw/omp-config/2026-11-24-skill-description-optimization.md)
+> Updated: 2026-11-24
 
 ## 结论
 
 Managed skills **没有自动清理**。
 
+## 与技能简介压缩的区别
+
+`Optimizing skills` 将压缩后的技能简介写入 `skill-descriptions.db`；managed skill 文件由 `manage_skill`、`learn(skill=...)` 或 Auto-Learn capture 创建或更新。
+
 ## 路径
 
 `~/.omp/agent/managed-skills`
 
-本机实测（2026-10-08）：`~/.omp/agent/` 下不存在 `skills/` 子目录；用户级 skills 实际位于 `~/.agents/skills/`，由 `~/.agents/.skill-lock.json` 管理；managed-skills 为独立目录，不受该锁文件管理。当前 managed-skills 共 12 个，用户级 skills 磁盘 159 个（152 tracked + 7 untracked）。
+本机实测：`~/.omp/agent/` 下不存在 `skills/` 子目录；用户级 skills 实际位于 `~/.agents/skills/`，由 `~/.agents/.skill-lock.json` 管理；managed-skills 为独立目录，不受该锁文件管理。当前 managed-skills 共 12 个，用户级 skills 磁盘 159 个（152 tracked + 7 untracked）。
 
 ## 操作
 
@@ -51,3 +55,7 @@ Managed skills **没有自动清理**。
 - **自动捕获回合**：`autolearn.autoContinue` 开启时在 agent 停止后跑一轮私有捕获（额外消耗 token）。该回合由分离的 capture agent 执行，只带 `manage_skill` 与 `learn` 两个工具，不写会话 transcript；产物是 managed skill 或 `coding-agent-learn` 记忆行，也可能无产物。详见 [Auto-Learn capture 管线与可观测产物](autolearn-capture-pipeline.md)。
 
 引用 OMP 行为规范时须区分两类出处：bundle 内字符串（系统提示注入或工具 description）与磁盘规则文件（如 `~/.omp/agent/rules/*.md`）。
+
+## See Also
+
+- [技能简介压缩与缓存](skill-description-optimization.md)

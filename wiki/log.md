@@ -2776,3 +2776,15 @@
 
 ## [2026-11-24] lint | 轻量手机远程工具精修后 scoped 复核 6 suspects, 0 auto-fixed
 - 精修内容：形态分类改为四类（yepanywhere、CodeRelay 归入浏览器定制 GUI）；Herdr 接入两项事实分开陈述——官方确认 App 经 SSH 连接 core、Tailscale 非必需，`hc connect` 是协议文档给出的 stdio 远程接入方式而 App 内部是否调用未确认；Raw 字段补链 herdr-app-core-mobile-boundaries.md 作为该句证据。scoped 复核三篇触及文章：lightweight-mobile-remote-tools 与 herdr-core-install-config-wsl2-tailscale 均不在 suspect 列表；ade-selection-method 剩余 6 条均为 2026-10-18 与 2026-11-22 轮次存量。
+
+## [2026-11-24] ingest | Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+- Disposition: Update
+- Raw: raw/harness-engineering/2026-11-24-herdr-tab-bar-question-overexecution.md
+- Updated: Agent 多轮表达一致性规则与 CLAUDE.md 跨机器配置手册
+
+## [2026-11-24] ingest | OMP 技能简介压缩：模型、缓存与 Optimizing skills
+- Disposition: New; Update
+- Raw: raw/omp-config/2026-11-24-skill-description-optimization.md
+- Created: wiki/omp-config/skill-description-optimization.md
+- Updated: OMP @smol 角色：直接使用、后级回退与本机模型; OMP Managed Skills 生命周期
+- 要点：确认启动文案为 Optimizing skills，v19.0.0 新增可见进度行；压缩优先 smol 链再 tiny，本机 smol 为 c8787/gpt-6.1-terra:low；输入为独立 user message，输出缓存进 skill-descriptions.db；当前会话保留预览快照，后续会话复用缓存。
