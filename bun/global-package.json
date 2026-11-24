@@ -39,7 +39,7 @@
     "tweakcc": "4.4.0",
     "typescript-language-server": "6.1.0",
     "vscode-langservers-extracted": "^4.10.0",
-    "wrangler": "4.167.0",
+    "wrangler": "4.168.0",
     "yaml-language-server": "2.0.0"
   },
   "trustedDependencies": [
