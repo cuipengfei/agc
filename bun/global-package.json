@@ -1,7 +1,8 @@
 {
   "dependencies": {
+    "@alibaba-group/open-code-review": "^1.14.3",
     "@anthropic-ai/claude-code": "2.1.331",
-    "@biomejs/biome": "2.6.8",
+    "@biomejs/biome": "2.6.9",
     "@colbymchenry/codegraph": "1.6.4",
     "@deepseek-ai/dsh": "0.2.2-rc.5",
     "@earendil-works/pi-coding-agent": "1.6.0",
@@ -11,12 +12,12 @@
     "@oh-my-pi/pi-coding-agent": "19.1.1",
     "@openai/codex": "0.172.0",
     "@opencode/cli": "2.4.1",
-    "@upstash/context7-mcp": "4.7.3",
+    "@upstash/context7-mcp": "4.8.0",
     "acpx": "0.22.0",
     "backpass": "0.1.44",
     "bash-language-server": "^5.8.1",
     "ccstatusline": "2.2.34",
-    "chrome-devtools-mcp": "1.13.0",
+    "chrome-devtools-mcp": "1.14.0",
     "context-mode": "2.2.2",
     "cowsay": "1.6.0",
     "dockerfile-language-server-nodejs": "^0.15.0",
@@ -43,6 +44,7 @@
     "yaml-language-server": "2.0.0"
   },
   "trustedDependencies": [
+    "@alibaba-group/open-code-review",
     "@anthropic-ai/claude-code",
     "@ast-grep/cli",
     "@beads/bd",

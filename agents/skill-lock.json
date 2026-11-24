@@ -1516,11 +1516,31 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
-      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "commit": "d65391149dbb5fe76478e76fa8d5122b2aa5a70e",
       "skillPath": "skills/in-progress/chief-of-staff/SKILL.md",
-      "skillFolderHash": "58e0a4122260ba45c150d8201dad2d6de4153d18",
+      "skillFolderHash": "8fc1744b18b8c241fc6ec6f633d9c701e9be58cf",
       "installedAt": "2026-11-23T16:37:12.733Z",
-      "updatedAt": "2026-11-23T16:37:12.733Z"
+      "updatedAt": "2026-11-24T16:01:48.480Z"
+    },
+    "open-code-review": {
+      "source": "alibaba/open-code-review",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/alibaba/open-code-review.git",
+      "commit": "959f8f5bb6fca717d4af05996103ad960a77cc99",
+      "skillPath": "skills/open-code-review/SKILL.md",
+      "skillFolderHash": "e62149fb469623168ef7a65c1cc97376a07b8e0b",
+      "installedAt": "2026-11-24T15:45:26.830Z",
+      "updatedAt": "2026-11-24T15:45:26.830Z"
+    },
+    "open-code-review-delegate": {
+      "source": "alibaba/open-code-review",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/alibaba/open-code-review.git",
+      "commit": "959f8f5bb6fca717d4af05996103ad960a77cc99",
+      "skillPath": "skills/open-code-review-delegate/SKILL.md",
+      "skillFolderHash": "6c7a9c99a6b37ee032010c5190822662858de0aa",
+      "installedAt": "2026-11-24T15:45:26.832Z",
+      "updatedAt": "2026-11-24T15:45:26.832Z"
     }
   },
   "dismissed": {
