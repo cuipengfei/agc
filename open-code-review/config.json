@@ -1,0 +1,19 @@
+{
+    "provider": "cop",
+    "model": "gpt-6.1-sol",
+    "custom_providers": {
+        "cop": {
+            "api_key": "<REDACTED>",
+            "url": "http://localhost:8787",
+            "protocol": "openai-responses",
+            "model": "gpt-6.1-sol",
+            "models": [
+                "gpt-6.1-sol"
+            ],
+            "extra_headers": {
+                "x-session-id": "{ocr_session_key}"
+            }
+        }
+    },
+    "llm": {}
+}

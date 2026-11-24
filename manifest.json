@@ -306,6 +306,12 @@
       "protected": false
     },
     {
+      "name": "open-code-review-config",
+      "source": "~/.opencodereview/config.json",
+      "repo": "open-code-review/config.json",
+      "protected": true
+    },
+    {
       "name": "headroom-settings",
       "source": "~/.headroom/settings.json",
       "repo": "headroom/settings.json",

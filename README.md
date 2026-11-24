@@ -4,6 +4,7 @@
 
 - Codex
 - OpenCode
+- Open Code Review
 - OMO
 - OMP
 - Herdr
@@ -16,6 +17,7 @@
 | --- | --- |
 | `codex/` | `~/.codex/` |
 | `opencode/` | `~/.config/opencode/` |
+| `open-code-review/config.json`（受保护，同步时脱敏） | `~/.opencodereview/config.json` |
 | `omo/` | `~/.omo/` |
 | `omp/` | `~/.omp/` |
 | `herdr/`（清单列出的文件） | `~/.config/herdr/` |
