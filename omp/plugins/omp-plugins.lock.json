@@ -1,7 +1,7 @@
 {
   "plugins": {
     "@plannotator/pi-extension": {
-      "version": "0.29.2",
+      "version": "0.29.3",
       "enabledFeatures": null,
       "enabled": true
     },
@@ -25,7 +25,7 @@
       "enabled": true
     },
     "omp-kit-companion": {
-      "version": "0.2.147",
+      "version": "0.2.150",
       "enabledFeatures": null,
       "enabled": true
     }
