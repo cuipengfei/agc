@@ -1,0 +1,16 @@
+{
+  "anthropic_base_url": "http://localhost:4140",
+  "anthropic_buffered_request_timeout_seconds": 600,
+  "anthropic_pre_upstream_acquire_timeout_seconds": 15.0,
+  "anthropic_pre_upstream_memory_context_timeout_seconds": 2.0,
+  "connect_timeout_seconds": 10,
+  "min_evidence": 5,
+  "openai_base_url": "http://localhost:4140",
+  "protect_tool_results": "codegraph_explore",
+  "request_timeout": 330,
+  "retry_max_attempts": 1,
+  "rpm": 60,
+  "subscription_poll_interval": 300,
+  "upstream_tcp_keepalive_seconds": 30,
+  "write_timeout_seconds": 150
+}

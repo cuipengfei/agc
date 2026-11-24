@@ -306,6 +306,12 @@
       "protected": false
     },
     {
+      "name": "headroom-settings",
+      "source": "~/.headroom/settings.json",
+      "repo": "headroom/settings.json",
+      "protected": false
+    },
+    {
       "name": "omp-agent-agents",
       "source": "~/.omp/agent/agents",
       "repo": "omp/agent/agents",

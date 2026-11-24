@@ -56,7 +56,7 @@ pull.sh / sync.py pull
 | `omp/agent/`    | OMP 配置、模型、MCP、WATCHDOG、extensions、hooks |
 | `omp/plugins/`  | OMP 插件包与锁定文件                             |
 | `prime/`        | Prime Agent 配置（settings、models）             |
-| `herdr/`、`tuios/`、`dsh/`、`plannotator/`、`starship/`、`yazi/` | 其他工具配置副本 |
+| `herdr/`、`tuios/`、`dsh/`、`plannotator/`、`starship/`、`yazi/`、`headroom/` | 其他工具配置副本 |
 | `agents/`、`bun/`、`uv/` | 技能锁、`vsc` 命令副本、Bun 全局包清单与指定的 `uv-receipt.toml` 文件 |
 | `tools/tern-maintain/` | 独立 Tern 维护工具与验收入口 |
 | `tools/wiki-check/` | Wiki 字面证据检查器 |
@@ -177,6 +177,7 @@ uv run --with-requirements requirements.txt python -m unittest discover -s pytho
 | `uv/tools/` | `~/.local/share/uv/tools/`（仅 `*/uv-receipt.toml`） |
 | `starship/starship.toml` | `~/.config/starship.toml` |
 | `yazi/yazi.toml` | `~/.config/yazi/yazi.toml` |
+| `headroom/settings.json` | `~/.headroom/settings.json` |
 
 ## 同步边界
 
