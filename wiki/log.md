@@ -2788,3 +2788,9 @@
 - Created: wiki/omp-config/skill-description-optimization.md
 - Updated: OMP @smol 角色：直接使用、后级回退与本机模型; OMP Managed Skills 生命周期
 - 要点：确认启动文案为 Optimizing skills，v19.0.0 新增可见进度行；压缩优先 smol 链再 tiny，本机 smol 为 c8787/gpt-6.1-terra:low；输入为独立 user message，输出缓存进 skill-descriptions.db；当前会话保留预览快照，后续会话复用缓存。
+
+## [2026-11-24] ingest | T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界（Web 功能与安装配置）
+- Disposition: Update
+- Raw: raw/agent-development-environments/2026-11-24-t3-paseo-orca-web-mode-survey.md
+- Updated: T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界
+- 要点：补三仓 Web 功能清单（T3 mobile 专属项剔除、Orca Download Folder 为唯一明文 Web 限制）、WSL 安装/升级/配置（T3 install.sh 与 T3CODE_LAN 机制、Paseo npm 与 web-ui 四键、Orca AppImage 直链与 orca-ide serve）；gh api 11-24 星数 76,689/24,920/135,516 与 license（Paseo NOASSERTION）写入本节；ade-candidate-inventory 的 10-18 历史快照表不回改。
