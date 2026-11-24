@@ -2794,3 +2794,16 @@
 - Raw: raw/agent-development-environments/2026-11-24-t3-paseo-orca-web-mode-survey.md
 - Updated: T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界
 - 要点：补三仓 Web 功能清单（T3 mobile 专属项剔除、Orca Download Folder 为唯一明文 Web 限制）、WSL 安装/升级/配置（T3 install.sh 与 T3CODE_LAN 机制、Paseo npm 与 web-ui 四键、Orca AppImage 直链与 orca-ide serve）；gh api 11-24 星数 76,689/24,920/135,516 与 license（Paseo NOASSERTION）写入本节；ade-candidate-inventory 的 10-18 历史快照表不回改。
+
+## [2026-11-25] ingest | Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界
+- Disposition: Update; New
+- Raw: raw/copilot-gateway/2026-11-25-copilot-api-failure-diagnostics.md
+- Created: wiki/copilot-gateway/local-hop-timeout-budget.md
+- Updated: Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界; OMP 19.1.1–19.0.1 配置项增量
+- 要点：失败 SSE 事件完整保留、尾随用量先于单次 error、日志字段含模型/请求与响应编号/端口/PID/断开状态/用量；脱敏为键名整值替换与字符串层截断，长文本不截断，客户端摘要上限 1024；日志按日期分文件并保留 7 天；OMP 两项流超时由 150 秒改为 420 秒；本机链路各层限时按各自监视条件分别记录。
+
+## [2026-11-25] ingest | OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal
+- Disposition: Update
+- Raw: raw/omp-tools/2026-11-25-selective-commit-staged-duplicate.md
+- Updated: OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal
+- 要点：索引里已有同一批暂存片段时，提交后两份文档在索引中各出现 8 行重复副本，git status 显示 MM、git diff HEAD 为空；机制未核实，提交后以 git diff HEAD 判断残留；原「不触碰他人已暂存内容」结论标注 Disputed。

@@ -125,6 +125,7 @@ Better Harness 的工作流审计模型与适用边界。
 | [GPT-6 Luna 与 Sol 三宿主接入记录](copilot-gateway/gpt-6-luna-sol-config.md) | 8787/4140 模型目录一致；Codex/OpenCode/OMP 数值、Responses-only、模板与解析校验、两模型冒烟 200；OpenCode provider 名 4140 实指 8787；OMO native 作为第四宿主；2026-10-01 复测 limits 嵌套形态与 c8787 家族 8 模型 maxTokens 等比提升（contextWindow 不动的用户决策） | 2026-10-01 |
 | [Copilot 延迟调查：社区报告、本机用量与 OMP 计时](copilot-gateway/copilot-latency-evidence-boundaries.md) | 区分社区延迟报告、copilot-api 用量事件与 OMP c8787 客户端计时；9 月和 10 月 TPS／TTFT 对比及归因限制 | 2026-10-17 |
 | [sticky-router 模型目录与重启状态](copilot-gateway/sticky-router-model-discovery-and-restart.md) | 模型目录的启动发现与过期、实例停用状态的重启影响、维护时的流量和状态检查 | 2026-11-14 |
+| [本机链路的超时预算：OMP、Headroom 与 copilot-api](copilot-gateway/local-hop-timeout-budget.md) | 三层各自监视的条件与取值（OMP 两处 420 秒看门狗、Headroom 330 秒整次请求、copilot-api 300000 毫秒响应头与流内空闲）、条件重叠时的先后推断与证据边界 | 2026-11-25 |
 
 
 ## responses-api
@@ -189,7 +190,7 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [justwoker-shim 设计](model-gateway-mismatch/justwoker-shim-design.md) | 断路器状态机、SSE 合成、文本协议工具仿真、路由（带工具无条件走 emulation）、断路器饥饿修复、工具描述不截断、非法 JSON 回退 | 2026-10-05 |
 | [Kiro 认证凭据路径速查](model-gateway-mismatch/kiro-auth-paths-cheatsheet.md) | 免费社交登录 vs 付费 ksk_、凭据落点与 Billing FAQ SoT；Free 计划下原生 Sonnet 4.5 请求通过，目录含 Haiku，Opus/GPT 请求不可用；IP 因果未受控 | 2026-10-23 |
 | [用 Anthropic thinking signature 判断网关实际服务的模型](model-gateway-mismatch/anthropic-signature-model-verification.md) | signature 明文头三层结构（outer/envelope/header）、field 6 模型 ID 与 field 8 块类型、解析链与 128 字节长度门、版本 4 格式无 field 6 返回 undefined、不校验密码学有效性 | 2026-10-26 |
-| [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) | CAPI 以 `finish_reason: "error"` 或顶层 `error` 结束仍返回 HTTP 200、无 `native_finish_reason`；三条下游协议各自收尾与「先用量后单次错误」的顺序约束；`Provider returned error finish_reason` 文案决定 OMP 可重试；`validated` 仅在 Gemini 3 由官方客户端改写，Argon 实测接受但映射未确认；`compat.extraBody` 覆盖 `tool_choice: "none"` | 2026-11-11 |
+| [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) | CAPI 以 `finish_reason: "error"` 或顶层 `error` 结束仍返回 HTTP 200、无 `native_finish_reason`；三条下游协议各自收尾与「先用量后单次错误」的顺序约束；`Provider returned error finish_reason` 文案决定 OMP 可重试；`validated` 仅在 Gemini 3 由官方客户端改写，Argon 实测接受但映射未确认；`compat.extraBody` 覆盖 `tool_choice: "none"`；2026-11-25 失败诊断日志：保留完整失败事件与尾随用量、两层脱敏、1024 字符客户端摘要上限 | 2026-11-25 |
 | [Gemini Thought Summaries 与 OMP reasoning_text 回传链路](model-gateway-mismatch/gemini-thought-summaries-and-omp-replay.md) | 服务端摘要本质与完整推理计费口径、Gemini 3+ 签名回传强制校验、OMP 摘要流式采集与环回判定开启 replayReasoningContent 后 reasoning_text 回传 CAPI、tool call 签名采集回放而文本摘要无签名、AGENTS.md「内部推理：中文」对该链路无约束、CAPI 对无签名配对 reasoning_text 的处理未验证 | 2026-11-21 |
 
 ## gcp-model-armor
@@ -261,7 +262,7 @@ OMP 配置项的源码级行为边界。
 | [OMP Codex WebSocket 传输判定与回退](omp-config/websocket-transport-policy.md) | 仅 `openai-codex-responses` 有 WebSocket 路径；三处开关与五步判定（模型级 false 挡住环境变量、全局 off 位于环境变量之后）；状态函数与 `lastTransport` 用途区分；V2 beta 头、帧内走 `client_metadata`、致命错误触发 `disableWebsocket` 回退 | 2026-10-24 |
 | [OMP 工具调用循环防护与 exemptTools](omp-config/tool-call-loop-guard.md) | 两族循环防护的分界；跨回合相同工具调用集合的匹配与计数（键排序、跳过意图字段）；豁免回合的跳过与重置两种结局；`exemptTools` 整体替换默认 `["wait"]` 的陷阱；`xd://` 设备别名豁免 | 2026-11-16 |
 | [OMP 终端动画设置：motion 与 shimmer 形态](omp-config/terminal-animation-settings.md) | `tui.motion` 预设对 `display.shimmer` 的强制覆盖、`kitt` 拼写、classic 与 kitt 的亮度分布与形态常量、只作用于 working 文案、native 与 ANSI 两条渲染路径 | 2026-11-16 |
-| [OMP 19.1.1–19.0.1 配置项增量](omp-config/release-config-changes-19-1-1-to-19-0-1.md) | 三版配置对照；computer.takeover、tools.commands 四键、Magic Edit、MCP、pi-native、snapcompactShape 与本机迁移值 | 2026-11-23 |
+| [OMP 19.1.1–19.0.1 配置项增量](omp-config/release-config-changes-19-1-1-to-19-0-1.md) | 三版配置对照；computer.takeover、tools.commands 四键、Magic Edit、MCP、pi-native、snapcompactShape 与本机迁移值；两个流超时键 2026-11-25 由 150 秒改为 420 秒 | 2026-11-25 |
 | [OpenAI Responses instructions 缓存与 GPT-6.2 绕过规则](omp-config/openai-responses-instructions-cache.md) | openai-responses 的 instructions 与 developer 两种形状；GPT-6.2 uncached-instructions；复现数据与官方根因未知 | 2026-11-23 |
 | [OMP 18.12.1–18.10.1 配置项增量](omp-config/release-config-changes-18-12-1-to-18-10-1.md) | 十个 release 的九个新增键、九个既有键行为变化、模型与 agent 字段、快捷键与环境变量、已移除项；含按注册表交叉匹配的增量调查方法与去重教训 | 2026-11-16 |
 
@@ -284,7 +285,7 @@ OMP 内建工具全集、会话暴露边界、审批类别与内部地址空间�
 | [OMP 自有浏览器后端：WebKit 与 Chromium 对照](omp-tools/own-browser-backends-webkit-vs-chromium.md) | 两个内建后端的取舍：引擎协议提供的默认读取/输入与无自动化标记、空闲不绘制、Safari 身份；Chromium 的 WebMCP、trace/profile、设备模拟、PDF 布局与可见窗口；两侧共同的指纹注入限制；Linux 软件绘制与未实测项 | 2026-11-20 |
 | [OMP computer prelude 与桌面自动化](omp-tools/computer-prelude-desktop-automation.md) | AX 与像素双路径、坐标系禁止混用；DesktopSession 四层结构；本机 WSL 能力矩阵（capture false、ax true、0 显示器 0 窗口）；快照上限 800/24 与 find 5000/24、默认 100 条；审批分类与接管语义；2026-11-09 补档位解析：是否询问取决于 `tools.approvalMode`，默认 `yolo`，前台控制另走确认；Windows UIA 框架覆盖表（Win32 逐类、WPF、WinForms 两档、Java、自绘）；Electron 与 VS Code 的激活与连接条件；2026-11-20 补与 browser 的分工与选路（原生外壳、系统开关面板、无调试端口 Electron、非网页桌面程序）、跨进程输入锁与 `InputBusy`、物理 Esc 急停的会话级拒绝、`UserIntervened` 空闲门、`control.acquire` 与字面批准键、菜单与 wait、休眠断言与锁屏状态表；19.1.1 computer.takeover 四档与旧值迁移 | 2026-11-23 |
 | [OMP bash 命令行折叠标记与 /dev/null 语义](omp-tools/bash-shell-visualization-idioms.md) | `🔇 out`/`🔇 err`/`🔇 silent` 与 `+err` 的四类重定向映射（idioms 层默认开）；命令文本来源链（模型 → rtk 扩展改写 `event.input.command`，6 次 rewrite 实测中 2 次带重定向均原样保留）；丢弃验证 `echo hidden-line >/dev/null` 不进工具结果；同区域 `⇡ first N`/`⇣ last N`/`⟵ ↓`/`⟦..↓⟧`/`⏱`/`# stop on first error` 等词汇表；`display.shellVisualization` 默认开；v18.18.0 tag 取证与未验证项 | 2026-11-07 |
-| [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](omp-tools/xd-protocol-and-selective-commit-journal.md) | v19.1.0 前 xd:// 历史记录；`xd://` 三类入口全表：10 个 `xd://<tool>/<topic>` 按需文档主题（`read`/`eval`）、4 个常驻动作设备（`resolve`/`reject`/`propose`/`report_issue`）、`tools.xdev` 动态工具抽屉（本机 `config.yml:116` 为 `false`）；`commit.draft()` 背后的会话级 `changes.jsonl`（`change`/`call`/`commit` 三类记录）与 `blobs/<size>-<hash>` gzip 快照（≤8 MiB，父子代理共享 artifacts 目录） | 2026-11-23 |
+| [OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal](omp-tools/xd-protocol-and-selective-commit-journal.md) | v19.1.0 前 xd:// 历史记录；`xd://` 三类入口全表：10 个 `xd://<tool>/<topic>` 按需文档主题（`read`/`eval`）、4 个常驻动作设备（`resolve`/`reject`/`propose`/`report_issue`）、`tools.xdev` 动态工具抽屉（本机 `config.yml:116` 为 `false`）；`commit.draft()` 背后的会话级 `changes.jsonl`（`change`/`call`/`commit` 三类记录）与 `blobs/<size>-<hash>` gzip 快照（≤8 MiB，父子代理共享 artifacts 目录）；索引已有同一批暂存片段时提交后各出现 8 行重复的一次观察（机制未核实） | 2026-11-25 |
 | [OMP bash 工具的 PTY 浮层与 `!` 命令的 PTY 路径](omp-tools/bash-pty-overlay-and-bang-commands.md) | `pty: true` 打开当前 TUI 内的全屏浮层、键盘直通、生命周期跟随工具调用；`!` 走 headless PTY 与 vterm 回放，仅在用户 shell 为 zsh/fish 且 `PI_NO_PTY` 未设时分配；全屏程序在 `!` 中不可用 | 2026-11-20 |
 | [Magic Edit：主模型描述、辅助模型修改](omp-tools/magic-edit.md) | hashline 与 magic 调用对照；@smol apply loop；真实 12 轮 model_usage 轨迹与 DONE 重试；三次实现 commit 与 Hashline 单发 benchmark 的边界；@smol 当前 terra:low | 2026-11-23 |
 

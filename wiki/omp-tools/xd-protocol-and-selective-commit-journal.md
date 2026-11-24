@@ -1,8 +1,8 @@
 # OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal
 
 > Sources: 本机 OMP 安装包源码（src/internal-urls/xd-protocol.ts、src/tools/xdev.ts、src/tools/resolve.ts、src/tools/read.ts、src/tools/eval.ts、src/sdk.ts、src/tools/settings.ts、src/commit/selective/journal.ts）与当前会话 artifacts 目录实测，2026-11-15; 本机 omp/agent/config.yml，2026-11-15; 本机 OMP 19.1.1 工具命令变更记录, 2026-11-23
-> Raw: [OMP xd:// 虚拟协议三类入口与选择性提交 ChangeJournal 源码与实测摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md)
-> Updated: 2026-11-23
+> Raw: [OMP xd:// 虚拟协议三类入口与选择性提交 ChangeJournal 源码与实测摘录](../../raw/omp-tools/2026-11-15-xd-protocol-and-change-journal-source.md); [OMP 19.1.1–19.0.1 配置项增量](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md); [选择性提交遇到已暂存内容时索引出现重复片段的一次观察](../../raw/omp-tools/2026-11-25-selective-commit-staged-duplicate.md)
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -76,6 +76,9 @@
 2. **`blobs/<size_base36>-<hash_base36>`（修改前后的全文压缩快照）**：只要单文件字节数不超过 `MAX_BLOB_BYTES = 8 * 1024 * 1024`（8 MiB），`#storeBlob` 会把修改前、修改后的完整 UTF-8 内容用 `Bun.gzipSync` 压缩，按 `` `${bytes.byteLength.toString(36)}-${Bun.hash(bytes).toString(36)}` `` 命名写入同目录的 `blobs/` 子目录（`journal.ts:18-21, 223-233`）。例如本会话实际生成的快照文件名为 `6d07-13j68975fx6lc`、`7re-ymzrimfnhtdi` 等。
 
 模型调用 `d = await commit.draft()` 时，OMP 读取 `changes.jsonl` 和 `blobs/`，把 HEAD 到当前工作树的每一行改动按写入者归属，自动预选当前 agent 及其子代理写过的行，并在私有 git index 上构建 commit，完全不触碰工作树或他人已暂存的内容。
+
+> **Status: Disputed** (2026-11-25)
+> 本机一次观察与该结论不一致：索引里已有同一批暂存片段时，提交后两份文档在索引中各多出 8 行重复副本，`git status --short` 显示 `MM`，`git diff HEAD` 为空，提交内容与工作树一致。重复只出现在索引。机制未核实；提交后用 `git diff HEAD` 判断是否真有残留。
 
 ## 证据边界
 

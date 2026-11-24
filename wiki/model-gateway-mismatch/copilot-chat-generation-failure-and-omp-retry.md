@@ -1,8 +1,8 @@
 # Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界
 
-> Sources: 本机仓库 copilot-api 源码、测试与 CI，2026-11-11; microsoft/vscode 现役 Copilot 源码与 Issue，2026-11-11; Copilot CAPI 直连实测，2026-11-11; Google Gemini API 函数调用文档，2026-11-11; 已安装 @oh-my-pi/pi-ai 源码，2026-11-11
-> Raw: [生成失败传递与 validated 取值取证](../../raw/model-gateway-mismatch/2026-11-11-copilot-chat-generation-failure-and-validated-probe.md)
-> Updated: 2026-11-11
+> Sources: 本机仓库 copilot-api 源码、测试与 CI，2026-11-11; microsoft/vscode 现役 Copilot 源码与 Issue，2026-11-11; Copilot CAPI 直连实测，2026-11-11; Google Gemini API 函数调用文档，2026-11-11; 已安装 @oh-my-pi/pi-ai 源码，2026-11-11; 本机 copilot-api 失败诊断实现与提交 0f3b3490, 2026-11-25
+> Raw: [生成失败传递与 validated 取值取证](../../raw/model-gateway-mismatch/2026-11-11-copilot-chat-generation-failure-and-validated-probe.md); [copilot-api 失败诊断与本机链路超时取值摘录](../../raw/copilot-gateway/2026-11-25-copilot-api-failure-diagnostics.md)
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -113,6 +113,16 @@ Copilot 客户端只在 `hasTools` 且 `family` 包含 `gemini-3` 时，按 Gemi
 
 错误消息脱敏不能只匹配敏感词本身。规则要求敏感词后接键值分隔符（`:`、`=`、`{`、`[`）或命中 Bearer 与 token 字面量才截断。按单词直接匹配会把上游正常的 `Session expired`、`Authorization failed` 与错误码 `invalid_session` 一起清除成通用错误，等于把可用的诊断信息丢掉。
 
+## 失败诊断日志
+
+HTTP 200 之后才出现的失败，客户端只会收到一条安全摘要。日志若只记录 `type`、`code`、`message`，上游事件里的其他字段随之丢失。提交 `0f3b3490` 起，`chat-completions-stream.ts` 在内部事件上增加 `upstreamError`，保存首个失败 SSE 事件的原始 envelope 与解析后的 `data`；守卫继续读完尾随 `usage` 与 `copilot_usage`，最后仍只向客户端发一次 `error`，公开 SSE 的字段集合不变。
+
+日志序列化由 `serializeChatCompletionFailureLog` 完成：键名命中敏感集合时整值替换为 `[redacted]`，其余字符串按元数据分隔符截断，URL 与常见 token 形式替换为占位符。日志不截断长文本，2200 字符的上游详情在回归测试中完整保留；客户端摘要仍经 `safeErrorMessage`，上限 1024 字符。
+
+记录字段包括模型、`requestId`、`gatewayRequestId`、`responseId`、`upstreamRequestId`、监听端口、PID、客户端断开状态、`usage` 与 `copilotUsage`；流式失败另带 `upstreamEvent`。文件名形如 `chat-completions-handler-YYYY-MM-DD.log`，默认目录 `~/.local/share/copilot-api/logs`，可用 `COPILOT_API_LOG_DIR` 覆盖；超过 7 天未修改的文件在启动时与每日清理。
+
+请求上下文的值在进入 `streamSSE` 回调之前取好；回调内读取 `AsyncLocalStorage` 会被现有 lint 规则拦下。诊断代码需要重启实例才生效。
+
 ## 证据边界
 
 - CAPI 的失败信号与官方客户端处理方式来自现役源码与 Issue，属于一手证据。
@@ -127,3 +137,4 @@ Copilot 客户端只在 `hasTools` 且 `family` 包含 `gemini-3` 时，按 Gemi
 - [SDK 对非标准 responses 帧的解析严格度差异](sdk-strictness-on-nonstandard-responses-frames.md) — 同一 relay 上不同解析器会改变结束状态
 - [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](../prompt-caching/gemini-4-argon-copilot-cache-drop.md) — 同一模型的缓存侧现象
 - [OMP 配置语义手册](../omp-config/config-semantics.md) — `compat.extraBody` 与 provider 协议层设置
+- [本机链路的超时预算：OMP、Headroom 与 copilot-api](../copilot-gateway/local-hop-timeout-budget.md) — 三层读超时的取值与顺序约束

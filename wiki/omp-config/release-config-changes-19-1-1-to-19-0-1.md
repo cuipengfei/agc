@@ -1,14 +1,14 @@
 # OMP 19.1.1–19.0.1 配置项增量
 
 > Sources: can1357/oh-my-pi v19.1.1、v19.1.0、v19.0.1 CHANGELOG 与 Releases, 2026-11-19 至 2026-11-23; 本机 v19.1.1 设置注册表、源码与用户级配置, 2026-11-23
-> Raw: [OMP 19.1.1–19.0.1 配置项增量与本机会话迁移](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md); [Magic Edit 源码与本机运行取证](../../raw/omp-tools/2026-11-23-magic-edit-source-and-runtime.md); [OMP pi-native、auth-gateway 与 scoped clients 源码取证](../../raw/omp-auth/2026-11-23-pi-native-gateway-and-scoped-clients.md)
-> Updated: 2026-11-23
+> Raw: [OMP 19.1.1–19.0.1 配置项增量与本机会话迁移](../../raw/omp-config/2026-11-23-omp-19-1-release-config-inventory.md); [Magic Edit 源码与本机运行取证](../../raw/omp-tools/2026-11-23-magic-edit-source-and-runtime.md); [OMP pi-native、auth-gateway 与 scoped clients 源码取证](../../raw/omp-auth/2026-11-23-pi-native-gateway-and-scoped-clients.md); [copilot-api 失败诊断与本机链路超时取值摘录](../../raw/copilot-gateway/2026-11-25-copilot-api-failure-diagnostics.md)
+> Updated: 2026-11-25
 
 ## Overview
 
 最近三个正式版本是 v19.1.1、v19.1.0、v19.0.1。配置变化包括 `computer.takeover`、扩展 Todo 后端、状态栏 `tree`、工具命令四键改名、Magic Edit、MCP 进程共享与空闲停止、Binary Ninja、PTY 通知、模型级 Snapcompact 形状和 `pi-native` 网关目录。v19.1.0 还用 bash tool commands 取代了旧 `xd://` 工具设备。
 
-本机安装版本和 NPM `latest` 都是 `19.1.1`。本机已完成 Magic Edit 与四个工具键迁移；两个流超时键仍显式保持 `150` 秒。
+本机安装版本和 NPM `latest` 都是 `19.1.1`。本机已完成 Magic Edit 与四个工具键迁移；两个流超时键在 2026-11-25 由 `150` 秒改为 `420` 秒。
 
 ## 新增、改名与移除的 config.yml 设置
 
@@ -77,7 +77,7 @@
 
 | 版本 | 配置 | 变化与本机影响 |
 |---|---|---|
-| 19.1.0 | `providers.streamFirstEventTimeoutSeconds`、`providers.streamIdleTimeoutSeconds` | 自动看门狗为 15 分钟；配置 `0` 关闭、`-1` 使用自动值。本机两项显式为 `150` 秒，保持该值 |
+| 19.1.0 | `providers.streamFirstEventTimeoutSeconds`、`providers.streamIdleTimeoutSeconds` | 自动看门狗为 15 分钟；配置 `0` 关闭、`-1` 使用自动值。本机两项原为 `150` 秒，2026-11-25 改为 `420` 秒 |
 | 19.1.0 | `retry.maxDelayMs` | 默认和本机均为 `300000`；重置时间在上限内时，即使没有 `Retry-After` 也等待 |
 | 19.1.0 | `autoResume` | 默认和本机均为 `false`；避免恢复其他 OMP 进程正在写入的会话 |
 | 19.1.0 | `ovnfs.path` | 修复 Windows 反斜杠、空格和 `$` |
