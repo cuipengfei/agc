@@ -69,6 +69,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [SkillEvaluator 的效度边界](agent-tooling/skillevaluator-validity-boundaries.md) | 88.8 分纸面复现与分项推导（五条扣分合计 25 分）、四个缺陷变体的命中与盲区（引用不存在的脚本与文实矛盾无感）、947 case 反推 sd≈0.26 与 12–38 个 case 的功效需求、默认 1 个 case 错判约 27%、Wilson 半宽规则最少 21 个 case、grader 自测 15/15 放行 | 2026-11-16 |
 | [配置清单类 skill 的证据复用与确定性检查](agent-tooling/config-inventory-skill-maintenance.md) | 三层证据（运行时快照不进库、消费方证据进库、翻译层随描述符更新）；只查缺项的复用流程与委派时携带版本来源；五个 skill 的隔离测试规模与断言类型；skills.yml 与 tern-maintain 的触发路径差异；Bun 跳过点开头目录；OMO 的版本证据与未核实标记（安装 5.1.72、73 项中 2 项已核对、schemaMissing 16） | 2026-11-16 |
 | [Clojure CLI 与 uml-viewer 的运行环境](agent-tooling/clojure-cli-and-uml-viewer-runtime.md) | 官方 CLI 与 Ubuntu clojure 启动器差别（clj、-Sdeps 缺席）；rlwrap 只服务 clj；linux-install.sh 1.12.6.1673 的下载物与 SHA-256；headless Zulu 的 libawt_xawt 缺口与 zulu25-ca-jre 修复；全局入口与 get-uml-viewer 的副作用对照；uv 清单只覆盖 Python 工具；Xvfb 1500×920 窗口证据与未验证项 | 2026-11-17 |
+| [Alibaba Open Code Review（ocr）：六阶段审查管线、双模式边界与本机接入](agent-tooling/alibaba-open-code-review.md) | Go 原生 CLI 与六个运行入口（含本地临时目录脚本 `review_pr.py`）；六阶段审查管线中确定性代码与 LLM 的分界（7 步文件筛选、`<4` 文件分组阈值、`50`/`100` 行规划门禁、滑窗行号定位与跨文件转移、五大保护主题豁免的反思过滤）；本仓 3 个提交实测（`.mjs` 与 `test/smoke.js` 排除范围、`.md` 白名单限制、5 类行号纠偏）；Native 与 Delegate 模式差异；本机安装与 8787/4140 网关 `x-session-id={ocr_session_key}` 修复 `ocr llm test` 跨实例 401 | 2026-11-25 |
 
 ## ai-coding-agents
 
@@ -247,7 +248,7 @@ OMP 配置项的源码级行为边界。
 | [OMP nvidia 模型剪枝机制](omp-config/omp-nvidia-model-pruning.md) | nvidia 缓存只增不减根因：四源合并 + retainModelIds 仅在 dynamicModelsAuthoritative=true 时执行、nvidia 未设该编译期内置标志（对照 deepinfra/novita/umans）、用户配置无法打开；实测 176 缓存/81 在线/95 差集构成（52 models.dev/4 内置/39 残留）；上游一行改动方案（暂不提 PR） | 2026-10-05 |
 | [OMP 实验性上下文管理与 OpenCode DCP 对比](omp-config/experimental-context-vs-dcp.md) | rollover/notes 机制与 DCP outbound transform 的对比与选型 | 2026-09-12 |
 | [OMP 运行时控制](omp-config/runtime-controls.md) | steering / follow-up / interrupt 队列语义与 parse regression 记录/修复 | 2026-09-11 |
-| [OMP 动态 Session Identity 与 Sticky Routing](omp-config/dynamic-session-identity-sticky-routing.md) | prompt_cache_key 归一化与 Chat compat gate、未声明 compat 键 keep 语义、4140 body fallback、三条路线排除理由 | 2026-09-14 |
+| [OMP 动态 Session Identity 与 Sticky Routing](omp-config/dynamic-session-identity-sticky-routing.md) | prompt_cache_key 归一化与 Chat compat gate、未声明 compat 键 keep 语义、4140 body fallback、三条路线排除理由；2026-11-25 补外部客户端 Open Code Review（`ocr`）`ocr llm test` 漏传 `SessionID` 致跨实例 401 及 `x-session-id={ocr_session_key}` 修复 | 2026-11-25 |
 | [OMP Advisor 防过时三旋钮](omp-config/advisor-freshness-knobs.md) | syncBacklog/immuneTurns/maxNotesPerUpdate 语义、backlog 与 note 两条丢弃路径、防过时最强组合与代价 | 2026-09-19 |
 | [OMP Advisor Concern 投递策略](omp-config/advisor-concern-delivery-policy.md) | mid-turn concern 的 admission defer 现状与 blocker-only 行为、git 沿革、upstream opt-in 变更请求 #9074/#9576/#10600 | 2026-09-19 |
 | [OMP /model 模型浏览器：角色解析与 kind 过滤](omp-config/model-browser-role-resolution.md) | 已配置角色按 enabledModels 受限集合解析、范围外即 `—` 且无兜底；15 内置角色 + 10 kind 清单 | 2026-11-23 |

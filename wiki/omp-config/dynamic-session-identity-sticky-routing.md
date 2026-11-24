@@ -1,8 +1,8 @@
 # OMP 动态 Session Identity 与 Sticky Routing
 
-> Sources: 本机源码核验与 live 测试, 2026-09-14
-> Raw: [OMP 动态 session identity 与 sticky routing 源码核验摘录](../../raw/omp-config/2026-09-14-omp-dynamic-session-identity-sticky-routing.md)
-> Updated: 2026-09-14
+> Sources: 本机源码核验与 live 测试, 2026-09-14; Open Code Review v1.14.3 经 8787/4140 粘性路由排障实测, 2026-11-25
+> Raw: [OMP 动态 session identity 与 sticky routing 源码核验摘录](../../raw/omp-config/2026-09-14-omp-dynamic-session-identity-sticky-routing.md); [Open Code Review 经 8787/4140 Copilot 网关 Responses 跨实例 401 与 {ocr_session_key} 修复证据](../../raw/copilot-gateway/2026-11-25-ocr-responses-cross-instance-401-and-session-key.md)
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -60,7 +60,22 @@ Headroom（8787）侧对本机包全目录 grep `prompt_cache_key` 零命中，�
 
 两条都排除后，body `prompt_cache_key` 路线成为改动最小、语义正确的方案：Responses 零改动，Chat 只需一行 provider-level compat，router 只需一个 fallback 分支。
 
+## 外部客户端案例：Open Code Review（`ocr`）的 `{ocr_session_key}` Header 路由（2026-11-25）
+
+当外部 Responses 客户端不经过 OMP，而是直接连入 `http://localhost:8787`（Headroom 转发至 `http://localhost:4140/v1/responses`）时，若某条请求路径漏传 `prompt_cache_key` 且未带会话 header，同样会因 4140 路由器降级为逐请求 `pickLeastLoaded`（`sid=-`、`reason=new`）而在多轮工具调用中触发跨实例 `401`。
+
+在 `alibaba/open-code-review` `v1.14.3`（`f6379f71`）中：
+
+1. **正式审查与连接自测的不对称**：`ocr review` 主循环（`internal/llmloop/loop.go:336`）为每个子任务生成 UUID 填入 `ChatRequest.SessionID`，由 `buildResponsesParams`（`internal/llm/responses_client.go:488-490`）写入 body 的 `prompt_cache_key`；但连接测试 `ocr llm test`（`cmd/opencodereview/llm_cmd.go:107-116`）构造 `ChatRequest` 时未设置 `SessionID`，导致请求既无 session header，body 也无 `prompt_cache_key`。
+2. **跨实例重放 401 实证**：Headroom 日志（`~/.headroom/logs/proxy-8787.log:36279-36295, 36409-36425`）与 `/tmp/sticky-router.log` 对齐显示，两次 `ocr llm test` 的第 1 轮请求分别落在 `<INSTANCE_A>:4144` 和 `<INSTANCE_C>:4146`（均返回 HTTP `200`），而 3～4 秒后的第 2 轮工具结果回传因 `sid=-` 被分到 `<INSTANCE_B>:4145`（`reason=new`）。由于 `responses_client.go:530-571` 通过 SDK `ToParam()` 原样重放第 1 轮输出项（含实例绑定的 item `id` 与 `reasoning.encrypted_content`），`4145` 返回 `401 Unauthorized {"message":"input item ID does not belong to this connection","code":""}`。
+3. **`{ocr_session_key}` 动态 Header 修复**：`internal/llm/sessionkey.go:20` 提供占位符 `{ocr_session_key}`。`NewOpenAIResponsesClient`（`responses_client.go:46-48`）在初始化时调用 `NewSessionKey()` 生成每客户端 UUIDv4（`ocr review` 中则由 `ContextWithSessionKey` 按 `(sessionID[:8], taskType, sha256(scope)[:8])` 细化为 `SessionTaskKey`），并在每次请求时由 `expandSessionKeyInHeaders` 展开 `extra_headers`。执行：
+   ```bash
+   ocr config set custom_providers.cop.extra_headers 'x-session-id={ocr_session_key}'
+   ```
+   后，4140 路由器通过 `x-session-id` 命中 sticky binding（实测 `<INSTANCE_C>:4146 reason=new` → `<INSTANCE_C>:4146 reason=sticky`），`ocr llm test` 输出 `✓ Tool-call round trip verified`。
+
 ## See Also
 
 - [Prompt Cache：前缀匹配与 cache key 的真实分工](../prompt-caching/cache-key-and-prefix-matching.md)
 - [OMP 配置语义手册](config-semantics.md)
+- [Alibaba Open Code Review（ocr）：六阶段审查管线、双模式边界与本机接入](../agent-tooling/alibaba-open-code-review.md)

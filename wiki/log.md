@@ -2807,3 +2807,9 @@
 - Raw: raw/omp-tools/2026-11-25-selective-commit-staged-duplicate.md
 - Updated: OMP xd:// 虚拟协议全集与选择性提交 ChangeJournal
 - 要点：索引里已有同一批暂存片段时，提交后两份文档在索引中各出现 8 行重复副本，git status 显示 MM、git diff HEAD 为空；机制未核实，提交后以 git diff HEAD 判断残留；原「不触碰他人已暂存内容」结论标注 Disputed。
+
+## [2026-11-25] ingest | Alibaba Open Code Review（ocr）：六阶段审查管线、双模式边界与本机接入
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-25-alibaba-open-code-review-source-and-local-setup.md; raw/copilot-gateway/2026-11-25-ocr-responses-cross-instance-401-and-session-key.md
+- Created: wiki/agent-tooling/alibaba-open-code-review.md
+- Updated: OMP 动态 Session Identity 与 Sticky Routing
