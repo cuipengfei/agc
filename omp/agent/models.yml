@@ -120,6 +120,18 @@ providers:
           output: 0
           cacheRead: 0
           cacheWrite: 0
+      - id: microsoft-decision-1-1
+        name: Microsoft-Decision-1.1
+        api: typesafe
+        baseUrl: http://localhost:8787
+        reasoning: false
+        input:
+          - text
+        cost:
+          input: 0
+          output: 0
+          cacheRead: 0
+          cacheWrite: 0
   c8787-chat:
     baseUrl: http://localhost:8787/v1
     apiKey: <REDACTED>

@@ -90,7 +90,7 @@ modelRoles:
   default: opencode-go/deepseek-v4.1-flash:max
   web: web/firecrawl
   memory: sensenova/glm-5.3:max
-  judge: c8787/gpt-6-luna-decisions
+  judge: c8787/microsoft-decision-1-1
   widget: sensenova/glm-5.3:max
   architect: c8787/gpt-6.1-sol:high
   designer: sensenova/kimi-k3:max
@@ -247,6 +247,7 @@ retry:
       - web/synthetic
       - web/ollama
     judge:
+      - c8787/gpt-6-luna-decisions
       - typesafe-zen/jev-1.13-free
       - "@tiny"
       - "@smol"
