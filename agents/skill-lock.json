@@ -329,10 +329,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/tt-a1i/archify.git",
       "skillPath": "archify/SKILL.md",
-      "skillFolderHash": "5c397123dff2a244b34b23216044fb6224e6caec",
+      "skillFolderHash": "e91df37318f9adec8b39150a2738beb4cd22bad5",
       "installedAt": "2026-07-11T15:33:28.854Z",
-      "updatedAt": "2026-11-25T15:18:12.477Z",
-      "commit": "dd71ddd3a5506c1816758609c210aebc12fdcfff"
+      "updatedAt": "2026-11-25T16:41:45.573Z",
+      "commit": "aff5c2b2a0f8b6cdb187f5f121e965a495833f10"
     },
     "i-have-adhd": {
       "source": "ayghri/i-have-adhd",

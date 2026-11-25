@@ -18,7 +18,7 @@
     "bash-language-server": "^5.8.1",
     "ccstatusline": "2.2.34",
     "chrome-devtools-mcp": "1.14.0",
-    "context-mode": "2.2.3",
+    "context-mode": "2.2.4",
     "cowsay": "1.6.0",
     "dockerfile-language-server-nodejs": "^0.15.0",
     "figlet": "1.13.0",
