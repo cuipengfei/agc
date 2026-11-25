@@ -744,3 +744,12 @@ Agent 使用凭据而不接触明文的隔离层级、方案选型与规模证�
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Agent 凭据隔离：让工具使用密钥而不接触明文](agent-auth-boundary/agent-key-isolation.md) | 三条泄漏路径；凭据代持、出站代理、沙箱 secret、密文化 `.env`、浏览器 profile 五类方案与 2026-11-25 星数；隔离强度分层；dotenvx 私钥位置、代理域名限制、短时效覆盖范围与系统钥匙串的边界；Apiiro/Nx/keyv 规模数据；本机 guard 的实际覆盖 | 2026-11-25 |
+
+## llm-wiki
+
+Karpathy LLM Wiki 模式的结构、论证与标准化（OKF），以及沿该模式长出的 skills、工具、应用与平台生态。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Karpathy LLM Wiki 模式](llm-wiki/karpathy-llm-wiki-pattern.md) | raw/wiki/schema 三层与 ingest/query/lint 三操作；index.md 与 log.md 两个特殊文件；论证围绕维护成本展开；Google OKF v0.1（2026-06-13）形式化与两个参考实现 | 2026-11-26 |
+| [Karpathy LLM Wiki 生态排名与选型](llm-wiki/ecosystem-ranking.md) | 60 余项衍生项目 L0–L5 分档与 star 快照（2026-11-25）；WeKnora、TencentDB-Agent-Memory、agents-flex 的同名能力边界；本仓 Astro-Han 分支位置；描述字段未署名不等于 README 未署名的方法论教训 | 2026-11-26 |

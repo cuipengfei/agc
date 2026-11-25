@@ -2843,3 +2843,10 @@
 - 要点：clientSignal 接入现有 RequestLifecycle，覆盖 headers/body 取消、原原因、清理与并发隔离；提交 6663ff5570，全量 5255 通过、0 失败。配置改为 OMP 45/120、网关 50000/130000、Headroom 150，保留 OMP 自动重试与模型切换。Issue #20511 覆盖 Responses 元数据与两协议 HTTP 分阶段预算，严格首输出期限尚未实现。
 - 归因：目标 Gemini 会话首次恢复完成于网关和 Headroom 重启之前；Headroom 后观察 40 条 completed，首 token 5.12–13.29 秒、中位 6.63 秒。缓存输入与请求内容同时变化，当前记录无法给代码、配置、网络或上游分配贡献百分比。
 - 历史快照：2026-11-25 旧 raw 的 Headroom 330 保存值与运行值一致属于更早读取；后来保存 150、重启前运行 330、重启后运行 150 均写入新 raw，旧快照保持原样。
+
+## [2026-11-26] ingest | Karpathy LLM Wiki 模式与生态调研
+- Disposition: New
+- Raw: raw/llm-wiki/2026-11-26-karpathy-llm-wiki-gist.md; raw/llm-wiki/2026-11-26-google-okf-announcement.md; raw/llm-wiki/2026-11-26-ecosystem-github-snapshot.md
+- Created: Karpathy LLM Wiki 模式; Karpathy LLM Wiki 生态排名与选型
+- 要点：模式一文覆盖 raw/wiki/schema 三层、ingest/query/lint 三操作、index.md 与 log.md 约定、维护成本论证与 Memex 定位，以及 Google OKF v0.1（2026-06-13）形式化与 BigQuery 参考实现。生态一文给出 60 余项衍生项目 L0–L5 分档与 2026-11-25 star 快照；WeKnora、TencentDB-Agent-Memory、agents-flex 经 README 全文检索判定为平台同名能力，移出衍生排名；本仓 karpathy-llm-wiki skill 确认为 Astro-Han 分支。
+- 证据边界：gist 一手内容经网页读取获取（gist API 两次 502）；gist 发布日期 4 月 3 日仅二手来源；HN item 47640875 一手（296 分、95 评论、2026-04-04）。
