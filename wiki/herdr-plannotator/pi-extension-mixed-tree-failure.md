@@ -40,5 +40,6 @@
 
 ## See Also
 
+- [Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝](plannotator-pi-extension-omp-19-2-pi-tui-rejection.md) — 另一类入口兼容故障
 - [Plannotator 工具链参考](toolchain-reference.md) — 09-27 node-pty/node-gyp 安装失败前科
 - [OMP 内置 slash 命令全量枚举](../omp-slash-commands/builtin-slash-commands.md) — /plannotator-last 等命令归属

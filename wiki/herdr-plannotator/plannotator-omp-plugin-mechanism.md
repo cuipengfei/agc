@@ -1,8 +1,8 @@
 # Plannotator OMP 插件运行机制：slash command 归属、浏览器服务链路与 node-pty 编译门
 
-> Sources: 本机诊断与源码阅读，2026-09-27；本机 OMP pi-extension 0.28.12 实测，2026-10-11
-> Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md)
-> Updated: 2026-11-15
+> Sources: 本机诊断与源码阅读，2026-09-27；本机 OMP pi-extension 0.28.12 实测，2026-10-11；本会话 OMP 19.2.0 与 pi-extension 0.29.3/0.29.4 实测，2026-11-25
+> Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md)
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -55,7 +55,13 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 
 **决策**：node-gyp 常驻全局。node-pty 的 Linux 预编译缺口是其发布形态决定的，不会自行修复；插件升级重新解包 node-pty 时会再次需要 node-gyp；node-gyp 自身是纯 JavaScript 驱动包，常驻代价近零。
 
-**边界认知**：OMP 插件健康检查只做存在性验证（plugins_directory、package_manifest、node_modules、插件版本行，共 5 项），不加载 pty.node。终端能力有优雅降级：`generated/agent-terminal.ts:17-22` 定义了 `webtui-unavailable`、`pty-unavailable` 等禁用原因，导入 `@plannotator/webtui` 失败时禁用终端桥接（server/agent-terminal.ts:12 起），其余功能不受影响。
+**边界认知**：OMP 插件健康检查做安装面存在性验证（基础目录、共享 node_modules、manifest 与 tools/hooks/extensions 路径；检查项随本机插件和 manifest 字段变化），不加载 pty.node，也不导入扩展入口。2026-09-27 的 node-pty 实例是 5 项 ok；2026-11-25 的 OMP 19.2 兼容实例是 8 项 ok。终端能力有优雅降级：`generated/agent-terminal.ts:17-22` 定义了 `webtui-unavailable`、`pty-unavailable` 等禁用原因，导入 `@plannotator/webtui` 失败时禁用终端桥接（server/agent-terminal.ts:12 起），其余功能不受影响。
+
+## OMP 19.2 legacy pi-tui 兼容门
+
+2026-11-25 实测，OMP 19.2.0 会拒绝仍导入旧 `@earendil-works/pi-tui` 的扩展入口。`@plannotator/pi-extension 0.29.3` 与已发布的 `0.29.4` 都在 `index.ts` 导入 `Key` 并注册 `Ctrl+Alt+P`，直接走 OMP `loadExtensions()` 会报 legacy `pi-tui` 拒绝；同一状态下 `omp plugin doctor --json` 仍报告 8 项 `ok`。doctor 的 8 项是本轮本机快照，不是固定检查数。
+
+不使用 `Ctrl+Alt+P` 时的本地补丁，是删除 `Key` import 和 shortcut 注册；补丁后 `loadExtensions()` 返回 `errors: []`、`extensions: 1`。该补丁会被后续安装或升级覆盖，详见 [Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝](plannotator-pi-extension-omp-19-2-pi-tui-rejection.md)。
 
 ## slash command 归属排查流程
 
@@ -68,6 +74,7 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 
 ## See Also
 
+- [Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝](plannotator-pi-extension-omp-19-2-pi-tui-rejection.md)
 - [Herdr + Plannotator 工具链全量 Reference](toolchain-reference.md)
 - [Plannotator 能标注哪些面](plannotator-annotatable-surfaces.md)
 - [Plannotator agent tool 注入与 Quick Labels 机制](plannotator-agent-tool-and-quick-labels.md)

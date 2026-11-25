@@ -2820,3 +2820,10 @@
 - Created: wiki/model-gateway-mismatch/free-model-aggregators-upstream-quota-and-client-gates.md
 - Updated: 免费强模型 API 候选与尝试排序
 - 要点：dsh-our-free-model 把 OpenCode 与 Kilo 的免密模型通道接入 DSH；OpenCode 免费聊天模型受官方客户端限制，仓库通过客户端请求塑形接入；DeepSeek V4.1 Flash Free 为官方限时免费且目录价格为 0，Kimi K3 在 OpenCode 与 Kilo 目录均为付费项；Kilo 匿名用户限制每 IP 每小时 200 次请求；免费不等于无限，OpenCode 裸客户端 429 的原因为额度与客户端门未分离，不作为单一额度证据；长期稳定性取决于上游活动、客户端检查和免费模型轮换。
+
+## [2026-11-25] ingest | Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝与本地补丁
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md
+- Created: wiki/herdr-plannotator/plannotator-pi-extension-omp-19-2-pi-tui-rejection.md
+- Updated: Plannotator OMP 插件运行机制; Plannotator pi-extension 混版故障
+- 要点：OMP 19.2.0 拒绝 `@earendil-works/pi-tui`；0.29.3 与 0.29.4 均受影响；doctor 只查 manifest/路径，本轮 8 项 ok 不能证明入口可加载；本地删除 `Key` import 和 `Ctrl+Alt+P` 注册后 `loadExtensions()` 返回 errors 0、extensions 1；上游 issue #4045 已评论补充 0.29.4 证据和本地补丁结果。
