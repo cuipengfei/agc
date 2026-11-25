@@ -2834,3 +2834,12 @@
 - Created: wiki/agent-auth-boundary/agent-key-isolation.md
 - Updated: OMP tool_call 范围防护扩展：执行前阻断危险 Grep; sandcastle：把 agent 关进进程围栏的编排库
 - 要点：泄漏路径分文件读取、环境变量转储与注入外传三类；`.gitignore` 与 secret manager 注入进程环境都不改变暴露面；有效方案是让真实凭据留在 agent 进程外，密文化 `.env` 只防误读与日志；dotenvx 私钥若在 agent 可读位置即退化为输出脱敏，`-fk` 只指定密钥文件位置；系统钥匙串在登录态对同账号进程透明；本机 `agy-sensitive-guard` 只覆盖 `read`/`grep` 七个路径与 `agy mcp` 命令，不构成文件隔离。
+
+## [2026-11-26] ingest | copilot-api 客户端取消、OMP 首输出期限与 Gemini 恢复归因
+- Disposition: New; Update; Disputed
+- Raw: raw/copilot-gateway/2026-11-26-client-cancellation-and-timeout-deployment.md; raw/omp-config/2026-11-26-http-first-output-deadline-evidence.md; raw/copilot-gateway/2026-11-26-gemini-recovery-and-attribution.md
+- Created: copilot-api 客户端取消与上游请求生命周期; OMP HTTP 首事件与首输出的计时边界
+- Updated: 本机链路的超时预算：OMP、Headroom 与 copilot-api; OMP 19.1.1–19.0.1 配置项增量; Copilot 延迟调查：社区报告、本机用量与 OMP 计时
+- 要点：clientSignal 接入现有 RequestLifecycle，覆盖 headers/body 取消、原原因、清理与并发隔离；提交 6663ff5570，全量 5255 通过、0 失败。配置改为 OMP 45/120、网关 50000/130000、Headroom 150，保留 OMP 自动重试与模型切换。Issue #20511 覆盖 Responses 元数据与两协议 HTTP 分阶段预算，严格首输出期限尚未实现。
+- 归因：目标 Gemini 会话首次恢复完成于网关和 Headroom 重启之前；Headroom 后观察 40 条 completed，首 token 5.12–13.29 秒、中位 6.63 秒。缓存输入与请求内容同时变化，当前记录无法给代码、配置、网络或上游分配贡献百分比。
+- 历史快照：2026-11-25 旧 raw 的 Headroom 330 保存值与运行值一致属于更早读取；后来保存 150、重启前运行 330、重启后运行 150 均写入新 raw，旧快照保持原样。

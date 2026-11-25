@@ -1,4 +1,4 @@
-# Headroom 0.42 设置项地图：生效顺序、失效项与保护名单匹配
+# Headroom 0.42.0 设置项地图：生效顺序、失效项与保护名单匹配
 
 > Sources: 本机 headroom-ai 0.42.0 源码与运行中服务实测, 2026-11-06
 > Raw: [2026-11-06-headroom-042-settings-survey](../../raw/agent-tooling/2026-11-06-headroom-042-settings-survey.md)

@@ -124,9 +124,10 @@ Better Harness 的工作流审计模型与适用边界。
 |---------|---------|---------|
 | [GPT-5.6 Luna 真实规格](copilot-gateway/gpt-5.6-luna-specs.md) | 窗口 1050000（922000 prompt + 128000 output）、o200k_base、仅 /responses 端点、一个窗口两个计费档；OMP contextWindow 配总窗口的教训 | 2026-09-06 |
 | [GPT-6 Luna 与 Sol 三宿主接入记录](copilot-gateway/gpt-6-luna-sol-config.md) | 8787/4140 模型目录一致；Codex/OpenCode/OMP 数值、Responses-only、模板与解析校验、两模型冒烟 200；OpenCode provider 名 4140 实指 8787；OMO native 作为第四宿主；2026-10-01 复测 limits 嵌套形态与 c8787 家族 8 模型 maxTokens 等比提升（contextWindow 不动的用户决策） | 2026-10-01 |
-| [Copilot 延迟调查：社区报告、本机用量与 OMP 计时](copilot-gateway/copilot-latency-evidence-boundaries.md) | 区分社区延迟报告、copilot-api 用量事件与 OMP c8787 客户端计时；9 月和 10 月 TPS／TTFT 对比及归因限制 | 2026-10-17 |
+| [Copilot 延迟调查：社区报告、本机用量与 OMP 计时](copilot-gateway/copilot-latency-evidence-boundaries.md) | 区分社区延迟报告、copilot-api 用量事件与 OMP 客户端计时；9 月和 10 月 TPS／TTFT 对比；2026-11-26 补 Gemini 重启前恢复、缓存输入口径及代码／配置／网络／上游归因限制 | 2026-11-26 |
 | [sticky-router 模型目录与重启状态](copilot-gateway/sticky-router-model-discovery-and-restart.md) | 模型目录的启动发现与过期、实例停用状态的重启影响、维护时的流量和状态检查 | 2026-11-14 |
-| [本机链路的超时预算：OMP、Headroom 与 copilot-api](copilot-gateway/local-hop-timeout-budget.md) | 三层各自监视的条件与取值（OMP 两处 420 秒看门狗、Headroom 330 秒整次请求、copilot-api 300000 毫秒响应头与流内空闲）、条件重叠时的先后推断与证据边界 | 2026-11-25 |
+| [本机链路的超时预算：OMP、Headroom 与 copilot-api](copilot-gateway/local-hop-timeout-budget.md) | 当前 OMP 45/120 秒、Headroom 150 秒、copilot-api 50000/130000 毫秒；旧 420/330/300000 快照、保存与运行值、重启生效及首事件／首输出边界 | 2026-11-26 |
+| [copilot-api 客户端取消与上游请求生命周期](copilot-gateway/upstream-client-cancellation.md) | clientSignal 经项目生命周期传入 Bun fetch；响应头／响应体取消、原原因、清理、并发隔离、各接口行为、提交 6663ff5570 与全量验证 | 2026-11-26 |
 
 
 ## responses-api
@@ -264,7 +265,8 @@ OMP 配置项的源码级行为边界。
 | [OMP Codex WebSocket 传输判定与回退](omp-config/websocket-transport-policy.md) | 仅 `openai-codex-responses` 有 WebSocket 路径；三处开关与五步判定（模型级 false 挡住环境变量、全局 off 位于环境变量之后）；状态函数与 `lastTransport` 用途区分；V2 beta 头、帧内走 `client_metadata`、致命错误触发 `disableWebsocket` 回退 | 2026-10-24 |
 | [OMP 工具调用循环防护与 exemptTools](omp-config/tool-call-loop-guard.md) | 两族循环防护的分界；跨回合相同工具调用集合的匹配与计数（键排序、跳过意图字段）；豁免回合的跳过与重置两种结局；`exemptTools` 整体替换默认 `["wait"]` 的陷阱；`xd://` 设备别名豁免 | 2026-11-16 |
 | [OMP 终端动画设置：motion 与 shimmer 形态](omp-config/terminal-animation-settings.md) | `tui.motion` 预设对 `display.shimmer` 的强制覆盖、`kitt` 拼写、classic 与 kitt 的亮度分布与形态常量、只作用于 working 文案、native 与 ANSI 两条渲染路径 | 2026-11-16 |
-| [OMP 19.1.1–19.0.1 配置项增量](omp-config/release-config-changes-19-1-1-to-19-0-1.md) | 三版配置对照；computer.takeover、tools.commands 四键、Magic Edit、MCP、pi-native、snapcompactShape 与本机迁移值；两个流超时键 2026-11-25 由 150 秒改为 420 秒 | 2026-11-25 |
+| [OMP 19.1.1–19.0.1 配置项增量](omp-config/release-config-changes-19-1-1-to-19-0-1.md) | 三版配置对照；computer.takeover、tools.commands 四键、Magic Edit、MCP、pi-native、snapcompactShape；本机流超时 150→420→首事件 45／空闲 120 秒 | 2026-11-26 |
+| [OMP HTTP 首事件与首输出的计时边界](omp-config/http-first-output-deadline.md) | Responses 元数据进度、Chat 空 chunk 过滤、HTTP 与迭代分阶段预算；19.2.0 回环复现、19.2.1 固定源码、Issue #20511 与重试验证边界 | 2026-11-26 |
 | [OpenAI Responses instructions 缓存与 GPT-6.2 绕过规则](omp-config/openai-responses-instructions-cache.md) | openai-responses 的 instructions 与 developer 两种形状；GPT-6.2 uncached-instructions；复现数据与官方根因未知 | 2026-11-23 |
 | [OMP 18.12.1–18.10.1 配置项增量](omp-config/release-config-changes-18-12-1-to-18-10-1.md) | 十个 release 的九个新增键、九个既有键行为变化、模型与 agent 字段、快捷键与环境变量、已移除项；含按注册表交叉匹配的增量调查方法与去重教训 | 2026-11-16 |
 
