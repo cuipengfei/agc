@@ -1,8 +1,8 @@
 # 免费强模型 API 候选与尝试排序
 
-> Sources: AIHubMix；速语 API；AnyRouter；Eachof；iFlow 社区；QuickRouter.AI；ChatAnywhere；FreeTokenRouter；Kilo Gateway；APIDock; baipiao.org; LMSpeed, 2026-09-02
-> Raw: [免费强模型 API 候选公开资料摘录](../../raw/model-gateway-mismatch/2026-09-02-free-strong-model-api-candidates.md); [baipiao.org/charity 投票数据](../../raw/model-gateway-mismatch/2026-09-03-baipiao-charity-votes.md); [baipiao.org/bbs 公益站汇总](../../raw/model-gateway-mismatch/2026-09-03-baipiao-bbs-charity-summary.md); [LMSpeed 免费 API 导航站](../../raw/model-gateway-mismatch/2026-09-04-lmspeed-free-api-directory.md)
-> Updated: 2026-09-04
+> Sources: AIHubMix；速语 API；AnyRouter；Eachof；iFlow 社区；QuickRouter.AI；ChatAnywhere；FreeTokenRouter；Kilo Gateway；APIDock; baipiao.org; LMSpeed, 2026-09-02; Kilo AI docs; 本会话实测, 2026-11-25
+> Raw: [免费强模型 API 候选公开资料摘录](../../raw/model-gateway-mismatch/2026-09-02-free-strong-model-api-candidates.md); [baipiao.org/charity 投票数据](../../raw/model-gateway-mismatch/2026-09-03-baipiao-charity-votes.md); [baipiao.org/bbs 公益站汇总](../../raw/model-gateway-mismatch/2026-09-03-baipiao-bbs-charity-summary.md); [LMSpeed 免费 API 导航站](../../raw/model-gateway-mismatch/2026-09-04-lmspeed-free-api-directory.md); [OpenCode 与 Kilo 免费模型池规则及最小实测](../../raw/model-gateway-mismatch/2026-11-25-opencode-kilo-free-pool-rules-and-live-checks.md)
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -59,11 +59,11 @@
 - 页面摘录声称注册立即获得 `1 million` 免费 Token，并称无需信用卡、无需付费。
 - 本轮没有确认准确的强模型 ID、每日重置规则和服务稳定性。
 
-### 9. Kilo Gateway：永久免费模式存在，但强模型不在免费层已确认
+### 9. Kilo Gateway：匿名免费池可用，强模型不在免费层
 
-- 页面同时展示 Claude Opus 4.8、Claude Sonnet 4.6、GPT-5.5 和 Gemini 3 Pro。
-- Free 模式写作 `$0/永久`，但具体说明只是访问默认免费模型。
-- 未确认上述旗舰模型属于免费层，因此不满足“明确免费强模型”的硬条件。
+- 2026-11-25 官方文档允许匿名用户使用免费模型，限制为每 IP 每小时 200 次请求；免费集合随合作提供方变化。
+- 当前目录中 `kimi-k3`、`kimi-k3.1-pro` 与 `deepseek/deepseek-v4.1-flash-1017` 的 `isFree` 均为 false；免费池包含 `kilo-auto/free` 等条目。
+- 因此 Kilo 可作为非敏感短期试用入口，不能据此认定页面展示的旗舰模型属于免费层。
 
 ### 10. APIDock：可尝试前沿模型，但只是注册试用
 
@@ -119,3 +119,4 @@ baipiao.org/bbs 上有一篇汇总帖列出更多支持每日签到的公益站�
 - [LMSpeed 免费 LLM API 目录](https://lmspeed.net/free) — 2824 模型、158 提供商的免费层筛选与速度基准。
 - [JustWoker `/v1/messages` 实测行为](justwoker-v1-messages-observed-behavior.md) — 兼容网关返回模型字段与 usage 的实际观测。
 - [开源 Harness 与托管推理不是一回事](../ai-coding-agents/open-harness-vs-hosted-inference.md) — 区分客户端、托管推理和 provider 路由。
+- [免费模型聚合器的上游额度与客户端门](free-model-aggregators-upstream-quota-and-client-gates.md) — 以 dsh-our-free-model 为例说明免费模型池、模型级免费资格、OpenCode 客户端门与长期稳定性边界。

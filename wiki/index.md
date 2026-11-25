@@ -185,7 +185,8 @@ MCP server 清单筛选、star 真实性与生态知识。
 | [模型 capability 与 gateway wire 参数不一致](model-gateway-mismatch/reasoning-capability-vs-wire-parameter.md) | reasoning capability 与 reasoning_effort wire 参数的分离及验证方法 | 2026-09-05 |
 | [Gateway catalog 是客户端配置的权威源](model-gateway-mismatch/gateway-catalog-as-config-authority.md) | claude_model_id 与计费档边界替代按窗口推算，真实窗口与计费档不可混用 | 2026-09-05 |
 | [JustWoker `/v1/messages` 实测行为](model-gateway-mismatch/justwoker-v1-messages-observed-behavior.md) | 四个请求模型名的返回模型、usage、身份和环境字段实测；目录无能力字段与 UA 门槛；流式丢内容块、tools 与 system 被运行时替换、quince 代号溯源；2026-10-09 流式恢复探测（并列观测，稳定性未验证） | 2026-10-09 |
-| [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序 | 2026-09-04 |
+| [免费强模型 API 候选与尝试排序](model-gateway-mismatch/free-strong-model-api-candidates.md) | 免费注册或签到、强模型名称与证据边界的候选排序；2026-11-25 补 Kilo 匿名免费池、每 IP 每小时 200 次请求与 Kimi K3 非免费层边界 | 2026-11-25 |
+| [免费模型聚合器的上游额度与客户端门](model-gateway-mismatch/free-model-aggregators-upstream-quota-and-client-gates.md) | dsh-our-free-model 的匿名免费通道、模型级免费判定、OpenCode 客户端门、Kilo 匿名额度与长期稳定性边界 | 2026-11-25 |
 | [Relay 的 chunked 流不终止：诊断与最小修复](model-gateway-mismatch/relay-unterminated-chunked-stream.md) | 缺失 chunked 终止块造成的 60 秒挂起、客户端一致性验证与本地 shim 修复 | 2026-09-05 |
 | [SDK 对非标准 responses 帧的解析严格度差异](model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) | AI SDK 与 pi-ai 对同一 responses 帧的解析差异及 OpenCode/OMP 协议分配；senpi(OMO) 共享同套 adapter 与不补 /v1 规则 | 2026-09-27 |
 | [justwoker-shim 设计](model-gateway-mismatch/justwoker-shim-design.md) | 断路器状态机、SSE 合成、文本协议工具仿真、路由（带工具无条件走 emulation）、断路器饥饿修复、工具描述不截断、非法 JSON 回退 | 2026-10-05 |

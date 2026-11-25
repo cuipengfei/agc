@@ -2813,3 +2813,10 @@
 - Raw: raw/agent-tooling/2026-11-25-alibaba-open-code-review-source-and-local-setup.md; raw/copilot-gateway/2026-11-25-ocr-responses-cross-instance-401-and-session-key.md
 - Created: wiki/agent-tooling/alibaba-open-code-review.md
 - Updated: OMP 动态 Session Identity 与 Sticky Routing
+
+## [2026-11-25] ingest | 免费模型聚合器的上游额度与客户端门
+- Disposition: New; Update
+- Raw: raw/model-gateway-mismatch/2026-11-25-dsh-our-free-model-mechanism.md; raw/model-gateway-mismatch/2026-11-25-opencode-kilo-free-pool-rules-and-live-checks.md
+- Created: wiki/model-gateway-mismatch/free-model-aggregators-upstream-quota-and-client-gates.md
+- Updated: 免费强模型 API 候选与尝试排序
+- 要点：dsh-our-free-model 把 OpenCode 与 Kilo 的免密模型通道接入 DSH；OpenCode 免费聊天模型受官方客户端限制，仓库通过客户端请求塑形接入；DeepSeek V4.1 Flash Free 为官方限时免费且目录价格为 0，Kimi K3 在 OpenCode 与 Kilo 目录均为付费项；Kilo 匿名用户限制每 IP 每小时 200 次请求；免费不等于无限，OpenCode 裸客户端 429 的原因为额度与客户端门未分离，不作为单一额度证据；长期稳定性取决于上游活动、客户端检查和免费模型轮换。
