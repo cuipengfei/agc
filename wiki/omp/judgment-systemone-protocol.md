@@ -1,8 +1,8 @@
 # OMP judgment /v1/systemone 协议面：题型 schema、传输参数、观测点与兼容端点
 
 > Sources: 本会话实测（OMP 18.2.6 本地日志判定链 + OpenCode Zen console + 同 body 重放）, 2026-09-20; 本会话取证（docs.typesafe.ai api/primitives 逐字抓取复核、本机 @oh-my-pi/* 18.2.6 源码直读）, 2026-09-20; 本会话实测（eval judge() 三题型、重复调用与 Jev 服务端日志确认）, 2026-09-20; 本会话实测（18.2.8 eval judge usage 记账、unexpected-stop nudge 无新增 usage）, 2026-09-22; 本会话源码直读（jfind cascade 四阶段消费方 + 通用 judge 接口）, 2026-09-28; 本会话源码直读与实测（openai-decisions wire 与 systemone 的字段对照）, 2026-11-09; can1357/oh-my-pi PR #19060, 2026-11-12
-> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md); [gemini-decisions-api-and-copilot-support](../../raw/ai-coding-agents/2026-11-13-gemini-decisions-api-and-copilot-support.md)
-> Updated: 2026-11-13
+> Raw: [judgment-systemone-live-evidence](../../raw/omp/2026-09-20-judgment-systemone-live-evidence.md); [jev-question-types-schema](../../raw/ai-coding-agents/2026-09-20-jev-question-types-schema.md); [jev-omp-compatibility-probes](../../raw/ai-coding-agents/2026-09-19-jev-omp-compatibility-probes.md); [eval-judge-jev-semantic-testing](../../raw/omp/2026-09-20-eval-judge-jev-semantic-testing.md); [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [find-tool-cascade-source-forensics](../../raw/omp/2026-09-28-find-tool-cascade-source-forensics.md); [luna-decisions 整链实测与协议对照](../../raw/omp/2026-11-09-luna-decisions-judge-live-test-and-wire-comparison.md); [gemini-decisions-api-and-copilot-support](../../raw/ai-coding-agents/2026-11-13-gemini-decisions-api-and-copilot-support.md); [microsoft-decision-1-1 实测](../../raw/omp/2026-11-26-microsoft-decision-1-1-copilot-systemone-live-test.md); [systemone 行为差异](../../raw/ai-coding-agents/2026-11-09-copilot-systemone-vs-luna-decisions-behavior-diff.md)
+> Updated: 2026-11-26
 
 ## Overview
 
@@ -70,6 +70,20 @@ unexpected-stop 的 classifier 先于 todo 完成检查运行（`src/session/age
 | OpenCode Zen（`https://opencode.ai/zen`） | **已实测兼容** | 原生暴露 `/zen/v1/systemone`；重放响应头 `x-opencode-endpoint-id: typesafe`、`x-opencode-upstream-model-id: jev-1.13.0`——服务端自认经 typesafe 通道转发且把请求 model 解析到具体上游版本（2026-09-20 重放实测） |
 | OpenRouter | **不兼容** | jev 实际挂在 `/api/alpha/decisions`（真 key 实测 200）；OMP 形状 `/api/v1/systemone` 实测 404（Next.js 兜底路由）。路径后缀硬编码，任何 base URL 都桥接不了（2026-09-19 实测） |
 | TypeSafe 直连（`https://api.typesafe.ai`） | 原生匹配 | 默认 baseUrl（`typesafe.ts:29`），参考端点形态见官方 api.md |
+| Copilot 直连（Business 账号，经本机 8787 网关） | **已实测兼容** | 2026-11-26 五个账号全 200：文本三题型可用，每请求约 160 input / 3 output tokens，约 600ms；协议与 Jev 一致可复用 OMP typesafeWire；微软差异点与图片限制见下文。证据见 [microsoft-decision-1-1 实测](../../raw/omp/2026-11-26-microsoft-decision-1-1-copilot-systemone-live-test.md) |
+
+## 微软 microsoft-decision-1-1 差异点
+
+`microsoft-decision-1-1` 是 Copilot 上游的系统判定模型，文本三题型协议与 Jev System One 一致，可复用 OMP typesafeWire，差异在四处：
+
+- predicate 带 `when_true` / `when_false` 时微软端返回 400 `unknown_parameter`；Jev 接受该字段。
+- choice 选项须为 `{value, description}` 对象，否则 400。
+- 图片引用语法：微软要求 `image:` 前缀；Jev 接受裸 `<uuid>`。typesafeWire 内部用裸 UUID，微软端会把裸 UUID 包装成 `<uuid>` 再送上游。
+- 微软端未列出 `box` 题型。Azure Foundry 路径为 `/providers/microsoft/v1/systemone`；TypeSafe 用 Bearer API key，Foundry 另支持 Entra bearer token 或 `api-key` 请求头。证据见 [行为差异 raw](../../raw/ai-coding-agents/2026-11-09-copilot-systemone-vs-luna-decisions-behavior-diff.md)。
+
+## 图片请求被静默忽略（2026-11-26）
+
+Copilot 上游 `/v1/systemone` 忽略 `assets`：带红/蓝测试图的概率与纯文本逐位一致（小数点后 16 位相同），`input_tokens` 恒为 40/46，逐次请求间 token 差异仅因 typesafeWire 每次随机生成 UUID 拼进 `state`。OMP 侧带 `images` 的 judge 调用因此由 `imageJudgeRoleChain` 改派 `c8787/gpt-6-luna-decisions`：实测正确区分红/蓝图（概率 1.0 / 0.99，136 tokens，1 次 attempt 无重试）。`microsoft-decision-1-1` 注册 `input: ["text"]`，不接图片题型。
 
 ## 与 openai-decisions 协议的字段对照
 

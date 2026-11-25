@@ -1,8 +1,8 @@
 # 同一模型名跨两个协议面时的模型 ID 分叉
 
 > Sources: GitHub Copilot 上游目录实测, 2026-11-09; OpenAI Decisions guide 与 Decisions create 参考页, 2026-10-25; `Ashesh3/copilot-api`、`github/gh-aw`、`github/gh-aw-firewall`、`microsoft/vscode` 公开记录, 2026-11-09
-> Raw: [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md)
-> Updated: 2026-11-09
+> Raw: [copilot-decisions-live-verification-1109](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md); [gpt-6-luna-decisions-copilot-history](../../raw/ai-coding-agents/2026-11-09-gpt-6-luna-decisions-copilot-history.md); [microsoft-decision-1-1 公开生态](../../raw/ai-coding-agents/2026-11-26-microsoft-decision-1-1-public-usage.md)
+> Updated: 2026-11-26
 
 ## Overview
 
@@ -30,6 +30,10 @@ Copilot 上游目录中，两个 ID 各自只有一组端点：
 请求体发 `"model": "gpt-6-luna-decisions"`，响应体回显 `"model": "gpt-6-luna"`。（[实测 raw](../../raw/ai-coding-agents/2026-11-09-copilot-decisions-live-verification.md) §⑤）
 
 因此日志与用量记录里看到的名字可能是生成面的名字，而入口是决策面的 ID。按响应体里的 `model` 反推入口会得出错误结论。
+
+## 微软第三方网关已上市（2026-11-26）
+
+`microsoft-decision-1.1` 已在 6 家第三方网关上市：OpenRouter（走 OpenRouter Decisions API，页面列出流量最多的公开应用：Pentest AI 269M tokens、Inklace 231M + 35.1M、Dumpling 59.2M、LoreMotion 58.4M）、Vercel AI Gateway、AnyRouter、Opper、OneInfer、OpenDunes（`POST /alpha/decisions`）。开源实现里直连 Copilot `/v1/systemone` 的有 agentgateway（`crates/llm/src/copilot.rs`：`RouteType::SystemOne => "/v1/systemone"`，`microsoft-decision-*` 无 chat format，测试 `decision_model_has_no_chat_formats_and_uses_systemone_path`）与 sxwxs/ghc-api（README：System One `POST /v1/systemone`，亦 `/systemone`）；litellm 有独立 `litellm/systemone/` 模块（`systemone(model, state, questions, ...)`，endpoint 由 api_base/provider 决定）；PilotSwarm 的 Foundry adapter 把 key 发向 `<root>/providers/microsoft/v1/systemone`（issue #332）。VS Code 源码搜不到 `microsoft-decision`，Agent Host 决策测试默认 `gpt-6-luna-decisions`。逐项来源与原文摘录见 [raw](../../raw/ai-coding-agents/2026-11-26-microsoft-decision-1-1-public-usage.md)。
 
 ## 诊断顺序
 

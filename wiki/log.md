@@ -2850,3 +2850,10 @@
 - Created: Karpathy LLM Wiki 模式; Karpathy LLM Wiki 生态排名与选型
 - 要点：模式一文覆盖 raw/wiki/schema 三层、ingest/query/lint 三操作、index.md 与 log.md 约定、维护成本论证与 Memex 定位，以及 Google OKF v0.1（2026-06-13）形式化与 BigQuery 参考实现。生态一文给出 60 余项衍生项目 L0–L5 分档与 2026-11-25 star 快照；WeKnora、TencentDB-Agent-Memory、agents-flex 经 README 全文检索判定为平台同名能力，移出衍生排名；本仓 karpathy-llm-wiki skill 确认为 Astro-Han 分支。
 - 证据边界：gist 一手内容经网页读取获取（gist API 两次 502）；gist 发布日期 4 月 3 日仅二手来源；HN item 47640875 一手（296 分、95 评论、2026-04-04）。
+
+## [2026-11-26] ingest | Copilot systemone 路由与 microsoft-decision-1-1 接入 OMP judge 主备链
+- Disposition: New; Update
+- Raw: raw/omp/2026-11-26-microsoft-decision-1-1-copilot-systemone-live-test.md; raw/copilot-gateway/2026-11-26-systemone-route-and-restart-procedure.md; raw/ai-coding-agents/2026-11-26-microsoft-decision-1-1-public-usage.md; raw/ai-coding-agents/2026-11-09-copilot-systemone-vs-luna-decisions-behavior-diff.md
+- Created: wiki/copilot-gateway/systemone-route-judge-chain-and-omp-config.md
+- Updated: OMP judgment /v1/systemone 协议面; OMP judge 角色链解析与 jev-latest 400 根因; 同一模型名跨两个协议面时的模型 ID 分叉
+- 要点：Copilot 直连 /v1/systemone 五账号全 200、文本三题型可用，每请求约 160 input / 3 output tokens；76 题对比 microsoft-decision-1-1 全对（Brier 0.000406）优于 luna-decisions 73/76（0.026034）；微软端 predicate 带 when_true/when_false 400、choice 须 {value, description}、图片须 image: 前缀、box 未列出；上游忽略 assets（带图与纯文本概率 16 位小数一致，input_tokens 恒 40/46），OMP images 由 imageJudgeRoleChain 改派 luna-decisions（红 1.0 蓝 0.99）；8787 网关加 /systemone 与 /v1/systemone 双路由，5256 项测试全绿；重启先 4142–4146 实例再单独 4140 sticky-router；jevify 冒烟 52 条 manifest 预过滤 3 条、3/3 判定，model_usage 与网关 history 三方证实；第三方网关 6 家已上市（OpenRouter、Vercel、AnyRouter、Opper、OneInfer、OpenDunes）、开源直连 agentgateway 与 ghc-api。

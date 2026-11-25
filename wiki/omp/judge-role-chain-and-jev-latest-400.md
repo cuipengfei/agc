@@ -1,8 +1,8 @@
 # OMP judge 角色链解析与 jev-latest 400 根因
 
 > Sources: 本会话取证（本机 oh-my-pi 源码 `/home/cpf/code-inside/oh-my-pi`，upstream/main `d49918fab2` 直读）, 2026-09-22; 本会话实测（zen 网关日志、eval judge、unexpected-stop nudge、会话 JSONL 全量扫描）, 2026-09-22
-> Raw: [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md)
-> Updated: 2026-09-22
+> Raw: [jev-latest-400-root-cause](../../raw/omp/2026-09-22-jev-latest-400-root-cause.md); [systemone 路由与重启流程](../../raw/copilot-gateway/2026-11-26-systemone-route-and-restart-procedure.md)
+> Updated: 2026-11-26
 
 ## Overview
 
@@ -47,6 +47,10 @@ retry:
 ```
 
 一处覆盖 auto judge 与 eval judge（同一 `resolveRoleChain`）。验证：`omp config get retry.fallbackChains` exit=0；当前会话 eval judge 实测 `2026-09-22T15:54:07.190Z` → usage `purpose=judge`、`provider=typesafe-zen`、`model=jev-1.13`。
+
+## 当前主备链（2026-11-26）
+
+`modelRoles.judge` = `c8787/microsoft-decision-1-1`；`retry.fallbackChains.judge` = `c8787/gpt-6-luna-decisions` → `typesafe-zen/jev-1.13-free` → `@tiny` → `@smol` → `@default`（2026-09-22 的显式链首 `typesafe-zen/jev-1.13` 已退役为 luna-decisions 让位）。`c8787/microsoft-decision-1-1` 在 models.yml 注册为 `api: typesafe`、`baseUrl: http://localhost:8787`（不带 `/v1`，typesafeWire 自己拼）、`input: ["text"]`、cost 全 0，经本机 8787 网关直达 Copilot `/v1/systemone`；它只接文本题型，图片判定由 `imageJudgeRoleChain` 改派 `c8787/gpt-6-luna-decisions`，见 [OMP judgment /v1/systemone 协议面](judgment-systemone-protocol.md)。2026-11-26 jevify 冒烟：manifest 52 条预过滤剩 3 条（`omp-config` / `omp-models` / `omp-env`），3/3 判定，session `model_usage`（`purpose=judge_batch`、`provider=c8787`）与 4140 网关 history 三方证实命中。
 
 ## 回溯解释：18.2.7 时期的 zen 400 潮
 
