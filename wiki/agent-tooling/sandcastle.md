@@ -2,7 +2,7 @@
 
 > Sources: mattpocock/sandcastle README 与 docs/guide（getting-started、core-concepts、run、iterations、branch-strategies、init、cli、glossary、sandbox-providers、agent-providers、.out-of-scope）, 2026-11-09; src/AgentProvider.ts 与 package.json, 2026-11-09; npm 注册表查询, 2026-11-09; 本机环境检查, 2026-11-09
 > Raw: [sandcastle README 与编排文档摘录](../../raw/agent-tooling/sandcastle-readme-and-orchestration-docs.md); [sandcastle 沙箱提供方、agent 提供方与围栏边界摘录](../../raw/agent-tooling/sandcastle-sandbox-and-agent-providers.md)
-> Updated: 2026-11-09
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -227,3 +227,4 @@ OMP 侧没有 sandcastle 的内置支持：仓库里搜索 `omp` 没有实质命
 - [ovnfs：面向 agent 的文件夹副本与跨机器交接](ovnfs.md)
 - [OMP 子 agent 工作区隔离：原生后端、ovnfs 接入与合并时机](../omp/subagent-workspace-isolation.md)
 - [AI Software Factory 概念与真工厂短名单](../software-factory/ai-software-factory-landscape.md)
+- [Agent 凭据隔离：让工具使用密钥而不接触明文](../agent-auth-boundary/agent-key-isolation.md)

@@ -1,8 +1,8 @@
 # OMP tool_call 范围防护扩展：执行前阻断危险 Grep
 
-> Sources: 本会话实现与验收记录, 2026-11-02; OMP SDK 18.15.0 扩展类型声明, 2026-11-02
-> Raw: [2026-11-02-grep-guard-extension](../../raw/omp-mnemopi/2026-11-02-grep-guard-extension.md); [2026-11-03-history-and-agent-db-index-repair](../../raw/omp/2026-11-03-history-and-agent-db-index-repair.md)
-> Updated: 2026-11-03
+> Sources: 本会话实现与验收记录, 2026-11-02; OMP SDK 18.15.0 扩展类型声明, 2026-11-02; 本机 agy-sensitive-guard 扩展源码, 2026-11-25
+> Raw: [2026-11-02-grep-guard-extension](../../raw/omp-mnemopi/2026-11-02-grep-guard-extension.md); [2026-11-03-history-and-agent-db-index-repair](../../raw/omp/2026-11-03-history-and-agent-db-index-repair.md); [agy-sensitive-guard 源码片段与 dotenvx 密钥供给摘录](../../raw/agent-auth-boundary/2026-11-25-dotenvx-key-supply-and-os-keychains.md)
+> Updated: 2026-11-25
 
 ## Overview
 
@@ -54,9 +54,12 @@ TTSR 的适用面是模型输出流与判定问题（分层见 [OMP Extension �
 
 防护只覆盖 `grep`。直接 `Read` 原始 db/WAL/SHM 仍在覆盖范围之外，对应风险与缓解背景见 [Mnemopi SQLite 损坏恢复](../omp-mnemopi/sqlite-corruption-recovery.md)。受保护集合只有 Mnemopi 目录与 history.db 系列，`~/.omp/agent/agent.db` 及其 sidecar 不在其中，见 [OMP agent.db 与 history.db](../omp/agent-storage-databases.md)。已运行会话不加载新扩展，需要重启。
 
+同类扩展 `agy-sensitive-guard` 的保护名单是七个硬编码凭据路径，`bash` 分支只匹配 `agy mcp list|add` 一条正则；`cat`、`printenv` 与名单外路径都不经过它。这类扩展降低误读概率，不构成文件隔离，凭据隔离的层级划分见 [Agent 凭据隔离](../agent-auth-boundary/agent-key-isolation.md)。
+
 ## See Also
 
 - [OMP Extension 与 TTSR 分层防护](../omp-ttsr/extension-and-ttsr-layering.md)
 - [Mnemopi SQLite 损坏恢复](../omp-mnemopi/sqlite-corruption-recovery.md)
 - [OMP agent.db 与 history.db：存储职责、表归属与索引级损坏修复](../omp/agent-storage-databases.md)
 - [OMP 内建工具与内部地址空间](../omp-tools/builtin-tools-and-internal-urls.md)
+- [Agent 凭据隔离：让工具使用密钥而不接触明文](../agent-auth-boundary/agent-key-isolation.md)

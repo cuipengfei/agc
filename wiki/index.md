@@ -734,3 +734,11 @@ Herdr 与 OMP 的自定义 Widget 位置与扩展入口。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Herdr 与 OMP 自定义 Widget 位置](omp-widgets/omp-herdr-widget-positions.md) | Herdr 五个显示位置（标签栏右侧 / Agent 条目 / workspace 条目 / 独立 pane / popup overlay）与 16×16 token 限制；OMP 六个扩展入口（`setStatus` / `setWidget` / `ctx.ui.custom()` / `setEditorComponent` / `registerComposerShape` / `registerMessageRenderer`）；`setHeader()` / `setFooter()` 在 interactive 模式无实际实现 | 2026-11-21 |
+
+## agent-auth-boundary
+
+Agent 使用凭据而不接触明文的隔离层级、方案选型与规模证据。
+
+| Article | Summary | Updated |
+|---------|---------|---------|
+| [Agent 凭据隔离：让工具使用密钥而不接触明文](agent-auth-boundary/agent-key-isolation.md) | 三条泄漏路径；凭据代持、出站代理、沙箱 secret、密文化 `.env`、浏览器 profile 五类方案与 2026-11-25 星数；隔离强度分层；dotenvx 私钥位置、代理域名限制、短时效覆盖范围与系统钥匙串的边界；Apiiro/Nx/keyv 规模数据；本机 guard 的实际覆盖 | 2026-11-25 |

@@ -2827,3 +2827,10 @@
 - Created: wiki/herdr-plannotator/plannotator-pi-extension-omp-19-2-pi-tui-rejection.md
 - Updated: Plannotator OMP 插件运行机制; Plannotator pi-extension 混版故障
 - 要点：OMP 19.2.0 拒绝 `@earendil-works/pi-tui`；0.29.3 与 0.29.4 均受影响；doctor 只查 manifest/路径，本轮 8 项 ok 不能证明入口可加载；本地删除 `Key` import 和 `Ctrl+Alt+P` 注册后 `loadExtensions()` 返回 errors 0、extensions 1；上游 issue #4045 已评论补充 0.29.4 证据和本地补丁结果。
+
+## [2026-11-25] ingest | Agent 凭据隔离：让工具使用密钥而不接触明文
+- Disposition: New; Update
+- Raw: raw/agent-auth-boundary/2026-11-25-agent-key-isolation-landscape.md; raw/agent-auth-boundary/2026-11-25-dotenvx-key-supply-and-os-keychains.md
+- Created: wiki/agent-auth-boundary/agent-key-isolation.md
+- Updated: OMP tool_call 范围防护扩展：执行前阻断危险 Grep; sandcastle：把 agent 关进进程围栏的编排库
+- 要点：泄漏路径分文件读取、环境变量转储与注入外传三类；`.gitignore` 与 secret manager 注入进程环境都不改变暴露面；有效方案是让真实凭据留在 agent 进程外，密文化 `.env` 只防误读与日志；dotenvx 私钥若在 agent 可读位置即退化为输出脱敏，`-fk` 只指定密钥文件位置；系统钥匙串在登录态对同账号进程透明；本机 `agy-sensitive-guard` 只覆盖 `read`/`grep` 七个路径与 `agy mcp` 命令，不构成文件隔离。
