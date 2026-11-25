@@ -183,12 +183,12 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
-      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "commit": "6f7f7831a625f040a8e06a0e7954826b87ce775a",
       "skillPath": "skills/engineering/domain-modeling/SKILL.md",
-      "skillFolderHash": "ea30ee454ba264543dbe40737973b1a5afb9f0e6",
+      "skillFolderHash": "db8ef024fb9a7b2022d57289359ae96cff0d8483",
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-06-18T23:46:40.482Z",
-      "updatedAt": "2026-11-23T16:37:12.710Z"
+      "updatedAt": "2026-11-25T14:14:58.158Z"
     },
     "grilling": {
       "source": "mattpocock/skills",
@@ -237,9 +237,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "5ab3ea281cc21457e33d3ecd9341afdd6bf6ffba",
+      "skillFolderHash": "558e390c63f5a09430b27f3ae9ce5165c8230ba9",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-11-05T02:06:25.508Z"
+      "updatedAt": "2026-11-25T14:11:38.819Z",
+      "commit": "e49079f3748b8431bd5d9c09c652461fb755cb86"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -661,10 +662,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/virgiliojr94/book-to-skill.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "57f3db51ff338edfd940a255b885c60ac90e40fa",
+      "skillFolderHash": "79b3fa66d249635453f8e9bc517fe033ac9d5a91",
       "installedAt": "2026-08-17T13:12:19.212Z",
-      "updatedAt": "2026-11-20T11:46:15.129Z",
-      "commit": "57f3db51ff338edfd940a255b885c60ac90e40fa"
+      "updatedAt": "2026-11-25T14:11:40.429Z",
+      "commit": "79b3fa66d249635453f8e9bc517fe033ac9d5a91"
     },
     "humanizer": {
       "source": "blader/humanizer",
@@ -745,10 +746,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/cathrynlavery/diagram-design.git",
       "skillPath": "skills/diagram-design/SKILL.md",
-      "skillFolderHash": "c3459c1167a9e09c5e983d255d5a28928b4983d0",
+      "skillFolderHash": "912c4832afaf65c33969cf025c0a30c05e4f9cdf",
       "installedAt": "2026-09-07T13:20:44.395Z",
-      "updatedAt": "2026-11-23T11:49:08.892Z",
-      "commit": "0eeda75a708f419560d5e032693618bb9954f17b"
+      "updatedAt": "2026-11-25T14:11:43.513Z",
+      "commit": "b228c5d77794a84150fca41b22940bb316b1398d"
     },
     "no-ai-slop": {
       "source": "petergyang/no-ai-slop",
