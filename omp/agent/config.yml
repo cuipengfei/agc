@@ -54,8 +54,8 @@ providers:
   autoThinkingMaxEffort: xhigh
   kimiApiFormat: auto
   openaiWebsockets: auto
-  streamFirstEventTimeoutSeconds: 420
-  streamIdleTimeoutSeconds: 420
+  streamFirstEventTimeoutSeconds: 45
+  streamIdleTimeoutSeconds: 120
   webSearchTimeoutSeconds: 60
   openrouterVariant: default
   fetch: auto

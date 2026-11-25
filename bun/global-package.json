@@ -14,7 +14,7 @@
     "@opencode/cli": "2.4.1",
     "@upstash/context7-mcp": "4.8.0",
     "acpx": "0.22.0",
-    "backpass": "0.1.44",
+    "backpass": "0.1.45",
     "bash-language-server": "^5.8.1",
     "ccstatusline": "2.2.34",
     "chrome-devtools-mcp": "1.14.0",

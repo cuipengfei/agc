@@ -7,7 +7,7 @@
   "min_evidence": 5,
   "openai_base_url": "http://localhost:4140",
   "protect_tool_results": "codegraph_explore",
-  "request_timeout": 330,
+  "request_timeout": 150,
   "retry_max_attempts": 1,
   "rpm": 60,
   "subscription_poll_interval": 300,
