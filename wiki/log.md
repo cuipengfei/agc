@@ -2878,3 +2878,8 @@
 - Disposition: New; Update
 - Raw: raw/proxy-ops/2026-11-26-ua-whitelist-encrypted-subscription.md
 - Updated: 专有代理客户端迁移到标准 Clash（占位墙判别法与 flag 突破标 Outdated，补 UA 三层分流与解密中转衔接）
+
+## [2026-11-27] ingest | Copilot 遥测的两条通道与判定差异
+- Disposition: New
+- Raw: raw/copilot-gateway/2026-11-27-copilot-telemetry-two-channels.md
+- Updated: 遥测接受的黑盒验证
