@@ -2864,3 +2864,12 @@
 - Created: OMP dsm：三后端二进制分析与 Python worker 架构
 - Updated: OMP 二进制分析的按需依赖安装
 - 要点：三后端 `ida`/`ghidra`/`binja` 一方原生集成，仅 Ghidra 首次分析自动下载（GitHub `Ghidra_12.2_build` 固定资产 + sha256 校验、Adoptium API 取 Temurin JDK 25、安装自带 wheels 建 PyGhidra venv）；IDA 与 Binary Ninja 只检测本机安装、永不下载，BN 许可证经 `import binaryninja` 探测限时 30 秒；auto 顺序 `["ida", "ghidra"]`、BN 仅显式可选；worker 为 NDJSON socket 协议，jpype 在 Python 进程内嵌 JVM，三个 `worker.py` 打进 npm 包使 TS 主进程零原生依赖；本机 2026-11-26 实测三件套就绪、natives 已编译、配置零覆盖、无 IDA；2026 年版本 Ghidra 12.2（2026-10-22）、IDA 9.5（2026-10-26）、Binary Ninja 6.0.10905 Krypton（2026-10-20，内置官方 MCP server），热度对比标注定性。
+
+## [2026-11-27] ingest | OMP LSP 工具卡片的 null 参数崩溃与 lsp.enabled 规避边界
+- Disposition: New
+- Raw: raw/omp-tools/2026-11-27-omp-lsp-renderer-null-new-name-crash.md
+
+## [2026-11-27] ingest | Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-27-plannotator-patch-recurrence-and-reapply.md
+- Updated: Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝

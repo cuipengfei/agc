@@ -440,7 +440,7 @@ read:
     unfoldLimit: 100
   toolResultPreview: true
 lsp:
-  enabled: true
+  enabled: false
   lazy: true
   shared: true
   formatOnWrite: false

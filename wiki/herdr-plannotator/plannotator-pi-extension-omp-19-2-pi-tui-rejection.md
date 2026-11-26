@@ -1,12 +1,12 @@
 # Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝：0.29.3/0.29.4、doctor 假绿与本地快捷键补丁
 
-> Sources: 本会话本机实测，2026-11-25; `backnotprop/plannotator#4045`, 2026-11-25
-> Raw: [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md)
-> Updated: 2026-11-25
+> Sources: 本会话本机实测，2026-11-25; `backnotprop/plannotator#4045`, 2026-11-25; 2026-11-27 复发与重打实测
+> Raw: [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md); [补丁复发与重打](../../raw/herdr-plannotator/2026-11-27-plannotator-patch-recurrence-and-reapply.md)
+> Updated: 2026-11-27
 
 ## Overview
 
-OMP 19.2.0 会拒绝仍导入 `@earendil-works/pi-tui` 的 Plannotator pi-extension。`0.29.3` 与已发布的 `0.29.4` 都受影响；问题不在 `omp plugin doctor` 报告的安装健康状态，而在扩展入口的真实模块导入。删除旧 `pi-tui` 的 `Key` 导入和 `Ctrl+Alt+P` 快捷键注册后，本机 `0.29.3` 可以通过 OMP `loadExtensions()` 绑定；代价是失去该快捷键，且这个本地补丁会被后续安装或升级覆盖。
+OMP 19.2.0 会拒绝仍导入 `@earendil-works/pi-tui` 的 Plannotator pi-extension。`0.29.3` 与已发布的 `0.29.4` 都受影响；问题不在 `omp plugin doctor` 报告的安装健康状态，而在扩展入口的真实模块导入。删除旧 `pi-tui` 的 `Key` 导入和 `Ctrl+Alt+P` 快捷键注册后，本机 `0.29.3` 可以通过 OMP `loadExtensions()` 绑定；代价是失去该快捷键，且这个本地补丁会被后续安装或升级覆盖。2026-11-27 复核时两段代码又回到文件里，补丁已不在（丢失原因未取证），按同样方式重打后 loader 再次通过。
 
 ## 故障证据
 
@@ -30,6 +30,14 @@ OMP 19.2.0 会拒绝仍导入 `@earendil-works/pi-tui` 的 Plannotator pi-extens
 补丁后，本机入口不再包含 `@earendil-works/pi-tui`、`Key.ctrlAlt` 或 `registerShortcut`。用 OMP `loadExtensions()` 直接加载该入口，结果为 `errors: []`、`extensions: 1`。
 
 这个补丁只绕开旧 `pi-tui` 导入，没有迁移 Plannotator 的 UI 代码；后续 `omp plugin install`、插件升级或 `uv-bun --up` 都可能覆盖本地改动。补丁后也没有在真实 OMP 会话里交互打开 Plannotator 页面，本轮验收到的是扩展加载与绑定成功。
+
+## 补丁复发与重打
+
+2026-11-27 复核：OMP 为 `19.2.1`，插件仍是 `0.29.3`，`index.ts` 里 `import { Key } from "@earendil-works/pi-tui";` 与 `pi.registerShortcut(Key.ctrlAlt("p"), ...)` 都在。丢失原因未取证，能确认的只是文件回到未补丁状态。
+
+重打仍按两步删除，另外同步三处文档：头部 Features 注释、README 中两处提到 `Ctrl+Alt+P` 的句子，以及 README 的 `## Keyboard shortcuts` 整节。README 与头部注释同样属于随包内容，升级时会一起被覆盖。
+
+本次验证比上一轮多两条断言：`plannotator-plan-mode`、`plannotator-review`、`plannotator-annotate`、`plannotator-last` 四个命令都在 `extension.commands` 里，`extension.shortcuts.size` 为 `0`，同时 `errors` 为空、`extensions` 为 `1`。
 
 ## 上游状态
 
