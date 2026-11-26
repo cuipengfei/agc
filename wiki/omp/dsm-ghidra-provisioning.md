@@ -1,8 +1,8 @@
 # OMP 二进制分析的按需依赖安装
 
-> Sources: OMP 工具说明 `omp://tools/dsm.md` 与 `xd://eval/dsm`，2026-11-20；已安装包 `src/ghidra/install.ts`，2026-11-20
-> Raw: [OMP 二进制分析的按需依赖安装（Ghidra、JDK、PyGhidra）](../../raw/omp/2026-11-20-omp-dsm-ghidra-jdk-provisioning.md)
-> Updated: 2026-11-20
+> Sources: OMP 工具说明 `omp://tools/dsm.md` 与 `xd://eval/dsm`，2026-11-20；已安装包 `src/ghidra/install.ts`，2026-11-20；已安装包 `src/disasm/settings.ts` 与本机复查，2026-11-26
+> Raw: [OMP 二进制分析的按需依赖安装（Ghidra、JDK、PyGhidra）](../../raw/omp/2026-11-20-omp-dsm-ghidra-jdk-provisioning.md); [OMP dsm 三后端、获取方式与 Python worker 架构（源码摘录）](../../raw/omp/2026-11-26-omp-disasm-backends-and-worker-architecture.md)
+> Updated: 2026-11-27
 
 ## Overview
 
@@ -62,9 +62,10 @@ export async function ensureJdk(): Promise<string> {
 
 ## 证据边界
 
-- 已核实：裸读与分析视图的行为差别；JDK 查找顺序与代码路径；本机两份 JDK 的版本与发行方；各目录占用。
+- 已核实：裸读与分析视图的行为差别；JDK 查找顺序与代码路径；本机两份 JDK 的版本与发行方；各目录占用；`disassembler.backend` 默认值为 `auto`（`src/disasm/settings.ts` 注册处 `default: "auto"`），本机配置无任何 disassembler/ghidra 覆盖项；2026-11-26 复查 `~/.omp/ghidra` 三件套就绪，`Ghidra/Features/Decompiler/os/linux_x86_64/` 下 `decompile` 与 `sleigh` 存在。
 - 未核实：`disassembler.backend = none` 对首次分析的影响；设置 `JAVA_HOME` 后安装器是否仍会新建自管目录（代码路径显示会先返回，未实测）。
 
 ## See Also
 
 - [OMP 本地构建：依赖、步骤、产物与验证](local-build.md)
+- [OMP dsm：三后端二进制分析与 Python worker 架构](dsm-disassembler-backends.md)

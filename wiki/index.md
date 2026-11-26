@@ -597,7 +597,8 @@ OMP judgment 子系统、TypeSafe/Jev 集成与 eval 求值 helper，输入预�
 | [Markdown 标题的 TUI 渲染：彩色 ### 的来源与两种消除方式](omp/markdown-heading-rendering.md) | depth 1/2 去 # 着色、depth>=3 固定拼回 `"#".repeat(depth)`（markdown.ts:4852-4856）；colorfulMarkdown 默认开、heading 按级 magenta/yellow/blue；消除靠 extensionRenderers.assistantText 扩展改写或用户级规则限 ## | 2026-11-15 |
 | [Stencil Spotlight：工具输出的相关性评分](omp/spotlight-relevance-scoring.md) | 专用评分协议 `POST /v1/spotlight`：`state` 共享上下文、`items` 候选项、`questions{probe}` 多维度；响应 `answers.<id>.scores` 长度等于候选项数；凭据来自 `STENCIL_API_KEY` 或 stencil 登录；`models.noSpotlight`/`offline` 门禁与 stencil 会话例外；与 Decisions、Jev 的外层差异；单次费用由 `stencil-cost-usd` 返回，公开单价未取得 | 2026-11-16 |
 | [OMP 状态栏 cost 段的三段金额组成](omp/status-line-cost-segments.md) | 状态栏 cost 段三项开销（主会话、子代理树、顾问）的组织算法、排版单位规则、Nerd 图标丢字现象与独立分账可加性 | 2026-11-18 |
-| [OMP 二进制分析的按需依赖安装](omp/dsm-ghidra-provisioning.md) | 裸读只返回元数据；`:overview`/`:strings`/`dsm.open` 在首次分析时按需安装 Ghidra 12.2、JDK 25、PyGhidra；JDK 只认 `JAVA_HOME` 与自管目录，不读 `PATH`，本机已装 Zulu 25.0.5.1 仍下载 Temurin 25.0.5.1；占用 1.2G 与 697M；设置 `JAVA_HOME` 可复用既有 JDK | 2026-11-20 |
+| [OMP 二进制分析的按需依赖安装](omp/dsm-ghidra-provisioning.md) | 裸读只返回元数据；`:overview`/`:strings`/`dsm.open` 在首次分析时按需安装 Ghidra 12.2、JDK 25、PyGhidra；JDK 只认 `JAVA_HOME` 与自管目录，不读 `PATH`，本机已装 Zulu 25.0.5.1 仍下载 Temurin 25.0.5.1；占用 1.2G 与 697M；设置 `JAVA_HOME` 可复用既有 JDK；2026-11-26 复查三件套就绪、默认 `auto` 无需配置 | 2026-11-27 |
+| [OMP dsm：三后端二进制分析与 Python worker 架构](omp/dsm-disassembler-backends.md) | 三后端 ida/ghidra/binja 一方原生集成；仅 Ghidra 首次分析自动下载（GitHub 固定 12.2 + sha256、Adoptium JDK 25、自带 wheels 建 PyGhidra venv），IDA/Binary Ninja 只检测本机安装；auto 顺序 IDA→Ghidra、BN 仅显式可选；Python worker NDJSON socket + jpype 进程内嵌 JVM，TS 主进程零原生依赖；2026 年版本 Ghidra 12.2、IDA 9.5、BN 6.0.10905 Krypton（内置 MCP server），热度对比为定性 | 2026-11-27 |
 
 ## tokscale
 

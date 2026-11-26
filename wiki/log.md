@@ -2857,3 +2857,10 @@
 - Created: wiki/copilot-gateway/systemone-route-judge-chain-and-omp-config.md
 - Updated: OMP judgment /v1/systemone 协议面; OMP judge 角色链解析与 jev-latest 400 根因; 同一模型名跨两个协议面时的模型 ID 分叉
 - 要点：Copilot 直连 /v1/systemone 五账号全 200、文本三题型可用，每请求约 160 input / 3 output tokens；76 题对比 microsoft-decision-1-1 全对（Brier 0.000406）优于 luna-decisions 73/76（0.026034）；微软端 predicate 带 when_true/when_false 400、choice 须 {value, description}、图片须 image: 前缀、box 未列出；上游忽略 assets（带图与纯文本概率 16 位小数一致，input_tokens 恒 40/46），OMP images 由 imageJudgeRoleChain 改派 luna-decisions（红 1.0 蓝 0.99）；8787 网关加 /systemone 与 /v1/systemone 双路由，5256 项测试全绿；重启先 4142–4146 实例再单独 4140 sticky-router；jevify 冒烟 52 条 manifest 预过滤 3 条、3/3 判定，model_usage 与网关 history 三方证实；第三方网关 6 家已上市（OpenRouter、Vercel、AnyRouter、Opper、OneInfer、OpenDunes）、开源直连 agentgateway 与 ghc-api。
+
+## [2026-11-27] ingest | OMP dsm：三后端二进制分析与 Python worker 架构
+- Disposition: New; Update
+- Raw: raw/omp/2026-11-26-omp-disasm-backends-and-worker-architecture.md; raw/omp/2026-11-26-disassembler-landscape-2026.md
+- Created: OMP dsm：三后端二进制分析与 Python worker 架构
+- Updated: OMP 二进制分析的按需依赖安装
+- 要点：三后端 `ida`/`ghidra`/`binja` 一方原生集成，仅 Ghidra 首次分析自动下载（GitHub `Ghidra_12.2_build` 固定资产 + sha256 校验、Adoptium API 取 Temurin JDK 25、安装自带 wheels 建 PyGhidra venv）；IDA 与 Binary Ninja 只检测本机安装、永不下载，BN 许可证经 `import binaryninja` 探测限时 30 秒；auto 顺序 `["ida", "ghidra"]`、BN 仅显式可选；worker 为 NDJSON socket 协议，jpype 在 Python 进程内嵌 JVM，三个 `worker.py` 打进 npm 包使 TS 主进程零原生依赖；本机 2026-11-26 实测三件套就绪、natives 已编译、配置零覆盖、无 IDA；2026 年版本 Ghidra 12.2（2026-10-22）、IDA 9.5（2026-10-26）、Binary Ninja 6.0.10905 Krypton（2026-10-20，内置官方 MCP server），热度对比标注定性。
