@@ -237,10 +237,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/nicobailon/visual-explainer.git",
       "skillPath": "plugins/visual-explainer/SKILL.md",
-      "skillFolderHash": "558e390c63f5a09430b27f3ae9ce5165c8230ba9",
+      "skillFolderHash": "4cf4981dff7a2606557bb18cb0bdf57edffb7944",
       "installedAt": "2026-06-30T16:33:11.094Z",
-      "updatedAt": "2026-11-25T14:11:38.819Z",
-      "commit": "e49079f3748b8431bd5d9c09c652461fb755cb86"
+      "updatedAt": "2026-11-26T14:19:42.087Z",
+      "commit": "916b21212eac7ed002d00ef5dd12695099775521"
     },
     "code-review": {
       "source": "mattpocock/skills",
@@ -1317,26 +1317,16 @@
       "installedAt": "2026-10-08T15:21:21.094Z",
       "updatedAt": "2026-11-24T13:35:51.187Z"
     },
-    "make-bot-ui": {
-      "source": "backnotprop/pstack",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/backnotprop/pstack.git",
-      "commit": "9dd340887a043aa1da07a0d5c4e6918bbb3a02a0",
-      "skillPath": "skills/make-bot-ui/SKILL.md",
-      "skillFolderHash": "31e22a34dbd14088789e2a1e7cb8a3924d4cc6f5",
-      "installedAt": "2026-10-08T15:21:58.359Z",
-      "updatedAt": "2026-11-24T13:35:51.271Z"
-    },
     "ultrawork": {
       "source": "code-yeongyu/oh-my-openagent",
       "sourceType": "github",
       "sourceUrl": "https://github.com/code-yeongyu/oh-my-openagent.git",
       "ref": "dev",
       "skillPath": "packages/omo-senpi/skills/ultrawork/SKILL.md",
-      "skillFolderHash": "2f3cdbbc18f39b48e76d09acd26d5e71898ddb3b",
+      "skillFolderHash": "3d995a91506c1a889bb33c600cf3aa326fc4f45e",
       "installedAt": "2026-10-08T16:13:21.148Z",
-      "updatedAt": "2026-11-24T13:35:56.073Z",
-      "commit": "329cfa80fe0e14b6346147af40351ab06d8eb9e8"
+      "updatedAt": "2026-11-26T14:19:42.697Z",
+      "commit": "c7b62004ab2649f689fa717f23086c1b1862f084"
     },
     "note": {
       "source": "cuipengfei/prompts",
@@ -1346,15 +1336,6 @@
       "skillFolderHash": "bcc42b592730035b71f389f1ab2889c123ea298f",
       "installedAt": "2026-10-13T15:14:23.157Z",
       "updatedAt": "2026-11-12T13:45:59.494Z"
-    },
-    "anatomy": {
-      "source": "wheresryan22/anatomy",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/wheresryan22/anatomy.git",
-      "skillPath": "SKILL.md",
-      "skillFolderHash": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
-      "installedAt": "2026-10-18T01:58:17.999Z",
-      "updatedAt": "2026-10-19T11:23:11.141Z"
     },
     "asd-ste100": {
       "source": "danyuchn/asd-ste100-skill",
