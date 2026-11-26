@@ -2873,3 +2873,8 @@
 - Disposition: Update
 - Raw: raw/herdr-plannotator/2026-11-27-plannotator-patch-recurrence-and-reapply.md
 - Updated: Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝
+
+## [2026-11-27] ingest | 红魔系客户端 UA 白名单加密订阅的解密与维护
+- Disposition: New; Update
+- Raw: raw/proxy-ops/2026-11-26-ua-whitelist-encrypted-subscription.md
+- Updated: 专有代理客户端迁移到标准 Clash（占位墙判别法与 flag 突破标 Outdated，补 UA 三层分流与解密中转衔接）

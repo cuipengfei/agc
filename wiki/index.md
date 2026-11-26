@@ -538,7 +538,8 @@ Tern 终端、Web 客户端、插件架构、设置存储与维护工具。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界 | 2026-09-16 |
+| [专有代理客户端迁移到标准 Clash：通用取证方法](proxy-ops/proprietary-client-to-clash-migration.md) | 内核指纹识别、本地登录态、面板 flag 格式参数突破、HTTPS 边界；2026-11-26 补 UA 白名单三层分流实测与 flag 突破失效标注 | 2026-11-26 |
+| [红魔系客户端 UA 白名单加密订阅的解密与维护](proxy-ops/hongmo-encrypted-subscription-decryption.md) | UA 三层分流判别、GoReSym 恢复函数表与 movabs 提取 AES 常量、Clash Verge 前置 YAML 校验、Windows Bun 解密中转服务与登录启动、Bun upgrade 的 PSModulePath 冲突修复、维护手册与敏感边界 | 2026-11-26 |
 | [代理出口 IP 指纹批量测量与形态分类](proxy-ops/exit-ip-fingerprint-measurement.md) | external-controller 切换测量与隔离内核定向测量、节点 DNS 取证、地区识别差异、BGP origin 与命名审计；2026-11-21 补多源交叉验证：ipconfig.io 把 AFRINIC 注册香港广播段标成 Seychelles/India 的实证、ip-api+ipinfo+cf colo 判定组合、URLTest 切换竞态与 fake-IP/tun 对照污染三坑、17 节点 8 出口与入口中继分离复测 | 2026-11-21 |
 | [域名定向代理规则：把指定域名固定到代理组](proxy-ops/domain-targeted-proxy-rules.md) | 前置域名规则、组名与节点名、controller 核对；Antigravity 后端和共享认证域名的分流范围；规则命中与出口合规分开验证；七域名规则从节点名迁移到 url-test 组名的实测案例 | 2026-11-19 |
 | [地区自动选线与测速判定：url-test 组的实测行为](proxy-ops/regional-url-test-auto-fallback.md) | url-test 组配置面（include-all-proxies+filter、interval/tolerance/max-failed-times）、选点与双路径回退（定时测速判失效 + 建连 3 次失败补测）、切换只影响新连接；测速地址决定候选集，17 节点 GitHub/gstatic 双地址实测（9 双通、2 仅 gstatic、6 双失败）；Clash Verge Rev 脚本加组、规则改组名、controller 热加载与 GUI 15 秒刷新 | 2026-11-19 |
