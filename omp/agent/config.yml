@@ -224,7 +224,7 @@ retry:
   usageReservePolicy: confirm
   fallbackChains:
     advisor:
-      - c8787/gpt-6-luna
+      - kimi-claw/k3d1-agent
     web:
       - web/tavily
       - web/exa
