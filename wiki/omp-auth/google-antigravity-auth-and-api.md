@@ -2,7 +2,7 @@
 
 > Sources: Google Antigravity FAQ，2026-11-14 采集；Google 官方论坛 199753 员工回复，2026-11-12；Google Gemini CLI 维护者公告；社区 API 文档、CLIProxyAPIBusiness quota 源码；OMP 18.20.0 与 18.22.2 源码；2026-11-17 至 2026-11-18 本机会话与 agy 1.5.10 至 1.5.11 日志
 > Raw: [API 与第三方工具政策](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [OMP 认证、版本与请求头](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [本机会话接入与错误](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [本机域名与出口观察](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [单句 429 逐词对照实验](../../raw/omp-auth/2026-11-18-antigravity-system-prompt-429-word-probe.md); [提交说明 429 对照](../../raw/omp-auth/2026-11-18-antigravity-commit-line-429-probe.md); [第三方政策与执行官方材料](../../raw/ai-coding-agents/2026-11-22-antigravity-third-party-policy-enforcement.md)
-> Updated: 2026-11-22
+> Updated: 2026-11-28
 
 ## 账号风险
 
@@ -78,3 +78,4 @@ Antigravity 的模型请求、账号资格、配额与许可证都走 Code Assis
 - [OMP 环境变量全量参考](../omp/env-variables-reference.md) — `PI_AI_ANTIGRAVITY_*` 的请求头覆盖与版本变化
 - [Antigravity CLI 用量查询与配额/许可证错误分层](../ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) — 打印模式与 TUI 的用量入口、1008/1001/404 分层
 - [OMP antigravity-cli：ACP provider](antigravity-cli-acp-provider.md) — 提交说明 429、可空枚举工具声明 400 与本地兼容扩展
+- [Google Gemini API CLI 与 AI Pro 四池 Neon 渠道](../ai-coding-agents/google-gemini-api-cli-and-neon-channels.md) — gemini-api-cli 的 API key 合规通道与网页池逆向项目对照

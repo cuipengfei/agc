@@ -1,8 +1,8 @@
 # Google Antigravity：套餐、模型、额度与地区
 
-> Sources: Google Antigravity pricing、plans、models、enterprise 与 FAQ 页面，2026-11-14 采集；Google 模型页面 2026-11-18 快照；Google Antigravity 定价页 2026-11-20 快照；Google One plans 页、SG 购买页与家庭共享帮助页，2026-11-20 采集；googledevs 公告；InfoWorld、MindStudio、eesel 报道；Google 套餐调整公告，2026-05-19；CodeAgentSwarm 价格整理、Forbes 报道、linux.do 额度估算、goofish.com 检索实测与社区用户报告
-> Raw: [套餐与模型](../../raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md); [地区与用户报告](../../raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md); [OMP 认证与额度记录](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [2026-11-18 模型快照](../../raw/ai-coding-agents/2026-11-18-antigravity-model-plan-snapshot.md); [本机接入与错误观察](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [2026-11-20 定价页与 Orchestrator](../../raw/ai-coding-agents/2026-11-20-antigravity-plans-models-orchestrator.md); [2026-11-20 家庭共享、额度估算与渠道](../../raw/ai-coding-agents/2026-11-20-google-one-sharing-quota-market.md)
-> Updated: 2026-11-20
+> Sources: Google Antigravity pricing、plans、models、enterprise 与 FAQ 页面，2026-11-14 采集；Google 模型页面 2026-11-18 快照；Google Antigravity 定价页 2026-11-20 快照；Google One plans 页、SG 购买页与家庭共享帮助页，2026-11-20 采集；googledevs 公告；InfoWorld、MindStudio、eesel 报道；Google 套餐调整公告，2026-05-19；CodeAgentSwarm 价格整理、Forbes 报道、linux.do 额度估算、goofish.com 检索实测与社区用户报告；Google 官方博客 Introducing Gemini 4 Neon，2026-11-18
+> Raw: [套餐与模型](../../raw/ai-coding-agents/google-antigravity-plans-models-2026-11-14.md); [地区与用户报告](../../raw/ai-coding-agents/google-antigravity-regions-quota-reports-2026-11-14.md); [OMP 认证与额度记录](../../raw/omp-auth/omp-antigravity-auth-headers-2026-11-14.md); [2026-11-18 模型快照](../../raw/ai-coding-agents/2026-11-18-antigravity-model-plan-snapshot.md); [本机接入与错误观察](../../raw/omp-auth/2026-11-18-antigravity-cli-session-routing-and-errors.md); [出口与域名对照](../../raw/proxy-ops/2026-11-18-antigravity-egress-and-domain-routing.md); [2026-11-18 用量与错误实测](../../raw/ai-coding-agents/2026-11-18-antigravity-cli-usage-quota-routing.md); [2026-11-20 定价页与 Orchestrator](../../raw/ai-coding-agents/2026-11-20-antigravity-plans-models-orchestrator.md); [2026-11-20 家庭共享、额度估算与渠道](../../raw/ai-coding-agents/2026-11-20-google-one-sharing-quota-market.md); [Neon 渠道与四额度池](../../raw/ai-coding-agents/2026-11-28-ai-pro-neon-channels-and-quota-pools.md)
+> Updated: 2026-11-28
 
 ## 套餐和价格
 
@@ -42,6 +42,7 @@ Google AI plans 详细对比表把 Antigravity agent requests 分为四级：Plu
 | 模型或选项 | Free / Plus | Google AI Pro | Google AI Ultra | Enterprise |
 |---|---|---|---|---|
 | Gemini 4 Hydrogen、Gemini 3.8 Flash | 可用 | 可用 | 可用 | 可用 |
+| Gemini 4 Neon、Orchestrator (Neon) | — | 付费 Pro 或符合条件的设备试用（Neon 2026-11-18 发布，11-20 起入 Pro 清单） | 可用 | 可用 |
 | Gemini 4 Carbon | — | — | 可用 | 可用 |
 | Gemini 4 Argon | — | 付费订阅或符合条件的设备试用 | 可用 | 可用 |
 | Orchestrator (Carbon) | — | — | 可用 | — |
@@ -66,6 +67,8 @@ Google 没有在本次查阅的资料中列出完整的 `eligible premium device
 Antigravity 定价页在 **2026-11-20**（GA 横幅“Gemini 4 Neon 与 Orchestrator 现已登陆”）将 **Orchestrator (Neon) 首次列入 Pro 模型清单**（脚注 2，付费 Pro 或符合条件的设备试用）；Ultra 清单含 Orchestrator (Carbon)。Pro 与 Ultra 的清单差别只剩 Carbon 两个入口（Gemini 4 Carbon、Orchestrator (Carbon)）。页面上 Claude Sonnet 4.6、Claude Opus 4.6 与 GPT-OSS-120b 仍列于各档，脚注 4 写“将于 2026 年 11 月 18 日移除”——移除日期已过但页面仍列，实际移除未验证。Pro 列表同时含 Claude 4.6 与 5.5 两代，脚注 5 说明：试用 Pro 给 4.6 双款，付费 Pro 给 5.5 双款。
 
 Pro／Ultra 的个人档要求 personal Google Account：工作账号（Workspace）不能订阅 Pro／Ultra，须走按用量的 Cloud project 或 Gemini Enterprise。
+
+2026-11-18 官方发布博客将 Neon 的铺货渠道写为「Gemini API in Google AI Studio、Gemini for business (via API and model dropdown)、付费 Google AI Pro and Ultra subscribers in Google Antigravity、Pro and Ultra subscribers in the Gemini app」，定价 $3 每百万输入 token、$15 每百万输出 token、缓存输入 $0.15（折扣 95%）、1 million-token 上下文窗口；AI Studio 官方 plans 文档写明 Neon 在 AI Studio 只对 AI Pro 与 AI Ultra 开放（Free 只有 Hydrogen），且套餐每日额度只在 AI Studio 网页内生效。四池渠道全貌见 [Google Gemini API CLI 与 AI Pro 四池 Neon 渠道](google-gemini-api-cli-and-neon-channels.md)。
 
 ## 额度怎么计算
 

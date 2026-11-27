@@ -1,8 +1,8 @@
 # Antigravity 第三方客户端政策、执行范围与计费边界
 
-> Sources: Google Antigravity Additional Terms of Service，2026-11-22 查阅；Google 官方论坛 199753 员工回复（2026-11-12）与 202740 员工回复（2026-11-20）；Google AI Studio「Google AI plans」文档，2026-11-22 查阅；Google Antigravity FAQ 与 Gemini CLI 维护者公告（2026-02-27），2026-11-14 采集
-> Raw: [政策与执行官方材料摘录](../../raw/ai-coding-agents/2026-11-22-antigravity-third-party-policy-enforcement.md); [FAQ 与 2026-02-27 封禁公告](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md)
-> Updated: 2026-11-22
+> Sources: Google Antigravity Additional Terms of Service，2026-11-22 查阅；Google 官方论坛 199753 员工回复（2026-11-12）与 202740 员工回复（2026-11-20）；Google AI Studio「Google AI plans」文档，2026-11-22 查阅；Google Antigravity FAQ 与 Gemini CLI 维护者公告（2026-02-27），2026-11-14 采集；网页池社区逆向代理项目文档（Mag1cFall/AIStudio2API、CJackHwang/AIstudioProxyAPI、Mag1cFall/Gemini-Web2API、FarisHijazi/gemini-web-api、HanaokaYuzu/Gemini-API），2026-11-28 采集
+> Raw: [政策与执行官方材料摘录](../../raw/ai-coding-agents/2026-11-22-antigravity-third-party-policy-enforcement.md); [FAQ 与 2026-02-27 封禁公告](../../raw/ai-coding-agents/google-antigravity-api-policy-2026-11-14.md); [网页池社区逆向代理项目](../../raw/ai-coding-agents/2026-11-28-gemini-web-reverse-proxy-projects.md)
+> Updated: 2026-11-28
 
 ## 禁止边界
 
@@ -44,6 +44,12 @@ AI Studio 文档写明：套餐每日额度只在 AI Studio 网页内生效；�
 
 所以订阅付费买到的是指定产品和入口的额度；第三方 agent 接入对应的是另一份按量计费的使用权，或者用套餐附带的 credits 支付。
 
+## 网页池逆向代理同属条款边界
+
+Google AI Studio 网页池与 Gemini 聊天应用池存在社区逆向代理项目：Mag1cFall/AIStudio2API 与 CJackHwang/AIstudioProxyAPI 走 MakerSuite 网页链，Mag1cFall/Gemini-Web2API 与 FarisHijazi/gemini-web-api 走 gemini.google.com 网页链。这些项目把网页 Cookie 会话或浏览器自动化会话转成 OpenAI、Claude、Gemini 兼容接口，README 给出接 OMP、Claude Code、Codex、OpenCode 与 `agy` 的现成配置。
+
+Gemini-Web2API 协议文档记录了读取账号《使用限制政策》违规警告标记的 RPC（`rpcids=GPRiHf`）与 `www.google.com/sorry` 人机验证重定向，说明 Google 侧有检测与拦截路径；抓取 Cookie 或绕过 BotGuard 把网页会话转成 API 属于「第三方软件访问服务」，与条款第 6 条同一边界。官方回复指路的 Google AI Studio Gemini API key 合规路径即 `gemini-api` CLI 所在通道，详见 [Google Gemini API CLI 与 AI Pro 四池 Neon 渠道](google-gemini-api-cli-and-neon-channels.md)。
+
 ## Google 公开的理由与推断
 
 官方公开的说法只有一条：第三方使用严重影响其他产品用户的服务体验，违反条款。对额度以内、纯自用的个人用户同样执行禁令，官方没有给出进一步解释。
@@ -52,10 +58,11 @@ AI Studio 文档写明：套餐每日额度只在 AI Studio 网页内生效；�
 
 ## 证据边界
 
-只读官方页面与官方论坛，无账号实测，无内部成本数据。停号案例（202740）仅发帖者自述，官方未证实。FAQ 与 2026-02-27 公告原文在 2026-11-14 raw。
+只读官方页面与官方论坛，无账号实测，无内部成本数据。停号案例（202740）仅发帖者自述，官方未证实。FAQ 与 2026-02-27 公告原文在 2026-11-14 raw。网页池逆向代理一节的证据为社区项目仓库文档直读（2026-11-28），未在本机部署或运行任何项目，未发起真实 API 调用。
 
 ## See Also
 
 - [OMP Antigravity 认证与社区 API](../omp-auth/google-antigravity-auth-and-api.md) — OMP 侧登录提示与认证行为
 - [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](../omp-auth/antigravity-cli-acp-provider.md) — 接入机制与 429/400 观察
 - [Google Antigravity：套餐、模型、额度与地区](google-antigravity-plans-and-regions.md) — 套餐档位、额度与地区资格
+- [Google Gemini API CLI 与 AI Pro 四池 Neon 渠道](google-gemini-api-cli-and-neon-channels.md) — gemini-api-cli 定位、四池架构与网页池逆向项目

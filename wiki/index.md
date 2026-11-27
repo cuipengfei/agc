@@ -77,8 +77,9 @@ AI coding agent、IDE 与 harness 的横向比较。
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14/18/20 三次模型快照、两个定价页六处档位不对应、SG 价格与促销、家庭共享共用池与排除权益、社区额度估算、goofish 检索与低价渠道现状；账号地区、代理出口识别差异及 1008、1001 本机会话观察；CLI 实测补用量入口与错误分层 | 2026-11-20 |
-| [Antigravity 第三方客户端政策、执行范围与计费边界](ai-coding-agents/antigravity-third-party-policy.md) | 条款第 6 条与 FAQ 的禁止边界；ACP 允许与不允许的分界（2026-11-12 官方回复：交互式客户端可、注册成 OMP harness 模型来源不可）；执行范围与申诉路径；用户自述停号（官方未确认）；AI 套餐额度与 API credits 的分离；公开理由与商业动机推断的分界 | 2026-11-22 |
+| [Google Antigravity：套餐、模型、额度与地区](ai-coding-agents/google-antigravity-plans-and-regions.md) | 2026-11-14/18/20 三次模型快照、两个定价页六处档位不对应、SG 价格与促销、家庭共享共用池与排除权益、社区额度估算、goofish 检索与低价渠道现状；账号地区、代理出口识别差异及 1008、1001 本机会话观察；CLI 实测补用量入口与错误分层；2026-11-28 补 Gemini 4 Neon 发布（2026-11-18）与 AI Studio/Gemini app 铺货渠道 | 2026-11-28 |
+| [Google Gemini API CLI 与 AI Pro 四池 Neon 渠道](ai-coding-agents/google-gemini-api-cli-and-neon-channels.md) | gemini-api-cli 无状态定位与 generativelanguage.googleapis.com 端点归属；三 CLI 谱系（gemini/agy/gemini-api）与 2026-06-18 个人迁移；AI Pro 四个独立额度池与 Neon 全渠道清单；AI Studio 网页池（MakerSuite 链原生函数调用）与 Gemini 网页池（提示词模拟 tool_calls）两类社区逆向代理对比及合规边界 | 2026-11-28 |
+| [Antigravity 第三方客户端政策、执行范围与计费边界](ai-coding-agents/antigravity-third-party-policy.md) | 条款第 6 条与 FAQ 的禁止边界；ACP 允许与不允许的分界（2026-11-12 官方回复：交互式客户端可、注册成 OMP harness 模型来源不可）；执行范围与申诉路径；用户自述停号（官方未确认）；AI 套餐额度与 API credits 的分离；公开理由与商业动机推断的分界；网页池逆向代理项目同属条款边界（2026-11-28） | 2026-11-28 |
 | [Antigravity Orchestrator 机制](ai-coding-agents/antigravity-orchestrator-mechanism.md) | 单模型全程 vs 规划/执行分工（规划模型+Hydrogen）；同一次回复内自动交接与三条回控触发；固定配置不可调 thinking level、非模型路由；24% 省额度/19% 提速测试数据；Orchestrator (Neon) 首入 Pro 清单 | 2026-11-20 |
 | [Antigravity CLI 用量查询与配额/许可证错误分层](ai-coding-agents/antigravity-cli-usage-and-quota-errors.md) | 打印模式与 TUI `/usage`、`/credits`；1008 地区、1001 许可证、no credits、404 四类错误；周额度窗口两态锚点规律与滚动机制；规则命中与出口合规分开验证 | 2026-11-18 |
 | [AI Coding Agent 对比：真正独特优势（19 家）](ai-coding-agents/4-agent-comparison.md) | 19 家 harness 的独有性裁定：真独有 4、可能独有 2；2026-09-27 直读 omo-ai 5.0.0 新增 OMO Kibitzer/Dream 两项单源候选（制品直读无运行时观测）；关键词与多 agent 编排行指向跨 harness 编排 | 2026-10-27 |
@@ -222,7 +223,7 @@ OMP 认证、MCP OAuth、凭据管理，以及 Auth Broker/Gateway 的代理访�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策（含 2026-11-12 官方回复的 OMP ACP provider 边界）；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系；系统指令文本触发的假 429（身份句 15 条单句对照、提交说明整行对照、跨客户端指纹演进、零宽混淆失效） | 2026-11-22 |
+| [OMP Antigravity 认证与社区 API](omp-auth/google-antigravity-auth-and-api.md) | Google 第三方客户端政策（含 2026-11-12 官方回复的 OMP ACP provider 边界）；OMP 版本与认证提示、社区接口地址差异；本机 agy 对 daily-cloudcode 与 AICode 的请求观察；Antigravity 与 Code Assist 后端关系；系统指令文本触发的假 429（身份句 15 条单句对照、提交说明整行对照、跨客户端指纹演进、零宽混淆失效） | 2026-11-28 |
 | [OMP `antigravity-cli`：Antigravity CLI 的 ACP provider](omp-auth/antigravity-cli-acp-provider.md) | 本地 agy ACP 子进程、OMP 工具与 OAuth 刷新归属、下载与 PI_AGY_PATH、本机接入及地区拒绝、限流、license 与 MCP schema 错误观察；身份句与提交说明整行 429 的对照；可空枚举工具声明 400、schema 兼容扩展与真实 Tavily 搜索验收 | 2026-11-18 |
 | [OMP Auth Broker 与 Gateway](omp-auth/auth-broker-gateway.md) | 凭据集中、access token 服务端解析；标准路由与 pi-native；scoped clients 的模型/账号权限和内网共享边界 | 2026-11-23 |
 | [SOFA 官方 MCP：OMP 接入、维护与验证](omp-auth/sofa-mcp-maintenance.md) | 连接配置与凭据归属、Clash 规则查找、回调机制、工具验证及私有草稿发布边界 | 2026-10-17 |

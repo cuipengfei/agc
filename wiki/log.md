@@ -2888,3 +2888,10 @@
 - Disposition: New; Update
 - Raw: raw/herdr-plannotator/2026-11-27-plannotator-0-29-5-omp-loader-recovery.md
 - Updated: Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝; Plannotator OMP 插件运行机制
+
+## [2026-11-28] ingest | Google Gemini API CLI 与 AI Pro 四池 Neon 渠道
+- Disposition: New; Update
+- Raw: raw/ai-coding-agents/2026-11-28-gemini-api-cli-and-three-clis.md; raw/ai-coding-agents/2026-11-28-ai-pro-neon-channels-and-quota-pools.md; raw/ai-coding-agents/2026-11-28-gemini-web-reverse-proxy-projects.md
+- Created: wiki/ai-coding-agents/google-gemini-api-cli-and-neon-channels.md
+- Updated: Google Antigravity：套餐、模型、额度与地区; Antigravity 第三方客户端政策、执行范围与计费边界; OMP Antigravity 认证与社区 API
+- 要点：gemini-api-cli（2026-04-29 建仓，4166 stars，Go，v0.5.0）源码 ServerList 唯一默认端点 generativelanguage.googleapis.com，凭证只认 AI Studio API key/access token；三 CLI 谱系与 2026-05-19 公告、2026-06-18 个人入口迁移；与 Antigravity 三向关系（install-skill 宿主、antigravity-preview-09-2026 managed agent、harness 评测用 Antigravity SDK 驱动）。Neon（2026-11-18 发布，$3/$15/$0.15，1M 窗口）官方渠道：AI Studio、Gemini for business、Antigravity（付费 Pro/Ultra）、Gemini app。AI Pro 四池：Antigravity 编程池（5 小时+周上限）、AI Studio 每日池（按日重置、Higher quota 不公布数字）、Gemini 聊天池（4x、5 小时+周上限）、每月 $10 credits（12 个月有效、Prepay $5 激活、Tier 1 每 10 分钟 $10 限速）。网页池逆向：AIStudio2API/AIstudioProxyAPI（MakerSuite RPC + SAPISIDHASH + WAA proof，原生函数调用）与 Gemini-Web2API/gemini-web-api（SNlM0e + otAQ7b + processSession，提示词模拟 tool_calls）；Gemini-Web2API 已列 gemini-4-neon，其余项目动态目录未实测；GPRiHf 违规警告与 /sorry 人机验证为社区文档记录的检测路径。
