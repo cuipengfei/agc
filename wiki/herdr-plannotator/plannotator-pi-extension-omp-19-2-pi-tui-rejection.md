@@ -1,12 +1,12 @@
-# Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝：0.29.3/0.29.4、doctor 假绿与本地快捷键补丁
+# Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝：0.29.3/0.29.4 受影响、0.29.5 修复、doctor 假绿与本地快捷键补丁
 
-> Sources: 本会话本机实测，2026-11-25; `backnotprop/plannotator#4045`, 2026-11-25; 2026-11-27 复发与重打实测
-> Raw: [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md); [补丁复发与重打](../../raw/herdr-plannotator/2026-11-27-plannotator-patch-recurrence-and-reapply.md)
+> Sources: 本会话本机实测，2026-11-25; `backnotprop/plannotator#4045`, 2026-11-25; 2026-11-27 复发与重打实测; 2026-11-27 OMP 19.2.1 与 0.29.5 加载恢复实测
+> Raw: [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md); [补丁复发与重打](../../raw/herdr-plannotator/2026-11-27-plannotator-patch-recurrence-and-reapply.md); [0.29.5 加载恢复](../../raw/herdr-plannotator/2026-11-27-plannotator-0-29-5-omp-loader-recovery.md)
 > Updated: 2026-11-27
 
 ## Overview
 
-OMP 19.2.0 会拒绝仍导入 `@earendil-works/pi-tui` 的 Plannotator pi-extension。`0.29.3` 与已发布的 `0.29.4` 都受影响；问题不在 `omp plugin doctor` 报告的安装健康状态，而在扩展入口的真实模块导入。删除旧 `pi-tui` 的 `Key` 导入和 `Ctrl+Alt+P` 快捷键注册后，本机 `0.29.3` 可以通过 OMP `loadExtensions()` 绑定；代价是失去该快捷键，且这个本地补丁会被后续安装或升级覆盖。2026-11-27 复核时两段代码又回到文件里，补丁已不在（丢失原因未取证），按同样方式重打后 loader 再次通过。
+OMP 19.2.0 会拒绝仍导入 `@earendil-works/pi-tui` 的 Plannotator pi-extension。`0.29.3` 与已发布的 `0.29.4` 都受影响；问题不在 `omp plugin doctor` 报告的安装健康状态，而在扩展入口的真实模块导入。删除旧 `pi-tui` 的 `Key` 导入和 `Ctrl+Alt+P` 快捷键注册后，本机 `0.29.3` 可以通过 OMP `loadExtensions()` 绑定；代价是失去该快捷键，且这个本地补丁会被后续安装或升级覆盖。2026-11-27 复核时两段代码又回到文件里，补丁已不在（丢失原因未取证），按同样方式重打后 loader 再次通过。同日 20:13 装入的 0.29.5 移除了运行时 `@earendil-works/pi-tui` 导入，快捷键参数改为字符串；在 OMP 19.2.1 上按 `index.ts` 与 `pi.extensions` 目录两种入口加载均为 `errors: []`、`extensions: 1`。当前安装没有补丁痕迹，本地补丁不再需要。
 
 ## 故障证据
 
@@ -39,9 +39,17 @@ OMP 19.2.0 会拒绝仍导入 `@earendil-works/pi-tui` 的 Plannotator pi-extens
 
 本次验证比上一轮多两条断言：`plannotator-plan-mode`、`plannotator-review`、`plannotator-annotate`、`plannotator-last` 四个命令都在 `extension.commands` 里，`extension.shortcuts.size` 为 `0`，同时 `errors` 为空、`extensions` 为 `1`。
 
+## 0.29.5 修复验证
+
+2026-11-27 实测环境为 OMP `19.2.1` 与 `@plannotator/pi-extension 0.29.5`，`pi.extensions` 仍为 `["./"]`；`index.ts` 只导入 `@earendil-works/pi-agent-core`、`@earendil-works/pi-ai`、`@earendil-works/pi-coding-agent`，全部 `.ts` 源码无 `pi-tui`，该包名只在 `package.json:90` 的 devDependencies；快捷键注册为 `pi.registerShortcut("ctrl+alt+p", ...)`（`index.ts:1812`）。
+
+用 OMP `loadExtensions()` 按直接加载 `index.ts` 与按 `pi.extensions` 加载包目录两种入口，均返回 `errors: []`、`extensions: 1`；直接加载结果列出 5 条命令（`plannotator-plan-mode`、`plannotator-review`、`plannotator-annotate`、`plannotator-last`、`plannotator-inbox`）、1 个快捷键 `ctrl+alt+p`、3 个工具（`plannotator`、`plannotator_mark_done`、`plannotator_submit_plan`）。`index.ts`、`package.json`、`README.md` 的 mtime 都在 `2026-11-27 20:13:53`，旧补丁已被这次安装覆盖。
+
+边界：本轮未在真实 OMP 会话打开页面做交互验收，也未复查 issue #4045 状态。
+
 ## 上游状态
 
-`backnotprop/plannotator#4045` 已覆盖同一问题，状态为 open。已发布评论补充三点：`0.29.4` 仍有同一导入；OMP `loadExtensions()` 可直接复现；删除旧 `pi-tui` 导入和快捷键注册可在不需要 `Ctrl+Alt+P` 时临时恢复加载。上游修复需要迁移快捷键或 UI 代码到当前 OMP API，或把该注册做成兼容分支。
+`backnotprop/plannotator#4045` 已覆盖同一问题，状态为 open。已发布评论补充三点：`0.29.4` 仍有同一导入；OMP `loadExtensions()` 可直接复现；删除旧 `pi-tui` 导入和快捷键注册可在不需要 `Ctrl+Alt+P` 时临时恢复加载。上游在 0.29.5 中移除运行时 `pi-tui` 导入并把快捷键参数改为字符串；issue 当前状态本轮未复查。
 
 ## See Also
 

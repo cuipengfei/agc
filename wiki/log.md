@@ -2883,3 +2883,8 @@
 - Disposition: New
 - Raw: raw/copilot-gateway/2026-11-27-copilot-telemetry-two-channels.md
 - Updated: 遥测接受的黑盒验证
+
+## [2026-11-27] ingest | Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝（0.29.5 修复验证）
+- Disposition: New; Update
+- Raw: raw/herdr-plannotator/2026-11-27-plannotator-0-29-5-omp-loader-recovery.md
+- Updated: Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝; Plannotator OMP 插件运行机制

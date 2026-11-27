@@ -1,8 +1,8 @@
 # Plannotator OMP 插件运行机制：slash command 归属、浏览器服务链路与 node-pty 编译门
 
-> Sources: 本机诊断与源码阅读，2026-09-27；本机 OMP pi-extension 0.28.12 实测，2026-10-11；本会话 OMP 19.2.0 与 pi-extension 0.29.3/0.29.4 实测，2026-11-25
-> Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md)
-> Updated: 2026-11-25
+> Sources: 本机诊断与源码阅读，2026-09-27；本机 OMP pi-extension 0.28.12 实测，2026-10-11；本会话 OMP 19.2.0 与 pi-extension 0.29.3/0.29.4 实测，2026-11-25；本机 OMP 19.2.1 与 pi-extension 0.29.5 实测，2026-11-27
+> Raw: [Plannotator OMP 插件升级失败：node-pty 编译门与 node-gyp 修复](../../raw/herdr-plannotator/2026-09-27-plannotator-node-pty-node-gyp-upgrade-failure.md); [Plannotator OMP 插件 slash command 归属与浏览器服务链路](../../raw/herdr-plannotator/2026-09-27-plannotator-omp-plugin-slash-command-and-serving.md); [Plannotator agent tool 注入、Quick Labels 与 config.json 键清单](../../raw/herdr-plannotator/2026-10-11-plannotator-agent-tool-and-quick-labels.md); [OMP 19.2 legacy pi-tui 拒绝与本机补丁](../../raw/herdr-plannotator/2026-11-25-omp-19-2-pi-tui-rejection-and-local-patch.md); [0.29.5 加载恢复](../../raw/herdr-plannotator/2026-11-27-plannotator-0-29-5-omp-loader-recovery.md)
+> Updated: 2026-11-27
 
 ## Overview
 
@@ -62,6 +62,8 @@ Plannotator 以两条互不依赖的通道存在于本机：OMP 插件 `@plannot
 2026-11-25 实测，OMP 19.2.0 会拒绝仍导入旧 `@earendil-works/pi-tui` 的扩展入口。`@plannotator/pi-extension 0.29.3` 与已发布的 `0.29.4` 都在 `index.ts` 导入 `Key` 并注册 `Ctrl+Alt+P`，直接走 OMP `loadExtensions()` 会报 legacy `pi-tui` 拒绝；同一状态下 `omp plugin doctor --json` 仍报告 8 项 `ok`。doctor 的 8 项是本轮本机快照，不是固定检查数。
 
 不使用 `Ctrl+Alt+P` 时的本地补丁，是删除 `Key` import 和 shortcut 注册；补丁后 `loadExtensions()` 返回 `errors: []`、`extensions: 1`。该补丁会被后续安装或升级覆盖，详见 [Plannotator pi-extension 的 OMP 19.2 legacy pi-tui 拒绝](plannotator-pi-extension-omp-19-2-pi-tui-rejection.md)。
+
+2026-11-27 实测，0.29.5 已移除运行时 `@earendil-works/pi-tui` 导入，快捷键改用字符串参数 `pi.registerShortcut("ctrl+alt+p", ...)`。在 OMP 19.2.1 上按直接加载 `index.ts` 与按 `pi.extensions` 加载包目录两种入口，`loadExtensions()` 均返回 `errors: []`、`extensions: 1`，当前安装不需要本地补丁。
 
 ## slash command 归属排查流程
 
