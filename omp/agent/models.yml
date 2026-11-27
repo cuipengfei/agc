@@ -150,6 +150,9 @@ providers:
           - text
         contextWindow: 1048576
         maxTokens: 65536
+        promptCache:
+          short: 267
+          long: 267
       - id: gemini-4-argon
         compat:
           extraBody:
@@ -161,6 +164,9 @@ providers:
           - text
         contextWindow: 1048576
         maxTokens: 65536
+        promptCache:
+          short: 267
+          long: 267
   kimi-claw:
     api: anthropic-messages
     baseUrl: https://agent-gw.kimi.com/coding

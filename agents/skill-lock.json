@@ -405,12 +405,12 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
-      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "commit": "bbadaa631c37af594e5a05c9cefacd9956136b18",
       "skillPath": "skills/engineering/to-tickets/SKILL.md",
-      "skillFolderHash": "2dee20ad722a31c04ededf9f2d83842473573045",
+      "skillFolderHash": "f0d279fd436cfd2630f2b612cbb3068f3a745e20",
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-08-05T13:34:32.064Z",
-      "updatedAt": "2026-11-23T16:37:12.724Z"
+      "updatedAt": "2026-11-27T17:46:33.915Z"
     },
     "wait-what": {
       "source": "mattpocock/skills",
