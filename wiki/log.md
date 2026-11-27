@@ -2895,3 +2895,10 @@
 - Created: wiki/ai-coding-agents/google-gemini-api-cli-and-neon-channels.md
 - Updated: Google Antigravity：套餐、模型、额度与地区; Antigravity 第三方客户端政策、执行范围与计费边界; OMP Antigravity 认证与社区 API
 - 要点：gemini-api-cli（2026-04-29 建仓，4166 stars，Go，v0.5.0）源码 ServerList 唯一默认端点 generativelanguage.googleapis.com，凭证只认 AI Studio API key/access token；三 CLI 谱系与 2026-05-19 公告、2026-06-18 个人入口迁移；与 Antigravity 三向关系（install-skill 宿主、antigravity-preview-09-2026 managed agent、harness 评测用 Antigravity SDK 驱动）。Neon（2026-11-18 发布，$3/$15/$0.15，1M 窗口）官方渠道：AI Studio、Gemini for business、Antigravity（付费 Pro/Ultra）、Gemini app。AI Pro 四池：Antigravity 编程池（5 小时+周上限）、AI Studio 每日池（按日重置、Higher quota 不公布数字）、Gemini 聊天池（4x、5 小时+周上限）、每月 $10 credits（12 个月有效、Prepay $5 激活、Tier 1 每 10 分钟 $10 限速）。网页池逆向：AIStudio2API/AIstudioProxyAPI（MakerSuite RPC + SAPISIDHASH + WAA proof，原生函数调用）与 Gemini-Web2API/gemini-web-api（SNlM0e + otAQ7b + processSession，提示词模拟 tool_calls）；Gemini-Web2API 已列 gemini-4-neon，其余项目动态目录未实测；GPRiHf 违规警告与 /sorry 人机验证为社区文档记录的检测路径。
+
+## [2026-11-28] ingest | Google AI 套餐权益目录：Pro 相对免费与 Plus 解锁什么
+- Disposition: New; Update; Disputed
+- Raw: raw/ai-coding-agents/2026-11-28-google-ai-pro-benefits-catalog.md
+- Created: wiki/ai-coding-agents/google-ai-pro-plan-benefits.md
+- Updated: Google Antigravity：套餐、模型、额度与地区; Google Gemini API CLI 与 AI Pro 四池 Neon 渠道
+- 要点：帮助页 14534406 的 Pro 权益清单与 16882689 的 Plus 清单并列核对——同功能不同额度（Colab Pro 200 对 Plus 50 CCUs；Flow Music Pro 10,000 对 Starter 3,000 credits、12 对 8 并发；Notebook Pro 300 对 Plus 100 sources；Flow 1,000 对 200 credits）；仅 Pro 及以上：5 TB/10 TB 存储、YouTube Premium Lite 个人版、Home Premium Standard（Advanced 为加购）、Health Premium（需 Pixel Watch 或 Fitbit）、Developer Program premium（Code Assist 配额、每月 $10 Cloud credits、30 个 Firebase Studio 工作区、不可共享）、Antigravity、Neon、AI Studio 与 Android Studio 的 Neon 额度、Search Carbon AI Mode、Have AI check pricing、Earth Gemini、Dreambeans、Docs 与 Vids 集成；AI credits 跨 Gemini、Flow、Antigravity 通用，Plus 不可购买，Gemini 侧 Usage limits 开关与 Antigravity 侧 Never/Always；Tasks in Gemini 在 AU/CA/IN/JP/KR/US 免订阅可用、其他地区需 Pro 或 Ultra、EEA/Nigeria/Switzerland/UK 不可用，套餐页写成 Ultra 首批访问属滞后；FAQ 仍写 3.1 Pro/Veo 3.1 Lite。

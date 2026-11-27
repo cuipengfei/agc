@@ -1,7 +1,7 @@
 # Google Gemini API CLI 与 AI Pro 四池 Neon 渠道
 
 > Sources: GitHub google-gemini / google-antigravity 组织与仓库直读（gemini-api-cli 源码、gemini-cli README、迁移公告、Antigravity CLI 发布博客），2026-11-28 采集；Google 官方博客 Introducing Gemini 4 Neon，2026-11-18；Google AI Studio 官方文档（google-ai-plans、pricing、rate-limits、models、build-mode）与 gemini.google/subscriptions、Gemini Apps 帮助页、Antigravity 官方文档，2026-11-28 采集；Mag1cFall/AIStudio2API、CJackHwang/AIstudioProxyAPI、Mag1cFall/Gemini-Web2API、FarisHijazi/gemini-web-api、HanaokaYuzu/Gemini-API 社区项目文档，2026-11-28 采集
-> Raw: [gemini-api-cli 与三 CLI 谱系](../../raw/ai-coding-agents/2026-11-28-gemini-api-cli-and-three-clis.md); [Neon 渠道与四额度池](../../raw/ai-coding-agents/2026-11-28-ai-pro-neon-channels-and-quota-pools.md); [网页池社区逆向代理项目](../../raw/ai-coding-agents/2026-11-28-gemini-web-reverse-proxy-projects.md)
+> Raw: [gemini-api-cli 与三 CLI 谱系](../../raw/ai-coding-agents/2026-11-28-gemini-api-cli-and-three-clis.md); [Neon 渠道与四额度池](../../raw/ai-coding-agents/2026-11-28-ai-pro-neon-channels-and-quota-pools.md); [网页池社区逆向代理项目](../../raw/ai-coding-agents/2026-11-28-gemini-web-reverse-proxy-projects.md); [Pro 套餐权益目录](../../raw/ai-coding-agents/2026-11-28-google-ai-pro-benefits-catalog.md)
 > Updated: 2026-11-28
 
 ## Overview
@@ -52,7 +52,7 @@ var ServerList = []string{
 | Antigravity 编程池 | Antigravity App、`agy`、7 类 IDE 表面、人直接操作的 `agy acp` | 每 5 小时滚动刷新 + 周上限（与 Gemini 聊天池同机制） | 不可用 |
 | AI Studio 网页每日池 | aistudio.google.com 的 Playground 与 Build（Antigravity Agent 驱动） | 「Daily allowances reset each day rather than using rolling windows」，官方只标 Higher quota，不公布固定数字，实时值看 `/rate-limit` 面板 | 不可用（Free 只给 Hydrogen） |
 | Gemini 聊天应用池 | gemini.google.com 网页与手机 App、Workspace 侧边栏、Gemini in Chrome | 免费版的 4 倍算力额度，每 5 小时刷新 + 周上限 | 不可用（Free/Plus 只给 Hydrogen） |
-| 每月 $10 API credits | 领取后绑到付费 `GEMINI_API_KEY`，供 `gemini-api` CLI、OMP、OpenCode、Cursor 等第三方 agent | 「Each monthly grant lasts 12 months」；Prepay 账单先充 $5 激活；按 Neon 单价扣减；Tier 1 限速每 10 分钟 $10 | 不可用（Neon 无 API Free tier） |
+| 每月 $10 API credits | 领取后绑到付费 `GEMINI_API_KEY`，供 `gemini-api` CLI、OMP、OpenCode、Cursor 等第三方 agent | 「Each monthly grant lasts 12 months」；Prepay 账单先充 $5 激活；credits 可加购（`one.google.com/ai/credits`），在 Gemini、Flow、Antigravity 间通用，按模型 API 标准价扣减；按 Neon 单价扣减；Tier 1 限速每 10 分钟 $10 | 不可用（Neon 无 API Free tier） |
 
 `x-aistudio-g1-tier`（TIER0/TIER1/TIER2）是 AI Studio 网页链的档位请求头，由社区协议文档记录（见逆向代理一节），档位对应的每日具体额度官方仍未公布数字。家庭组共享 Antigravity 与 Flow 的同一池额度；月度 API credits 只发给主订阅账号，家庭组与 AI Plus 档没有资格。
 
@@ -84,6 +84,7 @@ AIStudio2API 的 README 给出接 OMP、Claude Code、Codex、OpenCode、OpenCla
 
 ## See Also
 
+- [Google AI 套餐权益目录：Pro 相对免费与 Plus 解锁什么](google-ai-pro-plan-benefits.md) — Pro 捆绑权益全清单、AI credits 加购与 Antigravity 超额切换
 - [Google Antigravity：套餐、模型、额度与地区](google-antigravity-plans-and-regions.md) — 档位表唯一权威：Neon 与 Orchestrator (Neon) 的 Pro 清单收录
 - [Antigravity 第三方客户端政策、执行范围与计费边界](antigravity-third-party-policy.md) — 条款第 6 条、论坛官方回复与申诉路径
 - [OMP Antigravity 认证与社区 API](../omp-auth/google-antigravity-auth-and-api.md) — `daily-cloudcode-pa.googleapis.com` 的 Code Assist 后端证据与假 429 观察
