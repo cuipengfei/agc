@@ -131,8 +131,8 @@ Better Harness 的工作流审计模型与适用边界。
 | [sticky-router 模型目录与重启状态](copilot-gateway/sticky-router-model-discovery-and-restart.md) | 模型目录的启动发现与过期、实例停用状态的重启影响、维护时的流量和状态检查 | 2026-11-14 |
 | [本机链路的超时预算：OMP、Headroom 与 copilot-api](copilot-gateway/local-hop-timeout-budget.md) | 当前 OMP 45/120 秒、Headroom 150 秒、copilot-api 50000/130000 毫秒；旧 420/330/300000 快照、保存与运行值、重启生效及首事件／首输出边界 | 2026-11-26 |
 | [copilot-api 客户端取消与上游请求生命周期](copilot-gateway/upstream-client-cancellation.md) | clientSignal 经项目生命周期传入 Bun fetch；响应头／响应体取消、原原因、清理、并发隔离、各接口行为、提交 6663ff5570 与全量验证 | 2026-11-26 |
-| [Copilot 遥测的两条通道与判定差异](copilot-gateway/telemetry-two-channel-gating.md) | 普通统计与增强遥测的判定条件、`rt` 与 `telemetry` 字段的区别、两组 iKey、企业遥测端点同时服务两种 reporter；聊天请求的五个 GitHub 事件与字段真实度三档 | 2026-11-27 |
-| [遥测接受的黑盒验证](copilot-gateway/telemetry-acceptance-blackbox-check.md) | 进程外只读扫描驻留内存里的收集端回执；干净实例基线对照法；动态追踪失败的两种原因；结论强度与条数低估边界 | 2026-11-27 |
+| [Copilot 遥测的两条通道与判定差异](copilot-gateway/telemetry-two-channel-gating.md) | 普通统计与增强遥测的判定条件、rt 与 telemetry 字段的区别、两组 iKey、企业遥测端点同时服务两种 reporter；聊天请求的 12 种事件、按请求成套采样、4 项增强（上游对账头、source:user 消息、conversationId/timeSinceIssuedMs/unique_id）、隐私最小化与停发 OneCollector | 2026-11-28 |
+| [遥测接受的黑盒验证](copilot-gateway/telemetry-acceptance-blackbox-check.md) | 进程外只读扫描驻留内存里的收集端回执；成功计数日志设计；tmux 自然流量观察（15/16 事件接收、超时恢复、4145 无流量）；结论强度与条数低估边界 | 2026-11-28 |
 
 
 ## responses-api
