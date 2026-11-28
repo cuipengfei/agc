@@ -25,7 +25,7 @@
       "enabled": true
     },
     "omp-kit-companion": {
-      "version": "0.2.162",
+      "version": "0.2.163",
       "enabledFeatures": null,
       "enabled": true
     }
