@@ -229,7 +229,6 @@ retry:
       - web/tavily
       - web/exa
       - c8787/gpt-6-luna
-      - c8787/gpt-5.6-luna
       - web/duckduckgo
       - web/jina
       - web/kimi
