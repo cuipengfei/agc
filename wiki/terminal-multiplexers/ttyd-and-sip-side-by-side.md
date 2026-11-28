@@ -1,8 +1,8 @@
 # ttyd 与 sip 并存部署
 
-> Sources: 本机 systemd 配置与实测，2026-11-15；sip v0.10.0 官方源码与隔离浏览器实测，2026-11-15；本机 systemd cgroup 与重启实测，2026-11-20
-> Raw: [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md); [sip 的 KillMode=process 与 ttyd 对齐](../../raw/terminal-multiplexers/2026-11-20-sip-killmode-process-and-ttyd-parity.md)
-> Updated: 2026-11-20
+> Sources: 本机 systemd 配置与实测，2026-11-15；sip v0.10.0 官方源码与隔离浏览器实测，2026-11-15；本机 systemd cgroup 与重启实测，2026-11-20；本机 ss/ps 复核快照，2026-11-28
+> Raw: [sip WSL systemd 自启与 uv-bun 集成](../../raw/terminal-multiplexers/2026-11-15-sip-wsl-systemd-autostart-and-uv-bun-update.md); [sip 字体匹配与 Console 验证](../../raw/terminal-multiplexers/2026-11-15-sip-maple-font-resolution-and-console.md); [sip 服务重启的 cgroup 波及范围](../../raw/terminal-multiplexers/2026-11-20-sip-service-cgroup-restart-blast-radius.md); [sip 的 KillMode=process 与 ttyd 对齐](../../raw/terminal-multiplexers/2026-11-20-sip-killmode-process-and-ttyd-parity.md); [ttyd 与 sip 监听与进程归属复核](../../raw/terminal-multiplexers/2026-11-28-ttyd-sip-listener-process-recheck.md)
+> Updated: 2026-11-28
 
 ## Overview
 
@@ -16,6 +16,10 @@
 | `sip.service` | `7682` | 用户 systemd | cpf | active |
 
 两个服务均已设置 `Restart=always`（崩溃后 2 秒自动拉起）。用户 `Linger=yes` 已开启，WSL 启动后两个服务都会自动运行。
+
+## 2026-11-28 复核
+
+`ss -tlnp` 与 `ps` 快照：两个端口仍在监听、均仅绑定 127.0.0.1；ttyd（pid 185）与 sip（pid 356）的启动时间为 2026-11-27 03:15，与 WSL 本次启动一致，印证两个服务随启动自动拉起。当前三个 `herdr --session` TUI 客户端（sec、main、mon）全部运行在 sip 派发的 `zsh -l` 里；快照时刻 ttyd 下没有任何会话进程。哪个入口当前承载 herdr 会话属时刻性事实，引用时以现场重查为准；同机另有三个 `herdr server` 与 `herdr-core serve`，父进程均为用户 systemd（pid 292）。
 
 ## sip.service 关键配置
 

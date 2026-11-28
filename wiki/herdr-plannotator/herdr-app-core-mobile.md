@@ -1,8 +1,8 @@
 # Herdr App、herdr-core 与手机：产品关系和终端访问
 
-> Sources: Herdr 官方网站与 herdrdev/herdr-core 文档，本次采集 2026-11-12；Herdr, Inc. 的 Google Play 应用说明，本次采集 2026-11-12；用户提供的本机 `herdr --help` 输出，2026-11-12；herdr-core 安装脚本与 WSL2/Tailscale 部署实测，2026-11-13；本机手机接入排障实测，2026-11-17
-> Raw: [Herdr 产品关系、core 接口与手机官方摘录](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 默认会话与指定会话的接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md); [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md); [herdr-core 手机接入排障：hc 运行形态与 Tailscale SSH policy](../../raw/herdr-plannotator/2026-11-17-hc-phone-connect-ssh-policy.md)
-> Updated: 2026-11-17
+> Sources: Herdr 官方网站与 herdrdev/herdr-core 文档，本次采集 2026-11-12；Herdr, Inc. 的 Google Play 应用说明，本次采集 2026-11-12；用户提供的本机 `herdr --help` 输出，2026-11-12；herdr-core 安装脚本与 WSL2/Tailscale 部署实测，2026-11-13；本机手机接入排障实测，2026-11-17；herdr.dev 首页、下载页与 core 页复核及 herdrdev/herdr-app README，2026-11-28；本机 herdr 0.9.5 --help，2026-11-28
+> Raw: [Herdr 产品关系、core 接口与手机官方摘录](../../raw/herdr-plannotator/herdr-app-core-mobile-boundaries.md); [本机 Herdr TUI 默认会话与指定会话的接入命令](../../raw/herdr-plannotator/2026-11-12-herdr-tui-attach-from-phone-terminal.md); [herdr-core 安装脚本、配置定义与 WSL2/Tailscale 部署实测](../../raw/herdr-plannotator/2026-11-13-herdr-core-install-config-wsl2-tailscale.md); [herdr-core 手机接入排障：hc 运行形态与 Tailscale SSH policy](../../raw/herdr-plannotator/2026-11-17-hc-phone-connect-ssh-policy.md); [Herdr App 桌面平台范围与 web 客户端缺席官方摘录](../../raw/herdr-plannotator/2026-11-28-herdr-app-desktop-platforms-and-web-mode-absence.md)
+> Updated: 2026-11-28
 
 ## 产品名称与各自负责的事情
 
@@ -22,6 +22,10 @@ Herdr App 与 Herdr TUI 不共享 agent。手机官方 FAQ 明确说明手机 Ap
 对应的功能是 Herdr App 将布局、侧栏、标签、快捷键和主题保存为可修改文件。用户告诉 agent 希望怎样修改，agent 修改这些文件，可以调整界面或添加功能面板。
 
 手机官方说明明确提到可以调整终端快捷键栏，桌面 App 创建的 spaces 和 tabs 可以在手机显示。手机是否支持任意布局和功能面板定制、桌面自定义面板是否能在手机显示，本次没有取得明确说明。
+
+## Herdr App 的桌面平台范围
+
+官方下载页与 herdr-app README 给出的安装范围（2026-11-28 复核）：macOS 仅 Apple silicon，可用 `.dmg` 拖入 Applications、终端安装脚本或 Homebrew cask（`brew install --cask herdr-app`）三种方式，Intel Mac 用户需从源码自行构建；Linux 为 x86_64 与 arm64，需要桌面会话和可用的 Vulkan 驱动；Windows 为 x64，PowerShell 安装脚本要求 Windows 10 1803 或更新版本。手机为 iPhone、iPad 与 Android。基础平台范围与 2026-11-12 官网 FAQ 摘录一致，本次补的是安装方式与硬件、系统要求细节。
 
 ## 只运行 core 时怎样使用
 
@@ -93,6 +97,12 @@ WSL 部署与本机自测记录见 [herdr-core 安装配置与 WSL2/Tailscale �
 
 机制推断：如果电脑上的 agent 使用云端模型，模型请求仍由该电脑上的 agent 发出；手机查看终端不会把 agent 程序迁移到手机。这一项没有通过手机连接实测。
 
+## 官方客户端形态里没有 web
+
+2026-11-28 复核首页、下载页、core 页、herdr-app 与 herdr-core 的 README 和本机 `herdr 0.9.5 --help`：这些入口都没有网页服务或浏览器客户端。桌面 App 是原生窗口程序，手机 App 经 SSH 连 herdr-core；从浏览器使用 Herdr 没有官方产品。`herdr --help` 的命令面没有 web/HTTP 服务命令，`server` 是 headless server、`api` 查看 socket API，均非 HTTP。
+
+官方给出的自建客户端路径是 core 的 OpenRPC 接口：core 页写明「The Herdr app is one client. The same API is open to yours: a phone app, an editor panel, a Stream Deck. hc schema prints it as OpenRPC」；协议经 `hc connect` 在标准输入输出上传输、可套 SSH，接口顺序见上文。T3 Code、Orca、Paseo 由各自 server/runtime/daemon 自带 web 客户端，对比见 [T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界](../agent-development-environments/t3code-orca-herdr-run-surfaces.md)。本机把 Herdr TUI 放进浏览器用的 ttyd/sip 属于终端画面转发，不在官方客户端之列。
+
 ## Android、Google 服务和华为的证据边界
 
 官方提供 Android 应用，Google Play 应用 ID 为 `dev.herdr.app`。
@@ -107,6 +117,7 @@ Google 语音识别是可选方式，手机也支持本地语音模型。这个�
 - Context7 和 DeepWiki 用于辅助核对；以官方原文为依据。
 - 对 Android 内部实现、手机任意界面定制和华为兼容性，保留未知项。
 - 2026-11-17 补手机接入实测：tailnet policy 放行到 `"accept": true`，App 端到端连接未完成；其余命令示例来自文档。
+- 2026-11-28 补桌面平台细节与 web 客户端缺席核查；Herdr App 未实机安装，平台与安装细节来自官方下载页与 README 文字。
 
 ## See Also
 

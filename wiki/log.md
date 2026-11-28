@@ -2914,3 +2914,9 @@
 - Created: wiki/agent-tooling/headroom-savings-money-accounting.md; wiki/omp-config/local-provider-endpoint-switch.md
 - Updated: Headroom 0.42 设置项地图; GPT-6 Luna 与 Sol 三宿主接入记录; OMP web search 自定义 Responses API 端点; OMP /model 模型浏览器角色解析与 kind 过滤; OMO 5.0 独立版与插件版; Copilot 网关 cache retention 字段实测与 warming 不触发根因; OMP 配置语义手册
 - 要点：流式 chat 压缩率低涉及三处设计门及其上游状态；账本将重复历史按新输入价计钱造成 25 倍偏差，目录价与实际扣费也不符；与 SQLite 一对一匹配 30,597 次请求后重算，7 天节省 7.96、30 天 39.56，账本展示 308.11；更正端点归属：8787 为 Headroom proxy、4140 为 copilot-api；记录移除 openai-codex 的三处编辑点与验证；切换时刻为 2026-11-28 14:20:42 +08:00，后续计划按请求时间切分比较。
+
+## [2026-11-28] ingest | Herdr App、herdr-core 与手机：产品关系和终端访问
+- Disposition: Update
+- Raw: raw/herdr-plannotator/2026-11-28-herdr-app-desktop-platforms-and-web-mode-absence.md; raw/terminal-multiplexers/2026-11-28-ttyd-sip-listener-process-recheck.md
+- Updated: Herdr App、herdr-core 与手机：产品关系和终端访问; T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界; ttyd 与 sip 并存部署
+- 要点：Herdr App 平台细节（macOS 仅 Apple silicon，Intel Mac 需源码构建；Linux 需桌面会话与 Vulkan 驱动；Windows 10 1803+、PowerShell 安装）；官方五入口与本机 herdr 0.9.5 --help 核查确认全产品线无 web 客户端，自建客户端走 OpenRPC hc connect；本机复核：ttyd/sip 双入口监听仍在且仅绑回环、随 2026-11-27 启动自动拉起，三个 herdr --session TUI 在 sip 派发 shell 下运行，ttyd 快照时刻无会话进程。

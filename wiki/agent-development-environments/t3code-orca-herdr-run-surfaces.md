@@ -1,8 +1,8 @@
 # T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界
 
-> Sources: T3 Code 官方仓库文档，2026-11-15 查阅；Orca 官方文档与 main 分支源码（vite.web.config.ts）、issue #10687，2026-11-15 查阅；Herdr TUI 官方文档，2026-11-15 查阅；用户本机进程表与 `omp --help` 输出，2026-11-15；三仓 Web 模式功能与安装配置核实，2026-11-24
-> Raw: [T3 运行形态与 ACP](../../raw/agent-development-environments/2026-11-15-t3code-surfaces-and-acp.md); [Orca 运行模式与远程服务](../../raw/agent-development-environments/2026-11-15-orca-run-modes-and-remote-servers.md); [Herdr TUI agent 与会话文档](../../raw/agent-development-environments/2026-11-15-herdr-tui-agent-and-session-docs.md); [ttyd + Herdr 本机浏览器观察](../../raw/agent-development-environments/2026-11-15-ttyd-herdr-local-browser-observation.md); [三仓 Web 模式功能与安装配置](../../raw/agent-development-environments/2026-11-24-t3-paseo-orca-web-mode-survey.md)
-> Updated: 2026-11-24
+> Sources: T3 Code 官方仓库文档，2026-11-15 查阅；Orca 官方文档与 main 分支源码（vite.web.config.ts）、issue #10687，2026-11-15 查阅；Herdr TUI 官方文档，2026-11-15 查阅；用户本机进程表与 `omp --help` 输出，2026-11-15；三仓 Web 模式功能与安装配置核实，2026-11-24；Herdr 官方页面与 herdr-app README 复核、本机 ss/ps 复核快照，2026-11-28
+> Raw: [T3 运行形态与 ACP](../../raw/agent-development-environments/2026-11-15-t3code-surfaces-and-acp.md); [Orca 运行模式与远程服务](../../raw/agent-development-environments/2026-11-15-orca-run-modes-and-remote-servers.md); [Herdr TUI agent 与会话文档](../../raw/agent-development-environments/2026-11-15-herdr-tui-agent-and-session-docs.md); [ttyd + Herdr 本机浏览器观察](../../raw/agent-development-environments/2026-11-15-ttyd-herdr-local-browser-observation.md); [三仓 Web 模式功能与安装配置](../../raw/agent-development-environments/2026-11-24-t3-paseo-orca-web-mode-survey.md); [Herdr App 桌面平台范围与 web 客户端缺席官方摘录](../../raw/herdr-plannotator/2026-11-28-herdr-app-desktop-platforms-and-web-mode-absence.md); [ttyd 与 sip 监听与进程归属复核](../../raw/terminal-multiplexers/2026-11-28-ttyd-sip-listener-process-recheck.md)
+> Updated: 2026-11-28
 
 三个产品都是「控制 agent 的界面 + 保留 agent 执行的环境」，但四层职责的摆放不同：程序本体跑在哪、控制面（server/daemon）在哪、agent 进程在哪、状态存哪。本文只覆盖 T3 Code、Orca 与 Herdr TUI 三家；Herdr 的 app 产品线（herdr-core + 手机）见 [Herdr App、herdr-core 与手机](../herdr-plannotator/herdr-app-core-mobile.md)，图形客户端 Alma 见 [Alma 桌面应用与 Herdr 集成](../herdr-plannotator/alma-desktop-and-herdr-integration.md)。
 
@@ -33,6 +33,8 @@
 
 Orca 手机端官方定位是 remote control：启动/监控/停止会话、终端回放、Chat UI 权限、commit/push/PR、建 workspace，没有完整编辑器。Herdr 两条产品线（TUI 与 app）并存但会话互不相通。
 
+2026-11-28 官方核查把「无 web 客户端」确认到 App 产品线：首页、下载页、core 页、两份 README 与本机 `herdr 0.9.5 --help` 均无 web 入口，官方远程路径是桌面或手机 App 经 SSH 连 herdr-core；T3、Orca、Paseo 的 web 客户端由各自 server/runtime/daemon 提供，Herdr 没有对应层。见 [Herdr App、herdr-core 与手机](../herdr-plannotator/herdr-app-core-mobile.md)。
+
 ## 全本地与账号依赖
 
 三家都能做到无第三方服务器运行，差别在于要不要主动避开云端功能：
@@ -58,7 +60,7 @@ web 客户端页面提供方已证实：web client 只由 runtime 提供，官�
 
 ## ttyd + Herdr TUI 对比 T3 本机网页
 
-用户本机实际运行组合（进程表为证）：ttyd 以 root 运行、绑定 127.0.0.1:7681、`login -f <USER>`，浏览器里是 xterm.js 画面承载 Herdr TUI；同机另有两个 `herdr server` 与一组 `herdr-core` 进程。
+2026-11-15 观察时的本机组合（进程表为证）：ttyd 以 root 运行、绑定 127.0.0.1:7681、`login -f <USER>`，浏览器里是 xterm.js 画面承载 Herdr TUI；同机另有两个 `herdr server` 与一组 `herdr-core` 进程。2026-11-28 复核：7681 与 7682 均在监听、仍仅绑定回环；三个 `herdr --session` TUI（sec、main、mon）全部运行在 sip（7682）派发的 shell 里，快照时刻 ttyd 下没有会话进程；另有三个 `herdr server` 与 `herdr-core serve`。哪个入口当前承载 herdr 会话属时刻性事实，引用时带日期并现场重查，见 [ttyd 与 sip 并存部署](../terminal-multiplexers/ttyd-and-sip-side-by-side.md)。
 
 | | ttyd + Herdr TUI | T3 本机网页 |
 |---|---|---|
