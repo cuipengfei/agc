@@ -2976,3 +2976,10 @@
 - Raw: raw/software-testing/2026-11-28-terminal-color-log-assertions.md
 - Created: wiki/software-testing/terminal-color-log-assertions.md
 - 要点：shouldUseColor 只看 NO_COLOR 与 isTTY；整串日志断言在彩色终端失败，九项都是明文与带 ANSI 的模型名比较；同组两个文件 NO_COLOR=1 时 27 项全过、取消后 18 过 9 败；修复为 test 脚本前置 NO_COLOR=1（e7c29f80），四文件 46 项全过；颜色行为仍由两个参数化用例覆盖。
+
+## [2026-11-28] ingest | Orca 在 Linux/WSL 的安装、serve 与 Web 客户端
+- Disposition: New; Update
+- Raw: raw/agent-development-environments/2026-11-28-orca-linux-distribution-and-serve.md; raw/agent-development-environments/2026-11-28-orca-codebase-config-and-npm.md
+- Created: wiki/agent-development-environments/orca-linux-install-and-web-client.md; wiki/agent-development-environments/orca-codebase-and-distribution.md
+- Updated: T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界
+- 要点：四产物与 web client 归属；serve 默认 6768/回环、Web client URL、localStorage 按 origin；配置在 profile-state.db（SQLite）与 ~/.orca；npm 无官方包；v1.4.281 共 24 个资产，deb 直链 HEAD 200、225,495,568 bytes，Release 页 Assets 懒加载；WSL serve-only 选 deb 的理由与边界。

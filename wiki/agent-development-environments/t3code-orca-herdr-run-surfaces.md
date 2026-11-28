@@ -96,6 +96,8 @@ Orca：Web 客户端连 Remote Orca Server，服务器持有全部状态。官�
 
 共同前提：agent CLI（omp 等）自装并登录，三者只做控制面。均未实机安装；Paseo LICENSE 条款全文未读。
 
+Linux/WSL 的四种发行物、serve 默认值、配置路径与 deb/AppImage 取舍见 [Orca 在 Linux/WSL 的安装、serve 与 Web 客户端](orca-linux-install-and-web-client.md)；代码构成与发行物关系见 [Orca 的实现构成与发行物关系](orca-codebase-and-distribution.md)。
+
 ## 证据边界
 
 - 全部为厂商文档、源码与用户进程表；读取日期 2026-11-15，T3 取 main 分支，Orca/Herdr 取官方文档站当日版本；Orca web client 的判定补源码（`vite.web.config.ts`）与 issue #10687（同日读取）。
@@ -105,6 +107,8 @@ Orca：Web 客户端连 Remote Orca Server，服务器持有全部状态。官�
 
 ## See Also
 
+- [Orca 在 Linux/WSL 的安装、serve 与 Web 客户端](orca-linux-install-and-web-client.md)
+- [Orca 的实现构成与发行物关系](orca-codebase-and-distribution.md)
 - [ADE 候选清单](ade-candidate-inventory.md)
 - [ADE 选型方法](ade-selection-method.md)
 - [Herdr App、herdr-core 与手机](../herdr-plannotator/herdr-app-core-mobile.md)
