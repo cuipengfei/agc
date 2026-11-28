@@ -1,8 +1,8 @@
 # Prompt Cache：前缀匹配与 cache key 的真实分工
 
-> Sources: OpenAI 官方文档与 API Reference, 2026-09-04; Anthropic Claude Platform 文档, 2026-09-04; Claude Code 2.1.261 本机安装直读, 2026-09-05
-> Raw: [OpenAI Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md); [Anthropic Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md); [OMP /tan 命令源码验证摘录](../../raw/omp-background-agents/2026-09-04-tan-command-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md)
-> Updated: 2026-10-19
+> Sources: OpenAI 官方文档与 API Reference, 2026-09-04; Anthropic Claude Platform 文档, 2026-09-04; Claude Code 2.1.261 本机安装直读, 2026-09-05; 本机 Argon 受控对照, 2026-11-28
+> Raw: [OpenAI Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-openai-prompt-caching-docs.md); [Anthropic Prompt Caching 官方文档摘录](../../raw/prompt-caching/2026-09-04-anthropic-prompt-caching-docs.md); [OMP /tan 命令源码验证摘录](../../raw/omp-background-agents/2026-09-04-tan-command-verification.md); [Claude Code 与 Codex 入列](../../raw/ai-coding-agents/2026-09-05-claude-code-and-codex-enrollment.md); [账号绑定与交互标识对照](../../raw/prompt-caching/2026-11-28-argon-account-binding-and-interaction-id.md)
+> Updated: 2026-11-28
 
 ## Overview
 
@@ -62,6 +62,10 @@ OMP 侧的一个加重证据（单源，仅 OMP auth-gateway 源码注释）："
 第二条值得单独注意：本文其余部分讨论的 key、TTL、隔离都在单组织或单用户视角内，而这个开关瞄准的是**不同用户之间**共享静态前缀。Claude Code 自己写明了 tradeoff（模型看不到那些段的原位置），并留了 kill switch。
 
 反向核查：Reasonix `StaticPromptCache`（会话创建时快照 system prompt、不再从磁盘重读）在第一条轴上同轴；为跨用户共享前缀做工程的，已查材料中没有第二家。
+
+## 会话标识不是隔离墙（2026-11-28 实测）
+
+同一账号更换 Copilot token、更换 `vscode-sessionid` 后，重复请求仍命中 3,268 tokens；保持其余条件不变而更换账号，命中归零。这说明缓存归属跟着账号，不跟着进程或会话标识。对 `gemini-4-argon` 做的 5 组配对共 60 次请求中，一个臂全程固定同一个 `x-interaction-id`，另一臂每轮换新 ID，两臂都是 20 次追加请求里 1 次严重掉点、1 次归零，命中比例 0.8931 至 0.8934，未观察到固定标识的优势。该结论覆盖单一模型与单一账号。
 
 ## See Also
 

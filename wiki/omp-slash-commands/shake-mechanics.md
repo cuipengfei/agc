@@ -1,8 +1,8 @@
 # OMP Shake 机制：外科式上下文裁剪
 
 > Sources: OMP upstream source code（本地树 HEAD 73a11421fe，v18.2.11-58）；`@oh-my-pi/pi-coding-agent` 与 `@oh-my-pi/pi-ai` 18.18.3 源码；`copilot-api` 源码；OpenAI Reasoning 指南与 Responses API 参考
-> Raw: [Compaction 阈值与 Shake 机制源码取证](../../raw/omp-config/2026-10-01-compaction-threshold-and-shake-mechanics.md); [OMP /shake thinking 保留提示与 Responses 原生重放取证](../../raw/omp-slash-commands/2026-11-09-omp-shake-thinking-and-responses-replay.md)
-> Updated: 2026-11-09
+> Raw: [Compaction 阈值与 Shake 机制源码取证](../../raw/omp-config/2026-10-01-compaction-threshold-and-shake-mechanics.md); [OMP /shake thinking 保留提示与 Responses 原生重放取证](../../raw/omp-slash-commands/2026-11-09-omp-shake-thinking-and-responses-replay.md); [Argon 掉点字节级取证（含 shake 与保温器交互）](../../raw/prompt-caching/2026-11-28-argon-cache-drop-byte-forensics.md)
+> Updated: 2026-11-28
 
 ## 结论
 
@@ -105,8 +105,19 @@ OMP 把这一条拆成两份存放：`content` 里生成 `type: "thinking"` 块�
 
 代理侧是否真的重试，取决于上游是否返回带 `belong` 的 4xx，与本地的保留或删除没有因果关系。
 
+## 与缓存前缀的交叉影响（2026-11-28 补）
+
+shake 原地改写消息内容，会让上游缓存前缀在改写处截断。
+
+一次实测掉点从 102,728 tokens 降到 51,527 tokens：252 条消息的前 241 条逐字节相同，下标 241 的工具消息内容被替换为占位符，字节数从 294 变为 133。5 秒后的下一次请求恢复到 105,800 tokens。
+
+115 条请求、110 组配对中有 4 次严重掉点，其中三次的首个不一致下标分别为 346、241、559，角色都是 tool、字段都是 `$.content`；另一次从 238,770 降到 0 的 451 条历史消息逐字节相同，与 shake 无关。
+
+闲置压缩入口在裁剪前取消保温器，手动 `/shake` 与 `/drop-images` 没有这一步。缓存变更检测按对象引用比较，原地改写后两侧引用相同，因此检测不到变更，保温器可能继续按改写前的快照重放。该缺陷已作为上游 issue 提交，本地未打补丁。
+
 ## See Also
 
 - [OMP 内置 slash 命令全量枚举](builtin-slash-commands.md) — /shake 行与十问补遗
 - [OMP Compaction 阈值解析机制](../omp-config/compaction-threshold.md) — 何时触发自动压缩
 - [OMP Advisor 上下文标记](../omp-config/advisor-context-markers.md) — advisor 侧 shaken 占位符与 evictStaleResults 的区别
+- [OMP 缓存保温的调度、门槛与实测边界](../prompt-caching/omp-cache-warming-tuning.md)

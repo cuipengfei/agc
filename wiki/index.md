@@ -71,6 +71,7 @@ Agent 周边工具、安装配置与工作流 Skill。
 | [配置清单类 skill 的证据复用与确定性检查](agent-tooling/config-inventory-skill-maintenance.md) | 三层证据（运行时快照不进库、消费方证据进库、翻译层随描述符更新）；只查缺项的复用流程与委派时携带版本来源；五个 skill 的隔离测试规模与断言类型；skills.yml 与 tern-maintain 的触发路径差异；Bun 跳过点开头目录；OMO 的版本证据与未核实标记（安装 5.1.72、73 项中 2 项已核对、schemaMissing 16） | 2026-11-16 |
 | [Clojure CLI 与 uml-viewer 的运行环境](agent-tooling/clojure-cli-and-uml-viewer-runtime.md) | 官方 CLI 与 Ubuntu clojure 启动器差别（clj、-Sdeps 缺席）；rlwrap 只服务 clj；linux-install.sh 1.12.6.1673 的下载物与 SHA-256；headless Zulu 的 libawt_xawt 缺口与 zulu25-ca-jre 修复；全局入口与 get-uml-viewer 的副作用对照；uv 清单只覆盖 Python 工具；Xvfb 1500×920 窗口证据与未验证项 | 2026-11-17 |
 | [Alibaba Open Code Review（ocr）：六阶段审查管线、双模式边界与本机接入](agent-tooling/alibaba-open-code-review.md) | Go 原生 CLI 与六个运行入口（含本地临时目录脚本 `review_pr.py`）；六阶段审查管线中确定性代码与 LLM 的分界（7 步文件筛选、`<4` 文件分组阈值、`50`/`100` 行规划门禁、滑窗行号定位与跨文件转移、五大保护主题豁免的反思过滤）；本仓 3 个提交实测（`.mjs` 与 `test/smoke.js` 排除范围、`.md` 白名单限制、5 类行号纠偏）；Native 与 Delegate 模式差异；本机安装与 8787/4140 网关 `x-session-id={ocr_session_key}` 修复 `ocr llm test` 跨实例 401 | 2026-11-25 |
+| [配置类任务的范围控制与恢复基线](agent-tooling/scope-control-and-verification-discipline.md) | 边界写进子任务描述；仓库副本作恢复基线（5 个文件、48 处角色引用）；长等待设停止条件；统计库字段不等于事实分类；测性能固定真实链路 | 2026-11-28 |
 
 ## ai-coding-agents
 
@@ -394,7 +395,7 @@ OMP 内置 slash 命令的全量枚举与逐命令机制。
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [OMP 内置 slash 命令全表（v18.1.10 快照 82 条；当前 core registry 85 条）](omp-slash-commands/builtin-slash-commands.md) | 口径一 v18.1.10 快照 82 条（core 79 + bundled /green /review + SDK /autoresearch）；口径二 2026-10-10 当前 blob core registry 85 条七类：Mode 21 / Collab 11 / Session 19 / Lifecycle 25 / Marketplace 3 / Skills 1 / Control 5；2026-10-10 补 Mode 类 `/slow` `/ratchet` `/modelpreset` `/effort` | 2026-10-10 |
-| [OMP Shake 机制](omp-slash-commands/shake-mechanics.md) | 无 LLM 外科裁剪：tool result + 消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档、useless 豁免、toolCall 不碰、artifact 占位符可回收；`/shake thinking` 自 18.18.2 起保留原生重放轮次（`openai-responses`、`openai-codex-responses`、默认走 Responses 的 `openrouter`），冷会话按三条件回落，与 copilot-api 的 `belong` 剥除重试无因果 | 2026-11-09 |
+| [OMP Shake 机制](omp-slash-commands/shake-mechanics.md) | 无 LLM 外科裁剪：tool result + 消息内 ≥400 token 围栏/XML 块，散文骨架保留；protectTokens 16000/4000/0 三档、useless 豁免、toolCall 不碰、artifact 占位符可回收；`/shake thinking` 自 18.18.2 起保留原生重放轮次（`openai-responses`、`openai-codex-responses`、默认走 Responses 的 `openrouter`），冷会话按三条件回落，与 copilot-api 的 `belong` 剥除重试无因果；2026-11-28 补原地改写导致前缀截断的实测（102,728→51,527、下标 241 字节 294→133）与保温器未取消的缺口 | 2026-11-28 |
 | [OMP 会话内导航：/branch 与 /tree](omp-slash-commands/branch-vs-tree-navigation.md) | 同一会话文件内的 leaf 移动：`/branch` 回放当前分支最新约 600 条、`a` 展开全部、`f` 过滤、有兄弟分支时左右键导航兄弟条、草稿覆盖编辑器、固定不摘要；`/tree` 五档过滤（`default` 隐藏 `model_change` 等簿记条目）、草稿仅在编辑器为空时回填、摘要受 `branchSummary.enabled` 控制默认关、`ask` 结果重答；双击 Esc 空编辑器按 `doubleEscapeAction` 默认 `rewind`；与 `/fork`、`/resume`、`AgentSession.branch()` 的边界 | 2026-11-03 |
 
 ## omp-ttsr
@@ -433,10 +434,12 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 
 | Article | Summary | Updated |
 |---------|---------|---------|
-| [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界 | 2026-10-19 |
+| [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界；2026-11-28 补账号归属与 x-interaction-id 60 次对照（固定与轮换无差异） | 2026-11-28 |
 | [Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复](prompt-caching/gemini-38-flash-copilot-cache-drop.md) | 暂停约五分钟后缓存归零、下一轮恢复的直连后端复现与逐跳排除；归因倾向 Google 缓存策略，接入路径未排除 | 2026-10-19 |
-| [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](prompt-caching/gemini-4-argon-copilot-cache-drop.md) | Argon 仅支持隐式缓存且不支持显式缓存；社区报告经 OpenCode Go、AI Studio、Vertex AI 直连均存在缓存命中不稳定与掉点；用户因额外费用投诉；本机 copilot-api 对 Gemini family 自动补消息级缓存标记（前 2 条 system + 最后 1 条非 system），同账户成对对照无稳定收益，跨账户同正文请求会互相命中 | 2026-11-01 |
-| [Copilot 网关 cache retention 字段实测与 warming 不触发根因](prompt-caching/copilot-gateway-cache-retention-forensics.md) | 8787 Responses 通道 7 个成功响应模型的 prompt_cache_retention 回显（6 GPT `24h`、mai-code `in_memory`）；gpt-6-luna 单模型双请求 usage 从写入转命中（cache_write 4853→cached 4853），TTL/账单/字段来源未验证；OMP cacheWarming 对无 promptCache 声明的自定义模型不触发，固定 `long: 86400` 首次调度即触发一小时安全窗停止；2026-11-28 补 openai-codex 移除 | 2026-11-28 |
+| [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](prompt-caching/gemini-4-argon-copilot-cache-drop.md) | Argon 仅支持隐式缓存且不支持显式缓存；社区报告经 OpenCode Go、AI Studio、Vertex AI 直连均存在缓存命中不稳定与掉点；用户因额外费用投诉；本机 copilot-api 对 Gemini family 自动补消息级缓存标记（前 2 条 system + 最后 1 条非 system），同账户成对对照无稳定收益，跨账户同正文请求会互相命中；2026-11-28 字节级取证 115 条请求/110 组配对/4 次严重掉点，3 次首改位置为 tool 内容、1 次纯归零无改写；缓存跟随账号，交互标识无影响，跨账户共享缓存的判断撤回 | 2026-11-28 |
+| [Copilot 网关 cache retention 字段实测与保温触发条件](prompt-caching/copilot-gateway-cache-retention-forensics.md) | 8787 Responses 通道 7 个成功响应模型的 prompt_cache_retention 回显（6 GPT `24h`、mai-code `in_memory`）；gpt-6-luna 单模型双请求 usage 从写入转命中（cache_write 4853→cached 4853），TTL/账单/字段来源未验证；OMP cacheWarming 对无 promptCache 声明的自定义模型不触发，固定 `long: 86400` 首次调度即触发一小时安全窗停止；2026-11-28 补 openai-codex 移除；2026-11-28 补 gpt-6.1-sol 间隔统计（6,612 条记录、56 对长间隔样本、干净样本 22.038 分钟命中 0.9924 与 51.5967 分钟归零）；2026-11-28 已为 5 个现役 GPT 补上 promptCache 1500 并启用保温 | 2026-11-28 |
+| [OMP 缓存保温的调度、门槛与实测边界](prompt-caching/omp-cache-warming-tuning.md) | promptCache 按寿命 90% 触发、30 分钟闲置上限、2,000 秒以上不运行；宿主链路 7 次连续命中 102,728 tokens，直连后端首发未命中计费 0.038708；费用门槛只拦后续请求 | 2026-11-28 |
+| [copilot_cache_control 的选点规则与 Gemini 适用性](prompt-caching/copilot-cache-control-breakpoint-placement.md) | 五个客户端选点对比，本机与 caozhiyuan 版同源；Gemini 只跑隐式缓存，标记无受控收益证据，无标记也可能命中 | 2026-11-28 |
 
 ## keyboard-input
 

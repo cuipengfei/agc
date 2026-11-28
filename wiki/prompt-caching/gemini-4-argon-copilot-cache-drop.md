@@ -1,8 +1,8 @@
 # Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
 
-> Sources: Google 官方论坛, 2026-10-14; Google Cloud 官方文档, 2026-10-13; googleapis/python-genai issues, 2025-12 至 2026-09; OpenCode issues, 2026-08 至 2026-10; 本机 copilot-api 源码与真实请求实测, 2026-10-31
-> Raw: [Argon 社区报告与官方回应](../../raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md); [三种缓存模式官方文档](../../raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md); [Copilot Gemini 缓存标记注入与实测要点](../../raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md)
-> Updated: 2026-11-01
+> Sources: Google 官方论坛, 2026-10-14; Google Cloud 官方文档, 2026-10-13; googleapis/python-genai issues, 2025-12 至 2026-09; OpenCode issues, 2026-08 至 2026-10; 本机 copilot-api 源码与真实请求实测, 2026-10-31; 本机 8787 完整消息录制与受控对照, 2026-11-28
+> Raw: [Argon 社区报告与官方回应](../../raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md); [三种缓存模式官方文档](../../raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md); [Copilot Gemini 缓存标记注入与实测要点](../../raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md); [账号绑定与交互标识对照](../../raw/prompt-caching/2026-11-28-argon-account-binding-and-interaction-id.md); [掉点字节级取证](../../raw/prompt-caching/2026-11-28-argon-cache-drop-byte-forensics.md)
+> Updated: 2026-11-28
 
 ## Overview
 
@@ -49,9 +49,20 @@ Google 官方文档对 Gemini 上下文缓存三种模式的定义：
 
 `copilot-api` 在发往 Copilot `/chat/completions` 前，对被 `state.models` 判定为 Gemini family 的模型自动补消息级缓存标记：前 2 条非空 `system` 加最后 1 条非空非 `system`，已有标记不覆盖。Chat Completions、Messages 的 Chat fallback、Responses 的 Chat fallback 共用同一实现。
 
-同账户内的成对对照没有出现稳定方向的差异。跨账户发送相同正文时观察到缓存互相命中，两组因此不再是独立对照，看到的费用差异不能归因于标记。连续请求探针里，工具定义与顶层字段的哈希恒定，前缀改写不是这组请求的变量。
+同账户内的成对对照没有出现稳定方向的差异。跨账户发送相同正文时观察到缓存互相命中，两组因此不再是独立对照，看到的费用差异不能归因于标记。
+
+> **Status: Outdated** (2026-11-28)
+> 跨账户共享缓存的判断已撤回：五端口轮换请求全部 0 命中，复访各实例才各自命中，说明缓存跟随 GitHub 账号。同账号更换 token 与 vscode-sessionid 后仍命中 3,268 tokens。
+
+连续请求探针里，工具定义与顶层字段的哈希恒定，前缀改写不是这组请求的变量。
 
 结论：标记能否带来收益，需要账户内、前缀受控的对照才能判定；现有证据既不足以支持它提高命中，也不足以支持它在同账户内增加费用。
+
+## 账号绑定与受控对照（2026-11-28）
+
+五端口 4142–4146 各绑一个不同账号，轮换时五次全部 0 命中，复访时 4146 命中 3,181 tokens、4142 命中 2,833 tokens，复访量均比首轮输入少 2,049 tokens；同账号更换 token 与会话标识仍命中 3,268 tokens，换账号归零。`x-interaction-id` 固定与轮换各 20 次追加请求，两臂都是 1 次严重掉点、1 次归零，命中比例 0.8931 至 0.8934，未观察到固定标识的优势。
+
+字节级取证覆盖 115 条请求、110 组配对，其中 4 次严重掉点、105 组保持完整前缀。四次掉点中三次的首个不一致下标分别为 346、241、559，角色都是 tool、字段都是 `$.content`；`238,770 → 0` 那次的 451 条历史消息逐字节相同。`102,728 → 51,527` 那次的前缀在第 241 条下标之前完全一致，该条工具内容被 `/shake` 替换为占位符，字节从 294 变为 133，5 秒后恢复到 105,800。
 
 ## See Also
 
@@ -59,3 +70,5 @@ Google 官方文档对 Gemini 上下文缓存三种模式的定义：
 - [Prompt Cache：前缀匹配与 cache key 的真实分工](cache-key-and-prefix-matching.md)
 - [Copilot 网关 cache retention 字段实测与 warming 不触发根因](copilot-gateway-cache-retention-forensics.md)
 - [Copilot Chat 生成失败：跨协议传递、用量保留与 OMP 重试边界](../model-gateway-mismatch/copilot-chat-generation-failure-and-omp-retry.md) — 同一模型的流内 `finish_reason: "error"` 与网关侧的失败传递
+- [OMP 缓存保温的调度、门槛与实测边界](omp-cache-warming-tuning.md)
+- [copilot_cache_control 的选点规则与 Gemini 适用性](copilot-cache-control-breakpoint-placement.md)

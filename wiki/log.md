@@ -2920,3 +2920,47 @@
 - Raw: raw/herdr-plannotator/2026-11-28-herdr-app-desktop-platforms-and-web-mode-absence.md; raw/terminal-multiplexers/2026-11-28-ttyd-sip-listener-process-recheck.md
 - Updated: Herdr App、herdr-core 与手机：产品关系和终端访问; T3 Code、Orca 与 Herdr TUI 的运行形态和本地化边界; ttyd 与 sip 并存部署
 - 要点：Herdr App 平台细节（macOS 仅 Apple silicon，Intel Mac 需源码构建；Linux 需桌面会话与 Vulkan 驱动；Windows 10 1803+、PowerShell 安装）；官方五入口与本机 herdr 0.9.5 --help 核查确认全产品线无 web 客户端，自建客户端走 OpenRPC hc connect；本机复核：ttyd/sip 双入口监听仍在且仅绑回环、随 2026-11-27 启动自动拉起，三个 herdr --session TUI 在 sip 派发 shell 下运行，ttyd 快照时刻无会话进程。
+
+## [2026-11-28] ingest | Gemini 4 Argon 缓存归属：账号绑定与 x-interaction-id 对照
+- Disposition: Update
+- Raw: raw/prompt-caching/2026-11-28-argon-account-binding-and-interaction-id.md
+- Updated: Prompt Cache：前缀匹配与 cache key 的真实分工; Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
+- 要点：五端口轮换全部 0 命中，复访 4146 命中 3,181、4142 命中 2,833，复访量均比首轮输入少 2,049；同账号更换 token 与会话标识仍命中 3,268，换账号归零；5 组 60 次固定与轮换各 1 次严重掉点、命中比例 0.8931 至 0.8934；跨账号共享缓存的旧判断撤回。
+
+## [2026-11-28] ingest | Argon 掉点的字节级取证
+- Disposition: Update
+- Raw: raw/prompt-caching/2026-11-28-argon-cache-drop-byte-forensics.md
+- Updated: Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈; OMP Shake 机制
+- 要点：115 条请求、110 组配对、4 次严重掉点；三次首个不一致下标为 346、241、559，角色都是 tool、字段都是 $.content；238,770 → 0 那次的 451 条历史逐字节相同；102,728 → 51,527 那次下标 241 的字节从 294 变为 133、5 秒后恢复到 105,800；并发 8 次压缩省 17,205、缓存 8,486 至 8,531；279 MB 录制用完即清；手动 /shake 与 /drop-images 未取消保温器，已报上游。
+
+## [2026-11-28] ingest | OMP 缓存保温的调度、门槛与实测边界
+- Disposition: New; Update
+- Raw: raw/prompt-caching/2026-11-28-omp-cache-warmer-live-behavior.md
+- Created: wiki/prompt-caching/omp-cache-warming-tuning.md
+- Updated: Copilot 网关 cache retention 字段实测与 warming 不触发根因; Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
+- 要点：promptCache 按寿命 90% 触发，1,500 秒对应 1,350,000 毫秒；30 分钟闲置上限，2,000 秒以上不运行；宿主链路 7 次连续命中 102,728、单次 0.0143808、累计 0.1006656；直连后端 240.327 秒后首发未命中、耗时 271.859 秒、计费 0.038708；三项停止条件按发送前估算。
+
+## [2026-11-28] ingest | GPT-6.1 Sol 的命中与请求间隔
+- Disposition: Update
+- Raw: raw/copilot-gateway/2026-11-28-gpt-sol-cache-interval-from-usage-history.md
+- Updated: Copilot 网关 cache retention 字段实测与 warming 不触发根因
+- 要点：统计库 6,612 条（main 5,630）止于 2026-11-03，原始会话补到 2026-11-19 共 7,719 条（7,501 对话 + 218 辅助）；203 条标为 main 的实为辅助调用；56 对长间隔样本分桶；无中途活动样本两组：22.038 分钟命中 153,377（0.9924）、51.5967 分钟归零。
+
+## [2026-11-28] ingest | 4140 目录快照与 OMP 退役模型清理
+- Disposition: New
+- Raw: raw/copilot-gateway/2026-11-28-4140-model-catalog-snapshot.md
+- Updated: Copilot 网关 cache retention 字段实测与 warming 不触发根因
+- 要点：目录 14 项，5 个 GPT Responses、2 个 Gemini、2 个决策接口；删除 5 个不在目录的模型与 fallbackChains.web 中一行；5 个现役 GPT 加 promptCache short/long 1500；扩展放行 c8787 下 gpt- 且 openai-responses 的模型；4 项测试与 models/fallback 校验通过。
+
+## [2026-11-28] ingest | copilot_cache_control 的跨项目选点
+- Disposition: New; Update
+- Raw: raw/prompt-caching/2026-11-28-copilot-cache-control-cross-project-placement.md
+- Created: wiki/prompt-caching/copilot-cache-control-breakpoint-placement.md
+- Updated: Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈; Copilot 网关 cache retention 字段实测与 warming 不触发根因
+- 要点：本机与 caozhiyuan 版同源；VS Code 四标记自尾向前；CodeCompanion 按长度取四；ghcp_proxy 保留客户端标记；无标记时 217,526/219,575 仍命中、长期命中率 27%；无受控收益证据；四标记规划只到规格与票据。
+
+## [2026-11-28] ingest | 配置类任务的范围控制与恢复基线
+- Disposition: New
+- Raw: raw/agent-tooling/2026-11-28-scope-control-and-verification-lessons.md
+- Created: wiki/agent-tooling/scope-control-and-verification-discipline.md
+- 要点：误扩到三个宿主，恢复 5 个仓库文件与 48 处角色引用，仓库状态回净；Prime 一处凭据对应关系无法证明，记为未解决；纪律：边界写进子任务、仓库副本作基线、长等待设停止条件、统计字段不等于分类、测性能固定真实链路。
