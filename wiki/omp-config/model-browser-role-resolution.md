@@ -1,8 +1,8 @@
 # OMP /model 模型浏览器：角色解析与 kind 过滤
 
 > Sources: `can1357/oh-my-pi`（fork 已同步至 upstream/main `0f9139f546`）、本机 `pi-coding-agent` 安装版; 本机 v19.1.1 @smol 消费方源码与配置, 2026-11-23
-> Raw: [model-browser 角色解析与 kind 过滤取证](../../raw/omp-config/2026-09-23-model-browser-role-resolution.md); [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md)
-> Updated: 2026-11-23
+> Raw: [model-browser 角色解析与 kind 过滤取证](../../raw/omp-config/2026-09-23-model-browser-role-resolution.md); [OMP @smol 角色消费方与本机 gpt-6.1-terra 配置](../../raw/omp-config/2026-11-23-smol-role-consumers-and-terra-config.md); [OMP 本机 provider 端点切换](../../raw/omp-config/2026-11-28-local-provider-8787-to-4140-switch.md)
+> Updated: 2026-11-28
 
 `/model` 打开 `ModelHub`（`packages/tui/src/overlays/model-hub.ts`）。三栏：左侧会话/分支与后台 agent 列表；中间 provider 侧边栏（`All models N` 为当前范围模型数）；右侧角色列表。
 
@@ -24,7 +24,7 @@
 
 `model-browser.ts:183-195`：配置串非空就先记为「已配置」，解析不出模型时该角色被留空渲染成 `—`，且因已记为「已配置」，后续自动兜底挑选段（`:200`）被跳过。这就是「明明在 config 里配了却显示空」的根因。
 
-本机实证：WEB=`openai-codex/gpt-5.6-luna`、JUDGE=`typesafe-zen/jev-1.13`（两者都是自定义 provider 里的真实模型）原先都显示 `—`，根因是这两个 provider 都不在 `enabledModels` 里。把 `openai-codex/*`、`typesafe-zen/*` 加入 `enabledModels` 后重进会话，两个角色正常解析。
+本机实证：WEB=`openai-codex/gpt-5.6-luna`、JUDGE=`typesafe-zen/jev-1.13`（两者都是自定义 provider 里的真实模型）原先都显示 `—`，根因是这两个 provider 都不在 `enabledModels` 里。把 `openai-codex/*`、`typesafe-zen/*` 加入 `enabledModels` 后重进会话，两个角色正常解析。2026-11-28 起 `openai-codex` provider 已移除，WEB 角色现为 `web/firecrawl`；该段记录的是角色解析机制的历史实例。
 
 ## 全部内置角色（15 个，`model-roles.ts:54-88`）
 

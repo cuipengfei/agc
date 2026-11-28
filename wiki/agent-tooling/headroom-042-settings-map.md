@@ -1,8 +1,8 @@
 # Headroom 0.42.0 设置项地图：生效顺序、失效项与保护名单匹配
 
 > Sources: 本机 headroom-ai 0.42.0 源码与运行中服务实测, 2026-11-06
-> Raw: [2026-11-06-headroom-042-settings-survey](../../raw/agent-tooling/2026-11-06-headroom-042-settings-survey.md)
-> Updated: 2026-11-06
+> Raw: [2026-11-06-headroom-042-settings-survey](../../raw/agent-tooling/2026-11-06-headroom-042-settings-survey.md); [2026-11-28 Headroom 节省金额重算](../../raw/agent-tooling/2026-11-28-headroom-savings-repricing-audit.md)
+> Updated: 2026-11-28
 
 ## Overview
 
@@ -64,6 +64,8 @@
 ## 观测口径
 
 `/stats` 的 savings ledger 与 `headroom savings` 只累计 HTTP 请求，读数停在一处旧记录上的 50 个请求。OMP 走 WebSocket，不计入。按日志实算 2026-10-31 至 11-06 共 3,930 个请求、627,159,254 input token、压缩节省 11,030,341（1.76%），缓存读取占 91.2%。
+
+同一代理的两条通道差异明显：chat 节省 0.81%（51% 的请求节省为零），`/v1/responses` 节省 4.50%（24% 为零）。chat 侧受三处门限制：前缀冻结、读文件结果在保护名单中、流式请求不注入取回工具；2,589 条 chat 请求中 2,579 条为流式。展示的美元金额另有一层偏差，详见 [Headroom 压缩率与节省金额的计价边界](headroom-savings-money-accounting.md)。
 
 状态码需按事件行解析才有意义：200 共 4,273；500 共 123（`/v1/responses` 97、`/v1/chat/completions` 26）；204 共 27；400 共 20；404 共 18；304 共 10；408 共 5；413 共 2；502 共 2。全文关键字命中的「429」「5xx」「timeout」会把 token 数与阈值文本算进去。
 

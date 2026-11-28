@@ -1,8 +1,8 @@
 # Copilot 网关 cache retention 字段实测与 warming 不触发根因
 
 > Sources: 本机 8787 API 实测, 2026-11-03; OMP 18.16.0 源码取证, 2026-11-03; OMP 会话后续核查与离线运行, 2026-11-04
-> Raw: [Responses cache retention 字段实测与 gpt-6-luna 命中探针](../../raw/copilot-gateway/2026-11-03-responses-cache-retention-field-probe.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md)
-> Updated: 2026-11-04
+> Raw: [Responses cache retention 字段实测与 gpt-6-luna 命中探针](../../raw/copilot-gateway/2026-11-03-responses-cache-retention-field-probe.md); [OMP Provider 协议层配置项源码取证](../../raw/omp-config/2026-11-03-provider-protocol-config-semantics.md); [OMP Provider 配置说法核查与离线运行取证](../../raw/omp-config/2026-11-04-provider-config-claim-audit-and-runtime-probes.md); [OMP 本机 provider 端点切换](../../raw/omp-config/2026-11-28-local-provider-8787-to-4140-switch.md)
+> Updated: 2026-11-28
 
 ## Overview
 
@@ -36,7 +36,7 @@ Chat Completions 通道对照：2 个 Gemini 返回 200，响应体不含 `promp
 
 OMP 的 cache warmer 只对声明了 `promptCache` 寿命的模型调度刷新。TTL 来自 `model.promptCache[tier]`（catalog 规则 `prompt-cache` 轴或 models.yml `promptCache` 字段），无声明则 `getPromptCacheTtlMs` 返回 undefined，warmer 不调度。
 
-catalog 规则里目前只有 Anthropic、Factory Droid、Antigravity 声明了 `prompt-cache` 生命周期，OpenAI 类没有。8787 的三个 provider（`c8787`、`c8787-chat`、`openai-codex`）的模型均无 models.yml `promptCache` 字段。
+catalog 规则里目前只有 Anthropic、Factory Droid、Antigravity 声明了 `prompt-cache` 生命周期，OpenAI 类没有。8787 的两个 provider（`c8787`、`c8787-chat`）的模型均无 models.yml `promptCache` 字段；`openai-codex` 已于 2026-11-28 移除。
 
 响应 body 返回的 `prompt_cache_retention: "24h"` 是档位回显，不回填 OMP 的 TTL 元数据。要让 8787 模型参与 warming，需在 models.yml 显式写 `promptCache`，但固定 `long: 86400` 时 warmer 首次调度即触发一小时安全窗并停止，不能作为启用方法；上游真实 TTL 未确认。
 

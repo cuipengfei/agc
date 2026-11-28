@@ -1,8 +1,8 @@
 # GPT-6 Luna 与 Sol（8787 Copilot 网关）三宿主接入记录
 
 > Sources: 本机 8787/4140 `/v1/models` 实测与三宿主配置校验, 2026-09-25; OMO native models.json 校验, 2026-09-27; 8787 `/v1/models` 复测, 2026-10-01
-> Raw: [gpt6-three-host-config](../../raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [8787 实测 limits 与 maxTokens 调整](../../raw/copilot-gateway/2026-10-01-v1-models-live-limits.md)
-> Updated: 2026-10-01
+> Raw: [gpt6-three-host-config](../../raw/copilot-gateway/2026-09-25-gpt6-three-host-config.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [8787 实测 limits 与 maxTokens 调整](../../raw/copilot-gateway/2026-10-01-v1-models-live-limits.md); [OMP 本机 provider 端点切换](../../raw/omp-config/2026-11-28-local-provider-8787-to-4140-switch.md)
+> Updated: 2026-11-28
 
 ## 一句话
 
@@ -45,6 +45,9 @@ OMP 进程在启动时读取 `models.yml`；当前 OMP 会话需重启后才能�
 ## OpenCode provider `4140` 实指 8787
 
 OpenCode 里名为 `4140` 的 provider，其 `baseURL` 指向 `http://localhost:8787/v1`——`4140` 只是 provider 标识。上文两个 `/v1/models` 端点返回同一份 33102 字节目录、`cmp` 一致，也印证 8787 与 4140 是同一网关的两个入口。
+
+> **Status: Outdated** (2026-11-28)
+> 8787 是 Headroom proxy，4140 是 copilot-api；目录字节相同是因为转发，「同一网关的两个入口」不成立。
 
 ## OMO native 作为第四宿主（2026-09-27）
 

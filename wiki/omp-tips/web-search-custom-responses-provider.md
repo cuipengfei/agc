@@ -1,8 +1,8 @@
 # OMP web search: 自定义 Responses API 端点接入
 
 > Sources: OMP pi-coding-agent dist/cli.js (installed); copilot-api src/; headroom-ai site-packages; live probe (2026-09-19)
-> Raw: [codex-provider-responses-api-mechanism](../../raw/omp-tips/2026-09-19-codex-provider-responses-api-mechanism.md)
-> Updated: 2026-09-19
+> Raw: [codex-provider-responses-api-mechanism](../../raw/omp-tips/2026-09-19-codex-provider-responses-api-mechanism.md); [OMP 本机 provider 端点切换](../../raw/omp-config/2026-11-28-local-provider-8787-to-4140-switch.md)
+> Updated: 2026-11-28
 
 OMP 的 codex web search provider 支持通过自定义 `baseUrl` 接入任何兼容 `/codex/responses` 路径和 Codex 请求形状的 Responses API 端点。这是源码中明确设计的 seam（`codex.d.ts` 原文："Uses the configured Codex Responses transport for proxy/API-key setups and the official ChatGPT backend for OAuth logins"），不是 hack。
 
@@ -44,6 +44,9 @@ OMP → headroom (8787) → copilot-api (4140) → Copilot 上游，2026-09-19 �
 - headroom 注册了 `/v1/codex/responses` 路由并归一化为 `/v1/responses`
 - copilot-api 默认不剥离 `web_search`（`useResponsesApiWebSearch` 默认 true）
 - 实测返回完整 `web_search_call` 事件序列
+
+> **Status: Outdated** (2026-11-28)
+> 本机该实例已撤：`openai-codex` provider 块、`enabledModels` 条目与 `PI_CODEX_WEB_SEARCH_MODEL` 环境变量均已删除；机制与前提条件仍有效。
 
 ## 配置步骤
 

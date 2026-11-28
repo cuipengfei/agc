@@ -2907,3 +2907,10 @@
 - Disposition: Update
 - Raw: raw/copilot-gateway/2026-11-28-telemetry-enhancement-and-live-verification.md
 - Updated: Copilot 遥测的两条通道与判定差异; 遥测接受的黑盒验证
+
+## [2026-11-28] ingest | Headroom 压缩率与节省金额的计价边界
+- Disposition: New; Update
+- Raw: raw/agent-tooling/2026-11-28-headroom-savings-repricing-audit.md; raw/omp-config/2026-11-28-local-provider-8787-to-4140-switch.md
+- Created: wiki/agent-tooling/headroom-savings-money-accounting.md; wiki/omp-config/local-provider-endpoint-switch.md
+- Updated: Headroom 0.42 设置项地图; GPT-6 Luna 与 Sol 三宿主接入记录; OMP web search 自定义 Responses API 端点; OMP /model 模型浏览器角色解析与 kind 过滤; OMO 5.0 独立版与插件版; Copilot 网关 cache retention 字段实测与 warming 不触发根因; OMP 配置语义手册
+- 要点：流式 chat 压缩率低涉及三处设计门及其上游状态；账本将重复历史按新输入价计钱造成 25 倍偏差，目录价与实际扣费也不符；与 SQLite 一对一匹配 30,597 次请求后重算，7 天节省 7.96、30 天 39.56，账本展示 308.11；更正端点归属：8787 为 Headroom proxy、4140 为 copilot-api；记录移除 openai-codex 的三处编辑点与验证；切换时刻为 2026-11-28 14:20:42 +08:00，后续计划按请求时间切分比较。

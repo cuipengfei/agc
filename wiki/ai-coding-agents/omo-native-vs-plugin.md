@@ -1,8 +1,8 @@
 # OMO 5.0：独立版（omo-ai）与插件版（oh-my-openagent）
 
 > Sources: oh-my-openagent v5.0.0 release notes（code-yeongyu，2026-09-26）; npm registry（oh-my-openagent、omo-ai）; 本机实测（omo-ai 5.0.0 / engine senpi 2026.9.26），2026-09-27; oh-my-openagent dev 源码核对，2026-10-27
-> Raw: [OMO 5.0 独立版与插件版区别](../../raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md); [omo 命令面与首启迁移观察](../../raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md); [Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [Codex 特性门与 Code Mode 直读](../../raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md); [OMO mass ulw 独立版专属证据](../../raw/oh-my-openagent-omo/2026-10-27-mass-ulw-native-only.md)
-> Updated: 2026-10-27
+> Raw: [OMO 5.0 独立版与插件版区别](../../raw/oh-my-openagent-omo/2026-09-27-omo-5.0-native-vs-plugin.md); [omo 命令面与首启迁移观察](../../raw/oh-my-openagent-omo/2026-09-27-omo-cli-command-surface.md); [Kibitzer/Dream 机制与模型路由直读证据](../../raw/oh-my-openagent-omo/2026-09-27-kibitzer-dream-mechanisms.md); [OMO native 模型配置结构与 senpi adapter 集合](../../raw/oh-my-openagent-omo/2026-09-27-omo-native-model-config.md); [Codex 特性门与 Code Mode 直读](../../raw/ai-coding-agents/2026-09-05-codex-features-and-code-mode.md); [OMO mass ulw 独立版专属证据](../../raw/oh-my-openagent-omo/2026-10-27-mass-ulw-native-only.md); [OMP 本机 provider 端点切换](../../raw/omp-config/2026-11-28-local-provider-8787-to-4140-switch.md)
+> Updated: 2026-11-28
 
 术语：**插件版** = 装进宿主里跑的扩展；**独立版** = 自带引擎的独立命令行程序；**lane / category** = omo 按任务类型自动挑模型的通道；**bin** = npm 包声明的可执行命令名。
 
@@ -55,6 +55,10 @@ release notes 给出冷启动 5.8s→850ms、每轮上下文约插件版 0.39x�
 **baseUrl 必须带 `/v1`。** senpi 内置 OpenAI SDK 不自动补 `/v1`，追加 `/responses`、`/chat/completions` 前直接用 baseUrl，所以 openai 系 provider 的 baseUrl 写 `http://localhost:8787/v1`；anthropic-messages 的 baseUrl 去尾 `/v1`。这与 [pi-ai 不补 `/v1`](../model-gateway-mismatch/sdk-strictness-on-nonstandard-responses-frames.md) 是同一机制在 fork 上的实例。
 
 **8787 == 4140。** opencode 名为 `4140` 的 provider 只是 provider 标识，其 baseURL 指向 `localhost:8787`。
+
+### Status: Outdated（端点并不相等，2026-11-28）
+
+只有「opencode 的 `4140` provider 指向 8787」成立；8787 是 Headroom proxy，4140 是 copilot-api，两者「相等」的表述作废。
 
 ### Status: Unverified（生效来源与连通）
 
