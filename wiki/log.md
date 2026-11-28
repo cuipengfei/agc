@@ -2964,3 +2964,15 @@
 - Raw: raw/agent-tooling/2026-11-28-scope-control-and-verification-lessons.md
 - Created: wiki/agent-tooling/scope-control-and-verification-discipline.md
 - 要点：误扩到三个宿主，恢复 5 个仓库文件与 48 处角色引用，仓库状态回净；Prime 一处凭据对应关系无法证明，记为未解决；纪律：边界写进子任务、仓库副本作基线、长等待设停止条件、统计字段不等于分类、测性能固定真实链路。
+
+## [2026-11-28] ingest | 四标记策略的本机实现与官方边界
+- Disposition: Update
+- Raw: raw/prompt-caching/2026-11-28-gemini-chat-four-marker-implementation.md
+- Updated: copilot_cache_control 的选点规则与 Gemini 适用性; Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
+- 要点：Gemini 改用四标记逆扫，非 Gemini 的 Messages→Chat 保持 2+1；策略参数在首次应用时确定；已有标记计入预算且重放幂等；官方在已标记 user 上跳过导致标志位不重置、满额仍补第 5 个，本机两处都不同；提交 6945dda1 共 7 文件，497 项相关测试通过。
+
+## [2026-11-28] ingest | 终端颜色与日志断言的测试确定性
+- Disposition: New
+- Raw: raw/software-testing/2026-11-28-terminal-color-log-assertions.md
+- Created: wiki/software-testing/terminal-color-log-assertions.md
+- 要点：shouldUseColor 只看 NO_COLOR 与 isTTY；整串日志断言在彩色终端失败，九项都是明文与带 ANSI 的模型名比较；同组两个文件 NO_COLOR=1 时 27 项全过、取消后 18 过 9 败；修复为 test 脚本前置 NO_COLOR=1（e7c29f80），四文件 46 项全过；颜色行为仍由两个参数化用例覆盖。

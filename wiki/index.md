@@ -436,10 +436,10 @@ Provider prompt cache 的命中条件、cache key 路由语义、TTL 与隔离�
 |---------|---------|---------|
 | [Prompt Cache：前缀匹配与 cache key 的真实分工](prompt-caching/cache-key-and-prefix-matching.md) | 前缀精确匹配是命中必要条件；key 是概率性路由提示，不制造不保证命中、非安全边界；2026-11-28 补账号归属与 x-interaction-id 60 次对照（固定与轮换无差异） | 2026-11-28 |
 | [Gemini 3.8 Flash 经 Copilot 的缓存归零与恢复](prompt-caching/gemini-38-flash-copilot-cache-drop.md) | 暂停约五分钟后缓存归零、下一轮恢复的直连后端复现与逐跳排除；归因倾向 Google 缓存策略，接入路径未排除 | 2026-10-19 |
-| [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](prompt-caching/gemini-4-argon-copilot-cache-drop.md) | Argon 仅支持隐式缓存且不支持显式缓存；社区报告经 OpenCode Go、AI Studio、Vertex AI 直连均存在缓存命中不稳定与掉点；用户因额外费用投诉；本机 copilot-api 对 Gemini family 自动补消息级缓存标记（前 2 条 system + 最后 1 条非 system），同账户成对对照无稳定收益，跨账户同正文请求会互相命中；2026-11-28 字节级取证 115 条请求/110 组配对/4 次严重掉点，3 次首改位置为 tool 内容、1 次纯归零无改写；缓存跟随账号，交互标识无影响，跨账户共享缓存的判断撤回 | 2026-11-28 |
+| [Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈](prompt-caching/gemini-4-argon-copilot-cache-drop.md) | Argon 仅支持隐式缓存且不支持显式缓存；社区报告经 OpenCode Go、AI Studio、Vertex AI 直连均存在缓存命中不稳定与掉点；用户因额外费用投诉；本机 copilot-api 对 Gemini family 自动补消息级缓存标记（2026-11-28 起为四标记逆扫），同账户成对对照无稳定收益，跨账户同正文请求会互相命中；2026-11-28 字节级取证 115 条请求/110 组配对/4 次严重掉点，3 次首改位置为 tool 内容、1 次纯归零无改写；缓存跟随账号，交互标识无影响，跨账户共享缓存的判断撤回 | 2026-11-28 |
 | [Copilot 网关 cache retention 字段实测与保温触发条件](prompt-caching/copilot-gateway-cache-retention-forensics.md) | 8787 Responses 通道 7 个成功响应模型的 prompt_cache_retention 回显（6 GPT `24h`、mai-code `in_memory`）；gpt-6-luna 单模型双请求 usage 从写入转命中（cache_write 4853→cached 4853），TTL/账单/字段来源未验证；OMP cacheWarming 对无 promptCache 声明的自定义模型不触发，固定 `long: 86400` 首次调度即触发一小时安全窗停止；2026-11-28 补 openai-codex 移除；2026-11-28 补 gpt-6.1-sol 间隔统计（6,612 条记录、56 对长间隔样本、干净样本 22.038 分钟命中 0.9924 与 51.5967 分钟归零）；2026-11-28 已为 5 个现役 GPT 补上 promptCache 1500 并启用保温 | 2026-11-28 |
 | [OMP 缓存保温的调度、门槛与实测边界](prompt-caching/omp-cache-warming-tuning.md) | promptCache 按寿命 90% 触发、30 分钟闲置上限、2,000 秒以上不运行；宿主链路 7 次连续命中 102,728 tokens，直连后端首发未命中计费 0.038708；费用门槛只拦后续请求 | 2026-11-28 |
-| [copilot_cache_control 的选点规则与 Gemini 适用性](prompt-caching/copilot-cache-control-breakpoint-placement.md) | 五个客户端选点对比，本机与 caozhiyuan 版同源；Gemini 只跑隐式缓存，标记无受控收益证据，无标记也可能命中 | 2026-11-28 |
+| [copilot_cache_control 的选点规则与 Gemini 适用性](prompt-caching/copilot-cache-control-breakpoint-placement.md) | 显式断点与隐式前缀匹配的机制差异；各代理项目的断点放置模型（启发式、逆向贪心、Token 权重）；边界状态解耦与前置配额守卫等网关实现约束 | 2026-11-28 |
 
 ## keyboard-input
 
@@ -477,6 +477,7 @@ AI software factory 的概念判据、部署形态、真工厂短名单与机械
 | [Mutation testing、test oracle 与 invariant](software-testing/mutation-testing-oracles-and-invariants.md) | 变异测试机制、oracle 关系、invariant 的位置、等价 mutant 与结果解释边界；客户端操作历史作为分布式系统的一致性 oracle | 2026-11-18 |
 | [Deterministic Simulation Testing：单线程 Tick 驱动与故障重放](software-testing/deterministic-simulation-testing.md) | 灰色故障与真实集群复现的两层障碍、四类不确定性接管、Tickloom 的 Tickable/SimulatedNetwork/按 tick 超时、种子化故障注入与时间快进、文件系统 visible/durable 崩溃模型、TickCompletableFuture、六条规则与三层 fitness function、消息级与字节级模拟边界、应用层与 hypervisor 层路线 | 2026-11-18 |
 | [发布资产与镜像的验证方法](software-testing/release-artifact-verification.md) | 从 release `tag_name` 构造资产 URL；HEAD 探测与版本检查分工；原始 CI 日志逐项 PASS/FAIL；按平台和 manifest digest 对照测试与发布产物 | 2026-11-21 |
+| [终端颜色与日志断言的测试确定性](software-testing/terminal-color-log-assertions.md) | 环境自适应着色与日志精确断言的耦合风险；测试非确定性成因；真实 PTY 与环境重置的复现方法；断言解耦、入口统一设置与专项覆盖的治理策略 | 2026-11-28 |
 
 ## technology-radar
 

@@ -1,7 +1,7 @@
 # Gemini 4 Argon 上下文缓存：隐式缓存的掉点现象与社区反馈
 
 > Sources: Google 官方论坛, 2026-10-14; Google Cloud 官方文档, 2026-10-13; googleapis/python-genai issues, 2025-12 至 2026-09; OpenCode issues, 2026-08 至 2026-10; 本机 copilot-api 源码与真实请求实测, 2026-10-31; 本机 8787 完整消息录制与受控对照, 2026-11-28
-> Raw: [Argon 社区报告与官方回应](../../raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md); [三种缓存模式官方文档](../../raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md); [Copilot Gemini 缓存标记注入与实测要点](../../raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md); [账号绑定与交互标识对照](../../raw/prompt-caching/2026-11-28-argon-account-binding-and-interaction-id.md); [掉点字节级取证](../../raw/prompt-caching/2026-11-28-argon-cache-drop-byte-forensics.md)
+> Raw: [Argon 社区报告与官方回应](../../raw/prompt-caching/2026-10-20-gemini-4-argon-cache-community-and-official.md); [三种缓存模式官方文档](../../raw/prompt-caching/2026-10-20-gemini-caching-modes-official-docs.md); [Copilot Gemini 缓存标记注入与实测要点](../../raw/prompt-caching/2026-11-01-copilot-gemini-cache-control-and-hash-probe.md); [账号绑定与交互标识对照](../../raw/prompt-caching/2026-11-28-argon-account-binding-and-interaction-id.md); [掉点字节级取证](../../raw/prompt-caching/2026-11-28-argon-cache-drop-byte-forensics.md); [四标记实现与官方边界](../../raw/prompt-caching/2026-11-28-gemini-chat-four-marker-implementation.md)
 > Updated: 2026-11-28
 
 ## Overview
@@ -47,7 +47,7 @@ Google 官方文档对 Gemini 上下文缓存三种模式的定义：
 
 ## 本机代理链路的标记注入与实测
 
-`copilot-api` 在发往 Copilot `/chat/completions` 前，对被 `state.models` 判定为 Gemini family 的模型自动补消息级缓存标记：前 2 条非空 `system` 加最后 1 条非空非 `system`，已有标记不覆盖。Chat Completions、Messages 的 Chat fallback、Responses 的 Chat fallback 共用同一实现。
+`copilot-api` 在发往 Copilot `/chat/completions` 前，对被 `state.models` 判定为 Gemini family 的模型自动补消息级缓存标记。2026-11-28 起 Gemini 采用四标记策略：预算 4 个，自尾部逆扫当前 user、当前 tool 批次末尾与不带非空 `tool_calls` 的 assistant，有余量再从开头连续 `system`、`user` 补位；已有标记计入预算且不覆盖。Chat Completions、Messages 的 Chat fallback、Responses 的 Chat fallback 共用同一实现；非 Gemini 的 Messages→Chat 保持前 2 条非空 `system` 加最后 1 条非空非 `system`。
 
 同账户内的成对对照没有出现稳定方向的差异。跨账户发送相同正文时观察到缓存互相命中，两组因此不再是独立对照，看到的费用差异不能归因于标记。
 
