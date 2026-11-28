@@ -21,6 +21,7 @@ extensions:
   - /home/cpf/.omp/agent/extensions/herdr-omp-agent-state.ts
   - /home/cpf/.omp/agent/extensions/antigravity-prompt-adapter.ts
   - /home/cpf/.omp/agent/extensions/sys-sticky-footer.ts
+  - /home/cpf/.omp/agent/extensions/c8787-cache-warming.ts
 enabledModels:
   - c8787/*
   - c8787-chat/*
@@ -440,7 +441,7 @@ read:
     unfoldLimit: 100
   toolResultPreview: true
 lsp:
-  enabled: true
+  enabled: false
   lazy: true
   shared: true
   formatOnWrite: false

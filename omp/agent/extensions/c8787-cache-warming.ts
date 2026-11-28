@@ -5,9 +5,9 @@ const TARGET_PROVIDER = "c8787-chat";
 export default function c8787CacheWarming(pi: ExtensionAPI) {
 	pi.on("cache_warming_decision", (event, ctx) => {
 		if (ctx.model?.provider !== TARGET_PROVIDER) return;
-		if (!event.method) return;
-		if (event.missCost <= event.warmCost) return;
-		if (event.spentCost + event.warmCost > event.missCost) return;
+		if (!event.method) return { action: "stop" };
+		if (event.missCost <= event.warmCost) return { action: "stop" };
+		if (event.spentCost + event.warmCost > event.missCost) return { action: "stop" };
 		return { action: "warm" };
 	});
 }

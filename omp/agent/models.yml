@@ -1,6 +1,6 @@
 providers:
   openai-codex:
-    baseUrl: http://localhost:8787/v1
+    baseUrl: http://localhost:4140/v1
     apiKey: <REDACTED>
     api: openai-codex-responses
     compat:
@@ -17,7 +17,7 @@ providers:
         contextWindow: 1050000
         maxTokens: 128000
   c8787:
-    baseUrl: http://localhost:8787/v1
+    baseUrl: http://localhost:4140/v1
     apiKey: <REDACTED>
     api: openai-responses
     compat:
@@ -123,7 +123,7 @@ providers:
       - id: microsoft-decision-1-1
         name: Microsoft-Decision-1.1
         api: typesafe
-        baseUrl: http://localhost:8787
+        baseUrl: http://localhost:4140
         reasoning: false
         input:
           - text
@@ -133,7 +133,7 @@ providers:
           cacheRead: 0
           cacheWrite: 0
   c8787-chat:
-    baseUrl: http://localhost:8787/v1
+    baseUrl: http://localhost:4140/v1
     apiKey: <REDACTED>
     api: openai-completions
     compat:

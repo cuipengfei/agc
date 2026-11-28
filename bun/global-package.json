@@ -3,7 +3,7 @@
     "@alibaba-group/open-code-review": "1.14.4",
     "@anthropic-ai/claude-code": "2.1.332",
     "@biomejs/biome": "2.6.9",
-    "@colbymchenry/codegraph": "1.6.4",
+    "@colbymchenry/codegraph": "1.6.5",
     "@deepseek-ai/dsh": "0.2.2-rc.5",
     "@earendil-works/pi-coding-agent": "1.7.0",
     "@fresh-editor/fresh-editor": "0.5.9",
