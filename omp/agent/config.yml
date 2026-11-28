@@ -32,7 +32,6 @@ enabledModels:
   - deepseek/*
   - sensenova/*
   - openrouter/**
-  - openai-codex/*
   - typesafe-zen/*
   - nvidia/**
   - kiro/*
